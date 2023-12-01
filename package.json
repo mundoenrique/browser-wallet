@@ -1,4 +1,9 @@
 {
+  "name": "belcorp-corporation",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Novopayment",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
