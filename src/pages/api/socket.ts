@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const sockets: Record<string, Socket> = {};
 
-export default function handler(req, res) {
+export default function handler(req: any, res: any) {
   if (res.socket.server.io) {
     console.log('Server already started!');
     res.end();
