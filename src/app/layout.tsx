@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 //Internal app
-import { RootLayout } from '@/interfaces';
+import { RootLayoutProps } from '@/interfaces';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({ children }: RootLayout) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="es">
       <body>{children}</body>
