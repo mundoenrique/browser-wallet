@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
         rel: 'icon',
         type: 'image/x-icon',
         sizes: '32x32',
-        url: '',
+        url: '/images/favicon.ico',
       },
     ],
   };
