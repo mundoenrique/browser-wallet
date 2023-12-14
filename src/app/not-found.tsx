@@ -1,12 +1,14 @@
 'use client';
-import { Typography } from '@mui/material';
+
 import Link from 'next/link';
+import { Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
 export default function NotFound() {
   const router = useRouter();
+
   const goBack = () => {
-    router.back(); // Redirige a la página anterior
+    router.back();
   };
 
   return (
