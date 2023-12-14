@@ -1,4 +1,5 @@
 'use client';
+import { PWAInstallBar } from '@/components/UI/';
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
@@ -26,19 +27,22 @@ export default function Page() {
   }, []);
 
   return (
-    <div>
-      <h1>Hello, Next.js!</h1>
-      <h1>Next.js con Socket.IO y API externa</h1>
-      {apiData && (
-        <div>
-          <h2>Últimos movimientos:</h2>
-          <ul>
-            {apiData.map((movement: any) => (
-              <li key={movement.id}>{movement.description}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+    <>
+      <div>
+        <h1>Hello, Next.js!</h1>
+        <h1>Next.js con Socket.IO y API externa</h1>
+        {apiData && (
+          <div>
+            <h2>Últimos movimientos:</h2>
+            <ul>
+              {apiData.map((movement: any) => (
+                <li key={movement.id}>{movement.description}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+      <PWAInstallBar />
+    </>
   );
 }

@@ -1,0 +1,50 @@
+{
+  "name": "Mi billetera",
+  "short_name": "",
+  "theme_color": "#7D4DBE",
+  "background_color": "#FFFFFF",
+  "start_url": "/",
+  "id": "belcorp",
+  "display": "standalone",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/images/pwa/96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "/images/pwa/192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/pwa/512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "/images/pwa/512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ],
+  "description": "La billetera digital que te ayudará a pagar, cobrar y ordenar tus finanzas.",
+  "categories": ["business", "finance"],
+  "screenshots": [
+    {
+      "src": "/images/pwa/Bienvenida_1.png",
+      "type": "image/png",
+      "sizes": "1512x982",
+
+      "form_factor": "wide"
+    },
+    {
+      "src": "/images/pwa/Bienvenida_2.png",
+      "type": "image/png",
+      "sizes": "360x640",
+      "form_factor": "narrow"
+    }
+  ]
+}
