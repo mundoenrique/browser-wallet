@@ -1,9 +1,9 @@
-import { Server, Socket } from 'socket.io';
 import axios from 'axios';
+import { Server, Socket } from 'socket.io';
 
 const sockets: Record<string, Socket> = {};
 
-export default function handler(req, res) {
+export default function handler(req: any, res: any) {
   if (res.socket.server.io) {
     console.log('Server already started!');
     res.end();
@@ -17,7 +17,7 @@ export default function handler(req, res) {
 
   const onConnection = (socket: Socket) => {
     console.log('Usuario conectado:', socket.id);
-    // Almacenar el socket en un objeto para su referencia posterior
+    // Store the socket in an object for later reference
     sockets[socket.id] = socket;
 
     // Manejar eventos
@@ -26,7 +26,7 @@ export default function handler(req, res) {
       delete sockets[socket.id];
     });
 
-    // Escuchar la API y emitir cambios a los clientes
+    // Listen to the API and issue changes to clients
     setInterval(async () => {
       try {
         const response = await axios.get('https://api-services-kfmf.onrender.com/cards/4/movements');

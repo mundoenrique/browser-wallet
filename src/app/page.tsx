@@ -1,7 +1,7 @@
 'use client';
-import { PWAInstallBar } from '@/components/UI/';
-import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
+import { useEffect, useState } from 'react';
+import { PWAInstallBar } from '@/components/UI/';
 
 let socket: any;
 
