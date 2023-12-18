@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { isIOS } from 'react-device-detect';
 
-import { Button, Slide, IconButton, Stack, Paper, Typography } from '@mui/material';
+import { Button, Slide, Stack, Paper, Typography } from '@mui/material';
 //Internal app
 
 export default function PWAInstallBar() {
