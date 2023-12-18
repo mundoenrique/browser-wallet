@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { isIOS } from 'react-device-detect';
 
-import { Button, Slide, IconButton, Stack, Paper, Typography } from '@mui/material';
+import { Button, Slide, Stack, Paper, Typography } from '@mui/material';
 //Internal app
 
 export default function PWAInstallBar() {
@@ -20,10 +20,10 @@ export default function PWAInstallBar() {
       console.log('install', e);
       setOpenBar(true);
     });
-    if (iOSDevice) {
+    if (iOSDevice && !(window as any).navigator.standalone) {
       setOpenBar(true);
     }
-  }, []);
+  }, [iOSDevice]);
 
   const intallPrompt = async () => {
     if (!deferredPrompt) {
