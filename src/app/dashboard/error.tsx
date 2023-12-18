@@ -1,17 +1,11 @@
 'use client';
-import { Button, Typography } from '@mui/material';
-import { useEffect } from 'react';
 
-export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
-  useEffect(() => {
-    // Log the error to an error reporting service
-    console.error(error);
-  }, [error]);
+import { Typography } from '@mui/material';
 
+export default function ErrorBoundary({ error }: { error: Error }) {
   return (
     <>
-      <Typography variant="h2">Something went wrong!</Typography>
-      <Button onClick={() => reset()}>Try again</Button>
+      <Typography variant="h2">{error.message}</Typography>
     </>
   );
 }
