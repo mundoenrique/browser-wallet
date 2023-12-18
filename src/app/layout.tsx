@@ -8,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
       template: '%s | Indigo',
       default: 'Indigo',
     },
-    // manifest: `/api/manifest.webmanifest`,
+    manifest: `/manifest.webmanifest`,
     description: 'La billetera digital que te ayudará a pagar, cobrar y ordenar tus finanzas.',
     icons: [
       {
