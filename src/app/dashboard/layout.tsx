@@ -1,5 +1,6 @@
+//Internal app
 import { RootLayoutProps } from '@/interfaces';
 
-export default function LayoutDashboard({ children }: RootLayoutProps) {
+export default function DashboardLayout({ children }: RootLayoutProps) {
   return <main>{children}</main>;
 }
