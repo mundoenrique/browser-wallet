@@ -4,7 +4,7 @@ export const encrypt = ({
   data,
   secret = process.env.NEXT_PUBLIC_SECRET_KEY || '',
   safety = process.env.NEXT_PUBLIC_ACTIVE_SAFETY,
-}: any & string) => {
+}: any) => {
   if (safety === 'ON') {
     const key = CryptoJS.enc.Base64.parse(secret);
     const iv = CryptoJS.enc.Base64.parse(process.env.NEXT_PUBLIC_SECRET_IV || '');
@@ -19,7 +19,7 @@ export const decrypt = ({
   data,
   secret = process.env.NEXT_PUBLIC_SECRET_KEY || '',
   safety = process.env.NEXT_PUBLIC_ACTIVE_SAFETY,
-}: any & string) => {
+}: any) => {
   if (safety === 'ON') {
     const key = CryptoJS.enc.Base64.parse(secret);
     const iv = CryptoJS.enc.Base64.parse(process.env.NEXT_PUBLIC_SECRET_IV || '');
