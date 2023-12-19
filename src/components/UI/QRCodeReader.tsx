@@ -1,8 +1,7 @@
 'use client';
 
-import jsQR, { QRCode } from 'jsqr';
 import { useEffect } from 'react';
-
+import jsQR, { QRCode } from 'jsqr';
 import { Point } from 'jsqr/dist/locator';
 
 const decoder = (imageData: ImageData): Promise<QRCode> => {
@@ -14,7 +13,7 @@ const decoder = (imageData: ImageData): Promise<QRCode> => {
   });
 };
 
-function drawLine(begin: Point, end: Point, color: any, el: CanvasRenderingContext2D) {
+function drawLine(begin: Point, end: Point, color: string, el: CanvasRenderingContext2D) {
   el.beginPath();
   el.moveTo(begin.x, begin.y);
   el.lineTo(end.x, end.y);
@@ -25,7 +24,7 @@ function drawLine(begin: Point, end: Point, color: any, el: CanvasRenderingConte
 
 export default function QRCodeReader() {
   const els: any = {};
-  const setRefFactory = (key: any) => (element: any) => (els[key] = element);
+  const setRefFactory = (key: string) => (element: any) => (els[key] = element);
   let canvasContext: CanvasRenderingContext2D;
 
   function runTime() {
@@ -42,7 +41,6 @@ export default function QRCodeReader() {
           drawLine(code.location.topRightCorner, code.location.bottomRightCorner, '#FF3B58', canvasContext);
           drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, '#FF3B58', canvasContext);
           drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, '#FF3B58', canvasContext);
-          console.log(code);
         }
       });
     }
