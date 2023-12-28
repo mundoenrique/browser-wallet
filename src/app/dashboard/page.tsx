@@ -1,5 +1,8 @@
 'use client';
 
+import { Suspense } from 'react';
+import Loading from './loading';
+
 export default function Dashboard() {
-  return <h1>Dashboard Page</h1>;
+  return <Suspense fallback={<Loading />} />;
 }
