@@ -1,4 +1,5 @@
 import CryptoJS from 'crypto-js';
+import { ramdomData, log_message } from '@/utils/toolHelpers';
 
 export const encrypt = ({
   data,
@@ -28,4 +29,21 @@ export const decrypt = ({
     return decryptedData;
   }
   return data;
+};
+
+export const encryptToView = (request: { code: number; payload: string } | { code: number; msg: string }) => {
+  try {
+    const decode = ramdomData(22).toString();
+    const reqData = process.env.NEXT_PUBLIC_ACTIVE_SAFETY === 'ON' ? JSON.stringify(request) : request;
+		const encryptData = encrypt({ data: reqData, secret: decode });
+		const encryptResponse = {
+			payload: encryptData,
+			code: decode,
+    };
+    const resData = process.env.NEXT_PUBLIC_ACTIVE_SAFETY === 'ON' ? JSON.stringify(encryptResponse) : encryptResponse;
+    const response = encrypt({ data: resData});
+		return response;
+	} catch (e) {
+		log_message('error', `Error encrypt to view ${e}`);
+	}
 };
