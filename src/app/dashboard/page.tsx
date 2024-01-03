@@ -1,5 +1,8 @@
 'use client';
 
+import { Suspense } from 'react';
+import Loading from './loading';
+
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -73,6 +76,7 @@ export default function Dashboard() {
 
   return (
     <>
+      <Suspense fallback={<Loading />} />;
       <Grid container columns={1} spacing={2}>
         <Box sx={{ m: 4 }} component="form" onSubmit={handleSubmit(onSubmit)}>
           <h1>Dashboard Page</h1>
