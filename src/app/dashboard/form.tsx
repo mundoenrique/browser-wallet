@@ -1,18 +1,97 @@
 'use client';
 
-import Loading from './loading';
-import dynamic from 'next/dynamic';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-const Content = dynamic(() => import('./form'), {
-  loading: () => <Loading />,
-  ssr: false,
-});
+import { InputText, InputRadio, InputDatePicker, InputPass, InputSwitch, InputOTP } from '@/components/UI';
+import { getSchema } from '@/config';
+import InputSelect from '@/components/UI/form/InputSelect';
+import InputCheck from '@/components/UI/form/InputCheck';
+import { Box, Button, Grid } from '@mui/material';
+import dayjs from 'dayjs';
+import { date } from 'yup';
 
-export default function Dashboard() {
+const RadioOptions = [
+  {
+    text: 'Role 1',
+    value: 'A',
+  },
+  {
+    text: 'Role 2',
+    value: 'O',
+  },
+];
+
+const cookiesList = [
+  {
+    id: 1,
+    name: 'necessaryCookies',
+    title: 'Cookies necesarias',
+    info: '',
+    required: true,
+  },
+  {
+    id: 2,
+    name: 'functionalyCookies',
+    title: 'Cookies funcionales',
+    info: '',
+    required: false,
+  },
+  {
+    id: 3,
+    name: 'performanceCookies',
+    title: 'Cookies de rendimiento',
+    info: '',
+    required: false,
+  },
+];
+
+export default function Form() {
+  const schema = getSchema([/* 'email', 'password', 'initialDate', 'roles', 'term', */ 'country']);
+
+  const { control, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      email: 'giovannybm@gmail.com',
+      country: null,
+      password: '',
+      initialDate: dayjs('30/12/2024', 'DD-MM-YYYY'),
+      roles: 'A',
+      term: 'true',
+      cookies: '',
+      necessaryCookies: true,
+      functionalyCookies: false,
+      performanceCookies: false,
+    },
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = async (data: any) => {
+    console.log('cookies:', cookiesList, 'Formdata', data);
+  };
   return (
-    <>
-      <Content />
-    </>
+    <Grid container columns={1} spacing={2}>
+      <Box sx={{ m: 4 }} component="form" onSubmit={handleSubmit(onSubmit)}>
+        <h1>Dashboard Page</h1>
+        <InputText name="email" control={control} />
+        <InputSelect
+          name="country"
+          control={control}
+          options={selectOptions.map((e) => ({
+            text: e.name,
+            value: e.code,
+          }))}
+        />
+        <InputRadio name="roles" control={control} options={RadioOptions} />
+        <InputCheck name="term" control={control} />
+        <InputDatePicker name="initialDate" control={control} />
+        <InputPass name="password" control={control} additionalInfo />
+        <InputOTP />
+        <InputSwitch name="cookies" control={control} options={cookiesList} setValue={setValue} />
+        <Button variant="contained" type="submit" fullWidth>
+          Enviar
+        </Button>
+      </Box>
+    </Grid>
   );
 }
 
