@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  belcorp:
+    image: belcorp-dev
+    #image: /belcorp:dev
+    container_name: belcorp-dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+     - belcorp_network
+    restart: always
+    ports:
+      - 3010:3000
+    command: yarn start
+
+networks:
+  belcorp_network:
+    name: belcorp_network
