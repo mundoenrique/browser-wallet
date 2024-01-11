@@ -96,20 +96,22 @@ const theme = createTheme({
         root: {
           backgroundColor: secondary,
           maxWidth: 'initial !important',
-          flex: 'auto',
           paddingLeft: '0 !important',
           paddingRight: '0 !important',
+          display: 'flex',
+          flexDirection: 'column',
+          flexWrap: 'nowrap',
+          minHeight: '100vh',
         },
       },
     },
-    //Button
+    // Button
     MuiButton: {
       styleOverrides: {
         root: {
-          color: white,
           height: '52px',
           letterSpacing: 'normal',
-          minWidth: '115px',
+          minWidth: '156px',
           textTransform: 'none',
           ':hover': {
             background: primary,
@@ -129,6 +131,22 @@ const theme = createTheme({
             backgroundColor: primary,
             color: white,
           },
+        },
+      },
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+        },
+      },
+    },
+    MuiCardActions: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+          display: 'flex',
+          justifyContent: 'center',
         },
       },
     },

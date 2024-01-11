@@ -1,7 +1,6 @@
-import { Box } from '@mui/material';
 //Internal app
-import { RootLayoutProps } from '@/interfaces';
+import { ChildrenProps } from '@/interfaces';
 
-export default function DashboardLayout({ children }: RootLayoutProps) {
-  return <Box>{children}</Box>;
+export default function DashboardLayout({ children }: ChildrenProps) {
+  return <>{children}</>;
 }

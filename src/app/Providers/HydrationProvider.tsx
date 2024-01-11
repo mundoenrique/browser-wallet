@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, Container } from '@mui/material';
 //Internal app
 import logo from '%/images/pwa/96.png';
 import { ChildrenProps } from '@/interfaces';
@@ -21,8 +21,7 @@ export default function HydrationProvider({ children }: ChildrenProps) {
           display: 'flex',
           flexDirection: 'column',
           flexWrap: 'nowrap',
-          height: '100vh',
-          bgcolor: 'primary.main',
+          minHeight: '100vh',
         }}
       >
         <Box
@@ -44,17 +43,5 @@ export default function HydrationProvider({ children }: ChildrenProps) {
       </Box>
     );
 
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        flexWrap: 'nowrap',
-        height: '100vh',
-        bgcolor: 'primary.main',
-      }}
-    >
-      {children}
-    </Box>
-  );
+  return <Container>{children}</Container>;
 }
