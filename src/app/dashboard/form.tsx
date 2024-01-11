@@ -3,10 +3,18 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { InputText, InputRadio, InputDatePicker, InputPass, InputSwitch, InputOTP } from '@/components/UI';
+import {
+  InputText,
+  InputRadio,
+  InputDatePicker,
+  InputPass,
+  InputSwitch,
+  InputOTP,
+  InputSelect,
+  InputCheck,
+} from '@/components/';
 import { getSchema } from '@/config';
-import InputSelect from '@/components/UI/form/InputSelect';
-import InputCheck from '@/components/UI/form/InputCheck';
+
 import { Box, Button, Grid } from '@mui/material';
 import dayjs from 'dayjs';
 import { date } from 'yup';
