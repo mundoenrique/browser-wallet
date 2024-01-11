@@ -87,7 +87,7 @@ const NavBarOnbording = () => {
   );
 };
 
-export default function Dashboard() {
+export default function Onboarding() {
   return (
     <GradientContainer>
       <NavBarOnbording />
