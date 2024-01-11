@@ -3,10 +3,10 @@
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 //Internal app
-import { ProviderProps } from '@/interfaces';
-import theme from '../../theme/theme-default';
+import theme from '@/theme/theme-default';
+import { ChildrenProps } from '@/interfaces';
 
-export default function MuiProvider({ children }: ProviderProps) {
+export default function MuiProvider({ children }: ChildrenProps) {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

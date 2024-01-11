@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
+import { Container } from '@mui/material';
 //Internal app
 import { RootLayoutProps } from '@/interfaces';
+import { HydrationProvider, MuiProvider } from './providers';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -24,7 +26,15 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        <MuiProvider>
+          <HydrationProvider>
+            {/* <AuthProvider> */}
+            <Container>{children}</Container>
+            {/* </AuthProvider> */}
+          </HydrationProvider>
+        </MuiProvider>
+      </body>
     </html>
   );
 }

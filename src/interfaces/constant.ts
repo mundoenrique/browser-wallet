@@ -1,3 +1,3 @@
-export type RootLayoutProps = {
+export type ChildrenProps = {
   children: React.ReactNode;
 };
