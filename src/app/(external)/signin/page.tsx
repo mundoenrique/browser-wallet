@@ -16,7 +16,7 @@ export default function Page() {
       });
 
       socket.on('connect', () => {
-        console.log('Connected', socket.id);
+        // console.log('Connected', socket.id);
       });
 
       socket.on('movementsChange', (data: any) => {
@@ -42,7 +42,7 @@ export default function Page() {
           </div>
         )}
       </div>
-      <PWAInstallBar />
+      {/* <PWAInstallBar /> */}
     </>
   );
 }
