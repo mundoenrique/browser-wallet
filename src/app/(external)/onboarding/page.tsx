@@ -6,13 +6,15 @@ import { useState } from 'react';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Box, Button, Link as LinkMui, Card, CardActions, CardContent, Typography } from '@mui/material';
 // Internal app
-import logo from '%/images/pwa/96.png';
+import logo from '%/images/yiro.svg';
 import { ChildrenProps } from '@/interfaces';
-import GradientContainer from '@/components/UI/GradientContainer';
+import { GradientContainer, ModalResponsive } from '@/components';
 
 const CardOnboarding = ({ children }: ChildrenProps) => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
+
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleNext = () => {
     let newSkipped = skipped;
@@ -46,7 +48,25 @@ const CardOnboarding = ({ children }: ChildrenProps) => {
         <Typography variant="body2" color="text.secondary">
           {children}
         </Typography>
+        <Button
+          variant="contained"
+          sx={{ width: 'initial' }}
+          onClick={() => {
+            setOpenDialog(true);
+          }}
+        >
+          Modal
+        </Button>
+        <ModalResponsive
+          open={openDialog}
+          handleClose={() => {
+            setOpenDialog(false);
+          }}
+        >
+          <Typography>Modal Content</Typography>
+        </ModalResponsive>
       </CardContent>
+
       <CardActions>
         <Button
           variant="outlined"
