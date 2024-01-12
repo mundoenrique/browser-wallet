@@ -11,5 +11,5 @@ export { default as InputOTP } from './form/InputOTP';
 export { default as PWANavbar } from './navigation/NavbarPWA';
 export { default as DesktopSidebar } from './navigation/sidebar/SidebarDesktop';
 export { default as PWASidebar } from './navigation/sidebar/SidebarPWA';
-export { default as ModalPWA } from './modal/ModalPWA';
-export { default as ModalDesktop } from './modal/ModalDesktop';
+export { default as ModalResponsive } from './modal/ModalResponsive';
+export { default as GradientContainer } from './GradientContainer';
