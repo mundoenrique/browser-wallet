@@ -9,6 +9,9 @@ const primary = '#5F3F98';
 //Secondary color - Tenant
 const secondary = '#E1DEF6';
 
+//Tertiary color - Tenant
+const tertiary = '#CAC3EF';
+
 // Text color variables
 const textColor = '#1E293B';
 
@@ -20,15 +23,6 @@ const greyDark = '#c4c4c4';
 // Border variables
 const borderRadius = 10;
 
-// Font size variables
-const h1 = 28; //28px
-const h2 = 24; //24px
-const h3 = 22; //22px
-const h4 = 20; //20px
-const h5 = 18; //18px
-const text = 16; //16px
-const small = 12; //12px
-
 const theme = createTheme({
   palette: {
     primary: {
@@ -36,6 +30,7 @@ const theme = createTheme({
     },
     secondary: {
       main: secondary,
+      light: tertiary,
     },
     grey: {
       50: greyLight,
@@ -147,6 +142,69 @@ const theme = createTheme({
           padding: 0,
           display: 'flex',
           justifyContent: 'center',
+        },
+      },
+    },
+
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          transform: 'none !important',
+        },
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          color: textColor,
+          backgroundColor: white,
+          height: '52px',
+          '& > input::placeholder': {
+            color: textColor,
+            opacity: 1,
+          },
+          '& > fieldset > legend': {
+            display: 'none',
+          },
+          '& > fieldset': {
+            top: 0,
+            borderColor: tertiary,
+          },
+        },
+        input: {
+          borderRadius: borderRadius,
+          padding: '14px 14px !important',
+        },
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root': {
+            paddingTop: 0,
+            paddingBottom: 0,
+          },
+        },
+        input: {
+          padding: '7.5px 4px 7.5px 5px !important',
+        },
+        popupIndicatorOpen: {
+          transform: 'rotate(90deg)',
+        },
+        option: {
+          backgroundColor: 'transparent !important',
+          borderTopColor: tertiary,
+          borderBottomColor: 'transparent',
+          borderLeftColor: 'transparent',
+          borderRightColor: 'transparent',
+          borderWidth: '0.84px',
+          borderStyle: 'solid',
+          '&:first-of-type': {
+            border: 'none',
+          },
+          '&.Mui-focused': {
+            backgroundColor: 'transparent !important',
+          },
         },
       },
     },

@@ -2,7 +2,9 @@
 
 import { Controller } from 'react-hook-form';
 import { useTheme } from '@mui/material/styles';
-import { FormControl, FormLabel, FormHelperText, Radio, FormControlLabel, RadioGroup } from '@mui/material';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import { FormControl, FormLabel, FormHelperText, Radio, FormControlLabel, RadioGroup, Box } from '@mui/material';
 //Internal App
 import { InputOptionsProps } from '@/interfaces';
 
@@ -13,15 +15,29 @@ function InputRadioMUI(props: InputOptionsProps): JSX.Element {
   return (
     <FormControl component="fieldset" variant="standard" fullWidth>
       {label && <FormLabel focused={false}>{label}</FormLabel>}
-      <RadioGroup name={name} value={value} onChange={onChange}>
+      <RadioGroup name={name} value={value} onChange={onChange} sx={{ display: 'flex', flexDirection: 'row' }}>
         {options.map((option, i: number) => (
-          <FormControlLabel
+          <Box
             key={i}
-            value={option.value}
-            control={<Radio id={name + option.value} />}
-            label={option.text}
-            sx={{ mb: 0, pl: 2 }}
-          />
+            sx={{
+              bgcolor: value === option.value ? 'secondary.light' : 'white',
+              borderRadius: 1,
+              width: 154,
+              height: 52,
+              display: 'flex',
+              justifyContent: 'center',
+              mx: '12px',
+            }}
+          >
+            <FormControlLabel
+              value={option.value}
+              control={
+                <Radio id={name + option.value} checkedIcon={<CheckBoxIcon />} icon={<CheckBoxOutlineBlankIcon />} />
+              }
+              label={option.text}
+              sx={{ m: 0, p: 0, width: '100%', justifyContent: 'center' }}
+            />
+          </Box>
         ))}
       </RadioGroup>
       <FormHelperText sx={{ color: theme.palette.error.main, height: '20px' }} id={`${label}-helperText`}>
@@ -31,7 +47,7 @@ function InputRadioMUI(props: InputOptionsProps): JSX.Element {
   );
 }
 
-export default function InputRadio(props: InputOptionsProps) {
+export default function InputCheckCondition(props: InputOptionsProps) {
   const { name, control, onChange, options, ...restProps } = props;
 
   return (

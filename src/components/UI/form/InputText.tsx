@@ -1,32 +1,33 @@
 'use client';
 
 import { Controller } from 'react-hook-form';
-import { FormControl, FormHelperText, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
+import { FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/material';
 //Internal app
 import { TextFieldProps } from '@/interfaces';
 
 function InputMUI(props: TextFieldProps): JSX.Element {
-  const { name, label, labelError, type, optional, error, value, onChange } = props;
+  const { name, label, labelError, type, error, value, onChange } = props;
 
   const textLabel = label ?? name;
 
   return (
-    <FormControl variant="outlined" error={!!error} sx={{ mb: 2 }} fullWidth>
-      <InputLabel htmlFor={name}>{textLabel}</InputLabel>
-      <OutlinedInput
-        id={name}
-        type={type ?? 'text'}
-        label={textLabel}
-        aria-describedby={`${name}-helperText`}
-        error={!!error}
-        value={value}
-        onChange={onChange}
-        endAdornment={optional ? <InputAdornment position="end">{optional}</InputAdornment> : ''}
-      />
-      <FormHelperText sx={{ height: '20px' }} id={`${name}-helperText`}>
-        {error ? error.message : labelError || ''}
-      </FormHelperText>
-    </FormControl>
+    <>
+      <InputLabel sx={{ mb: '12px' }}>{textLabel}</InputLabel>
+      <FormControl variant="outlined" error={!!error} sx={{ mb: '5px' }} fullWidth>
+        <OutlinedInput
+          id={name}
+          type={type ?? 'text'}
+          label={textLabel}
+          aria-describedby={`${name}-helperText`}
+          error={!!error}
+          value={value}
+          onChange={onChange}
+        />
+        <FormHelperText sx={{ height: '20px' }} id={`${name}-helperText`}>
+          {error ? error.message : labelError || ''}
+        </FormHelperText>
+      </FormControl>
+    </>
   );
 }
 
