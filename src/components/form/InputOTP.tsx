@@ -1,14 +1,11 @@
 import { ReactElement, ChangeEvent, ClipboardEvent, KeyboardEvent } from 'react';
-import { OutlinedInput, FormGroup, Grid } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { OutlinedInput, FormGroup, Box } from '@mui/material';
 
 export default function InputOTP(props: any) {
   const { length = 4 } = props;
   const Inputs: ReactElement[] = [];
   const inputsRef: Array<HTMLInputElement> = [];
   let inputIndex: number = -1;
-
-  const theme = useTheme();
 
   const change = (e: ChangeEvent<HTMLInputElement>) => {
     if (inputIndex < length - 1 && e.target.value != '') {
@@ -46,12 +43,12 @@ export default function InputOTP(props: any) {
         }}
         id={`${i}-opt`}
         sx={{
-          width: 56,
-          height: 56,
+          width: 46,
+          height: 52,
           '& .MuiInputBase-input': {
             textAlign: 'center',
-            height: '48px',
-            width: '48px',
+            height: '52px',
+            width: '46px',
             padding: '4px',
             fontSize: '24px',
           },
@@ -68,14 +65,12 @@ export default function InputOTP(props: any) {
   }
 
   return (
-    <FormGroup row>
-      <Grid container rowSpacing={1}>
-        {Inputs.map((e) => (
-          <Grid item xs={1}>
-            {e}
-          </Grid>
-        ))}
-      </Grid>
+    <FormGroup sx={{ display: 'flex', flexDirection: 'row' }}>
+      {Inputs.map((e, i) => (
+        <Box key={i} sx={{ mx: '4px' }}>
+          {e}
+        </Box>
+      ))}
     </FormGroup>
   );
 }

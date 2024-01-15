@@ -2,42 +2,51 @@
 
 import 'dayjs/locale/es';
 import { Controller } from 'react-hook-form';
-import { FormHelperText } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { FormHelperText, InputLabel } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 //Internal App
-
-//import useGetFormStore from '@/hooks/zustanHooks';
-
 import { InputDatePickerProps } from '@/interfaces';
 
 function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
-  const theme = useTheme();
   const { name, label, labelError, error, onChange, value, views, format } = props;
 
   const inputLabel = label ?? name;
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'es'}>
-      <DatePicker
-        slotProps={{
-          textField: {
-            error: !!error,
-          },
-        }}
-        label={inputLabel}
-        value={value}
-        onChange={onChange}
-        views={views}
-        format={format ? format : 'DD/MM/YYYY'}
-        sx={{ width: '100%' }}
-      />
-      <FormHelperText sx={{ color: theme.palette.error.main, height: '20px', pl: 2 }} id={`${label}-helperText`}>
-        {error ? error.message : labelError || ''}
-      </FormHelperText>
-    </LocalizationProvider>
+    <>
+      <InputLabel sx={{ mb: '12px' }}>{label}</InputLabel>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'es'}>
+        <DatePicker
+          slotProps={{
+            textField: {
+              error: !!error,
+            },
+          }}
+          label={inputLabel}
+          value={value}
+          onChange={onChange}
+          views={views}
+          format={format ? format : 'DD/MM/YYYY'}
+          sx={{
+            width: '100%',
+            '&>.MuiFormLabel-root': { display: 'none' },
+            '&>.MuiInputBase-root': { pr: 0 },
+            '&>.MuiInputBase-root>.MuiInputAdornment-root>.MuiButtonBase-root': {
+              borderRadius: '50%',
+              bgcolor: 'secondary.light',
+              color: 'primary.main',
+              mr: '12px',
+              p: '4px',
+            },
+          }}
+        />
+        <FormHelperText sx={{ color: 'error.main', height: '20px', pl: 2 }} id={`${label}-helperText`}>
+          {error ? error.message : labelError || ''}
+        </FormHelperText>
+      </LocalizationProvider>
+    </>
   );
 }
 
@@ -55,8 +64,8 @@ export default function InputDatePicker(props: InputDatePickerProps) {
               name={name}
               value={field.value}
               onChange={(e) => {
-                field.onChange(e.format(format ? format : 'DD/MM/YYYY'));
-                onChange && onChange(e.format(format ? format : 'DD/MM/YYYY'));
+                field.onChange(e);
+                onChange && onChange(e);
               }}
               error={error}
               {...restProps}

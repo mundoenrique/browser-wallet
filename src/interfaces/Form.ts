@@ -82,15 +82,5 @@ export type FormData = {
 export interface SwitchListProps extends FormMUIProps {
   checked?: boolean;
   setValue?: any;
-  options: {
-    id: number;
-    name: string;
-    title: string;
-    info: string;
-    value?: boolean;
-    required: boolean;
-  }[];
-}
-export interface SwitchMUIProps extends FormMUIProps {
-  settings: { id: number; name: string; title: string; info: string; value?: boolean; required: boolean };
+  disabled?: boolean;
 }

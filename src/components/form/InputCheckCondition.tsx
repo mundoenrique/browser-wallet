@@ -1,7 +1,6 @@
 'use client';
 
 import { Controller } from 'react-hook-form';
-import { useTheme } from '@mui/material/styles';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import { FormControl, FormLabel, FormHelperText, Radio, FormControlLabel, RadioGroup, Box } from '@mui/material';
@@ -9,7 +8,6 @@ import { FormControl, FormLabel, FormHelperText, Radio, FormControlLabel, RadioG
 import { InputOptionsProps } from '@/interfaces';
 
 function InputRadioMUI(props: InputOptionsProps): JSX.Element {
-  const theme = useTheme();
   const { name, label, labelError, error, value, onChange, options } = props;
 
   return (
@@ -40,7 +38,7 @@ function InputRadioMUI(props: InputOptionsProps): JSX.Element {
           </Box>
         ))}
       </RadioGroup>
-      <FormHelperText sx={{ color: theme.palette.error.main, height: '20px' }} id={`${label}-helperText`}>
+      <FormHelperText sx={{ color: 'error.main', height: '20px' }} id={`${label}-helperText`}>
         {error ? error.message : labelError || ''}
       </FormHelperText>
     </FormControl>

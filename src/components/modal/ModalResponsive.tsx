@@ -1,9 +1,8 @@
-import { forwardRef } from 'react';
-import { Box, Fab, Modal, Slide } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { Box, Fab, Modal, Slide } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Close as CloseIcon } from '@mui/icons-material';
-
+//Internal app
 import { MuiModalProps } from '@/interfaces';
 
 const DesktopStyle = {

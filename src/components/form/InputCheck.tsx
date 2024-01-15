@@ -1,13 +1,11 @@
 'use client';
 
 import { Controller } from 'react-hook-form';
-import { useTheme } from '@mui/material/styles';
 import { FormControl, FormLabel, FormHelperText, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 //Internal App
 import { InputCheckProps } from '@/interfaces';
 
 function InputCheckMUI(props: InputCheckProps): JSX.Element {
-  const theme = useTheme();
   const { name, label, labelError, onChange, onClick, checked, value, error, disabled } = props;
 
   const textLabel = label ?? name;
@@ -25,7 +23,7 @@ function InputCheckMUI(props: InputCheckProps): JSX.Element {
           sx={{ mb: 0, pl: 2 }}
         />
       </FormGroup>
-      <FormHelperText sx={{ color: theme.palette.error.main, height: '20px' }} id={`${label}-helperText`}>
+      <FormHelperText sx={{ color: 'error.main', height: '20px' }} id={`${label}-helperText`}>
         {error ? error.message : labelError || ''}
       </FormHelperText>
     </FormControl>
