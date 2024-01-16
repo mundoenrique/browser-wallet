@@ -6,7 +6,7 @@ import { Close as CloseIcon } from '@mui/icons-material';
 import { MuiModalProps } from '@/interfaces';
 
 const DesktopStyle = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -14,10 +14,12 @@ const DesktopStyle = {
   bgcolor: 'background.paper',
   borderRadius: '16px',
   boxShadow: 24,
+  textAlign: 'center',
   p: 4,
 };
+
 const PWAStyle = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute',
   bottom: 0,
   width: '100%',
   bgcolor: 'background.paper',
@@ -25,26 +27,6 @@ const PWAStyle = {
   boxShadow: 24,
   p: 4,
 };
-
-export default function ModalResponsive(props: MuiModalProps) {
-  const { open, handleClose, children } = props;
-  const theme = useTheme();
-  const matche = useMediaQuery(theme.breakpoints.down('sm'));
-  console.log(theme);
-  return (
-    <>
-      {matche ? (
-        <PWADialog open={open} handleClose={handleClose}>
-          {children}
-        </PWADialog>
-      ) : (
-        <DesktopDialog open={open} handleClose={handleClose}>
-          {children}
-        </DesktopDialog>
-      )}
-    </>
-  );
-}
 
 const DesktopDialog = (props: MuiModalProps) => {
   const { open, handleClose, children } = props;
@@ -59,9 +41,8 @@ const DesktopDialog = (props: MuiModalProps) => {
             width: 34,
             height: 34,
             minHeight: 34,
-            border: '1px solid  #CAC3EF',
-
-            position: 'absolute' as 'absolute',
+            border: '1px solid #CAC3EF',
+            position: 'absolute',
             right: -12,
             top: -12,
             '& .MuiSvgIcon-root': {
@@ -75,6 +56,7 @@ const DesktopDialog = (props: MuiModalProps) => {
     </Modal>
   );
 };
+
 const PWADialog = (props: MuiModalProps) => {
   const { open, handleClose, children } = props;
   return (
@@ -85,3 +67,23 @@ const PWADialog = (props: MuiModalProps) => {
     </Modal>
   );
 };
+
+export default function ModalResponsive(props: MuiModalProps) {
+  const { open, handleClose, children } = props;
+  const theme = useTheme();
+  const matche = useMediaQuery(theme.breakpoints.down('sm'));
+
+  return (
+    <>
+      {matche ? (
+        <PWADialog open={open} handleClose={handleClose}>
+          {children}
+        </PWADialog>
+      ) : (
+        <DesktopDialog open={open} handleClose={handleClose}>
+          {children}
+        </DesktopDialog>
+      )}
+    </>
+  );
+}
