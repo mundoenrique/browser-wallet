@@ -1,76 +1,64 @@
-import { ReactElement, ChangeEvent, ClipboardEvent, KeyboardEvent } from 'react';
-import { OutlinedInput, FormGroup, Box } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Controller } from 'react-hook-form';
+import { Box, Button, Typography } from '@mui/material';
+import { MuiOtpInput } from 'mui-one-time-password-input';
+//Internal app
+import { InputOTPProps } from '@/interfaces';
 
-export default function InputOTP(props: any) {
-  const { length = 4 } = props;
-  const Inputs: ReactElement[] = [];
-  const inputsRef: Array<HTMLInputElement> = [];
-  let inputIndex: number = -1;
+export default function InputOTP(props: InputOTPProps): JSX.Element {
+  const { control, name, length, title, text } = props;
+  const [time, setTime] = useState<number>(60);
 
-  const change = (e: ChangeEvent<HTMLInputElement>) => {
-    if (inputIndex < length - 1 && e.target.value != '') {
-      inputsRef[Number(inputIndex) + 1].focus();
-    }
+  const handleResend = () => {
+    setTime(60);
+    console.log();
   };
 
-  const paste = (e: ClipboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const clipboardContent = e.clipboardData.getData('Text').split('');
-
-    if (clipboardContent.length > 0) {
-      for (let i = inputIndex; i < length; i++) {
-        if (clipboardContent[i]) {
-          inputsRef[i].value = clipboardContent[i];
-          inputsRef[i].focus();
+  useEffect(() => {
+    const updateTimer = () => {
+      setTime((prevTime) => {
+        if (prevTime > 0) {
+          return prevTime - 1;
+        } else {
+          return 0;
         }
-      }
-    }
-  };
+      });
+    };
 
-  const keyUp = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && inputIndex > 0) {
-      inputsRef[Number(inputIndex) - 1].focus();
-      inputsRef[inputIndex].select();
-    }
-  };
+    const timerId = setInterval(updateTimer, 1000);
 
-  for (let i = 0; i < length; i++) {
-    Inputs.push(
-      <OutlinedInput
-        key={i}
-        inputRef={(e) => {
-          inputsRef.push(e);
-        }}
-        id={`${i}-opt`}
-        sx={{
-          width: 46,
-          height: 52,
-          '& .MuiInputBase-input': {
-            textAlign: 'center',
-            height: '52px',
-            width: '46px',
-            padding: '4px',
-            fontSize: '24px',
-          },
-        }}
-        inputProps={{ maxLength: 1, inputMode: 'numeric' }}
-        onChange={change}
-        onPaste={paste}
-        onFocus={() => {
-          inputIndex = i;
-        }}
-        onKeyUp={keyUp}
-      />
-    );
-  }
+    return () => clearInterval(timerId);
+  }, []);
 
   return (
-    <FormGroup sx={{ display: 'flex', flexDirection: 'row' }}>
-      {Inputs.map((e, i) => (
-        <Box key={i} sx={{ mx: '4px' }}>
-          {e}
-        </Box>
-      ))}
-    </FormGroup>
+    <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%' }}>
+      <Typography fontWeight={700} mb={3}>
+        {title}
+      </Typography>
+      <Typography mb="12px">{text}</Typography>
+      <Controller
+        name={name}
+        control={control}
+        rules={{ validate: (value) => value.length === length }}
+        render={({ field }) => (
+          <Box>
+            <MuiOtpInput
+              sx={{ gap: 1, '&>.MuiFormControl-root>.MuiInputBase-root': { width: '46px' }, mb: 3 }}
+              {...field}
+              length={length}
+            />
+          </Box>
+        )}
+      />
+      {time === 0 ? (
+        <Typography mb={5}>Ya puedes solicitar un nuevo código</Typography>
+      ) : (
+        <Typography mb={5}>Tiempo restante - 0:{time}</Typography>
+      )}
+
+      <Button onClick={handleResend} sx={{ color: 'primary.main' }} disabled={time === 0 ? false : true}>
+        Renviar código
+      </Button>
+    </Box>
   );
 }

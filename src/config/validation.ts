@@ -68,4 +68,5 @@ export const validationRules: ValidationRule = {
   initialDate: yup.string().required('Ingresa una fecha'),
   country: yup.string().required('Selecciona un país'),
   term: yup.string().required('Acepta los terminos'),
+  otp: yup.string().required('Ingrese un código'),
 };

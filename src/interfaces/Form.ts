@@ -17,6 +17,12 @@ export interface TextFieldProps extends FormMUIProps {
   additionalInfo?: boolean;
 }
 
+export interface InputOTPProps extends FormMUIProps {
+  title: string;
+  text: string;
+  length: number;
+}
+
 export interface InputOptionsProps extends FormMUIProps {
   options: { value: string; text: string }[];
 }
