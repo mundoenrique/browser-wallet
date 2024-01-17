@@ -15,7 +15,7 @@ const tertiary = '#CAC3EF';
 // Text color variables
 const textColor = '#1E293B';
 
-const success = '#34C759';
+const success = '#99F462';
 // Grayscale variables
 const greyLight = '#f3f3f3';
 const greyNormal = '#d3d3d3';
@@ -32,6 +32,9 @@ const theme = createTheme({
     secondary: {
       main: secondary,
       light: tertiary,
+    },
+    success: {
+      main: success,
     },
     grey: {
       50: greyLight,

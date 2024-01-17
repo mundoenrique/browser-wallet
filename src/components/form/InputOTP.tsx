@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { MuiOtpInput } from 'mui-one-time-password-input';
@@ -63,7 +65,7 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
           )}
         />
         {time === 0 ? (
-          <Typography mb={5}>Ya puedes solicitar un nuevo código</Typography>
+          <Typography mb={5}>De necesitarlo, ya puedes solicitar un nuevo código</Typography>
         ) : (
           <Typography mb={5}>Tiempo restante - 0:{time}</Typography>
         )}

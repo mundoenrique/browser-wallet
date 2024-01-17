@@ -1,18 +1,19 @@
 'use client';
 
 import { Controller } from 'react-hook-form';
-import { FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/material';
+import Info from '@mui/icons-material/InfoOutlined';
+import { Box, FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/material';
 //Internal app
 import { TextFieldProps } from '@/interfaces';
 
 function InputMUI(props: TextFieldProps): JSX.Element {
-  const { name, label, labelError, type, error, value, onChange } = props;
+  const { name, label, labelError, type, error, value, onChange, colorText } = props;
 
   const textLabel = label ?? name;
 
   return (
     <>
-      <InputLabel sx={{ mb: '12px' }}>{textLabel}</InputLabel>
+      <InputLabel sx={{ mb: '12px', color: colorText ? colorText : 'inherit' }}>{textLabel}</InputLabel>
       <FormControl variant="outlined" error={!!error} sx={{ mb: '5px' }} fullWidth>
         <OutlinedInput
           id={name}
@@ -23,8 +24,14 @@ function InputMUI(props: TextFieldProps): JSX.Element {
           value={value}
           onChange={onChange}
         />
-        <FormHelperText sx={{ height: '20px' }} id={`${name}-helperText`}>
-          {error ? error.message : labelError || ''}
+        <FormHelperText sx={{ height: '20px', ml: 0 }} id={`${name}-helperText`}>
+          {error ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', color: colorText ? colorText : 'inherit' }}>
+              <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
+            </Box>
+          ) : (
+            <>{labelError || ''}</>
+          )}
         </FormHelperText>
       </FormControl>
     </>

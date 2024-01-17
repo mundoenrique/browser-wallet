@@ -57,7 +57,7 @@ const DesktopDialog = (props: MuiModalProps) => {
   );
 };
 
-const PWADialog = (props: MuiModalProps) => {
+const PwaDialog = (props: MuiModalProps) => {
   const { open, handleClose, children } = props;
   return (
     <Modal open={open} onClose={handleClose}>
@@ -76,9 +76,9 @@ export default function ModalResponsive(props: MuiModalProps) {
   return (
     <>
       {matche ? (
-        <PWADialog open={open} handleClose={handleClose}>
+        <PwaDialog open={open} handleClose={handleClose}>
           {children}
-        </PWADialog>
+        </PwaDialog>
       ) : (
         <DesktopDialog open={open} handleClose={handleClose}>
           {children}

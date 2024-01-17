@@ -15,6 +15,7 @@ export interface FormMUIProps {
 export interface TextFieldProps extends FormMUIProps {
   optional?: boolean;
   additionalInfo?: boolean;
+  colorText?: string;
 }
 
 export interface InputOTPProps extends FormMUIProps {

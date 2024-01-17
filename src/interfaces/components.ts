@@ -5,3 +5,9 @@ export interface MuiModalProps {
   handleClose: (...e: any[]) => void;
   children: ReactElement;
 }
+
+export interface MuiNavExternalProps {
+  image?: boolean;
+  color?: string;
+  relative?: boolean;
+}
