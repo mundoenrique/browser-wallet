@@ -24,6 +24,43 @@ const greyDark = '#c4c4c4';
 // Border variables
 const borderRadius = 10;
 
+export const fuchsiaBlue = {
+  50: '#F7F5FD',
+  100: '#F0EDFA',
+  200: '#E1DEF6',
+  300: '#CAC3EF',
+  400: '#B0A1E4',
+  500: '#947BD7',
+  600: '#815EC9',
+  700: '#7652B8',
+  800: '#5F3F98',
+  900: '#4E357D',
+  950: '#312154',
+};
+
+export const slate = {
+  50: '#F8FAFC',
+  100: '#F1F5F9',
+  200: '#E2E8F0',
+  300: '#CBD5E1',
+  400: '#94A3B8',
+  500: '#64748B',
+  600: '#475569',
+  700: '#334155',
+  800: '#1E293B',
+  900: '#0F172A',
+  950: '#020617',
+};
+export const grayscale = {
+  '06': '#353434',
+};
+
+declare module '@mui/material/Chip' {
+  interface ChipPropsVariantOverrides {
+    onboarding: true;
+  }
+}
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -203,6 +240,7 @@ const theme = createTheme({
           borderRightColor: 'transparent',
           borderWidth: '0.84px',
           borderStyle: 'solid',
+          height: '52px',
           '&:first-of-type': {
             border: 'none',
           },
@@ -260,6 +298,27 @@ const theme = createTheme({
           opacity: 1,
         },
       },
+    },
+    MuiChip: {
+      variants: [
+        {
+          props: { variant: 'onboarding' },
+          style: {
+            height: '24px',
+            backgroundColor: secondary,
+            color: primary,
+            fontFamily: 'Mulish',
+            fontSize: '9.819px',
+            fontStyle: 'normal',
+            fontWeight: 700,
+            lineHeight: '14.027px',
+            letterSpacing: '0.281px',
+            ' :hover': {
+              backgroundColor: secondary,
+            },
+          },
+        },
+      ],
     },
   },
 });

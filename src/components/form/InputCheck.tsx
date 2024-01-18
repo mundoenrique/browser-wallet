@@ -12,7 +12,6 @@ function InputCheckMUI(props: InputCheckProps): JSX.Element {
 
   return (
     <FormControl component="fieldset" variant="standard" fullWidth>
-      {label && <FormLabel focused={false}>{label}</FormLabel>}
       <FormGroup onClick={onClick}>
         <FormControlLabel
           value={value}

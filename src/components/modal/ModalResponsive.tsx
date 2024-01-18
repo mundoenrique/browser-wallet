@@ -1,11 +1,11 @@
-import { useTheme } from '@mui/material/styles';
+import { SxProps, useTheme } from '@mui/material/styles';
 import { Box, Fab, Modal, Slide } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Close as CloseIcon } from '@mui/icons-material';
+import { Close as CloseIcon, Padding } from '@mui/icons-material';
 //Internal app
 import { MuiModalProps } from '@/interfaces';
 
-const DesktopStyle = {
+const DesktopStyle: SxProps = {
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -13,22 +13,23 @@ const DesktopStyle = {
   width: 400,
   bgcolor: 'background.paper',
   borderRadius: '16px',
-  boxShadow: 24,
+  boxShadow: 2,
   textAlign: 'center',
-  p: 4,
+  padding: '30px 20px 20px 20px',
 };
 
-const PWAStyle = {
+const PWAStyle: SxProps = {
   position: 'absolute',
   bottom: 0,
   width: '100%',
   bgcolor: 'background.paper',
   borderRadius: '16px 16px 0 0',
-  boxShadow: 24,
+  boxShadow: 2,
   p: 4,
 };
 
 const DesktopDialog = (props: MuiModalProps) => {
+  const theme = useTheme();
   const { open, handleClose, children } = props;
   return (
     <Modal open={open} onClose={() => {}}>
@@ -41,7 +42,10 @@ const DesktopDialog = (props: MuiModalProps) => {
             width: 34,
             height: 34,
             minHeight: 34,
-            border: '1px solid #CAC3EF',
+            border: '1px solid',
+            borderColor: theme.palette.secondary.light,
+            boxShadow: 2,
+            bgcolor: 'white',
             position: 'absolute',
             right: -12,
             top: -12,
@@ -50,7 +54,7 @@ const DesktopDialog = (props: MuiModalProps) => {
             },
           }}
         >
-          <CloseIcon />
+          <CloseIcon color="primary" />
         </Fab>
       </Box>
     </Modal>
@@ -76,7 +80,7 @@ export default function ModalResponsive(props: MuiModalProps) {
   return (
     <>
       {matche ? (
-        <PwaDialog open={open} handleClose={handleClose}>
+        <PWADialog open={open} handleClose={handleClose}>
           {children}
         </PwaDialog>
       ) : (
