@@ -1,19 +1,14 @@
 'use client';
 
-//store
-import { stepperStore } from '@/store/volatileStore';
-
-// Internal app
-import { GradientContainer, CardOnboarding, NavExternal } from '@/components';
-
-//stepper
-
-import { OnboardingStepper, Landing, InfoVerification, CelularValidation, Ocupation } from './components';
 import { Typography } from '@mui/material';
-import PEP from './components/PEP';
+// Internal app
+import { stepperStore } from '@/store/volatileStore';
+import { GradientContainer, CardOnboarding, NavExternal } from '@/components';
+import { OnboardingStepper, Landing, InfoVerification, CelularValidation, Ocupation, PEP } from './components';
 
 export default function Onboarding() {
   const { step }: any = stepperStore();
+
   return (
     <>
       {step > 0 && <NavExternal image relative></NavExternal>}

@@ -1,13 +1,12 @@
 'use client';
-//UI
-import { Box, Button, Typography } from '@mui/material';
 
-//Store
+import { Box, Button, Typography } from '@mui/material';
+//Internal app
 import { stepperStore } from '@/store/volatileStore';
-import { InputCheckCondition, InputSelect, InputText } from '@/components';
 
 export default function PEP() {
   const { dec, inc }: any = stepperStore();
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
       <Box sx={{ marginTop: { sm: '40px' }, marginBottom: { sm: '24px' } }}>

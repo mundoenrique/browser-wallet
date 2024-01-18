@@ -26,7 +26,14 @@ export default function NavExternal({ image, color, relative }: MuiNavExternalPr
         </Box>
       )}
 
-      <Box sx={{ mt: { xs: 2, sm: '52px' }, mb: { xs: 2, sm: '52px' }, mr: '74px', ml: { xs: 3, sm: 0 } }}>
+      <Box
+        sx={{
+          mt: { xs: 2, sm: image ? '52px' : 2 },
+          mb: { xs: 2, sm: '52px' },
+          mr: image ? '74px' : 2,
+          ml: { xs: 3, sm: 0 },
+        }}
+      >
         <LinkMui
           component={Link}
           href="#"

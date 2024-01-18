@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
-import { MuiOtpInput } from 'mui-one-time-password-input';
 import { Box, Button, Typography } from '@mui/material';
+import { MuiOtpInput } from 'mui-one-time-password-input';
 //Internal app
 import { InputOTPProps } from '@/interfaces';
 import ModalResponsive from '../modal/ModalResponsive';
@@ -76,7 +76,7 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
       </Box>
 
       <ModalResponsive open={open} handleClose={() => setOpen(false)}>
-        <Typography>🎰 Nuevo código enviado</Typography>
+        <Typography py={2}>🎰 Nuevo código enviado</Typography>
       </ModalResponsive>
     </>
   );

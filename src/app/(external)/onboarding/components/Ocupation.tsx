@@ -1,10 +1,9 @@
 'use client';
-//UI
-import { Box, Button, Typography } from '@mui/material';
 
-//Store
+import { Box, Button, Typography } from '@mui/material';
+//Internal app
+import { InputSelect } from '@/components';
 import { stepperStore } from '@/store/volatileStore';
-import { InputSelect, InputText } from '@/components';
 
 export default function Ocupation() {
   const { updateStep, inc }: any = stepperStore();
@@ -14,7 +13,7 @@ export default function Ocupation() {
         <Typography variant="subtitle1" align="center" sx={{ marginBottom: '24px' }}>
           Queremos saber más de ti
         </Typography>
-        <InputSelect name="¿Cuál es tu ocupación?" label="¿Cuál es tu ocupación?" options={[]}></InputSelect>
+        <InputSelect name="¿Cuál es tu ocupación?" label="¿Cuál es tu ocupación?" options={[]} />
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
         <Button

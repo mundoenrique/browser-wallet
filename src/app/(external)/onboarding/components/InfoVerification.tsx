@@ -1,17 +1,12 @@
 'use client';
-import { useEffect, useState } from 'react';
-//UI
-import { Box, Button, Card, Chip, Divider, Typography } from '@mui/material';
 
-//form
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-
-//store
-import { stepperStore } from '@/store/volatileStore';
-
+import { Box, Button, Card, Chip, Divider, Typography } from '@mui/material';
 //internal app
 import { getSchema } from '@/config';
+import { stepperStore } from '@/store/volatileStore';
 import { InputCheck, InputText, ModalResponsive, InputSelect } from '@/components';
 
 const nationality = [
@@ -28,12 +23,10 @@ const nationality = [
 export default function InfoVerification() {
   const [editEmail, setEditEmail] = useState<boolean>(false);
   const [editCelular, setEditCelular] = useState<boolean>(false);
-
+  const schema = getSchema(['email', 'term', 'country']);
   const { inc }: any = stepperStore();
 
-  const schema = getSchema(['email', 'term', 'country']);
-
-  const { handleSubmit, trigger, watch, control } = useForm({
+  const { handleSubmit, trigger, control } = useForm({
     defaultValues: {
       country: null,
       celular: '132156456456',
@@ -62,7 +55,7 @@ export default function InfoVerification() {
           </Box>
           <Divider />
           <Box sx={{ paddingX: '20px', paddingTop: '12px' }}>
-            <InputSelect name="country" label="Nacionalidad" options={nationality} control={control}></InputSelect>
+            <InputSelect name="country" label="Nacionalidad" options={nationality} control={control} />
           </Box>
           <Divider />
           <Box
@@ -85,7 +78,7 @@ export default function InfoVerification() {
                 onClick={() => {
                   setEditCelular(true);
                 }}
-              ></Chip>
+              />
             </Box>
           </Box>
           <Divider />
@@ -109,20 +102,16 @@ export default function InfoVerification() {
                 onClick={() => {
                   setEditEmail(true);
                 }}
-              ></Chip>
+              />
             </Box>
           </Box>
         </Card>
-        <InputCheck
-          name="term"
-          label="Al continuar estoy aceptando los Términos y Condiciones."
-          control={control}
-        ></InputCheck>
+        <InputCheck name="term" label="Al continuar estoy aceptando los Términos y Condiciones." control={control} />
         <InputCheck
           name="privacy"
           label="Acepto la política de privacidad de datos y cláusula de protección de datos."
           control={control}
-        ></InputCheck>
+        />
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button variant="contained" type="submit" sx={{ width: { xs: 'auto', sm: 320 } }}>
             Continuar
@@ -137,7 +126,7 @@ export default function InfoVerification() {
       >
         <>
           <Typography variant="subtitle1">📱 Editar número de celular</Typography>
-          <InputText name="celular" label="Ingresa tu nuevo número de celular" control={control}></InputText>
+          <InputText name="celular" label="Ingresa tu nuevo número de celular" control={control} />
           <Button
             variant="contained"
             onClick={async () => {
@@ -158,7 +147,7 @@ export default function InfoVerification() {
       >
         <>
           <Typography variant="subtitle1">✉️ Editar email</Typography>
-          <InputText name="email" label="Ingresa tu nuevo email" control={control}></InputText>
+          <InputText name="email" label="Ingresa tu nuevo email" control={control} />
           <Button
             variant="contained"
             onClick={async () => {

@@ -4,8 +4,8 @@ import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 //Internal app
-import { ChildrenProps } from '@/interfaces';
 import { NavExternal } from '@/components';
+import { ChildrenProps } from '@/interfaces';
 
 const DesktopLayout = ({ children }: ChildrenProps) => {
   return (
