@@ -80,7 +80,7 @@ export default function ModalResponsive(props: MuiModalProps) {
   return (
     <>
       {matche ? (
-        <PWADialog open={open} handleClose={handleClose}>
+        <PwaDialog open={open} handleClose={handleClose}>
           {children}
         </PwaDialog>
       ) : (

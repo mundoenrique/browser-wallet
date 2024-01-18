@@ -1,91 +1,59 @@
 'use client';
 
-import Link from 'next/link';
-import Image from 'next/image';
-
-//UI
-import { Box, Link as LinkMui, Card, Typography } from '@mui/material';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-
 //store
-import { useVolatileStore } from '@/store/volatileStore';
+import { stepperStore } from '@/store/volatileStore';
 
 // Internal app
-
-import logo from '%/images/yiro.svg';
+import { GradientContainer, CardOnboarding, NavExternal } from '@/components';
 
 //stepper
 
-import { OnboardingStepper, Step1, Step2 } from './components';
-import { GradientContainer } from '@/components';
-
-//main component
-
-const CardOnboarding = (props: { title?: string; children: JSX.Element }) => {
-  const { children } = props;
-  return (
-    <>
-      <Card
-        sx={{
-          bgcolor: { xs: 'transparent', sm: '#F0EDFA' },
-          boxShadow: 'none',
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: { xs: 'auto', sm: 'calc(100vh - 180px)' },
-          width: { xs: 'auto', sm: 570 },
-          padding: { xs: '16px', sm: '24px' },
-          marginX: 'auto',
-        }}
-      >
-        {children}
-      </Card>
-    </>
-  );
-};
-
-const NavBarOnbording = () => {
-  return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-      <Box sx={{ mt: '41px', mb: '23px', ml: '74px', display: { xs: 'none', sm: 'block' } }}>
-        <Image src={logo} width={132} height={74} alt="Picture of the author" />
-      </Box>
-      <Box sx={{ mt: { xs: 2, sm: '52px' }, mb: { xs: 2, sm: '52px' }, mr: '74px', ml: { xs: 3, sm: 0 } }}>
-        <LinkMui
-          component={Link}
-          href="/"
-          underline="none"
-          sx={{ display: 'flex', alignItems: 'center' }}
-          fontWeight={700}
-          fontSize={{ xs: '12px', sm: 'initial' }}
-        >
-          <ArrowBackIosIcon sx={{ mr: 2 }} />
-          Volver a ésika Conmigo
-        </LinkMui>
-      </Box>
-    </Box>
-  );
-};
+import { OnboardingStepper, Landing, InfoVerification, CelularValidation, Ocupation } from './components';
+import { Typography } from '@mui/material';
+import PEP from './components/PEP';
 
 export default function Onboarding() {
-  const { step }: any = useVolatileStore();
+  const { step }: any = stepperStore();
   return (
     <>
-      {step > 0 && <NavBarOnbording />}
+      {step > 0 && <NavExternal image relative></NavExternal>}
       <OnboardingStepper step={step}>
         {/*Step 0*/}
         <GradientContainer>
-          <NavBarOnbording></NavBarOnbording>
-          <Typography>COntenido</Typography>
+          <NavExternal image relative></NavExternal>
+          <Landing />
         </GradientContainer>
 
         {/*Step 1*/}
         <CardOnboarding>
-          <Step1 />
+          <Typography variant="h6" align="center">
+            Paso 1/4
+          </Typography>
+          <InfoVerification />
         </CardOnboarding>
 
         {/*Step 2*/}
         <CardOnboarding>
-          <Step2 />
+          <Typography variant="h6" align="center">
+            Paso 2/4
+          </Typography>
+          <CelularValidation />
+        </CardOnboarding>
+
+        {/*Step 3*/}
+        <CardOnboarding>
+          <Typography variant="h6" align="center">
+            Paso 3/4
+          </Typography>
+          <Ocupation />
+        </CardOnboarding>
+
+        {/*Step 4*/}
+        <CardOnboarding>
+          <Typography variant="h6" align="center">
+            Paso 3/4
+          </Typography>
+          <PEP />
         </CardOnboarding>
       </OnboardingStepper>
     </>

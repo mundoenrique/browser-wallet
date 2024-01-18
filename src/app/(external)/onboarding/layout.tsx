@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 //Internal app
 import { ChildrenProps } from '@/interfaces';
-import { GradientContainer, NavExternal } from '@/components';
 
 export const metadata: Metadata = {
   title: 'Onboarding',
@@ -9,10 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardLayout({ children }: ChildrenProps) {
-  return (
-    <GradientContainer>
-      <NavExternal relative image />
-      {children}
-    </GradientContainer>
-  );
+  return <>{children}</>;
 }
