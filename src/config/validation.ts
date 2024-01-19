@@ -30,9 +30,7 @@ function passwordValidation(msg: string) {
     .required(msg)
     .min(6, 'La contraseña debe tener 6 caracteres')
     .max(6, 'La contraseña debe tener 6 caracteres')
-    .test('Contraseña invalida', 'La contraseña debe ser numérica', (value) =>
-      regularExpressions.password?.test(value)
-    );
+    .test('Contraseña invalida', 'Ingrese una contraseña valida', (value) => regularExpressions.password?.test(value));
 }
 
 export const regularExpressions: Partial<RegularExpressions> = {
@@ -47,7 +45,7 @@ export const regularExpressions: Partial<RegularExpressions> = {
   emailValid: /^[^@]{2,64}@[^_@]+\.[a-zA-Z]{2,}$/,
   alphanumunder: /^[wñÑ_]+$/,
   alphanum: /^[a-zA-Z0-9]+$/,
-  password: /^[0-9]+$/,
+  password: /^(?!.*(\d)\1)\d+(?:\.\d+)?$/,
   numeric: /^[0-9]+$/,
   phone: /^[0-9]{7,15}$/,
   phoneMasked: /^[0-9*]{7,20}$/,
