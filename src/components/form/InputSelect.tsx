@@ -1,14 +1,14 @@
 'use client';
 
 import { Controller } from 'react-hook-form';
+import Info from '@mui/icons-material/InfoOutlined';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { FormControl, FormHelperText, Autocomplete, TextField, InputLabel } from '@mui/material';
+import { FormControl, FormHelperText, Autocomplete, TextField, InputLabel, Box } from '@mui/material';
 //Internal App
 import { InputOptionsProps } from '@/interfaces';
 
 function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
   const { name, label, options, labelError, error, value, onChange } = props;
-
   const textLabel = label ?? name;
 
   return (
@@ -32,7 +32,15 @@ function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
           sx={{ width: '100%' }}
           renderInput={(params) => <TextField {...params} placeholder="Selecciona una opción" />}
         />
-        <FormHelperText sx={{ height: '20px' }}>{error ? error.message : labelError || ''}</FormHelperText>
+        <FormHelperText sx={{ height: '20px', ml: 0, display: 'flex', alignItems: 'center' }}>
+          {error ? (
+            <>
+              <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
+            </>
+          ) : (
+            <>{labelError || ''}</>
+          )}
+        </FormHelperText>
       </FormControl>
     </>
   );

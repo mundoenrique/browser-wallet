@@ -1,6 +1,7 @@
 'use client';
 
 import { Controller } from 'react-hook-form';
+import Info from '@mui/icons-material/InfoOutlined';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import { FormControl, FormLabel, FormHelperText, Radio, FormControlLabel, RadioGroup, Box } from '@mui/material';
@@ -38,8 +39,17 @@ function InputRadioMUI(props: InputOptionsProps): JSX.Element {
           </Box>
         ))}
       </RadioGroup>
-      <FormHelperText sx={{ color: 'error.main', height: '20px' }} id={`${label}-helperText`}>
-        {error ? error.message : labelError || ''}
+      <FormHelperText
+        sx={{ color: 'error.main', height: '20px', ml: 0, display: 'flex', alignItems: 'center' }}
+        id={`${label}-helperText`}
+      >
+        {error ? (
+          <>
+            <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
+          </>
+        ) : (
+          <>{labelError || ''}</>
+        )}
       </FormHelperText>
     </FormControl>
   );

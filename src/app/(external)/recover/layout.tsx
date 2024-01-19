@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Metadata } from 'next';
 //Internal app
 import { AuthOtpProps } from '@/interfaces';
@@ -13,7 +12,7 @@ export default async function layout({ children, authOtp }: AuthOtpProps) {
   return (
     <>
       <NavExternal image relative />
-      <CardOnboarding>{false ? <>{children}</> : <>{authOtp}</>}</CardOnboarding>
+      <CardOnboarding>{true ? <>{children}</> : <>{authOtp}</>}</CardOnboarding>
     </>
   );
 }

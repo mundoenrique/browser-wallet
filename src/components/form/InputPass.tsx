@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
+import Info from '@mui/icons-material/InfoOutlined';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { FormControl, FormHelperText, InputAdornment, InputLabel, OutlinedInput, IconButton } from '@mui/material';
+import { FormControl, FormHelperText, InputAdornment, InputLabel, OutlinedInput, IconButton, Box } from '@mui/material';
 //Internal App
 import { TextFieldProps } from '@/interfaces';
 
@@ -46,8 +47,17 @@ export default function InputPass(props: TextFieldProps): JSX.Element {
                   </InputAdornment>
                 }
               />
-              <FormHelperText sx={{ height: '20px' }} id={`${name}-helperText`}>
-                {error ? error.message : labelError || ''}
+              <FormHelperText
+                sx={{ height: '20px', ml: 0, display: 'flex', alignItems: 'center' }}
+                id={`${name}-helperText`}
+              >
+                {error ? (
+                  <>
+                    <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
+                  </>
+                ) : (
+                  <>{labelError || ''}</>
+                )}
               </FormHelperText>
             </FormControl>
           </>

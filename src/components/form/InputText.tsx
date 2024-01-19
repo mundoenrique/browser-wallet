@@ -24,11 +24,20 @@ function InputMUI(props: TextFieldProps): JSX.Element {
           value={value}
           onChange={onChange}
         />
-        <FormHelperText sx={{ height: '20px', ml: 0 }} id={`${name}-helperText`}>
+        <FormHelperText
+          sx={{
+            height: '20px',
+            ml: 0,
+            display: 'flex',
+            alignItems: 'center',
+            color: colorText ? colorText : 'inherit',
+          }}
+          id={`${name}-helperText`}
+        >
           {error ? (
-            <Box sx={{ display: 'flex', alignItems: 'center', color: colorText ? colorText : 'inherit' }}>
+            <>
               <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
-            </Box>
+            </>
           ) : (
             <>{labelError || ''}</>
           )}

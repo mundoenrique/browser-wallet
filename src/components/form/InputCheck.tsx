@@ -1,9 +1,11 @@
 'use client';
 
 import { Controller } from 'react-hook-form';
-import { FormControl, FormHelperText, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import Info from '@mui/icons-material/InfoOutlined';
+import { FormControl, FormHelperText, Checkbox, FormControlLabel, FormGroup, Box } from '@mui/material';
 //Internal App
 import { InputCheckProps } from '@/interfaces';
+import { useState } from 'react';
 
 function InputCheckMUI(props: InputCheckProps): JSX.Element {
   const { name, label, labelError, onChange, onClick, checked, value, error, disabled } = props;
@@ -22,15 +24,25 @@ function InputCheckMUI(props: InputCheckProps): JSX.Element {
           sx={{ alignItems: 'flex-start', '&>.MuiButtonBase-root': { pt: 0 } }}
         />
       </FormGroup>
-      <FormHelperText sx={{ color: 'error.main', height: '20px' }} id={`${label}-helperText`}>
-        {error ? error.message : labelError || ''}
+      <FormHelperText
+        sx={{ color: 'error.main', height: '20px', ml: 0, display: 'flex', alignItems: 'center' }}
+        id={`${label}-helperText`}
+      >
+        {error ? (
+          <>
+            <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
+          </>
+        ) : (
+          <>{labelError || ''}</>
+        )}
       </FormHelperText>
     </FormControl>
   );
 }
 
 export default function InputCheck(props: InputCheckProps) {
-  const { name, control, onChange, onClick, ...restProps } = props;
+  const { name, control, onChange, onClick, checked, ...restProps } = props;
+  const [isChecked, setIsChecked] = useState(checked ? true : false);
 
   return (
     <>
@@ -43,10 +55,11 @@ export default function InputCheck(props: InputCheckProps) {
               name={name}
               value={field.value}
               onClick={onClick}
-              checked={field.value === '' ? false : true}
+              checked={field.value ? true : false}
               onChange={(e) => {
-                field.onChange(e);
+                setIsChecked(!isChecked);
                 onChange && onChange(e);
+                field.onChange(e);
               }}
               error={error}
               {...restProps}

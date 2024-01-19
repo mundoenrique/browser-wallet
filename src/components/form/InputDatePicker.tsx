@@ -2,8 +2,9 @@
 
 import 'dayjs/locale/es';
 import { Controller } from 'react-hook-form';
-import { FormHelperText, InputLabel } from '@mui/material';
+import Info from '@mui/icons-material/InfoOutlined';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { Box, FormHelperText, InputLabel } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 //Internal App
@@ -42,8 +43,17 @@ function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
             },
           }}
         />
-        <FormHelperText sx={{ color: 'error.main', height: '20px', pl: 2 }} id={`${label}-helperText`}>
-          {error ? error.message : labelError || ''}
+        <FormHelperText
+          sx={{ color: 'error.main', height: '20px', ml: 0, display: 'flex', alignItems: 'center' }}
+          id={`${label}-helperText`}
+        >
+          {error ? (
+            <>
+              <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
+            </>
+          ) : (
+            <>{labelError || ''}</>
+          )}
         </FormHelperText>
       </LocalizationProvider>
     </>
