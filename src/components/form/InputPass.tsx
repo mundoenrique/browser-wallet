@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { FormControl, FormHelperText, InputAdornment, InputLabel, OutlinedInput, IconButton, Box } from '@mui/material';
+import Visibility from '@mui/icons-material/RemoveRedEyeOutlined';
+import VisibilityOff from '@mui/icons-material/VisibilityOffOutlined';
+import { FormControl, FormHelperText, InputAdornment, InputLabel, OutlinedInput, IconButton } from '@mui/material';
 //Internal App
 import { TextFieldProps } from '@/interfaces';
 

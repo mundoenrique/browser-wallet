@@ -24,6 +24,17 @@ export const getSchema = (fields: Field[]): yup.ObjectSchema<any> => {
   return yup.object().shape(shape);
 };
 
+function passwordValidation(msg: string) {
+  return yup
+    .string()
+    .required(msg)
+    .min(6, 'La contraseña debe tener 6 caracteres')
+    .max(6, 'La contraseña debe tener 6 caracteres')
+    .test('Contraseña invalida', 'La contraseña debe ser numérica', (value) =>
+      regularExpressions.password?.test(value)
+    );
+}
+
 export const regularExpressions: Partial<RegularExpressions> = {
   onlyNumber: /^[0-9]{2,20}$/,
   onlyOneNumber: /^[0-9]{1}$/,
@@ -36,7 +47,7 @@ export const regularExpressions: Partial<RegularExpressions> = {
   emailValid: /^[^@]{2,64}@[^_@]+\.[a-zA-Z]{2,}$/,
   alphanumunder: /^[wñÑ_]+$/,
   alphanum: /^[a-zA-Z0-9]+$/,
-  password: /^[\w!@*\-?¡¿+/.,#ñÑ]+$/,
+  password: /^[0-9]+$/,
   numeric: /^[0-9]+$/,
   phone: /^[0-9]{7,15}$/,
   phoneMasked: /^[0-9*]{7,20}$/,
@@ -79,11 +90,3 @@ export const validationRules: ValidationRule = {
   ),
   legal: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
 };
-
-function passwordValidation(msg: string) {
-  return yup
-    .string()
-    .required(msg)
-    .min(6, 'La contraseña debe tener 6 caracteres')
-    .max(6, 'La contraseña debe tener 6 caracteres');
-}

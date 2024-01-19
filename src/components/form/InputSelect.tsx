@@ -3,7 +3,7 @@
 import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { FormControl, FormHelperText, Autocomplete, TextField, InputLabel, Box } from '@mui/material';
+import { FormControl, FormHelperText, Autocomplete, TextField, InputLabel } from '@mui/material';
 //Internal App
 import { InputOptionsProps } from '@/interfaces';
 

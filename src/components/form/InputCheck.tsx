@@ -2,7 +2,7 @@
 
 import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
-import { FormControl, FormHelperText, Checkbox, FormControlLabel, FormGroup, Box } from '@mui/material';
+import { FormControl, FormHelperText, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 //Internal App
 import { InputCheckProps } from '@/interfaces';
 import { useState } from 'react';

@@ -2,7 +2,7 @@
 
 import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
-import { Box, FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/material';
+import { FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/material';
 //Internal app
 import { TextFieldProps } from '@/interfaces';
 

@@ -4,7 +4,7 @@ import 'dayjs/locale/es';
 import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Box, FormHelperText, InputLabel } from '@mui/material';
+import { FormHelperText, InputLabel } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 //Internal App
