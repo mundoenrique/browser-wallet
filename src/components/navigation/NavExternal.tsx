@@ -22,7 +22,7 @@ export default function NavExternal({ image, color, relative }: MuiNavExternalPr
     >
       {image && (
         <Box sx={{ mt: '41px', mb: '23px', ml: '74px', display: { xs: 'none', sm: 'block' } }}>
-          <Image src={logo} width={132} height={74} alt="Yiro app" />
+          <Image src={logo} width={132} height={74} alt="Yiro app" priority />
         </Box>
       )}
 

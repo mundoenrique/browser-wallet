@@ -91,3 +91,11 @@ export interface SwitchListProps extends FormMUIProps {
   setValue?: any;
   disabled?: boolean;
 }
+
+export interface InputsHandlePasswordProps extends FormMUIProps {
+  title: string;
+  text: string;
+  labelCurrentPass: string;
+  labelNewPass: string;
+  labelLegal: string;
+}

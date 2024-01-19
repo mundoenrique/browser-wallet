@@ -2,25 +2,13 @@
 
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
-import {
-  Box,
-  ClickAwayListener,
-  Fade,
-  FormControl,
-  FormHelperText,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  Popper,
-  Typography,
-  IconButton,
-} from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { FormControl, FormHelperText, InputAdornment, InputLabel, OutlinedInput, IconButton } from '@mui/material';
 //Internal App
 import { TextFieldProps } from '@/interfaces';
 
-export default function InputPassField(props: TextFieldProps): JSX.Element {
+export default function InputPass(props: TextFieldProps): JSX.Element {
   const { name, control, label, labelError, onChange } = props;
 
   const [passwordShown, setPasswordShown] = useState(false);

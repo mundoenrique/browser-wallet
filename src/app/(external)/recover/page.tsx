@@ -1,18 +1,20 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { Box, Button, Stack } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 //Internal app
 import { getSchema } from '@/config';
-import { CardOnboarding, InputOTP, NavExternal } from '@/components';
+import { InputCheck, InputPass } from '@/components';
 
 export default function Recover() {
-  const schema = getSchema(['otp']);
+  const schema = getSchema(['newPassword', 'newPasswordConfirm', 'legal']);
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      otp: '',
+      newPassword: '',
+      newPasswordConfirm: '',
+      legal: '',
     },
     resolver: yupResolver(schema),
   });
@@ -22,29 +24,40 @@ export default function Recover() {
   };
 
   return (
-    <>
-      <NavExternal image relative />
-      <CardOnboarding>
-        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-          <Stack
-            spacing={20}
-            sx={{
-              alignItems: 'center',
-            }}
-          >
-            <InputOTP
-              name="otp"
-              control={control}
-              length={4}
-              title="Por tu seguridad validaremos tu celular."
-              text="Hemos enviado un código de autenticación por SMS a tu celular *6549. Ingresa el mismo a continuación."
-            />
-            <Button variant="contained" type="submit" sx={{ maxWidth: 283, width: '100%' }}>
-              Continuar
-            </Button>
-          </Stack>
-        </Box>
-      </CardOnboarding>
-    </>
+    <Box
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      sx={{
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexDirection: 'column',
+      }}
+    >
+      <Box>
+        <Typography fontWeight={700} textAlign="center" mb={3}>
+          Crea una contraseña
+        </Typography>
+        <Typography mb={3}>
+          Para poder continuar con tu proceso de activación, es necesario que crees una contraseña.
+        </Typography>
+        <InputPass name="newPassword" control={control} label="Ingresar tu contraseña" />
+        <InputPass name="newPasswordConfirm" control={control} label="Confirma tu contraseña" />
+        <InputCheck
+          name="legal"
+          control={control}
+          label="He leído y acepto la política de privacidad y términos del servicio y autorización de LDPD."
+        />
+      </Box>
+
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Button variant="contained" type="submit" sx={{ maxWidth: 284, width: '100%' }}>
+          Continuar
+        </Button>
+        <Button variant="text" sx={{ maxWidth: 284, width: '100%', color: 'red' }}>
+          Capturar
+        </Button>
+      </Box>
+    </Box>
   );
 }

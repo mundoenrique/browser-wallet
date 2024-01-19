@@ -1,6 +1,5 @@
 import * as yup from 'yup';
 //Internal app
-
 import { Field, ValidationRule, ValidationShape, RegularExpressions } from '@/interfaces';
 
 // Generates a yup validation schema based on an array of form fields.
@@ -37,7 +36,7 @@ export const regularExpressions: Partial<RegularExpressions> = {
   emailValid: /^[^@]{2,64}@[^_@]+\.[a-zA-Z]{2,}$/,
   alphanumunder: /^[wñÑ_]+$/,
   alphanum: /^[a-zA-Z0-9]+$/,
-  password: /^[\w\-+.ñÑ]+$/,
+  password: /^[\w!@*\-?¡¿+/.,#ñÑ]+$/,
   numeric: /^[0-9]+$/,
   phone: /^[0-9]{7,15}$/,
   phoneMasked: /^[0-9*]{7,20}$/,
@@ -69,4 +68,22 @@ export const validationRules: ValidationRule = {
   country: yup.string().required('Selecciona un país'),
   term: yup.string().required('Acepta los terminos'),
   otp: yup.string().required('Ingrese un código'),
+  currentPassword: passwordValidation('password_required'),
+  newPassword: passwordValidation('Ingresa una nueva contraseña').notOneOf(
+    [yup.ref('currentPassword')],
+    'La nueva contraseña debe ser diferente a la actual'
+  ),
+  newPasswordConfirmation: passwordValidation('Confirma tu nueva contraseña').oneOf(
+    [yup.ref('newPassword')],
+    'Las contraseñas no coinciden'
+  ),
+  legal: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
 };
+
+function passwordValidation(msg: string) {
+  return yup
+    .string()
+    .required(msg)
+    .min(6, 'La contraseña debe tener 6 caracteres')
+    .max(6, 'La contraseña debe tener 6 caracteres');
+}

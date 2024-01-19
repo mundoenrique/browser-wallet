@@ -1,7 +1,7 @@
 'use client';
 
 import { Controller } from 'react-hook-form';
-import { FormControl, FormLabel, FormHelperText, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import { FormControl, FormHelperText, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 //Internal App
 import { InputCheckProps } from '@/interfaces';
 
@@ -19,7 +19,7 @@ function InputCheckMUI(props: InputCheckProps): JSX.Element {
           checked
           control={<Checkbox id={name} checked={checked} onChange={onChange} />}
           label={textLabel}
-          sx={{ mb: 0, pl: 2 }}
+          sx={{ alignItems: 'flex-start', '&>.MuiButtonBase-root': { pt: 0 } }}
         />
       </FormGroup>
       <FormHelperText sx={{ color: 'error.main', height: '20px' }} id={`${label}-helperText`}>

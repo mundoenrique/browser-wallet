@@ -1,12 +1,19 @@
+import axios from 'axios';
 import { Metadata } from 'next';
 //Internal app
-import { ChildrenProps } from '@/interfaces';
+import { AuthOtpProps } from '@/interfaces';
+import { CardOnboarding, NavExternal } from '@/components';
 
 export const metadata: Metadata = {
   title: 'Recover',
   description: 'Recupera tu contraseña',
 };
 
-export default function layout({ children }: ChildrenProps) {
-  return <>{children}</>;
+export default async function layout({ children, authOtp }: AuthOtpProps) {
+  return (
+    <>
+      <NavExternal image relative />
+      <CardOnboarding>{false ? <>{children}</> : <>{authOtp}</>}</CardOnboarding>
+    </>
+  );
 }

@@ -28,7 +28,7 @@ export default function Signin() {
     <Box sx={{ width: 320, zIndex: 1, mb: { xs: '10%', sm: '0' } }}>
       <Box sx={{ textAlign: 'center', mb: 3 }}>
         <Box mb={3}>
-          <Image src={logo} width={108} height={61} alt="Yiro" />
+          <Image src={logo} width={108} height={61} alt="Yiro" priority />
         </Box>
         <Box mb={8}>
           <Typography color="white" fontSize={14}>

@@ -49,7 +49,7 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
         <Typography fontWeight={700} mb={3}>
           {title}
         </Typography>
-        <Typography mb="12px">{text}</Typography>
+        <Typography mb={3}>{text}</Typography>
         <Controller
           name={name}
           control={control}

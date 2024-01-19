@@ -15,7 +15,7 @@ export default function Onboarding() {
       <OnboardingStepper step={step}>
         {/*Step 0*/}
         <GradientContainer>
-          <NavExternal image relative></NavExternal>
+          <NavExternal image relative />
           <Landing />
         </GradientContainer>
 
