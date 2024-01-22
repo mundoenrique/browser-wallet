@@ -15,6 +15,13 @@ export interface FormMUIProps {
 export interface TextFieldProps extends FormMUIProps {
   optional?: boolean;
   additionalInfo?: boolean;
+  colorText?: string;
+}
+
+export interface InputOTPProps extends FormMUIProps {
+  title: string;
+  text: string;
+  length: number;
 }
 
 export interface InputOptionsProps extends FormMUIProps {
@@ -82,15 +89,13 @@ export type FormData = {
 export interface SwitchListProps extends FormMUIProps {
   checked?: boolean;
   setValue?: any;
-  options: {
-    id: number;
-    name: string;
-    title: string;
-    info: string;
-    value?: boolean;
-    required: boolean;
-  }[];
+  disabled?: boolean;
 }
-export interface SwitchMUIProps extends FormMUIProps {
-  settings: { id: number; name: string; title: string; info: string; value?: boolean; required: boolean };
+
+export interface InputsHandlePasswordProps extends FormMUIProps {
+  title: string;
+  text: string;
+  labelCurrentPass: string;
+  labelNewPass: string;
+  labelLegal: string;
 }

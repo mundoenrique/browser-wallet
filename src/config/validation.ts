@@ -1,6 +1,5 @@
 import * as yup from 'yup';
 //Internal app
-
 import { Field, ValidationRule, ValidationShape, RegularExpressions } from '@/interfaces';
 
 // Generates a yup validation schema based on an array of form fields.
@@ -25,6 +24,15 @@ export const getSchema = (fields: Field[]): yup.ObjectSchema<any> => {
   return yup.object().shape(shape);
 };
 
+function passwordValidation(msg: string) {
+  return yup
+    .string()
+    .required(msg)
+    .min(6, 'La contraseña debe tener 6 caracteres')
+    .max(6, 'La contraseña debe tener 6 caracteres')
+    .test('Contraseña invalida', 'Ingrese una contraseña valida', (value) => regularExpressions.password?.test(value));
+}
+
 export const regularExpressions: Partial<RegularExpressions> = {
   onlyNumber: /^[0-9]{2,20}$/,
   onlyOneNumber: /^[0-9]{1}$/,
@@ -37,7 +45,7 @@ export const regularExpressions: Partial<RegularExpressions> = {
   emailValid: /^[^@]{2,64}@[^_@]+\.[a-zA-Z]{2,}$/,
   alphanumunder: /^[wñÑ_]+$/,
   alphanum: /^[a-zA-Z0-9]+$/,
-  password: /^[\w\-+.ñÑ]+$/,
+  password: /^(?!.*(\d)\1)\d+(?:\.\d+)?$/,
   numeric: /^[0-9]+$/,
   phone: /^[0-9]{7,15}$/,
   phoneMasked: /^[0-9*]{7,20}$/,
@@ -68,4 +76,15 @@ export const validationRules: ValidationRule = {
   initialDate: yup.string().required('Ingresa una fecha'),
   country: yup.string().required('Selecciona un país'),
   term: yup.string().required('Acepta los terminos'),
+  otp: yup.string().required('Ingrese un código'),
+  currentPassword: passwordValidation('password_required'),
+  newPassword: passwordValidation('Ingresa una nueva contraseña').notOneOf(
+    [yup.ref('currentPassword')],
+    'La nueva contraseña debe ser diferente a la actual'
+  ),
+  newPasswordConfirmation: passwordValidation('Confirma tu nueva contraseña').oneOf(
+    [yup.ref('newPassword')],
+    'Las contraseñas no coinciden'
+  ),
+  legal: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
 };
