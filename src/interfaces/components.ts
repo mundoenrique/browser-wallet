@@ -24,6 +24,6 @@ export interface MainLayoutProps extends ChildrenProps {
 }
 
 export interface CardDetailsProps extends ChildrenProps {
-  avatarImage?: { src: StaticImageData; alt: string }[];
+  avatarImage?: { src: StaticImageData; alt: string };
   avatarText?: string;
 }

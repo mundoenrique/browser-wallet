@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import { Avatar, Card } from '@mui/material';
 
@@ -19,8 +20,7 @@ export default function CardDetails(props: CardDetailsProps) {
       }}
     >
       <Avatar sx={{ bgcolor: 'white', position: 'absolute', transform: 'translate(130px, -50px)' }} variant="circular">
-        {avatarImage &&
-          avatarImage.map((img, i: number) => <Image key={i} src={img.src} width={22} height={22} alt={img.alt} />)}
+        {avatarImage && <Image src={avatarImage.src} width={22} height={22} alt={avatarImage.alt} priority />}
         {avatarText}
       </Avatar>
 
