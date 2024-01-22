@@ -5,9 +5,9 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 //Internal app
 import { NavExternal } from '@/components';
-import { ChildrenProps } from '@/interfaces';
+import { MainLayoutProps } from '@/interfaces';
 
-const DesktopLayout = ({ children }: ChildrenProps) => {
+const DesktopLayout = ({ children, svg = true }: MainLayoutProps) => {
   return (
     <Box
       sx={{
@@ -18,7 +18,7 @@ const DesktopLayout = ({ children }: ChildrenProps) => {
         minHeight: '100vh',
         background: 'linear-gradient(180deg, #947bd7 0%, #5f3f98 100%)',
         '&:before': {
-          content: `' '`,
+          content: svg ? `' '` : 'none',
           position: 'absolute',
           width: '100%',
           height: '100%',
@@ -36,7 +36,7 @@ const DesktopLayout = ({ children }: ChildrenProps) => {
   );
 };
 
-const PwaLayout = ({ children }: ChildrenProps) => {
+const PwaLayout = ({ children, svg = true }: MainLayoutProps) => {
   return (
     <Box
       sx={{
@@ -56,7 +56,7 @@ const PwaLayout = ({ children }: ChildrenProps) => {
           position: 'absolute',
           minHeight: '85%',
           '&::before': {
-            content: `' '`,
+            content: svg ? `' '` : 'none',
             position: 'absolute',
             width: '100%',
             height: '100%',
@@ -83,9 +83,11 @@ const PwaLayout = ({ children }: ChildrenProps) => {
   );
 };
 
-export default function MainLayout({ children }: ChildrenProps) {
+export default function MainLayout({ children, svg }: MainLayoutProps) {
   const theme = useTheme();
   const matche = useMediaQuery(theme.breakpoints.down('sm'));
 
-  return <>{matche ? <PwaLayout>{children}</PwaLayout> : <DesktopLayout>{children}</DesktopLayout>}</>;
+  return (
+    <>{matche ? <PwaLayout svg={svg}>{children}</PwaLayout> : <DesktopLayout svg={svg}>{children}</DesktopLayout>}</>
+  );
 }

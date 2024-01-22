@@ -31,7 +31,7 @@ const secondary = '#E1DEF6';
 const tertiary = '#CAC3EF';
 
 // Text color variables
-const textColor = '#1E293B';
+const textColor = '#334155';
 
 const success = '#99F462';
 // Grayscale variables
@@ -73,6 +73,25 @@ export const grayscale = {
   '06': '#353434',
 };
 
+declare module '@mui/material/Chip' {
+  interface ChipPropsVariantOverrides {
+    onboarding: true;
+  }
+}
+
+declare module '@mui/material/Button' {
+  interface ButtonPropsVariantOverrides {
+    underline: true;
+    secondary: true;
+  }
+}
+
+declare module '@mui/material/Divider' {
+  interface DividerPropsVariantOverrides {
+    primary: true;
+  }
+}
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -81,6 +100,7 @@ const theme = createTheme({
     secondary: {
       main: secondary,
       light: tertiary,
+      dark: '#947BD7',
     },
     success: {
       main: success,
@@ -189,6 +209,28 @@ const theme = createTheme({
     },
     // Button
     MuiButton: {
+      variants: [
+        {
+          props: { variant: 'underline' },
+          style: {
+            color: white,
+            fontWeight: 700,
+            textDecoration: 'underline',
+            width: '100%',
+            '&:hover': { textDecoration: 'underline', background: 'transparent' },
+          },
+        },
+        {
+          props: { variant: 'secondary' },
+          style: {
+            color: primary,
+            backgroundColor: white,
+            fontWeight: 700,
+            width: '100%',
+            '&:hover': { backgroundColor: white, color: primary },
+          },
+        },
+      ],
       styleOverrides: {
         root: {
           height: '52px',
@@ -242,19 +284,6 @@ const theme = createTheme({
             marginRight: 'auto',
             marginBottom: 3,
           }),
-          /*
- background: { xs: 'transparent', sm: '#F0EDFA' },
-            boxShadow: 'none',
-            display: 'flex',
-            flexDirection: 'column',
-            height: '672px',
-            minHeight: { xs: 'auto', sm: 672 },
-            width: { xs: 'auto', sm: 522 },
-            px: { xs: '16px', sm: '24px' },
-            py: { sm: 5 },
-            marginX: 'auto',
-            marginBottom: 3,
-            */
         },
       ],
     },
@@ -404,6 +433,17 @@ const theme = createTheme({
             ' :hover': {
               backgroundColor: secondary,
             },
+          },
+        },
+      ],
+    },
+    MuiDivider: {
+      variants: [
+        {
+          props: { variant: 'primary' },
+          style: {
+            borderWidth: '1px',
+            borderColor: fuchsiaBlue[400],
           },
         },
       ],

@@ -1,4 +1,7 @@
 import { ReactElement } from 'react';
+import { StaticImageData } from 'next/image';
+//Internal app
+import { ChildrenProps } from './constant';
 
 export interface MuiModalProps {
   open: boolean;
@@ -10,4 +13,17 @@ export interface MuiNavExternalProps {
   image?: boolean;
   color?: string;
   relative?: boolean;
+}
+
+export interface AuthOtpProps extends ChildrenProps {
+  authOtp: React.ReactNode;
+}
+
+export interface MainLayoutProps extends ChildrenProps {
+  svg?: boolean;
+}
+
+export interface CardDetailsProps extends ChildrenProps {
+  avatarImage?: { src: StaticImageData; alt: string }[];
+  avatarText?: string;
 }
