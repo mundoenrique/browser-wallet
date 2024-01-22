@@ -55,7 +55,7 @@ function InputRadioMUI(props: InputOptionsProps): JSX.Element {
   );
 }
 
-export default function InputCheckCondition(props: InputOptionsProps) {
+export default function InputRadios(props: InputOptionsProps) {
   const { name, control, onChange, options, ...restProps } = props;
 
   return (
