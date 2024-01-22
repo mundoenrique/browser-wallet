@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: 'Recupera tu contraseña',
 };
 
-export default async function layout({ children, authOtp }: AuthOtpProps) {
+export default async function RecoverLayout({ children, authOtp }: AuthOtpProps) {
   return (
     <>
       <NavExternal image relative />

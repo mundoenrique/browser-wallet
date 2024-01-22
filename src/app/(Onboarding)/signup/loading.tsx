@@ -2,6 +2,6 @@
 
 import { Typography } from '@mui/material';
 
-export default function Loading() {
+export default function SignupLoading() {
   return <Typography>Loading...</Typography>;
 }

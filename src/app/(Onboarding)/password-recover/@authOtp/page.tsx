@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { getSchema } from '@/config';
 import { InputOTP } from '@/components';
 
-export default function authOtp() {
+export default function AuthOtp() {
   const schema = getSchema(['otp']);
 
   const { control, handleSubmit } = useForm({
