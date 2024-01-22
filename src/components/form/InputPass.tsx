@@ -10,7 +10,7 @@ import { FormControl, FormHelperText, InputAdornment, InputLabel, OutlinedInput,
 import { TextFieldProps } from '@/interfaces';
 
 export default function InputPass(props: TextFieldProps): JSX.Element {
-  const { name, control, label, labelError, onChange } = props;
+  const { name, control, label, labelError, onChange, colorText } = props;
 
   const [passwordShown, setPasswordShown] = useState(false);
   const inputLabel = label ?? name;
@@ -26,7 +26,7 @@ export default function InputPass(props: TextFieldProps): JSX.Element {
         control={control}
         render={({ field, fieldState: { error } }) => (
           <>
-            <InputLabel sx={{ mb: '12px' }}>{inputLabel}</InputLabel>
+            <InputLabel sx={{ mb: '12px', color: colorText ? colorText : 'inherit' }}>{inputLabel}</InputLabel>
             <FormControl fullWidth variant="outlined" error={!!error} sx={{ mb: '5px' }}>
               <OutlinedInput
                 id={name}
@@ -42,13 +42,19 @@ export default function InputPass(props: TextFieldProps): JSX.Element {
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton aria-label="toggle password visibility" onClick={togglePasswordVisiblity} edge="end">
-                      {passwordShown ? <VisibilityOff /> : <Visibility />}
+                      {passwordShown ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 }
               />
               <FormHelperText
-                sx={{ height: '20px', ml: 0, display: 'flex', alignItems: 'center' }}
+                sx={{
+                  height: '20px',
+                  ml: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: colorText ? `${colorText} !important` : 'inherit',
+                }}
                 id={`${name}-helperText`}
               >
                 {error ? (

@@ -38,10 +38,10 @@ export default function AuthOtp() {
         name="otp"
         control={control}
         length={6}
-        title="Por tu seguridad validaremos tu celular."
-        text="Hemos enviado un código de autenticación por SMS a tu celular *6549. Ingresa el mismo a continuación."
+        title="Activación de doble factor"
+        text="Hemos enviado por tu seguridad un código SMS a tu celular *6549. Ingrésalo aquí."
       />
-      <Button variant="contained" type="submit" sx={{ maxWidth: 283, width: '100%' }}>
+      <Button variant="contained" type="submit" sx={{ maxWidth: 284, width: '100%' }}>
         Continuar
       </Button>
     </Box>

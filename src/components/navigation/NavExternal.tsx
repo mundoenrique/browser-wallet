@@ -8,7 +8,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import logo from '%/images/yiro.svg';
 import { MuiNavExternalProps } from '@/interfaces';
 
-export default function NavExternal({ image, color, relative }: MuiNavExternalProps) {
+export default function NavExternal({ image, color, relative, closeApp }: MuiNavExternalProps) {
   return (
     <Box
       sx={{
@@ -34,18 +34,33 @@ export default function NavExternal({ image, color, relative }: MuiNavExternalPr
           ml: { xs: 3, sm: 0 },
         }}
       >
-        <LinkMui
-          component={Link}
-          href="#"
-          underline="none"
-          sx={{ display: 'flex', alignItems: 'center' }}
-          fontWeight={700}
-          fontSize="12px"
-          color={color}
-        >
-          <ArrowBackIosIcon sx={{ mr: 2 }} />
-          Volver a ésika Conmigo
-        </LinkMui>
+        {!closeApp ? (
+          <LinkMui
+            component={Link}
+            href="/signin"
+            underline="none"
+            sx={{ display: 'flex', alignItems: 'center' }}
+            fontWeight={700}
+            fontSize="12px"
+            color={color}
+          >
+            <ArrowBackIosIcon sx={{ mr: 2 }} />
+            Volver
+          </LinkMui>
+        ) : (
+          <LinkMui
+            component={Link}
+            href="#"
+            underline="none"
+            sx={{ display: 'flex', alignItems: 'center' }}
+            fontWeight={700}
+            fontSize="12px"
+            color={color}
+          >
+            <ArrowBackIosIcon sx={{ mr: 2 }} />
+            Volver a ésika Conmigo
+          </LinkMui>
+        )}
       </Box>
     </Box>
   );

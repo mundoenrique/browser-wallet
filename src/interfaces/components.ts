@@ -13,6 +13,7 @@ export interface MuiNavExternalProps {
   image?: boolean;
   color?: string;
   relative?: boolean;
+  closeApp?: boolean;
 }
 
 export interface AuthOtpProps extends ChildrenProps {

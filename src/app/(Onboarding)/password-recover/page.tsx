@@ -1,7 +1,6 @@
 'use client';
 
-import html2canvas from 'html2canvas';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button, Typography } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,7 +10,6 @@ import { InputCheck, InputPass, ModalResponsive } from '@/components';
 
 export default function Recover() {
   const [open, setOpen] = useState(false);
-  const componentRef = useRef<any>(null);
   const schema = getSchema(['newPassword', 'newPasswordConfirmation', 'legal']);
 
   const { control, handleSubmit } = useForm({
@@ -28,23 +26,9 @@ export default function Recover() {
     setOpen(true);
   };
 
-  const handleConvert = () => {
-    html2canvas(componentRef.current)
-      .then((canvas) => {
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png');
-        link.download = 'imagen.png';
-        link.click();
-      })
-      .catch((error) => {
-        console.error('Error al convertir:', error);
-      });
-  };
-
   return (
     <>
       <Box
-        ref={componentRef}
         component="form"
         onSubmit={handleSubmit(onSubmit)}
         sx={{
@@ -61,7 +45,7 @@ export default function Recover() {
           <Typography mb={3}>
             Para poder continuar con tu proceso de activación, es necesario que crees una contraseña.
           </Typography>
-          <InputPass name="newPassword" control={control} label="Ingresar tu contraseña" />
+          <InputPass name="newPassword" control={control} label="Ingresa tu contraseña" />
           <InputPass name="newPasswordConfirmation" control={control} label="Confirma tu contraseña" />
           <InputCheck
             name="legal"
@@ -73,9 +57,6 @@ export default function Recover() {
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button variant="contained" type="submit" sx={{ maxWidth: 284, width: '100%' }}>
             Continuar
-          </Button>
-          <Button variant="text" onClick={handleConvert} sx={{ maxWidth: 284, width: '100%', color: 'red' }}>
-            Capturar
           </Button>
         </Box>
       </Box>

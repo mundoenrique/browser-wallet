@@ -49,7 +49,7 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
         <Typography fontWeight={700} mb={3}>
           {title}
         </Typography>
-        <Typography mb={3}>{text}</Typography>
+        <Typography mb="12px">{text}</Typography>
         <Controller
           name={name}
           control={control}
@@ -57,7 +57,11 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
           render={({ field }) => (
             <Box>
               <MuiOtpInput
-                sx={{ gap: 1, '&>.MuiFormControl-root>.MuiInputBase-root': { width: '46px' }, mb: 3 }}
+                sx={{
+                  gap: 1,
+                  mb: 3,
+                  '&>.MuiFormControl-root>.MuiInputBase-root': { width: '46px', fontSize: '25px', fontWeight: 700 },
+                }}
                 {...field}
                 length={length}
               />
@@ -76,7 +80,9 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
       </Box>
 
       <ModalResponsive open={open} handleClose={() => setOpen(false)}>
-        <Typography py={2}>🎰 Nuevo código enviado</Typography>
+        <Typography py={2} fontWeight={700}>
+          🎰 Nuevo código enviado
+        </Typography>
       </ModalResponsive>
     </>
   );

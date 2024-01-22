@@ -71,13 +71,13 @@ export const validationRules: ValidationRule = {
     .required('Ingresa una contraseña')
     .min(6, 'La contraseña debe tener al menos 6 caracteres')
     .max(25, 'La contraseña debe tener máximo 25 caracteres')
-    .test('passwordValid', 'password_required', (value) => regularExpressions.password?.test(value)),
+    .test('passwordValid', 'Ingrese una contraseña', (value) => regularExpressions.password?.test(value)),
   roles: yup.string().required('Debes seleccionar una opción'),
   initialDate: yup.string().required('Ingresa una fecha'),
   country: yup.string().required('Selecciona un país'),
   term: yup.string().required('Acepta los terminos'),
   otp: yup.string().required('Ingrese un código'),
-  currentPassword: passwordValidation('password_required'),
+  currentPassword: passwordValidation('Ingrese una contraseña'),
   newPassword: passwordValidation('Ingresa una nueva contraseña').notOneOf(
     [yup.ref('currentPassword')],
     'La nueva contraseña debe ser diferente a la actual'

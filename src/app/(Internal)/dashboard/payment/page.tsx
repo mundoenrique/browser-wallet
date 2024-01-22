@@ -1,8 +1,8 @@
 'use client';
 
+import { useRef } from 'react';
 import Image from 'next/image';
 import html2canvas from 'html2canvas';
-import { useRef } from 'react';
 import Copy from '@mui/icons-material/ContentCopy';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 //Internal app
@@ -19,7 +19,7 @@ export default function Payment() {
   const handleConvert = async () => {
     const webShareSupported = 'canShare' in navigator;
     const shareData: any = {
-      url: 'https://example.com',
+      url: 'https://www.pagoefectivo.la/pe/como-pagar',
       files: [],
     };
 

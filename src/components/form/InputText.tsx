@@ -7,15 +7,13 @@ import { FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/mat
 import { TextFieldProps } from '@/interfaces';
 
 function InputMUI(props: TextFieldProps): JSX.Element {
-  const { name, label, labelError, type, error, value, onChange, colorText } = props;
+  const { name, label, labelError, type, error, value, onChange } = props;
 
   const textLabel = label ?? name;
 
   return (
     <>
-      <InputLabel sx={{ mb: '12px', textAlign: 'left', color: colorText ? colorText : 'inherit' }}>
-        {textLabel}
-      </InputLabel>
+      <InputLabel sx={{ mb: '12px', textAlign: 'left' }}>{textLabel}</InputLabel>
       <FormControl variant="outlined" error={!!error} sx={{ mb: '5px' }} fullWidth>
         <OutlinedInput
           id={name}
@@ -32,7 +30,6 @@ function InputMUI(props: TextFieldProps): JSX.Element {
             ml: 0,
             display: 'flex',
             alignItems: 'center',
-            color: colorText ? `${colorText} !important` : 'inherit',
           }}
           id={`${name}-helperText`}
         >

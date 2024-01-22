@@ -11,7 +11,7 @@ export default function Signup() {
 
   return (
     <>
-      {step > 0 && <NavExternal image relative></NavExternal>}
+      {step > 0 && <NavExternal image relative />}
       <SignupStepper step={step}>
         {/*Step 0*/}
         <GradientContainer>

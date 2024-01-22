@@ -1,7 +1,7 @@
-import { SxProps, useTheme } from '@mui/material/styles';
-import { Box, Fab, Modal, Slide } from '@mui/material';
-import useMediaQuery from '@mui/material/useMediaQuery';
+'use client';
+
 import { Close as CloseIcon } from '@mui/icons-material';
+import { Box, Fab, Modal, Slide, SxProps, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
 import { MuiModalProps } from '@/interfaces';
 

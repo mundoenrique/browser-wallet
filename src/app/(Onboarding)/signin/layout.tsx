@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 //Internal app
-import { MainLayout } from '@/components';
 import { ChildrenProps } from '@/interfaces';
+import { MainLayout, NavExternal } from '@/components';
 
 export const metadata: Metadata = {
   title: 'Signin',
@@ -9,5 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default function SigninLayout({ children }: ChildrenProps) {
-  return <MainLayout>{children}</MainLayout>;
+  return (
+    <MainLayout>
+      <NavExternal color="white" closeApp />
+      {children}
+    </MainLayout>
+  );
 }

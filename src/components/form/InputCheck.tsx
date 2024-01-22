@@ -21,7 +21,7 @@ function InputCheckMUI(props: InputCheckProps): JSX.Element {
           checked
           control={<Checkbox id={name} checked={checked} onChange={onChange} />}
           label={textLabel}
-          sx={{ alignItems: 'flex-start', '&>.MuiButtonBase-root': { pt: 0 } }}
+          sx={{ alignItems: 'flex-start' }}
         />
       </FormGroup>
       <FormHelperText

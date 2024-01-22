@@ -1,10 +1,7 @@
 'use client';
 
-import { Box } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
-import { NavExternal } from '@/components';
 import { MainLayoutProps } from '@/interfaces';
 
 const DesktopLayout = ({ children, svg = true }: MainLayoutProps) => {
@@ -30,7 +27,6 @@ const DesktopLayout = ({ children, svg = true }: MainLayoutProps) => {
         },
       }}
     >
-      <NavExternal color="white" />
       {children}
     </Box>
   );
@@ -76,7 +72,6 @@ const PwaLayout = ({ children, svg = true }: MainLayoutProps) => {
           flexDirection: 'column',
         }}
       >
-        <NavExternal color="white" />
         {children}
       </Box>
     </Box>

@@ -4,13 +4,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, Link as LinkMui, Typography } from '@mui/material';
+import { Box, Button, Link as LinkMui, Typography, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
 import logo from '%/images/yiro.svg';
 import { getSchema } from '@/config';
-import { InputText } from '@/components';
+import { InputPass } from '@/components';
 
 export default function Signin() {
+  const theme = useTheme();
   const schema = getSchema(['password']);
 
   const { control, handleSubmit } = useForm({
@@ -32,9 +33,9 @@ export default function Signin() {
         </Box>
         <Box mb={8}>
           <Typography color="white" fontSize={14}>
-            Dinero en tu bolsillo
+            Dinero en tu bolsillo,
           </Typography>
-          <Typography color="success.main" fontSize={20} fontWeight={700}>
+          <Typography color="success.main" variant="h6" fontWeight={700}>
             ¡Sin complicaciones!
           </Typography>
         </Box>
@@ -45,21 +46,16 @@ export default function Signin() {
       </Box>
 
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <InputText name="password" control={control} label="Contraseña" colorText="white" />
+        <InputPass name="password" control={control} label="Contraseña" colorText="white" />
         <Box sx={{ width: '100%', py: 2, textAlign: 'center', mb: { xs: 6, sm: 12 } }}>
-          <LinkMui component={Link} href="#" sx={{ color: 'white', textDecorationColor: 'white' }}>
-            Recuperar contraseña
+          <LinkMui component={Link} href="/password-recover" sx={{ color: 'white', textDecorationColor: 'white' }}>
+            Olvide mi contraseña
           </LinkMui>
         </Box>
         <Button
-          variant="contained"
+          variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'contained' : 'secondary'}
           type="submit"
           fullWidth
-          sx={{
-            bgcolor: { sm: 'white' },
-            color: { sm: 'inherit' },
-            '&:hover': { bgcolor: { sm: 'white' } },
-          }}
         >
           Ingresar
         </Button>
