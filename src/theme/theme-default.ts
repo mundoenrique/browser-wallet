@@ -1,4 +1,22 @@
+import { useMediaQuery } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+
+declare module '@mui/material/Chip' {
+  interface ChipPropsVariantOverrides {
+    signup: true;
+  }
+}
+declare module '@mui/material/Paper' {
+  interface PaperPropsVariantOverrides {
+    signup: true;
+  }
+}
+
+declare module '@mui/material/Card' {
+  interface CardPropsVariantOverrides {
+    signup: true;
+  }
+}
 
 const white = '#fff';
 const black = '#000';
@@ -54,12 +72,6 @@ export const slate = {
 export const grayscale = {
   '06': '#353434',
 };
-
-declare module '@mui/material/Chip' {
-  interface ChipPropsVariantOverrides {
-    onboarding: true;
-  }
-}
 
 const theme = createTheme({
   palette: {
@@ -204,6 +216,48 @@ const theme = createTheme({
         },
       },
     },
+    MuiPaper: {
+      variants: [
+        {
+          props: { variant: 'signup' },
+          style: {},
+        },
+      ],
+    },
+    MuiCard: {
+      variants: [
+        {
+          props: { variant: 'signup' },
+          style: ({ theme }) => ({
+            background: useMediaQuery(theme.breakpoints.down('sm')) ? 'transparent' : '#F0EDFA',
+            minHeight: useMediaQuery(theme.breakpoints.down('sm')) ? 'auto' : '672px',
+            width: useMediaQuery(theme.breakpoints.down('sm')) ? 'auto' : '522px',
+            paddingLeft: useMediaQuery(theme.breakpoints.up('sm')) ? '16px' : '24px',
+            paddingRight: useMediaQuery(theme.breakpoints.up('sm')) ? '16px' : '24px',
+            boxShadow: 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            height: '672px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            marginBottom: 3,
+          }),
+          /*
+ background: { xs: 'transparent', sm: '#F0EDFA' },
+            boxShadow: 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            height: '672px',
+            minHeight: { xs: 'auto', sm: 672 },
+            width: { xs: 'auto', sm: 522 },
+            px: { xs: '16px', sm: '24px' },
+            py: { sm: 5 },
+            marginX: 'auto',
+            marginBottom: 3,
+            */
+        },
+      ],
+    },
     MuiCardContent: {
       styleOverrides: {
         root: {
@@ -336,7 +390,7 @@ const theme = createTheme({
     MuiChip: {
       variants: [
         {
-          props: { variant: 'onboarding' },
+          props: { variant: 'signup' },
           style: {
             height: '24px',
             backgroundColor: secondary,

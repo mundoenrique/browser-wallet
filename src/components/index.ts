@@ -22,4 +22,5 @@ export { default as ModalResponsive } from './modal/ModalResponsive';
 export { default as MainLayout } from './layout/MainLayout';
 export { default as GradientContainer } from './layout/GradientContainer';
 //cards
-export { default as CardOnboarding } from './cards/CardOnboarding';
+//TODO: eliminar el componente card
+//export { default as CardOnboarding } from './cards/CardOnboarding';

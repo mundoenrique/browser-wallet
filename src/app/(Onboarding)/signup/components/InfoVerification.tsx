@@ -73,7 +73,7 @@ export default function InfoVerification() {
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
               <Chip
-                variant="onboarding"
+                variant="signup"
                 label="Editar"
                 onClick={() => {
                   setEditCelular(true);
@@ -97,7 +97,7 @@ export default function InfoVerification() {
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
               <Chip
-                variant="onboarding"
+                variant="signup"
                 label="Editar"
                 onClick={() => {
                   setEditEmail(true);

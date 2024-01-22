@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
+import { Card } from '@mui/material';
 //Internal app
 import { AuthOtpProps } from '@/interfaces';
-import { CardOnboarding, NavExternal } from '@/components';
+import { NavExternal } from '@/components';
 
 export const metadata: Metadata = {
   title: 'Recover',
@@ -12,7 +13,7 @@ export default async function RecoverLayout({ children, authOtp }: AuthOtpProps)
   return (
     <>
       <NavExternal image relative />
-      <CardOnboarding>{true ? <>{children}</> : <>{authOtp}</>}</CardOnboarding>
+      <Card variant="signup">{true ? <>{children}</> : <>{authOtp}</>}</Card>
     </>
   );
 }

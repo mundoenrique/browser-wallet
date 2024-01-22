@@ -1,18 +1,18 @@
 'use client';
 
-import { Typography } from '@mui/material';
+import { Card, Typography } from '@mui/material';
 // Internal app
 import { stepperStore } from '@/store/volatileStore';
-import { GradientContainer, CardOnboarding, NavExternal } from '@/components';
-import { OnboardingStepper, Landing, InfoVerification, CelularValidation, Ocupation, PEP } from './components';
+import { GradientContainer, NavExternal } from '@/components';
+import { SignupStepper, Landing, InfoVerification, CelularValidation, Ocupation, PEP } from './components';
 
-export default function Onboarding() {
+export default function Signup() {
   const { step }: any = stepperStore();
 
   return (
     <>
       {step > 0 && <NavExternal image relative></NavExternal>}
-      <OnboardingStepper step={step}>
+      <SignupStepper step={step}>
         {/*Step 0*/}
         <GradientContainer>
           <NavExternal image relative />
@@ -20,37 +20,37 @@ export default function Onboarding() {
         </GradientContainer>
 
         {/*Step 1*/}
-        <CardOnboarding>
+        <Card variant="signup">
           <Typography variant="h6" align="center">
             Paso 1/4
           </Typography>
           <InfoVerification />
-        </CardOnboarding>
+        </Card>
 
         {/*Step 2*/}
-        <CardOnboarding>
+        <Card variant="signup">
           <Typography variant="h6" align="center">
             Paso 2/4
           </Typography>
           <CelularValidation />
-        </CardOnboarding>
+        </Card>
 
         {/*Step 3*/}
-        <CardOnboarding>
+        <Card variant="signup">
           <Typography variant="h6" align="center">
             Paso 3/4
           </Typography>
           <Ocupation />
-        </CardOnboarding>
+        </Card>
 
         {/*Step 4*/}
-        <CardOnboarding>
+        <Card variant="signup">
           <Typography variant="h6" align="center">
             Paso 3/4
           </Typography>
           <PEP />
-        </CardOnboarding>
-      </OnboardingStepper>
+        </Card>
+      </SignupStepper>
     </>
   );
 }
