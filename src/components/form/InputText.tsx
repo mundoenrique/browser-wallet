@@ -32,6 +32,7 @@ function InputMUI(props: TextFieldProps): JSX.Element {
             ml: 0,
             display: 'flex',
             alignItems: 'center',
+            color: colorText ? `${colorText} !important` : 'inherit',
           }}
           id={`${name}-helperText`}
         >
