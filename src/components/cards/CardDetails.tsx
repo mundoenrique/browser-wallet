@@ -20,7 +20,7 @@ export default function CardDetails(props: CardDetailsProps) {
       }}
     >
       <Avatar sx={{ bgcolor: 'white', position: 'absolute', top: '5px', left: '140px' }} variant="circular">
-        {avatarImage && <Image src={avatarImage.src} width={22} height={22} alt={avatarImage.alt} priority />}
+        {avatarImage && <img src={avatarImage.src.src} />}
         {avatarText}
       </Avatar>
 

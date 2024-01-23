@@ -57,7 +57,7 @@ export default function Payment() {
         <Typography color="white" mb={4}>
           Comparte esta información para que te paguen a través de Pago Efectivo:
         </Typography>
-        <Box ref={componentRef} sx={{ paddingTop: '25px', position: 'relative' }}>
+        <Box ref={componentRef} sx={{ padding: '24px 4px 4px 4px', position: 'relative' }}>
           <CardDetails avatarImage={ImagePagoEfectivo}>
             <Box
               sx={{
@@ -97,7 +97,8 @@ export default function Payment() {
               <Typography fontWeight={700} mb={3}>
                 Yape, Plin u otras billeteras:
               </Typography>
-              <Image src={Qr} width={106} height={100} alt="Código QR" />
+
+              <img src={Qr.src} />
             </Box>
           </CardDetails>
         </Box>
