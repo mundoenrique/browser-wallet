@@ -20,10 +20,6 @@ export interface AuthOtpProps extends ChildrenProps {
   authOtp: React.ReactNode;
 }
 
-export interface MainLayoutProps extends ChildrenProps {
-  svg?: boolean;
-}
-
 export interface CardDetailsProps extends ChildrenProps {
   avatarImage?: { src: StaticImageData; alt: string };
   avatarText?: string;

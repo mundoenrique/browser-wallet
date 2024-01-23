@@ -7,7 +7,7 @@ import Copy from '@mui/icons-material/ContentCopy';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 //Internal app
 import Qr from '%/images/QR.png';
-import { CardDetails, MainLayout } from '@/components';
+import { CardDetails, InternalLayout } from '@/components';
 import PagoEfectivo from '%/images/suppliers/pagoEfectivo.png';
 
 export default function Payment() {
@@ -46,9 +46,12 @@ export default function Payment() {
   };
 
   return (
-    <MainLayout svg={false}>
+    <InternalLayout>
       <Box sx={{ width: 320 }}>
-        <Typography variant="h6" color="white" mb={4} textAlign="center">
+        <Typography
+          variant="h6"
+          sx={{ display: { xs: 'none', sm: 'block' }, color: 'white', mb: 4, textAlign: 'center' }}
+        >
           Crear solicitud de cobro
         </Typography>
         <Typography color="white" mb={4}>
@@ -123,6 +126,6 @@ export default function Payment() {
           Compartir
         </Button>
       </Box>
-    </MainLayout>
+    </InternalLayout>
   );
 }

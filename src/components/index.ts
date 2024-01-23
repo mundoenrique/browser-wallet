@@ -21,5 +21,6 @@ export { default as ModalResponsive } from './modal/ModalResponsive';
 //layout
 export { default as MainLayout } from './layout/MainLayout';
 export { default as GradientContainer } from './layout/GradientContainer';
+export { default as InternalLayout } from './layout/InternalLayout';
 //cards
 export { default as CardDetails } from './cards/CardDetails';
