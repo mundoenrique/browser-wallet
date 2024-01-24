@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 //Internal app
 import { RootLayoutProps } from '@/interfaces';
+import { RSAKeyPairProvider } from './Providers/RSAKeyPairProvider';
+import { JWTProvider } from './Providers/JWTProvider';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -24,7 +26,11 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        <RSAKeyPairProvider>
+          <JWTProvider>{children}</JWTProvider>
+        </RSAKeyPairProvider>
+      </body>
     </html>
   );
 }
