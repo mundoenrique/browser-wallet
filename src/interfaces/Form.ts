@@ -37,6 +37,7 @@ export interface InputCheckProps extends FormMUIProps {
   onClick?: (...e: any[]) => void;
   checked?: boolean;
   disabled?: boolean;
+  labelHandle?: boolean | string;
 }
 
 export type UserSubmitForm = {

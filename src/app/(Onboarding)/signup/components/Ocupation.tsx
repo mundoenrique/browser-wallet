@@ -2,11 +2,12 @@
 
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
-import { InputSelect } from '@/components';
 import { stepperStore } from '@/store/volatileStore';
+import { InputSelect, InputText } from '@/components';
 
 export default function Ocupation() {
   const { updateStep, inc }: any = stepperStore();
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
       <Box sx={{ marginTop: { sm: '40px' }, marginBottom: { sm: '24px' } }}>
@@ -14,6 +15,9 @@ export default function Ocupation() {
           Queremos saber más de ti
         </Typography>
         <InputSelect name="¿Cuál es tu ocupación?" label="¿Cuál es tu ocupación?" options={[]} />
+        <InputSelect name="Tipo de empresa" label="Tipo de empresa" options={[]} />
+        <InputText name="Nombre empresa" label="Nombre empresa" />
+        <InputText name="Cargo empresa" label="Cargo empresa" />
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
         <Button

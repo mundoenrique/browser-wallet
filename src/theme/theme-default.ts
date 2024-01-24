@@ -82,6 +82,7 @@ declare module '@mui/material/Chip' {
 declare module '@mui/material/Button' {
   interface ButtonPropsVariantOverrides {
     underline: true;
+    primary: true;
     secondary: true;
   }
 }
@@ -211,6 +212,23 @@ const theme = createTheme({
     MuiButton: {
       variants: [
         {
+          props: { variant: 'primary' },
+          style: {
+            color: white,
+            backgroundColor: primary,
+            fontWeight: 700,
+            '&:hover': {
+              backgroundColor: primary,
+              color: white,
+            },
+            '&.Mui-disabled': {
+              backgroundColor: primary,
+              opacity: 0.3,
+              color: white,
+            },
+          },
+        },
+        {
           props: { variant: 'underline' },
           style: {
             color: white,
@@ -252,8 +270,8 @@ const theme = createTheme({
         },
         outlinedPrimary: {
           ':hover': {
-            backgroundColor: primary,
-            color: white,
+            backgroundColor: 'initial',
+            color: primary,
           },
         },
       },
@@ -272,17 +290,19 @@ const theme = createTheme({
           props: { variant: 'signup' },
           style: ({ theme }) => ({
             background: useMediaQuery(theme.breakpoints.down('sm')) ? 'transparent' : '#F0EDFA',
-            minHeight: useMediaQuery(theme.breakpoints.down('sm')) ? 'auto' : '672px',
+            minHeight: useMediaQuery(theme.breakpoints.down('sm')) ? '640px' : '672px',
             width: useMediaQuery(theme.breakpoints.down('sm')) ? 'auto' : '522px',
-            paddingLeft: useMediaQuery(theme.breakpoints.up('sm')) ? '16px' : '24px',
-            paddingRight: useMediaQuery(theme.breakpoints.up('sm')) ? '16px' : '24px',
+            paddingLeft: useMediaQuery(theme.breakpoints.down('sm')) ? '20px' : '24px',
+            paddingRight: useMediaQuery(theme.breakpoints.down('sm')) ? '20px' : '24px',
+            paddingTop: useMediaQuery(theme.breakpoints.up('sm')) ? '24px' : 0,
+            paddingBottom: useMediaQuery(theme.breakpoints.down('sm')) ? 0 : '42px',
             boxShadow: 'none',
-            display: 'flex',
+            display: 'grid',
             flexDirection: 'column',
-            height: '672px',
+            height: 'auto',
             marginLeft: 'auto',
             marginRight: 'auto',
-            marginBottom: 3,
+            marginBottom: '24px',
           }),
         },
       ],

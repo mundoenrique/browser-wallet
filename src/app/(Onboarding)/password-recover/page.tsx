@@ -2,21 +2,20 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Box, Button, Typography } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import { InputCheck, InputPass, ModalResponsive } from '@/components';
+import { InputPass, ModalResponsive } from '@/components';
 
 export default function Recover() {
   const [open, setOpen] = useState(false);
-  const schema = getSchema(['newPassword', 'newPasswordConfirmation', 'legal']);
+  const schema = getSchema(['newPassword', 'newPasswordConfirmation']);
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
       newPassword: '',
       newPasswordConfirmation: '',
-      legal: false,
     },
     resolver: yupResolver(schema),
   });
@@ -47,15 +46,10 @@ export default function Recover() {
           </Typography>
           <InputPass name="newPassword" control={control} label="Ingresa tu contraseña" />
           <InputPass name="newPasswordConfirmation" control={control} label="Confirma tu contraseña" />
-          <InputCheck
-            name="legal"
-            control={control}
-            label="He leído y acepto la política de privacidad y términos del servicio y autorización de LDPD."
-          />
         </Box>
 
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Button variant="contained" type="submit" sx={{ maxWidth: 284, width: '100%' }}>
+          <Button variant="primary" type="submit" sx={{ maxWidth: 284, width: '100%' }}>
             Continuar
           </Button>
         </Box>

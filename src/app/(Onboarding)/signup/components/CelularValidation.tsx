@@ -40,7 +40,7 @@ export default function CelularValidation() {
       onSubmit={handleSubmit(onSubmit)}
       sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}
     >
-      <Box sx={{ marginTop: { sm: '40px' }, textAlign: 'center' }}>
+      <Box sx={{ textAlign: 'center' }}>
         <InputOTP
           name="otp"
           title="Por tu seguridad validaremos tu celular"
@@ -59,7 +59,7 @@ export default function CelularValidation() {
         >
           Anterior
         </Button>
-        <Button variant="contained" type="submit" disabled={!enableNextStep}>
+        <Button variant="primary" type="submit" disabled={!enableNextStep}>
           Siguiente
         </Button>
       </Box>
