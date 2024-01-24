@@ -1,16 +1,78 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Box, Button, CircularProgress, Container, Typography } from '@mui/material';
 import Loading from './loading';
 import dynamic from 'next/dynamic';
+import { useApi } from '@/hooks/useApi';
+import { UserInfoType } from '@/interfaces';
 
 const Content = dynamic(() => import('./form'), {
   loading: () => <Loading />,
   ssr: false,
 });
 
-export default function Dashboard() {
+export default function Page() {
+  const [userInfo, setUserInfo] = useState<UserInfoType | null>(null);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const api = useApi();
+
+  // const handleLogout = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await axios.post('/api/auth/logout');
+  //     // Si el cierre de sesión es exitoso, redirige al inicio de sesión
+  //     if (response.status === 200) {
+  //       router.push('/signin');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error al cerrar la sesión', error);
+  //   }
+  //   setLoading(false);
+  // };
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await api.get('/user/info');
+        // Si la respuesta es exitosa, guarda la información del usuario en el estado
+        if (response.status === 200) {
+          console.log(response.data);
+
+          setUserInfo(response.data.data);
+        }
+      } catch (error) {
+        if (error instanceof Error && 'response' in error) {
+          const axiosError = error as any;
+          // Si la respuesta no es exitosa, redirige al inicio de sesión
+          if (axiosError.response && axiosError.response.status === 401) {
+          } else {
+          }
+          console.error(error);
+        }
+        router.push('/signin');
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
+  if (!userInfo) {
+    return <CircularProgress size={'large'} />;
+  }
+
   return (
     <>
+      <Box display="flex" justifyContent="flex-end" padding="16px">
+        {/* <Button variant="outlined" onClick={handleLogout} disabled={loading}>
+          {loading ? <CircularProgress size={24} /> : 'Cerrar sesión'}
+        </Button> */}
+      </Box>
+      <Container>
+        <Typography variant="h6">Bienvenido {userInfo.name}</Typography>
+      </Container>
       <Content />
     </>
   );
