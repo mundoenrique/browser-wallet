@@ -10,7 +10,7 @@ import {
   compactVerify,
   base64url,
 } from 'jose';
-import { AUDIENCE, ISSUER, JWE_ALG, JWS_ALG } from './constants';
+import { AUDIENCE, ISSUER, JWE_ALG, JWS_ALG, JWT_ALG } from './constants';
 
 const encode = TextEncoder.prototype.encode.bind(new TextEncoder());
 const decode = TextDecoder.prototype.decode.bind(new TextDecoder());
@@ -30,9 +30,9 @@ export async function signJWT(
   expiresIn: string | number | Date = '2h'
 ): Promise<string> {
   try {
-    const key = await importPKCS8(privateKey, JWS_ALG);
+    const key = await importPKCS8(privateKey, JWT_ALG);
     const jwt = await new SignJWT(payload)
-      .setProtectedHeader({ alg: JWS_ALG })
+      .setProtectedHeader({ alg: JWT_ALG })
       .setIssuedAt()
       .setIssuer(ISSUER)
       .setAudience(AUDIENCE)
@@ -56,7 +56,7 @@ export async function signJWT(
  */
 export async function verifyJWT(jwt: string | Uint8Array, publicKey: string): Promise<JWTPayload> {
   try {
-    const key = await importSPKI(publicKey, JWS_ALG);
+    const key = await importSPKI(publicKey, JWT_ALG);
     const { payload } = await jwtVerify(jwt, key, {
       issuer: ISSUER,
       audience: AUDIENCE,
@@ -79,6 +79,8 @@ export async function verifyJWT(jwt: string | Uint8Array, publicKey: string): Pr
  */
 export async function encryptJWE(payload: object, publicKey: string): Promise<string> {
   try {
+    console.log('encript JWE, publicKey:', publicKey);
+
     const plaintext = encode(JSON.stringify(payload));
     const key = await importSPKI(publicKey, JWE_ALG);
     const jwe = await new CompactEncrypt(plaintext).setProtectedHeader({ alg: JWE_ALG, enc: 'A256GCM' }).encrypt(key);
@@ -100,6 +102,8 @@ export async function encryptJWE(payload: object, publicKey: string): Promise<st
  */
 export async function decryptJWE(jwe: string, privateKey: string): Promise<object> {
   try {
+    console.log('decript JWE, privateKey:', privateKey);
+
     const key = await importPKCS8(privateKey, JWE_ALG);
     const { plaintext } = await compactDecrypt(jwe, key);
 
@@ -120,6 +124,8 @@ export async function decryptJWE(jwe: string, privateKey: string): Promise<objec
  */
 export async function signJWE(privateKey: string, jwe: string): Promise<string> {
   try {
+    console.log('sign JWE, privateKey:', privateKey);
+
     const key = await importPKCS8(privateKey, JWS_ALG);
     const jws = await new CompactSign(encode(jwe)).setProtectedHeader({ alg: JWS_ALG }).sign(key);
     const parts = jws.split('.');
@@ -142,6 +148,8 @@ export async function signJWE(privateKey: string, jwe: string): Promise<string> 
  */
 export async function verifyJWS(jws: string | Uint8Array, publicKey: string): Promise<boolean> {
   try {
+    console.log('verifica JWS, publicKey:', publicKey);
+
     const key = await importSPKI(publicKey, JWS_ALG);
     await compactVerify(jws, key);
 
