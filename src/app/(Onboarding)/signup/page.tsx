@@ -4,7 +4,18 @@ import { Card, Typography, useMediaQuery, useTheme } from '@mui/material';
 // Internal app
 import { stepperStore } from '@/store/volatileStore';
 import { GradientContainer, NavExternal } from '@/components';
-import { SignupStepper, Landing, InfoVerification, CelularValidation, Ocupation, PEP } from './components';
+import {
+  SignupStepper,
+  Landing,
+  InfoVerification,
+  CelularValidation,
+  Ocupation,
+  PEP,
+  DniInfo,
+  DniUpload,
+  SelfieInfo,
+} from './components';
+import SelfieUpload from './components/SelfieUpload';
 
 export default function Signup() {
   const theme = useTheme();
@@ -66,6 +77,49 @@ export default function Signup() {
             Paso 3/4
           </Typography>
           <PEP />
+        </Card>
+
+        <Card variant="signup">
+          <Typography
+            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
+            align="center"
+            mb={{ sm: 7 }}
+          >
+            Paso 4/4
+          </Typography>
+          <DniInfo />
+        </Card>
+
+        <Card variant="signup">
+          <Typography
+            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
+            align="center"
+            mb={{ sm: 7 }}
+          >
+            Paso 4/4
+          </Typography>
+          <DniUpload />
+        </Card>
+        <Card variant="signup">
+          <Typography
+            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
+            align="center"
+            mb={{ sm: 7 }}
+          >
+            Paso 4/4
+          </Typography>
+          <SelfieInfo />
+        </Card>
+
+        <Card variant="signup">
+          <Typography
+            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
+            align="center"
+            mb={{ sm: 7 }}
+          >
+            Paso 4/4
+          </Typography>
+          <SelfieUpload />
         </Card>
       </SignupStepper>
     </>

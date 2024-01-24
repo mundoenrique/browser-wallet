@@ -4,3 +4,7 @@ export { default as Ocupation } from './Ocupation';
 export { default as InfoVerification } from './InfoVerification';
 export { default as SignupStepper } from './SignupStepper';
 export { default as CelularValidation } from './CelularValidation';
+export { default as DniInfo } from './DniInfo';
+export { default as DniUpload } from './DniUpload';
+export { default as SelfieInfo } from './SelfieInfo';
+export { default as selfieUpload } from './SelfieUpload';
