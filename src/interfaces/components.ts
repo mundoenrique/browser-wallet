@@ -1,9 +1,10 @@
 import { ReactElement } from 'react';
 import { StaticImageData } from 'next/image';
+import { BoxProps } from '@mui/material';
 //Internal app
 import { ChildrenProps } from './constant';
 
-export interface MuiModalProps {
+export interface MuiModalProps extends BoxProps {
   open: boolean;
   handleClose: (...e: any[]) => void;
   children: ReactElement;

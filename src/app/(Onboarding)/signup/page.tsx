@@ -1,10 +1,21 @@
 'use client';
 
-import { Box, Card, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Card, Typography, useMediaQuery, useTheme } from '@mui/material';
 // Internal app
 import { stepperStore } from '@/store/volatileStore';
-import { NavExternal } from '@/components';
-import { SignupStepper, Landing, InfoVerification, CelularValidation, Ocupation, PEP } from './components';
+import BiometricValidation from './components/BiometricValidation';
+import {
+  SignupStepper,
+  Landing,
+  InfoVerification,
+  CelularValidation,
+  Ocupation,
+  PEP,
+  DniInfo,
+  DniUpload,
+  SelfieInfo,
+  SelfieUpload,
+} from './components';
 
 export default function Signup() {
   const theme = useTheme();
@@ -12,18 +23,9 @@ export default function Signup() {
 
   return (
     <>
-      {step > 0 && <NavExternal image relative closeApp />}
       <SignupStepper step={step}>
         {/*Step 0*/}
-        <Box
-          sx={{
-            background: 'linear-gradient(35deg, rgba(146,218,142,0) 20%, rgba(172,255,167,0.6) 100%)',
-            minHeight: '100vh',
-          }}
-        >
-          <NavExternal image relative closeApp />
-          <Landing />
-        </Box>
+        <Landing />
 
         {/*Step 1*/}
         <Card variant="signup">
@@ -72,6 +74,54 @@ export default function Signup() {
           </Typography>
           <PEP />
         </Card>
+        {/*Step 5*/}
+        <Card variant="signup">
+          <Typography
+            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
+            align="center"
+            mb={{ sm: 7 }}
+          >
+            Paso 4/4
+          </Typography>
+          <DniInfo />
+        </Card>
+
+        {/*Step 6*/}
+        <Card variant="signup">
+          <Typography
+            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
+            align="center"
+            mb={{ sm: 7 }}
+          >
+            Paso 4/4
+          </Typography>
+          <DniUpload />
+        </Card>
+
+        {/*Step 7*/}
+        <Card variant="signup">
+          <Typography
+            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
+            align="center"
+            mb={{ sm: 7 }}
+          >
+            Paso 4/4
+          </Typography>
+          <SelfieInfo />
+        </Card>
+
+        {/*Step 8*/}
+        <Card variant="signup">
+          <Typography
+            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
+            align="center"
+            mb={{ sm: 7 }}
+          >
+            Paso 4/4
+          </Typography>
+          <SelfieUpload />
+        </Card>
+        <BiometricValidation />
       </SignupStepper>
     </>
   );
