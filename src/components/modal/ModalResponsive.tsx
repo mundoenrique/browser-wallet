@@ -1,12 +1,11 @@
 'use client';
 
+import { forwardRef } from 'react';
+import { styled, useTheme } from '@mui/material/styles';
 import { Close as CloseIcon } from '@mui/icons-material';
 import { Box, Fab, Modal, Slide, useMediaQuery } from '@mui/material/';
-import { styled, useTheme } from '@mui/material/styles';
-
 //Internal app
 import { MuiModalProps } from '@/interfaces';
-import { forwardRef } from 'react';
 
 const RootModal = styled(Modal, {
   name: 'ModalResponsive',
@@ -74,6 +73,7 @@ const ModalResponsive = forwardRef((props: MuiModalProps, ref: any) => {
   const { open, handleClose, children, ...others } = props;
   const theme = useTheme();
   const matche = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <RootModal
       open={open}

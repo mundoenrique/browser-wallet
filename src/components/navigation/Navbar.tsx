@@ -7,6 +7,7 @@ import { NavbarProps } from '@/interfaces';
 
 export default function Navbar(props: NavbarProps) {
   const { onClick } = props;
+
   return (
     <AppBar
       position="fixed"

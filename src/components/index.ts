@@ -20,5 +20,6 @@ export { default as ModalResponsive } from './modal/ModalResponsive';
 //layout
 export { default as MainLayout } from './layout/MainLayout';
 export { default as PurpleLayout } from './layout/PurpleLayout';
+export { default as LoginLayout } from './layout/LoginLayout';
 //cards
 export { default as CardDetails } from './cards/CardDetails';

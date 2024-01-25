@@ -1,7 +1,7 @@
 'use client';
-import Image from 'next/image';
-import { Avatar, Card } from '@mui/material';
 
+import { Avatar, Card } from '@mui/material';
+//Internal app
 import { CardDetailsProps } from '@/interfaces';
 
 export default function CardDetails(props: CardDetailsProps) {

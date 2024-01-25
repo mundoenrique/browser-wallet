@@ -45,7 +45,7 @@ export default function Payment() {
   };
 
   return (
-    <PurpleLayout hidePelca>
+    <PurpleLayout>
       <Box sx={{ width: 320 }}>
         <Typography
           variant="h6"

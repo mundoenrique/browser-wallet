@@ -8,9 +8,7 @@ import { FormControl, FormHelperText, Checkbox, FormControlLabel, FormGroup, Box
 import { InputCheckProps } from '@/interfaces';
 
 function InputCheckMUI(props: InputCheckProps): JSX.Element {
-  const { name, label, labelError, onChange, checked, value, error, disabled, ...restProps } = props;
-
-  const textLabel = label ?? name;
+  const { name, label, labelError, onChange, checked, value, error, disabled } = props;
 
   return (
     <FormControl component="fieldset" variant="standard" fullWidth>

@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
-import { StaticImageData } from 'next/image';
 import { BoxProps } from '@mui/material';
+import { StaticImageData } from 'next/image';
 //Internal app
 import { ChildrenProps } from './constant';
 
