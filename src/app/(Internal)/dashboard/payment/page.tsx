@@ -1,13 +1,12 @@
 'use client';
 
 import { useRef } from 'react';
-import Image from 'next/image';
 import html2canvas from 'html2canvas';
 import Copy from '@mui/icons-material/ContentCopy';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 //Internal app
 import Qr from '%/images/QR.png';
-import { CardDetails, InternalLayout } from '@/components';
+import { CardDetails, PurpleLayout } from '@/components';
 import PagoEfectivo from '%/images/suppliers/pagoEfectivo.png';
 
 export default function Payment() {
@@ -46,7 +45,7 @@ export default function Payment() {
   };
 
   return (
-    <InternalLayout>
+    <PurpleLayout hidePelca>
       <Box sx={{ width: 320 }}>
         <Typography
           variant="h6"
@@ -127,6 +126,6 @@ export default function Payment() {
           Compartir
         </Button>
       </Box>
-    </InternalLayout>
+    </PurpleLayout>
   );
 }

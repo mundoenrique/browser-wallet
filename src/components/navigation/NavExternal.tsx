@@ -1,11 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { Box, Link as LinkMui } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 //Internal app
-import logo from '%/images/yiro.svg';
+import LogoPurple from '%/images/LogoPurple';
 import { MuiNavExternalProps } from '@/interfaces';
 
 export default function NavExternal({ image, color, relative, closeApp }: MuiNavExternalProps) {
@@ -22,7 +21,7 @@ export default function NavExternal({ image, color, relative, closeApp }: MuiNav
     >
       {image && (
         <Box sx={{ mt: '41px', mb: '23px', ml: '74px', display: { xs: 'none', sm: 'block' } }}>
-          <Image src={logo} width={132} height={74} alt="Yiro app" priority />
+          <LogoPurple />
         </Box>
       )}
 

@@ -1,6 +1,6 @@
 //pwa
-export { default as PWAInstallBar } from './PWA/PWAInstallBar';
 export { default as QRCodeReader } from './PWA/QRCodeReader';
+export { default as PWAInstallBar } from './PWA/PWAInstallBar';
 //form
 export { default as InputOTP } from './form/InputOTP';
 export { default as InputText } from './form/InputText';
@@ -12,15 +12,13 @@ export { default as InputSelect } from './form/InputSelect';
 export { default as InputDatePicker } from './form/InputDatePicker';
 export { default as InputCheckCondition } from './form/InputCheckCondition';
 //navigation
-export { default as PWANavbar } from './navigation/NavbarPWA';
+export { default as Navbar } from './navigation/Navbar';
+export { default as Sidebar } from './navigation/sidebar/Sidebar';
 export { default as NavExternal } from './navigation/NavExternal';
-export { default as PWASidebar } from './navigation/sidebar/SidebarPWA';
-export { default as DesktopSidebar } from './navigation/sidebar/SidebarDesktop';
 //modal
 export { default as ModalResponsive } from './modal/ModalResponsive';
 //layout
 export { default as MainLayout } from './layout/MainLayout';
-export { default as GradientContainer } from './layout/GradientContainer';
-export { default as InternalLayout } from './layout/InternalLayout';
+export { default as PurpleLayout } from './layout/PurpleLayout';
 //cards
 export { default as CardDetails } from './cards/CardDetails';

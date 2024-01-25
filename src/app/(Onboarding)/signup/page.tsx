@@ -1,9 +1,9 @@
 'use client';
 
-import { Card, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Card, Typography, useMediaQuery, useTheme } from '@mui/material';
 // Internal app
 import { stepperStore } from '@/store/volatileStore';
-import { GradientContainer, NavExternal } from '@/components';
+import { NavExternal } from '@/components';
 import { SignupStepper, Landing, InfoVerification, CelularValidation, Ocupation, PEP } from './components';
 
 export default function Signup() {
@@ -15,10 +15,15 @@ export default function Signup() {
       {step > 0 && <NavExternal image relative closeApp />}
       <SignupStepper step={step}>
         {/*Step 0*/}
-        <GradientContainer>
+        <Box
+          sx={{
+            background: 'linear-gradient(35deg, rgba(146,218,142,0) 20%, rgba(172,255,167,0.6) 100%)',
+            minHeight: '100vh',
+          }}
+        >
           <NavExternal image relative closeApp />
           <Landing />
-        </GradientContainer>
+        </Box>
 
         {/*Step 1*/}
         <Card variant="signup">

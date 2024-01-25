@@ -1,10 +1,9 @@
 'use client';
 
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Box, CircularProgress, Container } from '@mui/material';
 //Internal app
-import logo from '%/images/pwa/96.png';
+import LogoGreen from '%/images/LogoGreen';
 import { ChildrenProps } from '@/interfaces';
 
 export default function HydrationProvider({ children }: ChildrenProps) {
@@ -34,7 +33,7 @@ export default function HydrationProvider({ children }: ChildrenProps) {
           }}
         >
           <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
-            <Image src={logo} width={300} height={60} alt="Picture of the author" priority />
+            <LogoGreen />
             <Box sx={{ display: 'flex', m: 2 }}>
               <CircularProgress disableShrink color="inherit" />
             </Box>

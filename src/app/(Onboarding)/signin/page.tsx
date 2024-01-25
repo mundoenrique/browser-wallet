@@ -1,14 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Link as LinkMui, Typography, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
-import logo from '%/images/yiro.svg';
 import { getSchema } from '@/config';
 import { InputPass } from '@/components';
+import LogoGreen from '%/images/LogoGreen';
 
 export default function Signin() {
   const theme = useTheme();
@@ -29,7 +28,7 @@ export default function Signin() {
     <Box sx={{ width: 320, zIndex: 1, mb: { xs: '10%', sm: '0' } }}>
       <Box sx={{ textAlign: 'center', mb: 3 }}>
         <Box mb={3}>
-          <Image src={logo} width={108} height={61} alt="Yiro" priority />
+          <LogoGreen />
         </Box>
         <Box mb={8}>
           <Typography color="white" fontSize={14}>

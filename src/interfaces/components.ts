@@ -24,3 +24,19 @@ export interface CardDetailsProps extends ChildrenProps {
   avatarImage?: { src: StaticImageData; alt: string };
   avatarText?: string;
 }
+
+export interface PurpleLayoutProps {
+  children: React.ReactNode;
+  hidePelca?: boolean;
+}
+
+export interface NavbarProps {
+  onClick: () => void;
+}
+
+export interface SidebarProps {
+  drawerWidth: number;
+  open: boolean;
+  onTransitionEnd: () => void;
+  onClose: () => void;
+}
