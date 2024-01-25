@@ -1,9 +1,9 @@
 'use client';
 
-import { Card, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Card, Typography, useMediaQuery, useTheme } from '@mui/material';
 // Internal app
 import { stepperStore } from '@/store/volatileStore';
-import { GradientContainer, NavExternal } from '@/components';
+
 import {
   SignupStepper,
   Landing,
@@ -14,8 +14,9 @@ import {
   DniInfo,
   DniUpload,
   SelfieInfo,
+  SelfieUpload,
 } from './components';
-import SelfieUpload from './components/SelfieUpload';
+import BiometricValidation from './components/BiometricValidation';
 
 export default function Signup() {
   const theme = useTheme();
@@ -23,13 +24,11 @@ export default function Signup() {
 
   return (
     <>
-      {step > 0 && <NavExternal image relative closeApp />}
       <SignupStepper step={step}>
         {/*Step 0*/}
-        <GradientContainer>
-          <NavExternal image relative closeApp />
+        <Box>
           <Landing />
-        </GradientContainer>
+        </Box>
 
         {/*Step 1*/}
         <Card variant="signup">
@@ -78,7 +77,7 @@ export default function Signup() {
           </Typography>
           <PEP />
         </Card>
-
+        {/*Step 5*/}
         <Card variant="signup">
           <Typography
             variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
@@ -90,6 +89,7 @@ export default function Signup() {
           <DniInfo />
         </Card>
 
+        {/*Step 6*/}
         <Card variant="signup">
           <Typography
             variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
@@ -100,6 +100,8 @@ export default function Signup() {
           </Typography>
           <DniUpload />
         </Card>
+
+        {/*Step 7*/}
         <Card variant="signup">
           <Typography
             variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
@@ -111,6 +113,7 @@ export default function Signup() {
           <SelfieInfo />
         </Card>
 
+        {/*Step 8*/}
         <Card variant="signup">
           <Typography
             variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
@@ -121,6 +124,7 @@ export default function Signup() {
           </Typography>
           <SelfieUpload />
         </Card>
+        <BiometricValidation />
       </SignupStepper>
     </>
   );

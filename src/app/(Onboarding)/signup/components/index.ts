@@ -7,4 +7,4 @@ export { default as CelularValidation } from './CelularValidation';
 export { default as DniInfo } from './DniInfo';
 export { default as DniUpload } from './DniUpload';
 export { default as SelfieInfo } from './SelfieInfo';
-export { default as selfieUpload } from './SelfieUpload';
+export { default as SelfieUpload } from './SelfieUpload';

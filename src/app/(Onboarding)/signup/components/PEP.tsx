@@ -47,6 +47,11 @@ export default function PEP() {
         <Typography variant="body1" align="center" sx={{ marginBottom: '24px' }}>
           ¿Eres una Persona Políticamente Expuesta (PEP)?
         </Typography>
+        <Typography variant="body2" align="center" sx={{ textDecoration: 'underline', marginBottom: '24px' }}>
+          ¿Eres una Persona Políticamente Expuesta (PEP)?
+          <br />
+          ¿Trabajas en entidades gubernamentales?
+        </Typography>
         <Box>
           <InputCheckCondition name="pep" options={options} control={control} />
         </Box>
@@ -94,9 +99,6 @@ export default function PEP() {
                 <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '24px' }}>
                   <Button
                     variant="outlined"
-                    onClick={() => {
-                      dec();
-                    }}
                     sx={{
                       width: '320px',
                     }}

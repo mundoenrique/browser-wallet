@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   description: 'Proceso de registro en tu bolsillo',
 };
 
-export default function DashboardLayout({ children }: ChildrenProps) {
+export default function SignupLayout({ children }: ChildrenProps) {
   return <>{children}</>;
 }

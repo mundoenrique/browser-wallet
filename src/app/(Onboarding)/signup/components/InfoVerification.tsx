@@ -1,7 +1,7 @@
 'use client';
 
-import { ReactEventHandler, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { MouseEvent, useState } from 'react';
+import { set, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Card, Chip, Divider, Stack, Typography } from '@mui/material';
 //internal app
@@ -27,9 +27,12 @@ export default function InfoVerification() {
   const [editCelular, setEditCelular] = useState<boolean>(false);
   const [openTerms, setOpenTerms] = useState<boolean>(false);
   const schema = getSchema(['email', 'term', 'country']);
+  const schemaEmail = getSchema(['email']);
+  const schemaCelular = getSchema(['celular']);
+
   const { inc }: any = stepperStore();
 
-  const { handleSubmit, trigger, control, setValue } = useForm({
+  const { handleSubmit, control, setValue, getValues } = useForm({
     defaultValues: {
       country: 'pe',
       celular: '132156456456',
@@ -40,6 +43,31 @@ export default function InfoVerification() {
     resolver: yupResolver(schema),
   });
 
+  //Update Email Form
+  const {
+    control: controlEmail,
+    handleSubmit: handleSubmitEmail,
+    setValue: setValueEmail,
+    clearErrors: clearErrorsEmail,
+  } = useForm({
+    defaultValues: {
+      email: getValues('email'),
+    },
+    resolver: yupResolver(schemaEmail),
+  });
+
+  //Update Celular Form
+  const {
+    control: controlCelular,
+    handleSubmit: handleSubmitCelular,
+    setValue: setValueCelular,
+    clearErrors: clearErrorsCelular,
+  } = useForm({
+    defaultValues: {
+      celular: getValues('celular'),
+    },
+  });
+
   const onSubmit = (data: any) => {
     inc();
   };
@@ -48,138 +76,147 @@ export default function InfoVerification() {
     e.preventDefault();
     setOpenTerms(true);
   };
+
   const handleAcceptTerms = () => {
+    console.log('accept');
     setValue('term', true);
     setOpenTerms(false);
   };
 
-  return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-      <Box sx={{ marginTop: { sm: '40px' } }}>
-        <Box sx={{ marginBottom: { sm: '24px' } }}>
-          <Typography variant="subtitle1">¡Hola Andrea!</Typography>
-          <Typography variant="subtitle1">Empecemos verificando tu información personal</Typography>
-        </Box>
-      </Box>
-      <Card sx={{ p: '8px 0px', mb: { xs: 2, sm: 5 } }}>
-        <Box sx={{ px: '20px', pb: '12px' }}>
-          <Typography variant="subtitle2">Andrea Rodriguez</Typography>
-          <Typography variant="subtitle2">DNI: 78624555</Typography>
-        </Box>
-        <Divider />
-        <Box sx={{ px: '20px', pt: '12px' }}>
-          <InputSelect name="country" label="Nacionalidad" options={nationality} control={control} />
-        </Box>
-        <Divider />
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            px: '20px',
-            py: '12px',
-          }}
-        >
-          <Box>
-            <Typography variant="body2">Número de Celular:</Typography>
-            <Typography variant="body2">{control._formValues.celular}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <Chip
-              variant="signup"
-              label="Editar"
-              onClick={() => {
-                setEditCelular(true);
-              }}
-            />
-          </Box>
-        </Box>
-        <Divider />
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            px: '20px',
-            pt: '12px',
-          }}
-        >
-          <Box>
-            <Typography variant="body2">Email:</Typography>
-            <Typography variant="body2">{control._formValues.email} </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <Chip
-              variant="signup"
-              label="Editar"
-              onClick={() => {
-                setEditEmail(true);
-              }}
-            />
-          </Box>
-        </Box>
-      </Card>
-      <InputCheck
-        name="term"
-        labelHandle="Al continuar estoy aceptando los Términos y Condiciones."
-        control={control}
-        onClick={handleModalTerm}
-      />
-      <InputCheck
-        name="privacy"
-        label="Acepto la política de privacidad de datos y cláusula de protección de datos."
-        control={control}
-      />
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: { sm: 2 } }}>
-        <Button variant="contained" type="submit" sx={{ width: { xs: 'auto', sm: 320 } }}>
-          Continuar
-        </Button>
-      </Box>
+  const handleEditEmail = async (data: any) => {
+    setValue('email', data.email);
+    setEditEmail(false);
+  };
 
+  const handleEditCelular = async (data: any) => {
+    setValue('celular', data.celular);
+    setEditCelular(false);
+  };
+
+  return (
+    <>
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}
+      >
+        <Box sx={{ marginTop: { sm: '40px' } }}>
+          <Box sx={{ marginBottom: { sm: '24px' } }}>
+            <Typography variant="subtitle1">¡Hola Andrea!</Typography>
+            <Typography variant="subtitle1">Empecemos verificando tu información personal</Typography>
+          </Box>
+        </Box>
+        <Card sx={{ p: '8px 0px', mb: { xs: 2, sm: 5 } }}>
+          <Box sx={{ px: '20px', pb: '12px' }}>
+            <Typography variant="subtitle2">Andrea Rodriguez</Typography>
+            <Typography variant="subtitle2">DNI: 78624555</Typography>
+          </Box>
+          <Divider />
+          <Box sx={{ px: '20px', pt: '12px' }}>
+            <InputSelect name="country" label="Nacionalidad" options={nationality} control={control} />
+          </Box>
+          <Divider />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              px: '20px',
+              py: '12px',
+            }}
+          >
+            <Box>
+              <Typography variant="body2">Número de Celular:</Typography>
+              <Typography variant="body2">{control._formValues.celular}</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <Chip
+                variant="signup"
+                label="Editar"
+                onClick={() => {
+                  setEditCelular(true);
+                }}
+              />
+            </Box>
+          </Box>
+          <Divider />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              px: '20px',
+              pt: '12px',
+            }}
+          >
+            <Box>
+              <Typography variant="body2">Email:</Typography>
+              <Typography variant="body2">{control._formValues.email} </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <Chip
+                variant="signup"
+                label="Editar"
+                onClick={() => {
+                  setEditEmail(true);
+                }}
+              />
+            </Box>
+          </Box>
+        </Card>
+        <InputCheck
+          name="term"
+          labelHandle="Al continuar estoy aceptando los Términos y Condiciones."
+          control={control}
+          onClick={handleModalTerm}
+        />
+        <InputCheck
+          name="privacy"
+          label="Acepto la política de privacidad de datos y cláusula de protección de datos."
+          control={control}
+        />
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: { sm: 2 } }}>
+          <Button variant="contained" type="submit" sx={{ width: { xs: 'auto', sm: 320 } }}>
+            Continuar
+          </Button>
+        </Box>
+      </Box>
       <ModalResponsive
         open={editCelular}
         handleClose={() => {
+          clearErrorsCelular('celular');
+          setValueCelular('celular', getValues('celuar'));
           setEditCelular(false);
         }}
       >
-        <>
+        <Box component="form" onSubmit={handleSubmitCelular(handleEditCelular)}>
           <Typography variant="subtitle1" mb="12px">
             📱 Editar número de celular
           </Typography>
-          <InputText name="celular" label="Ingresa tu nuevo número de celular" control={control} />
-          <Button
-            variant="contained"
-            onClick={async () => {
-              const fieldStatus: any = await trigger('celular');
-              fieldStatus && setEditCelular(false);
-            }}
-          >
+          <InputText name="celular" label="Ingresa tu nuevo número de celular" control={controlCelular} />
+          <Button variant="contained" type="submit">
             Guardar
           </Button>
-        </>
+        </Box>
       </ModalResponsive>
 
       <ModalResponsive
         open={editEmail}
         handleClose={() => {
+          clearErrorsEmail('email');
+          setValueEmail('email', getValues('email'));
           setEditEmail(false);
         }}
       >
-        <>
+        <Box component="form" onSubmit={handleSubmitEmail(handleEditEmail)}>
           <Typography variant="subtitle1" mb="12px">
             ✉️ Editar email
           </Typography>
-          <InputText name="email" label="Ingresa tu nuevo email" control={control} />
-          <Button
-            variant="contained"
-            onClick={async () => {
-              const fieldStatus: any = await trigger('email');
-              fieldStatus && setEditEmail(false);
-            }}
-          >
+          <InputText name="email" label="Ingresa tu nuevo email" control={controlEmail} />
+          <Button variant="contained" type="submit">
             Guardar
           </Button>
-        </>
+        </Box>
       </ModalResponsive>
       <ModalResponsive
         open={openTerms}
@@ -193,9 +230,16 @@ export default function InfoVerification() {
           maxHeight: { sm: '600px', xs: '80vh' },
         }}
       >
-        <Box sx={{ height: '100%', overflow: 'auto' }}>
-          <Typography variant="h6">Términos Y condiciones</Typography>
-          <Typography textAlign={'left'}>
+        <Box
+          sx={{
+            height: '100%',
+            overflow: 'auto',
+          }}
+        >
+          <Typography variant="h6" align="left" sx={{ marginBottom: '24px' }}>
+            Términos Y condiciones
+          </Typography>
+          <Typography textAlign={'left'} variant="body2" sx={{ marginBottom: '24px' }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Orci nulla pellentesque dignissim enim sit amet. Commodo sed egestas egestas fringilla
             phasellus faucibus scelerisque. Id porta nibh venenatis cras sed felis eget. A diam maecenas sed enim ut.
@@ -234,6 +278,6 @@ export default function InfoVerification() {
           </Stack>
         </Box>
       </ModalResponsive>
-    </Box>
+    </>
   );
 }

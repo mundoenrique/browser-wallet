@@ -8,13 +8,13 @@ import { FormControl, FormHelperText, Checkbox, FormControlLabel, FormGroup, Box
 import { InputCheckProps } from '@/interfaces';
 
 function InputCheckMUI(props: InputCheckProps): JSX.Element {
-  const { name, label, labelError, onChange, onClick, checked, value, error, disabled, ...restProps } = props;
+  const { name, label, labelError, onChange, checked, value, error, disabled, ...restProps } = props;
 
   const textLabel = label ?? name;
 
   return (
     <FormControl component="fieldset" variant="standard" fullWidth>
-      <FormGroup onClick={onClick} {...restProps}>
+      <FormGroup>
         <FormControlLabel
           value={value}
           disabled={disabled}
@@ -65,7 +65,7 @@ export default function InputCheck(props: InputCheckProps) {
                 {...restProps}
               />
             ) : (
-              <Box sx={{ display: 'flex', alignContent: 'center' }} onClick={onClick}>
+              <Box sx={{ display: 'flex', alignContent: 'center' }}>
                 <InputCheckMUI
                   name={name}
                   value={field.value}
@@ -79,6 +79,7 @@ export default function InputCheck(props: InputCheckProps) {
                   {...restProps}
                 />
                 <Typography
+                  onClick={onClick}
                   sx={{
                     fontSize: '14px',
                     textDecoration: 'underline',
