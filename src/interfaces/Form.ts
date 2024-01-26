@@ -40,6 +40,7 @@ export interface InputCheckProps extends FormMUIProps {
   disabled?: boolean;
   labelHandle?: boolean | string;
   sx?: SxProps;
+  mtError?: number;
 }
 
 export type UserSubmitForm = {

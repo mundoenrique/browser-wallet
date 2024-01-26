@@ -338,6 +338,7 @@ const theme = createTheme({
             marginLeft: 'auto',
             marginRight: 'auto',
             marginBottom: '24px',
+            alignContent: useMediaQuery(theme.breakpoints.down('sm')) ? 'start' : 'space-between',
           }),
         },
         {

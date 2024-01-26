@@ -8,7 +8,7 @@ import { FormControl, FormHelperText, Checkbox, FormControlLabel, FormGroup, Box
 import { InputCheckProps } from '@/interfaces';
 
 function InputCheckMUI(props: InputCheckProps): JSX.Element {
-  const { name, label, labelError, onChange, checked, value, error, disabled } = props;
+  const { name, label, labelError, onChange, checked, value, error, disabled, mtError = 0 } = props;
 
   return (
     <FormControl component="fieldset" variant="standard" fullWidth>
@@ -23,7 +23,14 @@ function InputCheckMUI(props: InputCheckProps): JSX.Element {
         />
       </FormGroup>
       <FormHelperText
-        sx={{ color: 'error.main', height: '20px', ml: 0, display: 'flex', alignItems: 'center' }}
+        sx={{
+          color: 'error.main',
+          height: '20px',
+          ml: 0,
+          display: 'flex',
+          alignItems: 'center',
+          mt: { xs: mtError, sm: 0 },
+        }}
         id={`${label}-helperText`}
       >
         {error ? (
@@ -73,6 +80,7 @@ export default function InputCheck(props: InputCheckProps) {
                     onChange && onChange(e);
                     field.onChange(e);
                   }}
+                  mtError={3}
                   error={error}
                   {...restProps}
                 />

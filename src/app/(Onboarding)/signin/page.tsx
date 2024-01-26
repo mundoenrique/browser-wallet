@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Link as LinkMui, Typography } from '@mui/material';
 //Internal app
@@ -12,6 +13,7 @@ import LogoGreen from '%/images/LogoGreen';
 
 export default function Signin() {
   const btnRef: any = useRef(null);
+  const router = useRouter();
   const schema = getSchema(['password']);
 
   const { control, handleSubmit } = useForm({
@@ -23,6 +25,7 @@ export default function Signin() {
 
   const onSubmit = async (data: any) => {
     console.log('🚀 ~ onSubmit ~ data:', data);
+    router.push('/dashboard');
   };
 
   return (
