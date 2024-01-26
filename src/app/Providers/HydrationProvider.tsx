@@ -1,9 +1,10 @@
 'use client';
 
+import { Container } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Box, CircularProgress, Container } from '@mui/material';
 //Internal app
 import LogoGreen from '%/images/LogoGreen';
+import { PurpleLayout } from '@/components';
 import { ChildrenProps } from '@/interfaces';
 
 export default function HydrationProvider({ children }: ChildrenProps) {
@@ -15,31 +16,9 @@ export default function HydrationProvider({ children }: ChildrenProps) {
 
   if (isHydrated)
     return (
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'nowrap',
-          minHeight: '100vh',
-        }}
-      >
-        <Box
-          sx={{
-            alignItems: 'center',
-            display: 'flex',
-            height: '100%',
-            justifyContent: 'center',
-            width: '100%',
-          }}
-        >
-          <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
-            <LogoGreen />
-            <Box sx={{ display: 'flex', m: 2 }}>
-              <CircularProgress disableShrink color="inherit" />
-            </Box>
-          </Box>
-        </Box>
-      </Box>
+      <PurpleLayout>
+        <LogoGreen />
+      </PurpleLayout>
     );
 
   return <Container>{children}</Container>;
