@@ -30,7 +30,7 @@ export default function Signup() {
           align="center"
           mb={{ sm: 8 }}
         >
-          Paso {step + 1}/4
+          Paso {step}/4
         </Typography>
         {children}
       </Card>

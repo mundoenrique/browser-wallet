@@ -15,7 +15,7 @@ export default function SignupStepper(props: { currentStep: number; children: JS
         minHeight: '100vh',
       }}
     >
-      {currentStep < 7 && <NavExternal image relative />}
+      {currentStep < 7 && <NavExternal image relative closeApp />}
       {children[currentStep]}
     </Box>
   );
