@@ -5,7 +5,7 @@ import html2canvas from 'html2canvas';
 import Copy from '@mui/icons-material/ContentCopy';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 //Internal app
-import Qr from '%/images/QR.png';
+import Qr from '%/images/arts/QR.png';
 import { CardDetails, PurpleLayout } from '@/components';
 import PagoEfectivo from '%/images/suppliers/pagoEfectivo.png';
 

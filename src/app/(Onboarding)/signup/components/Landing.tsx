@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { Button, Box, Typography } from '@mui/material';
 //Internal app
-import welcome from '%/images/Stage01.png';
+import welcome from '%/images/arts/Stage01.png';
 import LogoPurple from '%/images/LogoPurple';
 import { stepperStore } from '@/store/volatileStore';
 

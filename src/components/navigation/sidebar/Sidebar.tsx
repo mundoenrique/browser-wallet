@@ -38,7 +38,7 @@ export default function Sidebar(props: SidebarProps) {
               position: 'absolute',
               width: '100%',
               height: '100%',
-              backgroundImage: `url('/images/pelcasMenu.png')`,
+              backgroundImage: `url('/images/pelcas/pelcasMenu.png')`,
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'top',
               backgroundSize: 'contain',
