@@ -5,6 +5,7 @@ declare module '@mui/material/Chip' {
   interface ChipPropsVariantOverrides {
     signup: true;
     detailCard: true;
+    onboarding: true;
   }
 }
 declare module '@mui/material/Paper' {
@@ -18,12 +19,6 @@ declare module '@mui/material/Card' {
   interface CardPropsVariantOverrides {
     signup: true;
     detailCard: true;
-  }
-}
-
-declare module '@mui/material/Chip' {
-  interface ChipPropsVariantOverrides {
-    onboarding: true;
   }
 }
 
@@ -325,8 +320,8 @@ const theme = createTheme({
           props: { variant: 'signup' },
           style: ({ theme }) => ({
             background: useMediaQuery(theme.breakpoints.down('sm')) ? 'transparent' : '#F0EDFA',
-            minHeight: useMediaQuery(theme.breakpoints.down('sm')) ? '640px' : '672px',
-            width: useMediaQuery(theme.breakpoints.down('sm')) ? 'auto' : '522px',
+            minHeight: useMediaQuery(theme.breakpoints.down('sm')) ? '560px' : '738px',
+            width: useMediaQuery(theme.breakpoints.down('sm')) ? 'auto' : '570px',
             paddingLeft: useMediaQuery(theme.breakpoints.down('sm')) ? '20px' : '24px',
             paddingRight: useMediaQuery(theme.breakpoints.down('sm')) ? '20px' : '24px',
             paddingTop: useMediaQuery(theme.breakpoints.up('sm')) ? '24px' : 0,
@@ -337,7 +332,7 @@ const theme = createTheme({
             height: 'auto',
             marginLeft: 'auto',
             marginRight: 'auto',
-            marginBottom: '24px',
+            marginBottom: useMediaQuery(theme.breakpoints.down('sm')) ? 0 : '24px',
             alignContent: useMediaQuery(theme.breakpoints.down('sm')) ? 'start' : 'space-between',
           }),
         },
@@ -378,9 +373,10 @@ const theme = createTheme({
 
     MuiFormLabel: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           transform: 'none !important',
-        },
+          fontSize: theme.breakpoints.down('sm') ? '14px' : '16px',
+        }),
       },
     },
     MuiInputBase: {
@@ -493,6 +489,23 @@ const theme = createTheme({
         root: {
           paddingTop: 0,
           paddingBottom: 0,
+          paddingLeft: 8,
+          paddingRight: 8,
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          marginBottom: '2px',
+          marginTop: '2px',
+        },
+      },
+    },
+    MuiFormControl: {
+      styleOverrides: {
+        root: {
+          marginBottom: '0 !important',
         },
       },
     },

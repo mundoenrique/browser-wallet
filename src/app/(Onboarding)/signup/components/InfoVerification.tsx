@@ -1,9 +1,9 @@
 'use client';
 
-import { MouseEvent, useState } from 'react';
-import { set, useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, Card, Chip, Divider, Stack, Typography } from '@mui/material';
+import { Box, Button, Card, Chip, Divider, Typography } from '@mui/material';
 //internal app
 import { getSchema } from '@/config';
 import { stepperStore } from '@/store/volatileStore';
@@ -78,12 +78,6 @@ export default function InfoVerification() {
     setOpenTerms(true);
   };
 
-  const handleAcceptTerms = () => {
-    console.log('accept');
-    setValue('term', true);
-    setOpenTerms(false);
-  };
-
   const handleEditEmail = async (data: any) => {
     setValue('email', data.email);
     setEditEmail(false);
@@ -101,13 +95,12 @@ export default function InfoVerification() {
         onSubmit={handleSubmit(onSubmit)}
         sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}
       >
-        <Box>
-          <Box sx={{ marginBottom: { sm: '24px' } }}>
-            <Typography variant="subtitle1">¡Hola Andrea!</Typography>
-            <Typography variant="subtitle1">Empecemos verificando tu información personal</Typography>
-          </Box>
+        <Box sx={{ mb: { xs: 2, sm: 5 } }}>
+          <Typography variant="subtitle1">¡Hola Andrea!</Typography>
+          <Typography variant="subtitle1">Empecemos verificando tu información personal</Typography>
         </Box>
-        <Card sx={{ p: '8px 0px', mb: { xs: 2, sm: 5 } }}>
+
+        <Card sx={{ p: '8px 0px', boxShadow: 'none', mb: { xs: 2, sm: 5 } }}>
           <Box sx={{ px: '20px', pb: '12px' }}>
             <Typography variant="subtitle2">Andrea Rodriguez</Typography>
             <Typography variant="subtitle2">DNI: 78624555</Typography>
@@ -182,6 +175,7 @@ export default function InfoVerification() {
           </Button>
         </Box>
       </Box>
+
       <ModalResponsive
         open={editCelular}
         handleClose={() => {
@@ -219,6 +213,7 @@ export default function InfoVerification() {
           </Button>
         </Box>
       </ModalResponsive>
+
       <ModalResponsive
         open={openTerms}
         handleClose={() => {
@@ -272,11 +267,6 @@ export default function InfoVerification() {
             blandit massa. A condimentum vitae sapien pellentesque habitant morbi tristique senectus et. Ultricies
             tristique nulla aliquet enim tortor at auctor.
           </Typography>
-          <Stack direction="row" spacing={2} justifyContent="center">
-            <Button variant="contained" onClick={handleAcceptTerms}>
-              Aceptar
-            </Button>
-          </Stack>
         </Box>
       </ModalResponsive>
     </>

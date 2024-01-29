@@ -1,17 +1,16 @@
 'use client';
 
-import { Backdrop, Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Box, Typography } from '@mui/material';
 
 //Internal app
-import Image from 'next/image';
-import Logo from '%/images/yiroGreen.svg';
-import { stepperStore } from '@/store/volatileStore';
+import LogoGreen from '%/images/LogoGreen';
+import { PurpleLayout } from '@/components';
 
 export default function BiometricValidation() {
+  const router = useRouter();
   const [statusStep, setStatusStep] = useState<number>(0);
-
-  const { dec, inc }: any = stepperStore();
 
   //TODO:timeEvent es de implementacion temporal
   const timeEvent = (time: number) =>
@@ -29,38 +28,19 @@ export default function BiometricValidation() {
           return timeEvent(1500);
         })
         .then(() => {
-          inc();
+          router.push('/signin');
         });
     })();
   }, []);
+
   return (
-    <>
-      <Backdrop
-        open={true}
-        onClick={() => {}}
-        sx={{
-          background: `linear-gradient(180deg, #947bd7 0%, #5f3f98 100%)`,
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-          '&:before': {
-            content: `' '`,
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            top: '-150px',
-            backgroundImage: `url('/images/vectorDesktop.svg')`,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-          },
-        }}
-      >
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px', width: '250px' }}>
-          <Image src={Logo} width={132} height={74} alt="logo" />
-          <Typography variant="h6" color={'white'} align="center" sx={{ height: '80px' }}>
-            {statusText[statusStep]}
-          </Typography>
-        </Box>
-      </Backdrop>
-    </>
+    <PurpleLayout>
+      <Box sx={{ zIndex: 1, display: 'grid', justifyItems: 'center' }}>
+        <LogoGreen />
+        <Typography variant="h6" color="white" align="center" sx={{ height: '80px' }}>
+          {statusText[statusStep]}
+        </Typography>
+      </Box>
+    </PurpleLayout>
   );
 }

@@ -19,7 +19,7 @@ function InputCheckMUI(props: InputCheckProps): JSX.Element {
           checked
           control={<Checkbox id={name} checked={checked} onChange={onChange} />}
           label={label}
-          sx={{ alignItems: 'flex-start', '&>.MuiFormControlLabel-label': { fontSize: '14px' } }}
+          sx={{ alignItems: 'flex-start', '&>.MuiFormControlLabel-label': { fontSize: '14px' }, mr: 0 }}
         />
       </FormGroup>
       <FormHelperText
@@ -86,8 +86,8 @@ export default function InputCheck(props: InputCheckProps) {
                 />
                 <Typography
                   onClick={onClick}
+                  variant="body2"
                   sx={{
-                    fontSize: '14px',
                     textDecoration: 'underline',
                     position: 'absolute',
                     ml: '31px',

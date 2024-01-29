@@ -49,7 +49,9 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
         <Typography fontWeight={700} mb={3}>
           {title}
         </Typography>
-        <Typography mb="12px">{text}</Typography>
+        <Typography variant="body2" mb="12px">
+          {text}
+        </Typography>
         <Controller
           name={name}
           control={control}
@@ -69,9 +71,13 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
           )}
         />
         {time === 0 ? (
-          <Typography mb={5}>De necesitarlo, ya puedes solicitar un nuevo código</Typography>
+          <Typography variant="body2" mb={5}>
+            De necesitarlo, ya puedes solicitar un nuevo código
+          </Typography>
         ) : (
-          <Typography mb={5}>Tiempo restante - 0:{time}</Typography>
+          <Typography variant="body2" mb={5} color="primary.main">
+            Tiempo restante - 0:{time}
+          </Typography>
         )}
 
         <Button onClick={handleResend} sx={{ color: 'primary.main' }} disabled={time === 0 ? false : true}>

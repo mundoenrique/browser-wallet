@@ -2,6 +2,7 @@
 
 import { Card, Typography, useMediaQuery, useTheme } from '@mui/material';
 // Internal app
+import { ChildrenProps } from '@/interfaces';
 import { stepperStore } from '@/store/volatileStore';
 import BiometricValidation from './components/BiometricValidation';
 import {
@@ -21,108 +22,58 @@ export default function Signup() {
   const theme = useTheme();
   const { step }: any = stepperStore();
 
+  const CardStep = ({ children }: ChildrenProps) => {
+    return (
+      <Card variant="signup">
+        <Typography
+          variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
+          align="center"
+          mb={{ sm: 8 }}
+        >
+          Paso {step + 1}/4
+        </Typography>
+        {children}
+      </Card>
+    );
+  };
+
   return (
-    <>
-      <SignupStepper step={step}>
-        {/*Step 0*/}
-        <Landing />
+    <SignupStepper currentStep={step}>
+      <Landing />
 
-        {/*Step 1*/}
-        <Card variant="signup">
-          <Typography
-            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
-            align="center"
-            mb={{ sm: 7 }}
-          >
-            Paso 1/4
-          </Typography>
-          <InfoVerification />
-        </Card>
+      <CardStep>
+        <InfoVerification />
+      </CardStep>
 
-        {/*Step 2*/}
-        <Card variant="signup">
-          <Typography
-            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
-            align="center"
-            mb={{ sm: 7 }}
-          >
-            Paso 2/4
-          </Typography>
-          <CelularValidation />
-        </Card>
+      <CardStep>
+        <CelularValidation />
+      </CardStep>
 
-        {/*Step 3*/}
-        <Card variant="signup">
-          <Typography
-            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
-            align="center"
-            mb={{ sm: 7 }}
-          >
-            Paso 3/4
-          </Typography>
-          <Ocupation />
-        </Card>
+      <CardStep>
+        <Ocupation />
+      </CardStep>
 
-        {/*Step 4*/}
-        <Card variant="signup">
-          <Typography
-            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
-            align="center"
-            mb={{ sm: 7 }}
-          >
-            Paso 3/4
-          </Typography>
-          <PEP />
-        </Card>
-        {/*Step 5*/}
-        <Card variant="signup">
-          <Typography
-            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
-            align="center"
-            mb={{ sm: 7 }}
-          >
-            Paso 4/4
-          </Typography>
-          <DniInfo />
-        </Card>
+      <CardStep>
+        <PEP />
+      </CardStep>
 
-        {/*Step 6*/}
-        <Card variant="signup">
-          <Typography
-            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
-            align="center"
-            mb={{ sm: 7 }}
-          >
-            Paso 4/4
-          </Typography>
-          <DniUpload />
-        </Card>
+      <CardStep>
+        <DniInfo />
+      </CardStep>
 
-        {/*Step 7*/}
-        <Card variant="signup">
-          <Typography
-            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
-            align="center"
-            mb={{ sm: 7 }}
-          >
-            Paso 4/4
-          </Typography>
-          <SelfieInfo />
-        </Card>
+      <CardStep>
+        <DniUpload />
+      </CardStep>
 
-        {/*Step 8*/}
-        <Card variant="signup">
-          <Typography
-            variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
-            align="center"
-            mb={{ sm: 7 }}
-          >
-            Paso 4/4
-          </Typography>
-          <SelfieUpload />
-        </Card>
-        <BiometricValidation />
-      </SignupStepper>
-    </>
+      <CardStep>
+        <SelfieInfo />
+      </CardStep>
+
+      <CardStep>
+        <SelfieUpload />
+      </CardStep>
+
+      <BiometricValidation />
+    </SignupStepper>
   );
 }
