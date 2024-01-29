@@ -4,6 +4,7 @@ import { forwardRef } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import { Close as CloseIcon } from '@mui/icons-material';
 import { Box, Fab, Modal, Slide, useMediaQuery } from '@mui/material/';
+
 //Internal app
 import { MuiModalProps } from '@/interfaces';
 
@@ -82,18 +83,14 @@ const ModalResponsive = forwardRef((props: MuiModalProps, ref: any) => {
       }}
       ref={ref}
     >
-      {matche ? (
-        <Slide in={open} direction="up" timeout={300}>
-          <BodyModal {...others}>{children}</BodyModal>
-        </Slide>
-      ) : (
+      <Box>
         <BodyModal {...others}>
           {children}
           <CloseButton onClick={handleClose}>
             <CloseIcon color="primary" />
           </CloseButton>
         </BodyModal>
-      )}
+      </Box>
     </RootModal>
   );
 });

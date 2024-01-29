@@ -87,4 +87,8 @@ export const validationRules: ValidationRule = {
     'Las contraseñas no coinciden'
   ),
   legal: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
+  celular: yup
+    .string()
+    .required('Ingresa un numero de celular')
+    .test('celularValid', 'Ingresa un numero de celular', (value) => regularExpressions.onlyNumber?.test(value)),
 };

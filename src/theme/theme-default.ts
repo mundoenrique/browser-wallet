@@ -332,7 +332,7 @@ const theme = createTheme({
             paddingTop: useMediaQuery(theme.breakpoints.up('sm')) ? '24px' : 0,
             paddingBottom: useMediaQuery(theme.breakpoints.down('sm')) ? 0 : '42px',
             boxShadow: 'none',
-            display: 'grid',
+            display: 'flex',
             flexDirection: 'column',
             height: 'auto',
             marginLeft: 'auto',

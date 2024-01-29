@@ -13,7 +13,7 @@ export default function SelfieInfo() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
-      <Box sx={{ marginTop: { sm: '40px' }, marginBottom: { sm: '24px' }, width: '100%' }}>
+      <Box sx={{ marginBottom: { sm: '24px' }, width: '100%' }}>
         <Typography variant="subtitle1" align="center" sx={{ marginBottom: '24px' }}>
           Ahora es momento de activar tu cuenta
         </Typography>

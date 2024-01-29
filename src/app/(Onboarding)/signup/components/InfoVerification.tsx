@@ -66,6 +66,7 @@ export default function InfoVerification() {
     defaultValues: {
       celular: getValues('celular'),
     },
+    resolver: yupResolver(schemaCelular),
   });
 
   const onSubmit = (data: any) => {
@@ -100,7 +101,7 @@ export default function InfoVerification() {
         onSubmit={handleSubmit(onSubmit)}
         sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}
       >
-        <Box sx={{ marginTop: { sm: '40px' } }}>
+        <Box>
           <Box sx={{ marginBottom: { sm: '24px' } }}>
             <Typography variant="subtitle1">¡Hola Andrea!</Typography>
             <Typography variant="subtitle1">Empecemos verificando tu información personal</Typography>
