@@ -3,11 +3,12 @@
 import 'dayjs/locale/es';
 import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { FormHelperText, InputLabel } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 //Internal App
+import { CalendarIcons } from '%/icons/Icons';
 import { InputDatePickerProps } from '@/interfaces';
 
 function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
@@ -20,6 +21,7 @@ function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
       <InputLabel sx={{ mb: '12px' }}>{label}</InputLabel>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'es'}>
         <DatePicker
+          slots={{ openPickerIcon: CalendarIcons }}
           slotProps={{
             textField: {
               error: !!error,
