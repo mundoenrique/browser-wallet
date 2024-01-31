@@ -7,12 +7,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { getSchema } from '@/config';
 import { InputOTP } from '@/components';
 import { Box, Button } from '@mui/material';
-import { stepperStore } from '@/store/volatileStore';
+import { useSignupStore } from '@/store/volatileStore';
 
 export default function CelularValidation() {
   const [enableNextStep, setEnableNextStep] = useState<boolean>(false);
   const schema = getSchema(['otp']);
-  const { inc, dec }: any = stepperStore();
+  const { inc, dec }: any = useSignupStore();
 
   const { handleSubmit, control, watch, trigger, getFieldState } = useForm({
     defaultValues: {
@@ -50,7 +50,7 @@ export default function CelularValidation() {
         />
       </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', mt: { sm: 2 }, mb: { xs: 3, sm: 0 } }}>
         <Button
           variant="outlined"
           onClick={() => {

@@ -1,13 +1,12 @@
 'use client';
 
 import { Box, Button, Typography } from '@mui/material';
-
 //Internal app
-import { stepperStore } from '@/store/volatileStore';
 import { InputText } from '@/components';
+import { useSignupStore } from '@/store/volatileStore';
 
 export default function DniUpload() {
-  const { dec, inc }: any = stepperStore();
+  const { dec, inc }: any = useSignupStore();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
@@ -39,7 +38,7 @@ export default function DniUpload() {
           <InputText name="Adjunta tu DNI" label="Adjunta tu DNI" />
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', mt: { sm: 2 }, mb: { xs: 3, sm: 0 } }}>
         <Button
           variant="outlined"
           onClick={() => {
