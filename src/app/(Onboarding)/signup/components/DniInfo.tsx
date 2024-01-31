@@ -4,11 +4,11 @@ import { Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material'
 
 import Image from 'next/image';
 //Internal app
-import { stepperStore } from '@/store/volatileStore';
+import { useSignupStore } from '@/store/volatileStore';
 import dniDesktop from '%/images/dniDesktop.svg';
 import dniPwa from '%/images/dniPwa.svg';
 export default function DniInfo() {
-  const { dec, inc }: any = stepperStore();
+  const { dec, inc }: any = useSignupStore();
   const theme = useTheme();
   const matcha = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -29,7 +29,7 @@ export default function DniInfo() {
           )}
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', mt: { sm: 2 }, mb: { xs: 3, sm: 0 } }}>
         <Button
           variant="outlined"
           onClick={() => {

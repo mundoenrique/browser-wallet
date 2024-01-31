@@ -3,11 +3,11 @@
 import { Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 //Internal app
-import { stepperStore } from '@/store/volatileStore';
+import { useSignupStore } from '@/store/volatileStore';
 import selfieDesktop from '%/images/selfieDesktop.svg';
 import selfiePwa from '%/images/selfiePwa.svg';
 export default function SelfieInfo() {
-  const { dec, inc }: any = stepperStore();
+  const { dec, inc }: any = useSignupStore();
   const theme = useTheme();
   const matcha = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -28,7 +28,7 @@ export default function SelfieInfo() {
           )}
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', mt: { sm: 2 }, mb: { xs: 3, sm: 0 } }}>
         <Button
           variant="outlined"
           onClick={() => {

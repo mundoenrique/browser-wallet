@@ -5,22 +5,22 @@ import { Button, Box, Typography } from '@mui/material';
 //Internal app
 import welcome from '%/images/Stage01.png';
 import LogoPurple from '%/images/LogoPurple';
-import { stepperStore } from '@/store/volatileStore';
+import { useSignupStore } from '@/store/volatileStore';
 
 export default function Landing() {
-  const { inc }: any = stepperStore();
+  const { inc }: any = useSignupStore();
 
   return (
     <Box
       sx={{
-        minHeight: { sm: 738 },
         display: 'flex',
         flexDirection: 'column',
         justifyContent: { sm: 'space-between' },
-        pb: { sm: 3 },
+        pb: 3,
+        flex: 1,
       }}
     >
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', my: { sm: 4 } }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, alignItems: 'center' }}>
         <Box sx={{ display: { sm: 'none' } }}>
           <LogoPurple width={71} height={40} />
         </Box>
