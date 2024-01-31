@@ -5,13 +5,14 @@ import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, Link as LinkMui, Typography } from '@mui/material';
+import { Box, Button, Link as LinkMui, Typography, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
 import { InputPass } from '@/components';
 import LogoGreen from '%/images/LogoGreen';
 
 export default function Signin() {
+  const theme = useTheme();
   const btnRef: any = useRef(null);
   const router = useRouter();
   const schema = getSchema(['password']);
@@ -30,7 +31,18 @@ export default function Signin() {
 
   return (
     <>
-      <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ width: 320, zIndex: 1 }}>
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          flex: '0 1 0',
+          justifyContent: 'space-between',
+          width: 320,
+          zIndex: 1,
+        }}
+      >
         <Box sx={{ textAlign: 'center', mb: 3 }}>
           <Box mb={3}>
             <LogoGreen />
@@ -56,19 +68,16 @@ export default function Signin() {
             </Box>
           </Box>
         </Box>
-        <Button ref={btnRef} variant="secondary" sx={{ display: { xs: 'none', sm: 'block' } }} type="submit" fullWidth>
+        <Button
+          ref={btnRef}
+          variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'contained' : 'secondary'}
+          sx={{ mb: '10%' }}
+          type="submit"
+          fullWidth
+        >
           Ingresar
         </Button>
       </Box>
-      <Button
-        onClick={() => btnRef.current.click()}
-        variant="contained"
-        sx={{ display: { xs: 'block', sm: 'none' }, mb: '10%', width: 320 }}
-        type="submit"
-        fullWidth
-      >
-        Ingresar
-      </Button>
     </>
   );
 }

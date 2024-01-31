@@ -171,11 +171,14 @@ export default function InfoVerification() {
             control={control}
           />
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: { sm: 2 }, mb: { xs: 3, sm: 0 } }}>
-          <Button variant="contained" type="submit" sx={{ width: { xs: 'auto', sm: 320 } }}>
-            Continuar
-          </Button>
-        </Box>
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{ width: { xs: 'auto', sm: 320 }, mt: { sm: 2 }, mb: { xs: 3, sm: 0 }, mx: { sm: 'auto' } }}
+          fullWidth
+        >
+          Continuar
+        </Button>
       </Box>
 
       <ModalResponsive

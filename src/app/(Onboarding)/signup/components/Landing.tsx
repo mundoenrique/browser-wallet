@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import { Button, Box, Typography } from '@mui/material';
 //Internal app
-import welcome from '%/images/arts/Stage01.png';
 import LogoPurple from '%/images/LogoPurple';
+import welcome from '%/images/arts/Stage01.png';
 import { useSignupStore } from '@/store/volatileStore';
 
 export default function Landing() {
