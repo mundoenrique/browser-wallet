@@ -328,6 +328,7 @@ const theme = createTheme({
             paddingBottom: useMediaQuery(theme.breakpoints.down('sm')) ? 0 : '42px',
             boxShadow: 'none',
             display: 'flex',
+            flex: 1,
             flexDirection: 'column',
             height: 'auto',
             marginLeft: useMediaQuery(theme.breakpoints.down('sm')) ? '0' : 'auto',
