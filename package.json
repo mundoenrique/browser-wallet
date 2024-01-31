@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "server": "node server"
+    "server": "node server",
+    "test": "jest --coverage"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
