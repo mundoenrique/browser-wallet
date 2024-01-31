@@ -3,8 +3,7 @@
 import { forwardRef } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import { Close as CloseIcon } from '@mui/icons-material';
-import { Box, Fab, Modal, Slide, useMediaQuery } from '@mui/material/';
-
+import { Box, Fab, Modal, useMediaQuery } from '@mui/material/';
 //Internal app
 import { MuiModalProps } from '@/interfaces';
 

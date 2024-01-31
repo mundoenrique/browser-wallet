@@ -2,10 +2,6 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import Key from '@mui/icons-material/VpnKeyOutlined';
-import CardPayment from '@mui/icons-material/PaymentOutlined';
-import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import {
   Box,
   Card,
@@ -19,28 +15,30 @@ import {
 } from '@mui/material';
 //Internal app
 import card from '%/images/card.png';
+import { fuchsiaBlue } from '@/theme/theme-default';
+import { CardIcons, FileIcons, KeyIcons, LogoutAppIcons, LogoutIcons, ToolIcons } from '%/Icons';
 
 export default function ItemSidebarPwa() {
   const itemsMenuPwa = [
     {
       item: 'Configuración tarjeta',
       url: '/dashboard/card-configuration',
-      icon: <CardPayment />,
+      icon: <CardIcons />,
     },
     {
       item: 'Cambiar contraseña',
       url: '/dashboard/change-password',
-      icon: <Key />,
+      icon: <KeyIcons />,
     },
     {
       item: 'Ayuda',
       url: '/dashboard/help',
-      icon: <BuildOutlinedIcon />,
+      icon: <ToolIcons />,
     },
     {
       item: 'Términos y condiciones',
       url: '/dashboard/terms-conditions',
-      icon: <DescriptionOutlinedIcon />,
+      icon: <FileIcons />,
     },
   ];
   return (
@@ -70,7 +68,9 @@ export default function ItemSidebarPwa() {
       <List disablePadding>
         <ListItem disablePadding sx={{ width: 244, my: '4px' }}>
           <ListItemButton component={Link} href="#" sx={{ textDecoration: 'none' }}>
-            <ListItemIcon sx={{ minWidth: 'auto', mr: '12px' }}>i</ListItemIcon>
+            <ListItemIcon sx={{ minWidth: 'auto', mr: '12px' }}>
+              <LogoutAppIcons />
+            </ListItemIcon>
             <ListItemText
               primary="Regresar a ésika conmigo"
               primaryTypographyProps={{ fontWeight: 700, fontSize: '14px' }}
@@ -80,8 +80,13 @@ export default function ItemSidebarPwa() {
         <Divider variant="middle" sx={{ bgcolor: '#B0A1E4' }} />
         <ListItem disablePadding sx={{ width: 244, my: '4px' }}>
           <ListItemButton component={Link} href="/signin" sx={{ textDecoration: 'none' }}>
-            <ListItemIcon sx={{ minWidth: 'auto', mr: '12px' }}>i</ListItemIcon>
-            <ListItemText primary="Cerrar sesión" primaryTypographyProps={{ fontWeight: 700, fontSize: '14px' }} />
+            <ListItemIcon sx={{ minWidth: 'auto', mr: '12px', color: fuchsiaBlue[600] }}>
+              <LogoutIcons />
+            </ListItemIcon>
+            <ListItemText
+              primary="Cerrar sesión"
+              primaryTypographyProps={{ fontWeight: 700, fontSize: '14px', color: fuchsiaBlue[600] }}
+            />
           </ListItemButton>
         </ListItem>
       </List>

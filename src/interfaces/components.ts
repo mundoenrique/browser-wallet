@@ -41,3 +41,8 @@ export interface SidebarProps {
   onTransitionEnd: () => void;
   onClose: () => void;
 }
+
+export interface StepperProps {
+  children: React.ReactNode;
+  stepNumber: string;
+}

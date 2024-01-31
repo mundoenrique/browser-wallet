@@ -11,7 +11,7 @@ import ModalResponsive from '../modal/ModalResponsive';
 export default function InputOTP(props: InputOTPProps): JSX.Element {
   const { control, name, length, title, text } = props;
   const [time, setTime] = useState<number>(60);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const handleResend = () => {
     setTime(60);
@@ -55,8 +55,8 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
         <Controller
           name={name}
           control={control}
-          rules={{ validate: (value) => value.length === length }}
-          render={({ field }) => (
+          rules={{ validate: (value: any) => value.length === length }}
+          render={({ field }: any) => (
             <Box>
               <MuiOtpInput
                 sx={{

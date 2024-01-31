@@ -2,7 +2,7 @@
 
 import { Card, Typography, useMediaQuery, useTheme } from '@mui/material';
 // Internal app
-import { ChildrenProps } from '@/interfaces';
+import { StepperProps } from '@/interfaces';
 import { stepperStore } from '@/store/volatileStore';
 import BiometricValidation from './components/BiometricValidation';
 import {
@@ -22,7 +22,8 @@ export default function Signup() {
   const theme = useTheme();
   const { step }: any = stepperStore();
 
-  const CardStep = ({ children }: ChildrenProps) => {
+  const CardStep = (props: StepperProps) => {
+    const { children, stepNumber } = props;
     return (
       <Card variant="signup">
         <Typography
@@ -30,7 +31,7 @@ export default function Signup() {
           align="center"
           mb={{ sm: 8 }}
         >
-          Paso {step}/4
+          Paso {stepNumber}/4
         </Typography>
         {children}
       </Card>
@@ -41,35 +42,35 @@ export default function Signup() {
     <SignupStepper currentStep={step}>
       <Landing />
 
-      <CardStep>
+      <CardStep stepNumber="1">
         <InfoVerification />
       </CardStep>
 
-      <CardStep>
+      <CardStep stepNumber="2">
         <CelularValidation />
       </CardStep>
 
-      <CardStep>
+      <CardStep stepNumber="3">
         <Ocupation />
       </CardStep>
 
-      <CardStep>
+      <CardStep stepNumber="3">
         <PEP />
       </CardStep>
 
-      <CardStep>
+      <CardStep stepNumber="4">
         <DniInfo />
       </CardStep>
 
-      <CardStep>
+      <CardStep stepNumber="4">
         <DniUpload />
       </CardStep>
 
-      <CardStep>
+      <CardStep stepNumber="4">
         <SelfieInfo />
       </CardStep>
 
-      <CardStep>
+      <CardStep stepNumber="4">
         <SelfieUpload />
       </CardStep>
 
