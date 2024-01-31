@@ -19,7 +19,7 @@ export default function SignupStepper(props: { currentStep: number; children: JS
         flexDirection: 'column',
       }}
     >
-      {currentStep < 7 && <NavExternal image relative />}
+      {currentStep < 7 && <NavExternal image relative closeApp />}
       {children[currentStep]}
     </Box>
   );

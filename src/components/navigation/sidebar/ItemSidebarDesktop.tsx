@@ -8,9 +8,9 @@ import Swap from '@mui/icons-material/SyncAltOutlined';
 import Payments from '@mui/icons-material/PaymentsOutlined';
 import CardPayment from '@mui/icons-material/PaymentOutlined';
 import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import CurrencyExchange from '@mui/icons-material/CurrencyExchangeOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import {
   Box,
   Card,

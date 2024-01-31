@@ -19,7 +19,10 @@ export default function PurpleLayout({ children, hidePelca }: PurpleLayoutProps)
           position: 'absolute',
           width: '100%',
           height: '100%',
-          backgroundImage: { xs: `url('/images/pelcasMobile.png')`, sm: `url('/images/pelcasDesktop.png')` },
+          backgroundImage: {
+            xs: `url('/images/pelcas/pelcasMobile.png')`,
+            sm: `url('/images/pelcas/pelcasDesktop.png')`,
+          },
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           backgroundSize: 'cover',

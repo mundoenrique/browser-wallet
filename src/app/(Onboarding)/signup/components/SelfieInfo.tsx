@@ -1,7 +1,7 @@
 'use client';
 
-import { Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
+import { Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { useSignupStore } from '@/store/volatileStore';
 import selfieDesktop from '%/images/selfieDesktop.svg';
