@@ -2,28 +2,34 @@
 
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
-import { ChildrenProps } from '@/interfaces';
+import { ChildrenOptionalProps, ChildrenProps } from '@/interfaces';
 
-const DesktopLayout = ({ children }: ChildrenProps) => {
+const ContainerLayout = ({ children }: ChildrenOptionalProps) => {
   return (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
         background: 'linear-gradient(180deg, #947bd7 0%, #5f3f98 100%)',
-        '&:before': {
+        display: 'flex',
+        borderRadius: { xs: '0 0 16px 16px', sm: 'initial' },
+        flexDirection: 'column',
+        justifyContent: { xs: 'center', sm: 'flex-start' },
+        minHeight: { xs: '85%', sm: '100vh' },
+        position: { xs: 'absolute', sm: 'initial' },
+        width: { xs: '100%', sm: 'auto' },
+        '&::before': {
           content: `' '`,
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          backgroundImage: `url('/images/pelcas/pelcasDesktop.png')`,
+          backgroundImage: {
+            xs: `url('/images/pelcas/pelcasMobile.png')`,
+            sm: `url('/images/pelcas/pelcasDesktop.png')`,
+          },
           backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
+          backgroundPosition: { xs: 'initial', sm: 'center' },
           backgroundSize: 'cover',
-          top: '-70px',
+          height: '100%',
+          position: 'absolute',
+          top: { xs: 0, sm: '-70px' },
+          width: '100%',
         },
       }}
     >
@@ -32,55 +38,36 @@ const DesktopLayout = ({ children }: ChildrenProps) => {
   );
 };
 
-const PwaLayout = ({ children }: ChildrenProps) => {
-  return (
-    <Box
-      sx={{
-        backgroundColor: 'secondary.main',
-        position: 'relative',
-      }}
-    >
-      <Box
-        sx={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'linear-gradient(180deg, #947bd7 0%, #5f3f98 100%)',
-          borderRadius: '0 0 16px 16px',
-          position: 'absolute',
-          minHeight: '85%',
-          '&::before': {
-            content: `' '`,
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            backgroundImage: `url('/images/pelcas/pelcasMobile.png')`,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-          },
-        }}
-      />
-
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          minHeight: '100vh',
-          flexDirection: 'column',
-        }}
-      >
-        {children}
-      </Box>
-    </Box>
-  );
-};
-
 export default function LoginLayout({ children }: ChildrenProps) {
   const theme = useTheme();
   const matche = useMediaQuery(theme.breakpoints.down('sm'));
 
-  return <>{matche ? <PwaLayout>{children}</PwaLayout> : <DesktopLayout>{children}</DesktopLayout>}</>;
+  return (
+    <>
+      {matche ? (
+        <Box
+          sx={{
+            backgroundColor: 'secondary.main',
+            position: 'relative',
+          }}
+        >
+          <ContainerLayout />
+
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              minHeight: '100vh',
+              flexDirection: 'column',
+            }}
+          >
+            {children}
+          </Box>
+        </Box>
+      ) : (
+        <ContainerLayout>{children}</ContainerLayout>
+      )}
+    </>
+  );
 }
