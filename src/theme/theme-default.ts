@@ -52,6 +52,7 @@ const tertiary = '#CAC3EF';
 const textColor = '#334155';
 
 const success = '#99F462';
+const error = '#FF00FA';
 // Grayscale variables
 const greyLight = '#f3f3f3';
 const greyNormal = '#d3d3d3';
@@ -103,6 +104,9 @@ const theme = createTheme({
     },
     success: {
       main: success,
+    },
+    error: {
+      main: error,
     },
     grey: {
       50: greyLight,
@@ -397,10 +401,28 @@ const theme = createTheme({
             top: 0,
             borderColor: tertiary,
           },
+          '&.Mui-focused, &:hover': {
+            borderColor: success,
+          },
+          '&.Mui-error': {
+            borderColor: error,
+          },
+          '&.Mui-disabled': {
+            backgroundColor: secondary,
+          },
         },
         input: {
           borderRadius: borderRadius,
           padding: '14px 14px !important',
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          '&:hover .MuiOutlinedInput-notchedOutline, &.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: success,
+          },
         },
       },
     },

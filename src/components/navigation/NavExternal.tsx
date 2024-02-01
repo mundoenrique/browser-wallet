@@ -28,7 +28,7 @@ export default function NavExternal({ image, color, closeApp }: MuiNavExternalPr
 
       <Box
         sx={{
-          mt: { xs: 2, sm: '52px' },
+          mt: { xs: 2, sm: image ? 0 : '52px' },
           mb: { sm: 2 },
           mr: { sm: '10px', md: '57px' },
           ml: { xs: 3, sm: 0 },

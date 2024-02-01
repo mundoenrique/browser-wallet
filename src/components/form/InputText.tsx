@@ -7,7 +7,7 @@ import { FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/mat
 import { TextFieldProps } from '@/interfaces';
 
 function InputMUI(props: TextFieldProps): JSX.Element {
-  const { name, label, labelError, type, error, value, onChange } = props;
+  const { name, label, labelError, type, error, value, onChange, disabled, readOnly } = props;
 
   const textLabel = label ?? name;
 
@@ -23,6 +23,8 @@ function InputMUI(props: TextFieldProps): JSX.Element {
           error={!!error}
           value={value}
           onChange={onChange}
+          disabled={disabled}
+          readOnly={readOnly}
         />
         <FormHelperText
           sx={{
