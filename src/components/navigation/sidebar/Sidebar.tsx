@@ -4,6 +4,7 @@ import { Box, Drawer } from '@mui/material';
 //Internal app
 import { SidebarProps } from '@/interfaces';
 import ItemSidebarPwa from './ItemSidebarPwa';
+import { fuchsiaBlue } from '@/theme/theme-default';
 import ItemSidebarDesktop from './ItemSidebarDesktop';
 
 export default function Sidebar(props: SidebarProps) {
@@ -29,7 +30,7 @@ export default function Sidebar(props: SidebarProps) {
       >
         <Box
           sx={{
-            background: 'radial-gradient(41.61% 90.43% at 91.05% 2.46%, rgba(172, 255, 167, 0.60) 0%, #E1DEF6 100%)',
+            background: `radial-gradient(41.61% 90.43% at 91.05% 2.46%, rgba(172, 255, 167, 0.60) 0%, ${fuchsiaBlue[200]} 100%)`,
             minHeight: '100vh',
             display: 'grid',
             alignContent: 'space-between',
@@ -56,7 +57,7 @@ export default function Sidebar(props: SidebarProps) {
             boxSizing: 'border-box',
             width: drawerWidth,
             bgcolor: 'secondary.main',
-            borderRight: '1px solid #B0A1E4',
+            borderRight: `1px solid ${fuchsiaBlue[400]}`,
             justifyContent: ' space-between',
           },
         }}

@@ -2,6 +2,7 @@
 
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
+import { fuchsiaBlue } from '@/theme/theme-default';
 import { ChildrenOptionalProps, ChildrenProps } from '@/interfaces';
 
 const ContainerLayout = ({ children }: ChildrenOptionalProps) => {
@@ -9,7 +10,7 @@ const ContainerLayout = ({ children }: ChildrenOptionalProps) => {
     <Box
       sx={{
         alignItems: 'center',
-        background: 'linear-gradient(180deg, #947bd7 0%, #5f3f98 100%)',
+        background: `linear-gradient(180deg, ${fuchsiaBlue[500]} 0%, ${fuchsiaBlue[800]} 100%)`,
         display: 'flex',
         borderRadius: { xs: '0 0 16px 16px', sm: 'initial' },
         flexDirection: 'column',
