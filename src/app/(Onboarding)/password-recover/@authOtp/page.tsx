@@ -5,7 +5,7 @@ import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 //Internal app
 import { getSchema } from '@/config';
-import { InputOTP } from '@/components';
+import InputOTP from '@/components/form/InputOTP';
 
 export default function AuthOtp() {
   const schema = getSchema(['otp']);

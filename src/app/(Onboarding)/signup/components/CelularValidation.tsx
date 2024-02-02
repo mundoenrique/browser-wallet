@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 //internal app
 import { getSchema } from '@/config';
-import { InputOTP } from '@/components';
+import InputOTP from '@/components/form/InputOTP';
 import { Box, Button } from '@mui/material';
 import { useSignupStore } from '@/store/volatileStore';
 
