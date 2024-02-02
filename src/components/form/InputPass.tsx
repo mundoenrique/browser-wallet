@@ -30,6 +30,7 @@ export default function InputPass(props: TextFieldProps): JSX.Element {
             <FormControl fullWidth variant="outlined" error={!!error} sx={{ mb: '5px' }}>
               <OutlinedInput
                 id={name}
+                data-testid={`${name}-input`}
                 type={passwordShown ? 'text' : 'password'}
                 label={inputLabel}
                 aria-describedby={`${name}-helperText`}

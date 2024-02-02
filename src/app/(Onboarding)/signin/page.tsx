@@ -33,6 +33,7 @@ export default function Signin() {
     <>
       <Box
         component="form"
+        data-testid="signin-form"
         onSubmit={handleSubmit(onSubmit)}
         sx={{
           display: 'flex',
