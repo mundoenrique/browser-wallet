@@ -2,14 +2,14 @@ import { render, screen } from '@testing-library/react';
 import SigninLayout, { metadata } from '@/app/(Onboarding)/signin/layout';
 
 describe('SigninLayout', () => {
-  it('should render the children', () => {
-    const testId = 'child-component';
-    render(
+  it('should render LoginLayout component when children props is passed', () => {
+    const { getByText } = render(
       <SigninLayout>
-        <div data-testid={testId}>Test Child</div>
+        <div>Test Children</div>
       </SigninLayout>
     );
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+
+    expect(getByText('Test Children')).toBeInTheDocument();
   });
 
   it('should have correct metadata', () => {
