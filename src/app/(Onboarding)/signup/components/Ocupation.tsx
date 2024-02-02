@@ -1,24 +1,85 @@
 'use client';
 
-import { Box, Button, Typography, useTheme } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Box, Button, Collapse, Typography } from '@mui/material';
 //Internal app
-import { useSignupStore } from '@/store/volatileStore';
+import { getSchema } from '@/config';
 import { InputSelect, InputText } from '@/components';
+import { useSignupStore } from '@/store/volatileStore';
 
 export default function Ocupation() {
+  const [ocupations, setOcupations] = useState(false);
   const { updateStep, inc }: any = useSignupStore();
+  const schema = ocupations
+    ? getSchema(['ocupation', 'enterpriseType', 'enterprises', 'position'])
+    : getSchema(['ocupation']);
+
+  const { handleSubmit, control, watch, reset, getValues } = useForm({
+    defaultValues: {
+      ocupation: 'pi',
+      enterpriseType: 'prv',
+      enterprises: '',
+      position: '',
+    },
+    resolver: yupResolver(schema),
+  });
+
+  const personOcupation = watch('ocupation');
+
+  useEffect(() => {
+    if (personOcupation === 'pi') {
+      setOcupations(false);
+      reset({
+        ...getValues(),
+        enterpriseType: 'prv',
+        enterprises: '',
+        position: '',
+      });
+    } else {
+      setOcupations(true);
+    }
+  }, [getValues, personOcupation, reset]);
+
+  const onSubmit = (data: any) => {
+    inc();
+  };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
-      <Box sx={{ mb: { sm: '24px' }, display: 'flex', flexDirection: 'column', gap: '24px', flex: 1 }}>
+    <Box
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}
+    >
+      <Box sx={{ mb: { sm: '24px' }, display: 'flex', flexDirection: 'column', flex: 1 }}>
         <Typography variant="subtitle1" align="center" sx={{ marginBottom: '24px' }}>
           Queremos saber más de ti
         </Typography>
         <Box>
-          <InputSelect name="¿Cuál es tu ocupación?" label="¿Cuál es tu ocupación?" options={[]} />
-          <InputSelect name="Tipo de empresa" label="Tipo de empresa" options={[]} />
-          <InputText name="Nombre empresa" label="Nombre empresa" />
-          <InputText name="Cargo empresa" label="Cargo empresa" />
+          <InputSelect
+            name="ocupation"
+            label="¿Cuál es tu ocupación?"
+            options={[
+              { text: 'Consultora de belleza independiente', value: 'pi' },
+              { text: 'Doctor', value: 'doc' },
+              { text: 'Contador', value: 'cont' },
+            ]}
+            control={control}
+          />
+          <Collapse in={ocupations} timeout={300}>
+            <InputSelect
+              name="enterpriseType"
+              label="Tipo de empresa"
+              options={[
+                { text: 'Privada', value: 'prv' },
+                { text: 'Publica', value: 'pbc' },
+              ]}
+              control={control}
+            />
+            <InputText name="enterprises" label="Nombre empresa" control={control} />
+            <InputText name="position" label="Cargo empresa" control={control} />
+          </Collapse>
         </Box>
       </Box>
 
@@ -31,13 +92,7 @@ export default function Ocupation() {
         >
           Anterior
         </Button>
-        <Button
-          variant="contained"
-          type="submit"
-          onClick={() => {
-            inc();
-          }}
-        >
+        <Button variant="contained" type="submit">
           Siguiente
         </Button>
       </Box>

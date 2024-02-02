@@ -15,12 +15,11 @@ export default function Landing() {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: { sm: 'space-between' },
-        pb: 3,
-        flex: 1,
+        justifyContent: 'center',
+        flex: 'auto',
       }}
     >
-      <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Box sx={{ display: { sm: 'none' } }}>
           <LogoPurple width={71} height={40} />
         </Box>

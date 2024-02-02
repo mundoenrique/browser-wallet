@@ -87,6 +87,10 @@ export const validationRules: ValidationRule = {
     'Las contraseñas no coinciden'
   ),
   legal: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
+  ocupation: yup.string().required('Selecciona una ocupación'),
+  enterpriseType: yup.string().required('Selecciona el tipo de empresa'),
+  enterprises: yup.string().required('Ingresa el nombre de la empresa'),
+  position: yup.string().required('Ingrese su posición en la empresa'),
   celular: yup
     .string()
     .required('Ingresa un numero de celular')

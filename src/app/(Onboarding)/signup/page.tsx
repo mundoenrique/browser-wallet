@@ -26,7 +26,7 @@ const CardStep = (props: StepperProps) => {
       <Typography
         variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
         align="center"
-        mb={{ sm: 8 }}
+        mb={{ sm: 4 }}
       >
         Paso {stepNumber}/4
       </Typography>

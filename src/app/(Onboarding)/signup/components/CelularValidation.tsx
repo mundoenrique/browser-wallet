@@ -1,7 +1,6 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 //internal app
 import { getSchema } from '@/config';
@@ -10,11 +9,10 @@ import { Box, Button } from '@mui/material';
 import { useSignupStore } from '@/store/volatileStore';
 
 export default function CelularValidation() {
-  const [enableNextStep, setEnableNextStep] = useState<boolean>(false);
   const schema = getSchema(['otp']);
   const { inc, dec }: any = useSignupStore();
 
-  const { handleSubmit, control, watch, trigger, getFieldState } = useForm({
+  const { handleSubmit, control } = useForm({
     defaultValues: {
       otp: '',
     },
@@ -25,32 +23,23 @@ export default function CelularValidation() {
     inc();
   };
 
-  const otpCode = watch('otp');
-  useEffect(() => {
-    (async () => {
-      const fieldStatus: any = await trigger('otp');
-      const fielstep = await getFieldState('otp');
-      setEnableNextStep(fieldStatus && otpCode.length == 4);
-    })();
-  }, [watch, otpCode]);
-
   return (
     <Box
       component="form"
       onSubmit={handleSubmit(onSubmit)}
       sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}
     >
-      <Box sx={{ textAlign: 'center', mb: { sm: 16 } }}>
+      <Box sx={{ textAlign: 'center', mb: 5 }}>
         <InputOTP
           name="otp"
           title="Por tu seguridad validaremos tu celular"
-          text="Ingresa el código de 4 dígitos que te enviamos por SMS al +51 992860290"
+          text="Ingresa el código de 4 dígitos que te enviamos por SMS al *** *** 1214"
           length={4}
           control={control}
         />
       </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', mt: { sm: 2 }, mb: { xs: 3, sm: 0 } }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', mb: { xs: 3, sm: 0 } }}>
         <Button
           variant="outlined"
           onClick={() => {
@@ -59,7 +48,7 @@ export default function CelularValidation() {
         >
           Anterior
         </Button>
-        <Button variant="primary" type="submit" disabled={!enableNextStep}>
+        <Button variant="primary" type="submit">
           Siguiente
         </Button>
       </Box>
