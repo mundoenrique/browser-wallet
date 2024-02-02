@@ -9,7 +9,7 @@ import { FormControl, FormLabel, FormHelperText, Radio, FormControlLabel, RadioG
 import { InputOptionsProps } from '@/interfaces';
 
 function InputRadioMUI(props: InputOptionsProps): JSX.Element {
-  const { name, label, labelError, error, value, onChange, options } = props;
+  const { name, label, labelError, error, value, onChange, options, disabled, readOnly } = props;
 
   return (
     <FormControl component="fieldset" variant="standard" fullWidth>
@@ -31,7 +31,13 @@ function InputRadioMUI(props: InputOptionsProps): JSX.Element {
             <FormControlLabel
               value={option.value}
               control={
-                <Radio id={name + option.value} checkedIcon={<CheckBoxIcon />} icon={<CheckBoxOutlineBlankIcon />} />
+                <Radio
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  id={name + option.value}
+                  checkedIcon={<CheckBoxIcon />}
+                  icon={<CheckBoxOutlineBlankIcon />}
+                />
               }
               label={option.text}
               sx={{ m: 0, p: 0, width: '100%', justifyContent: 'center' }}

@@ -12,7 +12,7 @@ import { CalendarIcons } from '%/Icons';
 import { InputDatePickerProps } from '@/interfaces';
 
 function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
-  const { name, label, labelError, error, onChange, value, views, format } = props;
+  const { name, label, labelError, error, onChange, value, views, format, disabled, readOnly } = props;
 
   const inputLabel = label ?? name;
 
@@ -22,6 +22,8 @@ function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'es'}>
         <DatePicker
           slots={{ openPickerIcon: CalendarIcons }}
+          disabled={disabled}
+          readOnly={readOnly}
           slotProps={{
             textField: {
               error: !!error,

@@ -11,6 +11,8 @@ export interface FormMUIProps {
   type?: string;
   control?: any;
   getOptionLabel?: Function;
+  disabled?: boolean;
+  readOnly?: boolean;
 }
 
 export interface TextFieldProps extends FormMUIProps {

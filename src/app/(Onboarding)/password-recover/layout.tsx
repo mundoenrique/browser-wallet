@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default async function RecoverLayout({ children, authOtp }: AuthOtpProps) {
   return (
     <>
-      <NavExternal image relative />
+      <NavExternal image />
       <Card variant="signup">{true ? <>{children}</> : <>{authOtp}</>}</Card>
     </>
   );

@@ -3,6 +3,7 @@
 import { Box } from '@mui/material';
 //Internal app
 import { PurpleLayoutProps } from '@/interfaces';
+import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function PurpleLayout({ children, hidePelca }: PurpleLayoutProps) {
   return (
@@ -13,7 +14,7 @@ export default function PurpleLayout({ children, hidePelca }: PurpleLayoutProps)
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '100vh',
-        background: 'linear-gradient(180deg, #947bd7 0%, #5f3f98 100%)',
+        background: `linear-gradient(180deg, ${fuchsiaBlue[500]} 0%, ${fuchsiaBlue[800]} 100%)`,
         '&:before': {
           content: hidePelca ? 'none' : `' '`,
           position: 'absolute',

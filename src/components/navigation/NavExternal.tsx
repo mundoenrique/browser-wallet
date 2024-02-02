@@ -7,14 +7,15 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import LogoPurple from '%/images/LogoPurple';
 import { MuiNavExternalProps } from '@/interfaces';
 
-export default function NavExternal({ image, color, relative, closeApp }: MuiNavExternalProps) {
+export default function NavExternal({ image, color, closeApp }: MuiNavExternalProps) {
   return (
     <Box
       sx={{
+        alignItems: 'center',
         display: 'flex',
         justifyContent: image ? 'space-between' : { xs: 'start', sm: 'end' },
         width: '100%',
-        position: { xs: 'relative', sm: relative ? 'relative' : 'absolute' },
+        position: 'relative',
         zIndex: 1,
         top: 0,
       }}
@@ -27,8 +28,9 @@ export default function NavExternal({ image, color, relative, closeApp }: MuiNav
 
       <Box
         sx={{
-          my: { xs: 2, sm: '52px' },
-          mr: '74px',
+          mt: { xs: 2, sm: image ? 0 : '52px' },
+          mb: { sm: 2 },
+          mr: { sm: '10px', md: '57px' },
           ml: { xs: 3, sm: 0 },
         }}
       >

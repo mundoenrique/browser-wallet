@@ -77,7 +77,7 @@ export default function ItemSidebarPwa() {
             />
           </ListItemButton>
         </ListItem>
-        <Divider variant="middle" sx={{ bgcolor: '#B0A1E4' }} />
+        <Divider variant="middle" sx={{ bgcolor: `${fuchsiaBlue[400]}` }} />
         <ListItem disablePadding sx={{ width: 244, my: '4px' }}>
           <ListItemButton component={Link} href="/signin" sx={{ textDecoration: 'none' }}>
             <ListItemIcon sx={{ minWidth: 'auto', mr: '12px', color: fuchsiaBlue[600] }}>

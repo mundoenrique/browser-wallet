@@ -96,12 +96,12 @@ export default function InfoVerification() {
         sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-          <Box sx={{ mb: { xs: 2, sm: 5 } }}>
+          <Box sx={{ mb: 2 }}>
             <Typography variant="subtitle1">¡Hola Andrea!</Typography>
             <Typography variant="subtitle1">Empecemos verificando tu información personal</Typography>
           </Box>
 
-          <Card sx={{ p: '8px 0px', boxShadow: 'none', mb: { xs: 2, sm: 5 } }}>
+          <Card sx={{ p: '8px 0px', boxShadow: 'none', mb: 2 }}>
             <Box sx={{ px: '20px', pb: '12px' }}>
               <Typography variant="subtitle2">Andrea Rodriguez</Typography>
               <Typography variant="subtitle2">DNI: 78624555</Typography>
@@ -174,7 +174,7 @@ export default function InfoVerification() {
         <Button
           variant="contained"
           type="submit"
-          sx={{ width: { xs: 'auto', sm: 320 }, mt: { sm: 2 }, mb: { xs: 3, sm: 0 }, mx: { sm: 'auto' } }}
+          sx={{ width: { xs: 'auto', sm: 320 }, mb: { xs: 3, sm: 0 }, mx: { sm: 'auto' } }}
           fullWidth
         >
           Continuar

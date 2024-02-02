@@ -2,14 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
-import { Box, Button, Typography } from '@mui/material';
+import Info from '@mui/icons-material/InfoOutlined';
 import { MuiOtpInput } from 'mui-one-time-password-input';
+import { Box, Button, FormHelperText, Typography } from '@mui/material';
 //Internal app
 import { InputOTPProps } from '@/interfaces';
 import ModalResponsive from '../modal/ModalResponsive';
 
 export default function InputOTP(props: InputOTPProps): JSX.Element {
-  const { control, name, length, title, text } = props;
+  const { control, name, length, title, text, labelError } = props;
   const [time, setTime] = useState<number>(60);
   const [open, setOpen] = useState(false);
 
@@ -56,17 +57,35 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
           name={name}
           control={control}
           rules={{ validate: (value: any) => value.length === length }}
-          render={({ field }: any) => (
+          render={({ field, fieldState: { error } }: any) => (
             <Box>
               <MuiOtpInput
                 sx={{
-                  gap: 1,
-                  mb: 3,
+                  p: 0,
+                  gap: '12px',
                   '&>.MuiFormControl-root>.MuiInputBase-root': { width: '46px', fontSize: '25px', fontWeight: 700 },
                 }}
                 {...field}
                 length={length}
               />
+              <FormHelperText
+                sx={{
+                  height: '20px',
+                  ml: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+                id={`${name}-helperText`}
+                error
+              >
+                {error ? (
+                  <>
+                    <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
+                  </>
+                ) : (
+                  <>{labelError || ''}</>
+                )}
+              </FormHelperText>
             </Box>
           )}
         />
@@ -80,7 +99,11 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
           </Typography>
         )}
 
-        <Button onClick={handleResend} sx={{ color: 'primary.main' }} disabled={time === 0 ? false : true}>
+        <Button
+          onClick={handleResend}
+          sx={{ color: 'primary.main', height: '20px' }}
+          disabled={time === 0 ? false : true}
+        >
           Renviar código
         </Button>
       </Box>

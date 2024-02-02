@@ -52,6 +52,7 @@ const tertiary = '#CAC3EF';
 const textColor = '#334155';
 
 const success = '#99F462';
+const error = '#FF00FA';
 // Grayscale variables
 const greyLight = '#f3f3f3';
 const greyNormal = '#d3d3d3';
@@ -103,6 +104,9 @@ const theme = createTheme({
     },
     success: {
       main: success,
+    },
+    error: {
+      main: error,
     },
     grey: {
       50: greyLight,
@@ -320,21 +324,21 @@ const theme = createTheme({
           props: { variant: 'signup' },
           style: ({ theme }) => ({
             background: useMediaQuery(theme.breakpoints.down('sm')) ? 'transparent' : '#F0EDFA',
-            minHeight: useMediaQuery(theme.breakpoints.down('sm')) ? '560px' : '738px',
+            minHeight: useMediaQuery(theme.breakpoints.down('sm')) ? '560px' : '458px',
             width: useMediaQuery(theme.breakpoints.down('sm')) ? 'auto' : '570px',
             paddingLeft: useMediaQuery(theme.breakpoints.down('sm')) ? '20px' : '24px',
             paddingRight: useMediaQuery(theme.breakpoints.down('sm')) ? '20px' : '24px',
             paddingTop: useMediaQuery(theme.breakpoints.up('sm')) ? '24px' : 0,
             paddingBottom: useMediaQuery(theme.breakpoints.down('sm')) ? 0 : '42px',
-            boxShadow: 'none',
-            display: 'flex',
-            flex: 1,
-            flexDirection: 'column',
-            height: 'auto',
+            flex: useMediaQuery(theme.breakpoints.down('sm')) ? 1 : 0,
             marginLeft: useMediaQuery(theme.breakpoints.down('sm')) ? '0' : 'auto',
             marginRight: useMediaQuery(theme.breakpoints.down('sm')) ? '0' : 'auto',
             marginBottom: useMediaQuery(theme.breakpoints.down('sm')) ? 0 : '24px',
             alignContent: useMediaQuery(theme.breakpoints.down('sm')) ? 'start' : 'space-between',
+            boxShadow: 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'auto',
           }),
         },
         {
@@ -397,10 +401,28 @@ const theme = createTheme({
             top: 0,
             borderColor: tertiary,
           },
+          '&.Mui-focused, &:hover': {
+            borderColor: success,
+          },
+          '&.Mui-error': {
+            borderColor: error,
+          },
+          '&.Mui-disabled': {
+            backgroundColor: secondary,
+          },
         },
         input: {
           borderRadius: borderRadius,
           padding: '14px 14px !important',
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          '&:hover .MuiOutlinedInput-notchedOutline, &.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: success,
+          },
         },
       },
     },

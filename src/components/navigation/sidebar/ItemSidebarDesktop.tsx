@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import {
   Box,
   Card,

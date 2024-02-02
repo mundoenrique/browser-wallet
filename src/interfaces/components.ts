@@ -13,7 +13,6 @@ export interface MuiModalProps extends BoxProps {
 export interface MuiNavExternalProps {
   image?: boolean;
   color?: string;
-  relative?: boolean;
   closeApp?: boolean;
 }
 
