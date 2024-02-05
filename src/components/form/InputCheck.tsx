@@ -1,31 +1,36 @@
 'use client';
 
+import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
-import { FormControl, FormHelperText, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import { FormControl, FormHelperText, Checkbox, FormControlLabel, FormGroup, Box, Typography } from '@mui/material';
 //Internal App
 import { InputCheckProps } from '@/interfaces';
-import { useState } from 'react';
 
 function InputCheckMUI(props: InputCheckProps): JSX.Element {
-  const { name, label, labelError, onChange, onClick, checked, value, error, disabled } = props;
-
-  const textLabel = label ?? name;
+  const { name, label, labelError, onChange, checked, value, error, disabled, mtError = 0 } = props;
 
   return (
     <FormControl component="fieldset" variant="standard" fullWidth>
-      <FormGroup onClick={onClick}>
+      <FormGroup>
         <FormControlLabel
           value={value}
           disabled={disabled}
           checked
           control={<Checkbox id={name} checked={checked} onChange={onChange} />}
-          label={textLabel}
-          sx={{ alignItems: 'flex-start', '&>.MuiButtonBase-root': { pt: 0 } }}
+          label={label}
+          sx={{ alignItems: 'flex-start', '&>.MuiFormControlLabel-label': { fontSize: '14px' }, mr: 0 }}
         />
       </FormGroup>
       <FormHelperText
-        sx={{ color: 'error.main', height: '20px', ml: 0, display: 'flex', alignItems: 'center' }}
+        sx={{
+          color: 'error.main',
+          height: '20px',
+          ml: 0,
+          display: 'flex',
+          alignItems: 'center',
+          mt: { xs: mtError, sm: 0 },
+        }}
         id={`${label}-helperText`}
       >
         {error ? (
@@ -41,7 +46,7 @@ function InputCheckMUI(props: InputCheckProps): JSX.Element {
 }
 
 export default function InputCheck(props: InputCheckProps) {
-  const { name, control, onChange, onClick, checked, ...restProps } = props;
+  const { name, control, onChange, onClick, checked, labelHandle, ...restProps } = props;
   const [isChecked, setIsChecked] = useState(checked ? true : false);
 
   return (
@@ -50,21 +55,50 @@ export default function InputCheck(props: InputCheckProps) {
         <Controller
           name={name}
           control={control}
-          render={({ field, fieldState: { error } }) => (
-            <InputCheckMUI
-              name={name}
-              value={field.value}
-              onClick={onClick}
-              checked={field.value ? true : false}
-              onChange={(e) => {
-                setIsChecked(!isChecked);
-                onChange && onChange(e);
-                field.onChange(e);
-              }}
-              error={error}
-              {...restProps}
-            />
-          )}
+          render={({ field, fieldState: { error } }) =>
+            !labelHandle ? (
+              <InputCheckMUI
+                name={name}
+                value={field.value}
+                checked={field.value ? true : false}
+                onChange={(e) => {
+                  setIsChecked(!isChecked);
+                  onChange && onChange(e);
+                  field.onChange(e);
+                }}
+                error={error}
+                {...restProps}
+              />
+            ) : (
+              <Box sx={{ display: 'flex', alignContent: 'center' }}>
+                <InputCheckMUI
+                  name={name}
+                  value={field.value}
+                  checked={field.value ? true : false}
+                  onChange={(e) => {
+                    setIsChecked(!isChecked);
+                    onChange && onChange(e);
+                    field.onChange(e);
+                  }}
+                  mtError={3}
+                  error={error}
+                  {...restProps}
+                />
+                <Typography
+                  onClick={onClick}
+                  variant="body2"
+                  sx={{
+                    textDecoration: 'underline',
+                    position: 'absolute',
+                    ml: '31px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {labelHandle}
+                </Typography>
+              </Box>
+            )
+          }
         />
       ) : (
         <InputCheckMUI name={name} onChange={onChange} onClick={onClick} {...restProps} />

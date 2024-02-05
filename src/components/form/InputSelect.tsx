@@ -8,7 +8,7 @@ import { FormControl, FormHelperText, Autocomplete, TextField, InputLabel } from
 import { InputOptionsProps } from '@/interfaces';
 
 function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
-  const { name, label, options, labelError, error, value, onChange } = props;
+  const { name, label, options, labelError, error, value, onChange, disabled, readOnly } = props;
   const textLabel = label ?? name;
 
   return (
@@ -21,6 +21,8 @@ function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
           id={name}
           disabledItemsFocusable
           options={options}
+          disabled={disabled}
+          readOnly={readOnly}
           getOptionLabel={(option) => {
             const getData = options.find((obj) => (obj as any).value === option);
             return option.text ?? getData?.text;

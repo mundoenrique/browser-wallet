@@ -1,13 +1,13 @@
 import { Metadata } from 'next';
 //Internal app
 import { ChildrenProps } from '@/interfaces';
-import { HydrationProvider, MuiProvider } from './providers';
+import { HydrationProvider, MuiProvider } from './Providers';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
-      template: '%s | Indigo',
-      default: 'Indigo',
+      template: '%s | Yiro',
+      default: 'Yiro',
     },
     manifest: `/manifest.webmanifest`,
     description: 'La billetera digital que te ayudará a pagar, cobrar y ordenar tus finanzas.',

@@ -1,4 +1,40 @@
+import { useMediaQuery } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+
+declare module '@mui/material/Chip' {
+  interface ChipPropsVariantOverrides {
+    signup: true;
+    detailCard: true;
+    onboarding: true;
+  }
+}
+declare module '@mui/material/Paper' {
+  interface PaperPropsVariantOverrides {
+    signup: true;
+    detailCard: true;
+  }
+}
+
+declare module '@mui/material/Card' {
+  interface CardPropsVariantOverrides {
+    signup: true;
+    detailCard: true;
+  }
+}
+
+declare module '@mui/material/Button' {
+  interface ButtonPropsVariantOverrides {
+    underline: true;
+    primary: true;
+    secondary: true;
+  }
+}
+
+declare module '@mui/material/Divider' {
+  interface DividerPropsVariantOverrides {
+    primary: true;
+  }
+}
 
 const white = '#fff';
 const black = '#000';
@@ -13,9 +49,10 @@ const secondary = '#E1DEF6';
 const tertiary = '#CAC3EF';
 
 // Text color variables
-const textColor = '#1E293B';
+const textColor = '#334155';
 
 const success = '#99F462';
+const error = '#FF00FA';
 // Grayscale variables
 const greyLight = '#f3f3f3';
 const greyNormal = '#d3d3d3';
@@ -55,12 +92,6 @@ export const grayscale = {
   '06': '#353434',
 };
 
-declare module '@mui/material/Chip' {
-  interface ChipPropsVariantOverrides {
-    onboarding: true;
-  }
-}
-
 const theme = createTheme({
   palette: {
     primary: {
@@ -69,9 +100,13 @@ const theme = createTheme({
     secondary: {
       main: secondary,
       light: tertiary,
+      dark: fuchsiaBlue[500],
     },
     success: {
       main: success,
+    },
+    error: {
+      main: error,
     },
     grey: {
       50: greyLight,
@@ -158,6 +193,38 @@ const theme = createTheme({
 				src: local('Mulish'), local('Mulish-SemiBold'), url(/fonts/Mulish-SemiBold.ttf) format('truetype');
 				unicodeRange: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF;
 			}
+
+      .eye-show {
+        position: absolute;
+        animation: animacion-imagen 1.5s infinite alternate;
+      }
+
+      @keyframes animacion-imagen {
+        0% {
+          opacity: 1;
+        }
+        10% {
+          opacity: 0;
+        }
+        20%{
+          opacity: 1;
+        }
+        30%{
+          opacity: 1;
+        }
+        40% {
+          opacity: 1;
+        }
+        60% {
+          opacity: 1;
+        }
+        80% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
 			`,
     },
     // Main container styles
@@ -177,6 +244,45 @@ const theme = createTheme({
     },
     // Button
     MuiButton: {
+      variants: [
+        {
+          props: { variant: 'primary' },
+          style: {
+            color: white,
+            backgroundColor: primary,
+            fontWeight: 700,
+            '&:hover': {
+              backgroundColor: primary,
+              color: white,
+            },
+            '&.Mui-disabled': {
+              backgroundColor: primary,
+              opacity: 0.3,
+              color: white,
+            },
+          },
+        },
+        {
+          props: { variant: 'underline' },
+          style: {
+            color: white,
+            fontWeight: 700,
+            textDecoration: 'underline',
+            width: '100%',
+            '&:hover': { textDecoration: 'underline', background: 'transparent' },
+          },
+        },
+        {
+          props: { variant: 'secondary' },
+          style: {
+            color: primary,
+            backgroundColor: white,
+            fontWeight: 700,
+            width: '100%',
+            '&:hover': { backgroundColor: white, color: primary },
+          },
+        },
+      ],
       styleOverrides: {
         root: {
           height: '52px',
@@ -198,11 +304,60 @@ const theme = createTheme({
         },
         outlinedPrimary: {
           ':hover': {
-            backgroundColor: primary,
-            color: white,
+            backgroundColor: 'initial',
+            color: primary,
           },
         },
       },
+    },
+    MuiPaper: {
+      variants: [
+        {
+          props: { variant: 'signup' },
+          style: {},
+        },
+      ],
+    },
+    MuiCard: {
+      variants: [
+        {
+          props: { variant: 'signup' },
+          style: ({ theme }) => ({
+            background: useMediaQuery(theme.breakpoints.down('sm')) ? 'transparent' : '#F0EDFA',
+            minHeight: useMediaQuery(theme.breakpoints.down('sm')) ? '560px' : '458px',
+            width: useMediaQuery(theme.breakpoints.down('sm')) ? 'auto' : '570px',
+            paddingLeft: useMediaQuery(theme.breakpoints.down('sm')) ? '20px' : '24px',
+            paddingRight: useMediaQuery(theme.breakpoints.down('sm')) ? '20px' : '24px',
+            paddingTop: useMediaQuery(theme.breakpoints.up('sm')) ? '24px' : 0,
+            paddingBottom: useMediaQuery(theme.breakpoints.down('sm')) ? 0 : '42px',
+            flex: useMediaQuery(theme.breakpoints.down('sm')) ? 1 : 0,
+            marginLeft: useMediaQuery(theme.breakpoints.down('sm')) ? '0' : 'auto',
+            marginRight: useMediaQuery(theme.breakpoints.down('sm')) ? '0' : 'auto',
+            marginBottom: useMediaQuery(theme.breakpoints.down('sm')) ? 0 : '24px',
+            alignContent: useMediaQuery(theme.breakpoints.down('sm')) ? 'start' : 'space-between',
+            boxShadow: 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'auto',
+          }),
+        },
+        {
+          props: { variant: 'detailCard' },
+          style: ({ theme }) => ({
+            alignItems: 'center',
+            background: 'linear-gradient(109deg, #A8F9A1 21.13%, #BC9DFA 86.79%)',
+            borderRadius: borderRadius,
+            border: `0.753px solid ${white}`,
+            display: 'flex',
+            paddingLeft: '12px',
+            minHeight: '62px',
+            width: useMediaQuery(theme.breakpoints.down('sm')) ? '244px' : '265px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            marginBottom: 16,
+          }),
+        },
+      ],
     },
     MuiCardContent: {
       styleOverrides: {
@@ -223,9 +378,10 @@ const theme = createTheme({
 
     MuiFormLabel: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           transform: 'none !important',
-        },
+          fontSize: theme.breakpoints.down('sm') ? '14px' : '16px',
+        }),
       },
     },
     MuiInputBase: {
@@ -245,10 +401,28 @@ const theme = createTheme({
             top: 0,
             borderColor: tertiary,
           },
+          '&.Mui-focused, &:hover': {
+            borderColor: success,
+          },
+          '&.Mui-error': {
+            borderColor: error,
+          },
+          '&.Mui-disabled': {
+            backgroundColor: secondary,
+          },
         },
         input: {
           borderRadius: borderRadius,
           padding: '14px 14px !important',
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          '&:hover .MuiOutlinedInput-notchedOutline, &.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: success,
+          },
         },
       },
     },
@@ -333,10 +507,35 @@ const theme = createTheme({
         },
       },
     },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          paddingTop: 0,
+          paddingBottom: 0,
+          paddingLeft: 8,
+          paddingRight: 8,
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          marginBottom: '2px',
+          marginTop: '2px',
+        },
+      },
+    },
+    MuiFormControl: {
+      styleOverrides: {
+        root: {
+          marginBottom: '0 !important',
+        },
+      },
+    },
     MuiChip: {
       variants: [
         {
-          props: { variant: 'onboarding' },
+          props: { variant: 'signup' },
           style: {
             height: '24px',
             backgroundColor: secondary,
@@ -350,6 +549,17 @@ const theme = createTheme({
             ' :hover': {
               backgroundColor: secondary,
             },
+          },
+        },
+      ],
+    },
+    MuiDivider: {
+      variants: [
+        {
+          props: { variant: 'primary' },
+          style: {
+            borderWidth: '1px',
+            borderColor: fuchsiaBlue[400],
           },
         },
       ],
