@@ -1,7 +1,7 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { useRouter } from 'next/navigation';
-import { createMockRouter } from '../mocks';
+import { createMockRouter } from '@/utils/mocks';
 import Signin from '@/app/(Onboarding)/signin/page';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
 const routerPushMock = jest.fn();
 jest.mock('next/navigation', () => ({

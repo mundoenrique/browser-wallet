@@ -3,7 +3,7 @@ export { default as QRCodeReader } from './PWA/QRCodeReader';
 export { default as PWAInstallBar } from './PWA/PWAInstallBar';
 //form
 export { default as FormPass } from './form/FormPass';
-export { default as InputOTP } from './form/InputOTP';
+// export { default as InputOTP } from './form/InputOTP';
 export { default as InputText } from './form/InputText';
 export { default as InputPass } from './form/InputPass';
 export { default as InputCheck } from './form/InputCheck';
