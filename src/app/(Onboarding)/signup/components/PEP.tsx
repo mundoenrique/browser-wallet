@@ -59,6 +59,7 @@ export default function PEP() {
 
   const onSubmit = (data: any) => {
     console.log(data);
+    inc();
   };
 
   useEffect(() => {
