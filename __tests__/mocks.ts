@@ -1,4 +1,3 @@
-// mocks.ts
 import { NextRouter } from 'next/router';
 
 export const createMockRouter = (router: Partial<NextRouter>): NextRouter => {

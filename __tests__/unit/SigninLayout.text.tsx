@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import SigninLayout, { metadata } from '@/app/(Onboarding)/signin/layout';
 
 describe('SigninLayout', () => {
