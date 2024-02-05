@@ -95,4 +95,24 @@ export const validationRules: ValidationRule = {
     .string()
     .required('Ingresa un numero de celular')
     .test('celularValid', 'Ingresa un numero de celular', (value) => regularExpressions.onlyNumber?.test(value)),
+  isPep: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
+  pepForm: yup.object().shape({
+    isFamilyAlive: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
+    position: yup.string().required('Ingrese su posición en la empresa'),
+    companyName: yup.string().required('Ingresa el nombre de la empresa'),
+    address: yup.string().required('Ingresa la dirección de la empresa'),
+    district: yup.string().required('Selecciona el distrito'),
+    province: yup.string().required('Selecciona la provincia'),
+    department: yup.string().required('Selecciona el departamento'),
+    endDate: yup.string().required('Ingresa la fecha'),
+    holdShare: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
+  }),
+
+  relatives: yup.array().of(
+    yup.object().shape({
+      fullName: yup.string().required('Ingresa el nombre completo'),
+      documentNumber: yup.string().required('Ingresa el número de identificación'),
+      documentType: yup.string().required('Selecciona el tipo de documento '),
+    })
+  ),
 };

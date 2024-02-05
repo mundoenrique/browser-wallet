@@ -1,7 +1,7 @@
 'use client';
 
 //Internal app
-import { Box } from '@mui/material';
+import { Box, Collapse, Fade } from '@mui/material';
 import { NavExternal } from '@/components';
 
 let rendering = 0;
@@ -20,6 +20,7 @@ export default function SignupStepper(props: { currentStep: number; children: JS
       }}
     >
       {currentStep < 7 && <NavExternal image closeApp />}
+
       {children[currentStep]}
     </Box>
   );
