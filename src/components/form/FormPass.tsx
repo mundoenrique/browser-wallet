@@ -24,7 +24,7 @@ export default function FormPass(porps: any) {
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, mb: { sm: 12 } }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, mb: { sm: 2 } }}>
         {description}
         <InputPass
           name="newPassword"
@@ -40,9 +40,7 @@ export default function FormPass(porps: any) {
           />
         )}
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', mt: { sm: 2 }, mb: { xs: 3, sm: 0 } }}>
-        {buttons}
-      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', mb: { xs: 3, sm: 0 } }}>{buttons}</Box>
     </Box>
   );
 }
