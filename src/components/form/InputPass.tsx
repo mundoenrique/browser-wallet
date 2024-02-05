@@ -26,7 +26,7 @@ export default function InputPass(props: TextFieldProps): JSX.Element {
         control={control}
         render={({ field, fieldState: { error } }) => (
           <>
-            <InputLabel sx={{ mb: '12px', color: colorText ? colorText : 'inherit' }}>{inputLabel}</InputLabel>
+            <InputLabel htmlFor={name} sx={{ mb: '12px', color: colorText ? colorText : 'inherit' }}>{inputLabel}</InputLabel>
             <FormControl fullWidth variant="outlined" error={!!error} sx={{ mb: '5px' }}>
               <OutlinedInput
                 id={name}

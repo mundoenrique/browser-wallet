@@ -7,10 +7,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Link as LinkMui, Typography, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import { InputPass } from '@/components';
+import { InputPass, ModalResponsive } from '@/components';
 import LogoGreen from '%/images/LogoGreen';
+import { useState } from 'react';
 
 export default function Signin() {
+  const [open, setOpen] = useState(false);
   const theme = useTheme();
   const router = useRouter();
   const schema = getSchema(['password']);
@@ -28,13 +30,18 @@ export default function Signin() {
 
   const onSubmit = async (data: any) => {
     console.log('🚀 ~ onSubmit ~ data:', data);
-    router.push('/dashboard');
+    if (data.password !== '123456') {
+      setOpen(true);
+    } else {
+      router.push('/dashboard');
+    }
   };
 
   return (
     <>
       <Box
         component="form"
+        data-testid="signin-form"
         onSubmit={handleSubmit(onSubmit)}
         sx={{
           display: 'flex',
@@ -80,6 +87,14 @@ export default function Signin() {
           Ingresar
         </Button>
       </Box>
+      <ModalResponsive open={open} handleClose={() => setOpen(false)}>
+        <>
+          <Typography py={2} fontWeight={700}>
+            Signin
+          </Typography>
+          <Typography textAlign="center">Contraseña incorrecta.</Typography>
+        </>
+      </ModalResponsive>
     </>
   );
 }
