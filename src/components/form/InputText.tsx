@@ -13,7 +13,9 @@ function InputMUI(props: TextFieldProps): JSX.Element {
 
   return (
     <>
-      <InputLabel sx={{ mb: '12px', textAlign: 'left' }}>{textLabel}</InputLabel>
+      <InputLabel htmlFor={name} sx={{ mb: '12px', textAlign: 'left' }}>
+        {textLabel}
+      </InputLabel>
       <FormControl variant="outlined" error={!!error} sx={{ mb: '5px' }} fullWidth>
         <OutlinedInput
           id={name}

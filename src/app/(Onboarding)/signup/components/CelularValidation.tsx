@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 //internal app
 import { getSchema } from '@/config';
-import InputOTP from '@/components/form/InputOTP';
 import { Box, Button } from '@mui/material';
+import InputOTP from '@/components/form/InputOTP';
 import { useSignupStore } from '@/store/volatileStore';
 
 export default function CelularValidation() {

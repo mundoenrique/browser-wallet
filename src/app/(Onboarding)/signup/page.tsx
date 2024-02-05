@@ -16,6 +16,7 @@ import {
   DniUpload,
   SelfieInfo,
   SelfieUpload,
+  PasswordCreation,
 } from './components';
 
 const CardStep = (props: StepperProps) => {
@@ -74,6 +75,10 @@ export default function Signup() {
       </CardStep>
 
       <BiometricValidation />
+
+      <CardStep stepNumber="4">
+        <PasswordCreation />
+      </CardStep>
     </SignupStepper>
   );
 }

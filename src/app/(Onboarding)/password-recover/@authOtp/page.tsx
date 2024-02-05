@@ -27,21 +27,22 @@ export default function AuthOtp() {
       component="form"
       onSubmit={handleSubmit(onSubmit)}
       sx={{
-        height: '100%',
         display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
         flexDirection: 'column',
+        flex: 1,
+        justifyContent: 'space-between',
       }}
     >
-      <InputOTP
-        name="otp"
-        control={control}
-        length={6}
-        title="Activación de doble factor"
-        text="Hemos enviado por tu seguridad un código SMS a tu celular *6549. Ingrésalo aquí."
-      />
-      <Button variant="contained" type="submit" sx={{ maxWidth: 284, width: '100%' }}>
+      <Box sx={{ textAlign: 'center' }}>
+        <InputOTP
+          name="otp"
+          control={control}
+          length={4}
+          title="Activación de doble factor"
+          text="Hemos enviado por tu seguridad un código SMS a tu celular *** *** 1214. Ingrésalo aquí."
+        />
+      </Box>
+      <Button variant="contained" type="submit" sx={{ maxWidth: 284, width: '100%', mx: 'auto' }}>
         Continuar
       </Button>
     </Box>
