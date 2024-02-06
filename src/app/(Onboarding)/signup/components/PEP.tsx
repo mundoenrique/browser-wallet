@@ -1,0 +1,196 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import { Box, Button, Collapse, Slide, Typography } from '@mui/material';
+import { useForm, useFieldArray, useFormState } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+//Internal app
+import { useSignupStore } from '@/store/volatileStore';
+import { InputCheckCondition, InputDatePicker, InputSelect, InputText } from '@/components';
+import { getSchema } from '@/config';
+
+//TODO:DEV
+import { DevTool } from '@hookform/devtools';
+
+const options: any = [
+  { text: 'Sí', value: 'true' },
+  { text: 'No', value: 'false' },
+];
+const selectOptions = [
+  { text: 'Opción A', value: 'A' },
+  { text: 'Opción B', value: 'B' },
+  { text: 'Opción C', value: 'C' },
+  { text: 'Opción D', value: 'D' },
+];
+
+export default function PEP() {
+  const [isPep, setIsPep] = useState(false);
+  const [hasParents, setHasParents] = useState(false);
+
+  const { dec, inc }: any = useSignupStore();
+
+  const schema = isPep ? getSchema(['isPep', 'pepForm', 'relatives']) : getSchema(['isPep']);
+
+  const { control, watch, handleSubmit, getValues, reset } = useForm({
+    defaultValues: {
+      isPep: null,
+      pepForm: {
+        isFamilyAlive: '',
+        position: '',
+        companyName: '',
+        address: '',
+        district: null,
+        province: null,
+        department: null,
+        endDate: '',
+        holdShare: '',
+      },
+    },
+    resolver: yupResolver(schema),
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'relatives',
+  });
+
+  const watchIsPep = watch('isPep');
+  const WatchIsFamilyAlive = watch('pepForm.isFamilyAlive');
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+    inc();
+  };
+
+  useEffect(() => {
+    watchIsPep !== null && setIsPep(watchIsPep.toLowerCase() === 'true');
+    WatchIsFamilyAlive && setHasParents(WatchIsFamilyAlive.toLowerCase() === 'true');
+
+    if (hasParents && !getValues('isAlive')) {
+      append({ documentNumber: '', documentType: null, fullName: '' });
+    } else {
+      remove();
+    }
+
+    if (watchIsPep !== null && watchIsPep.toLowerCase() !== 'true') {
+      reset({
+        isPep: 'false',
+        pepForm: {
+          isFamilyAlive: '',
+          position: '',
+          companyName: '',
+          address: '',
+          district: null,
+          province: null,
+          department: null,
+          endDate: '',
+          holdShare: '',
+        },
+      });
+      remove();
+    }
+  }, [watchIsPep, WatchIsFamilyAlive, hasParents, isPep, reset, watch]);
+
+  return (
+    <>
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}
+      >
+        <Box sx={{ mb: { sm: '24px' }, display: 'flex', flexDirection: 'column', gap: '24px', flex: 1 }}>
+          <Typography variant="subtitle1" align="center">
+            Queremos saber más de ti
+          </Typography>
+          <Typography variant="body2" align="center" sx={{ textDecoration: 'underline' }}>
+            ¿Eres una Persona Políticamente Expuesta (PEP)?
+            <br />
+            ¿Trabajas en entidades gubernamentales?
+          </Typography>
+          <Box>
+            <InputCheckCondition name="isPep" options={options} control={control} />
+          </Box>
+
+          <Collapse in={isPep} timeout={300}>
+            <InputText name="pepForm.position" label="Cargo en la institución pública" control={control} />
+            <InputText name="pepForm.companyName" label="Nombre de la institución" control={control} />
+            <InputText name="pepForm.address" label="Dirección" control={control} />
+            <InputSelect name="pepForm.district" label="Distrito" options={selectOptions} control={control} />
+            <InputSelect name="pepForm.province" label="Provincia" options={selectOptions} control={control} />
+            <InputSelect name="pepForm.department" label="Departamento" options={selectOptions} control={control} />
+            <InputDatePicker name="pepForm.endDate" label="Fecha" control={control} />
+
+            <Typography variant="body1" align="left" sx={{ marginBottom: '24px' }}>
+              ¿Posees participación, aporte o capital social igual o mayor al 25% en alguna (s) empresa (s)?
+            </Typography>
+            <Box
+              sx={{
+                '& .MuiFormGroup-root': {
+                  justifyContent: 'center',
+                },
+              }}
+            >
+              <InputCheckCondition name="pepForm.holdShare" options={options} control={control} />
+            </Box>
+
+            <Typography variant="body1" align="left" sx={{ marginBottom: '24px' }}>
+              ¿Posee parientes vivos PEP hasta el segundo grado de consanguinidad (padres, hijos, hermanos y nietos) y
+              segundo grado de afinidad (cónyuge o conviviente, suegros y cuñados)?
+            </Typography>
+            <Box
+              sx={{
+                '& .MuiFormGroup-root': {
+                  justifyContent: 'center',
+                },
+              }}
+            >
+              <InputCheckCondition name="pepForm.isFamilyAlive" options={options} control={control} />
+            </Box>
+
+            <Collapse in={hasParents} timeout={300}>
+              {fields.map((item, index) => (
+                <Box key={item.id}>
+                  <InputSelect
+                    name={`relatives.${index}.documentType`}
+                    label="Tipo de documento"
+                    options={selectOptions}
+                    control={control}
+                  />
+                  <InputText name={`relatives.${index}.documentNumber`} label="Número de documento" control={control} />
+                  <InputText name={`relatives.${index}.fullName`} label="Nombre completo" control={control} />
+                </Box>
+              ))}
+
+              <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '24px' }}>
+                <Button
+                  variant="outlined"
+                  sx={{
+                    width: '320px',
+                  }}
+                  onClick={() => {
+                    append({ documentType: null, documentNumber: '', fullName: '' });
+                  }}
+                >
+                  Agregar parientes
+                </Button>
+              </Box>
+            </Collapse>
+          </Collapse>
+        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', mt: { sm: 2 }, mb: { xs: 3, sm: 0 } }}>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              dec();
+            }}
+          >
+            Anterior
+          </Button>
+          <Button variant="contained" type="submit">
+            Siguiente
+          </Button>
+        </Box>
+      </Box>
+    </>
+  );
+}

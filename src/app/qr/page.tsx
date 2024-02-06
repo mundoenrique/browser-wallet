@@ -1,6 +1,7 @@
 'use client';
 
-import { QRCodeReader } from '@/components/UI';
+//Internal app
+import { QRCodeReader } from '@/components';
 
 export default function Qr() {
   return <QRCodeReader />;
