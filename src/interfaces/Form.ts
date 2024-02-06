@@ -1,3 +1,4 @@
+import { SxProps } from '@mui/material';
 import { DateView } from '@mui/x-date-pickers';
 
 export interface FormMUIProps {
@@ -10,11 +11,20 @@ export interface FormMUIProps {
   type?: string;
   control?: any;
   getOptionLabel?: Function;
+  disabled?: boolean;
+  readOnly?: boolean;
 }
 
 export interface TextFieldProps extends FormMUIProps {
   optional?: boolean;
   additionalInfo?: boolean;
+  colorText?: string;
+}
+
+export interface InputOTPProps extends FormMUIProps {
+  title: string;
+  text: string;
+  length: number;
 }
 
 export interface InputOptionsProps extends FormMUIProps {
@@ -30,6 +40,9 @@ export interface InputCheckProps extends FormMUIProps {
   onClick?: (...e: any[]) => void;
   checked?: boolean;
   disabled?: boolean;
+  labelHandle?: boolean | string;
+  sx?: SxProps;
+  mtError?: number;
 }
 
 export type UserSubmitForm = {
@@ -82,15 +95,13 @@ export type FormData = {
 export interface SwitchListProps extends FormMUIProps {
   checked?: boolean;
   setValue?: any;
-  options: {
-    id: number;
-    name: string;
-    title: string;
-    info: string;
-    value?: boolean;
-    required: boolean;
-  }[];
+  disabled?: boolean;
 }
-export interface SwitchMUIProps extends FormMUIProps {
-  settings: { id: number; name: string; title: string; info: string; value?: boolean; required: boolean };
+
+export interface InputsHandlePasswordProps extends FormMUIProps {
+  title: string;
+  text: string;
+  labelCurrentPass: string;
+  labelNewPass: string;
+  labelLegal: string;
 }

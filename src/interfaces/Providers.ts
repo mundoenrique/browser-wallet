@@ -1,13 +1,9 @@
-export type ProviderProps = {
-  children: React.ReactNode;
-};
-
-export type RSAKeysContextType = {
+export type RSAKeysContextProps = {
   publicKey?: string | null;
   privateKey?: string | null;
 };
 
-export type JWTContextType = {
+export type JWTContextProps = {
   token?: string | null;
   updateToken?: (newToken: string) => void;
 };

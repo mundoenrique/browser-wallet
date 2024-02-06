@@ -1,13 +1,13 @@
 'use client';
 
 import { createContext, useEffect, useState } from 'react';
-import { ProviderProps, RSAKeysContextType } from '@/interfaces';
+import { ChildrenProps, RSAKeysContextProps } from '@/interfaces';
 import { setKeyPair } from '@/utils/api';
 import { useApi } from '@/hooks/useApi';
 
-export const RSAKeyPairContext = createContext<RSAKeysContextType>({});
+export const RSAKeyPairContext = createContext<RSAKeysContextProps>({});
 
-export const RSAKeyPairProvider = ({ children }: ProviderProps) => {
+export const RSAKeyPairProvider = ({ children }: ChildrenProps) => {
   const [privateKey, setPrivateKey] = useState<string | null>(null);
   const [publicKey, setPublicKey] = useState<string | null>(null);
   const [keysGenerated, setKeysGenerated] = useState<boolean>(false);

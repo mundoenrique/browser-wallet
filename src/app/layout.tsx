@@ -1,14 +1,13 @@
 import { Metadata } from 'next';
 //Internal app
-import { RootLayoutProps } from '@/interfaces';
-import { RSAKeyPairProvider } from './Providers/RSAKeyPairProvider';
-import { JWTProvider } from './Providers/JWTProvider';
+import { ChildrenProps } from '@/interfaces';
+import { HydrationProvider, JWTProvider, MuiProvider, RSAKeyPairProvider } from './Providers';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
-      template: '%s | Indigo',
-      default: 'Indigo',
+      template: '%s | Yiro',
+      default: 'Yiro',
     },
     manifest: `/manifest.webmanifest`,
     description: 'La billetera digital que te ayudará a pagar, cobrar y ordenar tus finanzas.',
@@ -23,13 +22,17 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children }: ChildrenProps) {
   return (
     <html lang="es">
       <body>
-        <RSAKeyPairProvider>
-          <JWTProvider>{children}</JWTProvider>
-        </RSAKeyPairProvider>
+        <MuiProvider>
+          <HydrationProvider>
+            <RSAKeyPairProvider>
+              <JWTProvider>{children}</JWTProvider>
+            </RSAKeyPairProvider>
+          </HydrationProvider>
+        </MuiProvider>
       </body>
     </html>
   );

@@ -2,16 +2,14 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { RSAKeyPairContext } from './RSAKeyPairProvider';
-import { IData, JWTContextType, ProviderProps } from '@/interfaces';
+import { ChildrenProps, IData, JWTContextProps } from '@/interfaces';
 import { verifyJWT } from '@/utils/jwt';
 import { setJwtToken } from '@/utils/api';
 import { useApi } from '@/hooks/useApi';
-import SkeletonComponent from '@/components/UI/SkeletonComponent';
-import { log } from 'winston';
 
-export const JWTContext = createContext<JWTContextType>({});
+export const JWTContext = createContext<JWTContextProps>({});
 
-export const JWTProvider = ({ children }: ProviderProps) => {
+export const JWTProvider = ({ children }: ChildrenProps) => {
   const [token, setToken] = useState<string | null>(null);
   const { publicKey } = useContext(RSAKeyPairContext);
   const [loading, setLoading] = useState(true);
@@ -53,9 +51,5 @@ export const JWTProvider = ({ children }: ProviderProps) => {
     }
   }, [publicKey, apiPublicKey]);
 
-  return (
-    <JWTContext.Provider value={{ token, updateToken }}>
-      {loading ? <SkeletonComponent /> : children}
-    </JWTContext.Provider>
-  );
+  return <JWTContext.Provider value={{ token, updateToken }}>{children}</JWTContext.Provider>;
 };

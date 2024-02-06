@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getEnvVariable, handleError, getUserInfo, handleResponse, verifyJWT, JWT_HEADER } from '@/utils';
-import { IJWTPayload } from '@/interfaces/Api';
+import { IJWTPayload } from '@/interfaces/api';
 
 export async function GET(request: NextRequest) {
   const apiPublicKey = getEnvVariable('PUBLIC_KEY');
