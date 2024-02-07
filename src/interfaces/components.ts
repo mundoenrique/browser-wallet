@@ -41,6 +41,12 @@ export interface SidebarProps {
   onClose: () => void;
 }
 
+export interface ItemSecondarySidebar {
+  color?: boolean;
+  text: string;
+  icon: React.ReactNode;
+}
+
 export interface StepperProps {
   children: React.ReactNode;
   stepNumber: string;

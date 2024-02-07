@@ -2,10 +2,9 @@
 
 import { Box, Drawer } from '@mui/material';
 //Internal app
+import ListSidebar from './ListSidebar';
 import { SidebarProps } from '@/interfaces';
-import ItemSidebarPwa from './ItemSidebarPwa';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import ItemSidebarDesktop from './ItemSidebarDesktop';
 
 export default function Sidebar(props: SidebarProps) {
   const { drawerWidth, open, onTransitionEnd, onClose } = props;
@@ -46,11 +45,13 @@ export default function Sidebar(props: SidebarProps) {
             },
           }}
         >
-          <ItemSidebarPwa />
+          <ListSidebar />
         </Box>
       </Drawer>
+
       <Drawer
         variant="permanent"
+        open
         sx={{
           display: { xs: 'none', sm: 'block' },
           '& .MuiDrawer-paper': {
@@ -61,9 +62,8 @@ export default function Sidebar(props: SidebarProps) {
             justifyContent: ' space-between',
           },
         }}
-        open
       >
-        <ItemSidebarDesktop />
+        <ListSidebar />
       </Drawer>
     </Box>
   );

@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import { Box } from '@mui/material';
 //Internal app
+import Navbar from '../navigation/navbar/Navbar';
 import { ChildrenProps } from '@/interfaces';
-import Navbar from '../navigation/Navbar';
 import Sidebar from '../navigation/sidebar/Sidebar';
+import NavbarLower from '../navigation/navbar/NavbarLower';
 
 export default function MainLayout({ children }: ChildrenProps) {
   const drawerWidth = 315;
@@ -35,9 +36,14 @@ export default function MainLayout({ children }: ChildrenProps) {
         onClose={handleDrawerClose}
         drawerWidth={drawerWidth}
       />
-      <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` }, mt: { xs: 9, sm: 'auto' } }}
+      >
         {children}
       </Box>
+
+      <NavbarLower />
     </Box>
   );
 }
