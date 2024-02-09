@@ -4,13 +4,22 @@ import { useQrStore } from '@/store/qrstore';
 import { useEffect } from 'react';
 import io from 'socket.io-client';
 
-const socket = io();
+let socket: any;
 
 export default function VerifyCard() {
   const { user } = useQrStore();
 
+  const handleSocketEmit = async () => {
+    await fetch('/api/socket');
+    socket = io('', {
+      path: '/api/my_socket',
+    });
+    console.log('Emitiendo datos al servidor:', user);
+    socket.emit('sendData', user);
+  };
+
   useEffect(() => {
-    socket.emit('msjClient', user);
+    handleSocketEmit();
   }, []);
 
   return (

@@ -41,7 +41,6 @@ export default function handler(req: any, res: any) {
     socket.on('sendData', (user) => {
       console.log('Datos del cliente - socket:', user);
       socket.broadcast.emit('infoUser', user);
-      // io.emit('infoUser', user);
     });
   };
 
