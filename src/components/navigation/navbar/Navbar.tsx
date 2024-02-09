@@ -1,37 +1,61 @@
 'use client';
 
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { AppBar, IconButton, Toolbar, Link as LinkMui, Typography, Box } from '@mui/material';
 //Internal app
 import { NavbarProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function Navbar(props: NavbarProps) {
   const { onClick } = props;
+  const pathname = usePathname();
+  const dashboardNav = pathname === '/dashboard';
 
   return (
     <AppBar
       position="fixed"
       sx={{
-        display: { sm: 'none' },
+        display: { md: 'none' },
         backgroundColor: fuchsiaBlue[200],
         boxShadow: 0,
         height: 60,
       }}
     >
-      <Toolbar sx={{ minHeight: 60 }}>
+      <Toolbar sx={{ minHeight: 60, justifyContent: dashboardNav ? 'space-between' : 'flex-start' }}>
         <IconButton
           color="inherit"
           aria-label="open drawer"
           edge="start"
           onClick={onClick}
-          sx={{ mr: 2, display: { sm: 'none' }, color: 'primary.main' }}
+          sx={{ display: { md: 'none' }, color: 'primary.main' }}
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" noWrap component="div">
-          Responsive drawer
-        </Typography>
+
+        {dashboardNav ? (
+          <LinkMui
+            component={Link}
+            href="#"
+            underline="none"
+            sx={{ display: 'flex', alignItems: 'center' }}
+            fontWeight={700}
+            fontSize="12px"
+          >
+            <ArrowBackIosIcon sx={{ mr: 2 }} />
+            Volver a ésika Conmigo
+          </LinkMui>
+        ) : (
+          <>
+            <Typography variant="subtitle1" color="primary.main">
+              Movimientos
+            </Typography>
+
+            <Box width={40} />
+          </>
+        )}
       </Toolbar>
     </AppBar>
   );

@@ -51,3 +51,18 @@ export interface StepperProps {
   children: React.ReactNode;
   stepNumber: string;
 }
+
+export interface BackInformationProps {
+  hideDetails: () => void;
+  holder: string;
+  cardNumber: string;
+  expDate: string;
+  cvc: string;
+}
+
+export interface FrontInformationProps {
+  showDetails: () => void;
+  cardNumber: string;
+  balance: string;
+  holder: string;
+}

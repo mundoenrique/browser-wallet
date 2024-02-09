@@ -10,7 +10,7 @@ import { ArrowsIcons, CardIcons, CashIcons, FileIcons, GainIcons, HomeIcons, Key
 export default function ItemsSidebar() {
   const theme = useTheme();
   const { currentItem, setCurrentItem }: any = useMenuStore();
-  const matche = useMediaQuery(theme.breakpoints.up('sm'));
+  const matche = useMediaQuery(theme.breakpoints.up('md'));
 
   const itemMenu = matche
     ? [
@@ -133,7 +133,7 @@ export default function ItemsSidebar() {
                 primaryTypographyProps={{
                   fontWeight: 700,
                   color: currentItemMenu ? fuchsiaBlue[600] : 'initial',
-                  fontSize: { xs: '14px', sm: 'initial' },
+                  fontSize: { xs: '14px', md: 'initial' },
                 }}
               />
             </ListItemButton>

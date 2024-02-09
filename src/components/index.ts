@@ -10,6 +10,7 @@ export { default as InputCheck } from './form/InputCheck';
 export { default as InputRadio } from './form/InputRadio';
 export { default as InputSwitch } from './form/InputSwitch';
 export { default as InputSelect } from './form/InputSelect';
+export { default as InputTextPay } from './form/InputTextPay';
 export { default as InputDatePicker } from './form/InputDatePicker';
 export { default as InputCheckCondition } from './form/InputCheckCondition';
 //navigation
@@ -21,7 +22,11 @@ export { default as NavExternal } from './navigation/navbar/NavExternal';
 export { default as ModalResponsive } from './modal/ModalResponsive';
 //layout
 export { default as MainLayout } from './layout/MainLayout';
-export { default as PurpleLayout } from './layout/PurpleLayout';
 export { default as LoginLayout } from './layout/LoginLayout';
+export { default as PurpleLayout } from './layout/PurpleLayout';
 //cards
+export { default as CardDebt } from './cards/CardDebt';
 export { default as CardDetails } from './cards/CardDetails';
+export { default as CardInformation } from './cards/cardInformation/CardInformation';
+//tables
+export { default as LastMovements } from './tables/LastMovements';

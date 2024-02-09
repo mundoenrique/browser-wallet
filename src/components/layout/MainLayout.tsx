@@ -38,7 +38,12 @@ export default function MainLayout({ children }: ChildrenProps) {
       />
       <Box
         component="main"
-        sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` }, mt: { xs: 9, sm: 'auto' } }}
+        sx={{
+          display: 'grid',
+          width: { md: `calc(100% - ${drawerWidth}px)` },
+          mt: { xs: '60px', md: 'auto' },
+          mx: { xs: 'auto', md: 0 },
+        }}
       >
         {children}
       </Box>

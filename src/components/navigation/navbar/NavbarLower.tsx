@@ -40,7 +40,7 @@ export default function NavbarLower() {
   return (
     <Box
       sx={{
-        display: { sm: 'none' },
+        display: { md: 'none' },
         height: 60,
         borderRadius: '16px 16px 0 0 ',
         backgroundColor: '#F7F5FD',

@@ -17,7 +17,7 @@ export default function ListSidebar() {
         sx={{
           width: 132,
           height: 74,
-          display: { xs: 'none', sm: 'block' },
+          display: { xs: 'none', md: 'block' },
           mx: 'auto',
           my: '44px',
         }}
@@ -26,7 +26,7 @@ export default function ListSidebar() {
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-        <Card variant="detailCard" sx={{ mt: { xs: 10, sm: 'auto' }, mb: { xs: 0, sm: 'auto' } }}>
+        <Card variant="detailCard" sx={{ mt: { xs: 10, md: 'auto' }, mb: { xs: 0, md: 'auto' } }}>
           <Box sx={{ mr: 3, display: 'flex', alignItems: 'center' }}>
             <Image src={card} width={70} height={44} alt="Tarjeta Yiro" />
           </Box>

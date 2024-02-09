@@ -2,15 +2,15 @@
 
 import { Box, Drawer } from '@mui/material';
 //Internal app
-import ListSidebar from './ListSidebar';
 import { SidebarProps } from '@/interfaces';
+import ListSidebar from './components/ListSidebar';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function Sidebar(props: SidebarProps) {
   const { drawerWidth, open, onTransitionEnd, onClose } = props;
 
   return (
-    <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
+    <Box component="nav" sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }} aria-label="mailbox folders">
       <Drawer
         variant="temporary"
         open={open}
@@ -18,7 +18,7 @@ export default function Sidebar(props: SidebarProps) {
         onClose={onClose}
         ModalProps={{ keepMounted: true }}
         sx={{
-          display: { xs: 'block', sm: 'none' },
+          display: { xs: 'block', md: 'none' },
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
             width: 280,
@@ -53,13 +53,13 @@ export default function Sidebar(props: SidebarProps) {
         variant="permanent"
         open
         sx={{
-          display: { xs: 'none', sm: 'block' },
+          display: { xs: 'none', md: 'block' },
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
             width: drawerWidth,
             bgcolor: 'secondary.main',
             borderRight: `1px solid ${fuchsiaBlue[400]}`,
-            justifyContent: ' space-between',
+            justifyContent: 'space-between',
           },
         }}
       >
