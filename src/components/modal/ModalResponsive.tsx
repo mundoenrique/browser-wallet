@@ -2,8 +2,8 @@
 
 import { forwardRef } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import { Close as CloseIcon } from '@mui/icons-material';
-import { Box, Fab, Modal, useMediaQuery } from '@mui/material/';
+import { Close as CloseIcon, Margin } from '@mui/icons-material';
+import { Box, Link as MuiLink, Modal, useMediaQuery, Typography } from '@mui/material/';
 //Internal app
 import { MuiModalProps } from '@/interfaces';
 
@@ -27,6 +27,7 @@ const BodyModal = styled(Box, {
         borderRadius: '16px 16px 0 0',
         boxShadow: theme.shadows[2],
         padding: 12,
+        textAlign: 'center',
       }
     : {
         //desktop
@@ -34,39 +35,23 @@ const BodyModal = styled(Box, {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
+        padding: '0px 20px 32px 20px',
+        borderRadius: '16px',
         width: 400,
         background: theme.palette.background.paper,
-        borderRadius: '16px',
         boxShadow: theme.shadows[2],
         textAlign: 'center',
-        padding: '30px 20px 20px 20px',
         outline: 'none',
       }
 );
 
-const CloseButton = styled(Fab, {
+const CloseButtonContainer = styled(Box, {
   name: 'ModalResponsive',
   slot: 'closeButton',
 })(({ theme }) => ({
-  width: 32,
-  height: 32,
-  minHeight: 32,
-  border: '1px solid',
-  borderColor: theme.palette.secondary.light,
-  boxShadow: theme.shadows[2],
-  background: theme.palette.background.paper,
-  position: 'absolute',
-  right: -16,
-  top: -16,
-  display: useMediaQuery(theme.breakpoints.down('sm')) ? 'none' : 'inline-flex',
-  '& .MuiSvgIcon-root': {
-    height: 20,
-    Width: 20,
-  },
-  ':hover': {
-    boxShadow: theme.shadows[3],
-    background: theme.palette.background.paper,
-  },
+  display: useMediaQuery(theme.breakpoints.down('sm')) ? 'none' : 'flex',
+  justifyContent: 'right',
+  height: '52px',
 }));
 
 const ModalResponsive = forwardRef((props: MuiModalProps, ref: any) => {
@@ -84,10 +69,22 @@ const ModalResponsive = forwardRef((props: MuiModalProps, ref: any) => {
     >
       <Box>
         <BodyModal {...others}>
+          <CloseButtonContainer onClick={handleClose}>
+            <MuiLink
+              sx={{
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                color: '#5F3F98',
+                textDecoration: 'none',
+              }}
+            >
+              <Typography>Cerrar</Typography>
+              <CloseIcon />
+            </MuiLink>
+          </CloseButtonContainer>
           {children}
-          <CloseButton onClick={handleClose}>
-            <CloseIcon color="primary" />
-          </CloseButton>
         </BodyModal>
       </Box>
     </RootModal>

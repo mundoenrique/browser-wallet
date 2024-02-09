@@ -3,11 +3,11 @@
 import { Box, Button, Typography } from '@mui/material';
 
 //Internal app
-import { useSignupStore } from '@/store/volatileStore';
+import { useSignupStore } from '@/store/signupStore';
 import { InputText } from '@/components';
 
 export default function SelfieUpload() {
-  const { dec, inc }: any = useSignupStore();
+  const { dec, inc } = useSignupStore();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>

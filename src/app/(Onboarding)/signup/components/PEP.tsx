@@ -1,21 +1,24 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { Box, Button, Collapse, Slide, Typography } from '@mui/material';
-import { useForm, useFieldArray, useFormState } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { Box, Button, Collapse, Link as LinkMui, Typography } from '@mui/material';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 //Internal app
-import { useSignupStore } from '@/store/volatileStore';
-import { InputCheckCondition, InputDatePicker, InputSelect, InputText } from '@/components';
+import { useSignupStore } from '@/store/signupStore';
+import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResponsive } from '@/components';
 import { getSchema } from '@/config';
 
-//TODO:DEV
-import { DevTool } from '@hookform/devtools';
+//TODO:Only for DEV
+//import { DevTool } from '@hookform/devtools';
 
+//TODO: Data de ejemplo
 const options: any = [
   { text: 'Sí', value: 'true' },
   { text: 'No', value: 'false' },
 ];
+
+//TODO: Data de ejemplo
 const selectOptions = [
   { text: 'Opción A', value: 'A' },
   { text: 'Opción B', value: 'B' },
@@ -26,13 +29,15 @@ const selectOptions = [
 export default function PEP() {
   const [isPep, setIsPep] = useState(false);
   const [hasParents, setHasParents] = useState(false);
+  const [showParentModal, setShowParentModal] = useState(false);
+  const [parentIndex, setParentIndex] = useState(-1);
 
-  const { dec, inc }: any = useSignupStore();
+  const { dec, inc, updateFormState, pepFormState, setShowHeader } = useSignupStore();
 
   const schema = isPep ? getSchema(['isPep', 'pepForm', 'relatives']) : getSchema(['isPep']);
 
   const { control, watch, handleSubmit, getValues, reset } = useForm({
-    defaultValues: {
+    defaultValues: pepFormState || {
       isPep: null,
       pepForm: {
         isFamilyAlive: '',
@@ -59,11 +64,12 @@ export default function PEP() {
 
   const onSubmit = (data: any) => {
     console.log(data);
+    updateFormState('pepFormState', data);
     inc();
   };
 
   useEffect(() => {
-    watchIsPep !== null && setIsPep(watchIsPep.toLowerCase() === 'true');
+    watchIsPep && setIsPep(watchIsPep.toLowerCase() === 'true');
     WatchIsFamilyAlive && setHasParents(WatchIsFamilyAlive.toLowerCase() === 'true');
 
     if (hasParents && !getValues('isAlive')) {
@@ -88,8 +94,13 @@ export default function PEP() {
         },
       });
       remove();
+      setHasParents(false);
     }
   }, [watchIsPep, WatchIsFamilyAlive, hasParents, isPep, reset, watch]);
+
+  useEffect(() => {
+    setShowHeader(true);
+  }, []);
 
   return (
     <>
@@ -150,6 +161,30 @@ export default function PEP() {
             <Collapse in={hasParents} timeout={300}>
               {fields.map((item, index) => (
                 <Box key={item.id}>
+                  <Box
+                    sx={{
+                      marginBottom: '24px',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <Typography variant="subtitle1">Pariente</Typography>
+                    <Box>
+                      {index > 0 && (
+                        <LinkMui
+                          variant="subtitle1"
+                          onClick={() => {
+                            setParentIndex(index);
+                            setShowParentModal(true);
+                          }}
+                          sx={{ color: '#334155', cursor: 'pointer' }}
+                        >
+                          Eliminar
+                        </LinkMui>
+                      )}
+                    </Box>
+                  </Box>
                   <InputSelect
                     name={`relatives.${index}.documentType`}
                     label="Tipo de documento"
@@ -191,6 +226,37 @@ export default function PEP() {
           </Button>
         </Box>
       </Box>
+      <ModalResponsive
+        open={showParentModal}
+        handleClose={() => {
+          setShowParentModal(false);
+        }}
+      >
+        <>
+          <Typography variant="subtitle1" sx={{ marginBottom: '24px' }}>
+            ✋¿Deseas eliminar este pariente?
+          </Typography>
+          <Box sx={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setShowParentModal(false);
+              }}
+            >
+              Cancelar
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                remove(parentIndex);
+                setShowParentModal(false);
+              }}
+            >
+              Aceptar
+            </Button>
+          </Box>
+        </>
+      </ModalResponsive>
     </>
   );
 }

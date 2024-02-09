@@ -5,10 +5,10 @@ import { Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material'
 //Internal app
 import dniPwa from '%/images/arts/dniPwa.svg';
 import dniDesktop from '%/images/arts/dniDesktop.svg';
-import { useSignupStore } from '@/store/volatileStore';
+import { useSignupStore } from '@/store/signupStore';
 
 export default function DniInfo() {
-  const { dec, inc }: any = useSignupStore();
+  const { dec, inc } = useSignupStore();
   const theme = useTheme();
   const matcha = useMediaQuery(theme.breakpoints.up('sm'));
 

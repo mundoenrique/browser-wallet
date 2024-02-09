@@ -3,10 +3,10 @@
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { InputText } from '@/components';
-import { useSignupStore } from '@/store/volatileStore';
+import { useSignupStore } from '@/store/signupStore';
 
 export default function DniUpload() {
-  const { dec, inc }: any = useSignupStore();
+  const { dec, inc } = useSignupStore();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>

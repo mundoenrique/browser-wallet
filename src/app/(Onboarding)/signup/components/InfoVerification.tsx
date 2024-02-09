@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Card, Chip, Divider, Typography } from '@mui/material';
 //internal app
 import { getSchema } from '@/config';
-import { useSignupStore } from '@/store/volatileStore';
+import { useSignupStore } from '@/store/signupStore';
 import { InputCheck, InputText, ModalResponsive, InputSelect } from '@/components';
 
 //TODO: data de ejemplo
@@ -17,23 +17,21 @@ const nationality = [
   { text: 'Ecuatoriana', value: 'ec' },
 ];
 
-//TODO: Agregar Schemas para el celular y las politicas de privacidad y la nacionalidad
-//TODO: Agregar botones de la card para cada step
 //BUG: No se resalta las opciones en el campo select
-//TODO: Arreglar la edicion de celular/correo para cuando el cancele no le guarde los cambios
-//TODO:poner el modal de los terminos
+//TODO:Mejorar los modales y los terminos
 export default function InfoVerification() {
   const [editEmail, setEditEmail] = useState<boolean>(false);
   const [editCelular, setEditCelular] = useState<boolean>(false);
   const [openTerms, setOpenTerms] = useState<boolean>(false);
   const schema = getSchema(['email', 'term', 'country']);
+
   const schemaEmail = getSchema(['email']);
   const schemaCelular = getSchema(['celular']);
 
-  const { inc }: any = useSignupStore();
+  const { inc, updateFormState, verificationFormState, setShowHeader } = useSignupStore();
 
   const { handleSubmit, control, setValue, getValues } = useForm({
-    defaultValues: {
+    defaultValues: verificationFormState || {
       country: 'pe',
       celular: '132156456456',
       email: 'carolina123@gmail.com',
@@ -70,6 +68,7 @@ export default function InfoVerification() {
   });
 
   const onSubmit = (data: any) => {
+    updateFormState('verificationFormState', data);
     inc();
   };
 
@@ -87,6 +86,10 @@ export default function InfoVerification() {
     setValue('celular', data.celular);
     setEditCelular(false);
   };
+
+  useEffect(() => {
+    setShowHeader(true);
+  }, []);
 
   return (
     <>

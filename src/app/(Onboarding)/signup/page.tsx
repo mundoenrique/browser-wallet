@@ -3,7 +3,7 @@
 import { Card, Typography, useMediaQuery, useTheme } from '@mui/material';
 // Internal app
 import { StepperProps } from '@/interfaces';
-import { useSignupStore } from '@/store/volatileStore';
+import { useSignupStore } from '@/store/signupStore';
 import BiometricValidation from './components/BiometricValidation';
 import {
   SignupStepper,
@@ -17,7 +17,17 @@ import {
   SelfieInfo,
   SelfieUpload,
   PasswordCreation,
+  Ending,
 } from './components';
+
+const phaseToStep = (phase: string) => {
+  const phasesSteps: { [key: string]: number } = {
+    ONB_PHASES_TERMS: 0,
+    ONB_PHASES_CONSULT_DATA: 3,
+    ONB_PHASES_PEP: 4,
+  };
+  return phasesSteps[phase] || 0;
+};
 
 const CardStep = (props: StepperProps) => {
   const theme = useTheme();
@@ -36,7 +46,7 @@ const CardStep = (props: StepperProps) => {
   );
 };
 export default function Signup() {
-  const { step }: any = useSignupStore();
+  const { step } = useSignupStore();
 
   return (
     <SignupStepper currentStep={step}>
@@ -79,6 +89,8 @@ export default function Signup() {
       <CardStep stepNumber="4">
         <PasswordCreation />
       </CardStep>
+
+      <Ending />
     </SignupStepper>
   );
 }
