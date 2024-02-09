@@ -6,12 +6,12 @@ import { verifyJWT, encryptJWE, decryptJWE, signJWE, verifyDetachedJWS } from '.
 type EnvVariableKey = 'API_BASE_URL' | 'PRIVATE_KEY' | 'PUBLIC_KEY';
 
 /**
- * Función para manejar errores en las solicitudes a la API.
+ * Function to handle errors in API requests.
  *
- * @param message - El mensaje de error a mostrar.
- * @param error - El error capturado (opcional).
- * @param status - El código de estado HTTP a devolver (opcional).
- * @returns Una respuesta con el mensaje de error y el código de estado HTTP.
+ * @param message - The error message to display.
+ * @param error - The captured error (optional).
+ * @param status - The HTTP status code to return (optional).
+ * @returns A response with the error message and the HTTP status code.
  */
 export function handleError(
   message: string,
@@ -33,11 +33,11 @@ export function handleError(
 }
 
 /**
- * Función para obtener el valor de una variable de entorno.
+ * Function to get the value of an environment variable.
  *
- * @param key - La clave de la variable de entorno a obtener.
- * @returns El valor de la variable de entorno.
- * @throws Si la variable de entorno no está establecida.
+ * @param key - The key of the environment variable to get.
+ * @returns The value of the environment variable.
+ * @throws If the environment variable is not set.
  */
 export function getEnvVariable(key: EnvVariableKey): string {
   const value = process.env[key];
@@ -51,12 +51,12 @@ export function getEnvVariable(key: EnvVariableKey): string {
 }
 
 /**
- * Maneja la extracción y verificación del JWT.
+ * Handles the extraction and verification of the JWT.
  *
- * @param request - La solicitud NextRequest.
- * @param apiPublicKey - La clave pública de la API.
- * @returns El payload del JWT.
- * @throws Si hay un error al verificar el JWT.
+ * @param request - The NextRequest request.
+ * @param apiPublicKey - The API's public key.
+ * @returns The JWT payload.
+ * @throws If there is an error verifying the JWT.
  */
 export async function handleJWT(request: NextRequest, apiPublicKey: string): Promise<IJWTPayload> {
   try {
@@ -75,13 +75,13 @@ export async function handleJWT(request: NextRequest, apiPublicKey: string): Pro
 }
 
 /**
- * Maneja la extracción, descifrado del JWE y verificación del JWS.
+ * Handles the extraction, decryption of the JWE and verification of the JWS.
  *
- * @param request - La solicitud NextRequest.
- * @param appPublicKey - La clave publica de la APP.
- * @param apiPrivateKey - La clave privada de la API.
- * @returns Los datos descifrados.
- * @throws Si hay un error al verificar el JWS o descifrar el JWE.
+ * @param request - The NextRequest request.
+ * @param appPublicKey - The APP's public key.
+ * @param apiPrivateKey - The API's private key.
+ * @returns The decrypted data.
+ * @throws If there is an error verifying the JWS or decrypting the JWE.
  */
 export async function handleJWE(request: NextRequest, appPublicKey: string, apiPrivateKey: string): Promise<object> {
   try {
@@ -99,13 +99,13 @@ export async function handleJWE(request: NextRequest, appPublicKey: string, apiP
 }
 
 /**
- * Maneja la creación y envío de la respuesta.
+ * Handles the creation and sending of the response.
  *
- * @param responseObj - El objeto de respuesta.
- * @param appPublicKey - La clave pública de la aplicación.
- * @param apiPrivateKey - La clave privada de la API.
- * @returns La respuesta encriptada y firmada.
- * @throws Si hay un error al encriptar o firmar la respuesta.
+ * @param responseObj - The response object.
+ * @param appPublicKey - The application's public key.
+ * @param apiPrivateKey - The API's private key.
+ * @returns The encrypted and signed response.
+ * @throws If there is an error encrypting or signing the response.
  */
 export async function handleResponse(responseObj: any, appPublicKey: string, apiPrivateKey: string): Promise<Response> {
   try {

@@ -16,13 +16,13 @@ const encode = TextEncoder.prototype.encode.bind(new TextEncoder());
 const decode = TextDecoder.prototype.decode.bind(new TextDecoder());
 
 /**
- * Firma un JWT con una clave privada y un payload.
+ * Signs a JWT with a private key and a payload.
  *
- * @param privateKey - La clave privada para firmar el JWT.
- * @param payload - El payload del JWT.
- * @param expiresIn - El tiempo de expiración del JWT.
- * @returns El JWT firmado.
- * @throws Si hay un error al importar la clave privada o al firmar el JWT.
+ * @param privateKey - The private key to sign the JWT.
+ * @param payload - The payload of the JWT.
+ * @param expiresIn - The expiration time of the JWT.
+ * @returns The signed JWT.
+ * @throws If there is an error importing the private key or signing the JWT.
  */
 export async function signJWT(
   privateKey: string,
@@ -47,12 +47,12 @@ export async function signJWT(
 }
 
 /**
- * Verifica un JWT con una clave pública.
+ * Verifies a JWT with a public key.
  *
- * @param jwt - El JWT a verificar.
- * @param publicKey - La clave pública para verificar el JWT.
- * @returns El payload del JWT.
- * @throws Si hay un error al importar la clave pública o al verificar el JWT.
+ * @param jwt - The JWT to verify.
+ * @param publicKey - The public key to verify the JWT.
+ * @returns The payload of the JWT.
+ * @throws If there is an error importing the public key or verifying the JWT.
  */
 export async function verifyJWT(jwt: string | Uint8Array, publicKey: string): Promise<JWTPayload> {
   try {
@@ -70,12 +70,12 @@ export async function verifyJWT(jwt: string | Uint8Array, publicKey: string): Pr
 }
 
 /**
- * Encripta un payload en un JWE con una clave pública.
+ * Encrypts a payload into a JWE with a public key.
  *
- * @param payload - El payload a encriptar.
- * @param publicKey - La clave pública para encriptar el payload.
- * @returns El JWE encriptado.
- * @throws Si hay un error al importar la clave pública o al encriptar el payload.
+ * @param payload - The payload to encrypt.
+ * @param publicKey - The public key to encrypt the payload.
+ * @returns The encrypted JWE.
+ * @throws If there is an error importing the public key or encrypting the payload.
  */
 export async function encryptJWE(payload: object, publicKey: string): Promise<string> {
   try {
@@ -93,12 +93,12 @@ export async function encryptJWE(payload: object, publicKey: string): Promise<st
 }
 
 /**
- * Desencripta un JWE con una clave privada.
+ * Decrypts a JWE with a private key.
  *
- * @param jwe - El JWE a desencriptar.
- * @param privateKey - La clave privada para desencriptar el JWE.
- * @returns El payload desencriptado.
- * @throws Si hay un error al importar la clave privada o al desencriptar el JWE.
+ * @param jwe - The JWE to decrypt.
+ * @param privateKey - The private key to decrypt the JWE.
+ * @returns The decrypted payload.
+ * @throws If there is an error importing the private key or decrypting the JWE.
  */
 export async function decryptJWE(jwe: string, privateKey: string): Promise<object> {
   try {
@@ -115,12 +115,12 @@ export async function decryptJWE(jwe: string, privateKey: string): Promise<objec
 }
 
 /**
- * Genera un JWS sin payload a partir de un JWE y una clave privada.
+ * Generates a JWS without payload from a JWE and a private key.
  *
- * @param privateKeyJwk - La clave privada para firmar el JWE.
- * @param jwe - El JWE a firmar.
- * @returns El JWS sin payload.
- * @throws Si hay un error al importar la clave privada o al firmar el JWE.
+ * @param privateKey - The private key to sign the JWE.
+ * @param jwe - The JWE to sign.
+ * @returns The JWS without payload.
+ * @throws If there is an error importing the private key or signing the JWE.
  */
 export async function signJWE(privateKey: string, jwe: string): Promise<string> {
   try {
@@ -139,12 +139,12 @@ export async function signJWE(privateKey: string, jwe: string): Promise<string> 
 }
 
 /**
- * Verifica un JWS usando una clave pública.
+ * Verifies a JWS using a public key.
  *
- * @param jws - El JWS a verificar.
- * @param publicKey - La clave pública para verificar el JWS.
- * @returns Un booleano que indica si el JWS es válido.
- * @throws Si hay un error al importar la clave pública o al verificar el JWS.
+ * @param jws - The JWS to verify.
+ * @param publicKey - The public key to verify the JWS.
+ * @returns A boolean indicating whether the JWS is valid.
+ * @throws If there is an error importing the public key or verifying the JWS.
  */
 export async function verifyJWS(jws: string | Uint8Array, publicKey: string): Promise<boolean> {
   try {
@@ -161,13 +161,13 @@ export async function verifyJWS(jws: string | Uint8Array, publicKey: string): Pr
 }
 
 /**
- * Verifica un JWS Detached usando una clave pública y un payload.
+ * Verifies a Detached JWS using a public key and a payload.
  *
- * @param jws - El JWS Detached a verificar.
- * @param publicKey - La clave pública para verificar el JWS.
- * @param payload - El payload original del JWS.
- * @returns Un booleano que indica si el JWS es válido.
- * @throws Si no se proporcionó el JWS o si hay un error al verificar el JWS.
+ * @param jws - The Detached JWS to verify.
+ * @param publicKey - The public key to verify the JWS.
+ * @param payload - The original payload of the JWS.
+ * @returns A boolean indicating whether the JWS is valid.
+ * @throws If the JWS was not provided or if there is an error verifying the JWS.
  */
 export async function verifyDetachedJWS(jws: string | null, publicKey: string, payload: string): Promise<boolean> {
   try {
