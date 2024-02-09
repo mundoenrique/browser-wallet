@@ -7,12 +7,14 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { AppBar, IconButton, Toolbar, Link as LinkMui, Typography, Box } from '@mui/material';
 //Internal app
 import { NavbarProps } from '@/interfaces';
+import { useNavTitleStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function Navbar(props: NavbarProps) {
   const { onClick } = props;
   const pathname = usePathname();
   const dashboardNav = pathname === '/dashboard';
+  const { title }: any = useNavTitleStore();
 
   return (
     <AppBar
@@ -24,7 +26,7 @@ export default function Navbar(props: NavbarProps) {
         height: 60,
       }}
     >
-      <Toolbar sx={{ minHeight: 60, justifyContent: dashboardNav ? 'space-between' : 'flex-start' }}>
+      <Toolbar sx={{ minHeight: 60, justifyContent: dashboardNav ? 'flex-start' : 'space-between' }}>
         <IconButton
           color="inherit"
           aria-label="open drawer"
@@ -50,7 +52,7 @@ export default function Navbar(props: NavbarProps) {
         ) : (
           <>
             <Typography variant="subtitle1" color="primary.main">
-              Movimientos
+              {title}
             </Typography>
 
             <Box width={40} />

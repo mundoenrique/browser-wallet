@@ -16,12 +16,16 @@ export interface MuiNavExternalProps {
   closeApp?: boolean;
 }
 
+export interface RCProps extends ChildrenProps {
+  responseCode: React.ReactNode;
+}
+
 export interface AuthOtpProps extends ChildrenProps {
   authOtp: React.ReactNode;
 }
 
 export interface CardDetailsProps extends ChildrenProps {
-  avatarImage?: { src: StaticImageData; alt: string };
+  avatarImage?: any;
   avatarText?: string;
 }
 

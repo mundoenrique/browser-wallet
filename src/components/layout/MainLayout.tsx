@@ -40,7 +40,7 @@ export default function MainLayout({ children }: ChildrenProps) {
         component="main"
         sx={{
           display: 'grid',
-          width: { md: `calc(100% - ${drawerWidth}px)` },
+          width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
           mt: { xs: '60px', md: 'auto' },
           mx: { xs: 'auto', md: 0 },
         }}
