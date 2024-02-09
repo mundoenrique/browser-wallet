@@ -1,8 +1,11 @@
 'use client';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useQRCode } from 'next-qrcode';
-import { ModalResponsive } from '@/components';
+import { MainLayout, ModalResponsive } from '@/components';
+import io from 'socket.io-client';
+
+let socket: any;
 
 export default function Card() {
   const { SVG } = useQRCode();
@@ -11,8 +14,18 @@ export default function Card() {
 
   const userData = JSON.stringify({ username: 'elazaro', password: 'lazaro123' });
 
+  const handleSocketEmit = async () => {
+    await fetch('/api/socket');
+    socket = io('', {
+      path: '/api/my_socket',
+    });
+    console.log('Emitiendo datos al servidor:', userData);
+    socket.emit('sendData', userData);
+    setShowModal(false);
+  };
+
   return (
-    <>
+    <MainLayout>
       <ModalResponsive open={showModal} handleClose={() => setShowModal(false)}>
         <Grid container>
           <Grid
@@ -45,8 +58,21 @@ export default function Card() {
               }}
             />
           </Grid>
+          <Grid
+            item
+            xs={12}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Button variant="primary" onClick={handleSocketEmit}>
+              Emitir
+            </Button>
+          </Grid>
         </Grid>
       </ModalResponsive>
-    </>
+    </MainLayout>
   );
 }
