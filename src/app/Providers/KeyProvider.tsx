@@ -1,43 +1,25 @@
-// src/app/Providers/KeyProvider.tsx
 'use client';
 
 import React, { useEffect } from 'react';
+import NodeRSA from 'node-rsa';
 import { useKeyStore } from '@/store/keyStore';
-import { useApi } from '@/hooks/useApi';
 import { setKeyPair } from '@/utils/api';
+import { removePEMHeadersAndFooters } from '@/utils/jwt';
 import { ChildrenProps } from '@/interfaces/constant';
-import { JSEncrypt } from 'jsencrypt';
 
 export const KeyProvider: React.FC<ChildrenProps> = ({ children }) => {
   const { publicKey, privateKey, setKeys } = useKeyStore();
-  const api = useApi();
 
   useEffect(() => {
     if (!publicKey || !privateKey) {
-      // const generateKeys = () => {
-      //   try {
-      //     console.log('Generando par de claves RSA...');
-      //     // Crea una instancia de JSEncrypt
-      //     const crypt = new JSEncrypt({ default_key_size: '2048' });
-
-      //     // Genera el par de claves
-      //     const publicK = crypt.getPublicKey();
-      //     const privateK = crypt.getPrivateKey();
-      //     console.log('Clave pública:', publicK);
-      //     console.log('Clave privada:', privateK);
-
-      //     setKeys({ publicKey: publicK, privateKey: privateK });
-      //     setKeyPair(privateK, publicK);
-      //   } catch (error) {
-      //     console.error('Error al obtener las claves:', error);
-      //   }
-      // };
-      const fetchKeys = async () => {
+      const generateKeys = () => {
         try {
           console.log('Generando par de claves RSA...');
-          const response = await api.get('/auth/generate-keys');
-          const { publicKey, privateKey } = response.data;
-
+          const keypair = new NodeRSA({ b: 2048 });
+          const privateKey = removePEMHeadersAndFooters(keypair.exportKey('pkcs8-private-pem'));
+          const publicKey = removePEMHeadersAndFooters(keypair.exportKey('pkcs8-public-pem'));
+          console.log('Clave pública:', publicKey);
+          console.log('Clave privada:', privateKey);
           setKeys({ publicKey, privateKey });
           setKeyPair(privateKey, publicKey);
         } catch (error) {
@@ -45,8 +27,7 @@ export const KeyProvider: React.FC<ChildrenProps> = ({ children }) => {
         }
       };
 
-      fetchKeys();
-      // generateKeys();
+      generateKeys();
     }
   }, []);
 

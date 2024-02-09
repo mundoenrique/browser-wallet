@@ -29,7 +29,6 @@ export default function RootLayout({ children }: ChildrenProps) {
         <MuiProvider>
           <HydrationProvider>
             <KeyProvider>
-              {children}
               <JwtProvider>{children}</JwtProvider>
             </KeyProvider>
           </HydrationProvider>
