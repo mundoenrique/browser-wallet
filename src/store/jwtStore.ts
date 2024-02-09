@@ -1,5 +1,3 @@
-// src/store/jwtStore.ts
-
 import { JwtStoreProps } from '@/interfaces/store';
 import { create } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';

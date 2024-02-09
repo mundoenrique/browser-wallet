@@ -1,5 +1,3 @@
-// src/store/keyStore.ts
-
 import { create } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import { KeyStoreProps } from '@/interfaces/store';
