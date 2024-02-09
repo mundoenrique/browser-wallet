@@ -30,6 +30,9 @@ export async function signJWT(
   expiresIn: string | number | Date = '2h'
 ): Promise<string> {
   try {
+    if (!hasPEMHeadersAndFooters(privateKey)) {
+      privateKey = addPEMHeadersAndFooters(privateKey, 'private');
+    }
     const key = await importPKCS8(privateKey, JWT_ALG);
     const jwt = await new SignJWT(payload)
       .setProtectedHeader({ alg: JWT_ALG })
@@ -56,6 +59,9 @@ export async function signJWT(
  */
 export async function verifyJWT(jwt: string | Uint8Array, publicKey: string): Promise<JWTPayload> {
   try {
+    if (!hasPEMHeadersAndFooters(publicKey)) {
+      publicKey = addPEMHeadersAndFooters(publicKey, 'public');
+    }
     const key = await importSPKI(publicKey, JWT_ALG);
     const { payload } = await jwtVerify(jwt, key, {
       issuer: ISSUER,
@@ -80,7 +86,9 @@ export async function verifyJWT(jwt: string | Uint8Array, publicKey: string): Pr
 export async function encryptJWE(payload: object, publicKey: string): Promise<string> {
   try {
     console.log('encript JWE, publicKey:', publicKey);
-
+    if (!hasPEMHeadersAndFooters(publicKey)) {
+      publicKey = addPEMHeadersAndFooters(publicKey, 'public');
+    }
     const plaintext = encode(JSON.stringify(payload));
     const key = await importSPKI(publicKey, JWE_ALG);
     const jwe = await new CompactEncrypt(plaintext).setProtectedHeader({ alg: JWE_ALG, enc: 'A256GCM' }).encrypt(key);
@@ -103,7 +111,9 @@ export async function encryptJWE(payload: object, publicKey: string): Promise<st
 export async function decryptJWE(jwe: string, privateKey: string): Promise<object> {
   try {
     console.log('decript JWE, privateKey:', privateKey);
-
+    if (!hasPEMHeadersAndFooters(privateKey)) {
+      privateKey = addPEMHeadersAndFooters(privateKey, 'private');
+    }
     const key = await importPKCS8(privateKey, JWE_ALG);
     const { plaintext } = await compactDecrypt(jwe, key);
 
@@ -125,7 +135,9 @@ export async function decryptJWE(jwe: string, privateKey: string): Promise<objec
 export async function signJWE(privateKey: string, jwe: string): Promise<string> {
   try {
     console.log('sign JWE, privateKey:', privateKey);
-
+    if (!hasPEMHeadersAndFooters(privateKey)) {
+      privateKey = addPEMHeadersAndFooters(privateKey, 'private');
+    }
     const key = await importPKCS8(privateKey, JWS_ALG);
     const jws = await new CompactSign(encode(jwe)).setProtectedHeader({ alg: JWS_ALG }).sign(key);
     const parts = jws.split('.');
@@ -149,7 +161,9 @@ export async function signJWE(privateKey: string, jwe: string): Promise<string> 
 export async function verifyJWS(jws: string | Uint8Array, publicKey: string): Promise<boolean> {
   try {
     console.log('verifica JWS, publicKey:', publicKey);
-
+    if (!hasPEMHeadersAndFooters(publicKey)) {
+      publicKey = addPEMHeadersAndFooters(publicKey, 'public');
+    }
     const key = await importSPKI(publicKey, JWS_ALG);
     await compactVerify(jws, key);
 
@@ -186,4 +200,43 @@ export async function verifyDetachedJWS(jws: string | null, publicKey: string, p
   } catch (error) {
     throw new Error('Hubo un error al verificar el JWS:' + (error as Error).message);
   }
+}
+
+/**
+ * Verifies if a key has the typical PEM headers and footers.
+ *
+ * @param key - The key to verify.
+ * @returns `true` if the key has the headers and footers, `false` otherwise.
+ */
+export function hasPEMHeadersAndFooters(key: string): boolean {
+  const pemHeaders = ['-----BEGIN PUBLIC KEY-----', '-----BEGIN PRIVATE KEY-----'];
+  const pemFooters = ['-----END PUBLIC KEY-----', '-----END PRIVATE KEY-----'];
+
+  return pemHeaders.some((header) => key.includes(header)) && pemFooters.some((footer) => key.includes(footer));
+}
+
+/**
+ * Removes the PEM header and footer from an RSA key.
+ *
+ * @param key - The RSA key with headers and footers.
+ * @returns The RSA key without headers and footers.
+ */
+export function removePEMHeadersAndFooters(key: string): string {
+  const lines = key.split('\n');
+  const start = lines.findIndex((line) => line.includes('BEGIN'));
+  const end = lines.findIndex((line) => line.includes('END'));
+  return lines.slice(start + 1, end).join('');
+}
+
+/**
+ * Adds the PEM header and footer to an RSA key.
+ *
+ * @param key - The key content (without headers and footers).
+ * @param type - The type of the key (private or public).
+ * @returns The complete key with headers and footers.
+ */
+export function addPEMHeadersAndFooters(key: string, type: 'private' | 'public'): string {
+  const header = `-----BEGIN ${type.toUpperCase()} KEY-----\n`;
+  const footer = `\n-----END ${type.toUpperCase()} KEY-----\n`;
+  return `${header}${key}${footer}`;
 }
