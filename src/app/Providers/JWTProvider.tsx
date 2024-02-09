@@ -1,55 +1,33 @@
+// src/app/Providers/JwtProvider.tsx
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
-import { RSAKeyPairContext } from './RSAKeyPairProvider';
-import { ChildrenProps, IData, JWTContextProps } from '@/interfaces';
-import { verifyJWT } from '@/utils/jwt';
-import { setJwtToken } from '@/utils/api';
+import React, { useEffect } from 'react';
+import { useKeyStore, useJwtStore } from '@/store';
 import { useApi } from '@/hooks/useApi';
+import { ChildrenProps } from '@/interfaces/constant';
 
-export const JWTContext = createContext<JWTContextProps>({});
-
-export const JWTProvider = ({ children }: ChildrenProps) => {
-  const [token, setToken] = useState<string | null>(null);
-  const { publicKey } = useContext(RSAKeyPairContext);
-  const [loading, setLoading] = useState(true);
+export const JwtProvider: React.FC<ChildrenProps> = ({ children }) => {
+  const { publicKey } = useKeyStore();
+  const { token, setToken } = useJwtStore();
   const api = useApi();
-  const apiPublicKey = process.env.NEXT_PUBLIC_KEY;
-
-  const getToken = async () => {
-    if (publicKey && apiPublicKey) {
-      try {
-        console.log('Obteniendo JWT Token...');
-
-        const { data: payload }: { data: IData<string> } = await api.post('/auth/get-token', { publicKey });
-        const jwt = payload.data as string;
-
-        try {
-          const auth = await verifyJWT(jwt, apiPublicKey);
-          if (auth) {
-            setToken(jwt);
-            setJwtToken(jwt);
-          }
-        } catch (error) {
-          console.error('Error al verificar el JWT: ', error);
-        }
-      } catch (error) {
-        console.error('Error al obtener el token: ', error);
-      }
-    }
-    setLoading(false);
-  };
-
-  const updateToken = (newToken: string) => {
-    setToken(newToken);
-    setJwtToken(newToken);
-  };
 
   useEffect(() => {
-    if (!token) {
-      getToken();
-    }
-  }, [publicKey, apiPublicKey]);
+    if (publicKey && !token) {
+      const generateJwtToken = async () => {
+        try {
+          console.log('Generando token JWT...');
+          const response = await api.post('/auth/get-token', { publicKey });
+          const token = response.data.data as string;
 
-  return <JWTContext.Provider value={{ token, updateToken }}>{children}</JWTContext.Provider>;
+          setToken(token);
+        } catch (error) {
+          console.error('Error al generar el token JWT:', error);
+        }
+      };
+
+      generateJwtToken();
+    }
+  }, [publicKey]);
+
+  return <>{children}</>;
 };
