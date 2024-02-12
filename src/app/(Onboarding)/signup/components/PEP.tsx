@@ -30,6 +30,7 @@ export default function PEP() {
   const [isPep, setIsPep] = useState(false);
   const [hasParents, setHasParents] = useState(false);
   const [showParentModal, setShowParentModal] = useState(false);
+  const [showPepInfo, setShowPepInfo] = useState(false);
   const [parentIndex, setParentIndex] = useState(-1);
 
   const { dec, inc, updateFormState, pepFormState, setShowHeader } = useSignupStore();
@@ -113,7 +114,14 @@ export default function PEP() {
           <Typography variant="subtitle1" align="center">
             Queremos saber más de ti
           </Typography>
-          <Typography variant="body2" align="center" sx={{ textDecoration: 'underline' }}>
+          <Typography
+            variant="body2"
+            align="center"
+            sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+            onClick={() => {
+              setShowPepInfo(true);
+            }}
+          >
             ¿Eres una Persona Políticamente Expuesta (PEP)?
             <br />
             ¿Trabajas en entidades gubernamentales?
@@ -226,6 +234,23 @@ export default function PEP() {
           </Button>
         </Box>
       </Box>
+      <ModalResponsive
+        open={showPepInfo}
+        handleClose={() => {
+          setShowPepInfo(false);
+        }}
+      >
+        <Box>
+          <Typography variant="subtitle1" sx={{ marginBottom: '16px' }}>
+            🧑¿Qué es una Persona Expuesta Políticamente(PEP)?
+          </Typography>
+          <Typography>
+            Son aquellas personas que ocupan o han ocupado en los últimos 5 años funciones públicas destacadas o
+            funciones prominentes en una organización internacional (en el Perú o en el extranjero) y cuyas
+            circunstancias financieras pueden ser objeto de interés público.
+          </Typography>
+        </Box>
+      </ModalResponsive>
       <ModalResponsive
         open={showParentModal}
         handleClose={() => {
