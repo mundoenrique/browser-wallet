@@ -30,3 +30,5 @@ export { default as CardDetails } from './cards/CardDetails';
 export { default as CardInformation } from './cards/cardInformation/CardInformation';
 //tables
 export { default as LastMovements } from './tables/LastMovements';
+//accordions
+export { default as Accordions } from './Accordions';
