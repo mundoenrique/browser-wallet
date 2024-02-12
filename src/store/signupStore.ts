@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { devtools, persist, createJSONStorage } from 'zustand/middleware';
+import { SignupStore } from '@/interfaces';
 
 export const useSignupStore = create<SignupStore>()(
   devtools(
