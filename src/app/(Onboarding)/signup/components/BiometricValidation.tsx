@@ -1,16 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Box, Typography } from '@mui/material';
 
 //Internal app
 import LogoGreen from '%/images/LogoGreen';
 import { PurpleLayout } from '@/components';
-import { useSignupStore } from '@/store/volatileStore';
+import { useSignupStore } from '@/store/signupStore';
 
 export default function BiometricValidation() {
-  const { inc }: any = useSignupStore();
+  const { updateStep, setShowHeader } = useSignupStore();
   const [statusStep, setStatusStep] = useState<number>(0);
+  const initial = useRef(false);
 
   //TODO:timeEvent es de implementacion temporal
   const timeEvent = (time: number) =>
@@ -25,12 +26,18 @@ export default function BiometricValidation() {
       timeEvent(3000)
         .then(() => {
           setStatusStep(statusStep + 1);
+
           return timeEvent(1500);
         })
         .then(() => {
-          inc();
+          !initial.current && updateStep(10);
+          initial.current = true;
         });
     })();
+  }, [statusStep]);
+
+  useEffect(() => {
+    setShowHeader(false);
   }, []);
 
   return (

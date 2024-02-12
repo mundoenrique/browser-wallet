@@ -4,11 +4,11 @@ import Image from 'next/image';
 import { Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import selfiePwa from '%/images/arts/selfiePwa.svg';
-import { useSignupStore } from '@/store/volatileStore';
+import { useSignupStore } from '@/store/signupStore';
 import selfieDesktop from '%/images/arts/selfieDesktop.svg';
 
 export default function SelfieInfo() {
-  const { dec, inc }: any = useSignupStore();
+  const { dec, inc } = useSignupStore();
   const theme = useTheme();
   const matcha = useMediaQuery(theme.breakpoints.up('sm'));
 

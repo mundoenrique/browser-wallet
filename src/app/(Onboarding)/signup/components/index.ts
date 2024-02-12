@@ -9,3 +9,4 @@ export { default as SignupStepper } from './SignupStepper';
 export { default as PasswordCreation } from './PasswordCreation';
 export { default as InfoVerification } from './InfoVerification';
 export { default as CelularValidation } from './CelularValidation';
+export { default as Ending } from './Ending';

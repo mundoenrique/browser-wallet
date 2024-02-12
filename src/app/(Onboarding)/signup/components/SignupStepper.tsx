@@ -3,12 +3,11 @@
 import { Box } from '@mui/material';
 //Internal app
 import { NavExternal } from '@/components';
-
-let rendering = 0;
+import { useSignupStore } from '@/store/signupStore';
 
 export default function SignupStepper(props: { currentStep: number; children: JSX.Element[] }) {
   const { currentStep, children } = props;
-  rendering++;
+  const { showHeader } = useSignupStore();
   return (
     <Box
       sx={{
@@ -19,7 +18,7 @@ export default function SignupStepper(props: { currentStep: number; children: JS
         flexDirection: 'column',
       }}
     >
-      {currentStep < 7 && <NavExternal image closeApp />}
+      {showHeader && <NavExternal image closeApp />}
 
       {children[currentStep]}
     </Box>

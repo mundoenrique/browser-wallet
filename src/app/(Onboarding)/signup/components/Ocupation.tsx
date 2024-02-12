@@ -7,17 +7,17 @@ import { Box, Button, Collapse, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
 import { InputSelect, InputText } from '@/components';
-import { useSignupStore } from '@/store/volatileStore';
+import { useSignupStore } from '@/store/signupStore';
 
 export default function Ocupation() {
   const [ocupations, setOcupations] = useState(false);
-  const { updateStep, inc }: any = useSignupStore();
+  const { updateStep, inc, updateFormState, ocupationFormState }: any = useSignupStore();
   const schema = ocupations
     ? getSchema(['ocupation', 'enterpriseType', 'enterprises', 'position'])
     : getSchema(['ocupation']);
 
   const { handleSubmit, control, watch, reset, getValues } = useForm({
-    defaultValues: {
+    defaultValues: ocupationFormState || {
       ocupation: 'pi',
       enterpriseType: 'prv',
       enterprises: '',
@@ -43,6 +43,7 @@ export default function Ocupation() {
   }, [getValues, personOcupation, reset]);
 
   const onSubmit = (data: any) => {
+    updateFormState('ocupationFormState', data);
     inc();
   };
 
