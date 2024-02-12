@@ -15,7 +15,7 @@ export default function ItemsSidebar() {
   const itemMenu = matche
     ? [
         {
-          item: 'Home',
+          item: 'Inicio',
           url: '/dashboard',
           icon: <HomeIcons />,
           id: 'home',
@@ -58,7 +58,7 @@ export default function ItemsSidebar() {
         },
         {
           item: 'Términos y condiciones',
-          url: '/dashboard/terms-conditions',
+          url: '/dashboard/legal',
           icon: <FileIcons />,
           id: 'terms',
         },
@@ -84,7 +84,7 @@ export default function ItemsSidebar() {
         },
         {
           item: 'Términos y condiciones',
-          url: '/dashboard/terms-conditions',
+          url: '/dashboard/legal',
           icon: <FileIcons />,
           id: 'terms',
         },

@@ -42,7 +42,7 @@ export default function AuthOtp() {
           text="Hemos enviado por tu seguridad un código SMS a tu celular *** *** 1214. Ingrésalo aquí."
         />
       </Box>
-      <Button variant="contained" type="submit" sx={{ maxWidth: 284, width: '100%', mx: 'auto' }}>
+      <Button variant="contained" type="submit" sx={{ maxWidth: 284, width: '100%', mx: 'auto', mb: 3 }}>
         Continuar
       </Button>
     </Box>

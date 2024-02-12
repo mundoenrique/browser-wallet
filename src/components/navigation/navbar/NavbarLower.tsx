@@ -12,7 +12,7 @@ export default function NavbarLower() {
 
   const itemMenu = [
     {
-      item: 'Home',
+      item: 'Inicio',
       url: '/dashboard',
       icon: <HomeIcons />,
       id: 'home',

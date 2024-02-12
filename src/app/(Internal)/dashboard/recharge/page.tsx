@@ -34,7 +34,7 @@ export default function Recharge() {
   };
 
   return (
-    <Box sx={{ width: 320, textAlign: 'center', mx: 3, mt: { md: 29 } }}>
+    <Box sx={{ width: 320, textAlign: 'center', mx: { xs: 'auto', md: 3 }, mt: { md: 29 } }}>
       <Typography
         variant="h6"
         color="primary"
