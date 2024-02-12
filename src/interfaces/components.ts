@@ -41,7 +41,28 @@ export interface SidebarProps {
   onClose: () => void;
 }
 
+export interface ItemSecondarySidebar {
+  color?: boolean;
+  text: string;
+  icon: React.ReactNode;
+}
+
 export interface StepperProps {
   children: React.ReactNode;
   stepNumber: string;
+}
+
+export interface BackInformationProps {
+  hideDetails: () => void;
+  holder: string;
+  cardNumber: string;
+  expDate: string;
+  cvc: string;
+}
+
+export interface FrontInformationProps {
+  showDetails: () => void;
+  cardNumber: string;
+  balance: string;
+  holder: string;
 }
