@@ -1,3 +1,11 @@
+/**
+ * User information page.
+ *
+ * @description Page simulates the card information to be validated.
+ * @param {function} handleSocketEmit - Test event for broadcasting through a button
+ * @returns {JSX.Element} The rendered page.
+ */
+
 'use client';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import React, { useState } from 'react';

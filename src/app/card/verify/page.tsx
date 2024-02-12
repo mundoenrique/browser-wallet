@@ -1,3 +1,11 @@
+/**
+ * User verification page.
+ *
+ * @description This page is used to verify the user's card.
+ * @param {function} handleSocketEmit - issues user information
+ * @returns {JSX.Element} The rendered page.
+ */
+
 'use client';
 
 import { useQrStore } from '@/store/qrstore';

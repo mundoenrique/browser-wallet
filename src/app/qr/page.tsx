@@ -1,3 +1,12 @@
+/**
+ * QR page.
+ *
+ * @description Page that generates the QR that redirects to reader.
+ * @param {state} setUser - user information
+ * @param {function} readCodeFunction - Capture the information, save and redirect
+ * @returns {JSX.Element} The rendered page.
+ */
+
 'use client';
 
 //Internal app

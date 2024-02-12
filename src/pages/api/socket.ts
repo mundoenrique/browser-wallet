@@ -1,4 +1,11 @@
-import axios from 'axios';
+/**
+ * Web socket configuration.
+ *
+ * @param res - Request.
+ * @returns Events.
+ * @throws An error occurs when not pointing to the web socket path..
+ */
+
 import { Server, Socket } from 'socket.io';
 
 const sockets: Record<string, Socket> = {};
@@ -25,18 +32,6 @@ export default function handler(req: any, res: any) {
       console.log('Usuario desconectado:', socket.id);
       delete sockets[socket.id];
     });
-
-    // Listen to the API and issue changes to clients
-    // setInterval(async () => {
-    //   try {
-    //     const response = await axios.get('https://api-services-kfmf.onrender.com/cards/4/movements');
-    //     const data = response.data;
-
-    //     io.emit('movementsChange', data);
-    //   } catch (error) {
-    //     console.error('Error al obtener datos de la API:', error);
-    //   }
-    // }, 5000);
 
     socket.on('sendData', (user) => {
       console.log('Datos del cliente - socket:', user);
