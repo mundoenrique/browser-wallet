@@ -3,8 +3,8 @@
 import { Box, Button, Typography } from '@mui/material';
 
 //Internal app
-import { useSignupStore } from '@/store/signupStore';
 import { InputText } from '@/components';
+import { useSignupStore } from '@/store';
 
 export default function SelfieUpload() {
   const { dec, inc } = useSignupStore();

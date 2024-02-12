@@ -4,9 +4,9 @@ import { useEffect, useState, useRef } from 'react';
 import { Box, Typography } from '@mui/material';
 
 //Internal app
+import { useSignupStore } from '@/store';
 import LogoGreen from '%/images/LogoGreen';
 import { PurpleLayout } from '@/components';
-import { useSignupStore } from '@/store/signupStore';
 
 export default function BiometricValidation() {
   const { updateStep, setShowHeader } = useSignupStore();

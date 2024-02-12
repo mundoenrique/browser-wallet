@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import { Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
+import { useSignupStore } from '@/store';
 import selfiePwa from '%/images/arts/selfiePwa.svg';
-import { useSignupStore } from '@/store/signupStore';
 import selfieDesktop from '%/images/arts/selfieDesktop.svg';
 
 export default function SelfieInfo() {

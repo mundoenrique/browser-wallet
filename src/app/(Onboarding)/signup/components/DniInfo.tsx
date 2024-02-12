@@ -3,9 +3,9 @@
 import Image from 'next/image';
 import { Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
+import { useSignupStore } from '@/store';
 import dniPwa from '%/images/arts/dniPwa.svg';
 import dniDesktop from '%/images/arts/dniDesktop.svg';
-import { useSignupStore } from '@/store/signupStore';
 
 export default function DniInfo() {
   const { dec, inc } = useSignupStore();

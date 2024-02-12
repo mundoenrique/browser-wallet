@@ -3,7 +3,7 @@
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { InputText } from '@/components';
-import { useSignupStore } from '@/store/signupStore';
+import { useSignupStore } from '@/store';
 
 export default function DniUpload() {
   const { dec, inc } = useSignupStore();

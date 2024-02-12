@@ -1,10 +1,10 @@
 'use client';
 
+import { useEffect } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { FormPass } from '@/components';
-import { useSignupStore } from '@/store/signupStore';
-import { useEffect } from 'react';
+import { useSignupStore } from '@/store';
 
 export default function PasswordCreation() {
   const { updateStep, inc, setShowHeader } = useSignupStore();

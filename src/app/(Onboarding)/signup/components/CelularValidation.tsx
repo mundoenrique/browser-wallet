@@ -6,7 +6,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { getSchema } from '@/config';
 import { Box, Button } from '@mui/material';
 import InputOTP from '@/components/form/InputOTP';
-import { useSignupStore } from '@/store/signupStore';
 
 export default function CelularValidation() {
   const schema = getSchema(['otp']);

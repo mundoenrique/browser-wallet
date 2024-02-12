@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 import { Box } from '@mui/material';
 
 //Internal app
+import { useSignupStore } from '@/store';
 import LogoGreen from '%/images/LogoGreen';
 import { PurpleLayout } from '@/components';
-import { useSignupStore } from '@/store/signupStore';
 
 export default function Ending() {
   const { setShowHeader } = useSignupStore();

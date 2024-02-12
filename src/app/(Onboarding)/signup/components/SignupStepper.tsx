@@ -2,8 +2,8 @@
 
 import { Box } from '@mui/material';
 //Internal app
+import { useSignupStore } from '@/store';
 import { NavExternal } from '@/components';
-import { useSignupStore } from '@/store/signupStore';
 
 export default function SignupStepper(props: { currentStep: number; children: JSX.Element[] }) {
   const { currentStep, children } = props;

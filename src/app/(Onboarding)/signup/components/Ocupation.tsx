@@ -6,8 +6,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Collapse, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
+import { useSignupStore } from '@/store';
 import { InputSelect, InputText } from '@/components';
-import { useSignupStore } from '@/store/signupStore';
 
 export default function Ocupation() {
   const [ocupations, setOcupations] = useState(false);

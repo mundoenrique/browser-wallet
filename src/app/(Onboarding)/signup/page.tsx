@@ -2,8 +2,8 @@
 
 import { Card, Typography, useMediaQuery, useTheme } from '@mui/material';
 // Internal app
+import { useSignupStore } from '@/store';
 import { StepperProps } from '@/interfaces';
-import { useSignupStore } from '@/store/signupStore';
 import BiometricValidation from './components/BiometricValidation';
 import {
   SignupStepper,

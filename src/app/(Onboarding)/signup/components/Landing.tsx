@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import { Button, Box, Typography } from '@mui/material';
 //Internal app
+import { useSignupStore } from '@/store';
 import LogoPurple from '%/images/LogoPurple';
 import welcome from '%/images/arts/Stage01.png';
-import { useSignupStore } from '@/store/signupStore';
 
 export default function Landing() {
   const { inc, setShowHeader }: any = useSignupStore();

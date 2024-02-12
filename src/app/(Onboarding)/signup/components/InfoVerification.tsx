@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Card, Chip, Divider, Typography } from '@mui/material';
 //internal app
 import { getSchema } from '@/config';
-import { useSignupStore } from '@/store/signupStore';
+import { useSignupStore } from '@/store';
 import { InputCheck, InputText, ModalResponsive, InputSelect } from '@/components';
 
 //TODO: data de ejemplo
