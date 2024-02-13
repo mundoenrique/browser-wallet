@@ -12,7 +12,8 @@ import { InputPass, ModalResponsive } from '@/components';
 
 export default function ChangePassword() {
   const { updateTitle }: any = useNavTitleStore();
-  const [open, setOpen] = useState(false);
+  const [openOtp, setOpenOtp] = useState(false);
+  const [openRc, setOpenRc] = useState(false);
   const schemaFormPassword = getSchema(['newPassword', 'newPasswordConfirmation', 'currentPassword']);
   const schemaFormOtp = getSchema(['otp']);
 
@@ -36,12 +37,13 @@ export default function ChangePassword() {
 
   const onSubmit = async (data: any) => {
     console.log(data);
-    setOpen(true);
+    setOpenOtp(true);
   };
 
   const onSubmitOtp = async (data: any) => {
     console.log(data);
-    setOpen(false);
+    setOpenOtp(false);
+    setOpenRc(true);
     resetFormOtp();
   };
 
@@ -81,7 +83,7 @@ export default function ChangePassword() {
         </Box>
       </Box>
 
-      <ModalResponsive open={open} handleClose={() => setOpen(false)}>
+      <ModalResponsive open={openOtp} handleClose={() => setOpenOtp(false)}>
         <Box component="form" onSubmit={handleFormOtp(onSubmitOtp)}>
           <Box mb={3}>
             <InputOTP
@@ -96,6 +98,10 @@ export default function ChangePassword() {
             Continuar
           </Button>
         </Box>
+      </ModalResponsive>
+
+      <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>
+        <Typography variant="subtitle2">🥳 Actualización exitosa</Typography>
       </ModalResponsive>
     </>
   );
