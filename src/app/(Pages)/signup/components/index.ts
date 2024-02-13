@@ -1,4 +1,5 @@
 export { default as PEP } from './PEP';
+export { default as Ending } from './Ending';
 export { default as Landing } from './Landing';
 export { default as DniInfo } from './DniInfo';
 export { default as DniUpload } from './DniUpload';
@@ -9,4 +10,3 @@ export { default as SignupStepper } from './SignupStepper';
 export { default as PasswordCreation } from './PasswordCreation';
 export { default as InfoVerification } from './InfoVerification';
 export { default as CelularValidation } from './CelularValidation';
-export { default as Ending } from './Ending';

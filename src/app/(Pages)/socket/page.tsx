@@ -12,9 +12,10 @@
 'use client';
 
 import io from 'socket.io-client';
-import { Grid, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
 import { useQRCode } from 'next-qrcode';
+import { useEffect, useState } from 'react';
+import { Grid, Typography } from '@mui/material';
+//Internal app
 import { MainLayout, ModalResponsive } from '@/components';
 
 let socket: any;

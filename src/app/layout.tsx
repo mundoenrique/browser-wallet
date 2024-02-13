@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 //Internal app
 import { ChildrenProps } from '@/interfaces';
-import { HydrationProvider, MuiProvider } from './Providers';
+import { HydrationProvider, MuiProvider } from '@/components';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

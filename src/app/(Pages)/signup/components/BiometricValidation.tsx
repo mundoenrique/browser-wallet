@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
 import { Box, Typography } from '@mui/material';
-
+import { useEffect, useState, useRef } from 'react';
 //Internal app
 import { useSignupStore } from '@/store';
 import LogoGreen from '%/images/LogoGreen';

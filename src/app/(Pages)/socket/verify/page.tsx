@@ -8,9 +8,11 @@
 
 'use client';
 
-import { useQrStore } from '@/store/qrstore';
 import { useEffect } from 'react';
 import io from 'socket.io-client';
+import { Typography } from '@mui/material';
+//Internal app
+import { useQrStore } from '@/store/qrstore';
 
 let socket: any;
 
@@ -32,8 +34,8 @@ export default function VerifyCard() {
 
   return (
     <>
-      <h1>VerifyCard</h1>
-      <h3>{user}</h3>
+      <Typography variant="h1">VerifyCard</Typography>
+      <Typography variant="h3">{user}</Typography>
     </>
   );
 }

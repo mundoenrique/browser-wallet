@@ -26,7 +26,7 @@ export default function Navbar(props: NavbarProps) {
         height: 60,
       }}
     >
-      <Toolbar sx={{ minHeight: 60, justifyContent: dashboardNav ? 'space-between' : 'flex-start' }}>
+      <Toolbar sx={{ minHeight: 60, justifyContent: 'space-between' }}>
         <IconButton
           color="inherit"
           aria-label="open drawer"

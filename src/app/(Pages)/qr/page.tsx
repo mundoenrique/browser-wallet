@@ -9,10 +9,10 @@
 
 'use client';
 
+import { useRouter } from 'next/navigation';
 //Internal app
 import { QRCodeReader } from '@/components';
 import { useQrStore } from '@/store/qrstore';
-import { useRouter } from 'next/navigation';
 
 export default function Qr() {
   const router = useRouter();
@@ -22,7 +22,7 @@ export default function Qr() {
     return new Promise((resolve) => {
       console.log('readCodeFunction-pageQR:', data);
       setUser(data);
-      router.push('/card/verify');
+      router.push('/socket/verify');
       resolve(data);
     });
   };

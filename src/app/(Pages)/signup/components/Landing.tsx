@@ -1,7 +1,7 @@
 'use client';
-import { useEffect } from 'react';
 
 import Image from 'next/image';
+import { useEffect } from 'react';
 import { Button, Box, Typography } from '@mui/material';
 //Internal app
 import { useSignupStore } from '@/store';

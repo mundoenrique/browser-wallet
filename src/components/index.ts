@@ -32,3 +32,6 @@ export { default as CardInformation } from './cards/cardInformation/CardInformat
 export { default as LastMovements } from './tables/LastMovements';
 //accordions
 export { default as Accordions } from './Accordions';
+//providers
+export { default as MuiProvider } from './providers/MuiProvider';
+export { default as HydrationProvider } from './providers/HydrationProvider';

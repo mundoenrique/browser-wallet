@@ -7,11 +7,12 @@
  */
 
 'use client';
-import { Box, Button, Grid, Typography } from '@mui/material';
-import React, { useState } from 'react';
-import { useQRCode } from 'next-qrcode';
-import { MainLayout, ModalResponsive } from '@/components';
+import { useState } from 'react';
 import io from 'socket.io-client';
+import { useQRCode } from 'next-qrcode';
+import { Button, Grid, Typography } from '@mui/material';
+//Internal app
+import { MainLayout, ModalResponsive } from '@/components';
 
 let socket: any;
 
