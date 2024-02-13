@@ -19,7 +19,7 @@ export default function CardInformation() {
         <FrontInformation
           showDetails={handleShowDetails}
           cardNumber="4577 ···· ···· 4321"
-          balance="1,200.000.00"
+          balance="10.000.000.00"
           holder="Roberto Gallardo"
         />
         <BackInformation

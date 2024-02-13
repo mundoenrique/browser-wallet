@@ -29,27 +29,21 @@ export default function FrontInformation(props: FrontInformationProps) {
           <Box mb={1}>
             <Button sx={{ height: 0, minWidth: 0, p: 0 }} onClick={showDetails}>
               <Visibility sx={{ pr: 1 }} />
-              Ver todo
+              <Typography variant="caption" sx={{ textDecoration: 'underline', color: 'white' }}>
+                Ver número
+              </Typography>
             </Button>
-            <Typography variant="body1" color="white" fontWeight={400}>
+            <Typography variant="body1" color="white" fontWeight={400} sx={{ opacity: 0.5 }}>
               {cardNumber}
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <Box width={110}>
+          <Box sx={{ display: 'flex', gap: 1, opacity: 0.5 }}>
+            <Box width={130}>
               <Typography variant="body2" color="white">
                 Disponible
               </Typography>
               <Typography variant="body1" color="white" fontWeight={400} noWrap>
                 S/ {balance}
-              </Typography>
-            </Box>
-            <Box width={80}>
-              <Typography variant="body2" color="white">
-                Titular
-              </Typography>
-              <Typography variant="body1" color="white" fontWeight={400} noWrap>
-                {holder}
               </Typography>
             </Box>
           </Box>
