@@ -77,11 +77,11 @@ export const validationRules: ValidationRule = {
   country: yup.string().required('Selecciona un país'),
   term: yup.string().required('Acepta los terminos'),
   policy: yup.string().required('Acepta los terminos'),
-  otp: yup.string().required('Ingrese un código'),
+  otp: yup.string().required('Ingrese un código').min(4, 'El código es de 4 digitos'),
   currentPassword: passwordValidation('Ingrese una contraseña'),
   newPassword: passwordValidation('Ingresa una nueva contraseña').notOneOf(
     [yup.ref('currentPassword')],
-    'La nueva contraseña debe ser diferente a la actual'
+    'Está contraseña debe ser diferente a la actual'
   ),
   newPasswordConfirmation: passwordValidation('Confirma tu nueva contraseña').oneOf(
     [yup.ref('newPassword')],
