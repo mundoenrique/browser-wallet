@@ -17,7 +17,6 @@ export default function Legal() {
       <Typography
         variant="h6"
         color="primary"
-        mb={6}
         sx={{ color: 'primary.main', mb: 6, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
       >
         Términos y condiciones

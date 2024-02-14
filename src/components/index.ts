@@ -26,8 +26,10 @@ export { default as LoginLayout } from './layout/LoginLayout';
 export { default as PurpleLayout } from './layout/PurpleLayout';
 //cards
 export { default as CardDebt } from './cards/CardDebt';
+export { default as HandleCard } from './cards/HandleCard';
 export { default as CardDetails } from './cards/CardDetails';
 export { default as CardInformation } from './cards/cardInformation/CardInformation';
+
 //tables
 export { default as LastMovements } from './tables/LastMovements';
 //accordions

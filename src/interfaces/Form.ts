@@ -96,6 +96,7 @@ export interface SwitchListProps extends FormMUIProps {
   checked?: boolean;
   setValue?: any;
   disabled?: boolean;
+  fullWidth?: boolean;
 }
 
 export interface InputsHandlePasswordProps extends FormMUIProps {

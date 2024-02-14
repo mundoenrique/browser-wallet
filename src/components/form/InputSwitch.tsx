@@ -6,16 +6,17 @@ import { FormControl, FormControlLabel, Switch } from '@mui/material';
 import { SwitchListProps } from '@/interfaces';
 
 function SwitchMUI(props: SwitchListProps): JSX.Element {
-  const { name, onChange, value, label, disabled, checked } = props;
+  const { name, onChange, value, label, disabled, checked, fullWidth } = props;
 
   return (
-    <FormControl component="fieldset" variant="standard" fullWidth>
+    <FormControl component="fieldset" variant="standard" fullWidth={fullWidth}>
       <FormControlLabel
         value={value}
         label={label}
         name={name}
         disabled={disabled}
         checked={checked}
+        sx={{ m: 0 }}
         control={<Switch focusVisibleClassName=".Mui-focusVisible" onChange={onChange} />}
       />
     </FormControl>

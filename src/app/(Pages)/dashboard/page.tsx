@@ -5,10 +5,10 @@ import { Avatar, Box, Typography } from '@mui/material';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardDebt, CardInformation, LastMovements } from '@/components';
 
-const user = 'Andrea';
-const currentUser = user[0];
-
 export default function Dashboard() {
+  const user = 'Andrea';
+  const currentUser = user[0];
+
   return (
     <Box
       sx={{

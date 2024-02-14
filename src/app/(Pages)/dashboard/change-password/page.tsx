@@ -57,7 +57,6 @@ export default function ChangePassword() {
         <Typography
           variant="h6"
           color="primary"
-          mb={6}
           sx={{ color: 'primary.main', mb: 6, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
         >
           Cambiar contraseña
