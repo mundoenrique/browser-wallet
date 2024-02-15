@@ -13,11 +13,20 @@ export default function Legal() {
   }, []);
 
   return (
-    <Box sx={{ width: 320, mx: { xs: 'auto', md: 3 }, mt: { md: 29 } }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: { xs: 'flex-start', md: 'center' },
+        minHeight: '100vh',
+        mx: { xs: 'auto', md: 3 },
+        mt: 3,
+      }}
+    >
       <Typography
         variant="h6"
         color="primary"
-        sx={{ color: 'primary.main', mb: 6, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
+        sx={{ color: 'primary.main', mb: 6, display: { xs: 'none ', md: 'block' }, width: 320, textAlign: 'center' }}
       >
         Términos y condiciones
       </Typography>

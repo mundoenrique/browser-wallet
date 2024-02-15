@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect } from 'react';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import Arrow from '@mui/icons-material/ArrowBackIos';
 import { Box, Link as LinkMui, Stack, Typography } from '@mui/material';
 //Internal app
 import { Accordions } from '@/components';
@@ -29,7 +29,16 @@ export default function Questions() {
   }, []);
 
   return (
-    <Box sx={{ width: 320, mx: { xs: 'auto', md: 3 }, mt: { md: 29 } }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: { xs: 'flex-start', md: 'center' },
+        width: 320,
+        minHeight: '100vh',
+        mx: { xs: 'auto', md: 3 },
+      }}
+    >
       <Typography
         variant="h6"
         color="primary"
@@ -46,7 +55,7 @@ export default function Questions() {
         fontWeight={700}
         fontSize="12px"
       >
-        <ArrowBackIosIcon sx={{ mr: 2, width: 14, height: 14 }} />
+        <Arrow sx={{ mr: 2, width: 14, height: 14 }} />
         Volver
       </LinkMui>
 

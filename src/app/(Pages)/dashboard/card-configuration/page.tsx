@@ -27,7 +27,7 @@ export default function CardConfiguration() {
 
   return (
     <Box sx={{ width: 320, mx: { xs: 'auto', md: 3 } }}>
-      <Box sx={{ display: 'flex', mb: { xs: 2, md: 17 }, mt: { md: 5 } }}>
+      <Box sx={{ display: 'flex', mb: { xs: 2, md: 0 }, mt: { md: 5 } }}>
         <Avatar sx={{ width: '32px', height: '32px', bgcolor: fuchsiaBlue[400], mr: '12px' }}>{currentUser}</Avatar>
         <Box>
           <Typography variant="h6">¡Hola {user}! 👋</Typography>
@@ -35,41 +35,50 @@ export default function CardConfiguration() {
         </Box>
       </Box>
 
-      <Typography
-        variant="h6"
-        color="primary"
-        sx={{ color: 'primary.main', mb: 3, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: 'calc(100vh - 92px)',
+          justifyContent: { xs: 'flex-start', md: 'center' },
+        }}
       >
-        Configuración de mi tarjeta
-      </Typography>
-
-      <CardInformation />
-
-      <Stack spacing={3 / 2} mt={3}>
-        <HandleCard avatar={<CardIcons color="primary" sx={{ p: '2px' }} />} icon={<Arrow />}>
-          <Typography variant="subtitle2">Activa tu tarjeta física</Typography>
-        </HandleCard>
-
-        <HandleCard
-          avatar={<WebPageIcon color="primary" sx={{ p: '3px' }} />}
-          icon={<InputSwitch name="shopping" control={control} />}
+        <Typography
+          variant="h6"
+          color="primary"
+          sx={{ color: 'primary.main', mb: 3, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
         >
-          <Typography variant="subtitle2">Compras por internet</Typography>
-          <Typography fontSize={10}>Estatus: Activada</Typography>
-        </HandleCard>
+          Configuración de mi tarjeta
+        </Typography>
 
-        <HandleCard avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />} icon={<Arrow />}>
-          <Typography variant="subtitle2">Bloquear por perdida o robo</Typography>
-        </HandleCard>
+        <CardInformation />
 
-        <HandleCard avatar={<KeyIcons color="primary" sx={{ p: '2px' }} />} icon={<Arrow />}>
-          <Typography variant="subtitle2">Cambiar PIN</Typography>
-        </HandleCard>
+        <Stack spacing={3 / 2} mt={3}>
+          <HandleCard avatar={<CardIcons color="primary" sx={{ p: '2px' }} />} icon={<Arrow />}>
+            <Typography variant="subtitle2">Activa tu tarjeta física</Typography>
+          </HandleCard>
 
-        <HandleCard avatar={<PersonWrongIcon color="primary" sx={{ p: '2px' }} />} icon={<Arrow />}>
-          <Typography variant="subtitle2">Eliminar cuenta Yiro</Typography>
-        </HandleCard>
-      </Stack>
+          <HandleCard
+            avatar={<WebPageIcon color="primary" sx={{ p: '3px' }} />}
+            icon={<InputSwitch name="shopping" control={control} />}
+          >
+            <Typography variant="subtitle2">Compras por internet</Typography>
+            <Typography fontSize={10}>Estatus: Activada</Typography>
+          </HandleCard>
+
+          <HandleCard avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />} icon={<Arrow />}>
+            <Typography variant="subtitle2">Bloquear por perdida o robo</Typography>
+          </HandleCard>
+
+          <HandleCard avatar={<KeyIcons color="primary" sx={{ p: '2px' }} />} icon={<Arrow />}>
+            <Typography variant="subtitle2">Cambiar PIN</Typography>
+          </HandleCard>
+
+          <HandleCard avatar={<PersonWrongIcon color="primary" sx={{ p: '2px' }} />} icon={<Arrow />}>
+            <Typography variant="subtitle2">Eliminar cuenta Yiro</Typography>
+          </HandleCard>
+        </Stack>
+      </Box>
     </Box>
   );
 }

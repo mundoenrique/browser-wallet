@@ -78,3 +78,9 @@ export interface HandleCardProps {
   avatar: React.ReactNode;
   disabled?: boolean;
 }
+
+export interface ModalOtpProps {
+  handleClose: () => void;
+  open: boolean;
+  onSubmit: (data: any) => Promise<void>;
+}

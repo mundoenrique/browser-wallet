@@ -2,11 +2,10 @@
 
 import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import { FormControl, FormLabel, FormHelperText, Radio, FormControlLabel, RadioGroup, Box } from '@mui/material';
 //Internal App
 import { InputOptionsProps } from '@/interfaces';
+import { fuchsiaBlue } from '@/theme/theme-default';
 
 function InputRadioMUI(props: InputOptionsProps): JSX.Element {
   const { name, label, labelError, error, value, onChange, options, disabled, readOnly } = props;
@@ -19,28 +18,18 @@ function InputRadioMUI(props: InputOptionsProps): JSX.Element {
           <Box
             key={i}
             sx={{
-              bgcolor: value === option.value ? 'secondary.light' : 'white',
+              bgcolor: value === option.value ? 'secondary.light' : 'transparent',
               borderRadius: 1,
-              width: 154,
+              border: value === option.value ? `1px solid ${fuchsiaBlue[800]}` : 'none',
               height: 52,
-              display: 'flex',
-              justifyContent: 'center',
-              mx: '12px',
+              width: '100%',
             }}
           >
             <FormControlLabel
               value={option.value}
-              control={
-                <Radio
-                  disabled={disabled}
-                  readOnly={readOnly}
-                  id={name + option.value}
-                  checkedIcon={<CheckBoxIcon />}
-                  icon={<CheckBoxOutlineBlankIcon />}
-                />
-              }
+              control={<Radio disabled={disabled} readOnly={readOnly} id={name + option.value} />}
               label={option.text}
-              sx={{ m: 0, p: 0, width: '100%', justifyContent: 'center' }}
+              sx={{ m: 'auto', width: '100%', height: 50 }}
             />
           </Box>
         ))}
