@@ -24,7 +24,7 @@ export default function Card() {
 
   const [dataUser, setDataUser] = useState<any>(null);
   const [showModal, setShowModal] = useState(true);
-  const [url, setUrl] = useState('https://g868630t-3000.brs.devtunnels.ms/qr');
+  const [url, setUrl] = useState(`${process.env.NEXT_PUBLIC_PATH_URL}/qr`);
 
   useEffect(() => {
     const socketInit = async () => {
