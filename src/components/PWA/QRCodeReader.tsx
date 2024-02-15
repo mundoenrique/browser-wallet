@@ -4,6 +4,10 @@ import jsQR, { QRCode } from 'jsqr';
 //Typado
 import { Point } from 'jsqr/dist/locator';
 
+interface IQRCodeReader {
+  readCode: (data: string) => void;
+}
+
 const decoder = (imageData: ImageData): Promise<QRCode> => {
   return new Promise((resolve) => {
     const decoded = jsQR(imageData?.data, imageData?.width, imageData?.height);
@@ -22,7 +26,7 @@ function drawLine(begin: Point, end: Point, color: string, el: CanvasRenderingCo
   el?.stroke();
 }
 
-export default function QRCodeReader() {
+export default function QRCodeReader({ readCode }: IQRCodeReader) {
   let videoElement: HTMLVideoElement;
   let canvasElement: HTMLCanvasElement;
   let canvasContext: CanvasRenderingContext2D | null;
@@ -40,6 +44,9 @@ export default function QRCodeReader() {
             drawLine(code.location.topRightCorner, code.location.bottomRightCorner, '#FF3B58', canvasContext);
             drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, '#FF3B58', canvasContext);
             drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, '#FF3B58', canvasContext);
+            console.log('decoder:', code);
+            const data = JSON.stringify(code.data);
+            readCode(data);
           }
         });
       }

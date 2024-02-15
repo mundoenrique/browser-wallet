@@ -40,5 +40,6 @@
   },
   "[shellscript]": {
     "files.eol": "\n"
-  }
+  },
+  "typescript.tsserver.nodePath": ""
 }
