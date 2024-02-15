@@ -2,13 +2,13 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Stack, Typography } from '@mui/material';
 import Email from '@mui/icons-material/EmailOutlined';
-import { Box, Stack, Typography } from '@mui/material';
 import Questions from '@mui/icons-material/HelpOutlineOutlined';
 //Internal app
-import { HandleCard } from '@/components';
 import { useNavTitleStore } from '@/store';
 import { CallIcon, WhatsappIcon } from '%/Icons';
+import { ContainerLayout, HandleCard } from '@/components';
 
 export default function Help() {
   const router = useRouter();
@@ -23,16 +23,7 @@ export default function Help() {
   }, []);
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: { xs: 'flex-start', md: 'center' },
-        width: 320,
-        minHeight: '100vh',
-        mx: { xs: 'auto', md: 3 },
-      }}
-    >
+    <ContainerLayout>
       <Typography
         variant="h6"
         color="primary"
@@ -65,6 +56,6 @@ export default function Help() {
           <Typography variant="body2">support@belcorp.com</Typography>
         </HandleCard>
       </Stack>
-    </Box>
+    </ContainerLayout>
   );
 }

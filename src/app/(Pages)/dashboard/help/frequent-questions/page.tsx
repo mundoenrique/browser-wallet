@@ -1,12 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect } from 'react';
-import Arrow from '@mui/icons-material/ArrowBackIos';
-import { Box, Link as LinkMui, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 //Internal app
-import { Accordions } from '@/components';
 import { useNavTitleStore } from '@/store';
+import { Accordions, ContainerLayout, Linking } from '@/components';
 
 const questions = [
   {
@@ -29,16 +27,7 @@ export default function Questions() {
   }, []);
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: { xs: 'flex-start', md: 'center' },
-        width: 320,
-        minHeight: '100vh',
-        mx: { xs: 'auto', md: 3 },
-      }}
-    >
+    <ContainerLayout>
       <Typography
         variant="h6"
         color="primary"
@@ -47,17 +36,7 @@ export default function Questions() {
         Preguntas frecuentes
       </Typography>
 
-      <LinkMui
-        component={Link}
-        href="/dashboard/help"
-        underline="none"
-        sx={{ display: 'flex', alignItems: 'center', mb: 4 }}
-        fontWeight={700}
-        fontSize="12px"
-      >
-        <Arrow sx={{ mr: 2, width: 14, height: 14 }} />
-        Volver
-      </LinkMui>
+      <Linking href="#" label="Volver" />
 
       <Typography variant="body2" mb={2}>
         Selecciona el tema que necesitas
@@ -68,6 +47,6 @@ export default function Questions() {
           <Accordions key={i} title={item.title} content={item.content} />
         ))}
       </Stack>
-    </Box>
+    </ContainerLayout>
   );
 }

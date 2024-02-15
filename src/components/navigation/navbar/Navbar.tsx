@@ -1,11 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import MenuIcon from '@mui/icons-material/Menu';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { AppBar, IconButton, Toolbar, Link as LinkMui, Typography, Box } from '@mui/material';
+import { AppBar, IconButton, Toolbar, Typography, Box } from '@mui/material';
 //Internal app
+import Linking from '../Linking';
 import { NavbarProps } from '@/interfaces';
 import { useNavTitleStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
@@ -38,17 +37,7 @@ export default function Navbar(props: NavbarProps) {
         </IconButton>
 
         {dashboardNav ? (
-          <LinkMui
-            component={Link}
-            href="#"
-            underline="none"
-            sx={{ display: 'flex', alignItems: 'center' }}
-            fontWeight={700}
-            fontSize="12px"
-          >
-            <ArrowBackIosIcon sx={{ mr: 2 }} />
-            Volver a ésika Conmigo
-          </LinkMui>
+          <Linking href="#" label="Volver a ésika Conmigo" mb={0} />
         ) : (
           <>
             <Typography variant="subtitle1" color="primary.main">

@@ -7,7 +7,7 @@ import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
 import { useNavTitleStore } from '@/store';
-import { InputTextPay } from '@/components';
+import { ContainerLayout, InputTextPay } from '@/components';
 
 export default function Recharge() {
   const schema = getSchema(['password']);
@@ -34,16 +34,7 @@ export default function Recharge() {
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: { xs: 'flex-start', md: 'center' },
-        width: 320,
-        minHeight: '100vh',
-        mx: { xs: 'auto', md: 3 },
-      }}
-    >
+    <ContainerLayout>
       <Typography
         variant="h6"
         color="primary"
@@ -57,6 +48,6 @@ export default function Recharge() {
           Generar recarga
         </Button>
       </Box>
-    </Box>
+    </ContainerLayout>
   );
 }

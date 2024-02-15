@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { Avatar, Box, Button, Card, Stack, Typography } from '@mui/material';
 //Internal app
 import { useNavTitleStore } from '@/store';
-import { ModalResponsive } from '@/components';
 import { fuchsiaBlue } from '@/theme/theme-default';
+import { ContainerLayout, ModalResponsive } from '@/components';
 
 export default function RequestPhysicalCard() {
   const { updateTitle }: any = useNavTitleStore();
@@ -21,16 +21,7 @@ export default function RequestPhysicalCard() {
 
   return (
     <>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: { xs: 'flex-start', md: 'center' },
-          width: 320,
-          minHeight: '100vh',
-          mx: { xs: 'auto', md: 3 },
-        }}
-      >
+      <ContainerLayout>
         <Typography
           variant="h6"
           color="primary"
@@ -93,7 +84,7 @@ export default function RequestPhysicalCard() {
         <Button variant="contained" onClick={handleSendCard}>
           Solicitar tarjeta
         </Button>
-      </Box>
+      </ContainerLayout>
 
       <ModalResponsive open={open} handleClose={() => setOpen(false)}>
         <Typography variant="subtitle1">💳 ¡Listo! Te enviaremos tu tarjeta en el siguiente pedido.</Typography>

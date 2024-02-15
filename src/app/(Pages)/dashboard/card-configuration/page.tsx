@@ -2,18 +2,15 @@
 
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { Box, Stack, Typography } from '@mui/material';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
-import { Avatar, Box, Stack, Typography } from '@mui/material';
 //Internal app
 import { useNavTitleStore } from '@/store';
-import { fuchsiaBlue } from '@/theme/theme-default';
-import { CardInformation, HandleCard, InputSwitch } from '@/components';
+import { CardInformation, HandleCard, InputSwitch, UserWelcome } from '@/components';
 import { CardCloseIcon, CardIcons, KeyIcons, PersonWrongIcon, WebPageIcon } from '%/Icons';
 
 export default function CardConfiguration() {
   const { updateTitle }: any = useNavTitleStore();
-  const user = 'Andrea';
-  const currentUser = user[0];
 
   useEffect(() => {
     updateTitle('Cambiar contraseña');
@@ -27,14 +24,7 @@ export default function CardConfiguration() {
 
   return (
     <Box sx={{ width: 320, mx: { xs: 'auto', md: 3 } }}>
-      <Box sx={{ display: 'flex', mb: { xs: 2, md: 0 }, mt: { md: 5 } }}>
-        <Avatar sx={{ width: '32px', height: '32px', bgcolor: fuchsiaBlue[400], mr: '12px' }}>{currentUser}</Avatar>
-        <Box>
-          <Typography variant="h6">¡Hola {user}! 👋</Typography>
-          <Typography variant="caption">Bienvenido a yiro</Typography>
-        </Box>
-      </Box>
-
+      <UserWelcome />
       <Box
         sx={{
           display: 'flex',

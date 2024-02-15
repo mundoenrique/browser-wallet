@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 //Internal app
 import { useNavTitleStore } from '@/store';
+import { ContainerLayout } from '@/components';
 
 export default function Legal() {
   const { updateTitle }: any = useNavTitleStore();
@@ -13,16 +14,7 @@ export default function Legal() {
   }, []);
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: { xs: 'flex-start', md: 'center' },
-        minHeight: '100vh',
-        mx: { xs: 'auto', md: 3 },
-        mt: 3,
-      }}
-    >
+    <ContainerLayout fullWidth>
       <Typography
         variant="h6"
         color="primary"
@@ -59,6 +51,6 @@ export default function Legal() {
           est laborum.
         </Typography>
       </Stack>
-    </Box>
+    </ContainerLayout>
   );
 }

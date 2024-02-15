@@ -14,6 +14,7 @@ export { default as InputTextPay } from './form/InputTextPay';
 export { default as InputDatePicker } from './form/InputDatePicker';
 export { default as InputCheckCondition } from './form/InputCheckCondition';
 //navigation
+export { default as Linking } from './navigation/Linking';
 export { default as Navbar } from './navigation/navbar/Navbar';
 export { default as Sidebar } from './navigation/sidebar/Sidebar';
 export { default as NavbarLower } from './navigation/navbar/NavbarLower';
@@ -25,12 +26,12 @@ export { default as ModalResponsive } from './modal/ModalResponsive';
 export { default as MainLayout } from './layout/MainLayout';
 export { default as LoginLayout } from './layout/LoginLayout';
 export { default as PurpleLayout } from './layout/PurpleLayout';
+export { default as ContainerLayout } from './layout/ContainerLayout';
 //cards
 export { default as CardDebt } from './cards/CardDebt';
 export { default as HandleCard } from './cards/HandleCard';
 export { default as CardDetails } from './cards/CardDetails';
 export { default as CardInformation } from './cards/cardInformation/CardInformation';
-
 //tables
 export { default as LastMovements } from './tables/LastMovements';
 //accordions
@@ -38,3 +39,5 @@ export { default as Accordions } from './Accordions';
 //providers
 export { default as MuiProvider } from './providers/MuiProvider';
 export { default as HydrationProvider } from './providers/HydrationProvider';
+//user welcome
+export { default as UserWelcome } from './UserWelcome';

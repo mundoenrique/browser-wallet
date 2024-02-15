@@ -1,9 +1,8 @@
 'use client';
 
-import Link from 'next/link';
-import { Box, Link as LinkMui } from '@mui/material';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { Box } from '@mui/material';
 //Internal app
+import Linking from '../Linking';
 import LogoPurple from '%/images/LogoPurple';
 import { MuiNavExternalProps } from '@/interfaces';
 
@@ -35,31 +34,9 @@ export default function NavExternal({ image, color, closeApp }: MuiNavExternalPr
         }}
       >
         {!closeApp ? (
-          <LinkMui
-            component={Link}
-            href="/signin"
-            underline="none"
-            sx={{ display: 'flex', alignItems: 'center' }}
-            fontWeight={700}
-            fontSize="12px"
-            color={color}
-          >
-            <ArrowBackIosIcon sx={{ mr: 2 }} />
-            Volver
-          </LinkMui>
+          <Linking href="/signin" label="Volver" mb={0} />
         ) : (
-          <LinkMui
-            component={Link}
-            href="#"
-            underline="none"
-            sx={{ display: 'flex', alignItems: 'center' }}
-            fontWeight={700}
-            fontSize="12px"
-            color={color}
-          >
-            <ArrowBackIosIcon sx={{ mr: 2 }} />
-            Volver a ésika Conmigo
-          </LinkMui>
+          <Linking href="#" label="Volver a ésika Conmigo" mb={0} color={color} />
         )}
       </Box>
     </Box>

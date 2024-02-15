@@ -1,27 +1,33 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
+import { useForm } from 'react-hook-form';
 import { useNavTitleStore } from '@/store';
-import { ContainerLayout, InputPass, ModalOtp, ModalResponsive } from '@/components';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { ContainerLayout, InputRadio, Linking, ModalOtp, ModalResponsive } from '@/components';
 
-export default function ChangePassword() {
+export default function Survey() {
   const { updateTitle }: any = useNavTitleStore();
   const [openOtp, setOpenOtp] = useState(false);
   const [openRc, setOpenRc] = useState(false);
-  const schemaFormPassword = getSchema(['newPassword', 'newPasswordConfirmation', 'currentPassword']);
+  const schema = getSchema(['blockType']);
+
+  useEffect(() => {
+    updateTitle('Ayúdanos con esta encuesta');
+  }, []);
 
   const { control, handleSubmit, reset } = useForm({
-    defaultValues: { newPassword: '', newPasswordConfirmation: '', currentPassword: '' },
-    resolver: yupResolver(schemaFormPassword),
+    defaultValues: {
+      blockType: '',
+    },
+    resolver: yupResolver(schema),
   });
 
   const onSubmit = async (data: any) => {
-    console.log(data);
+    console.log('🚀 ~ onSubmit ~ data:', data);
     setOpenOtp(true);
   };
 
@@ -32,9 +38,28 @@ export default function ChangePassword() {
     reset();
   };
 
-  useEffect(() => {
-    updateTitle('Cambiar contraseña');
-  }, []);
+  const blockCardType = [
+    {
+      text: 'No la uso con frecuencia',
+      value: '65',
+    },
+    {
+      text: 'No me sirve para mi negocio',
+      value: '66',
+    },
+    {
+      text: 'Es complicada para usar',
+      value: '67',
+    },
+    {
+      text: 'Ya tengo otros medios pago',
+      value: '68',
+    },
+    {
+      text: 'No hay motivo solo quiero eliminar',
+      value: '69',
+    },
+  ];
 
   return (
     <>
@@ -44,21 +69,20 @@ export default function ChangePassword() {
           color="primary"
           sx={{ color: 'primary.main', mb: 6, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
         >
-          Cambiar contraseña
+          Ayúdanos con esta encuesta
         </Typography>
 
-        <Typography variant="body2">Elige 6 números que recuerdes.</Typography>
+        <Linking href="#" label="Volver" />
 
         <Typography variant="body2" mb={3}>
-          Evita utilizar tu fecha de cumpleaños para que sea más segura
+          Pensando siempre en darte la mejor propuesta de valor, quisiéramos saber el motivo por el que estás eliminando
+          tu cuenta Yiro
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-          <InputPass name="currentPassword" control={control} label="Ingresar tu contraseña actual" />
-          <InputPass name="newPassword" control={control} label="Ingresa una nueva contraseña" />
-          <InputPass name="newPasswordConfirmation" control={control} label="Confirma tu nueva contraseña" />
+          <InputRadio options={blockCardType} name="blockType" control={control} />
           <Button variant="contained" type="submit" fullWidth>
-            Guardar
+            Bloquear
           </Button>
         </Box>
       </ContainerLayout>
@@ -66,7 +90,9 @@ export default function ChangePassword() {
       <ModalOtp open={openOtp} handleClose={() => setOpenOtp(false)} onSubmit={onSubmitOtp} />
 
       <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>
-        <Typography variant="subtitle2">🥳 Actualización exitosa</Typography>
+        <Typography variant="subtitle1" mb={3}>
+          🚫 Tu cuenta ha sido eliminada
+        </Typography>
       </ModalResponsive>
     </>
   );

@@ -1,15 +1,13 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import Arrow from '@mui/icons-material/ArrowBackIos';
-import { Box, Button, Typography, Link as LinkMui } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
 import { useForm } from 'react-hook-form';
 import { useNavTitleStore } from '@/store';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { InputPass, ModalOtp, ModalResponsive } from '@/components';
+import { ContainerLayout, InputPass, Linking, ModalOtp, ModalResponsive } from '@/components';
 
 export default function ChangePin() {
   const { updateTitle }: any = useNavTitleStore();
@@ -40,16 +38,7 @@ export default function ChangePin() {
 
   return (
     <>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: { xs: 'flex-start', md: 'center' },
-          width: 320,
-          minHeight: '100vh',
-          mx: { xs: 'auto', md: 3 },
-        }}
-      >
+      <ContainerLayout>
         <Typography
           variant="h6"
           color="primary"
@@ -58,17 +47,7 @@ export default function ChangePin() {
           Cambiar PIN
         </Typography>
 
-        <LinkMui
-          component={Link}
-          href="/dashboard/help"
-          underline="none"
-          sx={{ display: 'flex', alignItems: 'center', mb: 4 }}
-          fontWeight={700}
-          fontSize="12px"
-        >
-          <Arrow sx={{ mr: 2, width: 14, height: 14 }} />
-          Volver
-        </LinkMui>
+        <Linking href="#" label="Volver" />
 
         <Typography variant="body2" mb={3}>
           A continuación puedes cambiar tu PIN, recuérdalo al momento de usar tu tarjeta
@@ -81,7 +60,7 @@ export default function ChangePin() {
             Cambiar PIN
           </Button>
         </Box>
-      </Box>
+      </ContainerLayout>
 
       <ModalOtp open={openOtp} handleClose={() => setOpenOtp(false)} onSubmit={onSubmitOtp} />
 

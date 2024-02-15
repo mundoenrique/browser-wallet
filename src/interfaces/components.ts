@@ -1,6 +1,5 @@
 import { ReactElement } from 'react';
 import { BoxProps } from '@mui/material';
-import { StaticImageData } from 'next/image';
 //Internal app
 import { ChildrenProps } from './constant';
 
@@ -83,4 +82,17 @@ export interface ModalOtpProps {
   handleClose: () => void;
   open: boolean;
   onSubmit: (data: any) => Promise<void>;
+}
+export interface ContainerLayoutProps {
+  children: React.ReactNode;
+  fullWidth?: boolean;
+}
+
+export interface LinkingProps {
+  href: string;
+  mb?: number | string;
+  label: string;
+  color?: string;
+  underline?: boolean;
+  hidenArrow?: boolean;
 }

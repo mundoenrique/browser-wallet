@@ -1,10 +1,8 @@
 'use client';
 
-import { Avatar, Box, Link as LinkMui, Typography } from '@mui/material';
-import Link from 'next/link';
+import { Box, Typography } from '@mui/material';
 //Internal app
-import { fuchsiaBlue } from '@/theme/theme-default';
-import { CardDebt, CardInformation, LastMovements } from '@/components';
+import { CardDebt, CardInformation, LastMovements, Linking, UserWelcome } from '@/components';
 
 const movementData = [
   {
@@ -40,9 +38,6 @@ const movementData = [
 ];
 
 export default function Dashboard() {
-  const user = 'Andrea';
-  const currentUser = user[0];
-
   return (
     <Box
       sx={{
@@ -53,13 +48,7 @@ export default function Dashboard() {
       }}
     >
       <Box sx={{ width: 320, mx: { xs: 'auto', md: 3 } }}>
-        <Box sx={{ display: 'flex', mb: { xs: 2, md: 0 }, mt: { md: 5 } }}>
-          <Avatar sx={{ width: '32px', height: '32px', bgcolor: fuchsiaBlue[400], mr: '12px' }}>{currentUser}</Avatar>
-          <Box>
-            <Typography variant="h6">¡Hola {user}! 👋</Typography>
-            <Typography variant="caption">Bienvenido a yiro</Typography>
-          </Box>
-        </Box>
+        <UserWelcome />
         <Box
           sx={{
             display: 'flex',
@@ -75,9 +64,7 @@ export default function Dashboard() {
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
             <Typography variant="subtitle1">Últimos movimientos</Typography>
-            <LinkMui component={Link} href="#" color="primary.main" fontWeight={700} fontSize={12}>
-              Ver todo
-            </LinkMui>
+            <Linking href="#" color="primary.main" label="Ver todo" mb={0} hidenArrow />
           </Box>
           <LastMovements data={movementData} />
         </Box>

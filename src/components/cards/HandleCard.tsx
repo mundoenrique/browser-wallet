@@ -24,9 +24,7 @@ export default function HandleCard(props: HandleCardProps) {
     >
       <Box sx={{ display: 'flex' }}>
         <Avatar sx={{ bgcolor: fuchsiaBlue[200], width: 26, height: 26, mr: 1 }}>{avatar}</Avatar>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box>{children}</Box>
-        </Box>
+        <Box sx={{ display: 'grid', alignItems: 'center' }}>{children}</Box>
       </Box>
       {icon}
     </Card>
