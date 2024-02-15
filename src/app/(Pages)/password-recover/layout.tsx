@@ -9,11 +9,11 @@ export const metadata: Metadata = {
   description: 'Recupera tu contraseña',
 };
 
-export default async function RecoverLayout({ children, responseCode }: RCProps) {
+export default async function RecoverLayout({ children }: RCProps) {
   return (
     <>
       <NavExternal image />
-      <Card variant="signup">{true ? <>{children}</> : <>{responseCode}</>}</Card>
+      <Card variant="signup">{children}</Card>
     </>
   );
 }

@@ -8,6 +8,7 @@ import { Box, Button, Collapse, Link as LinkMui, Typography } from '@mui/materia
 import { getSchema } from '@/config';
 import { useSignupStore } from '@/store';
 import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResponsive } from '@/components';
+import { slate } from '@/theme/theme-default';
 
 //TODO:Only for DEV
 //import { DevTool } from '@hookform/devtools';
@@ -186,7 +187,7 @@ export default function PEP() {
                             setParentIndex(index);
                             setShowParentModal(true);
                           }}
-                          sx={{ color: '#334155', cursor: 'pointer' }}
+                          sx={{ color: slate[700], cursor: 'pointer' }}
                         >
                           Eliminar
                         </LinkMui>

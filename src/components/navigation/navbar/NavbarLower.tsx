@@ -43,7 +43,7 @@ export default function NavbarLower() {
         display: { md: 'none' },
         height: 60,
         borderRadius: '16px 16px 0 0 ',
-        backgroundColor: '#F7F5FD',
+        backgroundColor: fuchsiaBlue[50],
         bottom: 0,
         position: 'fixed',
         width: '100%',

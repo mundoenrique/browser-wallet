@@ -6,6 +6,7 @@ import { Close as CloseIcon, Margin } from '@mui/icons-material';
 import { Box, Link as MuiLink, Modal, useMediaQuery, Typography } from '@mui/material/';
 //Internal app
 import { MuiModalProps } from '@/interfaces';
+import { fuchsiaBlue } from '@/theme/theme-default';
 
 const RootModal = styled(Modal, {
   name: 'ModalResponsive',
@@ -76,7 +77,7 @@ const ModalResponsive = forwardRef((props: MuiModalProps, ref: any) => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                color: '#5F3F98',
+                color: fuchsiaBlue[800],
                 textDecoration: 'none',
               }}
             >

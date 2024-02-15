@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { getSchema } from '@/config';
 import InputOTP from '@/components/form/InputOTP';
 
-export default function AuthOtp() {
+export default function AuthOtp({ setOTP }: { setOTP: (value: boolean) => void }) {
   const schema = getSchema(['otp']);
 
   const { control, handleSubmit } = useForm({
@@ -19,7 +19,11 @@ export default function AuthOtp() {
 
   const onSubmit = async (data: any) => {
     console.log(data);
-    //Endpoint de validacion de otp
+    fetch('/signup').then((result) => {
+      console.log(result);
+
+      result.status === 200 && setOTP(true);
+    });
   };
 
   return (

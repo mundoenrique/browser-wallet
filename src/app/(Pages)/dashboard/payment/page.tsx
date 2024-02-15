@@ -8,6 +8,7 @@ import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 import Qr from '%/images/arts/QR.png';
 import { CardDetails, PurpleLayout } from '@/components';
 import PagoEfectivo from '%/images/suppliers/pagoEfectivo.png';
+import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function Payment() {
   const componentRef = useRef<any>(null);
@@ -26,7 +27,7 @@ export default function Payment() {
       const canvas = await html2canvas(componentRef.current, {
         removeContainer: false,
         allowTaint: true,
-        backgroundColor: '#5F3F98',
+        backgroundColor: fuchsiaBlue[700],
       });
       if (webShareSupported) {
         const blob: Blob = await new Promise((resolve: any) => canvas.toBlob(resolve, 'image/png'));

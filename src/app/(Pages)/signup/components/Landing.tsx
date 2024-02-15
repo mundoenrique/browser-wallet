@@ -7,6 +7,7 @@ import { Button, Box, Typography } from '@mui/material';
 import { useSignupStore } from '@/store';
 import LogoPurple from '%/images/LogoPurple';
 import welcome from '%/images/arts/Stage01.png';
+import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function Landing() {
   const { inc, setShowHeader }: any = useSignupStore();
@@ -31,7 +32,7 @@ export default function Landing() {
         <Image src={welcome} width={360} height={426} alt="animation" priority />
       </Box>
       <Box sx={{ textAlign: 'center' }}>
-        <Typography variant="subtitle1" sx={{ color: '#7652B8', mb: { xs: '56px', sm: '24px' } }}>
+        <Typography variant="subtitle1" sx={{ color: fuchsiaBlue[800], mb: { xs: '56px', sm: '24px' } }}>
           ¡Obtén tu cuenta Yiro en sólo 4 pasos!
         </Typography>
         <Button
