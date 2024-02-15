@@ -1,4 +1,3 @@
-// src/app/Providers/JwtProvider.tsx
 'use client';
 
 import React, { useEffect } from 'react';
