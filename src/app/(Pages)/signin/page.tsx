@@ -87,6 +87,7 @@ export default function Signin() {
           Ingresar
         </Button>
       </Box>
+
       <ModalResponsive open={open} handleClose={() => setOpen(false)}>
         <>
           <Typography py={2} fontWeight={700}>

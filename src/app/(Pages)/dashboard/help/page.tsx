@@ -3,12 +3,12 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Email from '@mui/icons-material/EmailOutlined';
+import { Box, Stack, Typography } from '@mui/material';
 import Questions from '@mui/icons-material/HelpOutlineOutlined';
-import { Avatar, Box, Card, Stack, Typography } from '@mui/material';
 //Internal app
-import { CallIcon } from '%/Icons';
+import { HandleCard } from '@/components';
 import { useNavTitleStore } from '@/store';
-import { fuchsiaBlue } from '@/theme/theme-default';
+import { CallIcon, WhatsappIcon } from '%/Icons';
 
 export default function Help() {
   const router = useRouter();
@@ -23,11 +23,19 @@ export default function Help() {
   }, []);
 
   return (
-    <Box sx={{ width: 320, mx: { xs: 'auto', md: 3 }, mt: { md: 29 } }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: { xs: 'flex-start', md: 'center' },
+        width: 320,
+        minHeight: '100vh',
+        mx: { xs: 'auto', md: 3 },
+      }}
+    >
       <Typography
         variant="h6"
         color="primary"
-        mb={6}
         sx={{ color: 'primary.main', mb: 6, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
       >
         Ayuda
@@ -37,33 +45,25 @@ export default function Help() {
         ¿Necesitas contactarnos?
       </Typography>
       <Stack spacing={2}>
-        <Card sx={{ boxShadow: 0, display: 'flex', p: 1 }}>
-          <Avatar sx={{ bgcolor: fuchsiaBlue[200], width: 26, height: 26, mr: 1 }}>
-            <CallIcon color="primary" sx={{ p: '4px' }} />
-          </Avatar>
-          <Box>
-            <Typography variant="subtitle2">Centro de ayuda</Typography>
-            <Typography variant="body2">Lima o extranjero (511) 707 6080 y Provincia 0800 80700</Typography>
-          </Box>
-        </Card>
-        <Card sx={{ boxShadow: 0, display: 'flex', p: 1 }}>
-          <Avatar sx={{ bgcolor: fuchsiaBlue[200], width: 26, height: 26, mr: 1 }}>
-            <Email color="primary" sx={{ p: '2px' }} />
-          </Avatar>
-          <Box>
-            <Typography variant="subtitle2">Soporte</Typography>
-            <Typography variant="body2">support@belcorp.com</Typography>
-          </Box>
-        </Card>
-        <Card sx={{ boxShadow: 0, display: 'flex', p: 1, cursor: 'pointer' }} onClick={handleQuestions}>
-          <Avatar sx={{ bgcolor: fuchsiaBlue[200], width: 26, height: 26, mr: 1 }}>
-            <Questions color="primary" sx={{ p: '2px' }} />
-          </Avatar>
-          <Box>
-            <Typography variant="subtitle2">Preguntas frecuentes</Typography>
-            <Typography variant="body2">Inquietudes y asesorías </Typography>
-          </Box>
-        </Card>
+        <HandleCard avatar={<Questions color="primary" sx={{ p: '2px' }} />} onClick={handleQuestions}>
+          <Typography variant="subtitle2">Preguntas frecuentes</Typography>
+          <Typography variant="body2">Inquietudes y asesorías </Typography>
+        </HandleCard>
+
+        <HandleCard avatar={<WhatsappIcon color="primary" sx={{ p: '3px' }} />}>
+          <Typography variant="subtitle2">Contáctanos por WhatsApp</Typography>
+          <Typography variant="body2">Atención personalizada</Typography>
+        </HandleCard>
+
+        <HandleCard avatar={<CallIcon color="primary" sx={{ p: '4px' }} />}>
+          <Typography variant="subtitle2">Centro de ayuda</Typography>
+          <Typography variant="body2">Lima o extranjero (511) 707 6080 y Provincia 0800 80700</Typography>
+        </HandleCard>
+
+        <HandleCard avatar={<Email color="primary" sx={{ p: '2px' }} />}>
+          <Typography variant="subtitle2">Soporte</Typography>
+          <Typography variant="body2">support@belcorp.com</Typography>
+        </HandleCard>
       </Stack>
     </Box>
   );

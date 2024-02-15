@@ -68,5 +68,19 @@ export interface FrontInformationProps {
   showDetails: () => void;
   cardNumber: string;
   balance: string;
-  holder: string;
+}
+
+export interface HandleCardProps {
+  children: React.ReactNode;
+  icon?: React.ReactNode;
+  onClick?: () => void | boolean;
+  large?: number;
+  avatar: React.ReactNode;
+  disabled?: boolean;
+}
+
+export interface ModalOtpProps {
+  handleClose: () => void;
+  open: boolean;
+  onSubmit: (data: any) => Promise<void>;
 }

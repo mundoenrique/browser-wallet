@@ -4,11 +4,11 @@ import Image from 'next/image';
 import { Box, Button, Typography } from '@mui/material';
 import Visibility from '@mui/icons-material/RemoveRedEyeOutlined';
 //Internal app
-import card from '%/images/cardDesktop.png';
+import card from '%/images/cardYiro.svg';
 import { FrontInformationProps } from '@/interfaces';
 
 export default function FrontInformation(props: FrontInformationProps) {
-  const { showDetails, cardNumber, balance, holder } = props;
+  const { showDetails, cardNumber, balance } = props;
 
   return (
     <Box

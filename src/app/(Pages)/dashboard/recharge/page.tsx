@@ -34,11 +34,19 @@ export default function Recharge() {
   };
 
   return (
-    <Box sx={{ width: 320, textAlign: 'center', mx: { xs: 'auto', md: 3 }, mt: { md: 29 } }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: { xs: 'flex-start', md: 'center' },
+        width: 320,
+        minHeight: '100vh',
+        mx: { xs: 'auto', md: 3 },
+      }}
+    >
       <Typography
         variant="h6"
         color="primary"
-        mb={6}
         sx={{ color: 'primary.main', mb: 6, display: { xs: 'none ', md: 'block' } }}
       >
         Generar recarga

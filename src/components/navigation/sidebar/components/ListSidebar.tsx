@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { Box, Card, Divider, List, Typography } from '@mui/material';
 //Internal app
-import card from '%/images/card.png';
+import card from '%/images/cardYiro.svg';
 import ItemsSidebar from './ItemsSidebar';
 import LogoPurple from '%/images/LogoPurple';
 import { fuchsiaBlue } from '@/theme/theme-default';

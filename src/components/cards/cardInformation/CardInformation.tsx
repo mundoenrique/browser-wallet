@@ -16,12 +16,7 @@ export default function CardInformation() {
   return (
     <BodyCard>
       <BodyCardAction className={showDetails ? 'active' : undefined}>
-        <FrontInformation
-          showDetails={handleShowDetails}
-          cardNumber="4577 ···· ···· 4321"
-          balance="10.000.000.00"
-          holder="Roberto Gallardo"
-        />
+        <FrontInformation showDetails={handleShowDetails} cardNumber="4577 ···· ···· 4321" balance="10.000.000.00" />
         <BackInformation
           hideDetails={handleShowDetails}
           holder="Andrea Rodriguez"

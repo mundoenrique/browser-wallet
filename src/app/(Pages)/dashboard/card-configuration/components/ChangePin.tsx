@@ -1,22 +1,24 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, Typography } from '@mui/material';
+import Arrow from '@mui/icons-material/ArrowBackIos';
+import { Box, Button, Typography, Link as LinkMui } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
+import { useForm } from 'react-hook-form';
 import { useNavTitleStore } from '@/store';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { InputPass, ModalOtp, ModalResponsive } from '@/components';
 
-export default function ChangePassword() {
+export default function ChangePin() {
   const { updateTitle }: any = useNavTitleStore();
   const [openOtp, setOpenOtp] = useState(false);
   const [openRc, setOpenRc] = useState(false);
-  const schemaFormPassword = getSchema(['newPassword', 'newPasswordConfirmation', 'currentPassword']);
+  const schemaFormPassword = getSchema(['newPin', 'confirmPin']);
 
   const { control, handleSubmit, reset } = useForm({
-    defaultValues: { newPassword: '', newPasswordConfirmation: '', currentPassword: '' },
+    defaultValues: { newPin: '', confirmPin: '' },
     resolver: yupResolver(schemaFormPassword),
   });
 
@@ -33,7 +35,7 @@ export default function ChangePassword() {
   };
 
   useEffect(() => {
-    updateTitle('Cambiar contraseña');
+    updateTitle('Cambiar PIN');
   }, []);
 
   return (
@@ -53,21 +55,30 @@ export default function ChangePassword() {
           color="primary"
           sx={{ color: 'primary.main', mb: 6, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
         >
-          Cambiar contraseña
+          Cambiar PIN
         </Typography>
 
-        <Typography variant="body2">Elige 6 números que recuerdes.</Typography>
+        <LinkMui
+          component={Link}
+          href="/dashboard/help"
+          underline="none"
+          sx={{ display: 'flex', alignItems: 'center', mb: 4 }}
+          fontWeight={700}
+          fontSize="12px"
+        >
+          <Arrow sx={{ mr: 2, width: 14, height: 14 }} />
+          Volver
+        </LinkMui>
 
         <Typography variant="body2" mb={3}>
-          Evita utilizar tu fecha de cumpleaños para que sea más segura
+          A continuación puedes cambiar tu PIN, recuérdalo al momento de usar tu tarjeta
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-          <InputPass name="currentPassword" control={control} label="Ingresar tu contraseña actual" />
-          <InputPass name="newPassword" control={control} label="Ingresa una nueva contraseña" />
-          <InputPass name="newPasswordConfirmation" control={control} label="Confirma tu nueva contraseña" />
+          <InputPass name="newPin" control={control} label="Nuevo Pin" />
+          <InputPass name="confirmPin" control={control} label="Confirmar tu nuevo Pin" />
           <Button variant="contained" type="submit" fullWidth>
-            Guardar
+            Cambiar PIN
           </Button>
         </Box>
       </Box>
@@ -75,7 +86,17 @@ export default function ChangePassword() {
       <ModalOtp open={openOtp} handleClose={() => setOpenOtp(false)} onSubmit={onSubmitOtp} />
 
       <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>
-        <Typography variant="subtitle2">🥳 Actualización exitosa</Typography>
+        <>
+          <Typography variant="h6" mb={3}>
+            🥳 Actualización exitosa
+          </Typography>
+          <Typography variant="body1" textAlign="center" mb={3}>
+            El PIN de tu tarjeta ha sido actualizado con éxito.
+          </Typography>
+          <Button variant="contained" onClick={() => setOpenRc(false)} fullWidth>
+            Ir al Inicio
+          </Button>
+        </>
       </ModalResponsive>
     </>
   );

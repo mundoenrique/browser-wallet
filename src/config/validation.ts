@@ -24,6 +24,15 @@ export const getSchema = (fields: Field[]): yup.ObjectSchema<any> => {
   return yup.object().shape(shape);
 };
 
+function pinValidation(msg: string) {
+  return yup
+    .string()
+    .required(msg)
+    .min(4, 'El Pin debe ser de 4 números')
+    .max(4, 'El Pin debe ser de 4 números')
+    .test('Pin invalido', 'El Pin es númerico', (value) => regularExpressions.numeric?.test(value));
+}
+
 function passwordValidation(msg: string) {
   return yup
     .string()
@@ -77,11 +86,15 @@ export const validationRules: ValidationRule = {
   country: yup.string().required('Selecciona un país'),
   term: yup.string().required('Acepta los terminos'),
   policy: yup.string().required('Acepta los terminos'),
-  otp: yup.string().required('Ingrese un código'),
+  otp: yup
+    .string()
+    .required('Ingrese un código')
+    .min(4, 'El código es de 4 digitos')
+    .test('otpValid', 'El código es númerico', (value) => regularExpressions.numeric?.test(value)),
   currentPassword: passwordValidation('Ingrese una contraseña'),
   newPassword: passwordValidation('Ingresa una nueva contraseña').notOneOf(
     [yup.ref('currentPassword')],
-    'La nueva contraseña debe ser diferente a la actual'
+    'Está contraseña debe ser diferente a la actual'
   ),
   newPasswordConfirmation: passwordValidation('Confirma tu nueva contraseña').oneOf(
     [yup.ref('newPassword')],
@@ -108,7 +121,6 @@ export const validationRules: ValidationRule = {
     endDate: yup.string().required('Ingresa la fecha'),
     holdShare: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
   }),
-
   relatives: yup.array().of(
     yup.object().shape({
       fullName: yup.string().required('Ingresa el nombre completo'),
@@ -116,4 +128,7 @@ export const validationRules: ValidationRule = {
       documentType: yup.string().required('Selecciona el tipo de documento '),
     })
   ),
+  blockType: yup.string().required('Debes seleccionar una opción'),
+  newPin: pinValidation('Ingrese tu nuevo Pin'),
+  confirmPin: pinValidation('Confirma tu nuevo Pin').oneOf([yup.ref('newPin')], 'Los Pines no coinciden'),
 };
