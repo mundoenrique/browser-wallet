@@ -19,7 +19,7 @@ export default function ListSidebar() {
           height: 74,
           display: { xs: 'none', md: 'block' },
           mx: 'auto',
-          my: '44px',
+          my: 11 / 2,
         }}
       >
         <LogoPurple />

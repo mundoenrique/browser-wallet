@@ -18,7 +18,7 @@ function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
 
   return (
     <>
-      <InputLabel sx={{ mb: '12px' }}>{label}</InputLabel>
+      <InputLabel sx={{ mb: 3 / 2 }}>{label}</InputLabel>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'es'}>
         <DatePicker
           slots={{ openPickerIcon: CalendarIcons }}
@@ -42,13 +42,13 @@ function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
               borderRadius: '50%',
               bgcolor: 'secondary.light',
               color: 'primary.main',
-              mr: '12px',
+              mr: 3 / 2,
               p: '4px',
             },
           }}
         />
         <FormHelperText
-          sx={{ color: 'error.main', height: '20px', ml: 0, display: 'flex', alignItems: 'center' }}
+          sx={{ color: 'error.main', height: 20, ml: 0, display: 'flex', alignItems: 'center' }}
           id={`${label}-helperText`}
         >
           {error ? (

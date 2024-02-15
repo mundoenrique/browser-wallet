@@ -62,15 +62,15 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
               <MuiOtpInput
                 sx={{
                   p: 0,
-                  gap: '12px',
-                  '&>.MuiFormControl-root>.MuiInputBase-root': { width: '46px', fontSize: '25px', fontWeight: 700 },
+                  gap: 3 / 2,
+                  '&>.MuiFormControl-root>.MuiInputBase-root': { width: '46px', fontSize: 25, fontWeight: 700 },
                 }}
                 {...field}
                 length={length}
               />
               <FormHelperText
                 sx={{
-                  height: '20px',
+                  height: 20,
                   ml: 0,
                   display: 'flex',
                   alignItems: 'center',
@@ -99,11 +99,7 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
           </Typography>
         )}
 
-        <Button
-          onClick={handleResend}
-          sx={{ color: 'primary.main', height: '20px' }}
-          disabled={time === 0 ? false : true}
-        >
+        <Button onClick={handleResend} sx={{ color: 'primary.main', height: 20 }} disabled={time === 0 ? false : true}>
           Renviar código
         </Button>
       </Box>

@@ -105,12 +105,12 @@ export default function InfoVerification() {
           </Box>
 
           <Card sx={{ p: '8px 0px', boxShadow: 'none', mb: 2 }}>
-            <Box sx={{ px: '20px', pb: '12px' }}>
+            <Box sx={{ px: 5 / 2, pb: 3 / 2 }}>
               <Typography variant="subtitle2">Andrea Rodriguez</Typography>
               <Typography variant="subtitle2">DNI: 78624555</Typography>
             </Box>
             <Divider />
-            <Box sx={{ px: '20px', pt: '12px' }}>
+            <Box sx={{ px: 5 / 2, pt: 3 / 2 }}>
               <InputSelect name="country" label="Nacionalidad" options={nationality} control={control} />
             </Box>
             <Divider />
@@ -119,8 +119,8 @@ export default function InfoVerification() {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                px: '20px',
-                py: '12px',
+                px: 5 / 2,
+                py: 3 / 2,
               }}
             >
               <Box>
@@ -143,8 +143,8 @@ export default function InfoVerification() {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                px: '20px',
-                pt: '12px',
+                px: 5 / 2,
+                pt: 3 / 2,
               }}
             >
               <Box>
@@ -229,9 +229,9 @@ export default function InfoVerification() {
         }}
         sx={{
           width: { sm: '90vw', xs: '100%' },
-          maxWidth: { sm: '800px', xs: '100%' },
+          maxWidth: { sm: 800, xs: '100%' },
           height: { sm: '90vh', xs: '80vh' },
-          maxHeight: { sm: '600px', xs: '80vh' },
+          maxHeight: { sm: 600, xs: '80vh' },
         }}
       >
         <Box
@@ -240,10 +240,10 @@ export default function InfoVerification() {
             overflow: 'auto',
           }}
         >
-          <Typography variant="h6" align="left" sx={{ marginBottom: '24px' }}>
+          <Typography variant="h6" align="left" sx={{ mb: 3 }}>
             Términos Y condiciones
           </Typography>
-          <Typography textAlign={'left'} variant="body2" sx={{ marginBottom: '24px' }}>
+          <Typography textAlign={'left'} variant="body2" sx={{ mb: 3 }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Orci nulla pellentesque dignissim enim sit amet. Commodo sed egestas egestas fringilla
             phasellus faucibus scelerisque. Id porta nibh venenatis cras sed felis eget. A diam maecenas sed enim ut.

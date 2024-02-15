@@ -13,7 +13,7 @@ function InputMUI(props: TextFieldProps): JSX.Element {
 
   return (
     <>
-      <InputLabel htmlFor={name} sx={{ mb: '12px', textAlign: 'left' }}>
+      <InputLabel htmlFor={name} sx={{ mb: 3 / 2, textAlign: 'left' }}>
         {textLabel}
       </InputLabel>
       <FormControl variant="outlined" error={!!error} sx={{ mb: '5px' }} fullWidth>
@@ -30,7 +30,7 @@ function InputMUI(props: TextFieldProps): JSX.Element {
         />
         <FormHelperText
           sx={{
-            height: '20px',
+            height: 20,
             ml: 0,
             display: 'flex',
             alignItems: 'center',

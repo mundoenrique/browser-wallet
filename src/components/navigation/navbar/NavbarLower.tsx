@@ -73,7 +73,7 @@ export default function NavbarLower() {
                     flexShrink: 0,
                     height: '4px',
                     position: 'absolute',
-                    width: '34px',
+                    width: 34,
                     top: 0,
                   },
                 }}
@@ -86,7 +86,7 @@ export default function NavbarLower() {
                   primaryTypographyProps={{
                     fontWeight: 700,
                     color: currentItemMenu ? fuchsiaBlue[600] : 'initial',
-                    fontSize: { xs: '10px', sm: 'initial' },
+                    fontSize: { xs: 10, md: 'initial' },
                   }}
                 />
               </ListItemButton>

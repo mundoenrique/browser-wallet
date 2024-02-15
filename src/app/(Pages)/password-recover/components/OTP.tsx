@@ -5,9 +5,11 @@ import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 //Internal app
 import { getSchema } from '@/config';
+import { AuthOtpFormProps } from '@/interfaces';
 import InputOTP from '@/components/form/InputOTP';
 
-export default function AuthOtp({ setOTP }: { setOTP: (value: boolean) => void }) {
+export default function AuthOtp(props: AuthOtpFormProps) {
+  const { setOTP } = props;
   const schema = getSchema(['otp']);
 
   const { control, handleSubmit } = useForm({

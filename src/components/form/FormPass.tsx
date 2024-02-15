@@ -40,7 +40,7 @@ export default function FormPass(porps: any) {
           />
         )}
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', mb: { xs: 3, sm: 0 } }}>{buttons}</Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 / 2, mb: { xs: 3, sm: 0 } }}>{buttons}</Box>
     </Box>
   );
 }

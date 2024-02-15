@@ -27,7 +27,7 @@ export default function PasswordCreation() {
           <Typography variant="subtitle1" sx={{ mb: 3, mx: 'auto' }}>
             Ahora es momento de activar tu cuenta
           </Typography>
-          <Typography variant="body2" mb="12px">
+          <Typography variant="body2" mb={3 / 2}>
             Para finalizar crea una contraseña segura
           </Typography>
           <Box sx={{ mb: 2 }}>

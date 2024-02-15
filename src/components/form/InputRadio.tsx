@@ -35,7 +35,7 @@ function InputRadioMUI(props: InputOptionsProps): JSX.Element {
         ))}
       </RadioGroup>
       <FormHelperText
-        sx={{ color: 'error.main', height: '20px', ml: 0, display: 'flex', alignItems: 'center' }}
+        sx={{ color: 'error.main', height: 20, ml: 0, display: 'flex', alignItems: 'center' }}
         id={`${label}-helperText`}
       >
         {error ? (

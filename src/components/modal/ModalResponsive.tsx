@@ -2,7 +2,7 @@
 
 import { forwardRef } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import { Close as CloseIcon, Margin } from '@mui/icons-material';
+import { Close as CloseIcon } from '@mui/icons-material';
 import { Box, Link as MuiLink, Modal, useMediaQuery, Typography } from '@mui/material/';
 //Internal app
 import { MuiModalProps } from '@/interfaces';
@@ -52,7 +52,7 @@ const CloseButtonContainer = styled(Box, {
 })(({ theme }) => ({
   display: useMediaQuery(theme.breakpoints.down('sm')) ? 'none' : 'flex',
   justifyContent: 'right',
-  height: '52px',
+  height: 52,
 }));
 
 const ModalResponsive = forwardRef((props: MuiModalProps, ref: any) => {
@@ -76,7 +76,7 @@ const ModalResponsive = forwardRef((props: MuiModalProps, ref: any) => {
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
+                gap: 1,
                 color: fuchsiaBlue[800],
                 textDecoration: 'none',
               }}

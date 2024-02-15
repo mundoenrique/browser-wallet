@@ -13,9 +13,13 @@ export default function Linking(props: LinkingProps) {
     <LinkMui
       component={Link}
       href={href}
-      sx={{ display: 'flex', alignItems: 'center', textDecoration: underline ? 'underline' : 'none' }}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        textDecoration: underline ? 'underline' : 'none',
+        color: color ? color : 'primary.main',
+      }}
       mb={mb}
-      color={color}
       fontWeight={700}
       fontSize={12}
     >

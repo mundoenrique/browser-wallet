@@ -25,7 +25,7 @@ export default function CardDebt(props: any) {
       }}
     >
       <Box sx={{ display: 'flex', height: 28, justifyContent: 'space-between' }}>
-        <Typography sx={{ fontSize: '10px', fontWeight: 600, py: OweMe ? 1 : '4px', px: 1 }}>
+        <Typography sx={{ fontSize: 10, fontWeight: 600, py: OweMe ? 1 : 1 / 2, px: 1 }}>
           {OweMe ? 'Me deben' : <Esika sx={{ width: '100%' }} />}
         </Typography>
         <Box position="relative">
@@ -40,7 +40,7 @@ export default function CardDebt(props: any) {
               top: '50%',
               left: '60%',
               transform: 'translate(-50%, -50%)',
-              fontSize: '10px',
+              fontSize: 10,
               fontWeight: 600,
               color: 'white',
             }}
@@ -50,7 +50,7 @@ export default function CardDebt(props: any) {
         </Box>
       </Box>
       <Box px={1}>
-        <Typography sx={{ fontSize: '10px', fontWeight: 400 }}>
+        <Typography sx={{ fontSize: 10, fontWeight: 400 }}>
           {OweMe ? 'Mis clientes me deben' : 'Mi deuda con ésika'}
         </Typography>
         <Typography variant="h6" noWrap>
@@ -70,22 +70,22 @@ export default function CardDebt(props: any) {
       >
         {OweMe ? (
           <>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 / 2 }}>
               <AvatarGroup max={MaxOweMe > 5 ? 5 : MaxOweMe}>
                 {clientOweMe.slice(0, 5).map((client, i) => (
-                  <Avatar key={i} sx={{ width: '14px', height: '14px', bgcolor: fuchsiaBlue[400] }} />
+                  <Avatar key={i} sx={{ width: 14, height: 14, bgcolor: fuchsiaBlue[400] }} />
                 ))}
               </AvatarGroup>
 
               <Typography fontSize={8}>{MaxOweMe - 5}+ Clientes</Typography>
             </Box>
-            <ArrowCircle sx={{ fontSize: '12px', color: 'primary.main' }} />
+            <ArrowCircle sx={{ fontSize: 12, color: 'primary.main' }} />
           </>
         ) : (
           <>
-            <Clock sx={{ fontSize: '12px', color: 'primary.main' }} />
+            <Clock sx={{ fontSize: 12, color: 'primary.main' }} />
             <Typography fontSize={8}>Vence el 31 de Dic 2023</Typography>
-            <ArrowCircle sx={{ fontSize: '12px', color: 'primary.main' }} />
+            <ArrowCircle sx={{ fontSize: 12, color: 'primary.main' }} />
           </>
         )}
       </Box>

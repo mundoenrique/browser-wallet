@@ -14,9 +14,9 @@ export default function CardDetails(props: CardDetailsProps) {
         display: 'flex',
         justifyContent: 'space-between',
         pt: 4,
-        px: '12px',
-        pb: '12px',
-        mb: '12px',
+        px: 3 / 2,
+        pb: 3 / 2,
+        mb: 3 / 2,
       }}
     >
       <Avatar sx={{ bgcolor: 'white', position: 'absolute', top: '5px', left: '140px' }} variant="circular">

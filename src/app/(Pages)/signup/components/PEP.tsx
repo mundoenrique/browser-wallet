@@ -7,8 +7,8 @@ import { Box, Button, Collapse, Link as LinkMui, Typography } from '@mui/materia
 //Internal app
 import { getSchema } from '@/config';
 import { useSignupStore } from '@/store';
-import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResponsive } from '@/components';
 import { slate } from '@/theme/theme-default';
+import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResponsive } from '@/components';
 
 //TODO:Only for DEV
 //import { DevTool } from '@hookform/devtools';
@@ -111,7 +111,7 @@ export default function PEP() {
         onSubmit={handleSubmit(onSubmit)}
         sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}
       >
-        <Box sx={{ mb: { sm: '24px' }, display: 'flex', flexDirection: 'column', gap: '24px', flex: 1 }}>
+        <Box sx={{ mb: { sm: 3 }, display: 'flex', flexDirection: 'column', gap: 3, flex: 1 }}>
           <Typography variant="subtitle1" align="center">
             Queremos saber más de ti
           </Typography>
@@ -140,7 +140,7 @@ export default function PEP() {
             <InputSelect name="pepForm.department" label="Departamento" options={selectOptions} control={control} />
             <InputDatePicker name="pepForm.endDate" label="Fecha" control={control} />
 
-            <Typography variant="body1" align="left" sx={{ marginBottom: '24px' }}>
+            <Typography variant="body1" align="left" sx={{ mb: 3 }}>
               ¿Posees participación, aporte o capital social igual o mayor al 25% en alguna (s) empresa (s)?
             </Typography>
             <Box
@@ -153,7 +153,7 @@ export default function PEP() {
               <InputCheckCondition name="pepForm.holdShare" options={options} control={control} />
             </Box>
 
-            <Typography variant="body1" align="left" sx={{ marginBottom: '24px' }}>
+            <Typography variant="body1" align="left" sx={{ mb: 3 }}>
               ¿Posee parientes vivos PEP hasta el segundo grado de consanguinidad (padres, hijos, hermanos y nietos) y
               segundo grado de afinidad (cónyuge o conviviente, suegros y cuñados)?
             </Typography>
@@ -205,11 +205,11 @@ export default function PEP() {
                 </Box>
               ))}
 
-              <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '24px' }}>
+              <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 / 2, mb: 3 }}>
                 <Button
                   variant="outlined"
                   sx={{
-                    width: '320px',
+                    width: 320,
                   }}
                   onClick={() => {
                     append({ documentType: null, documentNumber: '', fullName: '' });
@@ -221,7 +221,7 @@ export default function PEP() {
             </Collapse>
           </Collapse>
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', mt: { sm: 2 }, mb: { xs: 3, sm: 0 } }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 / 2, mt: { sm: 2 }, mb: { xs: 3, sm: 0 } }}>
           <Button
             variant="outlined"
             onClick={() => {
@@ -242,7 +242,7 @@ export default function PEP() {
         }}
       >
         <Box>
-          <Typography variant="subtitle1" sx={{ marginBottom: '16px' }}>
+          <Typography variant="subtitle1" sx={{ mb: 2 }}>
             🧑¿Qué es una Persona Expuesta Políticamente(PEP)?
           </Typography>
           <Typography>
@@ -259,10 +259,10 @@ export default function PEP() {
         }}
       >
         <>
-          <Typography variant="subtitle1" sx={{ marginBottom: '24px' }}>
+          <Typography variant="subtitle1" sx={{ mb: 3 }}>
             ✋¿Deseas eliminar este pariente?
           </Typography>
-          <Box sx={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+          <Box sx={{ display: 'flex', gap: 3 / 2, justifyContent: 'center' }}>
             <Button
               variant="outlined"
               onClick={() => {

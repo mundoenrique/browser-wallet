@@ -58,14 +58,14 @@ export default function Signin() {
             <LogoGreen />
           </Box>
           <Box mb={8}>
-            <Typography color="white" fontSize={14}>
+            <Typography variant="body2" color="white">
               Dinero en tu bolsillo,
             </Typography>
-            <Typography color="success.main" variant="h6" fontWeight={700}>
+            <Typography color="success.main" variant="h6">
               ¡Sin complicaciones!
             </Typography>
           </Box>
-          <Typography color="white" fontSize={20} fontWeight={700}>
+          <Typography variant="h6" color="white">
             ¡Hola Andrea!
           </Typography>
           <Typography color="white">Para continuar, ingresa la contraseña de tu cuenta digital.</Typography>

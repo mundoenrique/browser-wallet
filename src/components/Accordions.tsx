@@ -14,7 +14,7 @@ export default function Accordions(props: any) {
         sx={{
           alignItems: 'center',
           bgcolor: 'white',
-          borderRadius: '10px',
+          borderRadius: 1,
           cursor: 'pointer',
           display: 'flex',
           height: 40,

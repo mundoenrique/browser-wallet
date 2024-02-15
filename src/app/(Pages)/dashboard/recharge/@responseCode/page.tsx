@@ -65,7 +65,7 @@ export default function ResponseCode() {
                 flexDirection: 'column',
                 textAlign: 'center',
                 alignItems: 'center',
-                width: '140px',
+                width: 140,
               }}
             >
               <Typography fontWeight={700} mb={3}>
@@ -79,7 +79,7 @@ export default function ResponseCode() {
               </Typography>
               <Typography variant="h6" sx={{ display: 'flex', color: 'primary.main', alignItems: 'center' }}>
                 112399769
-                <IconButton aria-label="delete" size="small" sx={{ p: 0, ml: '12px' }}>
+                <IconButton aria-label="delete" size="small" sx={{ p: 0, ml: 3 / 2 }}>
                   <Copy sx={{ color: 'primary.main' }} />
                 </IconButton>
               </Typography>
@@ -90,7 +90,7 @@ export default function ResponseCode() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                width: '140px',
+                width: 140,
                 textAlign: 'center',
               }}
             >

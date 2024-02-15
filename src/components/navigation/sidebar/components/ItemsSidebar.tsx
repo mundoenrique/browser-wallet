@@ -102,17 +102,17 @@ export default function ItemsSidebar() {
             onClick={() => setCurrentItem(menu.id)}
             sx={{
               width: 244,
-              my: '4px',
+              my: 1 / 2,
               '&:before': {
                 background: fuchsiaBlue[600],
                 borderRadius: '0px 0px 4px 4px',
                 content: currentItemMenu ? `' '` : 'none',
                 flexShrink: 0,
-                height: '4px',
+                height: 4,
                 left: '-15px',
                 position: 'fixed',
                 transform: 'rotate(-90deg)',
-                width: '34px',
+                width: 34,
               },
             }}
           >
@@ -123,9 +123,7 @@ export default function ItemsSidebar() {
               selected={currentItemMenu}
               sx={{ textDecoration: 'none', pl: 0 }}
             >
-              <ListItemIcon
-                sx={{ minWidth: 'auto', mr: '12px', color: currentItemMenu ? fuchsiaBlue[600] : 'initial' }}
-              >
+              <ListItemIcon sx={{ minWidth: 'auto', mr: 3 / 2, color: currentItemMenu ? fuchsiaBlue[600] : 'initial' }}>
                 {menu.icon}
               </ListItemIcon>
               <ListItemText
@@ -133,7 +131,7 @@ export default function ItemsSidebar() {
                 primaryTypographyProps={{
                   fontWeight: 700,
                   color: currentItemMenu ? fuchsiaBlue[600] : 'initial',
-                  fontSize: { xs: '14px', md: 'initial' },
+                  fontSize: { xs: 14, md: 'initial' },
                 }}
               />
             </ListItemButton>

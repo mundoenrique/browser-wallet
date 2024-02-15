@@ -13,7 +13,7 @@ function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
 
   return (
     <>
-      <InputLabel sx={{ mb: '12px' }}>{textLabel}</InputLabel>
+      <InputLabel sx={{ mb: 3 / 2 }}>{textLabel}</InputLabel>
       <FormControl error={!!error} variant="outlined" sx={{ mb: '5px' }} fullWidth>
         <Autocomplete
           value={value}
@@ -34,7 +34,7 @@ function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
           sx={{ width: '100%' }}
           renderInput={(params) => <TextField {...params} placeholder="Selecciona una opción" />}
         />
-        <FormHelperText sx={{ height: '20px', ml: 0, display: 'flex', alignItems: 'center' }}>
+        <FormHelperText sx={{ height: 20, ml: 0, display: 'flex', alignItems: 'center' }}>
           {error ? (
             <>
               <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}

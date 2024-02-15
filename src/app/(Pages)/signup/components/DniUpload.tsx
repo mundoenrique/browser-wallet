@@ -10,7 +10,7 @@ export default function DniUpload() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '16px' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 / 2, mb: 2 }}>
         <Typography variant="subtitle1" align="center">
           Toma una foto frontal de tu DNI
         </Typography>
@@ -21,7 +21,7 @@ export default function DniUpload() {
           Enfoca la información de tu DNI.
           <br /> Evita las sombras y usar el flash.
         </Typography>
-        <Box sx={{ marginTop: '12px' }}>
+        <Box sx={{ mt: 3 / 2 }}>
           <InputText name="Adjunta tu DNI" label="Adjunta tu DNI" />
         </Box>
         <Typography variant="subtitle1" align="center">
@@ -34,11 +34,11 @@ export default function DniUpload() {
           Enfoca la información de tu DNI.
           <br /> Evita las sombras y usar el flash.
         </Typography>
-        <Box sx={{ marginTop: '12px' }}>
+        <Box sx={{ mt: 3 / 2 }}>
           <InputText name="Adjunta tu DNI" label="Adjunta tu DNI" />
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', mt: { sm: 2 }, mb: { xs: 3, sm: 0 } }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 / 2, mt: { sm: 2 }, mb: { xs: 3, sm: 0 } }}>
         <Button
           variant="outlined"
           onClick={() => {

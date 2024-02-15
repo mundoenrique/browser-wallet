@@ -24,7 +24,7 @@ export default function FrontInformation(props: FrontInformationProps) {
       <Box sx={{ position: 'absolute' }}>
         <Image src={card} width={320} height={180} alt="Tarjeta Yiro" priority />
       </Box>
-      <Box sx={{ display: 'grid', position: 'relative', gap: 1, p: 2, height: '180px', alignItems: 'end' }}>
+      <Box sx={{ display: 'grid', position: 'relative', gap: 1, p: 2, height: 180, alignItems: 'end' }}>
         <Box>
           <Box mb={1}>
             <Button sx={{ height: 0, minWidth: 0, p: 0 }} onClick={showDetails}>

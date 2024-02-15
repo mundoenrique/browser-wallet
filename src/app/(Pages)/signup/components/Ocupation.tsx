@@ -53,8 +53,8 @@ export default function Ocupation() {
       onSubmit={handleSubmit(onSubmit)}
       sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}
     >
-      <Box sx={{ mb: { sm: '24px' }, display: 'flex', flexDirection: 'column', flex: 1 }}>
-        <Typography variant="subtitle1" align="center" sx={{ marginBottom: '24px' }}>
+      <Box sx={{ mb: { sm: 3 }, display: 'flex', flexDirection: 'column', flex: 1 }}>
+        <Typography variant="subtitle1" align="center" sx={{ mb: 3 }}>
           Queremos saber más de ti
         </Typography>
         <Box>
@@ -84,7 +84,7 @@ export default function Ocupation() {
         </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: '12px', mt: { sm: 2 }, mb: { xs: 3, sm: 0 } }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 / 2, mt: { sm: 2 }, mb: { xs: 3, sm: 0 } }}>
         <Button
           variant="outlined"
           onClick={() => {

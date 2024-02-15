@@ -43,7 +43,7 @@ export default function BiometricValidation() {
     <PurpleLayout>
       <Box sx={{ zIndex: 1, display: 'grid', justifyItems: 'center' }}>
         <LogoGreen />
-        <Typography variant="h6" color="white" align="center" sx={{ height: '80px' }}>
+        <Typography variant="h6" color="white" align="center" sx={{ height: 80 }}>
           {statusText[statusStep]}
         </Typography>
       </Box>

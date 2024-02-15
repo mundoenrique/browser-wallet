@@ -10,9 +10,9 @@ export default function ItemSecondarySidebar(props: ItemSecondarySidebar) {
   const { color, text, icon } = props;
 
   return (
-    <ListItem disablePadding sx={{ width: { xs: 244, md: 'auto' }, my: { xs: '4px', md: 0 } }}>
+    <ListItem disablePadding sx={{ width: { xs: 244, md: 'auto' }, my: { xs: 1 / 2, md: 0 } }}>
       <ListItemButton component={Link} href="/signin" sx={{ textDecoration: 'none' }}>
-        <ListItemIcon sx={{ minWidth: 'auto', mr: '12px', color: color ? fuchsiaBlue[600] : 'initial' }}>
+        <ListItemIcon sx={{ minWidth: 'auto', mr: 3 / 2, color: color ? fuchsiaBlue[600] : 'initial' }}>
           {icon}
         </ListItemIcon>
         <ListItemText
@@ -20,7 +20,7 @@ export default function ItemSecondarySidebar(props: ItemSecondarySidebar) {
           primaryTypographyProps={{
             fontWeight: 700,
             color: color ? fuchsiaBlue[600] : 'initial',
-            fontSize: { xs: '14px', md: 'initial' },
+            fontSize: { xs: 14, md: 'initial' },
           }}
         />
       </ListItemButton>

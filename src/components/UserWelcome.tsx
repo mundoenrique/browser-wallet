@@ -10,7 +10,7 @@ export default function UserWelcome() {
 
   return (
     <Box sx={{ display: 'flex', mb: { xs: 2, md: 0 }, mt: { md: 5 } }}>
-      <Avatar sx={{ width: '32px', height: '32px', bgcolor: fuchsiaBlue[400], mr: '12px' }}>{currentUser}</Avatar>
+      <Avatar sx={{ width: 32, height: 32, bgcolor: fuchsiaBlue[400], mr: 3 / 2 }}>{currentUser}</Avatar>
       <Box>
         <Typography variant="h6">¡Hola {user}! 👋</Typography>
         <Typography variant="caption">Bienvenido a yiro</Typography>

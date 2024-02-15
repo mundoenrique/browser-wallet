@@ -96,3 +96,7 @@ export interface LinkingProps {
   underline?: boolean;
   hidenArrow?: boolean;
 }
+
+export interface AuthOtpFormProps {
+  setOTP: (value: boolean) => void;
+}

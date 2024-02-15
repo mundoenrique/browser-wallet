@@ -32,7 +32,7 @@ export default function Landing() {
         <Image src={welcome} width={360} height={426} alt="animation" priority />
       </Box>
       <Box sx={{ textAlign: 'center' }}>
-        <Typography variant="subtitle1" sx={{ color: fuchsiaBlue[800], mb: { xs: '56px', sm: '24px' } }}>
+        <Typography variant="subtitle1" sx={{ color: fuchsiaBlue[800], mb: { xs: 7, sm: 3 } }}>
           ¡Obtén tu cuenta Yiro en sólo 4 pasos!
         </Typography>
         <Button
