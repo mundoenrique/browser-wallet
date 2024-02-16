@@ -17,14 +17,3 @@ services:
 networks:
   belcorp_network:
     name: belcorp_network
-
-startupProbe:
-  httpGet:
-    path: /api/healthcheck
-    port: 3000
-    httpHeaders:
-    - name: X-Kubernetes-Probe
-      value: Startup
-  timeoutSeconds: 300
-  periodSeconds: 30
-  failureThreshold: 10
