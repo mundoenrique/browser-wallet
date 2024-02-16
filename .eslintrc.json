@@ -4,6 +4,7 @@
     "comma-dangle": ["error", "always-multiline"],
     "no-undef": "off",
     "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
-    "semi": [2, "always"]
+    "semi": [2, "always"],
+    "react-hooks/rules-of-hooks": "warn"
   }
 }
