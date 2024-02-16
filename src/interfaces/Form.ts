@@ -7,7 +7,7 @@ export interface FormMUIProps {
   labelError?: string;
   error?: any;
   value?: any;
-  onChange?: (...e: any[]) => void;
+  onChange?: (..._e: any[]) => void;
   type?: string;
   control?: any;
   getOptionLabel?: Function;
@@ -37,7 +37,7 @@ export interface InputDatePickerProps extends FormMUIProps {
 }
 
 export interface InputCheckProps extends FormMUIProps {
-  onClick?: (...e: any[]) => void;
+  onClick?: (..._e: any[]) => void;
   checked?: boolean;
   disabled?: boolean;
   labelHandle?: boolean | string;
@@ -59,7 +59,7 @@ export type CardSubmitForm = {
 };
 
 export interface SelectProps {
-  onChange?: (...e: any[]) => void;
+  onChange?: (..._e: any[]) => void;
   label?: any;
   labelError?: any;
   error?: boolean | undefined;
@@ -73,7 +73,7 @@ export interface DatePickerProps {
   labelError?: any;
   error?: boolean | undefined;
   value?: any;
-  onChange?: (...e: any[]) => void;
+  onChange?: (..._e: any[]) => void;
   restProps?: any;
 }
 
@@ -82,7 +82,7 @@ export interface RadioProps {
   options: { value: string; label: string }[];
   error?: boolean | undefined;
   value?: any;
-  onChange?: (...e: any[]) => void;
+  onChange?: (..._e: any[]) => void;
   labelError?: any;
   id: string;
 }
