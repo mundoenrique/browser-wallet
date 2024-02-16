@@ -26,7 +26,7 @@ export const JwtProvider: React.FC<ChildrenProps> = ({ children }) => {
 
       generateJwtToken();
     }
-  }, [publicKey]);
+  }, [api, publicKey, setToken, token]);
 
   return <>{children}</>;
 };
