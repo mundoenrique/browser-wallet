@@ -106,3 +106,10 @@ export interface InputsHandlePasswordProps extends FormMUIProps {
   labelNewPass: string;
   labelLegal: string;
 }
+
+export interface FormPassProps {
+  onSubmit: () => void;
+  description: string;
+  buttons: React.ReactNode;
+  register?: boolean;
+}
