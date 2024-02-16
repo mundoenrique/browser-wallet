@@ -1,13 +1,45 @@
 import { useEffect } from 'react';
-import { api } from '@/utils/api';
+import { api, setJwtToken, setprivateKey } from '@/utils/api';
 import { verifyJWT } from '@/utils/jwt';
 import { JWT_HEADER } from '@/utils/constants';
-import { useJwtStore } from '@/store/jwtStore';
+import { useJwtStore, useKeyStore } from '@/store';
 
 export function useApi() {
-  const { setToken } = useJwtStore();
+  const { token, setToken } = useJwtStore();
+  const { privateKey } = useKeyStore();
 
   useEffect(() => {
+    if (token && privateKey) {
+      api.interceptors.request.use(
+        async (request) => {
+          const apiPublicKey: string | undefined = process.env.NEXT_PUBLIC_KEY;
+          const url = request.url;
+
+          if (!apiPublicKey) {
+            return Promise.reject('API publicKey is not defined');
+          }
+
+          if (url !== '/auth/get-token') {
+            console.log('default JWT_HEADER: ', api.defaults.headers.common[JWT_HEADER]);
+            if (!api.defaults.headers.common[JWT_HEADER]) {
+              setJwtToken(token);
+              request.headers[JWT_HEADER] = token;
+              setprivateKey(privateKey);
+            }
+          }
+
+          return request;
+        },
+        (error) => {
+          console.error('Error in request:', error);
+          return Promise.reject({
+            message: 'Error in request',
+            originalError: error,
+          });
+        }
+      );
+    }
+
     api.interceptors.response.use(
       async (response) => {
         const url = response.config.url;
@@ -32,11 +64,14 @@ export function useApi() {
         return response;
       },
       (error) => {
-        console.error('Error in response: ', error);
-        return Promise.reject(error);
+        console.error('Error in response:', error);
+        return Promise.reject({
+          message: 'Error in response',
+          originalError: error,
+        });
       }
     );
-  }, [setToken]);
+  }, [privateKey, setToken, token]);
 
   return api;
 }
