@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { useKeyStore, useJwtStore } from '@/store';
 import { useApi } from '@/hooks/useApi';
 import { ChildrenProps } from '@/interfaces/constant';
+import { setJwtToken } from '@/utils/api';
 
 export const JwtProvider: React.FC<ChildrenProps> = ({ children }) => {
   const { publicKey } = useKeyStore();
@@ -19,6 +20,7 @@ export const JwtProvider: React.FC<ChildrenProps> = ({ children }) => {
           const token = response.data.data as string;
 
           setToken(token);
+          setJwtToken(token);
         } catch (error) {
           console.error('Error al generar el token JWT:', error);
         }
@@ -26,7 +28,7 @@ export const JwtProvider: React.FC<ChildrenProps> = ({ children }) => {
 
       generateJwtToken();
     }
-  }, [publicKey]);
+  }, [api, publicKey, setToken, token]);
 
   return <>{children}</>;
 };

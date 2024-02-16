@@ -10,31 +10,31 @@ const api = axios.create({
 });
 
 let privateKey = '';
-let publicKey = '';
 
-function setKeyPair(privKey: string, publiKey: string) {
+function setprivateKey(privKey: string) {
   privateKey = privKey;
-  publicKey = publiKey;
 }
 
 function setJwtToken(token: string) {
   api.defaults.headers.common[JWT_HEADER] = token;
 }
 
-const headersOfInterest = [JWS_HEADER, JWT_HEADER];
-
 api.interceptors.request.use(
   async (request) => {
-    const apiPublicKey = process.env.NEXT_PUBLIC_KEY;
+    const apiPublicKey: string | undefined = process.env.NEXT_PUBLIC_KEY;
     const url = request.url;
     const data = request.data;
 
+    if (!apiPublicKey) {
+      return Promise.reject('API publicKey is not defined');
+    }
+
+    if (!privateKey) {
+      return Promise.reject('privateKey is not defined');
+    }
+
     console.log('--------------- Request API---------------');
     console.log('url:', url);
-
-    if (url === '/auth/generate-keys' || !apiPublicKey) {
-      return request;
-    }
 
     if (data) {
       console.log('data:', data);
@@ -53,7 +53,10 @@ api.interceptors.request.use(
   },
   (error) => {
     console.error('Error in request:', error);
-    return Promise.reject(error);
+    return Promise.reject({
+      message: 'Error in request',
+      originalError: error,
+    });
   }
 );
 
@@ -94,8 +97,11 @@ api.interceptors.response.use(
   },
   (error) => {
     console.error('Error in response:', error);
-    return Promise.reject(error);
+    return Promise.reject({
+      message: 'Error in response',
+      originalError: error,
+    });
   }
 );
 
-export { api, setKeyPair, setJwtToken };
+export { api, setprivateKey, setJwtToken };

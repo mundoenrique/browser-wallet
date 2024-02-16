@@ -6,7 +6,7 @@ import { ChildrenProps } from './constant';
 
 export interface MuiModalProps extends BoxProps {
   open: boolean;
-  handleClose: (...e: any[]) => void;
+  handleClose: (..._e: any[]) => void;
   children: ReactElement;
 }
 

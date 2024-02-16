@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import NodeRSA from 'node-rsa';
 import { useKeyStore } from '@/store/keyStore';
-import { setKeyPair } from '@/utils/api';
+import { setprivateKey } from '@/utils/api';
 import { removePEMHeadersAndFooters } from '@/utils/jwt';
 import { ChildrenProps } from '@/interfaces/constant';
 
@@ -21,7 +21,7 @@ export const KeyProvider: React.FC<ChildrenProps> = ({ children }) => {
           console.log('Clave pública:', publicKey);
           console.log('Clave privada:', privateKey);
           setKeys({ publicKey, privateKey });
-          setKeyPair(privateKey, publicKey);
+          setprivateKey(privateKey);
         } catch (error) {
           console.error('Error al obtener las claves:', error);
         }
@@ -29,7 +29,7 @@ export const KeyProvider: React.FC<ChildrenProps> = ({ children }) => {
 
       generateKeys();
     }
-  }, []);
+  }, [privateKey, publicKey, setKeys]);
 
   return <>{children}</>;
 };
