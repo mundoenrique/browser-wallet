@@ -69,7 +69,7 @@ const CloseButton = styled(Fab, {
   },
 }));
 
-const ModalResponsive = forwardRef((props: MuiModalProps, ref: any) => {
+const ModalResponsive = forwardRef(function MyModalResponsive(props: MuiModalProps, ref: any) {
   const { open, handleClose, children, ...others } = props;
   const theme = useTheme();
   const matche = useMediaQuery(theme.breakpoints.down('sm'));
