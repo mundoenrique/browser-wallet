@@ -5,9 +5,20 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 //Internal app
 import { getSchema } from '@/config';
+import { FormPassProps } from '@/interfaces';
 import { InputCheck, InputPass } from '@/components';
 
-export default function FormPass(porps: any) {
+/**
+ * Form component for password management (Change and create password)
+ *
+ * @param onSubmit - Function that sends the data.
+ * @param description - Descriptive paragraph of the form.
+ * @param buttons - Assign the necessary buttons for the form.
+ * @param register - Specifies whether the form is from the registration flow.
+ * @returns The JSON with the data delivered.
+ * @throws If there is an error in any field that does not comply with the regular expressions.
+ */
+export default function FormPass(porps: FormPassProps): JSX.Element {
   const { onSubmit, description, buttons, register } = porps;
   const schema = register
     ? getSchema(['newPassword', 'newPasswordConfirmation', 'policy'])
