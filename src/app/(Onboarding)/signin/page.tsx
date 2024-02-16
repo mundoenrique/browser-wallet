@@ -1,20 +1,23 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Link as LinkMui, Typography, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
+import { useApi } from '@/hooks/useApi';
 import { getSchema } from '@/config';
 import { InputPass, ModalResponsive } from '@/components';
 import LogoGreen from '%/images/LogoGreen';
-import { useState } from 'react';
 
 export default function Signin() {
   const [open, setOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const theme = useTheme();
   const router = useRouter();
+  const api = useApi();
   const schema = getSchema(['password']);
 
   const { control, handleSubmit } = useForm({
@@ -26,10 +29,28 @@ export default function Signin() {
 
   const onSubmit = async (data: any) => {
     console.log('🚀 ~ onSubmit ~ data:', data);
-    if (data.password !== '123456') {
+    try {
+      const payload = { email: 'jllerena@novopayment.com', password: 'Novo123' };
+      const response = await api.post('/auth/login', payload);
+
+      // Si el inicio de sesión es exitoso, redirige al dashboard
+      if (response.status === 200) {
+        console.log('data:', response.data);
+        router.push('/dashboard');
+      }
+    } catch (error) {
+      if (error instanceof Error && 'response' in error) {
+        const axiosError = error as any;
+        console.log(error);
+        if (axiosError.response && axiosError.response.status === 401) {
+          setErrorMessage('Contraseña incorrecta');
+        } else {
+          setErrorMessage('Ocurrió un error inesperado');
+        }
+      } else {
+        setErrorMessage('Ocurrió un error inesperado');
+      }
       setOpen(true);
-    } else {
-      router.push('/dashboard');
     }
   };
 
@@ -88,7 +109,7 @@ export default function Signin() {
           <Typography py={2} fontWeight={700}>
             Signin
           </Typography>
-          <Typography textAlign="center">Contraseña incorrecta.</Typography>
+          <Typography textAlign="center">{errorMessage}</Typography>
         </>
       </ModalResponsive>
     </>
