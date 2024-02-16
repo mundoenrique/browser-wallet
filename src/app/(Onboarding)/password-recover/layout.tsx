@@ -13,7 +13,7 @@ export default async function RecoverLayout({ children, authOtp }: AuthOtpProps)
   return (
     <>
       <NavExternal image />
-      <Card variant="signup">{true ? <>{children}</> : <>{authOtp}</>}</Card>
+      <Card variant="signup">{authOtp ? <>{authOtp}</> : <>{children}</>}</Card>
     </>
   );
 }
