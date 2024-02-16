@@ -10,7 +10,7 @@ import { CardInformation, HandleCard, InputSwitch, UserWelcome } from '@/compone
 import { CardCloseIcon, CardIcons, KeyIcons, PersonWrongIcon, WebPageIcon } from '%/Icons';
 
 export default function CardConfiguration() {
-  const { updateTitle }: any = useNavTitleStore();
+  const { updateTitle } = useNavTitleStore();
 
   useEffect(() => {
     updateTitle('Cambiar contraseña');

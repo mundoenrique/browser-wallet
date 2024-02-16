@@ -8,7 +8,7 @@ import { fuchsiaBlue } from '@/theme/theme-default';
 import { ContainerLayout, ModalResponsive } from '@/components';
 
 export default function RequestPhysicalCard() {
-  const { updateTitle }: any = useNavTitleStore();
+  const { updateTitle } = useNavTitleStore();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {

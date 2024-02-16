@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/components';
 
 export default function BlockCard() {
-  const { updateTitle }: any = useNavTitleStore();
+  const { updateTitle } = useNavTitleStore();
   const [open, setOpen] = useState(false);
   const schema = getSchema(['blockType']);
 

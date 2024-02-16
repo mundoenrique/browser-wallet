@@ -8,7 +8,7 @@ import { fuchsiaBlue } from '@/theme/theme-default';
 import { ArrowsIcons, CashIcons, GainIcons, HomeIcons } from '%/Icons';
 
 export default function NavbarLower() {
-  const { currentItem, setCurrentItem }: any = useMenuStore();
+  const { currentItem, setCurrentItem } = useMenuStore();
 
   const itemMenu = [
     {

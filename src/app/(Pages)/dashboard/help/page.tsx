@@ -12,7 +12,7 @@ import { ContainerLayout, HandleCard } from '@/components';
 
 export default function Help() {
   const router = useRouter();
-  const { updateTitle }: any = useNavTitleStore();
+  const { updateTitle } = useNavTitleStore();
 
   const handleQuestions = () => {
     router.push('/dashboard/help/frequent-questions');

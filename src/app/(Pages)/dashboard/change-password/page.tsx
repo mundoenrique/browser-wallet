@@ -10,7 +10,7 @@ import { useNavTitleStore } from '@/store';
 import { ContainerLayout, InputPass, ModalOtp, ModalResponsive } from '@/components';
 
 export default function ChangePassword() {
-  const { updateTitle }: any = useNavTitleStore();
+  const { updateTitle } = useNavTitleStore();
   const [openOtp, setOpenOtp] = useState(false);
   const [openRc, setOpenRc] = useState(false);
   const schemaFormPassword = getSchema(['newPassword', 'newPasswordConfirmation', 'currentPassword']);

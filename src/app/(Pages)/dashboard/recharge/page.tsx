@@ -12,7 +12,7 @@ import { ContainerLayout, InputTextPay } from '@/components';
 export default function Recharge() {
   const schema = getSchema(['password']);
 
-  const { updateTitle }: any = useNavTitleStore();
+  const { updateTitle } = useNavTitleStore();
 
   useEffect(() => {
     updateTitle('Generar recarga');

@@ -11,7 +11,7 @@ import { InputSelect, InputText } from '@/components';
 
 export default function Ocupation() {
   const [ocupations, setOcupations] = useState(false);
-  const { updateStep, inc, updateFormState, ocupationFormState }: any = useSignupStore();
+  const { updateStep, inc, updateFormState, ocupationFormState } = useSignupStore();
   const schema = ocupations
     ? getSchema(['ocupation', 'enterpriseType', 'enterprises', 'position'])
     : getSchema(['ocupation']);

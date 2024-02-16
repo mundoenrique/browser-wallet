@@ -8,7 +8,7 @@ import { useNavTitleStore } from '@/store';
 import { ContainerLayout, HandleCard, Linking } from '@/components';
 
 export default function ActivatePhysicalCard() {
-  const { updateTitle }: any = useNavTitleStore();
+  const { updateTitle } = useNavTitleStore();
 
   useEffect(() => {
     updateTitle('Activación de tarjeta física');

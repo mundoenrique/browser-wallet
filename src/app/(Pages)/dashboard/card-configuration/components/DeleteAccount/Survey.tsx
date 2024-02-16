@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ContainerLayout, InputRadio, Linking, ModalOtp, ModalResponsive } from '@/components';
 
 export default function Survey() {
-  const { updateTitle }: any = useNavTitleStore();
+  const { updateTitle } = useNavTitleStore();
   const [openOtp, setOpenOtp] = useState(false);
   const [openRc, setOpenRc] = useState(false);
   const schema = getSchema(['blockType']);

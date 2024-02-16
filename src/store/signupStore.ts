@@ -2,6 +2,10 @@ import { create } from 'zustand';
 import { devtools, persist, createJSONStorage } from 'zustand/middleware';
 import { SignupStore } from '@/interfaces';
 
+/**
+ * Stores and modifies the status of onboarding process screens and forms
+ */
+
 export const useSignupStore = create<SignupStore>()(
   devtools(
     persist(

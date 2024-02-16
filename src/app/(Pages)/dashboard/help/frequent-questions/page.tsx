@@ -20,7 +20,7 @@ const questions = [
 ];
 
 export default function Questions() {
-  const { updateTitle }: any = useNavTitleStore();
+  const { updateTitle } = useNavTitleStore();
 
   useEffect(() => {
     updateTitle('Preguntas frecuentes');

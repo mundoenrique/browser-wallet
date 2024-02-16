@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ContainerLayout, InputPass, Linking, ModalOtp, ModalResponsive } from '@/components';
 
 export default function ChangePin() {
-  const { updateTitle }: any = useNavTitleStore();
+  const { updateTitle } = useNavTitleStore();
   const [openOtp, setOpenOtp] = useState(false);
   const [openRc, setOpenRc] = useState(false);
   const schemaFormPassword = getSchema(['newPin', 'confirmPin']);

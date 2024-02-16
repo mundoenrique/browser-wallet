@@ -8,7 +8,7 @@ import { useNavTitleStore } from '@/store';
 import { ContainerLayout, HandleCard, Linking } from '@/components';
 
 export default function DeleteAccount() {
-  const { updateTitle }: any = useNavTitleStore();
+  const { updateTitle } = useNavTitleStore();
 
   useEffect(() => {
     updateTitle('Eliminar cuenta');

@@ -1,11 +1,16 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { MenuStore } from '@/interfaces';
 
-export const useMenuStore = create()(
+/**
+ * Store for navMenu
+ */
+
+export const useMenuStore = create<MenuStore>()(
   persist(
     (set) => ({
       currentItem: 'home',
-      setCurrentItem: (item: number) => set({ currentItem: item }),
+      setCurrentItem: (item) => set({ currentItem: item }),
     }),
     {
       name: 'Menu',

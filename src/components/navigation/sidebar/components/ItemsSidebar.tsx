@@ -9,7 +9,7 @@ import { ArrowsIcons, CardIcons, CashIcons, FileIcons, GainIcons, HomeIcons, Key
 
 export default function ItemsSidebar() {
   const theme = useTheme();
-  const { currentItem, setCurrentItem }: any = useMenuStore();
+  const { currentItem, setCurrentItem } = useMenuStore();
   const matche = useMediaQuery(theme.breakpoints.up('md'));
 
   const itemMenu = matche

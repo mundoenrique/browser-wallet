@@ -13,7 +13,7 @@ export default function Navbar(props: NavbarProps) {
   const { onClick } = props;
   const pathname = usePathname();
   const dashboardNav = pathname === '/dashboard';
-  const { title }: any = useNavTitleStore();
+  const { title } = useNavTitleStore();
 
   return (
     <AppBar
