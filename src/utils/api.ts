@@ -10,18 +10,14 @@ const api = axios.create({
 });
 
 let privateKey = '';
-let publicKey = '';
 
-function setKeyPair(privKey: string, publiKey: string) {
+function setprivateKey(privKey: string) {
   privateKey = privKey;
-  publicKey = publiKey;
 }
 
 function setJwtToken(token: string) {
   api.defaults.headers.common[JWT_HEADER] = token;
 }
-
-const headersOfInterest = [JWS_HEADER, JWT_HEADER];
 
 api.interceptors.request.use(
   async (request) => {
@@ -98,4 +94,4 @@ api.interceptors.response.use(
   }
 );
 
-export { api, setKeyPair, setJwtToken };
+export { api, setprivateKey, setJwtToken };

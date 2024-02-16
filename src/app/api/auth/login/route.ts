@@ -9,7 +9,7 @@ import {
   handleJWE,
   handleJWT,
 } from '@/utils';
-import { ICredentials, IEncryptedBody, IJWTPayload, IPayload } from '@/interfaces/api';
+import { ICredentials, IJWTPayload } from '@/interfaces/api';
 
 export async function POST(request: NextRequest) {
   const apiPublicKey = getEnvVariable('PUBLIC_KEY');

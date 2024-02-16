@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { api } from '@/utils/api';
 import { verifyJWT } from '@/utils/jwt';
 import { JWT_HEADER } from '@/utils/constants';
