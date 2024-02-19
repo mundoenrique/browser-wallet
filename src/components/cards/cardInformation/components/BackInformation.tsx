@@ -6,7 +6,16 @@ import { CopyIcons } from '%/Icons';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { BackInformationProps } from '@/interfaces';
 
-export default function BackInformation(props: BackInformationProps) {
+/**
+ * Shows information on the back of the 3D card
+ *
+ * @param hideDetails - Function to hide cardholder information
+ * @param holder - Owner's name.
+ * @param cardNumber - Card number.
+ * @param expDate - Card expiration date.
+ * @param cvc - Shows the cvv2.
+ */
+export default function BackInformation(props: BackInformationProps): JSX.Element {
   const { hideDetails, holder, cardNumber, expDate, cvc } = props;
 
   const copyText = async () => {

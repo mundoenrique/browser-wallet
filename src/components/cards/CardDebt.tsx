@@ -4,10 +4,17 @@ import Clock from '@mui/icons-material/QueryBuilder';
 import ArrowCircle from '@mui/icons-material/ArrowCircleRightOutlined';
 import { Avatar, AvatarGroup, Box, Card, Typography } from '@mui/material';
 //Internal app
+import { CardDebtProps } from '@/interfaces';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
 import { BgButtonPayLarge, BgButtonPaySmall, Esika } from '%/Icons';
 
-export default function CardDebt(props: any) {
+/**
+ * Cards used to show debts on dashboard
+ *
+ * @param OweMe - Shows the configuration of the clients that must.
+ * @returns Debt balances.
+ */
+export default function CardDebt(props: CardDebtProps): JSX.Element {
   const { OweMe } = props;
   const clientOweMe = ['', '', '', '', '', '', ''];
   const MaxOweMe = clientOweMe.length;

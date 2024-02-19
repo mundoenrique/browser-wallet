@@ -5,7 +5,17 @@ import { Box, Card, Avatar } from '@mui/material';
 import { HandleCardProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
-export default function HandleCard(props: HandleCardProps) {
+/**
+ * Card designed to display information with an icon and have a function.
+ *
+ * @param children - Child elements.
+ * @param icon - Specifies the icon, used when it has a function..
+ * @param onClick - Function that will generate the card.
+ * @param large - Card height (@defaultValue `40px`).
+ * @param avatar - Icon or image that the avatar will have.
+ * @param disabled - Disables the card, accepted when using a function.
+ */
+export default function HandleCard(props: HandleCardProps): JSX.Element {
   const { children, icon, onClick, large = 40, avatar, disabled } = props;
 
   return (

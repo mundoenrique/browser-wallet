@@ -7,7 +7,14 @@ import Visibility from '@mui/icons-material/RemoveRedEyeOutlined';
 import card from '%/images/cardYiro.svg';
 import { FrontInformationProps } from '@/interfaces';
 
-export default function FrontInformation(props: FrontInformationProps) {
+/**
+ * Displays information on the front of the 3D card.
+ *
+ * @param showDetails - Function to show cardholder information
+ * @param cardNumber - Card number.
+ * @param balance - The available account balance.
+ */
+export default function FrontInformation(props: FrontInformationProps): JSX.Element {
   const { showDetails, cardNumber, balance } = props;
 
   return (

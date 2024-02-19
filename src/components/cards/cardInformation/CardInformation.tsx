@@ -5,9 +5,21 @@ import { useState } from 'react';
 import BackInformation from './components/BackInformation';
 import FrontInformation from './components/FrontInformation';
 import { BodyCard, BodyCardAction } from './components/BodyCards';
+import { BackInformationProps, FrontInformationProps } from '@/interfaces';
 
-export default function CardInformation() {
-  const [showDetails, setShowDetails] = useState(false);
+/**
+ * Shows the 3D card with all the cardholder information
+ *
+ * @param cardNumber - Card number.
+ * @param balance - The available account balance.
+ * @param holder - Owner's name.
+ * @param expDate - Card expiration date.
+ * @param cvc - Shows the cvv2.
+ * @returns 3D card with all the cardholder information.
+ */
+export default function CardInformation(props: BackInformationProps & FrontInformationProps): JSX.Element {
+  const { cardNumber, balance, holder, expDate, cvc } = props;
+  const [showDetails, setShowDetails] = useState<boolean>(false);
 
   const handleShowDetails = () => {
     setShowDetails(!showDetails);

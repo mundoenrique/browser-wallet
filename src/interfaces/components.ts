@@ -100,3 +100,7 @@ export interface LinkingProps {
 export interface AuthOtpFormProps {
   setOTP: (value: boolean) => void;
 }
+
+export interface CardDebtProps {
+  OweMe?: boolean;
+}
