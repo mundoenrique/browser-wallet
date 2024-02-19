@@ -10,7 +10,15 @@ import InputOTP from '../form/InputOTP';
 import { ModalOtpProps } from '@/interfaces';
 import ModalResponsive from './ModalResponsive';
 
-export default function ModalOtp(props: ModalOtpProps) {
+/**
+ * Reusable modal to request verification code
+ *
+ * @param handleClose - Function of the modal to close it with the X.
+ * @param open - State of the modal to show it or not.
+ * @param onSubmit - Function that sends the data obtained in the form.
+ * @returns Json with the verification code
+ */
+export default function ModalOtp(props: ModalOtpProps): JSX.Element {
   const { handleClose, open, onSubmit } = props;
   const schemaFormOtp = getSchema(['otp']);
 

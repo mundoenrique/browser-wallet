@@ -55,6 +55,13 @@ const CloseButtonContainer = styled(Box, {
   height: 52,
 }));
 
+/**
+ * Windows used to display informational messages or operational responses.
+ *
+ * @param handleClose - Function of the modal to close it with the X.
+ * @param open - State of the modal to show it or not.
+ * @param children - Children elements.
+ */
 const ModalResponsive = forwardRef((props: MuiModalProps, ref: any) => {
   const { open, handleClose, children, ...others } = props;
   const theme = useTheme();
