@@ -6,7 +6,14 @@ import Linking from '../Linking';
 import LogoPurple from '%/images/LogoPurple';
 import { MuiNavExternalProps } from '@/interfaces';
 
-export default function NavExternal({ image, color, closeApp }: MuiNavExternalProps) {
+/**
+ * Navigation bar used in onboarding flows.
+ *
+ * @param image - Confirm and display the product logo.
+ * @param color - Link Text Color.
+ * @param closeApp - Confirm if the link to exit the application is displayed.
+ */
+export default function NavExternal({ image, color, closeApp }: MuiNavExternalProps): JSX.Element {
   return (
     <Box
       sx={{

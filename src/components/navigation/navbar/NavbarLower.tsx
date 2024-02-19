@@ -7,7 +7,14 @@ import { useMenuStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { ArrowsIcons, CashIcons, GainIcons, HomeIcons } from '%/Icons';
 
-export default function NavbarLower() {
+/**
+ * Bottom bar to show menu items in responsive.
+ *
+ * @remarks
+ *
+ * This component has persistence with Zustand and is being passed (Home, Recharge, Transfer and Charge)
+ */
+export default function NavbarLower(): JSX.Element {
   const { currentItem, setCurrentItem } = useMenuStore();
 
   const itemMenu = [

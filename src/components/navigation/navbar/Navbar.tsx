@@ -9,7 +9,15 @@ import { NavbarProps } from '@/interfaces';
 import { useNavTitleStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
-export default function Navbar(props: NavbarProps) {
+/**
+ * Top bar used in responsive to show menu and titles.
+ *
+ * @param onClick - Function that receives the action of opening or closing the "sidebar" menu.
+ * @remarks
+ *
+ * The titles are rendered based on the current page with a useEffect and stored in a global state, this is done directly from each page.
+ */
+export default function Navbar(props: NavbarProps): JSX.Element {
   const { onClick } = props;
   const pathname = usePathname();
   const dashboardNav = pathname === '/dashboard';
