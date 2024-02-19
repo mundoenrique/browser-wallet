@@ -6,7 +6,17 @@ import Arrow from '@mui/icons-material/ArrowBackIos';
 //Internal app
 import { LinkingProps } from '@/interfaces';
 
-export default function Linking(props: LinkingProps) {
+/**
+ * Combination of MUI with Next to create link.
+ *
+ * @param href - Navigation route.
+ * @param mb - Lower margin {@defaultValue `4 or 32px`}.
+ * @param label - Link text.
+ * @param color - Link color confirmation.
+ * @param underline - Confirm if the link should be underlined.
+ * @param hidenArrow - Hide the arrow icon.
+ */
+export default function Linking(props: LinkingProps): JSX.Element {
   const { href, mb = 4, label, color, underline, hidenArrow } = props;
 
   return (

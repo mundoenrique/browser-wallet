@@ -6,7 +6,14 @@ import { ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/mater
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { ItemSecondarySidebar } from '@/interfaces';
 
-export default function ItemSecondarySidebar(props: ItemSecondarySidebar) {
+/**
+ * Child items that do not change in the menu.
+ *
+ * @param color - Element text color.
+ * @param text - Element text.
+ * @param icon - Item custom icon.
+ */
+export default function ItemSecondarySidebar(props: ItemSecondarySidebar): JSX.Element {
   const { color, text, icon } = props;
 
   return (

@@ -6,7 +6,15 @@ import { SidebarProps } from '@/interfaces';
 import ListSidebar from './components/ListSidebar';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
-export default function Sidebar(props: SidebarProps) {
+/**
+ * Sidebar configured for the different resolutions.
+ *
+ * @param drawerWidth - Sidebar Width {@defaultValue `315px`}.
+ * @param open - Function to show sidebar or not - responsive.
+ * @param onTransitionEnd - Function to close the sidebar when you have an action - responsive.
+ * @param onClose - Function to close the sidebar - responsive.
+ */
+export default function Sidebar(props: SidebarProps): JSX.Element {
   const { drawerWidth, open, onTransitionEnd, onClose } = props;
 
   return (

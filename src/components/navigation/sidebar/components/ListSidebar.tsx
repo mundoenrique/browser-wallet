@@ -10,7 +10,13 @@ import { fuchsiaBlue } from '@/theme/theme-default';
 import { LogoutAppIcons, LogoutIcons } from '%/Icons';
 import ItemSecondarySidebar from './ItemSecondarySidebar';
 
-export default function ListSidebar() {
+/**
+ * Complete sidebar structure.
+ * @remarks
+ *
+ * In the sybar structure we find: The logo, primary menu elements (ItemsSidebar.tsx) and secondary menu elements (ItemSecondarySidebar.tsx)
+ */
+export default function ListSidebar(): JSX.Element {
   return (
     <>
       <Box

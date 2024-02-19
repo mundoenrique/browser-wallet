@@ -7,7 +7,10 @@ import { useMenuStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { ArrowsIcons, CardIcons, CashIcons, FileIcons, GainIcons, HomeIcons, KeyIcons, ToolIcons } from '%/Icons';
 
-export default function ItemsSidebar() {
+/**
+ * Primary items that change with menu resolution.
+ */
+export default function ItemsSidebar(): JSX.Element {
   const theme = useTheme();
   const { currentItem, setCurrentItem } = useMenuStore();
   const matche = useMediaQuery(theme.breakpoints.up('md'));
