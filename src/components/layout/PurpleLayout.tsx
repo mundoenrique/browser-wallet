@@ -5,7 +5,13 @@ import { Box } from '@mui/material';
 import { PurpleLayoutProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
-export default function PurpleLayout({ children, hidePelca }: PurpleLayoutProps) {
+/**
+ * Purple container used to display response messages
+ *
+ * @param children - Children elements.
+ * @param hidePelca - Hide container art.
+ */
+export default function PurpleLayout({ children, hidePelca }: PurpleLayoutProps): JSX.Element {
   return (
     <Box
       sx={{

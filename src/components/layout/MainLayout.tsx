@@ -8,10 +8,15 @@ import { ChildrenProps } from '@/interfaces';
 import Sidebar from '../navigation/sidebar/Sidebar';
 import NavbarLower from '../navigation/navbar/NavbarLower';
 
-export default function MainLayout({ children }: ChildrenProps) {
+/**
+ * Container used in the internal views of the application
+ *
+ * @param children - Children elements.
+ */
+export default function MainLayout({ children }: ChildrenProps): JSX.Element {
   const drawerWidth = 315;
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
+  const [isClosing, setIsClosing] = useState<boolean>(false);
 
   const handleDrawerClose = () => {
     setIsClosing(true);

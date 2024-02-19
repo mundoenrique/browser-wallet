@@ -4,8 +4,15 @@ import { Box } from '@mui/system';
 //Internal app
 import { ContainerLayoutProps } from '@/interfaces';
 
-export default function ContainerLayout(props: ContainerLayoutProps) {
+/**
+ * Global application container
+ *
+ * @param children - Children elements.
+ * @param fullWidth - Container width.
+ */
+export default function ContainerLayout(props: ContainerLayoutProps): JSX.Element {
   const { children, fullWidth } = props;
+
   return (
     <Box
       sx={{

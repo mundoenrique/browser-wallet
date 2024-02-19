@@ -39,7 +39,12 @@ const ContainerLayout = ({ children }: ChildrenOptionalProps) => {
   );
 };
 
-export default function LoginLayout({ children }: ChildrenProps) {
+/**
+ * Container used only at login
+ *
+ * @param children - Children elements.
+ */
+export default function LoginLayout({ children }: ChildrenProps): JSX.Element {
   const theme = useTheme();
   const matche = useMediaQuery(theme.breakpoints.down('sm'));
 
