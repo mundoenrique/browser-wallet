@@ -7,7 +7,12 @@ import LogoGreen from '%/images/LogoGreen';
 import { PurpleLayout } from '@/components';
 import { ChildrenProps } from '@/interfaces';
 
-export default function HydrationProvider({ children }: ChildrenProps) {
+/**
+ * Provider showing a load while hydrating the application.
+ *
+ * @param children - Children element.
+ */
+export default function HydrationProvider({ children }: ChildrenProps): JSX.Element {
   const [isHydrated, setIsHydrated] = useState(true);
 
   useEffect(() => {

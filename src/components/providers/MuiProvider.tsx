@@ -6,7 +6,12 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from '@/theme/theme-default';
 import { ChildrenProps } from '@/interfaces';
 
-export default function MuiProvider({ children }: ChildrenProps) {
+/**
+ * Provider setting material ui theme
+ *
+ * @param children - Children element.
+ */
+export default function MuiProvider({ children }: ChildrenProps): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
