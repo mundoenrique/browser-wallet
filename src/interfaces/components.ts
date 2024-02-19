@@ -104,3 +104,20 @@ export interface AuthOtpFormProps {
 export interface CardDebtProps {
   OweMe?: boolean;
 }
+
+export interface TableDataProps {
+  data: [
+    {
+      title: string;
+      date: string;
+      amount: number;
+      incoming: boolean;
+    }
+  ];
+}
+
+export interface AccordionsProps {
+  collapsed?: boolean;
+  title: string;
+  content: string;
+}

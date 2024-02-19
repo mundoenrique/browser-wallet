@@ -4,6 +4,9 @@ import { Avatar, Box, Typography } from '@mui/material';
 //Internal app
 import { fuchsiaBlue } from '@/theme/theme-default';
 
+/**
+ * Module used to welcome the user.
+ */
 export default function UserWelcome() {
   const user = 'Andrea';
   const currentUser = user[0];

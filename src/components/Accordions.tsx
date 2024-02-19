@@ -3,8 +3,16 @@
 import { useState } from 'react';
 import { Box, Grow, Typography } from '@mui/material';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
+import { AccordionsProps } from '@/interfaces';
 
-export default function Accordions(props: any) {
+/**
+ * Drop down card used to display extensive information.
+ *
+ * @param collapsed - Whether or not to show the content of the accordion.
+ * @param title - Text that goes on the card.
+ * @param content - Content to display.
+ */
+export default function Accordions(props: AccordionsProps) {
   const { collapsed, title, content } = props;
   const [isCollapsed, setIsCollapsed] = useState(collapsed);
 
