@@ -4,10 +4,10 @@ import { useEffect } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { FormPass } from '@/components';
-import { useSignupStore } from '@/store';
+import { useRegisterStore } from '@/store';
 
 export default function PasswordCreation() {
-  const { updateStep, inc, setShowHeader } = useSignupStore();
+  const { updateStep, inc, setShowHeader } = useRegisterStore();
 
   const onSubmit = async (data: any) => {
     console.log(data);

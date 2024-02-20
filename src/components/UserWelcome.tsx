@@ -7,7 +7,7 @@ import { fuchsiaBlue } from '@/theme/theme-default';
 /**
  * Module used to welcome the user.
  */
-export default function UserWelcome() {
+export default function UserWelcome(): JSX.Element {
   const user = 'Andrea';
   const currentUser = user[0];
 

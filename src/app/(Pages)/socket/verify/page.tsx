@@ -1,18 +1,10 @@
-/**
- * User verification page.
- *
- * @description This page is used to verify the user's card.
- * @param {function} handleSocketEmit - issues user information
- * @returns {JSX.Element} The rendered page.
- */
-
 'use client';
 
 import { useEffect } from 'react';
 import io from 'socket.io-client';
 import { Typography } from '@mui/material';
 //Internal app
-import { useQrStore } from '@/store/qrstore';
+import { useQrStore } from '@/store';
 
 let socket: any;
 

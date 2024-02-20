@@ -4,13 +4,13 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 //internal app
 import { getSchema } from '@/config';
-import { useSignupStore } from '@/store';
+import { useRegisterStore } from '@/store';
 import { Box, Button } from '@mui/material';
 import InputOTP from '@/components/form/InputOTP';
 
 export default function CelularValidation() {
   const schema = getSchema(['otp']);
-  const { inc, dec } = useSignupStore();
+  const { inc, dec } = useRegisterStore();
 
   const { handleSubmit, control } = useForm({
     defaultValues: {

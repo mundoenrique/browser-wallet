@@ -1,11 +1,23 @@
 import { AnySchema } from 'yup';
 
+/**
+ * Field Name
+ */
 export type Field = string | { [key: string]: string[] };
 
+/**
+ * Rule validation
+ */
 export type ValidationRule = { [key: string]: AnySchema };
 
+/**
+ * GetSchema validation
+ */
 export type ValidationShape = { [key: string]: AnySchema };
 
+/**
+ * Regular expressions
+ */
 export interface RegularExpressions {
   onlyNumber: RegExp;
   onlyOneNumber: RegExp;

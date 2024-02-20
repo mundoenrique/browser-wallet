@@ -1,18 +1,9 @@
-/**
- * QR page.
- *
- * @description Page that generates the QR that redirects to reader.
- * @param {state} setUser - user information
- * @param {function} readCodeFunction - Capture the information, save and redirect
- * @returns {JSX.Element} The rendered page.
- */
-
 'use client';
 
 import { useRouter } from 'next/navigation';
 //Internal app
+import { useQrStore } from '@/store';
 import { QRCodeReader } from '@/components';
-import { useQrStore } from '@/store/qrstore';
 
 export default function Qr() {
   const router = useRouter();

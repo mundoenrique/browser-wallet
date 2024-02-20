@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Box, Grow, Typography } from '@mui/material';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
+//Internal app
 import { AccordionsProps } from '@/interfaces';
 
 /**
@@ -12,7 +13,7 @@ import { AccordionsProps } from '@/interfaces';
  * @param title - Text that goes on the card.
  * @param content - Content to display.
  */
-export default function Accordions(props: AccordionsProps) {
+export default function Accordions(props: AccordionsProps): JSX.Element {
   const { collapsed, title, content } = props;
   const [isCollapsed, setIsCollapsed] = useState(collapsed);
 

@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Card, Chip, Divider, Typography } from '@mui/material';
 //internal app
 import { getSchema } from '@/config';
-import { useSignupStore } from '@/store';
+import { useRegisterStore } from '@/store';
 import { InputCheck, InputText, ModalResponsive, InputSelect } from '@/components';
 
 //TODO: data de ejemplo
@@ -28,7 +28,7 @@ export default function InfoVerification() {
   const schemaEmail = getSchema(['email']);
   const schemaCelular = getSchema(['celular']);
 
-  const { inc, updateFormState, verificationFormState, setShowHeader } = useSignupStore();
+  const { inc, updateFormState, verificationFormState, setShowHeader } = useRegisterStore();
 
   const { handleSubmit, control, setValue, getValues } = useForm({
     defaultValues: verificationFormState || {

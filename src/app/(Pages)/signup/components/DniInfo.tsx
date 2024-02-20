@@ -3,12 +3,12 @@
 import Image from 'next/image';
 import { Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
-import { useSignupStore } from '@/store';
+import { useRegisterStore } from '@/store';
 import dniPwa from '%/images/arts/dniPwa.svg';
 import dniDesktop from '%/images/arts/dniDesktop.svg';
 
 export default function DniInfo() {
-  const { dec, inc } = useSignupStore();
+  const { dec, inc } = useRegisterStore();
   const theme = useTheme();
   const matcha = useMediaQuery(theme.breakpoints.up('sm'));
 

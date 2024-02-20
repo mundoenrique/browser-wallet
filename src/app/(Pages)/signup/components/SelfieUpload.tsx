@@ -4,10 +4,10 @@ import { Box, Button, Typography } from '@mui/material';
 
 //Internal app
 import { InputText } from '@/components';
-import { useSignupStore } from '@/store';
+import { useRegisterStore } from '@/store';
 
 export default function SelfieUpload() {
-  const { dec, inc } = useSignupStore();
+  const { dec, inc } = useRegisterStore();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>

@@ -5,12 +5,12 @@ import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
 //Internal app
-import { useSignupStore } from '@/store';
+import { useRegisterStore } from '@/store';
 import LogoGreen from '%/images/LogoGreen';
 import { PurpleLayout } from '@/components';
 
 export default function Ending() {
-  const { setShowHeader } = useSignupStore();
+  const { setShowHeader } = useRegisterStore();
   const { push } = useRouter();
 
   //TODO:timeEvent es de implementacion temporal

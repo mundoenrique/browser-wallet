@@ -4,13 +4,13 @@ import Image from 'next/image';
 import { useEffect } from 'react';
 import { Button, Box, Typography } from '@mui/material';
 //Internal app
-import { useSignupStore } from '@/store';
+import { useRegisterStore } from '@/store';
 import LogoPurple from '%/images/LogoPurple';
 import welcome from '%/images/arts/Stage01.png';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function Landing() {
-  const { inc, setShowHeader }: any = useSignupStore();
+  const { inc, setShowHeader }: any = useRegisterStore();
 
   useEffect(() => {
     setShowHeader(true);

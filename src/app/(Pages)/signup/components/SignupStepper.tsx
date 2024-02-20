@@ -2,12 +2,12 @@
 
 import { Box } from '@mui/material';
 //Internal app
-import { useSignupStore } from '@/store';
+import { useRegisterStore } from '@/store';
 import { NavExternal } from '@/components';
 
 export default function SignupStepper(props: { currentStep: number; children: JSX.Element[] }) {
   const { currentStep, children } = props;
-  const { showHeader } = useSignupStore();
+  const { showHeader } = useRegisterStore();
   return (
     <Box
       sx={{

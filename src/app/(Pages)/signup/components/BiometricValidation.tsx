@@ -3,12 +3,12 @@
 import { Box, Typography } from '@mui/material';
 import { useEffect, useState, useRef } from 'react';
 //Internal app
-import { useSignupStore } from '@/store';
+import { useRegisterStore } from '@/store';
 import LogoGreen from '%/images/LogoGreen';
 import { PurpleLayout } from '@/components';
 
 export default function BiometricValidation() {
-  const { updateStep, setShowHeader } = useSignupStore();
+  const { updateStep, setShowHeader } = useRegisterStore();
   const [statusStep, setStatusStep] = useState<number>(0);
   const initial = useRef(false);
 

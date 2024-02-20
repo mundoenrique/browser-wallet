@@ -6,7 +6,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { Box, Button, Collapse, Link as LinkMui, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import { useSignupStore } from '@/store';
+import { useRegisterStore } from '@/store';
 import { slate } from '@/theme/theme-default';
 import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResponsive } from '@/components';
 
@@ -34,7 +34,7 @@ export default function PEP() {
   const [showPepInfo, setShowPepInfo] = useState(false);
   const [parentIndex, setParentIndex] = useState(-1);
 
-  const { dec, inc, updateFormState, pepFormState, setShowHeader } = useSignupStore();
+  const { dec, inc, updateFormState, pepFormState, setShowHeader } = useRegisterStore();
 
   const schema = isPep ? getSchema(['isPep', 'pepForm', 'relatives']) : getSchema(['isPep']);
 

@@ -6,12 +6,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Collapse, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import { useSignupStore } from '@/store';
+import { useRegisterStore } from '@/store';
 import { InputSelect, InputText } from '@/components';
 
 export default function Ocupation() {
   const [ocupations, setOcupations] = useState(false);
-  const { updateStep, inc, updateFormState, ocupationFormState } = useSignupStore();
+  const { updateStep, inc, updateFormState, ocupationFormState } = useRegisterStore();
   const schema = ocupations
     ? getSchema(['ocupation', 'enterpriseType', 'enterprises', 'position'])
     : getSchema(['ocupation']);

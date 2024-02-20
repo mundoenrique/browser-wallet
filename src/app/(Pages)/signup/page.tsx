@@ -2,7 +2,7 @@
 
 import { Card, Typography, useMediaQuery, useTheme } from '@mui/material';
 // Internal app
-import { useSignupStore } from '@/store';
+import { useRegisterStore } from '@/store';
 import { StepperProps } from '@/interfaces';
 import BiometricValidation from './components/BiometricValidation';
 import {
@@ -46,7 +46,7 @@ const CardStep = (props: StepperProps) => {
   );
 };
 export default function Signup() {
-  const { step } = useSignupStore();
+  const { step } = useRegisterStore();
 
   return (
     <SignupStepper currentStep={step}>
