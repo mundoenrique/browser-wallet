@@ -16,13 +16,9 @@ export default function Recharge() {
 
   useEffect(() => {
     updateTitle('Generar recarga');
-  }, []);
+  }, [updateTitle]);
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       password: '',
     },

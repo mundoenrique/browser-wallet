@@ -24,7 +24,7 @@ export default function Questions() {
 
   useEffect(() => {
     updateTitle('Preguntas frecuentes');
-  }, []);
+  }, [updateTitle]);
 
   return (
     <ContainerLayout>

@@ -20,7 +20,7 @@ export default function Help() {
 
   useEffect(() => {
     updateTitle('Ayuda');
-  }, []);
+  }, [updateTitle]);
 
   return (
     <ContainerLayout>

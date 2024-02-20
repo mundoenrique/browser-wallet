@@ -12,7 +12,7 @@ export default function DeleteAccount() {
 
   useEffect(() => {
     updateTitle('Eliminar cuenta');
-  }, []);
+  }, [updateTitle]);
 
   return (
     <ContainerLayout>

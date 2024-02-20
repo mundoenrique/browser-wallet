@@ -16,7 +16,7 @@ export default function BlockCard() {
 
   useEffect(() => {
     updateTitle('Bloquear tarjeta');
-  }, []);
+  }, [updateTitle]);
 
   const { control, handleSubmit } = useForm({
     defaultValues: {

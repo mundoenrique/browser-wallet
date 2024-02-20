@@ -22,7 +22,7 @@ export default function VerifyCard() {
 
   useEffect(() => {
     handleSocketEmit();
-  }, []);
+  }, [handleSocketEmit]);
 
   return (
     <>

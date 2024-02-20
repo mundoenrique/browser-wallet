@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
-
 //Internal app
 import { useRegisterStore } from '@/store';
 import LogoGreen from '%/images/LogoGreen';

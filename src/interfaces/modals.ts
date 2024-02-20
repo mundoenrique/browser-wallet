@@ -9,7 +9,7 @@ import { BoxProps } from '@mui/system';
  */
 export interface MuiModalProps extends BoxProps {
   open: boolean;
-  handleClose: (...e: any[]) => void;
+  handleClose: (..._e: any[]) => void;
   children: React.ReactElement;
 }
 
@@ -23,5 +23,5 @@ export interface MuiModalProps extends BoxProps {
 export interface ModalOtpProps {
   handleClose: () => void;
   open: boolean;
-  onSubmit: (data: any) => Promise<void>;
+  onSubmit: (_data: any) => Promise<void>;
 }

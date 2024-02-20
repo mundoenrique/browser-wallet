@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function RechargeLayout({ children, responseCode }: RCProps) {
-  return false ? <>{children}</> : <>{responseCode}</>;
+  return children ? <>{children}</> : <>{responseCode}</>;
 }

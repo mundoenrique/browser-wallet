@@ -19,7 +19,7 @@ export default function CelularValidation() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = () => {
     inc();
   };
 

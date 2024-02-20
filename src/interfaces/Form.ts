@@ -22,7 +22,7 @@ export interface FormMUIProps {
   labelError?: string;
   error?: any;
   value?: any;
-  onChange?: (...e: any[]) => void;
+  onChange?: (..._e: any[]) => void;
   type?: string;
   control?: any;
   getOptionLabel?: Function;
@@ -93,7 +93,7 @@ export interface InputDatePickerProps extends FormMUIProps {
  * @typeParam mtError (Optional): number
  */
 export interface InputCheckProps extends FormMUIProps {
-  onClick?: (...e: any[]) => void;
+  onClick?: (..._e: any[]) => void;
   checked?: boolean;
   disabled?: boolean;
   labelHandle?: boolean | string;
@@ -125,7 +125,7 @@ export interface SwitchListProps extends FormMUIProps {
  * @typeParam register (Optional): boolean
  */
 export interface FormPassProps {
-  onSubmit: (data: any) => Promise<void>;
+  onSubmit: (_data: any) => Promise<void>;
   description: string | React.ReactNode;
   buttons: React.ReactNode;
   register?: boolean;
@@ -137,5 +137,5 @@ export interface FormPassProps {
  * @typeParam setOTP: (value: boolean) => void
  */
 export interface AuthOtpFormProps {
-  setOTP: (value: boolean) => void;
+  setOTP: (_value: boolean) => void;
 }

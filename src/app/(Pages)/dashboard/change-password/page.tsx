@@ -34,7 +34,7 @@ export default function ChangePassword() {
 
   useEffect(() => {
     updateTitle('Cambiar contraseña');
-  }, []);
+  }, [updateTitle]);
 
   return (
     <>

@@ -97,8 +97,9 @@ export default function ResponseCode() {
               <Typography fontWeight={700} mb={3}>
                 Yape, Plin u otras billeteras:
               </Typography>
-
-              <img src={Qr.src} />
+              <picture>
+                <img src={Qr.src} alt="Qr Code" />
+              </picture>
             </Box>
           </CardDetails>
         </Box>

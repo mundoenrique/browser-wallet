@@ -34,7 +34,7 @@ export default function ChangePin() {
 
   useEffect(() => {
     updateTitle('Cambiar PIN');
-  }, []);
+  }, [updateTitle]);
 
   return (
     <>

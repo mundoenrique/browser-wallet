@@ -5,7 +5,7 @@ import jsQR, { QRCode } from 'jsqr';
 import { Point } from 'jsqr/dist/locator';
 
 interface IQRCodeReader {
-  readCode: (data: string) => void;
+  readCode: (_data: string) => void;
 }
 
 const decoder = (imageData: ImageData): Promise<QRCode> => {

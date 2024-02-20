@@ -11,7 +11,7 @@ export default function Legal() {
 
   useEffect(() => {
     updateTitle('Términos y condiciones');
-  }, []);
+  }, [updateTitle]);
 
   return (
     <ContainerLayout fullWidth>

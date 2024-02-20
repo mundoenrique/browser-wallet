@@ -17,11 +17,7 @@ export default function Signin() {
   const router = useRouter();
   const schema = getSchema(['password']);
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       password: '',
     },
