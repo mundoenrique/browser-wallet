@@ -14,12 +14,10 @@
  * }]
  */
 export interface TableDataProps {
-  data: [
-    {
-      title: string;
-      date: string;
-      amount: number;
-      incoming: boolean;
-    }
-  ];
+  data: {
+    date: string;
+    title: string;
+    amount: number;
+    incoming: boolean;
+  }[];
 }

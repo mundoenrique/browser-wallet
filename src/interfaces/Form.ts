@@ -119,14 +119,14 @@ export interface SwitchListProps extends FormMUIProps {
 /**
  * Password management form
  *
- * @typeParam onSubmit: () => void
+ * @typeParam onSubmit: (data: any) => Promise<void>
  * @typeParam description: string
  * @typeParam buttons: React.ReactNode
  * @typeParam register (Optional): boolean
  */
 export interface FormPassProps {
-  onSubmit: () => void;
-  description: string;
+  onSubmit: (data: any) => Promise<void>;
+  description: string | React.ReactNode;
   buttons: React.ReactNode;
   register?: boolean;
 }
