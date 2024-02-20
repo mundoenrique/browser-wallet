@@ -1,14 +1,3 @@
-/**
- * Card page.
- *
- * @description Page that generates the QR that redirects to reader.
- * @param {state} url - define the reader's url
- * @param {state} dataUser - user information
- * @param {state} showModal - oredirection modal status
- * @param {function} socketInit - Initializes the socket and listens for events through useEffect
- * @returns {JSX.Element} The rendered page.
- */
-
 'use client';
 
 import io from 'socket.io-client';

@@ -1,12 +1,5 @@
-/**
- * User information page.
- *
- * @description Page simulates the card information to be validated.
- * @param {function} handleSocketEmit - Test event for broadcasting through a button
- * @returns {JSX.Element} The rendered page.
- */
-
 'use client';
+
 import { useState } from 'react';
 import io from 'socket.io-client';
 import { useQRCode } from 'next-qrcode';
@@ -18,9 +11,7 @@ let socket: any;
 
 export default function Card() {
   const { SVG } = useQRCode();
-
   const [showModal, setShowModal] = useState(true);
-
   const userData = JSON.stringify({ username: 'elazaro', password: 'lazaro123' });
 
   const handleSocketEmit = async () => {
