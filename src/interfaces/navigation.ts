@@ -87,4 +87,5 @@ export interface LinkingProps {
   color?: string;
   underline?: boolean;
   hidenArrow?: boolean;
+  iconSize?: { height: number | string; width: number | string };
 }

@@ -36,6 +36,23 @@ declare module '@mui/material/Divider' {
   }
 }
 
+declare module '@mui/material/styles' {
+  interface TypographyVariants {
+    subtitle3: React.CSSProperties;
+  }
+
+  // allow configuration using `createTheme`
+  interface TypographyVariantsOptions {
+    subtitle3?: React.CSSProperties;
+  }
+}
+
+declare module '@mui/material/Typography' {
+  interface TypographyPropsVariantOverrides {
+    subtitle3: true;
+  }
+}
+
 const white = '#fff';
 const black = '#000';
 
@@ -130,6 +147,14 @@ const theme = createTheme({
       fontStyle: 'normal',
       fontWeight: 700,
       lineHeight: '20px',
+      letterSpacing: '0.1px',
+    },
+    subtitle3: {
+      fontFamily: 'Mulish',
+      fontSize: '12px',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '16px',
       letterSpacing: '0.1px',
     },
     body2: {

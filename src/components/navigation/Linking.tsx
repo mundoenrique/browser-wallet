@@ -5,6 +5,7 @@ import { Link as LinkMui } from '@mui/material';
 import Arrow from '@mui/icons-material/ArrowBackIos';
 //Internal app
 import { LinkingProps } from '@/interfaces';
+import { height, width } from '@mui/system';
 
 /**
  * Combination of MUI with Next to create link.
@@ -17,7 +18,7 @@ import { LinkingProps } from '@/interfaces';
  * @param hidenArrow - Hide the arrow icon.
  */
 export default function Linking(props: LinkingProps): JSX.Element {
-  const { href, mb = 4, label, color, underline, hidenArrow } = props;
+  const { href, mb = 4, label, color, underline, hidenArrow, iconSize = { height: 14, width: 14 } } = props;
 
   return (
     <LinkMui
@@ -33,7 +34,7 @@ export default function Linking(props: LinkingProps): JSX.Element {
       fontWeight={700}
       fontSize={12}
     >
-      {!hidenArrow && <Arrow sx={{ mr: 2, width: 14, height: 14 }} />}
+      {!hidenArrow && <Arrow sx={{ mr: 2, width: iconSize.width, height: iconSize.height }} />}
       {label}
     </LinkMui>
   );
