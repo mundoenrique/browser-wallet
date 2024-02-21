@@ -36,7 +36,7 @@ export default function Questions() {
         Preguntas frecuentes
       </Typography>
 
-      <Linking href="#" label="Volver" />
+      <Linking href="/dashboard/help" label="Volver" />
 
       <Typography variant="body2" mb={2}>
         Selecciona el tema que necesitas

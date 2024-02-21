@@ -79,6 +79,7 @@ export interface ItemSecondarySidebarProps {
  * @typeParam color (Optional): string
  * @typeParam underline (Optional): boolean
  * @typeParam hidenArrow (Optional): boolean
+ * @typeParam fontSize (Optional): number | string
  */
 export interface LinkingProps {
   href: string;
@@ -87,4 +88,5 @@ export interface LinkingProps {
   color?: string;
   underline?: boolean;
   hidenArrow?: boolean;
+  fontSize?: number | string;
 }

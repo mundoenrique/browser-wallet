@@ -15,9 +15,10 @@ import { LinkingProps } from '@/interfaces';
  * @param color - Link color confirmation.
  * @param underline - Confirm if the link should be underlined.
  * @param hidenArrow - Hide the arrow icon.
+ * @param fontSize - Font size.
  */
 export default function Linking(props: LinkingProps): JSX.Element {
-  const { href, mb = 4, label, color, underline, hidenArrow } = props;
+  const { href, mb = 4, label, color, underline, hidenArrow, fontSize = 12 } = props;
 
   return (
     <LinkMui
@@ -31,7 +32,7 @@ export default function Linking(props: LinkingProps): JSX.Element {
       }}
       mb={mb}
       fontWeight={700}
-      fontSize={12}
+      fontSize={fontSize}
     >
       {!hidenArrow && <Arrow sx={{ mr: 2, width: 14, height: 14 }} />}
       {label}

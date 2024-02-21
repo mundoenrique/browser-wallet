@@ -20,7 +20,7 @@ import {
 import Qr from '%/images/arts/QR.png';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import PagoEfectivo from '%/images/suppliers/pagoEfectivo.png';
-import { CardDetails, ContainerLayout, ModalResponsive, PurpleLayout } from '@/components';
+import { CardDetails, ContainerLayout, Linking, ModalResponsive, PurpleLayout } from '@/components';
 
 export default function ResponseCode() {
   const router = useRouter();
@@ -132,9 +132,19 @@ export default function ResponseCode() {
           <Button variant="underline" sx={{ mb: 4 }} onClick={handleShowInfo}>
             ¿Cómo realizar la recarga?
           </Button>
-          <Button variant="secondary" onClick={handleConvert}>
+          <Button variant="secondary" onClick={handleConvert} sx={{ mb: 4 }}>
             Guardar Código QR
           </Button>
+          <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <Linking
+              href="/dashboard/recharge"
+              label="Volver al inicio"
+              hidenArrow
+              color="white"
+              underline
+              fontSize={16}
+            />
+          </Box>
         </ContainerLayout>
       </PurpleLayout>
 
