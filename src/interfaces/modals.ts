@@ -5,12 +5,12 @@ import { BoxProps } from '@mui/system';
  *
  * @typeParam open: boolean
  * @typeParam handleClose: (...e: any[]) => void
- * @typeParam children: React.ReactElement
+ * @typeParam children: React.ReactNode
  */
 export interface MuiModalProps extends BoxProps {
   open: boolean;
   handleClose: (..._e: any[]) => void;
-  children: React.ReactElement;
+  children: React.ReactNode;
 }
 
 /**

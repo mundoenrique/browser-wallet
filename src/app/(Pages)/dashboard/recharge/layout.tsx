@@ -1,12 +1,12 @@
 import { Metadata } from 'next';
 //Internal app
-import { RCProps } from '@/interfaces';
+import { ChildrenProps } from '@/interfaces';
 
 export const metadata: Metadata = {
   title: 'Recargar',
   description: 'Recarga tu billetera Yiro',
 };
 
-export default function RechargeLayout({ children, responseCode }: RCProps) {
-  return children ? <>{children}</> : <>{responseCode}</>;
+export default function RechargeLayout({ children }: ChildrenProps) {
+  return <>{children}</>;
 }

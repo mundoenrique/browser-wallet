@@ -65,17 +65,15 @@ export default function ChangePin() {
       <ModalOtp open={openOtp} handleClose={() => setOpenOtp(false)} onSubmit={onSubmitOtp} />
 
       <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>
-        <>
-          <Typography variant="h6" mb={3}>
-            🥳 Actualización exitosa
-          </Typography>
-          <Typography variant="body1" textAlign="center" mb={3}>
-            El PIN de tu tarjeta ha sido actualizado con éxito.
-          </Typography>
-          <Button variant="contained" onClick={() => setOpenRc(false)} fullWidth>
-            Ir al Inicio
-          </Button>
-        </>
+        <Typography variant="h6" mb={3}>
+          🥳 Actualización exitosa
+        </Typography>
+        <Typography variant="body1" textAlign="center" mb={3}>
+          El PIN de tu tarjeta ha sido actualizado con éxito.
+        </Typography>
+        <Button variant="contained" onClick={() => setOpenRc(false)} fullWidth>
+          Ir al Inicio
+        </Button>
       </ModalResponsive>
     </>
   );

@@ -72,4 +72,8 @@ export const validationRules: ValidationRule = {
   blockType: yup.string().required('Debes seleccionar una opción'),
   newPin: pinValidation('Ingrese tu nuevo Pin'),
   confirmPin: pinValidation('Confirma tu nuevo Pin').oneOf([yup.ref('newPin')], 'Los Pines no coinciden'),
+  amount: yup
+    .string()
+    .required('Ingresa un monto')
+    .test('amountValid', 'Ingresa un monto', (value) => regularExpressions.onlyNumber?.test(value)),
 };
