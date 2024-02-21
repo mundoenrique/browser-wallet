@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 //Internal app
 import { MenuStore } from '@/interfaces';
 
@@ -22,6 +22,6 @@ export const useMenuStore = create<MenuStore>()(
        */
       setCurrentItem: (item) => set({ currentItem: item }),
     }),
-    { name: 'Menu', version: undefined }
+    { name: 'Menu', storage: createJSONStorage(() => sessionStorage) }
   )
 );

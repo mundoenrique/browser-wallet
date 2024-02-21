@@ -6,7 +6,7 @@
  */
 export interface NavTitleStore {
   title: string;
-  updateTitle: (newTitle: string) => void;
+  updateTitle: (_newTitle: string) => void;
 }
 
 /**
@@ -17,7 +17,7 @@ export interface NavTitleStore {
  */
 export interface MenuStore {
   currentItem: string;
-  setCurrentItem: (item: string) => void;
+  setCurrentItem: (_item: string) => void;
 }
 
 /**
@@ -64,7 +64,7 @@ export interface SidebarProps {
  * @typeParam text: string
  * @typeParam icon: React.ReactNode
  */
-export interface ItemSecondarySidebar {
+export interface ItemSecondarySidebarProps {
   color?: boolean;
   text: string;
   icon: React.ReactNode;
@@ -79,6 +79,7 @@ export interface ItemSecondarySidebar {
  * @typeParam color (Optional): string
  * @typeParam underline (Optional): boolean
  * @typeParam hidenArrow (Optional): boolean
+ * @typeParam fontSize (Optional): number | string
  */
 export interface LinkingProps {
   href: string;
@@ -88,4 +89,5 @@ export interface LinkingProps {
   underline?: boolean;
   hidenArrow?: boolean;
   iconSize?: { height: number | string; width: number | string };
+  fontSize?: number | string;
 }

@@ -1,7 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 //Internal app
 import { useMenuStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
@@ -94,51 +103,54 @@ export default function ItemsSidebar(): JSX.Element {
       ];
 
   return (
-    <List>
+    <List sx={{ width: '100%' }}>
       {itemMenu.map((menu, i) => {
         const currentItemMenu = currentItem === menu.id ? true : false;
 
         return (
-          <ListItem
+          <Box
             key={i}
-            disablePadding
-            onClick={() => setCurrentItem(menu.id)}
             sx={{
-              width: 244,
-              my: 1 / 2,
+              width: 'auto',
+              display: 'flex',
+              alignItems: 'center',
               '&:before': {
                 background: fuchsiaBlue[600],
-                borderRadius: '0px 0px 4px 4px',
+                borderRadius: '0 4px 4px 0',
                 content: currentItemMenu ? `' '` : 'none',
                 flexShrink: 0,
-                height: 4,
-                left: '-15px',
-                position: 'fixed',
-                transform: 'rotate(-90deg)',
-                width: 34,
+                width: 4,
+                left: '2px',
+                position: 'absolute',
+                transform: 'translateX(-50%)',
+                height: 34,
               },
             }}
           >
-            <ListItemButton
-              disabled={currentItemMenu}
-              component={Link}
-              href={menu.url}
-              selected={currentItemMenu}
-              sx={{ textDecoration: 'none', pl: 0 }}
-            >
-              <ListItemIcon sx={{ minWidth: 'auto', mr: 3 / 2, color: currentItemMenu ? fuchsiaBlue[600] : 'initial' }}>
-                {menu.icon}
-              </ListItemIcon>
-              <ListItemText
-                primary={menu.item}
-                primaryTypographyProps={{
-                  fontWeight: 700,
-                  color: currentItemMenu ? fuchsiaBlue[600] : 'initial',
-                  fontSize: { xs: 14, md: 'initial' },
-                }}
-              />
-            </ListItemButton>
-          </ListItem>
+            <ListItem disablePadding onClick={() => setCurrentItem(menu.id)} sx={{ width: 244, mx: 'auto', my: 1 / 2 }}>
+              <ListItemButton
+                disabled={currentItemMenu}
+                component={Link}
+                href={menu.url}
+                selected={currentItemMenu}
+                sx={{ textDecoration: 'none', pl: 0 }}
+              >
+                <ListItemIcon
+                  sx={{ minWidth: 'auto', mr: 3 / 2, color: currentItemMenu ? fuchsiaBlue[600] : 'initial' }}
+                >
+                  {menu.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={menu.item}
+                  primaryTypographyProps={{
+                    fontWeight: 700,
+                    color: currentItemMenu ? fuchsiaBlue[600] : 'initial',
+                    fontSize: { xs: 14, md: 'initial' },
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          </Box>
         );
       })}
     </List>

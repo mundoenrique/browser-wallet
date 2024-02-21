@@ -17,7 +17,7 @@ export default function Survey() {
 
   useEffect(() => {
     updateTitle('Ayúdanos con esta encuesta');
-  }, []);
+  }, [updateTitle]);
 
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {

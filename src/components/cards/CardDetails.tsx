@@ -27,7 +27,13 @@ export default function CardDetails(props: CardDetailsProps): JSX.Element {
       }}
     >
       <Avatar sx={{ bgcolor: 'white', position: 'absolute', top: '5px', left: '140px' }} variant="circular">
-        {avatarImage ? <img src={avatarImage.src.src} /> : avatarText}
+        {avatarImage ? (
+          <picture>
+            <img src={avatarImage.src.src} alt="Proveedor" />
+          </picture>
+        ) : (
+          avatarText
+        )}
       </Avatar>
 
       {children}

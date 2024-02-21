@@ -241,16 +241,14 @@ export default function PEP() {
           setShowPepInfo(false);
         }}
       >
-        <Box>
-          <Typography variant="subtitle1" sx={{ mb: 2 }}>
-            🧑¿Qué es una Persona Expuesta Políticamente(PEP)?
-          </Typography>
-          <Typography>
-            Son aquellas personas que ocupan o han ocupado en los últimos 5 años funciones públicas destacadas o
-            funciones prominentes en una organización internacional (en el Perú o en el extranjero) y cuyas
-            circunstancias financieras pueden ser objeto de interés público.
-          </Typography>
-        </Box>
+        <Typography variant="subtitle1" sx={{ mb: 2 }}>
+          🧑¿Qué es una Persona Expuesta Políticamente(PEP)?
+        </Typography>
+        <Typography>
+          Son aquellas personas que ocupan o han ocupado en los últimos 5 años funciones públicas destacadas o funciones
+          prominentes en una organización internacional (en el Perú o en el extranjero) y cuyas circunstancias
+          financieras pueden ser objeto de interés público.
+        </Typography>
       </ModalResponsive>
       <ModalResponsive
         open={showParentModal}
@@ -258,30 +256,28 @@ export default function PEP() {
           setShowParentModal(false);
         }}
       >
-        <>
-          <Typography variant="subtitle1" sx={{ mb: 3 }}>
-            ✋¿Deseas eliminar este pariente?
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 3 / 2, justifyContent: 'center' }}>
-            <Button
-              variant="outlined"
-              onClick={() => {
-                setShowParentModal(false);
-              }}
-            >
-              Cancelar
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => {
-                remove(parentIndex);
-                setShowParentModal(false);
-              }}
-            >
-              Aceptar
-            </Button>
-          </Box>
-        </>
+        <Typography variant="subtitle1" sx={{ mb: 3 }}>
+          ✋¿Deseas eliminar este pariente?
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 3 / 2, justifyContent: 'center' }}>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setShowParentModal(false);
+            }}
+          >
+            Cancelar
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              remove(parentIndex);
+              setShowParentModal(false);
+            }}
+          >
+            Aceptar
+          </Button>
+        </Box>
       </ModalResponsive>
     </>
   );

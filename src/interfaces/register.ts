@@ -16,11 +16,11 @@
 export interface RegisterStore {
   step: number;
   showHeader: boolean;
-  setShowHeader: (value: boolean) => void;
+  setShowHeader: (_value: boolean) => void;
   inc: () => void;
   dec: () => void;
-  updateStep: (amount: number) => void;
-  updateFormState: (form: string, data: {}) => void;
+  updateStep: (_amount: number) => void;
+  updateFormState: (_form: string, _data: {}) => void;
   verificationFormState: object | null;
   ocupationFormState: object | null;
   pepFormState: object | null;

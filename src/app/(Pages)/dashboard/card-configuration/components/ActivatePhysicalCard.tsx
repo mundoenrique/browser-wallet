@@ -12,7 +12,7 @@ export default function ActivatePhysicalCard() {
 
   useEffect(() => {
     updateTitle('Activación de tarjeta física');
-  }, []);
+  }, [updateTitle]);
 
   return (
     <ContainerLayout>

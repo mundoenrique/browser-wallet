@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 //Internal app
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { ItemSecondarySidebar } from '@/interfaces';
+import { ItemSecondarySidebarProps } from '@/interfaces';
 
 /**
  * Child items that do not change in the menu.
@@ -13,7 +13,7 @@ import { ItemSecondarySidebar } from '@/interfaces';
  * @param text - Element text.
  * @param icon - Item custom icon.
  */
-export default function ItemSecondarySidebar(props: ItemSecondarySidebar): JSX.Element {
+export default function ItemSecondarySidebar(props: ItemSecondarySidebarProps): JSX.Element {
   const { color, text, icon } = props;
 
   return (

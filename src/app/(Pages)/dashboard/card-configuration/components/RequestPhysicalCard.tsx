@@ -13,7 +13,7 @@ export default function RequestPhysicalCard() {
 
   useEffect(() => {
     updateTitle('Solicitar tarjeta física');
-  }, []);
+  }, [updateTitle]);
 
   const handleSendCard = () => {
     setOpen(!open);

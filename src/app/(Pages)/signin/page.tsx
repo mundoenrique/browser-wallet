@@ -17,11 +17,7 @@ export default function Signin() {
   const router = useRouter();
   const schema = getSchema(['password']);
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       password: '',
     },
@@ -89,12 +85,10 @@ export default function Signin() {
       </Box>
 
       <ModalResponsive open={open} handleClose={() => setOpen(false)}>
-        <>
-          <Typography py={2} fontWeight={700}>
-            Signin
-          </Typography>
-          <Typography textAlign="center">Contraseña incorrecta.</Typography>
-        </>
+        <Typography py={2} fontWeight={700}>
+          Signin
+        </Typography>
+        <Typography textAlign="center">Contraseña incorrecta.</Typography>
       </ModalResponsive>
     </>
   );

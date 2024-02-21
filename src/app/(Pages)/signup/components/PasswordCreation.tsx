@@ -16,7 +16,7 @@ export default function PasswordCreation() {
 
   useEffect(() => {
     setShowHeader(true);
-  }, []);
+  }, [setShowHeader]);
 
   return (
     <FormPass

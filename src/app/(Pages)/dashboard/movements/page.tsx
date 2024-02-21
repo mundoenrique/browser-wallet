@@ -6,7 +6,6 @@ import { Box, Typography } from '@mui/material';
 import { InputSelect, LastMovements, Linking } from '@/components';
 import { useNavTitleStore } from '@/store';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
-import { display, flexbox } from '@mui/system';
 
 const movementData = [
   {
@@ -100,13 +99,12 @@ export default function Movements() {
             display: 'flex',
             flexDirection: 'column',
             background: { xs: 'white', md: 'none' },
-            paddingBottom: '16px',
+
             borderRadius: { xs: '12px ', md: '0' },
           }}
         >
           <Box
             sx={{
-              mb: '16px',
               paddingX: 3,
               paddingY: '4px',
               background: slate[200],

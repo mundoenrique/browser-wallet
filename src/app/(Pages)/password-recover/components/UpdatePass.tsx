@@ -36,12 +36,10 @@ export default function UpdatePass() {
       />
 
       <ModalResponsive open={open} handleClose={() => setOpen(false)}>
-        <>
-          <Typography py={2} fontWeight={700}>
-            📟 !Nueva contraseña!
-          </Typography>
-          <Typography textAlign="center">Tu contraseña ha sido actualizada exitosamente.</Typography>
-        </>
+        <Typography py={2} fontWeight={700}>
+          📟 !Nueva contraseña!
+        </Typography>
+        <Typography textAlign="center">Tu contraseña ha sido actualizada exitosamente.</Typography>
       </ModalResponsive>
     </>
   );

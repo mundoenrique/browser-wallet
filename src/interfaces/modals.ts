@@ -5,12 +5,12 @@ import { BoxProps } from '@mui/system';
  *
  * @typeParam open: boolean
  * @typeParam handleClose: (...e: any[]) => void
- * @typeParam children: React.ReactElement
+ * @typeParam children: React.ReactNode
  */
 export interface MuiModalProps extends BoxProps {
   open: boolean;
-  handleClose: (...e: any[]) => void;
-  children: React.ReactElement;
+  handleClose: (..._e: any[]) => void;
+  children: React.ReactNode;
 }
 
 /**
@@ -23,5 +23,5 @@ export interface MuiModalProps extends BoxProps {
 export interface ModalOtpProps {
   handleClose: () => void;
   open: boolean;
-  onSubmit: (data: any) => Promise<void>;
+  onSubmit: (_data: any) => Promise<void>;
 }

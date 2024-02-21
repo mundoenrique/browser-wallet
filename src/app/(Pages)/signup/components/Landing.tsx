@@ -10,11 +10,11 @@ import welcome from '%/images/arts/Stage01.png';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function Landing() {
-  const { inc, setShowHeader }: any = useRegisterStore();
+  const { inc, setShowHeader } = useRegisterStore();
 
   useEffect(() => {
     setShowHeader(true);
-  }, []);
+  }, [setShowHeader]);
 
   return (
     <Box

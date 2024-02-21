@@ -20,14 +20,14 @@ import {
   Ending,
 } from './components';
 
-const phaseToStep = (phase: string) => {
-  const phasesSteps: { [key: string]: number } = {
-    ONB_PHASES_TERMS: 0,
-    ONB_PHASES_CONSULT_DATA: 3,
-    ONB_PHASES_PEP: 4,
-  };
-  return phasesSteps[phase] || 0;
-};
+// const phaseToStep = (phase: string) => {
+//   const phasesSteps: { [key: string]: number } = {
+//     ONB_PHASES_TERMS: 0,
+//     ONB_PHASES_CONSULT_DATA: 3,
+//     ONB_PHASES_PEP: 4,
+//   };
+//   return phasesSteps[phase] || 0;
+// };
 
 const CardStep = (props: StepperProps) => {
   const theme = useTheme();

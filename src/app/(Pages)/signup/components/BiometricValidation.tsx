@@ -33,11 +33,11 @@ export default function BiometricValidation() {
           initial.current = true;
         });
     })();
-  }, [statusStep]);
+  }, [statusStep, updateStep]);
 
   useEffect(() => {
     setShowHeader(false);
-  }, []);
+  }, [setShowHeader]);
 
   return (
     <PurpleLayout>

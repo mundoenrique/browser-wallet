@@ -81,7 +81,7 @@ function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
  * @label dayjs - {@link https://www.npmjs.com/package/dayjs}
  */
 export default function InputDatePicker(props: InputDatePickerProps): JSX.Element {
-  const { name, control, onChange, format, ...restProps } = props;
+  const { name, control, onChange, ...restProps } = props;
 
   return (
     <>

@@ -98,7 +98,9 @@ export default function Payment() {
                 Yape, Plin u otras billeteras:
               </Typography>
 
-              <img src={Qr.src} />
+              <picture>
+                <img src={Qr.src} alt="Qr Code" />
+              </picture>
             </Box>
           </CardDetails>
         </Box>

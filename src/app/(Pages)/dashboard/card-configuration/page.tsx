@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Stack, Typography } from '@mui/material';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
@@ -8,15 +7,16 @@ import Arrow from '@mui/icons-material/ArrowForwardIos';
 import { useNavTitleStore } from '@/store';
 import { CardInformation, HandleCard, InputSwitch, UserWelcome } from '@/components';
 import { CardCloseIcon, CardIcons, KeyIcons, PersonWrongIcon, WebPageIcon } from '%/Icons';
+import { useEffect } from 'react';
 
 export default function CardConfiguration() {
   const { updateTitle } = useNavTitleStore();
 
   useEffect(() => {
     updateTitle('Cambiar contraseña');
-  }, []);
+  }, [updateTitle]);
 
-  const { control, handleSubmit } = useForm({
+  const { control } = useForm({
     defaultValues: {
       shopping: '',
     },

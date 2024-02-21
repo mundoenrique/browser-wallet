@@ -16,12 +16,7 @@ export const validationRules: ValidationRule = {
     .required('Ingresa un email para continuar')
     .min(7, 'Ingresa un email válido')
     .test('emailValid', 'Ingresa un email válido', (value) => regularExpressions.emailValid?.test(value)),
-  password: yup
-    .string()
-    .required('Ingresa una contraseña')
-    .min(6, 'La contraseña debe tener al menos 6 caracteres')
-    .max(25, 'La contraseña debe tener máximo 25 caracteres')
-    .test('passwordValid', 'Ingrese una contraseña', (value) => regularExpressions.password?.test(value)),
+  password: passwordValidation('Ingrese una contraseña'),
   roles: yup.string().required('Debes seleccionar una opción'),
   initialDate: yup.string().required('Ingresa una fecha'),
   country: yup.string().required('Selecciona un país'),
@@ -72,4 +67,8 @@ export const validationRules: ValidationRule = {
   blockType: yup.string().required('Debes seleccionar una opción'),
   newPin: pinValidation('Ingrese tu nuevo Pin'),
   confirmPin: pinValidation('Confirma tu nuevo Pin').oneOf([yup.ref('newPin')], 'Los Pines no coinciden'),
+  amount: yup
+    .string()
+    .required('Ingresa un monto')
+    .test('amountValid', 'Ingresa un monto', (value) => regularExpressions.onlyNumber?.test(value)),
 };

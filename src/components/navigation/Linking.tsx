@@ -16,9 +16,20 @@ import { height, width } from '@mui/system';
  * @param color - Link color confirmation.
  * @param underline - Confirm if the link should be underlined.
  * @param hidenArrow - Hide the arrow icon.
+ * @param fontSize - Font size.
+ * @param iconSize - Object with height and width for the icon.
  */
 export default function Linking(props: LinkingProps): JSX.Element {
-  const { href, mb = 4, label, color, underline, hidenArrow, iconSize = { height: 14, width: 14 } } = props;
+  const {
+    href,
+    mb = 4,
+    label,
+    color,
+    underline,
+    hidenArrow,
+    fontSize = 12,
+    iconSize = { height: 14, width: 14 },
+  } = props;
 
   return (
     <LinkMui
@@ -32,7 +43,7 @@ export default function Linking(props: LinkingProps): JSX.Element {
       }}
       mb={mb}
       fontWeight={700}
-      fontSize={12}
+      fontSize={fontSize}
     >
       {!hidenArrow && <Arrow sx={{ mr: 2, width: iconSize.width, height: iconSize.height }} />}
       {label}

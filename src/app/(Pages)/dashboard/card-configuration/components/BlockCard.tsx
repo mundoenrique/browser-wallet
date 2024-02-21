@@ -16,7 +16,7 @@ export default function BlockCard() {
 
   useEffect(() => {
     updateTitle('Bloquear tarjeta');
-  }, []);
+  }, [updateTitle]);
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -71,26 +71,20 @@ export default function BlockCard() {
       </ContainerLayout>
 
       <ModalResponsive open={open} handleClose={() => setOpen(false)}>
-        <>
-          <Typography variant="subtitle1" mb={3}>
-            🚫 Tarjeta Bloqueada
+        <Typography variant="subtitle1" mb={3}>
+          🚫 Tarjeta Bloqueada
+        </Typography>
+        <Stack spacing={2} sx={{ textAlign: 'left' }} mb={3}>
+          <Typography variant="body2">Estamos bloqueando esta tarjeta.</Typography>
+          <Typography variant="body2">
+            Para que puedas seguir con tus transacciones, estamos creando una nueva cuenta Yiro virtual.
           </Typography>
-          <Stack spacing={2} sx={{ textAlign: 'left' }} mb={3}>
-            <Typography variant="body2">Estamos bloqueando esta tarjeta.</Typography>
-            <Typography variant="body2">
-              Para que puedas seguir con tus transacciones, estamos creando una nueva cuenta Yiro virtual.
-            </Typography>
-            <Typography variant="body2">
-              Si quieres una nueva tarjeta física tienes que volver a solicitarla.
-            </Typography>
-            <Typography variant="body2">
-              Si tienes afiliado un pago recurrente tienes que volver a generarlo.
-            </Typography>
-          </Stack>
-          <Button variant="contained" onClick={() => setOpen(false)} fullWidth>
-            Entendido
-          </Button>
-        </>
+          <Typography variant="body2">Si quieres una nueva tarjeta física tienes que volver a solicitarla.</Typography>
+          <Typography variant="body2">Si tienes afiliado un pago recurrente tienes que volver a generarlo.</Typography>
+        </Stack>
+        <Button variant="contained" onClick={() => setOpen(false)} fullWidth>
+          Entendido
+        </Button>
       </ModalResponsive>
     </>
   );

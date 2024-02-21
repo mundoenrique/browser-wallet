@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useMediaQuery } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 
 declare module '@mui/material/Chip' {
+  // eslint-disable-next-line no-unused-vars
   interface ChipPropsVariantOverrides {
     signup: true;
     detailCard: true;
@@ -9,6 +11,7 @@ declare module '@mui/material/Chip' {
   }
 }
 declare module '@mui/material/Paper' {
+  // eslint-disable-next-line no-unused-vars
   interface PaperPropsVariantOverrides {
     signup: true;
     detailCard: true;
@@ -16,6 +19,7 @@ declare module '@mui/material/Paper' {
 }
 
 declare module '@mui/material/Card' {
+  // eslint-disable-next-line no-unused-vars
   interface CardPropsVariantOverrides {
     signup: true;
     detailCard: true;
@@ -23,6 +27,7 @@ declare module '@mui/material/Card' {
 }
 
 declare module '@mui/material/Button' {
+  // eslint-disable-next-line no-unused-vars
   interface ButtonPropsVariantOverrides {
     underline: true;
     primary: true;
@@ -31,6 +36,7 @@ declare module '@mui/material/Button' {
 }
 
 declare module '@mui/material/Divider' {
+  // eslint-disable-next-line no-unused-vars
   interface DividerPropsVariantOverrides {
     primary: true;
   }
@@ -54,7 +60,6 @@ declare module '@mui/material/Typography' {
 }
 
 const white = '#fff';
-const black = '#000';
 
 // Primary color - Tenant
 const primary = '#5F3F98';
