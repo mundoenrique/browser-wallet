@@ -1,63 +1,6 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { useMediaQuery } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-
-declare module '@mui/material/Chip' {
-  // eslint-disable-next-line no-unused-vars
-  interface ChipPropsVariantOverrides {
-    signup: true;
-    detailCard: true;
-    onboarding: true;
-  }
-}
-declare module '@mui/material/Paper' {
-  // eslint-disable-next-line no-unused-vars
-  interface PaperPropsVariantOverrides {
-    signup: true;
-    detailCard: true;
-  }
-}
-
-declare module '@mui/material/Card' {
-  // eslint-disable-next-line no-unused-vars
-  interface CardPropsVariantOverrides {
-    signup: true;
-    detailCard: true;
-  }
-}
-
-declare module '@mui/material/Button' {
-  // eslint-disable-next-line no-unused-vars
-  interface ButtonPropsVariantOverrides {
-    underline: true;
-    primary: true;
-    secondary: true;
-  }
-}
-
-declare module '@mui/material/Divider' {
-  // eslint-disable-next-line no-unused-vars
-  interface DividerPropsVariantOverrides {
-    primary: true;
-  }
-}
-
-declare module '@mui/material/styles' {
-  interface TypographyVariants {
-    subtitle3: React.CSSProperties;
-  }
-
-  // allow configuration using `createTheme`
-  interface TypographyVariantsOptions {
-    subtitle3?: React.CSSProperties;
-  }
-}
-
-declare module '@mui/material/Typography' {
-  interface TypographyPropsVariantOverrides {
-    subtitle3: true;
-  }
-}
+//
+import './theme.d';
 
 const white = '#fff';
 
@@ -349,22 +292,30 @@ const theme = createTheme({
         {
           props: { variant: 'signup' },
           style: ({ theme }) => ({
-            background: useMediaQuery(theme.breakpoints.down('sm')) ? 'transparent' : '#F0EDFA',
-            minHeight: useMediaQuery(theme.breakpoints.down('sm')) ? '560px' : '458px',
-            width: useMediaQuery(theme.breakpoints.down('sm')) ? 'auto' : '570px',
-            paddingLeft: useMediaQuery(theme.breakpoints.down('sm')) ? '20px' : '24px',
-            paddingRight: useMediaQuery(theme.breakpoints.down('sm')) ? '20px' : '24px',
-            paddingTop: useMediaQuery(theme.breakpoints.up('sm')) ? '24px' : 0,
-            paddingBottom: useMediaQuery(theme.breakpoints.down('sm')) ? 0 : '42px',
-            flex: useMediaQuery(theme.breakpoints.down('sm')) ? 1 : 0,
-            marginLeft: useMediaQuery(theme.breakpoints.down('sm')) ? '0' : 'auto',
-            marginRight: useMediaQuery(theme.breakpoints.down('sm')) ? '0' : 'auto',
-            marginBottom: useMediaQuery(theme.breakpoints.down('sm')) ? 0 : '24px',
-            alignContent: useMediaQuery(theme.breakpoints.down('sm')) ? 'start' : 'space-between',
+            background: fuchsiaBlue[100],
+            minHeight: '458px',
+            width: '570px',
+            padding: '0px 24px 42px 24px',
+            flex: 0,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            marginBottom: '24px',
+            alignContent: 'space-between',
             boxShadow: 'none',
             display: 'flex',
             flexDirection: 'column',
             height: 'auto',
+            [theme.breakpoints.down('sm')]: {
+              background: 'transparent',
+              minHeight: '560px',
+              width: 'auto',
+              padding: '24px 20px 0px 20px',
+              marginLeft: '0',
+              marginRight: '0',
+              marginBottom: '0',
+              flex: 1,
+              alignContent: 'start',
+            },
           }),
         },
         {
@@ -377,10 +328,13 @@ const theme = createTheme({
             display: 'flex',
             paddingLeft: '12px',
             minHeight: '62px',
-            width: useMediaQuery(theme.breakpoints.down('sm')) ? '244px' : '265px',
+            width: '265px',
             marginLeft: 'auto',
             marginRight: 'auto',
             marginBottom: 16,
+            [theme.breakpoints.down('sm')]: {
+              width: '244px',
+            },
           }),
         },
       ],

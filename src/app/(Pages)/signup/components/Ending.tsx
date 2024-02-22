@@ -29,7 +29,7 @@ export default function Ending() {
           push('/signin');
         });
     })();
-  }, []);
+  }, [setShowHeader, push]);
 
   return (
     <PurpleLayout>

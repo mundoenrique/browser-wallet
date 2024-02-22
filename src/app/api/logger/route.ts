@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // import { getServerSession } from 'next-auth/next';
 import { NextRequest, NextResponse } from 'next/server';
 //Internal app
@@ -7,6 +8,7 @@ import { decrypt, encryptToView } from '@/utils/encrypt_decrypt';
 
 export async function POST(req: NextRequest) {
   const { payload } = await req.json();
+  //
   const reqData = JSON.parse(decrypt({ data: payload }));
   // const session = await getServerSession(options);
   const ip = req.headers.get('x-forwarded-for');

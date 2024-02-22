@@ -98,11 +98,11 @@ export default function PEP() {
       remove();
       setHasParents(false);
     }
-  }, [watchIsPep, WatchIsFamilyAlive, hasParents, isPep, reset, watch]);
+  }, [watchIsPep, WatchIsFamilyAlive, hasParents, isPep, reset, watch, append, remove, getValues]);
 
   useEffect(() => {
     setShowHeader(true);
-  }, []);
+  }, [setShowHeader]);
 
   return (
     <>

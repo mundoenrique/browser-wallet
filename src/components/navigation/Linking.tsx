@@ -5,7 +5,6 @@ import { Link as LinkMui } from '@mui/material';
 import Arrow from '@mui/icons-material/ArrowBackIos';
 //Internal app
 import { LinkingProps } from '@/interfaces';
-import { height, width } from '@mui/system';
 
 /**
  * Combination of MUI with Next to create link.

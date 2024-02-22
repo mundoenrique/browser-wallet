@@ -56,7 +56,7 @@ export default function Movements() {
   const { updateTitle } = useNavTitleStore();
   useEffect(() => {
     updateTitle('Movimientos');
-  }, []);
+  }, [updateTitle]);
   return (
     <Box
       sx={{
