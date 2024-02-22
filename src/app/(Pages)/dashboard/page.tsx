@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
 //Internal app
 import { CardDebt, CardInformation, LastMovements, Linking, UserWelcome } from '@/components';
@@ -38,6 +39,8 @@ const movementData = [
 ];
 
 export default function Dashboard() {
+  const router = useRouter();
+
   return (
     <Box
       sx={{
@@ -59,7 +62,7 @@ export default function Dashboard() {
         >
           <CardInformation />
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3, mb: 2 }}>
-            <CardDebt />
+            <CardDebt onClick={() => router.push('/dashboard/debt')} />
             <CardDebt OweMe />
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>

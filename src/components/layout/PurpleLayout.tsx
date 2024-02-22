@@ -1,7 +1,7 @@
 'use client';
 
 import Confetti from 'react-confetti';
-import { SetStateAction, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Arrow from '@mui/icons-material/ArrowBackIos';
 import { Box, IconButton, Typography } from '@mui/material';
 //Internal app
@@ -70,6 +70,9 @@ export default function PurpleLayout({
           backgroundPosition: 'center',
           backgroundSize: 'cover',
           top: { xs: 0, sm: '-70px' },
+        },
+        '& > canvas': {
+          zIndex: '0 !important',
         },
       }}
     >

@@ -53,18 +53,26 @@ export interface FrontInformationProps {
  * Debt card
  *
  * @typeParam OweMe (Optional): boolean
+ * @typeParam onClick (Optional): () => void
  */
 export interface CardDebtProps {
   OweMe?: boolean;
+  onClick?: () => void | boolean;
 }
 
 /**
  * Detailed card
  *
  * @typeParam avatarImage (Optional): any
- * @typeParam avatarText (Optional): string
+ * @typeParam avatarText (Optional): string | React.ReactNode
+ * @typeParam textBotton (Optional): string
+ * @typeParam ticket (Optional): boolean
+ * @typeParam actionTicket (Optional):) => void
  */
-export interface CardDetailsProps extends ChildrenProps {
+export interface CardTicketProps extends ChildrenProps {
   avatarImage?: any;
-  avatarText?: string;
+  avatarText?: string | React.ReactNode;
+  textBotton?: string;
+  ticket?: boolean;
+  actionTicket?: () => void;
 }

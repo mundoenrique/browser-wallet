@@ -30,8 +30,9 @@ export { default as ContainerLayout } from './layout/ContainerLayout';
 //cards
 export { default as CardDebt } from './cards/CardDebt';
 export { default as HandleCard } from './cards/HandleCard';
-export { default as CardDetails } from './cards/CardDetails';
+export { default as CardTicket } from './cards/CardTicket';
 export { default as CardInformation } from './cards/cardInformation/CardInformation';
+
 //tables
 export { default as LastMovements } from './tables/LastMovements';
 //accordions
