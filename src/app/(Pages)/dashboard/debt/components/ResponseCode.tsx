@@ -22,7 +22,7 @@ export default function ResponseCode() {
       description: 'S/ 200.00',
     },
     {
-      icon: <EsikaIsotipo sx={{ color: 'primary.main' }} />,
+      icon: <Clock sx={{ color: 'primary.main' }} />,
       label: 'Fecha y hora',
       description: 'Martes 05 Dic - 1:45 pm',
     },
