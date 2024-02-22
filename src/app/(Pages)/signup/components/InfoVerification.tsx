@@ -89,7 +89,7 @@ export default function InfoVerification() {
 
   useEffect(() => {
     setShowHeader(true);
-  }, []);
+  }, [setShowHeader]);
 
   return (
     <>

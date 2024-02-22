@@ -15,8 +15,8 @@
  */
 export interface TableDataProps {
   data: {
-    date: string;
     title: string;
+    date: string;
     amount: number;
     incoming: boolean;
   }[];
