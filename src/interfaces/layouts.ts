@@ -7,6 +7,7 @@
  * @typeParam left (Optional): boolean
  * @typeParam navbar (Optional): boolean
  * @typeParam HandleNavbar (Optional): () => void
+ * @typeParam confetti (Optional): boolean
  */
 export interface PurpleLayoutProps {
   children: React.ReactNode;
@@ -15,6 +16,7 @@ export interface PurpleLayoutProps {
   left?: boolean;
   navbar?: boolean;
   HandleNavbar?: () => void;
+  confetti?: boolean;
 }
 
 /**

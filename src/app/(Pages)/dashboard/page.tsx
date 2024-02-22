@@ -64,7 +64,7 @@ export default function Dashboard() {
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
             <Typography variant="subtitle1">Últimos movimientos</Typography>
-            <Linking href="#" color="primary.main" label="Ver todo" mb={0} hidenArrow />
+            <Linking href="#" color="primary.main" label="Ver todo" mb={0} hidenArrow underline />
           </Box>
           <LastMovements data={movementData} />
         </Box>

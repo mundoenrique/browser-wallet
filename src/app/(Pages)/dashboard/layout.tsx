@@ -4,7 +4,7 @@ import { MainLayout } from '@/components';
 import { ChildrenProps } from '@/interfaces';
 
 export const metadata: Metadata = {
-  title: 'Dashboard',
+  title: 'Inicio',
   description: 'Inicio en tu billetera Yiro',
 };
 
