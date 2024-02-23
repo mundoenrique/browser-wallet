@@ -12,10 +12,11 @@ import { BgButtonPayLarge, BgButtonPaySmall, Esika } from '%/Icons';
  * Cards used to show debts on dashboard
  *
  * @param OweMe - Shows the configuration of the clients that must.
+ * @param onClick - Confirm and manage the card.
  * @returns Debt balances.
  */
 export default function CardDebt(props: CardDebtProps): JSX.Element {
-  const { OweMe } = props;
+  const { OweMe, onClick } = props;
   const clientOweMe = ['', '', '', '', '', '', ''];
   const MaxOweMe = clientOweMe.length;
 
@@ -29,7 +30,9 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
         flexDirection: 'column',
         justifyContent: 'space-between',
         borderRadius: '14px',
+        cursor: onClick ? 'pointer' : 'initial',
       }}
+      onClick={onClick}
     >
       <Box sx={{ display: 'flex', height: 28, justifyContent: 'space-between' }}>
         <Typography sx={{ fontSize: 10, fontWeight: 600, py: OweMe ? 1 : 1 / 2, px: 1 }}>

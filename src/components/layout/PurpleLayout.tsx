@@ -1,5 +1,7 @@
 'use client';
 
+import Confetti from 'react-confetti';
+import { useEffect, useRef, useState } from 'react';
 import Arrow from '@mui/icons-material/ArrowBackIos';
 import { Box, IconButton, Typography } from '@mui/material';
 //Internal app
@@ -15,7 +17,8 @@ import { fuchsiaBlue } from '@/theme/theme-default';
  * @param bigModal - Overview.
  * @param left - Content on the left.
  * @param navbar - Show the navigation bar.
- * @param HandleNavbar - Navigation management function.
+ * @param HandleNavbar - Navigation management function.}
+ * @param confetti - Show confetti animation.
  */
 export default function PurpleLayout({
   children,
@@ -24,10 +27,25 @@ export default function PurpleLayout({
   left,
   navbar,
   HandleNavbar,
+  confetti,
 }: PurpleLayoutProps): JSX.Element {
   const { title } = useNavTitleStore();
+  const [width, setWidth] = useState<number>();
+  const [height, setHeight] = useState<number>();
+  const divRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (divRef.current) {
+      const width = divRef.current.offsetWidth;
+      setWidth(width);
+      const height = divRef?.current?.offsetHeight;
+      setHeight(height);
+    }
+  }, []);
+
   return (
     <Box
+      ref={divRef}
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -53,8 +71,13 @@ export default function PurpleLayout({
           backgroundSize: 'cover',
           top: { xs: 0, sm: '-70px' },
         },
+        '& > canvas': {
+          zIndex: '0 !important',
+        },
       }}
     >
+      {confetti && <Confetti width={width} height={height} numberOfPieces={500} tweenDuration={40000} />}
+
       {navbar && (
         <Box
           sx={{

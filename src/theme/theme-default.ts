@@ -1,6 +1,5 @@
-import { createTheme } from '@mui/material/styles';
-//
 import './theme.d';
+import { createTheme } from '@mui/material/styles';
 
 const white = '#fff';
 

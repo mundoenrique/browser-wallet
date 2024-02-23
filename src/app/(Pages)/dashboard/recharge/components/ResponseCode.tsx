@@ -20,7 +20,7 @@ import {
 import Qr from '%/images/arts/QR.png';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import PagoEfectivo from '%/images/suppliers/pagoEfectivo.png';
-import { CardDetails, ContainerLayout, Linking, ModalResponsive, PurpleLayout } from '@/components';
+import { CardTicket, ContainerLayout, Linking, ModalResponsive, PurpleLayout } from '@/components';
 
 export default function ResponseCode() {
   const router = useRouter();
@@ -83,7 +83,7 @@ export default function ResponseCode() {
             Recarga a través de Pago Efectivo por una de estas 2 opciones:
           </Typography>
           <Box ref={componentRef} sx={{ padding: '24px 4px 4px 4px', position: 'relative' }}>
-            <CardDetails avatarImage={ImagePagoEfectivo}>
+            <CardTicket avatarImage={ImagePagoEfectivo}>
               <Box
                 sx={{
                   display: 'flex',
@@ -126,7 +126,7 @@ export default function ResponseCode() {
                   <img src={Qr.src} alt="Qr Code" />
                 </picture>
               </Box>
-            </CardDetails>
+            </CardTicket>
           </Box>
 
           <Button variant="underline" sx={{ mb: 4 }} onClick={handleShowInfo}>

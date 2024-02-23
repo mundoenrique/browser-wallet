@@ -1,9 +1,11 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
 //Internal app
 import { CardDebt, CardInformation, LastMovements, Linking, UserWelcome } from '@/components';
 import { useEffect } from 'react';
+import { useMenuStore } from '@/store';
 
 const movementData = [
   {
@@ -39,9 +41,13 @@ const movementData = [
 ];
 
 export default function Dashboard() {
+  const { setCurrentItem } = useMenuStore();
   useEffect(() => {
     console.log('dashboard');
-  }, []);
+    setCurrentItem('home');
+  }, [setCurrentItem]);
+  const router = useRouter();
+
   return (
     <Box
       sx={{
@@ -63,12 +69,12 @@ export default function Dashboard() {
         >
           <CardInformation />
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3, mb: 2 }}>
-            <CardDebt />
+            <CardDebt onClick={() => router.push('/dashboard/debt')} />
             <CardDebt OweMe />
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
             <Typography variant="subtitle1">Últimos movimientos</Typography>
-            <Linking href="/dashboard/movements" color="primary.main" label="Ver todo" mb={0} hidenArrow />
+            <Linking href="/dashboard/movements" color="primary.main" label="Ver todo" mb={0} hidenArrow underline />
           </Box>
           <LastMovements data={movementData} />
         </Box>
