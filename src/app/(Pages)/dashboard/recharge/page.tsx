@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import { useNavTitleStore } from '@/store';
+import { useNavTitleStore, useMenuStore } from '@/store';
 import ResponseCode from './components/ResponseCode';
 import { ContainerLayout, InputTextPay } from '@/components';
 
@@ -15,10 +15,11 @@ export default function Recharge() {
   const schema = getSchema(['amount']);
 
   const { updateTitle } = useNavTitleStore();
-
+  const { setCurrentItem } = useMenuStore();
   useEffect(() => {
     updateTitle('Generar recarga');
-  }, [updateTitle]);
+    setCurrentItem('recharge');
+  }, [updateTitle, setCurrentItem]);
 
   const { control, handleSubmit } = useForm({
     defaultValues: {

@@ -3,15 +3,17 @@
 import { useEffect } from 'react';
 import { Stack, Typography } from '@mui/material';
 //Internal app
-import { useNavTitleStore } from '@/store';
+import { useNavTitleStore, useMenuStore } from '@/store';
 import { ContainerLayout } from '@/components';
 
 export default function Legal() {
   const { updateTitle } = useNavTitleStore();
+  const { setCurrentItem } = useMenuStore();
 
   useEffect(() => {
     updateTitle('Términos y condiciones');
-  }, [updateTitle]);
+    setCurrentItem('terms');
+  }, [updateTitle, setCurrentItem]);
 
   return (
     <ContainerLayout fullWidth>

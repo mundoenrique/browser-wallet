@@ -60,7 +60,12 @@ export default function LastMovements({ data }: TableDataProps): JSX.Element {
             }}
           >
             <Box>
-              <Typography variant="subtitle2">{row.title}</Typography>
+              <Typography
+                variant="subtitle2"
+                sx={{ maxWidth: '140px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+              >
+                {row.title}
+              </Typography>
               <Typography sx={{ fontSize: '10px', lineHeight: '16px' }}>
                 {dayjs(row.date).format('MMMM D, h:mm a')}
               </Typography>

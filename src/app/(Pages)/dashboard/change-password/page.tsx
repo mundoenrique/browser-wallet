@@ -6,11 +6,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import { useNavTitleStore } from '@/store';
+import { useNavTitleStore, useMenuStore } from '@/store';
 import { ContainerLayout, InputPass, ModalOtp, ModalResponsive } from '@/components';
 
 export default function ChangePassword() {
   const { updateTitle } = useNavTitleStore();
+  const { setCurrentItem } = useMenuStore();
   const [openOtp, setOpenOtp] = useState(false);
   const [openRc, setOpenRc] = useState(false);
   const schemaFormPassword = getSchema(['newPassword', 'newPasswordConfirmation', 'currentPassword']);
@@ -34,7 +35,8 @@ export default function ChangePassword() {
 
   useEffect(() => {
     updateTitle('Cambiar contraseña');
-  }, [updateTitle]);
+    setCurrentItem('password-change');
+  }, [updateTitle, setCurrentItem]);
 
   return (
     <>

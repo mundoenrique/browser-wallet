@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
 //Internal app
 import { CardDebt, CardInformation, LastMovements, Linking, UserWelcome } from '@/components';
+import { useEffect } from 'react';
+import { useMenuStore } from '@/store';
 
 const movementData = [
   {
@@ -39,6 +41,11 @@ const movementData = [
 ];
 
 export default function Dashboard() {
+  const { setCurrentItem } = useMenuStore();
+  useEffect(() => {
+    console.log('dashboard');
+    setCurrentItem('home');
+  }, [setCurrentItem]);
   const router = useRouter();
 
   return (

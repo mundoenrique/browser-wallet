@@ -6,21 +6,22 @@ import { Stack, Typography } from '@mui/material';
 import Email from '@mui/icons-material/EmailOutlined';
 import Questions from '@mui/icons-material/HelpOutlineOutlined';
 //Internal app
-import { useNavTitleStore } from '@/store';
+import { useNavTitleStore, useMenuStore } from '@/store';
 import { CallIcon, WhatsappIcon } from '%/Icons';
 import { ContainerLayout, HandleCard } from '@/components';
 
 export default function Help() {
   const router = useRouter();
   const { updateTitle } = useNavTitleStore();
-
+  const { setCurrentItem } = useMenuStore();
   const handleQuestions = () => {
     router.push('/dashboard/help/frequent-questions');
   };
 
   useEffect(() => {
     updateTitle('Ayuda');
-  }, [updateTitle]);
+    setCurrentItem('help');
+  }, [updateTitle, setCurrentItem]);
 
   return (
     <ContainerLayout>
