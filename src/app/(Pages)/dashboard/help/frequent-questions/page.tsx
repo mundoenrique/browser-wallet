@@ -22,6 +22,7 @@ const questions = [
 export default function Questions() {
   const { updateTitle } = useNavTitleStore();
   const { setCurrentItem } = useMenuStore();
+
   useEffect(() => {
     updateTitle('Preguntas frecuentes');
     setCurrentItem('help');

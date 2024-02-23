@@ -55,10 +55,12 @@ const movementData = [
 export default function Movements() {
   const { setCurrentItem } = useMenuStore();
   const { updateTitle } = useNavTitleStore();
+
   useEffect(() => {
     updateTitle('Movimientos');
     setCurrentItem('home');
   }, [updateTitle, setCurrentItem]);
+
   return (
     <Box
       sx={{

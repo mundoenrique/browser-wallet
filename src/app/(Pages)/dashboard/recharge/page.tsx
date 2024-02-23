@@ -13,9 +13,9 @@ import { ContainerLayout, InputTextPay } from '@/components';
 export default function Recharge() {
   const [openRc, setOpenRc] = useState(false);
   const schema = getSchema(['amount']);
-
   const { updateTitle } = useNavTitleStore();
   const { setCurrentItem } = useMenuStore();
+
   useEffect(() => {
     updateTitle('Generar recarga');
     setCurrentItem('recharge');
