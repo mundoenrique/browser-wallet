@@ -8,7 +8,7 @@ import { MenuStore } from '@/interfaces';
  * @param currentItem - Initial state {@defaultValue `home`}
  * @param setCurrentItem - Function that sets the new value
  *
- * @remarks This state persists in localstorage
+ * @remarks This state persists in sessionStorage
  */
 export const useMenuStore = create<MenuStore>()(
   persist(

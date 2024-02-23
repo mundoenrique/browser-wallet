@@ -20,7 +20,6 @@ export const useRegisterStore = create<RegisterStore>()(
         showHeader: true,
         /**
          * Increases the step by 1 which leads to navigate to the following screen
-         *
          */
         setShowHeader: (value) => set({ showHeader: value }),
         /**
@@ -29,12 +28,10 @@ export const useRegisterStore = create<RegisterStore>()(
         inc: () => set((state) => ({ step: state.step + 1 })),
         /**
          * Goes to the step specified in the parameter
-         *
          */
         dec: () => set((state) => ({ step: state.step - 1 })),
         /**
          * Updates the storage of the given form
-         *
          */
         updateStep: (newAmount) => set({ step: newAmount }),
         /**

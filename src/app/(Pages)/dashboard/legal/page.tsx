@@ -23,7 +23,7 @@ export default function Legal() {
         Términos y condiciones
       </Typography>
 
-      <Stack spacing={2}>
+      <Stack spacing={2} sx={{ px: { xs: 2, md: 0 } }}>
         <Typography variant="subtitle1">Términos y condiciones</Typography>
         <Typography paragraph>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore

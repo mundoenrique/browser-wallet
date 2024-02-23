@@ -39,7 +39,11 @@ export default function ResponseCode() {
         </Typography>
 
         <Box sx={{ padding: '24px 4px 4px 4px', position: 'relative' }}>
-          <CardTicket avatarText={<CheckCircleIcon color="success" />} ticket textBotton="Guardar">
+          <CardTicket
+            avatarText={<CheckCircleIcon color="success" sx={{ width: 51, height: 51 }} />}
+            ticket
+            textBotton="Guardar"
+          >
             <Box sx={{ display: 'grid', width: '100%' }}>
               <Typography variant="subtitle1" textAlign="center">
                 Has pagado

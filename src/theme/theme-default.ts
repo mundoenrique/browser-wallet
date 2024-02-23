@@ -294,7 +294,7 @@ const theme = createTheme({
             background: fuchsiaBlue[100],
             minHeight: '458px',
             width: '570px',
-            padding: '0px 24px 42px 24px',
+            padding: '24px 24px 42px 24px',
             flex: 0,
             marginLeft: 'auto',
             marginRight: 'auto',
@@ -304,7 +304,7 @@ const theme = createTheme({
             display: 'flex',
             flexDirection: 'column',
             height: 'auto',
-            [theme.breakpoints.down('sm')]: {
+            [theme.breakpoints.down('md')]: {
               background: 'transparent',
               minHeight: '560px',
               width: 'auto',

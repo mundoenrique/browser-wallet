@@ -8,8 +8,8 @@ import { Box, Button, Card, Stack, Typography } from '@mui/material';
 import { getSchema } from '@/config';
 import { useNavTitleStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { ContainerLayout, InputTextPay } from '@/components';
 import ResponseCode from './components/ResponseCode';
+import { ContainerLayout, InputTextPay, Linking } from '@/components';
 
 export default function Debt() {
   const [openRc, setOpenRc] = useState(false);
@@ -43,15 +43,9 @@ export default function Debt() {
           Pagar deuda con ésika
         </Typography>
 
-        <Card
-          sx={{
-            boxShadow: 'none',
-            bgcolor: fuchsiaBlue[300],
-            px: 3,
-            py: 1,
-            mb: 4,
-          }}
-        >
+        <Linking href="/dashboard" label="Volver" />
+
+        <Card sx={{ boxShadow: 'none', bgcolor: fuchsiaBlue[300], px: 3, py: 1, mb: 4 }}>
           <Stack spacing={1} sx={{ display: 'grid', justifyContent: 'center', justifyItems: 'center' }}>
             <Typography variant="body1" color="primary.main">
               Deuda total

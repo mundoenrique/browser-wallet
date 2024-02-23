@@ -31,8 +31,8 @@ export { default as ContainerLayout } from './layout/ContainerLayout';
 export { default as CardDebt } from './cards/CardDebt';
 export { default as HandleCard } from './cards/HandleCard';
 export { default as CardTicket } from './cards/CardTicket';
+export { default as CardReport } from './cards/CardReport';
 export { default as CardInformation } from './cards/cardInformation/CardInformation';
-
 //tables
 export { default as LastMovements } from './tables/LastMovements';
 //accordions
