@@ -1,16 +1,16 @@
 import { create } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
-import { JwtStoreProps } from '@/interfaces/store';
+import { oAuth2StoreProps } from '@/interfaces/store';
 
-export const useJwtStore = create<JwtStoreProps>()(
+export const useOAuth2Store = create<oAuth2StoreProps>()(
   devtools(
     persist(
       (set) => ({
-        token: null,
-        setToken: (token) => set({ token }),
+        accessToken: null,
+        setAccessToken: (accessToken) => set({ accessToken }),
       }),
       {
-        name: 'jwt-store',
+        name: 'oauth2-store',
         storage: createJSONStorage(() => sessionStorage),
       }
     )

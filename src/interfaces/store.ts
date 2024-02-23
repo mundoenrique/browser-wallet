@@ -8,3 +8,8 @@ export type JwtStoreProps = {
   token: string | null;
   setToken: (_token: string) => void;
 };
+
+export type oAuth2StoreProps = {
+  accessToken: string | null;
+  setAccessToken: (_token: string) => void;
+};
