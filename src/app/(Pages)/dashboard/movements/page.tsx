@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 //Internal app
 import { InputSelect, LastMovements, Linking } from '@/components';
-import { useNavTitleStore } from '@/store';
-import { fuchsiaBlue, slate } from '@/theme/theme-default';
+import { useMenuStore, useNavTitleStore } from '@/store';
+import { fuchsiaBlue } from '@/theme/theme-default';
 
 const movementData = [
   {
@@ -53,10 +53,12 @@ const movementData = [
 ];
 
 export default function Movements() {
+  const { setCurrentItem } = useMenuStore();
   const { updateTitle } = useNavTitleStore();
   useEffect(() => {
     updateTitle('Movimientos');
-  }, [updateTitle]);
+    setCurrentItem('home');
+  }, [updateTitle, setCurrentItem]);
   return (
     <Box
       sx={{
@@ -103,20 +105,7 @@ export default function Movements() {
             borderRadius: { xs: '12px ', md: '0' },
           }}
         >
-          <Box
-            sx={{
-              paddingX: 3,
-              paddingY: '4px',
-              background: slate[200],
-              borderRadius: { xs: '12px 12px 0 0', md: '0' },
-            }}
-          >
-            <Typography component="p" variant="subtitle3" color={slate[700]}>
-              Diciembre 2023
-            </Typography>
-          </Box>
-
-          <Box sx={{ paddingX: 3 }}>
+          <Box sx={{ paddingX: 3, paddingY: 2 }}>
             <LastMovements data={movementData} />
           </Box>
         </Box>

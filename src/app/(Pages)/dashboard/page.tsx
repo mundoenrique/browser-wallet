@@ -3,6 +3,7 @@
 import { Box, Typography } from '@mui/material';
 //Internal app
 import { CardDebt, CardInformation, LastMovements, Linking, UserWelcome } from '@/components';
+import { useEffect } from 'react';
 
 const movementData = [
   {
@@ -38,6 +39,9 @@ const movementData = [
 ];
 
 export default function Dashboard() {
+  useEffect(() => {
+    console.log('dashboard');
+  }, []);
   return (
     <Box
       sx={{

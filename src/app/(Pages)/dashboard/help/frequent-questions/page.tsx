@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { Stack, Typography } from '@mui/material';
 //Internal app
-import { useNavTitleStore } from '@/store';
+import { useNavTitleStore, useMenuStore } from '@/store';
 import { Accordions, ContainerLayout, Linking } from '@/components';
 
 const questions = [
@@ -21,10 +21,11 @@ const questions = [
 
 export default function Questions() {
   const { updateTitle } = useNavTitleStore();
-
+  const { setCurrentItem } = useMenuStore();
   useEffect(() => {
     updateTitle('Preguntas frecuentes');
-  }, [updateTitle]);
+    setCurrentItem('help');
+  }, [updateTitle, setCurrentItem]);
 
   return (
     <ContainerLayout>

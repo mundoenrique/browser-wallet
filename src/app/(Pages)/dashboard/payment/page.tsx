@@ -1,10 +1,11 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import Copy from '@mui/icons-material/ContentCopy';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 //Internal app
+import { useMenuStore } from '@/store';
 import Qr from '%/images/arts/QR.png';
 import { CardDetails, PurpleLayout } from '@/components';
 import PagoEfectivo from '%/images/suppliers/pagoEfectivo.png';
@@ -12,6 +13,7 @@ import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function Payment() {
   const componentRef = useRef<any>(null);
+  const { setCurrentItem } = useMenuStore();
   const ImagePagoEfectivo = {
     src: PagoEfectivo,
     alt: 'Logo Pago Efectivo',
@@ -44,6 +46,9 @@ export default function Payment() {
       console.error(err);
     }
   };
+  useEffect(() => {
+    setCurrentItem('payment');
+  }, [setCurrentItem]);
 
   return (
     <PurpleLayout>
