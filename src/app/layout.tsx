@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 //Internal app
 import { ChildrenProps } from '@/interfaces';
-import { HydrationProvider, MuiProvider } from '@/components';
+import { HydrationProvider, JwtProvider, KeyProvider, MuiProvider } from '@/components';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -27,7 +27,11 @@ export default function RootLayout({ children }: ChildrenProps) {
     <html lang="es">
       <body>
         <MuiProvider>
-          <HydrationProvider>{children}</HydrationProvider>
+          <HydrationProvider>
+            <KeyProvider>
+              <JwtProvider>{children}</JwtProvider>
+            </KeyProvider>
+          </HydrationProvider>
         </MuiProvider>
       </body>
     </html>

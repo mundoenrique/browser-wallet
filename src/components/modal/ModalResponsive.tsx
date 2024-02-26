@@ -62,8 +62,7 @@ const CloseButtonContainer = styled(Box, {
  * @param open - State of the modal to show it or not.
  * @param children - Children elements.
  */
-// eslint-disable-next-line react/display-name
-const ModalResponsive = forwardRef((props: MuiModalProps, ref: any) => {
+const ModalResponsive = forwardRef(function MyModalResponsive(props: MuiModalProps, ref: any) {
   const { open, handleClose, children, ...others } = props;
   const theme = useTheme();
   const matche = useMediaQuery(theme.breakpoints.down('sm'));
