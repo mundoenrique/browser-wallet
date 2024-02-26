@@ -1,6 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-
-export async function GET(_req: NextApiRequest, _res: NextApiResponse) {
+export async function GET() {
   return new Response('Health check ok test', {
     status: 200,
   });
