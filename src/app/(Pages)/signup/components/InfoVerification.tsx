@@ -41,7 +41,6 @@ export default function InfoVerification() {
     resolver: yupResolver(schema),
   });
 
-  //Update Email Form
   const {
     control: controlEmail,
     handleSubmit: handleSubmitEmail,

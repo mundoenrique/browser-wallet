@@ -6,12 +6,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import { useNavTitleStore, useMenuStore } from '@/store';
 import ResponseCode from './components/ResponseCode';
+import { useNavTitleStore, useMenuStore } from '@/store';
 import { ContainerLayout, InputTextPay } from '@/components';
 
 export default function Recharge() {
-  const [openRc, setOpenRc] = useState(false);
+  const [openRc, setOpenRc] = useState<boolean>(false);
   const schema = getSchema(['amount']);
   const { updateTitle } = useNavTitleStore();
   const { setCurrentItem } = useMenuStore();
@@ -22,9 +22,7 @@ export default function Recharge() {
   }, [updateTitle, setCurrentItem]);
 
   const { control, handleSubmit } = useForm({
-    defaultValues: {
-      amount: '',
-    },
+    defaultValues: { amount: '' },
     resolver: yupResolver(schema),
   });
 

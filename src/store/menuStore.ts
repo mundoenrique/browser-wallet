@@ -5,6 +5,7 @@ import { MenuStore } from '@/interfaces';
 
 /**
  * Store for navMenu
+ *
  * @param currentItem - Initial state {@defaultValue `home`}
  * @param setCurrentItem - Function that sets the new value
  *
@@ -18,7 +19,7 @@ export const useMenuStore = create<MenuStore>()(
        */
       currentItem: 'home',
       /**
-       *Replaces the current menu item
+       * Replaces the current menu item
        */
       setCurrentItem: (item) => set({ currentItem: item }),
     }),

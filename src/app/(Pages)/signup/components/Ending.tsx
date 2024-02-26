@@ -9,8 +9,8 @@ import LogoGreen from '%/images/LogoGreen';
 import { PurpleLayout } from '@/components';
 
 export default function Ending() {
-  const { setShowHeader } = useRegisterStore();
   const { push } = useRouter();
+  const { setShowHeader } = useRegisterStore();
 
   //TODO:timeEvent es de implementacion temporal
   const timeEvent = (time: number) =>

@@ -11,10 +11,9 @@ let socket: any;
 
 export default function Card() {
   const { SVG } = useQRCode();
-
   const [dataUser, setDataUser] = useState<any>(null);
-  const [showModal, setShowModal] = useState(true);
-  const [url] = useState(`${process.env.NEXT_PUBLIC_PATH_URL}/qr`);
+  const [showModal, setShowModal] = useState<boolean>(true);
+  const [url] = useState<string>(`${process.env.NEXT_PUBLIC_PATH_URL}/qr`);
 
   useEffect(() => {
     const socketInit = async () => {
@@ -28,7 +27,6 @@ export default function Card() {
       });
 
       socket.on('infoUser', (data: any) => {
-        console.log('pageCard - Mensaje del servidor:', data);
         setDataUser(data);
         setShowModal(false);
         socket.emit('disconnect');

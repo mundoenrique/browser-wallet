@@ -19,9 +19,7 @@ export default function CardConfiguration() {
   }, [updateTitle, setCurrentItem]);
 
   const { control } = useForm({
-    defaultValues: {
-      shopping: '',
-    },
+    defaultValues: { shopping: '' },
   });
 
   return (

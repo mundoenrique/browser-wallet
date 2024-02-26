@@ -11,8 +11,8 @@ import { ContainerLayout, InputRadio, Linking, ModalOtp, ModalResponsive } from 
 
 export default function Survey() {
   const { updateTitle } = useNavTitleStore();
-  const [openOtp, setOpenOtp] = useState(false);
-  const [openRc, setOpenRc] = useState(false);
+  const [openOtp, setOpenOtp] = useState<boolean>(false);
+  const [openRc, setOpenRc] = useState<boolean>(false);
   const schema = getSchema(['blockType']);
 
   useEffect(() => {
@@ -20,9 +20,7 @@ export default function Survey() {
   }, [updateTitle]);
 
   const { control, handleSubmit, reset } = useForm({
-    defaultValues: {
-      blockType: '',
-    },
+    defaultValues: { blockType: '' },
     resolver: yupResolver(schema),
   });
 

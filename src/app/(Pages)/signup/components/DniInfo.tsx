@@ -8,8 +8,8 @@ import dniPwa from '%/images/arts/dniPwa.svg';
 import dniDesktop from '%/images/arts/dniDesktop.svg';
 
 export default function DniInfo() {
-  const { dec, inc } = useRegisterStore();
   const theme = useTheme();
+  const { dec, inc } = useRegisterStore();
   const matcha = useMediaQuery(theme.breakpoints.up('sm'));
 
   return (

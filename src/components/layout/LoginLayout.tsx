@@ -2,8 +2,8 @@
 
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
-import { fuchsiaBlue } from '@/theme/theme-default';
 import { ChildrenProps } from '@/interfaces';
+import { fuchsiaBlue } from '@/theme/theme-default';
 
 const ContainerLayout = ({ children }: ChildrenProps) => {
   return (

@@ -24,7 +24,7 @@ import { CardReport, ContainerLayout, Linking, ModalResponsive, PurpleLayout } f
 
 export default function ResponseCode() {
   const router = useRouter();
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const componentRef = useRef<any>(null);
   const ImagePagoEfectivo = {
     src: PagoEfectivo,

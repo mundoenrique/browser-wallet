@@ -6,7 +6,7 @@ import OTP from './components/OTP';
 import UpdatePass from './components/UpdatePass';
 
 export default function Recover() {
-  const [otpValid, setOtpValid] = useState(false);
+  const [otpValid, setOtpValid] = useState<boolean>(false);
 
   return <>{otpValid ? <UpdatePass /> : <OTP setOTP={setOtpValid} />}</>;
 }

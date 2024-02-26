@@ -11,7 +11,7 @@ let socket: any;
 
 export default function Card() {
   const { SVG } = useQRCode();
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState<boolean>(true);
   const userData = JSON.stringify({ username: 'elazaro', password: 'lazaro123' });
 
   const handleSocketEmit = async () => {
@@ -19,7 +19,6 @@ export default function Card() {
     socket = io('', {
       path: '/api/my_socket',
     });
-    console.log('Emitiendo datos al servidor:', userData);
     socket.emit('sendData', userData);
     setShowModal(false);
   };

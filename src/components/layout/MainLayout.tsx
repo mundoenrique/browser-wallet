@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { Box } from '@mui/material';
 //Internal app
-import Navbar from '../navigation/navbar/Navbar';
 import { ChildrenProps } from '@/interfaces';
+import Navbar from '../navigation/navbar/Navbar';
 import Sidebar from '../navigation/sidebar/Sidebar';
 import NavbarLower from '../navigation/navbar/NavbarLower';
 

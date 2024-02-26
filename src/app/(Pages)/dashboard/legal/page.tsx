@@ -3,8 +3,8 @@
 import { useEffect } from 'react';
 import { Stack, Typography } from '@mui/material';
 //Internal app
-import { useNavTitleStore, useMenuStore } from '@/store';
 import { ContainerLayout } from '@/components';
+import { useNavTitleStore, useMenuStore } from '@/store';
 
 export default function Legal() {
   const { updateTitle } = useNavTitleStore();

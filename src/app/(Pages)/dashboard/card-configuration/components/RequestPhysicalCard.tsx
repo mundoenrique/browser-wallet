@@ -9,7 +9,7 @@ import { ContainerLayout, ModalResponsive } from '@/components';
 
 export default function RequestPhysicalCard() {
   const { updateTitle } = useNavTitleStore();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
     updateTitle('Solicitar tarjeta física');

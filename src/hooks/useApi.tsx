@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { api, setJwtToken, setprivateKey } from '@/utils/api';
+//Internal app
 import { verifyJWT } from '@/utils/jwt';
 import { JWT_HEADER } from '@/utils/constants';
 import { useJwtStore, useKeyStore } from '@/store';
+import { api, setJwtToken, setprivateKey } from '@/utils/api';
 
 export function useApi() {
   const { token, setToken } = useJwtStore();

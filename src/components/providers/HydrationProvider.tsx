@@ -13,7 +13,7 @@ import { ChildrenProps } from '@/interfaces';
  * @param children - Children element.
  */
 export default function HydrationProvider({ children }: ChildrenProps): JSX.Element {
-  const [isHydrated, setIsHydrated] = useState(true);
+  const [isHydrated, setIsHydrated] = useState<boolean>(true);
 
   useEffect(() => {
     setIsHydrated(false);

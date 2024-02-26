@@ -1,26 +1,4 @@
 /**
- * Top bar titles
- *
- * @typeParam title: string
- * @typeParam updateTitle: (newTitle: string) => void
- */
-export interface NavTitleStore {
-  title: string;
-  updateTitle: (_newTitle: string) => void;
-}
-
-/**
- * Active menu item
- *
- * @typeParam title: string
- * @typeParam updateTitle: (item: string) => void
- */
-export interface MenuStore {
-  currentItem: string;
-  setCurrentItem: (_item: string) => void;
-}
-
-/**
  * Navbar
  *
  * @typeParam onClick: () => void

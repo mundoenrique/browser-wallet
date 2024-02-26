@@ -10,7 +10,7 @@ import { useRegisterStore } from '@/store';
 import { InputSelect, InputText } from '@/components';
 
 export default function Ocupation() {
-  const [ocupations, setOcupations] = useState(false);
+  const [ocupations, setOcupations] = useState<boolean>(false);
   const { updateStep, inc, updateFormState, ocupationFormState } = useRegisterStore();
   const schema = ocupations
     ? getSchema(['ocupation', 'enterpriseType', 'enterprises', 'position'])

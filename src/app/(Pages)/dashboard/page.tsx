@@ -1,11 +1,11 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
 //Internal app
-import { CardDebt, CardInformation, LastMovements, Linking, UserWelcome } from '@/components';
-import { useEffect } from 'react';
 import { useMenuStore } from '@/store';
+import { CardDebt, CardInformation, LastMovements, Linking, UserWelcome } from '@/components';
 
 const movementData = [
   {
@@ -41,13 +41,12 @@ const movementData = [
 ];
 
 export default function Dashboard() {
+  const router = useRouter();
   const { setCurrentItem } = useMenuStore();
 
   useEffect(() => {
     setCurrentItem('home');
   }, [setCurrentItem]);
-
-  const router = useRouter();
 
   return (
     <Box

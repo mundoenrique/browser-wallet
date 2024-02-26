@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useCallback } from 'react';
 import io from 'socket.io-client';
 import { Typography } from '@mui/material';
+import { useEffect, useCallback } from 'react';
 //Internal app
 import { useQrStore } from '@/store';
 
@@ -16,7 +16,6 @@ export default function VerifyCard() {
     socket = io('', {
       path: '/api/my_socket',
     });
-    console.log('Emitiendo datos al servidor:', user);
     socket.emit('sendData', user);
   }, [user]);
 

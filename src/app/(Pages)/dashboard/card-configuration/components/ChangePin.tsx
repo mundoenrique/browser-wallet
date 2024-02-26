@@ -11,8 +11,8 @@ import { ContainerLayout, InputPass, Linking, ModalOtp, ModalResponsive } from '
 
 export default function ChangePin() {
   const { updateTitle } = useNavTitleStore();
-  const [openOtp, setOpenOtp] = useState(false);
-  const [openRc, setOpenRc] = useState(false);
+  const [openOtp, setOpenOtp] = useState<boolean>(false);
+  const [openRc, setOpenRc] = useState<boolean>(false);
   const schemaFormPassword = getSchema(['newPin', 'confirmPin']);
 
   const { control, handleSubmit, reset } = useForm({

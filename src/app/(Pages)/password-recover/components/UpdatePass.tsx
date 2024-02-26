@@ -6,7 +6,7 @@ import { Button, Typography } from '@mui/material';
 import { FormPass, ModalResponsive } from '@/components';
 
 export default function UpdatePass() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const onSubmit = async (data: any) => {
     console.log(data);

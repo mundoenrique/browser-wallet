@@ -22,7 +22,7 @@ export default function BackInformation(props: BackInformationProps): JSX.Elemen
     try {
       await navigator.clipboard.writeText(cardNumber);
     } catch (error) {
-      console.error('Error al copiar texto:', error);
+      console.error('Error copying text:', error);
     }
   };
 

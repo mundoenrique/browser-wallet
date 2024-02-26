@@ -32,6 +32,7 @@ import {
 const CardStep = (props: StepperProps) => {
   const theme = useTheme();
   const { children, stepNumber } = props;
+
   return (
     <Card variant="signup">
       <Typography

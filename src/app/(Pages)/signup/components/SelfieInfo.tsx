@@ -8,8 +8,8 @@ import selfiePwa from '%/images/arts/selfiePwa.svg';
 import selfieDesktop from '%/images/arts/selfieDesktop.svg';
 
 export default function SelfieInfo() {
-  const { dec, inc } = useRegisterStore();
   const theme = useTheme();
+  const { dec, inc } = useRegisterStore();
   const matcha = useMediaQuery(theme.breakpoints.up('sm'));
 
   return (

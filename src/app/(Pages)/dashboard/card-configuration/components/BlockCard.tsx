@@ -11,7 +11,7 @@ import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/compone
 
 export default function BlockCard() {
   const { updateTitle } = useNavTitleStore();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const schema = getSchema(['blockType']);
 
   useEffect(() => {
@@ -19,9 +19,7 @@ export default function BlockCard() {
   }, [updateTitle]);
 
   const { control, handleSubmit } = useForm({
-    defaultValues: {
-      blockType: '',
-    },
+    defaultValues: { blockType: '' },
     resolver: yupResolver(schema),
   });
 

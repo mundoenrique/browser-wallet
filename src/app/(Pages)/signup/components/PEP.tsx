@@ -13,13 +13,11 @@ import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResp
 //TODO:Only for DEV
 //import { DevTool } from '@hookform/devtools';
 
-//TODO: Data de ejemplo
 const options: any = [
   { text: 'Sí', value: 'true' },
   { text: 'No', value: 'false' },
 ];
 
-//TODO: Data de ejemplo
 const selectOptions = [
   { text: 'Opción A', value: 'A' },
   { text: 'Opción B', value: 'B' },
@@ -28,11 +26,11 @@ const selectOptions = [
 ];
 
 export default function PEP() {
-  const [isPep, setIsPep] = useState(false);
-  const [hasParents, setHasParents] = useState(false);
-  const [showParentModal, setShowParentModal] = useState(false);
-  const [showPepInfo, setShowPepInfo] = useState(false);
-  const [parentIndex, setParentIndex] = useState(-1);
+  const [isPep, setIsPep] = useState<boolean>(false);
+  const [hasParents, setHasParents] = useState<boolean>(false);
+  const [showParentModal, setShowParentModal] = useState<boolean>(false);
+  const [showPepInfo, setShowPepInfo] = useState<boolean>(false);
+  const [parentIndex, setParentIndex] = useState<number>(-1);
 
   const { dec, inc, updateFormState, pepFormState, setShowHeader } = useRegisterStore();
 

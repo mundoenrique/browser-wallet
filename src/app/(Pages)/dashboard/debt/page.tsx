@@ -12,15 +12,13 @@ import { useMenuStore, useNavTitleStore } from '@/store';
 import { ContainerLayout, InputTextPay, Linking } from '@/components';
 
 export default function Debt() {
-  const [openRc, setOpenRc] = useState(false);
+  const [openRc, setOpenRc] = useState<boolean>(false);
   const { updateTitle } = useNavTitleStore();
   const { setCurrentItem } = useMenuStore();
   const schema = getSchema(['amount']);
 
   const { control, handleSubmit } = useForm({
-    defaultValues: {
-      amount: '',
-    },
+    defaultValues: { amount: '' },
     resolver: yupResolver(schema),
   });
 

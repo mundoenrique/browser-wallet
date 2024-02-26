@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { IEncryptedBody, IJWTPayload } from '@/interfaces';
+//Internal app
 import { JWT_HEADER, JWS_HEADER } from './constants';
+import { IEncryptedBody, IJWTPayload } from '@/interfaces';
 import { verifyJWT, encryptJWE, decryptJWE, signJWE, verifyDetachedJWS } from './jwt';
 
 type EnvVariableKey = 'API_BASE_URL' | 'PRIVATE_KEY' | 'PUBLIC_KEY';
@@ -19,14 +20,12 @@ export function handleError(
   status: number | undefined = undefined
 ): NextResponse {
   if (error) {
-    console.error(error);
     const errorMessage = error.message ? error.message : error;
     if (!status) {
       status = error.status ? error.status : 500;
     }
     return NextResponse.json({ message, error: errorMessage }, { status });
   } else {
-    console.error(message);
     status = status ? status : 500;
     return NextResponse.json({ message }, { status });
   }
@@ -43,7 +42,6 @@ export function getEnvVariable(key: EnvVariableKey): string {
   const value = process.env[key];
 
   if (!value || value.length === 0) {
-    console.error(`The environment variable ${key} is not set.`);
     throw new Error(`The environment variable ${key} is not set.`);
   }
 
@@ -63,14 +61,14 @@ export async function handleJWT(request: NextRequest, apiPublicKey: string): Pro
     const jwtToken: string | null = request.headers.get(JWT_HEADER);
 
     if (!jwtToken) {
-      throw new Error('No se proporcionó el JWT. Por favor, asegúrate de que tu solicitud incluye un JWT válido.');
+      throw new Error('JWT was not provided. Please make sure your request includes a valid JWT.');
     }
 
     const jwtPayload: IJWTPayload = (await verifyJWT(jwtToken, apiPublicKey)) as unknown as IJWTPayload;
 
     return jwtPayload;
   } catch (error) {
-    throw new Error('Error en el manejo del JWT: ' + (error as Error).message);
+    throw new Error('Error in the handling of JWT: ' + (error as Error).message);
   }
 }
 
@@ -94,7 +92,7 @@ export async function handleJWE(request: NextRequest, appPublicKey: string, apiP
     const data = await decryptJWE(paylaod, apiPrivateKey);
     return data;
   } catch (error) {
-    throw new Error('Error en el manejo del JWE: ' + (error as Error).message);
+    throw new Error('Error in the handling of JWE: ' + (error as Error).message);
   }
 }
 
@@ -118,6 +116,6 @@ export async function handleResponse(responseObj: any, appPublicKey: string, api
 
     return response;
   } catch (error) {
-    throw new Error('Error en el manejo de la respuesta: ' + (error as Error).message);
+    throw new Error('Error in response handling: ' + (error as Error).message);
   }
 }

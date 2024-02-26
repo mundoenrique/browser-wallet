@@ -13,9 +13,7 @@ export default function CelularValidation() {
   const { inc, dec } = useRegisterStore();
 
   const { handleSubmit, control } = useForm({
-    defaultValues: {
-      otp: '',
-    },
+    defaultValues: { otp: '' },
     resolver: yupResolver(schema),
   });
 

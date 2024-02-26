@@ -10,6 +10,7 @@ import {
   compactVerify,
   base64url,
 } from 'jose';
+//Internal app
 import { AUDIENCE, ISSUER, JWE_ALG, JWS_ALG, JWT_ALG } from './constants';
 
 const encode = TextEncoder.prototype.encode.bind(new TextEncoder());
@@ -44,8 +45,7 @@ export async function signJWT(
 
     return jwt;
   } catch (error) {
-    console.error(error);
-    throw new Error('Hubo un error al firmar el JWT.');
+    throw new Error('There was an error signing the JWT.');
   }
 }
 
@@ -70,8 +70,7 @@ export async function verifyJWT(jwt: string | Uint8Array, publicKey: string): Pr
 
     return payload;
   } catch (error) {
-    console.error(error);
-    throw new Error('Hubo un error al verificar el JWT.');
+    throw new Error('There was an error verifying the JWT.');
   }
 }
 
@@ -85,7 +84,6 @@ export async function verifyJWT(jwt: string | Uint8Array, publicKey: string): Pr
  */
 export async function encryptJWE(payload: object, publicKey: string): Promise<string> {
   try {
-    console.log('encript JWE, publicKey:', publicKey);
     if (!hasPEMHeadersAndFooters(publicKey)) {
       publicKey = addPEMHeadersAndFooters(publicKey, 'public');
     }
@@ -95,8 +93,7 @@ export async function encryptJWE(payload: object, publicKey: string): Promise<st
 
     return jwe;
   } catch (error) {
-    console.error(error);
-    throw new Error('Hubo un error al encriptar el payload.');
+    throw new Error('There was an error encrypting the payload.');
   }
 }
 
@@ -110,7 +107,6 @@ export async function encryptJWE(payload: object, publicKey: string): Promise<st
  */
 export async function decryptJWE(jwe: string, privateKey: string): Promise<object> {
   try {
-    console.log('decript JWE, privateKey:', privateKey);
     if (!hasPEMHeadersAndFooters(privateKey)) {
       privateKey = addPEMHeadersAndFooters(privateKey, 'private');
     }
@@ -119,8 +115,7 @@ export async function decryptJWE(jwe: string, privateKey: string): Promise<objec
 
     return JSON.parse(decode(plaintext));
   } catch (error) {
-    console.error(error);
-    throw new Error('Hubo un error al desencriptar el JWE.');
+    throw new Error('There was an error decrypting JWE.');
   }
 }
 
@@ -134,7 +129,6 @@ export async function decryptJWE(jwe: string, privateKey: string): Promise<objec
  */
 export async function signJWE(privateKey: string, jwe: string): Promise<string> {
   try {
-    console.log('sign JWE, privateKey:', privateKey);
     if (!hasPEMHeadersAndFooters(privateKey)) {
       privateKey = addPEMHeadersAndFooters(privateKey, 'private');
     }
@@ -145,8 +139,7 @@ export async function signJWE(privateKey: string, jwe: string): Promise<string> 
 
     return modifiedJws;
   } catch (error) {
-    console.error(error);
-    throw new Error('Hubo un error al firmar el JWE.');
+    throw new Error('There was an error when signing the JWE.');
   }
 }
 
@@ -160,7 +153,6 @@ export async function signJWE(privateKey: string, jwe: string): Promise<string> 
  */
 export async function verifyJWS(jws: string | Uint8Array, publicKey: string): Promise<boolean> {
   try {
-    console.log('verifica JWS, publicKey:', publicKey);
     if (!hasPEMHeadersAndFooters(publicKey)) {
       publicKey = addPEMHeadersAndFooters(publicKey, 'public');
     }
@@ -169,8 +161,7 @@ export async function verifyJWS(jws: string | Uint8Array, publicKey: string): Pr
 
     return true;
   } catch (error) {
-    console.error(error);
-    throw new Error('Hubo un error al verificar el JWS.');
+    throw new Error('There was an error verifying the JWS.');
   }
 }
 
@@ -186,7 +177,7 @@ export async function verifyJWS(jws: string | Uint8Array, publicKey: string): Pr
 export async function verifyDetachedJWS(jws: string | null, publicKey: string, payload: string): Promise<boolean> {
   try {
     if (!jws) {
-      throw new Error('No se proporcionó el JWS. Por favor, asegúrate de que tu solicitud incluye un JWS válido.');
+      throw new Error('JWS was not provided. Please make sure your application includes a valid JWS.');
     }
 
     const base64UrlPayload = base64url.encode(payload);
@@ -198,7 +189,7 @@ export async function verifyDetachedJWS(jws: string | null, publicKey: string, p
 
     return true;
   } catch (error) {
-    throw new Error('Hubo un error al verificar el JWS:' + (error as Error).message);
+    throw new Error('There was an error verifying the JWS:' + (error as Error).message);
   }
 }
 

@@ -12,8 +12,8 @@ import { ContainerLayout, InputPass, ModalOtp, ModalResponsive } from '@/compone
 export default function ChangePassword() {
   const { updateTitle } = useNavTitleStore();
   const { setCurrentItem } = useMenuStore();
-  const [openOtp, setOpenOtp] = useState(false);
-  const [openRc, setOpenRc] = useState(false);
+  const [openOtp, setOpenOtp] = useState<boolean>(false);
+  const [openRc, setOpenRc] = useState<boolean>(false);
   const schemaFormPassword = getSchema(['newPassword', 'newPasswordConfirmation', 'currentPassword']);
 
   const { control, handleSubmit, reset } = useForm({

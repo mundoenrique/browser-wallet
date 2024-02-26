@@ -1,7 +1,6 @@
 'use client';
 
 import { Box, Button, Typography } from '@mui/material';
-
 //Internal app
 import { InputText } from '@/components';
 import { useRegisterStore } from '@/store';

@@ -13,9 +13,7 @@ export default function AuthOtp(props: AuthOtpFormProps) {
   const schema = getSchema(['otp']);
 
   const { control, handleSubmit } = useForm({
-    defaultValues: {
-      otp: '',
-    },
+    defaultValues: { otp: '' },
     resolver: yupResolver(schema),
   });
 
