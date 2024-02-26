@@ -1,39 +1,20 @@
-import './theme.d';
 import { createTheme } from '@mui/material/styles';
-
-const white = '#fff';
-
-// Primary color - Tenant
-const primary = '#5F3F98';
-
-//Secondary color - Tenant
-const secondary = '#E1DEF6';
-
-//Tertiary color - Tenant
-const tertiary = '#CAC3EF';
-
-// Text color variables
-const textColor = '#334155';
+//Internal app
+import './theme.d';
 
 const success = '#99F462';
-// Grayscale variables
-const greyLight = '#f3f3f3';
-const greyNormal = '#d3d3d3';
-const greyDark = '#c4c4c4';
-
-// Border variables
 const borderRadius = 10;
 
 export const fuchsiaBlue = {
   50: '#F7F5FD',
   100: '#F0EDFA',
-  200: '#E1DEF6',
-  300: '#CAC3EF',
+  200: '#E1DEF6', // Secondary color
+  300: '#CAC3EF', // Tertiary color
   400: '#B0A1E4',
   500: '#947BD7',
   600: '#815EC9',
   700: '#7652B8',
-  800: '#5F3F98',
+  800: '#5F3F98', // Primary color
   900: '#4E357D',
   950: '#312154',
 };
@@ -46,39 +27,30 @@ export const slate = {
   400: '#94A3B8',
   500: '#64748B',
   600: '#475569',
-  700: '#334155',
+  700: '#334155', // Text color
   800: '#1E293B',
   900: '#0F172A',
   950: '#020617',
-};
-export const grayscale = {
-  '06': '#353434',
 };
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: primary,
+      main: fuchsiaBlue[800],
     },
     secondary: {
-      main: secondary,
-      light: tertiary,
+      main: fuchsiaBlue[200],
+      light: fuchsiaBlue[300],
       dark: fuchsiaBlue[500],
     },
     success: {
       main: success,
     },
-    grey: {
-      50: greyLight,
-      100: greyNormal,
-      200: greyDark,
-      300: textColor,
-    },
   },
   typography: {
     fontFamily: 'Mulish',
     allVariants: {
-      color: textColor,
+      color: slate[700],
     },
     subtitle1: {
       fontFamily: 'Mulish',
@@ -111,7 +83,7 @@ const theme = createTheme({
       fontWeight: 400,
       lineHeight: '20px',
       letterSpacing: '0.1px',
-      color: textColor,
+      color: slate[700],
     },
     h6: {
       fontFamily: 'Montserrat',
@@ -120,7 +92,7 @@ const theme = createTheme({
       fontWeight: 700,
       lineHeight: '28px',
       letterSpacing: '0.15px',
-      color: textColor,
+      color: slate[700],
     },
   },
   shape: {
@@ -130,11 +102,10 @@ const theme = createTheme({
     MuiTypography: {
       styleOverrides: {
         root: {
-          color: textColor,
+          color: slate[700],
         },
       },
     },
-    // Global component styles
     MuiCssBaseline: {
       styleOverrides: `
 			@font-face {
@@ -195,11 +166,10 @@ const theme = createTheme({
       }
 			`,
     },
-    // Main container styles
     MuiContainer: {
       styleOverrides: {
         root: {
-          backgroundColor: secondary,
+          backgroundColor: fuchsiaBlue[200],
           maxWidth: 'initial !important',
           paddingLeft: '0 !important',
           paddingRight: '0 !important',
@@ -210,30 +180,29 @@ const theme = createTheme({
         },
       },
     },
-    // Button
     MuiButton: {
       variants: [
         {
           props: { variant: 'primary' },
           style: {
-            color: white,
-            backgroundColor: primary,
+            color: 'white',
+            backgroundColor: fuchsiaBlue[800],
             fontWeight: 700,
             '&:hover': {
-              backgroundColor: primary,
-              color: white,
+              backgroundColor: fuchsiaBlue[800],
+              color: 'white',
             },
             '&.Mui-disabled': {
-              backgroundColor: primary,
+              backgroundColor: fuchsiaBlue[800],
               opacity: 0.3,
-              color: white,
+              color: 'white',
             },
           },
         },
         {
           props: { variant: 'underline' },
           style: {
-            color: white,
+            color: 'white',
             fontWeight: 700,
             textDecoration: 'underline',
             width: '100%',
@@ -243,11 +212,11 @@ const theme = createTheme({
         {
           props: { variant: 'secondary' },
           style: {
-            color: primary,
-            backgroundColor: white,
+            color: fuchsiaBlue[800],
+            backgroundColor: 'white',
             fontWeight: 700,
             width: '100%',
-            '&:hover': { backgroundColor: white, color: primary },
+            '&:hover': { backgroundColor: 'white', color: fuchsiaBlue[800] },
           },
         },
       ],
@@ -258,14 +227,14 @@ const theme = createTheme({
           minWidth: '156px',
           textTransform: 'none',
           ':hover': {
-            background: primary,
+            background: fuchsiaBlue[800],
           },
         },
         contained: {
-          background: primary,
+          background: fuchsiaBlue[800],
         },
         textPrimary: {
-          color: white,
+          color: 'white',
           ':hover': {
             background: 'transparent',
           },
@@ -273,7 +242,7 @@ const theme = createTheme({
         outlinedPrimary: {
           ':hover': {
             backgroundColor: 'initial',
-            color: primary,
+            color: fuchsiaBlue[800],
           },
         },
       },
@@ -323,7 +292,7 @@ const theme = createTheme({
             alignItems: 'center',
             background: 'linear-gradient(109deg, #A8F9A1 21.13%, #BC9DFA 86.79%)',
             borderRadius: borderRadius,
-            border: `0.753px solid ${white}`,
+            border: `0.753px solid white`,
             display: 'flex',
             paddingLeft: '12px',
             minHeight: '62px',
@@ -366,11 +335,11 @@ const theme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: {
-          color: textColor,
-          backgroundColor: white,
+          color: slate[700],
+          backgroundColor: 'white',
           height: '52px',
           '& > input::placeholder': {
-            color: textColor,
+            color: slate[700],
             opacity: 1,
           },
           '& > fieldset > legend': {
@@ -378,13 +347,13 @@ const theme = createTheme({
           },
           '& > fieldset': {
             top: 0,
-            borderColor: tertiary,
+            borderColor: fuchsiaBlue[300],
           },
           '&.Mui-focused, &:hover': {
             borderColor: success,
           },
           '&.Mui-disabled': {
-            backgroundColor: secondary,
+            backgroundColor: fuchsiaBlue[200],
           },
         },
         input: {
@@ -418,7 +387,7 @@ const theme = createTheme({
         },
         option: {
           backgroundColor: 'transparent !important',
-          borderTopColor: tertiary,
+          borderTopColor: fuchsiaBlue[300],
           borderBottomColor: 'transparent',
           borderLeftColor: 'transparent',
           borderRightColor: 'transparent',
@@ -514,8 +483,8 @@ const theme = createTheme({
           props: { variant: 'signup' },
           style: {
             height: '24px',
-            backgroundColor: secondary,
-            color: primary,
+            backgroundColor: fuchsiaBlue[200],
+            color: fuchsiaBlue[800],
             fontFamily: 'Mulish',
             fontSize: '9.819px',
             fontStyle: 'normal',
@@ -523,7 +492,7 @@ const theme = createTheme({
             lineHeight: '14.027px',
             letterSpacing: '0.281px',
             ' :hover': {
-              backgroundColor: secondary,
+              backgroundColor: fuchsiaBlue[200],
             },
           },
         },
