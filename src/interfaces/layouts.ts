@@ -29,3 +29,16 @@ export interface ContainerLayoutProps {
   children: React.ReactNode;
   fullWidth?: boolean;
 }
+
+/**
+ * Container for error messages
+ *
+ * @typeParam title: string
+ * @typeParam  description: string
+ * @typeParam onClick: () => void
+ */
+export interface StatusReportProps {
+  title: string;
+  description: string;
+  onClick: () => void;
+}

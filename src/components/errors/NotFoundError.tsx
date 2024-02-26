@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { Box, Typography, Stack } from '@mui/material';
 //Internal app
 import Linking from '../navigation/Linking';
@@ -10,9 +9,6 @@ import PurpleLayout from '../layout/PurpleLayout';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function NotFoundError({ code }: any) {
-  const router = useRouter();
-  console.log('🚀 ~ NotFoundError ~ router:', router);
-
   return (
     <PurpleLayout hidePelca>
       <Box sx={{ width: { xs: 'auto', sm: 542 }, display: 'grid', justifyItems: 'center', textAlign: 'center', mx: 3 }}>

@@ -45,4 +45,5 @@ export { default as HydrationProvider } from './providers/HydrationProvider';
 //user welcome
 export { default as UserWelcome } from './UserWelcome';
 //error
+export { default as StatusReport } from './errors/StatusReport';
 export { default as NotFoundError } from './errors/NotFoundError';
