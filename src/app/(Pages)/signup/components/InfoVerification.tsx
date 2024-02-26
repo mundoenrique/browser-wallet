@@ -23,7 +23,7 @@ export default function InfoVerification() {
   const [editEmail, setEditEmail] = useState<boolean>(false);
   const [editCelular, setEditCelular] = useState<boolean>(false);
   const [openTerms, setOpenTerms] = useState<boolean>(false);
-  const schema = getSchema(['email', 'term', 'country']);
+  const schema = getSchema(['email', 'term', 'country', 'policy']);
 
   const schemaEmail = getSchema(['email']);
   const schemaCelular = getSchema(['celular']);
@@ -36,7 +36,7 @@ export default function InfoVerification() {
       celular: '132156456456',
       email: 'carolina123@gmail.com',
       term: '',
-      privacy: '',
+      policy: '',
     },
     resolver: yupResolver(schema),
   });
@@ -169,7 +169,7 @@ export default function InfoVerification() {
             onClick={handleModalTerm}
           />
           <InputCheck
-            name="privacy"
+            name="policy"
             label="Acepto la política de privacidad de datos y cláusula de protección de datos."
             control={control}
           />
