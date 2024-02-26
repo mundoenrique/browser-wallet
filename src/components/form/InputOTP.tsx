@@ -9,6 +9,20 @@ import { Box, Button, FormHelperText, Typography } from '@mui/material';
 import { InputOTPProps } from '@/interfaces';
 import ModalResponsive from '../modal/ModalResponsive';
 
+/**
+ * Field used to enter an otp code.
+ *
+ * @param name - Name of the field - React Hook Form.
+ * @param control - Object provided by the useForm method - React Hook Form.
+ * @param length - Number of otp fields.
+ * @param title - Title of the form.
+ * @param text - Descriptive paragraph of the form.
+ * @param labelError - Text for error message.
+ * @returns The value assigned to the Otp.
+ * @throws If there is an error in any field that does not comply with the regular expressions.
+ * @label React Hook Form - {@link https://react-hook-form.com/docs/useform/control}
+ * @label MUI Otp input - {@link https://viclafouch.github.io/mui-otp-input/}
+ */
 export default function InputOTP(props: InputOTPProps): JSX.Element {
   const { control, name, length, title, text, labelError } = props;
   const [time, setTime] = useState<number>(60);
@@ -62,15 +76,15 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
               <MuiOtpInput
                 sx={{
                   p: 0,
-                  gap: '12px',
-                  '&>.MuiFormControl-root>.MuiInputBase-root': { width: '46px', fontSize: '25px', fontWeight: 700 },
+                  gap: 3 / 2,
+                  '&>.MuiFormControl-root>.MuiInputBase-root': { width: '46px', fontSize: 25, fontWeight: 700 },
                 }}
                 {...field}
                 length={length}
               />
               <FormHelperText
                 sx={{
-                  height: '20px',
+                  height: 20,
                   ml: 0,
                   display: 'flex',
                   alignItems: 'center',
@@ -99,11 +113,7 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
           </Typography>
         )}
 
-        <Button
-          onClick={handleResend}
-          sx={{ color: 'primary.main', height: '20px' }}
-          disabled={time === 0 ? false : true}
-        >
+        <Button onClick={handleResend} sx={{ color: 'primary.main', height: 20 }} disabled={time === 0 ? false : true}>
           Renviar código
         </Button>
       </Box>

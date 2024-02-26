@@ -2,10 +2,10 @@
 
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
+import { ChildrenProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { ChildrenOptionalProps, ChildrenProps } from '@/interfaces';
 
-const ContainerLayout = ({ children }: ChildrenOptionalProps) => {
+const ContainerLayout = ({ children }: ChildrenProps) => {
   return (
     <Box
       sx={{
@@ -39,7 +39,12 @@ const ContainerLayout = ({ children }: ChildrenOptionalProps) => {
   );
 };
 
-export default function LoginLayout({ children }: ChildrenProps) {
+/**
+ * Container used only at login
+ *
+ * @param children - Children elements.
+ */
+export default function LoginLayout({ children }: ChildrenProps): JSX.Element {
   const theme = useTheme();
   const matche = useMediaQuery(theme.breakpoints.down('sm'));
 

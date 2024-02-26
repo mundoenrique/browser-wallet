@@ -10,17 +10,40 @@ export { default as InputCheck } from './form/InputCheck';
 export { default as InputRadio } from './form/InputRadio';
 export { default as InputSwitch } from './form/InputSwitch';
 export { default as InputSelect } from './form/InputSelect';
+export { default as InputTextPay } from './form/InputTextPay';
 export { default as InputDatePicker } from './form/InputDatePicker';
 export { default as InputCheckCondition } from './form/InputCheckCondition';
 //navigation
-export { default as Navbar } from './navigation/Navbar';
+export { default as Linking } from './navigation/Linking';
+export { default as Navbar } from './navigation/navbar/Navbar';
 export { default as Sidebar } from './navigation/sidebar/Sidebar';
-export { default as NavExternal } from './navigation/NavExternal';
+export { default as NavbarLower } from './navigation/navbar/NavbarLower';
+export { default as NavExternal } from './navigation/navbar/NavExternal';
 //modal
+export { default as ModalOtp } from './modal/ModalOtp';
 export { default as ModalResponsive } from './modal/ModalResponsive';
 //layout
 export { default as MainLayout } from './layout/MainLayout';
-export { default as PurpleLayout } from './layout/PurpleLayout';
 export { default as LoginLayout } from './layout/LoginLayout';
+export { default as PurpleLayout } from './layout/PurpleLayout';
+export { default as ContainerLayout } from './layout/ContainerLayout';
 //cards
-export { default as CardDetails } from './cards/CardDetails';
+export { default as CardDebt } from './cards/CardDebt';
+export { default as HandleCard } from './cards/HandleCard';
+export { default as CardTicket } from './cards/CardTicket';
+export { default as CardReport } from './cards/CardReport';
+export { default as CardInformation } from './cards/cardInformation/CardInformation';
+//tables
+export { default as LastMovements } from './tables/LastMovements';
+//accordions
+export { default as Accordions } from './Accordions';
+//providers
+export * from './providers/KeyProvider';
+export * from './providers/JWTProvider';
+export { default as MuiProvider } from './providers/MuiProvider';
+export { default as HydrationProvider } from './providers/HydrationProvider';
+//user welcome
+export { default as UserWelcome } from './UserWelcome';
+//error
+export { default as StatusReport } from './errors/StatusReport';
+export { default as NotFoundError } from './errors/NotFoundError';

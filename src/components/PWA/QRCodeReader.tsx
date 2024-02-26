@@ -5,7 +5,7 @@ import jsQR, { QRCode } from 'jsqr';
 import { Point } from 'jsqr/dist/locator';
 
 interface IQRCodeReader {
-  readCode: (data: string) => void;
+  readCode: (_data: string) => void;
 }
 
 const decoder = (imageData: ImageData): Promise<QRCode> => {
@@ -26,6 +26,10 @@ function drawLine(begin: Point, end: Point, color: string, el: CanvasRenderingCo
   el?.stroke();
 }
 
+/**
+ * Generates the QR code used to create a socket.
+ * @param readCode - Receive a promise with the data.
+ */
 export default function QRCodeReader({ readCode }: IQRCodeReader) {
   let videoElement: HTMLVideoElement;
   let canvasElement: HTMLCanvasElement;

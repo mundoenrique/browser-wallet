@@ -1,9 +1,14 @@
 const winston = require('winston');
 const DailyRotateFile = require('winston-daily-rotate-file');
 const { printf } = winston.format;
+//Internal app
+import { LogData } from '@/interfaces';
 
 export {};
 
+/**
+ * Set the geographic time
+ */
 const timezoned = () => {
   let d = new Date(),
     year = d.getFullYear(),
@@ -25,30 +30,20 @@ const timezoned = () => {
   return `${[year, month, day].join('-')} ${time}`;
 };
 
-type LogData = {
-  level: string;
-  message: string;
-  user?: string;
-  ip?: string;
-  timestamp: string;
-}
-
-// Config structure log output
-const myFormat = printf(({
- level,
- message,
- user,
- ip,
- timestamp,
-}: LogData) => {
- if (user) {
-  return `${level} - ${timestamp} --> [${user}] IP: ${ip}, ${message}`;
- } else {
-  return `${level} - ${timestamp} --> ${message}`;
- }
+/**
+ * Config structure log output
+ */
+const myFormat = printf(({ level, message, user, ip, timestamp }: LogData) => {
+  if (user) {
+    return `${level} - ${timestamp} --> [${user}] IP: ${ip}, ${message}`;
+  } else {
+    return `${level} - ${timestamp} --> ${message}`;
+  }
 });
 
-// Config bot log in single files date
+/**
+ * Config bot log in single files date
+ */
 const opts = {
   filename: `${process.env.LOG_PATH}log-%DATE%.log`,
   datePattern: 'YYYY-MM-DD',
@@ -62,7 +57,9 @@ const opts = {
   ),
 };
 
-// Create new instance of winston logger
+/**
+ * Create new instance of winston logger
+ */
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL,
   defaultMeta: {
@@ -71,7 +68,9 @@ const logger = winston.createLogger({
   transports: [new DailyRotateFile(opts)],
 });
 
-//Create default console log when node_env is not production
+/**
+ * Create default console log when node_env is not production
+ */
 logger.enviromentLogs = function () {
   if (process.env.NODE_ENV !== 'production') {
     logger.add(

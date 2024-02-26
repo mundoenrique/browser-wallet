@@ -1,4 +1,5 @@
 'use client';
+
 import { Typography, Button } from '@mui/material';
 
 export default function GlobalError({ error, reset }: { error: Error; reset: () => void }) {
