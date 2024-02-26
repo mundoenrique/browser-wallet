@@ -38,6 +38,8 @@ export { default as LastMovements } from './tables/LastMovements';
 //accordions
 export { default as Accordions } from './Accordions';
 //providers
+export * from './providers/KeyProvider';
+export * from './providers/JWTProvider';
 export { default as MuiProvider } from './providers/MuiProvider';
 export { default as HydrationProvider } from './providers/HydrationProvider';
 //user welcome
