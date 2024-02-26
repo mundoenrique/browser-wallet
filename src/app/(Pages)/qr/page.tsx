@@ -6,14 +6,14 @@ import { useQrStore } from '@/store';
 import { QRCodeReader } from '@/components';
 
 export default function Qr() {
-  const router = useRouter();
+  const { push } = useRouter();
   const { setUser } = useQrStore();
 
   const readCodeFunction = (data: any): Promise<any> => {
     return new Promise((resolve) => {
       console.log('readCodeFunction-pageQR:', data);
       setUser(data);
-      router.push('/socket/verify');
+      push('/socket/verify');
       resolve(data);
     });
   };

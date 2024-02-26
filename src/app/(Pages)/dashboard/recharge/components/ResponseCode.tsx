@@ -23,7 +23,7 @@ import PagoEfectivo from '%/images/suppliers/pagoEfectivo.png';
 import { CardReport, ContainerLayout, Linking, ModalResponsive, PurpleLayout } from '@/components';
 
 export default function ResponseCode() {
-  const router = useRouter();
+  const { push } = useRouter();
   const [showModal, setShowModal] = useState<boolean>(false);
   const componentRef = useRef<any>(null);
   const ImagePagoEfectivo = {
@@ -36,7 +36,7 @@ export default function ResponseCode() {
   };
 
   const HandleNavbar = () => {
-    router.push('/dashboard/recharge');
+    push('/dashboard/recharge');
   };
 
   const handleConvert = async () => {

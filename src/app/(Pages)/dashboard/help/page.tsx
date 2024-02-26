@@ -11,11 +11,11 @@ import { CallIcon, WhatsappIcon } from '%/Icons';
 import { ContainerLayout, HandleCard } from '@/components';
 
 export default function Help() {
-  const router = useRouter();
+  const { push } = useRouter();
   const { updateTitle } = useNavTitleStore();
   const { setCurrentItem } = useMenuStore();
   const handleQuestions = () => {
-    router.push('/dashboard/help/frequent-questions');
+    push('/dashboard/help/frequent-questions');
   };
 
   useEffect(() => {

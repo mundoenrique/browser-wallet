@@ -41,7 +41,7 @@ const movementData = [
 ];
 
 export default function Dashboard() {
-  const router = useRouter();
+  const { push } = useRouter();
   const { setCurrentItem } = useMenuStore();
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function Dashboard() {
         >
           <CardInformation />
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3, mb: 2 }}>
-            <CardDebt onClick={() => router.push('/dashboard/debt')} />
+            <CardDebt onClick={() => push('/dashboard/debt')} />
             <CardDebt OweMe />
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>

@@ -15,7 +15,7 @@ import { InputPass, ModalResponsive } from '@/components';
 export default function Signin() {
   const api = useApi();
   const theme = useTheme();
-  const router = useRouter();
+  const { push } = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const schema = getSchema(['password']);
@@ -32,7 +32,7 @@ export default function Signin() {
       const response = await api.post('/auth/login', payload);
 
       if (response.status === 200) {
-        router.push('/dashboard');
+        push('/dashboard');
       }
     } catch (error) {
       if (error instanceof Error && 'response' in error) {
