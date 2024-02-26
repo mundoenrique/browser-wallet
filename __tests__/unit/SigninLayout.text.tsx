@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
-import SigninLayout, { metadata } from '@/app/(Onboarding)/signin/layout';
+//Internal app
+import SigninLayout, { metadata } from '@/app/(Pages)/signin/layout';
 
 describe('SigninLayout', () => {
   it('should render LoginLayout component when children props is passed', () => {

@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import { isIOS } from 'react-device-detect';
 import { Button, Slide, Stack, Paper, Typography } from '@mui/material';
 
+/**
+ * Bottom bar used to install the pwa.
+ */
 export default function PWAInstallBar() {
   const [deferredPrompt, setDeferredPrompt] = useState<string | Event | null | any>(null);
   const [iOSDevice, setIOSDevice] = useState<boolean>(false);

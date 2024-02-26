@@ -3,9 +3,10 @@
 import { forwardRef } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import { Close as CloseIcon } from '@mui/icons-material';
-import { Box, Fab, Modal, useMediaQuery } from '@mui/material/';
+import { Box, Link as MuiLink, Modal, useMediaQuery, Typography } from '@mui/material/';
 //Internal app
 import { MuiModalProps } from '@/interfaces';
+import { fuchsiaBlue } from '@/theme/theme-default';
 
 const RootModal = styled(Modal, {
   name: 'ModalResponsive',
@@ -27,6 +28,7 @@ const BodyModal = styled(Box, {
         borderRadius: '16px 16px 0 0',
         boxShadow: theme.shadows[2],
         padding: 12,
+        textAlign: 'center',
       }
     : {
         //desktop
@@ -34,41 +36,32 @@ const BodyModal = styled(Box, {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
+        padding: '0px 20px 32px 20px',
+        borderRadius: '16px',
         width: 400,
         background: theme.palette.background.paper,
-        borderRadius: '16px',
         boxShadow: theme.shadows[2],
         textAlign: 'center',
-        padding: '30px 20px 20px 20px',
         outline: 'none',
       }
 );
 
-const CloseButton = styled(Fab, {
+const CloseButtonContainer = styled(Box, {
   name: 'ModalResponsive',
   slot: 'closeButton',
 })(({ theme }) => ({
-  width: 32,
-  height: 32,
-  minHeight: 32,
-  border: '1px solid',
-  borderColor: theme.palette.secondary.light,
-  boxShadow: theme.shadows[2],
-  background: theme.palette.background.paper,
-  position: 'absolute',
-  right: -16,
-  top: -16,
-  display: useMediaQuery(theme.breakpoints.down('sm')) ? 'none' : 'inline-flex',
-  '& .MuiSvgIcon-root': {
-    height: 20,
-    Width: 20,
-  },
-  ':hover': {
-    boxShadow: theme.shadows[3],
-    background: theme.palette.background.paper,
-  },
+  display: useMediaQuery(theme.breakpoints.down('sm')) ? 'none' : 'flex',
+  justifyContent: 'right',
+  height: 52,
 }));
 
+/**
+ * Windows used to display informational messages or operational responses.
+ *
+ * @param handleClose - Function of the modal to close it with the X.
+ * @param open - State of the modal to show it or not.
+ * @param children - Children elements.
+ */
 const ModalResponsive = forwardRef(function MyModalResponsive(props: MuiModalProps, ref: any) {
   const { open, handleClose, children, ...others } = props;
   const theme = useTheme();
@@ -84,10 +77,22 @@ const ModalResponsive = forwardRef(function MyModalResponsive(props: MuiModalPro
     >
       <Box>
         <BodyModal {...others}>
+          <CloseButtonContainer onClick={handleClose}>
+            <MuiLink
+              sx={{
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                color: fuchsiaBlue[800],
+                textDecoration: 'none',
+              }}
+            >
+              <Typography>Cerrar</Typography>
+              <CloseIcon />
+            </MuiLink>
+          </CloseButtonContainer>
           {children}
-          <CloseButton onClick={handleClose}>
-            <CloseIcon color="primary" />
-          </CloseButton>
         </BodyModal>
       </Box>
     </RootModal>

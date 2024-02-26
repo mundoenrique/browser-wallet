@@ -13,7 +13,7 @@ function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
 
   return (
     <>
-      <InputLabel sx={{ mb: '12px' }}>{textLabel}</InputLabel>
+      <InputLabel sx={{ mb: 3 / 2 }}>{textLabel}</InputLabel>
       <FormControl error={!!error} variant="outlined" sx={{ mb: '5px' }} fullWidth>
         <Autocomplete
           value={value}
@@ -34,7 +34,7 @@ function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
           sx={{ width: '100%' }}
           renderInput={(params) => <TextField {...params} placeholder="Selecciona una opción" />}
         />
-        <FormHelperText sx={{ height: '20px', ml: 0, display: 'flex', alignItems: 'center' }}>
+        <FormHelperText sx={{ height: 20, ml: 0, display: 'flex', alignItems: 'center' }}>
           {error ? (
             <>
               <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
@@ -48,7 +48,31 @@ function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
   );
 }
 
-export default function InputSelect(props: InputOptionsProps) {
+/**
+ * The autocomplete is a normal text input enhanced by a panel of suggested options.
+ *
+ * @param name - Name of the field - React Hook Form.
+ * @param control - Object provided by the useForm method - React Hook Form.
+ * @param label - The label of the radio input.
+ * @param labelError - Text for error message.
+ * @param onChange - Detect the change in the radio input.
+ * @param colorText - Input label color.
+ * @param disabled - Disable radio input.
+ * @param readOnly - Make the radio input read-only.
+ * @param options - Array with number of fields autocomplete.
+ * @example Array of objects
+ * ```
+ * [
+ *  { text: 'Peruana', value: 'pe' },
+ *  { text: 'Colombiana', value: 'co' },
+ * ]
+ * ```
+ * @returns The value assigned to the autocomplete input.
+ * @throws If there is an error in any field that does not comply with the regular expressions.
+ * @label React Hook Form - {@link https://react-hook-form.com/docs/useform/control}
+ * @label Material UI - {@link https://mui.com/material-ui/react-autocomplete/}
+ */
+export default function InputSelect(props: InputOptionsProps): JSX.Element {
   const { name, control, onChange, options, ...restProps } = props;
 
   return (

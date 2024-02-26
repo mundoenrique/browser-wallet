@@ -1,27 +1,30 @@
+/**
+ * Login credentials
+ *
+ * @typeParam email: string
+ * @typeParam password: string
+ */
 export interface ICredentials {
   email: string;
   password: string;
 }
 
-export interface IData<T> {
-  success: boolean;
-  message: string;
-  data?: T;
-}
-
+/**
+ * Encrypted body
+ *
+ * @typeParam data: string
+ */
 export interface IEncryptedBody {
   data: string;
 }
 
-export interface IJWSPayload {
-  data?: string;
-}
-
+/**
+ * JWT payload
+ *
+ * @typeParam publicKey: string
+ * @typeParam id (Optional): number
+ */
 export interface IJWTPayload {
   publicKey: string;
   id?: number;
-}
-
-export interface IPayload {
-  data: string;
 }

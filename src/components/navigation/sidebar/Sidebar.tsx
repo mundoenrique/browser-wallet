@@ -3,15 +3,22 @@
 import { Box, Drawer } from '@mui/material';
 //Internal app
 import { SidebarProps } from '@/interfaces';
-import ItemSidebarPwa from './ItemSidebarPwa';
+import ListSidebar from './components/ListSidebar';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import ItemSidebarDesktop from './ItemSidebarDesktop';
 
-export default function Sidebar(props: SidebarProps) {
+/**
+ * Sidebar configured for the different resolutions.
+ *
+ * @param drawerWidth - Sidebar Width {@defaultValue `315px`}.
+ * @param open - Function to show sidebar or not - responsive.
+ * @param onTransitionEnd - Function to close the sidebar when you have an action - responsive.
+ * @param onClose - Function to close the sidebar - responsive.
+ */
+export default function Sidebar(props: SidebarProps): JSX.Element {
   const { drawerWidth, open, onTransitionEnd, onClose } = props;
 
   return (
-    <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
+    <Box component="nav" sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }} aria-label="mailbox folders">
       <Drawer
         variant="temporary"
         open={open}
@@ -19,7 +26,7 @@ export default function Sidebar(props: SidebarProps) {
         onClose={onClose}
         ModalProps={{ keepMounted: true }}
         sx={{
-          display: { xs: 'block', sm: 'none' },
+          display: { xs: 'block', md: 'none' },
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
             width: 280,
@@ -46,24 +53,25 @@ export default function Sidebar(props: SidebarProps) {
             },
           }}
         >
-          <ItemSidebarPwa />
+          <ListSidebar />
         </Box>
       </Drawer>
+
       <Drawer
         variant="permanent"
+        open
         sx={{
-          display: { xs: 'none', sm: 'block' },
+          display: { xs: 'none', md: 'block' },
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
             width: drawerWidth,
             bgcolor: 'secondary.main',
             borderRight: `1px solid ${fuchsiaBlue[400]}`,
-            justifyContent: ' space-between',
+            justifyContent: 'space-between',
           },
         }}
-        open
       >
-        <ItemSidebarDesktop />
+        <ListSidebar />
       </Drawer>
     </Box>
   );

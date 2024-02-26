@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-
+//Internal app
 import { decryptJWE, encryptJWE, getEnvVariable, handleError, signJWT } from '@/utils';
 
 export async function POST(request: NextRequest) {
@@ -9,19 +9,25 @@ export async function POST(request: NextRequest) {
 
     const privateKey = getEnvVariable('PRIVATE_KEY');
 
-    // Desencriptar el JWE payload y obtener clave pública
+    /**
+     * Decrypt the JWE payload and obtain public key.
+     */
     const decryptedPayload = await decryptJWE(data, privateKey);
     const { publicKey } = decryptedPayload as { publicKey: string };
 
-    // Crear un JWT
+    /**
+     *Create a JWT
+     */
     const token = await signJWT(privateKey, { publicKey });
 
-    // Encriptar la respuesta con la clave pública recibida
-    const responsePayload = { success: true, message: 'JWT creado con éxito', data: token };
+    /**
+     * Encrypt the response with the received public key
+     */
+    const responsePayload = { success: true, message: 'JWT created successfully', data: token };
     const encryptedResponse = await encryptJWE(responsePayload, publicKey);
 
     return Response.json({ data: encryptedResponse });
   } catch (error) {
-    return handleError('Ha ocurrido un error al procesar la solicitud.', error);
+    return handleError('An error occurred while processing the request:', error);
   }
 }

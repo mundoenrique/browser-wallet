@@ -1,4 +1,6 @@
 import { NextRequest } from 'next/server';
+//Internal app
+import { ICredentials, IJWTPayload } from '@/interfaces/api';
 import {
   signJWT,
   getEnvVariable,
@@ -9,7 +11,6 @@ import {
   handleJWE,
   handleJWT,
 } from '@/utils';
-import { ICredentials, IJWTPayload } from '@/interfaces/api';
 
 export async function POST(request: NextRequest) {
   const apiPublicKey = getEnvVariable('PUBLIC_KEY');
@@ -28,33 +29,44 @@ export async function POST(request: NextRequest) {
     return handleError((error as Error).message);
   }
 
-  // Procesar el payload y obtener la respuesta del backend
+  /**
+   * Process the payload and get the response from the backend
+   */
   const { email, password } = credentials;
-  // Autentica al usuario con la API externa.
+
+  /**
+   * Authenticates the user with the external API.
+   */
   const result = await authenticateUser(email, password);
 
   if (!result.success) {
-    // Si la autenticación no es exitosa, devuelve un error.
+    /**
+     * If authentication is not successful, return an error.
+     */
     return handleError('Invalid email or password', null, 401);
   }
 
   const userId: string = result.data.id;
 
-  // Crea el objeto de respuesta.
+  /**
+   * Create the response object.
+   */
   const responseObj = { success: true, message: 'Inicio de sesión exitoso', data: userId };
 
-  // Maneja la creación de la respuesta
+  /**
+   * Handle the creation of the response
+   */
   let response: Response;
   try {
     response = await handleResponse(responseObj, appPublicKey, apiPrivateKey);
   } catch (error) {
     return handleError((error as Error).message, error);
   }
-
-  // Firmar el JWT con la privateKey de la API, incluyendole el id del usario
+  /**
+   * Sign the JWT with the API privateKey, including the user ID
+   */
   const jwt: string = await signJWT(apiPrivateKey, { publicKey: appPublicKey, id: userId });
   response.headers.set(JWT_HEADER, jwt);
 
-  // Enviar la respuesta
   return response;
 }
