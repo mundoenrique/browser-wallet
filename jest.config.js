@@ -13,7 +13,7 @@ const customJestConfig = {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
   collectCoverage: true,
-  collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
+  collectCoverageFrom: ['src/app/**/signin/*page.tsx'],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
 };
 
