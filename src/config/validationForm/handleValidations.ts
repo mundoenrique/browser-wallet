@@ -25,5 +25,5 @@ export function passwordValidation(msg: string) {
     .required(msg)
     .min(6, 'La contraseña debe tener 6 caracteres')
     .max(6, 'La contraseña debe tener 6 caracteres')
-    .test('Contraseña invalida', 'Ingrese una contraseña valida', (value) => regularExpressions.password?.test(value));
+    .test('Contraseña invalida', 'Ingrese una contraseña valida', (value) => !regularExpressions.password?.test(value));
 }

@@ -21,11 +21,11 @@ export const validationRules: ValidationRule = {
   initialDate: yup.string().required('Ingresa una fecha'),
   country: yup.string().required('Selecciona un país'),
   term: yup.string().required('Acepta los terminos'),
-  policy: yup.string().required('Acepta los terminos'),
+  policy: yup.string().required('Acepta la política'),
   otp: yup
     .string()
     .required('Ingrese un código')
-    .min(4, 'El código es de 4 digitos')
+    .min(4, 'El código es de 4 dígitos')
     .test('otpValid', 'El código es númerico', (value) => regularExpressions.numeric?.test(value)),
   currentPassword: passwordValidation('Ingrese una contraseña'),
   newPassword: passwordValidation('Ingresa una nueva contraseña').notOneOf(
@@ -45,7 +45,7 @@ export const validationRules: ValidationRule = {
     .string()
     .required('Ingresa un numero de celular')
     .test('celularValid', 'Ingresa un numero de celular', (value) => regularExpressions.onlyNumber?.test(value)),
-  isPep: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
+  isPep: yup.string().nonNullable().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
   pepForm: yup.object().shape({
     isFamilyAlive: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
     position: yup.string().required('Ingrese su posición en la empresa'),

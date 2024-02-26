@@ -38,7 +38,7 @@ export default function PEP() {
 
   const { control, watch, handleSubmit, getValues, reset } = useForm({
     defaultValues: pepFormState || {
-      isPep: null,
+      isPep: '',
       pepForm: {
         isFamilyAlive: '',
         position: '',
@@ -78,7 +78,7 @@ export default function PEP() {
       remove();
     }
 
-    if (watchIsPep !== null && watchIsPep.toLowerCase() !== 'true') {
+    if (watchIsPep !== '' && watchIsPep.toLowerCase() !== 'true') {
       reset({
         isPep: 'false',
         pepForm: {
@@ -96,7 +96,7 @@ export default function PEP() {
       remove();
       setHasParents(false);
     }
-  }, [watchIsPep, WatchIsFamilyAlive, hasParents, isPep, reset, watch, append, remove, getValues]);
+  }, [watchIsPep, WatchIsFamilyAlive, hasParents, reset, watch, append, remove, getValues]);
 
   useEffect(() => {
     setShowHeader(true);
