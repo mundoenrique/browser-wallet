@@ -42,10 +42,11 @@ const movementData = [
 
 export default function Dashboard() {
   const { setCurrentItem } = useMenuStore();
+
   useEffect(() => {
-    console.log('dashboard');
     setCurrentItem('home');
   }, [setCurrentItem]);
+
   const router = useRouter();
 
   return (

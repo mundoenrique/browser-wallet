@@ -6,14 +6,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Card, Stack, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import { useNavTitleStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import ResponseCode from './components/ResponseCode';
+import { useMenuStore, useNavTitleStore } from '@/store';
 import { ContainerLayout, InputTextPay, Linking } from '@/components';
 
 export default function Debt() {
   const [openRc, setOpenRc] = useState(false);
   const { updateTitle } = useNavTitleStore();
+  const { setCurrentItem } = useMenuStore();
   const schema = getSchema(['amount']);
 
   const { control, handleSubmit } = useForm({
@@ -30,7 +31,8 @@ export default function Debt() {
 
   useEffect(() => {
     updateTitle('Pagar deuda con ésika');
-  }, [updateTitle]);
+    setCurrentItem('home');
+  }, [updateTitle, setCurrentItem]);
 
   return (
     <>
