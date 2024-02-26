@@ -66,13 +66,11 @@ export interface CardDebtProps {
  * @typeParam avatarImage (Optional): any
  * @typeParam avatarText (Optional): string | React.ReactNode
  * @typeParam textBotton (Optional): string
- * @typeParam ticket (Optional): boolean
  * @typeParam actionTicket (Optional):) => void
  */
 export interface CardTicketProps extends ChildrenProps {
   avatarImage?: any;
   avatarText?: string | React.ReactNode;
   textBotton?: string;
-  ticket?: boolean;
   actionTicket?: () => void;
 }

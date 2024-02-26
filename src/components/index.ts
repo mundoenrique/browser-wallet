@@ -44,3 +44,5 @@ export { default as MuiProvider } from './providers/MuiProvider';
 export { default as HydrationProvider } from './providers/HydrationProvider';
 //user welcome
 export { default as UserWelcome } from './UserWelcome';
+//error
+export { default as NotFoundError } from './errors/NotFoundError';

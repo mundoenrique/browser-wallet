@@ -2,7 +2,6 @@
 
 import Dollar from '@mui/icons-material/AttachMoney';
 import Clock from '@mui/icons-material/QueryBuilder';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Avatar, Box, Card, Divider, Stack, Typography } from '@mui/material';
 //Internal app
 import { EsikaIsotipo } from '%/Icons';
@@ -39,11 +38,7 @@ export default function ResponseCode() {
         </Typography>
 
         <Box sx={{ padding: '24px 4px 4px 4px', position: 'relative' }}>
-          <CardTicket
-            avatarText={<CheckCircleIcon color="success" sx={{ width: 51, height: 51 }} />}
-            ticket
-            textBotton="Guardar"
-          >
+          <CardTicket textBotton="Guardar">
             <Box sx={{ display: 'grid', width: '100%' }}>
               <Typography variant="subtitle1" textAlign="center">
                 Has pagado
