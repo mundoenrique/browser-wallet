@@ -1,4 +1,18 @@
 import { createTheme } from '@mui/material/styles';
+
+import { Montserrat, Mulish } from 'next/font/google';
+
+const montserrat = Montserrat({
+  weight: ['700'],
+  subsets: ['latin'],
+  display: 'swap',
+});
+const mulish = Mulish({
+  weight: ['400', '500', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+});
+
 //Internal app
 import './theme.d';
 
@@ -48,12 +62,12 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Mulish',
+    fontFamily: mulish.style.fontFamily,
     allVariants: {
       color: slate[700],
     },
     subtitle1: {
-      fontFamily: 'Mulish',
+      fontFamily: mulish.style.fontFamily,
       fontSize: 16,
       fontStyle: 'normal',
       fontWeight: 700,
@@ -61,7 +75,7 @@ const theme = createTheme({
       letterSpacing: '0.15px',
     },
     subtitle2: {
-      fontFamily: 'Mulish',
+      fontFamily: mulish.style.fontFamily,
       fontSize: 14,
       fontStyle: 'normal',
       fontWeight: 700,
@@ -77,7 +91,7 @@ const theme = createTheme({
       letterSpacing: '0.1px',
     },
     body2: {
-      fontFamily: 'Mulish',
+      fontFamily: mulish.style.fontFamily,
       fontSize: 14,
       fontStyle: 'normal',
       fontWeight: 400,
@@ -86,7 +100,7 @@ const theme = createTheme({
       color: slate[700],
     },
     h6: {
-      fontFamily: 'Montserrat',
+      fontFamily: montserrat.style.fontFamily,
       fontSize: 20,
       fontStyle: 'normal',
       fontWeight: 700,
@@ -108,32 +122,7 @@ const theme = createTheme({
     },
     MuiCssBaseline: {
       styleOverrides: `
-			@font-face {
-				font-family: 'Mulish';
-				font-style: normal;
-				font-display: swap;
-				font-weight: 400;
-				src: local('Mulish'), local('Mulish-Regular'), url(/fonts/Mulish-Regular.ttf) format('truetype');
-				unicodeRange: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF;
-			}
-			@font-face {
-				font-family: 'Mulish';
-				font-style: normal;
-				font-display: swap;
-				font-weight: 700;
-				src: local('Mulish'), local('Mulish-Bold'), url(/fonts/Mulish-Bold.ttf) format('truetype');
-				unicodeRange: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF;
-			}
-			@font-face {
-				font-family: 'Mulish';
-				font-style: normal;
-				font-display: swap;
-				font-weight: 500;
-				src: local('Mulish'), local('Mulish-SemiBold'), url(/fonts/Mulish-SemiBold.ttf) format('truetype');
-				unicodeRange: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF;
-			}
-
-      .check-circle {
+      .eye-show {
         position: absolute;
         animation: circleAnimation .6s;
       }
@@ -505,7 +494,7 @@ const theme = createTheme({
             height: '24px',
             backgroundColor: fuchsiaBlue[200],
             color: fuchsiaBlue[800],
-            fontFamily: 'Mulish',
+            fontFamily: mulish.style.fontFamily,
             fontSize: '9.819px',
             fontStyle: 'normal',
             fontWeight: 700,
