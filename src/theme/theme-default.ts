@@ -1,32 +1,16 @@
 import { createTheme } from '@mui/material/styles';
 
-import { Montserrat } from 'next/font/google';
-import localFont from 'next/font/local';
+import { Montserrat, Mulish } from 'next/font/google';
 
 const montserrat = Montserrat({
   weight: ['700'],
   subsets: ['latin'],
   display: 'swap',
 });
-
-const mulish = localFont({
-  src: [
-    {
-      path: '../../public/fonts/Mulish-Regular.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../../public/fonts/Mulish-SemiBold.ttf',
-      weight: '500',
-      style: 'normal',
-    },
-    {
-      path: '../../public/fonts/Mulish-Bold.ttf',
-      weight: '700',
-      style: 'normal',
-    },
-  ],
+const mulish = Mulish({
+  weight: ['400', '500', '700'],
+  subsets: ['latin'],
+  display: 'swap',
 });
 
 //Internal app
