@@ -1,6 +1,7 @@
 import { createTheme } from '@mui/material/styles';
-
 import { Montserrat, Mulish } from 'next/font/google';
+//Internal app
+import './theme.d';
 
 const montserrat = Montserrat({
   weight: ['700'],
@@ -12,9 +13,6 @@ const mulish = Mulish({
   subsets: ['latin'],
   display: 'swap',
 });
-
-//Internal app
-import './theme.d';
 
 const success = '#99F462';
 const borderRadius = 10;
@@ -122,7 +120,7 @@ const theme = createTheme({
     },
     MuiCssBaseline: {
       styleOverrides: `
-      .eye-show {
+      .check-circle{
         position: absolute;
         animation: circleAnimation .6s;
       }
