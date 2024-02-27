@@ -41,6 +41,5 @@
   "[shellscript]": {
     "files.eol": "\n"
   },
-  "typescript.tsserver.nodePath": "",
-  "CodeGPT.apiKey": "CodeGPT Plus Beta"
+  "typescript.tsserver.nodePath": ""
 }
