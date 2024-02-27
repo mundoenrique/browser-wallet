@@ -3,10 +3,10 @@ import { Metadata } from 'next';
 import { ChildrenProps } from '@/interfaces';
 
 export const metadata: Metadata = {
-  title: 'Movimientos',
-  description: 'Historial de movimientos en Yiro',
+  title: 'Mis clientes',
+  description: 'Gestiona tus clientes en Yiro',
 };
 
-export default function MovementsLayout({ children }: ChildrenProps) {
+export default function ClientsLayout({ children }: ChildrenProps) {
   return <>{children}</>;
 }

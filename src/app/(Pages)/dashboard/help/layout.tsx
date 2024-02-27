@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   description: 'Sección de ayuda para las dudas que tengas de tu billetera Yiro',
 };
 
-export default function LegalLayout({ children }: ChildrenProps) {
+export default function HelpLayout({ children }: ChildrenProps) {
   return <>{children}</>;
 }
