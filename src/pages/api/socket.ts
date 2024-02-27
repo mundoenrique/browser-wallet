@@ -1,3 +1,5 @@
+import { Server, Socket } from 'socket.io';
+
 /**
  * Web socket configuration.
  *
@@ -5,12 +7,8 @@
  * @returns Events.
  * @throws An error occurs when not pointing to the web socket path..
  */
-
-import { Server, Socket } from 'socket.io';
-
-const sockets: Record<string, Socket> = {};
-
 export default function handler(req: any, res: any) {
+  const sockets: Record<string, Socket> = {};
   if (res.socket.server.io) {
     console.log('Server already started!');
     res.end();
@@ -23,18 +21,16 @@ export default function handler(req: any, res: any) {
   res.socket.server.io = io;
 
   const onConnection = (socket: Socket) => {
-    console.log('Usuario conectado:', socket.id);
-    // Store the socket in an object for later reference
+    console.log('Logged in user:', socket.id);
     sockets[socket.id] = socket;
 
-    // Manejar eventos
     socket.on('disconnect', () => {
-      console.log('Usuario desconectado:', socket.id);
+      console.log('Disconnected user:', socket.id);
       delete sockets[socket.id];
     });
 
     socket.on('sendData', (user) => {
-      console.log('Datos del cliente - socket:', user);
+      console.log('Client data - socket:', user);
       socket.broadcast.emit('infoUser', user);
     });
   };
