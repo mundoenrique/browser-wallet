@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 //Internal app
 import { ChildrenProps } from '@/interfaces';
 import { HydrationProvider, MuiProvider } from './Providers';
@@ -26,9 +27,11 @@ export default function RootLayout({ children }: ChildrenProps) {
   return (
     <html lang="es">
       <body>
-        <MuiProvider>
-          <HydrationProvider>{children}</HydrationProvider>
-        </MuiProvider>
+        <AppRouterCacheProvider>
+          <MuiProvider>
+            <HydrationProvider>{children}</HydrationProvider>
+          </MuiProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
