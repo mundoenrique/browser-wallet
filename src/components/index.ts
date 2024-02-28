@@ -20,7 +20,7 @@ export { default as Sidebar } from './navigation/sidebar/Sidebar';
 export { default as NavbarLower } from './navigation/navbar/NavbarLower';
 export { default as NavExternal } from './navigation/navbar/NavExternal';
 //modal
-export { default as ModalOtp } from './modal/ModalOtp';
+// export { default as ModalOtp } from './modal/ModalOtp';
 export { default as ModalResponsive } from './modal/ModalResponsive';
 //layout
 export { default as MainLayout } from './layout/MainLayout';
@@ -32,7 +32,7 @@ export { default as CardDebt } from './cards/CardDebt';
 export { default as HandleCard } from './cards/HandleCard';
 export { default as CardTicket } from './cards/CardTicket';
 export { default as CardReport } from './cards/CardReport';
-export { default as CardInformation } from './cards/cardInformation/CardInformation';
+// export { default as CardInformation } from './cards/cardInformation/CardInformation';
 //tables
 export { default as LastMovements } from './tables/LastMovements';
 //accordions
