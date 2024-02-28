@@ -13,8 +13,11 @@ const customJestConfig = {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
   collectCoverage: true,
-  collectCoverageFrom: ['src/app/**/signin/*.tsx'],
+  collectCoverageFrom: ['src/app/**/signin/*page.tsx'],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+  },
 };
 
 module.exports = createJestConfig(customJestConfig);
