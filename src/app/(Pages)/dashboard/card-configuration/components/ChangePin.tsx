@@ -7,7 +7,8 @@ import { getSchema } from '@/config';
 import { useForm } from 'react-hook-form';
 import { useNavTitleStore } from '@/store';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ContainerLayout, InputPass, Linking, ModalOtp, ModalResponsive } from '@/components';
+import { ContainerLayout, InputPass, Linking, ModalResponsive } from '@/components';
+import ModalOtp from '@/components/modal/ModalOtp';
 
 export default function ChangePin() {
   const { updateTitle } = useNavTitleStore();

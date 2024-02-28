@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
 //Internal app
 import { useMenuStore } from '@/store';
-import { CardDebt, CardInformation, LastMovements, Linking, UserWelcome } from '@/components';
+import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
+import CardInformation from '@/components/cards/cardInformation/CardInformation';
 
 const movementData = [
   {

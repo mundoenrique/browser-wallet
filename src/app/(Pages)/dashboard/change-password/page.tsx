@@ -7,7 +7,8 @@ import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
 import { useNavTitleStore, useMenuStore } from '@/store';
-import { ContainerLayout, InputPass, ModalOtp, ModalResponsive } from '@/components';
+import { ContainerLayout, InputPass, ModalResponsive } from '@/components';
+import ModalOtp from '@/components/modal/ModalOtp';
 
 export default function ChangePassword() {
   const { updateTitle } = useNavTitleStore();
