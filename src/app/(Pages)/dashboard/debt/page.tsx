@@ -6,8 +6,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Card, Stack, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
+import ResponseCode from './partial/ResponseCode';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import ResponseCode from './components/ResponseCode';
 import { useMenuStore, useNavTitleStore } from '@/store';
 import { ContainerLayout, InputTextPay, Linking } from '@/components';
 

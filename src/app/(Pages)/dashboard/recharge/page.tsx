@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import ResponseCode from './components/ResponseCode';
+import ResponseCode from './partial/ResponseCode';
 import { useNavTitleStore, useMenuStore } from '@/store';
 import { ContainerLayout, InputTextPay } from '@/components';
 

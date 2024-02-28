@@ -4,7 +4,7 @@ import { Card, Typography, useMediaQuery, useTheme } from '@mui/material';
 // Internal app
 import { useRegisterStore } from '@/store';
 import { StepperProps } from '@/interfaces';
-import BiometricValidation from './components/BiometricValidation';
+import BiometricValidation from './partial/BiometricValidation';
 import {
   SignupStepper,
   Landing,
@@ -18,7 +18,7 @@ import {
   SelfieUpload,
   PasswordCreation,
   Ending,
-} from './components';
+} from './partial';
 
 // const phaseToStep = (phase: string) => {
 //   const phasesSteps: { [key: string]: number } = {
