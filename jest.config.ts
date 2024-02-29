@@ -19,6 +19,7 @@ const config: Config = {
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   coverageProvider: 'v8',
   coveragePathIgnorePatterns: ['<rootDir>/public/', '<rootDir>/node_modules/'],
+  reporters: ['default', ['jest-junit', { outputDirectory: 'coverage/junit' }]],
 };
 
 export default createJestConfig(config);
