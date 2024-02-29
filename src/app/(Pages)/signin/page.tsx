@@ -30,18 +30,12 @@ export default function Signin() {
     try {
       const payload = { email: 'jllerena@novopayment.com', password: 'Novo123' };
       const response = await api.post('/auth/login', payload);
-
-      if (response.status === 200) {
-        push('/dashboard');
-      }
+      if (response.status === 200) return push('/dashboard');
     } catch (error) {
       if (error instanceof Error && 'response' in error) {
         const axiosError = error as any;
-        if (axiosError.response && axiosError.response.status === 401) {
-          setErrorMessage('Contraseña incorrecta');
-        } else {
-          setErrorMessage('Ocurrió un error inesperado');
-        }
+        if (axiosError.response && axiosError.response.status === 401) return setErrorMessage('Contraseña incorrecta');
+        return setErrorMessage('Ocurrió un error inesperado');
       } else {
         setErrorMessage('Ocurrió un error inesperado');
       }
