@@ -56,6 +56,14 @@ export default function CardConfiguration() {
             <Typography fontSize={10}>Estatus: Activada</Typography>
           </HandleCard>
 
+          <HandleCard
+            avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />}
+            icon={<InputSwitch name="temporaryLock" control={control} />}
+          >
+            <Typography variant="subtitle2">Bloqueo temporal</Typography>
+            <Typography fontSize={10}>Estatus: Tarjeta bloqueada</Typography>
+          </HandleCard>
+
           <HandleCard avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />} icon={<Arrow />}>
             <Typography variant="subtitle2">Bloquear por perdida o robo</Typography>
           </HandleCard>

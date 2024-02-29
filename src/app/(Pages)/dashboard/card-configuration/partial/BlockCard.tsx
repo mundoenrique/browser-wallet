@@ -30,10 +30,6 @@ export default function BlockCard() {
 
   const blockCardType = [
     {
-      text: 'Temporal',
-      value: 'PB',
-    },
-    {
       text: 'Por perdida o robo (definitivo)',
       value: '41',
     },
@@ -73,15 +69,16 @@ export default function BlockCard() {
           🚫 Tarjeta Bloqueada
         </Typography>
         <Stack spacing={2} sx={{ textAlign: 'left' }} mb={3}>
-          <Typography variant="body2">Estamos bloqueando esta tarjeta.</Typography>
+          <Typography variant="body2">Tu tarjeta esta bloqueada.</Typography>
+          <Typography variant="body2">Además estamos creándote una nueva cuenta Yiro Virtual</Typography>
           <Typography variant="body2">
-            Para que puedas seguir con tus transacciones, estamos creando una nueva cuenta Yiro virtual.
+            No te preocupes conservaras todos los datos de tu cuenta anterior y puedes seguir usando nuestros servicios.
           </Typography>
           <Typography variant="body2">Si quieres una nueva tarjeta física tienes que volver a solicitarla.</Typography>
           <Typography variant="body2">Si tienes afiliado un pago recurrente tienes que volver a generarlo.</Typography>
         </Stack>
         <Button variant="contained" onClick={() => setOpen(false)} fullWidth>
-          Entendido
+          Crear nueva cuenta
         </Button>
       </ModalResponsive>
     </>
