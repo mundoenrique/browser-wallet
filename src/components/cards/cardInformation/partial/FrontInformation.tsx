@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import Visibility from '@mui/icons-material/RemoveRedEyeOutlined';
 //Internal app
@@ -16,6 +17,7 @@ import { FrontInformationProps } from '@/interfaces';
  */
 export default function FrontInformation(props: FrontInformationProps): JSX.Element {
   const { showDetails, cardNumber, balance } = props;
+  const [showBalance, setShowBalance] = useState<boolean>(false);
 
   return (
     <Box
@@ -44,13 +46,16 @@ export default function FrontInformation(props: FrontInformationProps): JSX.Elem
               {cardNumber}
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', gap: 1, opacity: 0.5 }}>
+          <Box sx={{ display: 'flex', gap: 1 }}>
             <Box width={130}>
-              <Typography variant="body2" color="white">
-                Disponible
-              </Typography>
-              <Typography variant="body1" color="white" fontWeight={400} noWrap>
-                S/ {balance}
+              <Button sx={{ height: 0, minWidth: 0, p: 0 }} onClick={() => setShowBalance(!showBalance)}>
+                <Visibility sx={{ pr: 1 }} />
+                <Typography variant="caption" sx={{ textDecoration: 'underline', color: 'white' }}>
+                  {showBalance ? 'Ocultar saldo' : 'Mostrar saldo'}
+                </Typography>
+              </Button>
+              <Typography variant="body1" color="white" fontWeight={400} noWrap sx={{ opacity: 0.5 }}>
+                S/ {showBalance ? balance : '******'}
               </Typography>
             </Box>
           </Box>
