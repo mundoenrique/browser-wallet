@@ -18,9 +18,17 @@ export default function CardConfiguration() {
     setCurrentItem('card-settings');
   }, [updateTitle, setCurrentItem]);
 
-  const { control } = useForm({
-    defaultValues: { shopping: '' },
+  const { control: controlShopping, handleSubmit: handleSubmitShopping } = useForm({
+    defaultValues: { shopping: false },
   });
+
+  const { control: controlTemporyBlock, handleSubmit: handleSubmitTemporaryBlock } = useForm({
+    defaultValues: { temporaryBlock: false },
+  });
+
+  const onSubmit = async (data: any) => {
+    console.log('🚀 ~ onSubmit ~ data:', data);
+  };
 
   return (
     <Box sx={{ width: 320, mx: { xs: 'auto', md: 3 } }}>
@@ -50,7 +58,13 @@ export default function CardConfiguration() {
 
           <HandleCard
             avatar={<WebPageIcon color="primary" sx={{ p: '3px' }} />}
-            icon={<InputSwitch name="shopping" control={control} />}
+            icon={
+              <InputSwitch
+                onChange={() => handleSubmitShopping(onSubmit)()}
+                name="shopping"
+                control={controlShopping}
+              />
+            }
           >
             <Typography variant="subtitle2">Compras por internet</Typography>
             <Typography fontSize={10}>Estatus: Activada</Typography>
@@ -58,7 +72,13 @@ export default function CardConfiguration() {
 
           <HandleCard
             avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />}
-            icon={<InputSwitch name="temporaryLock" control={control} />}
+            icon={
+              <InputSwitch
+                onChange={() => handleSubmitTemporaryBlock(onSubmit)()}
+                name="temporaryBlock"
+                control={controlTemporyBlock}
+              />
+            }
           >
             <Typography variant="subtitle2">Bloqueo temporal</Typography>
             <Typography fontSize={10}>Estatus: Tarjeta bloqueada</Typography>
