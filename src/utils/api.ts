@@ -55,10 +55,8 @@ api.interceptors.request.use(
   },
 
   (error) => {
-    return Promise.reject({
-      message: 'Error in request',
-      originalError: error,
-    });
+    console.error('Error in response:', error);
+    return Promise.reject(error);
   }
 );
 

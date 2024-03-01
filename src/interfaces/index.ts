@@ -1,5 +1,5 @@
 export * from './api';
-export * from './form';
+export * from './forms';
 export * from './cards';
 export * from './store';
 export * from './modals';
@@ -8,7 +8,6 @@ export * from './tables';
 export * from './layouts';
 export * from './register';
 export * from './constans';
-export * from './validation';
 export * from './navigation';
 export * from './accordions';
-export * from './validation';
+export * from './validations';

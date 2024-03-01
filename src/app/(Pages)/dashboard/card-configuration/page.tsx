@@ -6,8 +6,9 @@ import { Box, Stack, Typography } from '@mui/material';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
 //Internal app
 import { useNavTitleStore, useMenuStore } from '@/store';
-import { CardInformation, HandleCard, InputSwitch, UserWelcome } from '@/components';
+import { HandleCard, InputSwitch, UserWelcome } from '@/components';
 import { CardCloseIcon, CardIcons, KeyIcons, PersonWrongIcon, WebPageIcon } from '%/Icons';
+import CardInformation from '@/components/cards/cardInformation/CardInformation';
 
 export default function CardConfiguration() {
   const { setCurrentItem } = useMenuStore();
