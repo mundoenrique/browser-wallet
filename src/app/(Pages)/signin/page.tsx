@@ -3,17 +3,21 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Link as LinkMui, Typography, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
+import { useApi } from '@/hooks/useApi';
 import LogoGreen from '%/images/LogoGreen';
 import { InputPass, ModalResponsive } from '@/components';
 
 export default function Signin() {
+  const api = useApi();
   const theme = useTheme();
+  const { push } = useRouter();
   const [open, setOpen] = useState<boolean>(false);
-  const [errorMessage] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const schema = getSchema(['password']);
 
   const { control, handleSubmit } = useForm({
@@ -22,7 +26,21 @@ export default function Signin() {
   });
 
   const onSubmit = async (data: any) => {
-    console.log('🚀 ~ onSubmit ~ data:', data);
+    try {
+      // pass 357689
+      const payload = { email: 'jllerena@novopayment.com', password: data.password };
+      const response = await api.post('/auth/login', payload);
+      if (response.status === 200) return push('/dashboard');
+    } catch (error) {
+      if (error instanceof Error && 'response' in error) {
+        const axiosError = error as any;
+        if (axiosError.response && axiosError.response.status === 401) return setErrorMessage('Contraseña incorrecta');
+        return setErrorMessage('Ocurrió un error inesperado');
+      } else {
+        setErrorMessage('Ocurrió un error inesperado');
+      }
+      setOpen(true);
+    }
   };
 
   return (
