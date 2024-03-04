@@ -1,8 +1,11 @@
+'use client';
+
 import { useEffect } from 'react';
-import { api, setJwtToken, setprivateKey } from '@/utils/api';
+//Internal app
 import { verifyJWT } from '@/utils/jwt';
 import { JWT_HEADER } from '@/utils/constants';
 import { useJwtStore, useKeyStore } from '@/store';
+import { api, setJwtToken, setprivateKey } from '@/utils/api';
 
 export function useApi() {
   const { token, setToken } = useJwtStore();
@@ -32,10 +35,7 @@ export function useApi() {
         },
         (error) => {
           console.error('Error in request:', error);
-          return Promise.reject({
-            message: 'Error in request',
-            originalError: error,
-          });
+          return Promise.reject(error);
         }
       );
     }
@@ -65,10 +65,7 @@ export function useApi() {
       },
       (error) => {
         console.error('Error in response:', error);
-        return Promise.reject({
-          message: 'Error in response',
-          originalError: error,
-        });
+        return Promise.reject(error);
       }
     );
   }, [privateKey, setToken, token]);

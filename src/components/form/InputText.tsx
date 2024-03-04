@@ -13,7 +13,7 @@ function InputMUI(props: TextFieldProps): JSX.Element {
 
   return (
     <>
-      <InputLabel htmlFor={name} sx={{ mb: '12px', textAlign: 'left' }}>
+      <InputLabel htmlFor={name} sx={{ mb: 3 / 2, textAlign: 'left' }}>
         {textLabel}
       </InputLabel>
       <FormControl variant="outlined" error={!!error} sx={{ mb: '5px' }} fullWidth>
@@ -30,7 +30,7 @@ function InputMUI(props: TextFieldProps): JSX.Element {
         />
         <FormHelperText
           sx={{
-            height: '20px',
+            height: 20,
             ml: 0,
             display: 'flex',
             alignItems: 'center',
@@ -50,6 +50,21 @@ function InputMUI(props: TextFieldProps): JSX.Element {
   );
 }
 
+/**
+ * field used for data delivery.
+ *
+ * @param name - Name of the field - React Hook Form.
+ * @param control - Object provided by the useForm method - React Hook Form.
+ * @param label - The label of the input.
+ * @param labelError - Text for error message.
+ * @param onChange - Detect the change in the input.
+ * @param disabled - Disable input.
+ * @param readOnly - Make the input read-only.
+ * @returns The value assigned to the input.
+ * @throws If there is an error in any field that does not comply with the regular expressions.
+ * @label React Hook Form - {@link https://react-hook-form.com/docs/useform/control}
+ * @label Material UI - {@link https://mui.com/material-ui/api/outlined-input/}
+ */
 export default function InputText(props: TextFieldProps) {
   const { name, control, onChange, ...restProps } = props;
 
