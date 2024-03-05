@@ -21,7 +21,7 @@ export default function Collect() {
   const { setCurrentItem } = useMenuStore();
   const schema = getSchema(['nameClient', 'numberClient', 'amount']);
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: { nameClient: '', numberClient: '', amount: '' },
     resolver: yupResolver(schema),
   });
@@ -36,8 +36,19 @@ export default function Collect() {
     cards: <SuccessCards />,
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: any, e: any) => {
     console.log('🚀 ~ onSubmit ~ data:', data);
+    e.preventDefault();
+
+    if (e.nativeEvent.submitter.id === 'wallets') {
+      setShowActionBtn('wallets');
+    }
+
+    if (e.nativeEvent.submitter.id === 'cards') {
+      setShowActionBtn('cards');
+    }
+
+    reset();
   };
 
   return (
@@ -64,23 +75,11 @@ export default function Collect() {
             ¿Cómo te va a pagar el cliente?
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Button
-              variant="payment"
-              type="submit"
-              sx={{ width: 144, p: 2 }}
-              onClick={() => setShowActionBtn('wallets')}
-            >
+            <Button variant="payment" type="submit" sx={{ width: 144, p: 2 }} id="wallets">
               Billetera digital, Banco o agencia
               <Image src={wallets} alt="Billetas y bancos" />
             </Button>
-            <Button
-              variant="payment"
-              type="submit"
-              sx={{ width: 144, p: 2 }}
-              onClick={() => {
-                setShowActionBtn('cards');
-              }}
-            >
+            <Button variant="payment" type="submit" sx={{ width: 144, p: 2 }} id="cards">
               Tarjeta de crédito o débito
               <Image src={franchises} alt="Billetas y bancos" />
             </Button>
