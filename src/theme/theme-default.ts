@@ -120,6 +120,10 @@ const theme = createTheme({
     },
     MuiCssBaseline: {
       styleOverrides: `
+      body{
+        padding-right: 0 !important;
+      }
+
       .check-circle{
         position: absolute;
         animation: circleAnimation .6s;
