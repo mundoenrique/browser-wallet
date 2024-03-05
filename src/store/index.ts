@@ -1,4 +1,4 @@
-export * from '@/store/qrStore';
+export * from '@/store/qrStores';
 export * from '@/store/jwtStore';
 export * from '@/store/keyStore';
 export * from '@/store/menuStore';
