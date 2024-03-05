@@ -226,6 +226,25 @@ const theme = createTheme({
             '&:hover': { backgroundColor: 'white', color: fuchsiaBlue[800] },
           },
         },
+        {
+          props: { variant: 'payment' },
+          style: {
+            backgroundColor: fuchsiaBlue[800],
+            color: 'white',
+            display: 'grid',
+            fontWeight: 700,
+            height: '144px',
+            justifyItems: 'center',
+            maxWidth: '144px',
+            minWidth: 'auto',
+            padding: '16px',
+            width: '100%',
+            '&:hover': {
+              backgroundColor: fuchsiaBlue[800],
+              color: 'white',
+            },
+          },
+        },
       ],
       styleOverrides: {
         root: {

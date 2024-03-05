@@ -26,6 +26,7 @@ export declare module '@mui/material/Button' {
     underline: true;
     primary: true;
     secondary: true;
+    payment: true;
   }
 }
 

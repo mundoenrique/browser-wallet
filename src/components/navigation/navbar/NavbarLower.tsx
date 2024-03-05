@@ -38,9 +38,9 @@ export default function NavbarLower(): JSX.Element {
     },
     {
       item: 'Cobrar',
-      url: '/dashboard/payment',
+      url: '/dashboard/collect',
       icon: <CashIcons />,
-      id: 'payment',
+      id: 'collect',
     },
   ];
 

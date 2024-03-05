@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import ResponseCode from './partial/ResponseCode';
+import Success from './partial/Success';
 import { useNavTitleStore, useMenuStore } from '@/store';
 import { ContainerLayout, InputTextPay } from '@/components';
 
@@ -49,7 +49,7 @@ export default function Recharge() {
         </Box>
       </ContainerLayout>
 
-      {openRc && <ResponseCode />}
+      {openRc && <Success />}
     </>
   );
 }

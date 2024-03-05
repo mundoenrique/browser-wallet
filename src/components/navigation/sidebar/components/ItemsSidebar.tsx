@@ -46,9 +46,9 @@ export default function ItemsSidebar(): JSX.Element {
         },
         {
           item: 'Cobrar',
-          url: '/dashboard/payment',
+          url: '/dashboard/collect',
           icon: <CashIcons />,
-          id: 'payment',
+          id: 'collect',
         },
         {
           item: 'Configuración tarjeta',

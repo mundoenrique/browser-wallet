@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Card, Stack, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import ResponseCode from './partial/ResponseCode';
+import Success from './partial/Success';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { useMenuStore, useNavTitleStore } from '@/store';
 import { ContainerLayout, InputTextPay, Linking } from '@/components';
@@ -65,7 +65,7 @@ export default function Debt() {
         </Box>
       </ContainerLayout>
 
-      {openRc && <ResponseCode />}
+      {openRc && <Success />}
     </>
   );
 }

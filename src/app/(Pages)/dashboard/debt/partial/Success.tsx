@@ -4,11 +4,11 @@ import Dollar from '@mui/icons-material/AttachMoney';
 import Clock from '@mui/icons-material/QueryBuilder';
 import { Avatar, Box, Card, Divider, Stack, Typography } from '@mui/material';
 //Internal app
-import { EsikaIsotipo } from '%/Icons';
+import { EsikaIsotipo } from '@/components';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardTicket, ContainerLayout, PurpleLayout } from '@/components';
 
-export default function ResponseCode() {
+export default function Success() {
   const description = [
     {
       icon: <EsikaIsotipo sx={{ color: 'primary.main' }} />,
