@@ -13,7 +13,7 @@ export const KeyProvider: React.FC<ChildrenProps> = ({ children }) => {
 
   useEffect(() => {
     if (!publicKey || !privateKey) {
-      const generateKeys = () => {
+      (function () {
         try {
           /**
            * Generating RSA key pair.
@@ -26,8 +26,7 @@ export const KeyProvider: React.FC<ChildrenProps> = ({ children }) => {
         } catch (error) {
           console.error('Error getting keys:', error);
         }
-      };
-      generateKeys();
+      })();
     }
   }, [privateKey, publicKey, setKeys]);
 

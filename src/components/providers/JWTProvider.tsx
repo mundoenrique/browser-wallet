@@ -14,7 +14,7 @@ export const JwtProvider: React.FC<ChildrenProps> = ({ children }) => {
 
   useEffect(() => {
     if (publicKey && !token) {
-      const generateJwtToken = async () => {
+      (async () => {
         try {
           /**
            * Generando token JWT
@@ -26,8 +26,7 @@ export const JwtProvider: React.FC<ChildrenProps> = ({ children }) => {
         } catch (error) {
           console.error('Error generating JWT token:', error);
         }
-      };
-      generateJwtToken();
+      })();
     }
   }, [api, publicKey, setToken, token]);
 
