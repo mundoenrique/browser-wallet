@@ -70,13 +70,13 @@ export const validationRules: ValidationRule = {
   amount: yup
     .string()
     .required('Campo obligatorio')
-    .test('amountValid', 'Ingresa un monto', (value) => regularExpressions.onlyNumber?.test(value)),
+    .test('amountValid', 'Ingresa un monto', (value) => regularExpressions.floatAmount?.test(value)),
   nameClient: yup
     .string()
     .required('Campo obligatorio')
-    .test('nameClientValid', 'Ingrese un nombre valido', (value) => regularExpressions.namesValid?.test(value)),
+    .test('nameClientValid', 'Ingrese un nombre valido', (value) => regularExpressions.alphaName?.test(value)),
   numberClient: yup
     .string()
     .required('Campo obligatorio')
-    .test('numberClientValid', 'Ingrese un teléfono valido', (value) => regularExpressions.onlyOneNumber?.test(value)),
+    .test('numberClientValid', 'Ingrese un teléfono valido', (value) => regularExpressions.phone?.test(value)),
 };
