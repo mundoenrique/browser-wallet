@@ -74,3 +74,33 @@ export interface CardTicketProps extends ChildrenProps {
   textBotton?: string;
   actionTicket?: () => void;
 }
+
+/**
+ * Card with information about the operation
+ *
+ * @typeParam date: string
+ * @typeParam amount: string | number
+ * @typeParam name: string
+ */
+export interface CardInfoOperationProps {
+  date: string;
+  amount: string | number;
+  name: string;
+}
+
+/**
+ * Card Pago Efectivo
+ *
+ * @typeParam string | number
+ * @typeParam children: React.ReactNode
+ * @typeParam label: string
+ * @typeParam download (Optional): boolean
+ * @typeParam share (Optional): boolean
+ */
+export interface CardPagoEfectivoProps {
+  cip: string;
+  children: React.ReactNode;
+  label: string;
+  download?: boolean;
+  share?: boolean;
+}

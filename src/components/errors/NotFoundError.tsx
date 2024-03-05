@@ -6,9 +6,15 @@ import { Box, Typography, Stack } from '@mui/material';
 import Linking from '../navigation/Linking';
 import errorSvg from '%/images/arts/error.svg';
 import PurpleLayout from '../layout/PurpleLayout';
+import { NotFoundErrorProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
-export default function NotFoundError({ code }: any) {
+/**
+ * Shows https error messages
+ *
+ * @param code - Error code generated
+ */
+export default function NotFoundError({ code }: NotFoundErrorProps) {
   return (
     <PurpleLayout hidePelca>
       <Box sx={{ width: { xs: 'auto', sm: 542 }, display: 'grid', justifyItems: 'center', textAlign: 'center', mx: 3 }}>

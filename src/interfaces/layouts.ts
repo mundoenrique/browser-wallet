@@ -40,3 +40,12 @@ export interface StatusReportProps {
   description: string;
   onClick: () => void;
 }
+
+/**
+ * Not found Error
+ *
+ * @typeParam code: 404 | 500;
+ */
+export interface NotFoundErrorProps {
+  code: 404 | 500;
+}
