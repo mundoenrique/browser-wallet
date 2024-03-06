@@ -89,11 +89,12 @@ export default function Movements() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: { xs: 'start', md: 'center' },
-          width: 360,
+          width: { xs: '100%', sm: '360px' },
           mx: { xs: 'auto', md: 0 },
           overflow: 'auto',
           [theme.breakpoints.up('sm')]: {
             minHeight: 'calc(100vh + 100px)',
+            width: '360px',
           },
         }}
         ref={containerDesktop}
