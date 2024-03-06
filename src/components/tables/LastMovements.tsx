@@ -5,6 +5,7 @@ import { Avatar, Box, Skeleton, Typography } from '@mui/material';
 import { NorthEast, SouthEast } from '@mui/icons-material';
 //Internal app
 import { TableDataProps } from '@/interfaces';
+import { stringAvatar } from '@/utils/toolHelper';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
 
 /**
@@ -38,9 +39,8 @@ export default function LastMovements({ data, loading }: TableDataProps): JSX.El
       sx={{
         display: 'flex',
         flexDirection: 'column',
-
         overflow: 'auto',
-
+        mb: 10,
         borderRadius: '24px',
         '& li:first-of-type': {
           borderRadius: '16px 16px 0 0',
@@ -68,7 +68,17 @@ export default function LastMovements({ data, loading }: TableDataProps): JSX.El
           }}
         >
           <Box>
-            <Avatar sx={{ width: '28px', height: '28px', bgcolor: fuchsiaBlue[400] }}></Avatar>
+            <Avatar
+              sx={{
+                bgcolor: fuchsiaBlue[200],
+                color: 'primary.main',
+                fontSize: 12,
+                fontWeight: 700,
+                height: 28,
+                width: 28,
+              }}
+              {...stringAvatar(row.title)}
+            />
           </Box>
           <Box
             sx={{

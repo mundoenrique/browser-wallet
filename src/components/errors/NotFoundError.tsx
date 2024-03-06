@@ -4,21 +4,24 @@ import Image from 'next/image';
 import { Box, Typography, Stack } from '@mui/material';
 //Internal app
 import Linking from '../navigation/Linking';
-import errorSvg from '%/images/arts/error.svg';
+import Pet from '%/images/arts/pet.png';
 import PurpleLayout from '../layout/PurpleLayout';
+import { NotFoundErrorProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
-export default function NotFoundError({ code }: any) {
+/**
+ * Shows https error messages
+ *
+ * @param code - Error code generated
+ */
+export default function NotFoundError({ code }: NotFoundErrorProps) {
   return (
     <PurpleLayout hidePelca>
       <Box sx={{ width: { xs: 'auto', sm: 542 }, display: 'grid', justifyItems: 'center', textAlign: 'center', mx: 3 }}>
         <Box mb={11 / 2}>
-          <Image src={errorSvg} height={179} width={172} alt="Error" />
+          <Image src={Pet} height={229} width={336} alt="Error" />
         </Box>
         <Stack spacing={3 / 2} mb={4}>
-          <Typography variant="h1" fontWeight={700} color={fuchsiaBlue[50]}>
-            404
-          </Typography>
           <Box>
             <Typography variant="subtitle1" color={fuchsiaBlue[50]}>
               {code == 404 ? '¡Oops!' : '¡Ups!'}

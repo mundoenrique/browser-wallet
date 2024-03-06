@@ -6,9 +6,9 @@ import { Box, Button, Typography } from '@mui/material';
 import { getSchema } from '@/config';
 import { useForm } from 'react-hook-form';
 import { useNavTitleStore, useConfigCardStore } from '@/store';
+import ModalOtp from '@/components/modal/ModalOtp';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/components';
-import ModalOtp from '@/components/modal/ModalOtp';
 
 export default function Survey() {
   const { updateTitle } = useNavTitleStore();

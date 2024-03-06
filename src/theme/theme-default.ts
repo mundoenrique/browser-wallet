@@ -120,6 +120,10 @@ const theme = createTheme({
     },
     MuiCssBaseline: {
       styleOverrides: `
+      body{
+        padding-right: 0 !important;
+      }
+
       .check-circle{
         position: absolute;
         animation: circleAnimation .6s;
@@ -224,6 +228,25 @@ const theme = createTheme({
             fontWeight: 700,
             width: '100%',
             '&:hover': { backgroundColor: 'white', color: fuchsiaBlue[800] },
+          },
+        },
+        {
+          props: { variant: 'payment' },
+          style: {
+            backgroundColor: fuchsiaBlue[800],
+            color: 'white',
+            display: 'grid',
+            fontWeight: 700,
+            height: '144px',
+            justifyItems: 'center',
+            maxWidth: '144px',
+            minWidth: 'auto',
+            padding: '16px',
+            width: '100%',
+            '&:hover': {
+              backgroundColor: fuchsiaBlue[800],
+              color: 'white',
+            },
           },
         },
       ],
@@ -362,6 +385,9 @@ const theme = createTheme({
           '&.Mui-disabled': {
             backgroundColor: fuchsiaBlue[200],
           },
+          '&.Mui-error': {
+            backgroundColor: '#FBE5E5',
+          },
         },
         input: {
           borderRadius: borderRadius,
@@ -374,6 +400,9 @@ const theme = createTheme({
         root: {
           '&:hover .MuiOutlinedInput-notchedOutline, &.Mui-focused .MuiOutlinedInput-notchedOutline': {
             borderColor: success,
+          },
+          '&.Mui-error .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#ef5350',
           },
         },
       },

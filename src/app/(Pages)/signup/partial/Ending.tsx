@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { Box, Typography } from '@mui/material';
 //Internal app
 import { useRegisterStore } from '@/store';
 import LogoGreen from '%/images/LogoGreen';
@@ -35,6 +35,11 @@ export default function Ending() {
     <PurpleLayout>
       <Box sx={{ zIndex: 1, display: 'grid', justifyItems: 'center' }}>
         <LogoGreen />
+        <Typography fontSize={34} align="center" color="white" fontWeight={700} width={250} lineHeight="44px">
+          ¡Felicidades!
+          <br />
+          Ya eres parte de Yiro
+        </Typography>
       </Box>
     </PurpleLayout>
   );

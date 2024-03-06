@@ -41,6 +41,7 @@ export interface TextFieldProps extends FormMUIProps {
   optional?: boolean;
   additionalInfo?: boolean;
   colorText?: string;
+  endAdornment?: React.ReactNode;
 }
 
 /**

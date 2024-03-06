@@ -69,6 +69,14 @@ export const validationRules: ValidationRule = {
   confirmPin: pinValidation('Confirma tu nuevo Pin').oneOf([yup.ref('newPin')], 'Los Pines no coinciden'),
   amount: yup
     .string()
-    .required('Ingresa un monto')
-    .test('amountValid', 'Ingresa un monto', (value) => regularExpressions.onlyNumber?.test(value)),
+    .required('Campo obligatorio')
+    .test('amountValid', 'Ingresa un monto', (value) => regularExpressions.floatAmount?.test(value)),
+  nameClient: yup
+    .string()
+    .required('Campo obligatorio')
+    .test('nameClientValid', 'Ingrese un nombre valido', (value) => regularExpressions.alphaName?.test(value)),
+  numberClient: yup
+    .string()
+    .required('Campo obligatorio')
+    .test('numberClientValid', 'Ingrese un teléfono valido', (value) => regularExpressions.phone?.test(value)),
 };

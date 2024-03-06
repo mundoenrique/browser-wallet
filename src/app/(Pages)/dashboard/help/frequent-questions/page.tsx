@@ -44,7 +44,7 @@ export default function Questions() {
         Selecciona el tema que necesitas
       </Typography>
 
-      <Stack spacing={3}>
+      <Stack spacing={2}>
         {questions.map((item, i) => (
           <Accordions key={i} title={item.title} content={item.content} />
         ))}

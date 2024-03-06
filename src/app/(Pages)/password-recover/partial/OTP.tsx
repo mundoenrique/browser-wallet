@@ -37,13 +37,13 @@ export default function AuthOtp(props: AuthOtpFormProps) {
         justifyContent: 'space-between',
       }}
     >
-      <Box sx={{ textAlign: 'center' }}>
+      <Box sx={{ textAlign: { md: 'center' } }}>
         <InputOTP
           name="otp"
           control={control}
           length={4}
-          title="Activación de doble factor"
-          text="Hemos enviado por tu seguridad un código SMS a tu celular *** *** 1214. Ingrésalo aquí."
+          title="Recupera tu contraseña"
+          text="Hemos enviado por tu seguridad un código SMS a tu celular *6549. Ingrésalo aquí."
         />
       </Box>
       <Button variant="contained" type="submit" sx={{ maxWidth: 284, width: '100%', mx: 'auto', mb: { xs: 3, md: 0 } }}>
