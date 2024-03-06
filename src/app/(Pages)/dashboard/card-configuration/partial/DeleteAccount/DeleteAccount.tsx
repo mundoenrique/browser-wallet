@@ -4,12 +4,12 @@ import { useEffect } from 'react';
 import { Button, Typography, Stack } from '@mui/material';
 import SadnessIcon from '@mui/icons-material/SentimentDissatisfiedOutlined';
 //Internal app
-import { useNavTitleStore } from '@/store';
+import { useNavTitleStore, useConfigCardStore } from '@/store';
 import { ContainerLayout, HandleCard, Linking } from '@/components';
 
 export default function DeleteAccount() {
   const { updateTitle } = useNavTitleStore();
-
+  const { updatePage } = useConfigCardStore();
   useEffect(() => {
     updateTitle('Eliminar cuenta');
   }, [updateTitle]);
@@ -24,7 +24,13 @@ export default function DeleteAccount() {
         Eliminar cuenta
       </Typography>
 
-      <Linking href="#" label="Volver" />
+      <Linking
+        onClick={() => {
+          updatePage('main');
+        }}
+        href="#"
+        label="Volver"
+      />
 
       <Stack spacing={3}>
         <HandleCard avatar={<SadnessIcon color="primary" sx={{ p: 1 / 2 }} />}>
@@ -36,7 +42,14 @@ export default function DeleteAccount() {
           <Typography variant="caption">Ten en cuenta que esta decisión es irreversible.</Typography>
         </HandleCard>
 
-        <Button variant="contained">Eliminar cuenta</Button>
+        <Button
+          variant="contained"
+          onClick={() => {
+            updatePage('survey');
+          }}
+        >
+          Continuar
+        </Button>
       </Stack>
     </ContainerLayout>
   );

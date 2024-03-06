@@ -5,13 +5,14 @@ import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
 import { useForm } from 'react-hook-form';
-import { useNavTitleStore } from '@/store';
+import { useNavTitleStore, useConfigCardStore } from '@/store';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/components';
 import ModalOtp from '@/components/modal/ModalOtp';
 
 export default function Survey() {
   const { updateTitle } = useNavTitleStore();
+  const { updatePage } = useConfigCardStore();
   const [openOtp, setOpenOtp] = useState<boolean>(false);
   const [openRc, setOpenRc] = useState<boolean>(false);
   const schema = getSchema(['blockType']);
@@ -71,7 +72,13 @@ export default function Survey() {
           Ayúdanos con esta encuesta
         </Typography>
 
-        <Linking href="#" label="Volver" />
+        <Linking
+          onClick={() => {
+            updatePage('main');
+          }}
+          href="#"
+          label="Volver"
+        />
 
         <Typography variant="body2" mb={3}>
           Pensando siempre en darte la mejor propuesta de valor, quisiéramos saber el motivo por el que estás eliminando
@@ -81,7 +88,7 @@ export default function Survey() {
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           <InputRadio options={blockCardType} name="blockType" control={control} />
           <Button variant="contained" type="submit" fullWidth>
-            Bloquear
+            Continuar
           </Button>
         </Box>
       </ContainerLayout>

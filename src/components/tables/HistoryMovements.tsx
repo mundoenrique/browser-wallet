@@ -1,14 +1,14 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { Avatar, Box, Skeleton, Typography } from '@mui/material';
+import { Avatar, Box, Typography } from '@mui/material';
 import { NorthEast, SouthEast } from '@mui/icons-material';
 //Internal app
 import { TableDataProps } from '@/interfaces';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
 
 /**
- * Table used to show the last 5 moves
+ * Table used to show the last 3 months moves
  *
  * @param data - Receive a array
  * @example
@@ -19,27 +19,12 @@ import { fuchsiaBlue, slate } from '@/theme/theme-default';
  *   incoming: boolean;
  * }]
  */
-export default function LastMovements({ data, loading }: TableDataProps): JSX.Element {
-  const LoadingSkeleton = [];
-  for (var i = 0; i < 5; i++) {
-    LoadingSkeleton.push(
-      <Box key={i} sx={{ display: 'flex', flexDirection: 'row', marginY: '8px' }}>
-        <Skeleton animation="wave" variant="circular" width={40} height={40} />
-        <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
-          <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-          <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-        </Box>
-      </Box>
-    );
-  }
-
+export default function HistoryMovements({ data }: TableDataProps): JSX.Element {
   return (
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
-
-        overflow: 'auto',
 
         borderRadius: '24px',
         '& li:first-of-type': {
@@ -48,9 +33,6 @@ export default function LastMovements({ data, loading }: TableDataProps): JSX.El
         '& li:last-of-type': {
           borderRadius: '0 0 16px 16px ',
         },
-      }}
-      onScroll={() => {
-        console.log('element scrol');
       }}
     >
       {data.map((row, idx) => (
@@ -103,7 +85,6 @@ export default function LastMovements({ data, loading }: TableDataProps): JSX.El
           </Box>
         </Box>
       ))}
-      {loading && LoadingSkeleton}
     </Box>
   );
 }

@@ -1,12 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { useTheme } from '@mui/material/styles';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 //Internal app
 import { InputSelect, LastMovements, Linking } from '@/components';
-import { useMenuStore, useNavTitleStore } from '@/store';
+
 import { fuchsiaBlue } from '@/theme/theme-default';
 
 /**
@@ -25,33 +24,19 @@ const dateRank = (): { value: string; text: string }[] => {
   return months;
 };
 
-export default function Movements() {
+export default function MovementsDesktop() {
   const [movementData, setMovementData] = useState<any>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>(1);
   const [filterMonth, setFilterMonth] = useState(dateRank()[0].value);
   const [isLoading, setIsloading] = useState<boolean>(false);
-
-  const { setCurrentItem } = useMenuStore();
-  const { updateTitle } = useNavTitleStore();
-
-  const containerDesktop = useRef<HTMLDivElement | null>(null);
-  const containerPWA = useRef<HTMLDivElement | null>(null);
-
-  const theme = useTheme();
+  const container = useRef<HTMLDivElement | null>(null);
 
   //TODO: Direccion del scroll
   const scrollHandle = useCallback(async () => {
-    if (containerDesktop.current && !isLoading && currentPage <= lastPage - 1) {
-      let scroll = containerDesktop.current?.scrollHeight - window.scrollY - window.innerHeight;
+    if (container.current && !isLoading && currentPage <= lastPage - 1) {
+      let scroll = container.current?.scrollHeight - window.scrollY - window.innerHeight;
       if (scroll <= 100) {
-        setCurrentPage((prevPage) => prevPage + 1);
-      }
-    } else if (containerPWA.current && !isLoading && currentPage <= lastPage - 1) {
-      let scroll =
-        containerPWA.current?.scrollHeight - containerPWA.current?.scrollTop - containerPWA.current?.clientHeight;
-      console.log(scroll);
-      if (scroll <= 20) {
         setCurrentPage((prevPage) => prevPage + 1);
       }
     }
@@ -76,28 +61,19 @@ export default function Movements() {
     })();
   }, [currentPage]); //eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    updateTitle('Movimientos');
-    setCurrentItem('home');
-  }, [updateTitle, setCurrentItem]);
-
   return (
-    <>
-      <Box
-        sx={{
-          height: { xs: 'calc(100vh - 120px)', md: 'auto' },
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: { xs: 'start', md: 'center' },
-          width: 360,
-          mx: { xs: 'auto', md: 0 },
-          overflow: 'auto',
-          [theme.breakpoints.up('sm')]: {
-            minHeight: 'calc(100vh + 100px)',
-          },
-        }}
-        ref={containerDesktop}
-      >
+    <Box
+      sx={{
+        minHeight: 'calc(100vh + 200px)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: { xs: 'start', md: 'center' },
+        width: 360,
+        mx: { xs: 'auto', md: 0 },
+      }}
+      ref={container}
+    >
+      <Box>
         <Box sx={{ paddingX: 3 }}>
           <Typography
             variant="h6"
@@ -125,23 +101,17 @@ export default function Movements() {
           />
         </Box>
         <Box
-          onScroll={() => {
-            scrollHandle();
-          }}
-          ref={containerPWA}
           sx={{
             display: 'block',
-            height: { xs: 'calc(100% + 100px)', md: 'auto' },
             background: { xs: 'white', md: 'none' },
             borderRadius: { xs: '12px ', md: '0' },
-            overflow: { xs: 'auto', md: 'hidden' },
-            paddingX: 3,
-            paddingY: 2,
           }}
         >
-          <LastMovements data={movementData} loading={isLoading} />
+          <Box sx={{ paddingX: 3, paddingY: 2, width: '100%' }}>
+            <LastMovements data={movementData} loading={isLoading} />
+          </Box>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 }

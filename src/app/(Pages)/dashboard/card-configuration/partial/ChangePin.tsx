@@ -5,13 +5,14 @@ import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
 import { useForm } from 'react-hook-form';
-import { useNavTitleStore } from '@/store';
+import { useNavTitleStore, useConfigCardStore } from '@/store';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ContainerLayout, InputPass, Linking, ModalResponsive } from '@/components';
 import ModalOtp from '@/components/modal/ModalOtp';
 
 export default function ChangePin() {
   const { updateTitle } = useNavTitleStore();
+  const { updatePage } = useConfigCardStore();
   const [openOtp, setOpenOtp] = useState<boolean>(false);
   const [openRc, setOpenRc] = useState<boolean>(false);
   const schemaFormPassword = getSchema(['newPin', 'confirmPin']);
@@ -48,7 +49,13 @@ export default function ChangePin() {
           Cambiar PIN
         </Typography>
 
-        <Linking href="#" label="Volver" />
+        <Linking
+          href="#"
+          label="Volver"
+          onClick={() => {
+            updatePage('main');
+          }}
+        />
 
         <Typography variant="body2" mb={3}>
           A continuación puedes cambiar tu PIN, recuérdalo al momento de usar tu tarjeta
@@ -72,7 +79,14 @@ export default function ChangePin() {
         <Typography variant="body1" textAlign="center" mb={3}>
           El PIN de tu tarjeta ha sido actualizado con éxito.
         </Typography>
-        <Button variant="contained" onClick={() => setOpenRc(false)} fullWidth>
+        <Button
+          variant="contained"
+          onClick={() => {
+            setOpenRc(false);
+            updatePage('main');
+          }}
+          fullWidth
+        >
           Ir al Inicio
         </Button>
       </ModalResponsive>

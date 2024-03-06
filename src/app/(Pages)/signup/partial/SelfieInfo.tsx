@@ -10,7 +10,7 @@ import selfieDesktop from '%/images/arts/selfieDesktop.svg';
 export default function SelfieInfo() {
   const theme = useTheme();
   const { dec, inc } = useRegisterStore();
-  const matcha = useMediaQuery(theme.breakpoints.up('sm'));
+  const match = useMediaQuery(theme.breakpoints.up('sm'));
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
@@ -22,7 +22,7 @@ export default function SelfieInfo() {
           Tómate una selfie para terminar la validación del DNI
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 / 2 }}>
-          {matcha ? (
+          {match ? (
             <Image src={selfieDesktop} height={156} width={224} alt="DNI" />
           ) : (
             <Image src={selfiePwa} height={261} width={148} alt="DNI" />

@@ -4,12 +4,12 @@ import { useEffect } from 'react';
 import { Button, Stack, Typography } from '@mui/material';
 //Internal app
 import { CardIcons } from '%/Icons';
-import { useNavTitleStore } from '@/store';
+import { useNavTitleStore, useConfigCardStore } from '@/store';
 import { ContainerLayout, HandleCard, Linking } from '@/components';
 
 export default function ActivatePhysicalCard() {
   const { updateTitle } = useNavTitleStore();
-
+  const { updatePage } = useConfigCardStore();
   useEffect(() => {
     updateTitle('Activación de tarjeta física');
   }, [updateTitle]);
@@ -24,7 +24,13 @@ export default function ActivatePhysicalCard() {
         Activación de tarjeta física
       </Typography>
 
-      <Linking href="/dashboard/help" label="Volver" />
+      <Linking
+        href="#"
+        onClick={() => {
+          updatePage('main');
+        }}
+        label="Volver"
+      />
 
       <Typography variant="body2" mb={3}>
         Para activar tu tarjeta

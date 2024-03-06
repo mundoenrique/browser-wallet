@@ -10,7 +10,7 @@ import dniDesktop from '%/images/arts/dniDesktop.svg';
 export default function DniInfo() {
   const theme = useTheme();
   const { dec, inc } = useRegisterStore();
-  const matcha = useMediaQuery(theme.breakpoints.up('sm'));
+  const match = useMediaQuery(theme.breakpoints.up('sm'));
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
@@ -22,7 +22,7 @@ export default function DniInfo() {
           Primero validaremos tu identidad con una foto frontal de tu DNI
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 / 2 }}>
-          {matcha ? (
+          {match ? (
             <Image src={dniDesktop} height={156} width={224} alt="DNI" />
           ) : (
             <Image src={dniPwa} height={255} width={142} alt="DNI" />

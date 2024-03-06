@@ -46,11 +46,11 @@ const ContainerLayout = ({ children }: ChildrenProps) => {
  */
 export default function LoginLayout({ children }: ChildrenProps): JSX.Element {
   const theme = useTheme();
-  const matche = useMediaQuery(theme.breakpoints.down('sm'));
+  const match = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <>
-      {matche ? (
+      {match ? (
         <Box
           sx={{
             backgroundColor: 'secondary.main',

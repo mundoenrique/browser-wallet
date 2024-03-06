@@ -4,3 +4,4 @@ export * from '@/store/keyStore';
 export * from '@/store/menuStore';
 export * from '@/store/registerStore';
 export * from '@/store/navTitleStore';
+export * from '@/store/configCardStore';

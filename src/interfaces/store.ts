@@ -53,6 +53,17 @@ export interface NavTitleStore {
 }
 
 /**
+ * Config Card component routing
+ *
+ * @typeParam title: string
+ * @typeParam updateTitle: (newTitle: string) => void
+ */
+export interface ConfigCardStore {
+  page: string;
+  updatePage: (_newPage: string) => void;
+}
+
+/**
  * Global status for registration flow
  *
  * @typeParam step - number

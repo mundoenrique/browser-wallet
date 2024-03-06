@@ -22,9 +22,9 @@ import { ArrowsIcons, CardIcons, CashIcons, FileIcons, GainIcons, HomeIcons, Key
 export default function ItemsSidebar(): JSX.Element {
   const theme = useTheme();
   const { currentItem, setCurrentItem } = useMenuStore();
-  const matche = useMediaQuery(theme.breakpoints.up('md'));
+  const match = useMediaQuery(theme.breakpoints.up('md'));
 
-  const itemMenu = matche
+  const itemMenu = match
     ? [
         {
           item: 'Inicio',

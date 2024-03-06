@@ -17,8 +17,13 @@ export const regularExpressions: Partial<RegularExpressions> = {
   emailValid: /^[^@]{2,64}@[^_@]+\.[a-zA-Z]{2,}$/,
   alphanumunder: /^[wñÑ_]+$/,
   alphanum: /^[a-zA-Z0-9]+$/,
-  password:
-    /(012|123|234|345|456|567|678|789|890)\1|(0123|1234|2345|3456|4567|5678|6789|7890)|(0987|9876|8765|7654|6543|5432|4321|3210)|(\d)\4\4\4/g,
+  password: {
+    consecutive_group: /(012|123|234|345|456|567|678|789|890)\1/,
+    consecutive_ascedant: /(0123|1234|2345|3456|4567|5678|6789|7890)/,
+    consecutive_descendant: /(0987|9876|8765|7654|6543|5432|4321|3210)/,
+    repeated: /(\d)\1\1/,
+  },
+
   numeric: /^[0-9]+$/,
   phone: /^[0-9]{7,15}$/,
   phoneMasked: /^[0-9*]{7,20}$/,

@@ -20,4 +20,5 @@ export interface TableDataProps {
     amount: number;
     incoming: boolean;
   }[];
+  loading?: boolean;
 }

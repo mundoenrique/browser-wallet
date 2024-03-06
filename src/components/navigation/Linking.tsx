@@ -28,6 +28,7 @@ export default function Linking(props: LinkingProps): JSX.Element {
     hidenArrow,
     fontSize = 12,
     iconSize = { height: 14, width: 14 },
+    onClick,
   } = props;
 
   return (
@@ -43,6 +44,7 @@ export default function Linking(props: LinkingProps): JSX.Element {
       mb={mb}
       fontWeight={700}
       fontSize={fontSize}
+      onClick={onClick}
     >
       {!hidenArrow && <Arrow sx={{ mr: 2, width: iconSize.width, height: iconSize.height }} />}
       {label}
