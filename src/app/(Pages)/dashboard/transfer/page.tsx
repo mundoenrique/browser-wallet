@@ -82,7 +82,7 @@ export default function Transfer() {
 
       {openRc && (
         <Suspense fallback={<Loading />}>
-          <Success />
+          <Success onClick={() => setOpenRc(false)} />
         </Suspense>
       )}
     </>

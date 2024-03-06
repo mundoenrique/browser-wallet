@@ -66,13 +66,17 @@ export interface CardDebtProps {
  * @typeParam avatarImage (Optional): any
  * @typeParam avatarText (Optional): string | React.ReactNode
  * @typeParam textBotton (Optional): string
- * @typeParam actionTicket (Optional):) => void
+ * @typeParam download (Optional): boolean;
+ * @typeParam shared (Optional): boolean;
+ * @typeParam onClick (Optional): () => void | boolean;
  */
 export interface CardTicketProps extends ChildrenProps {
   avatarImage?: any;
   avatarText?: string | React.ReactNode;
   textBotton?: string;
-  actionTicket?: () => void;
+  download?: boolean;
+  shared?: boolean;
+  onClick?: () => void | boolean;
 }
 
 /**

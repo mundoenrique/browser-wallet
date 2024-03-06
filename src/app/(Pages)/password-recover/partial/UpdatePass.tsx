@@ -19,12 +19,15 @@ export default function UpdatePass() {
         onSubmit={onSubmit}
         description={
           <>
-            <Typography fontWeight={700} textAlign="center" mb={3}>
-              Crea una contraseña
+            <Typography sx={{ mb: 3, fontWeight: 700, textAlign: { md: 'center' } }}>
+              Recuperar tu contraseña
             </Typography>
 
-            <Typography mb={3} textAlign="center">
-              Para poder continuar con tu proceso de activación, es necesario que crees una contraseña.
+            <Typography variant="body2" fontWeight={700}>
+              Elige 6 números que recuerdes.
+            </Typography>
+            <Typography mb={3} variant="body2">
+              Evita fechas de cumpleaños, números consecutivos ó iguales.
             </Typography>
           </>
         }

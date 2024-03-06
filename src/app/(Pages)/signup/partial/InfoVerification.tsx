@@ -235,7 +235,7 @@ export default function InfoVerification() {
       >
         <Box
           sx={{
-            height: '100%',
+            height: '90%',
             overflow: 'auto',
           }}
         >

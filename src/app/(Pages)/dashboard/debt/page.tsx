@@ -45,7 +45,7 @@ export default function Debt() {
 
         <Linking href="/dashboard" label="Volver" />
 
-        <Card sx={{ boxShadow: 'none', bgcolor: fuchsiaBlue[300], px: 3, py: 1, mb: 4 }}>
+        <Card sx={{ boxShadow: 'none', bgcolor: fuchsiaBlue[300], px: 3, py: 1, mb: 4, borderRadius: '16px' }}>
           <Stack spacing={1} sx={{ display: 'grid', justifyContent: 'center', justifyItems: 'center' }}>
             <Typography variant="body1" color="primary.main">
               Deuda total

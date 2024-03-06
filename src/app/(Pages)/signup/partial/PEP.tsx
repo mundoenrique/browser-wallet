@@ -115,8 +115,7 @@ export default function PEP() {
           </Typography>
           <Typography
             variant="body2"
-            align="center"
-            sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+            sx={{ textDecoration: 'underline', cursor: 'pointer', textAlign: { md: 'center' } }}
             onClick={() => {
               setShowPepInfo(true);
             }}
@@ -138,7 +137,7 @@ export default function PEP() {
             <InputSelect name="pepForm.department" label="Departamento" options={selectOptions} control={control} />
             <InputDatePicker name="pepForm.endDate" label="Fecha" control={control} />
 
-            <Typography variant="body1" align="left" sx={{ mb: 3 }}>
+            <Typography variant="body2" align="left" sx={{ mb: 3 }}>
               ¿Posees participación, aporte o capital social igual o mayor al 25% en alguna (s) empresa (s)?
             </Typography>
             <Box
@@ -151,7 +150,7 @@ export default function PEP() {
               <InputCheckCondition name="pepForm.holdShare" options={options} control={control} />
             </Box>
 
-            <Typography variant="body1" align="left" sx={{ mb: 3 }}>
+            <Typography variant="body2" align="left" sx={{ mb: 3 }}>
               ¿Posee parientes vivos PEP hasta el segundo grado de consanguinidad (padres, hijos, hermanos y nietos) y
               segundo grado de afinidad (cónyuge o conviviente, suegros y cuñados)?
             </Typography>

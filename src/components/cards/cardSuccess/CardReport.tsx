@@ -20,7 +20,7 @@ export default function CardReport(props: CardTicketProps) {
       <Card
         sx={{
           bgcolor: fuchsiaBlue[50],
-          borderRadius: 'shape.borderRadius',
+          borderRadius: '16px',
           display: 'flex',
           justifyContent: 'center',
           pt: 4,

@@ -385,6 +385,9 @@ const theme = createTheme({
           '&.Mui-disabled': {
             backgroundColor: fuchsiaBlue[200],
           },
+          '&.Mui-error': {
+            backgroundColor: '#FBE5E5',
+          },
         },
         input: {
           borderRadius: borderRadius,
@@ -397,6 +400,9 @@ const theme = createTheme({
         root: {
           '&:hover .MuiOutlinedInput-notchedOutline, &.Mui-focused .MuiOutlinedInput-notchedOutline': {
             borderColor: success,
+          },
+          '&.Mui-error .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#ef5350',
           },
         },
       },

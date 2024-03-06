@@ -16,7 +16,7 @@ export default function CardInfoOperation(props: CardInfoOperationProps) {
   const { date, amount, name } = props;
 
   return (
-    <Card sx={{ boxShadow: 'none', bgcolor: fuchsiaBlue[500], px: 3, py: 1, mb: 2 }}>
+    <Card sx={{ boxShadow: 'none', bgcolor: fuchsiaBlue[500], px: 3, py: 1, mb: 2, borderRadius: '16px' }}>
       <Stack spacing={1} sx={{ display: 'grid', justifyContent: 'center', justifyItems: 'center' }}>
         <Typography variant="body2" color="white" fontWeight={700}>
           Pago vigente hasta: {date}

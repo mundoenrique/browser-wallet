@@ -46,9 +46,10 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
         shareData['files'].push(file);
         await navigator.share(shareData);
       } else {
+        const image = canvas.toDataURL('image/png');
         const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png');
-        link.download = 'imagen.png';
+        link.href = image;
+        link.download = 'ticket.png';
         link.click();
       }
     } catch (err) {
@@ -99,7 +100,7 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
             <Typography variant="caption" fontWeight={700}>
               Código CIP:
             </Typography>
-            <Typography variant="h6" sx={{ display: 'flex', color: 'primary.main', alignItems: 'center' }}>
+            <Typography variant="subtitle1" sx={{ display: 'flex', color: 'primary.main', alignItems: 'center' }}>
               {cip}
               <IconButton aria-label="delete" size="small" sx={{ p: 0, ml: 1 }} onClick={copyText}>
                 <CopyIcons sx={{ color: 'primary.main' }} />

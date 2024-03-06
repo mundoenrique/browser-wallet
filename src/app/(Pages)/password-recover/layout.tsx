@@ -5,11 +5,11 @@ import { NavExternal } from '@/components';
 import { ChildrenProps } from '@/interfaces';
 
 export const metadata: Metadata = {
-  title: 'Recover',
+  title: 'Recuperar contraseña',
   description: 'Recupera tu contraseña',
 };
 
-export default async function RecoverLayout({ children }: ChildrenProps) {
+export default function RecoverLayout({ children }: ChildrenProps) {
   return (
     <>
       <NavExternal image />
