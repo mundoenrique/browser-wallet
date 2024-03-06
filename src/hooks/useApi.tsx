@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 //Internal app
 import { verifyJWT } from '@/utils/jwt';
@@ -33,10 +35,7 @@ export function useApi() {
         },
         (error) => {
           console.error('Error in request:', error);
-          return Promise.reject({
-            message: 'Error in request',
-            originalError: error,
-          });
+          return Promise.reject(error);
         }
       );
     }
@@ -66,10 +65,7 @@ export function useApi() {
       },
       (error) => {
         console.error('Error in response:', error);
-        return Promise.reject({
-          message: 'Error in response',
-          originalError: error,
-        });
+        return Promise.reject(error);
       }
     );
   }, [privateKey, setToken, token]);

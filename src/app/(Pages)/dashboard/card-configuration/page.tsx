@@ -6,7 +6,8 @@ import { Box, Stack, Typography } from '@mui/material';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
 //Internal app
 import { useNavTitleStore, useMenuStore } from '@/store';
-import { CardInformation, HandleCard, InputSwitch, UserWelcome } from '@/components';
+import { HandleCard, InputSwitch, UserWelcome } from '@/components';
+import CardInformation from '@/components/cards/cardInformation/CardInformation';
 import { CardCloseIcon, CardIcons, KeyIcons, PersonWrongIcon, WebPageIcon } from '%/Icons';
 
 export default function CardConfiguration() {
