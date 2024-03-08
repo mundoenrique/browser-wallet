@@ -1,12 +1,17 @@
 'use client';
 
 import { useEffect } from 'react';
-
-import Main from './partial/Main';
-
 //Internal app
 import { useNavTitleStore, useMenuStore, useConfigCardStore } from '@/store';
-import { ActivatePhysicalCard, BlockCard, ChangePin, DeleteAccount, RequestPhysicalCard, Survey } from './partial';
+import {
+  ActivatePhysicalCard,
+  BlockCard,
+  ChangePin,
+  DeleteAccount,
+  Main,
+  RequestPhysicalCard,
+  Survey,
+} from './partial';
 
 export default function CardConfiguration() {
   const { setCurrentItem } = useMenuStore();
