@@ -36,7 +36,7 @@ export default function ListSidebar(): JSX.Element {
 
       <Box
         sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', cursor: 'pointer' }}
-        onClick={() => updatePage('blockCard')}
+        onClick={() => updatePage('requesPhysicalCard')}
       >
         <Card variant="detailCard" sx={{ mt: { xs: 10, md: 'auto' }, mb: { xs: 0, md: 'auto' } }}>
           <Box sx={{ mr: 3, display: 'flex', alignItems: 'center' }}>

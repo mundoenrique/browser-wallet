@@ -122,7 +122,7 @@ export default function PEP() {
           >
             ¿Eres una Persona Políticamente Expuesta (PEP)?
             <br />
-            ¿Trabajas en entidades gubernamentales?
+            ¿Ocupas una posición con personas a tu cargo en entidades gubernamentales?
           </Typography>
           <Box>
             <InputCheckCondition name="isPep" options={options} control={control} />

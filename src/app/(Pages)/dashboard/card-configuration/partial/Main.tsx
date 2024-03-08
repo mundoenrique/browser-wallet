@@ -2,14 +2,14 @@
 
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Box, Stack, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { Box, Stack, Typography } from '@mui/material';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
 //Internal app
-import { useNavTitleStore, useMenuStore, useConfigCardStore } from '@/store';
 import { HandleCard, InputSwitch, UserWelcome } from '@/components';
-import { CardCloseIcon, CardIcons, KeyIcons, PersonWrongIcon, WebPageIcon } from '%/Icons';
+import { useNavTitleStore, useMenuStore, useConfigCardStore } from '@/store';
+import { CardCloseIcon, CardIcons, KeyIcons, PersonWrongIcon } from '%/Icons';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
 
 export default function CardConfiguration() {
@@ -25,11 +25,7 @@ export default function CardConfiguration() {
     setCurrentItem('card-settings');
   }, [updateTitle, setCurrentItem]);
 
-  const { control: controlShopping, handleSubmit: handleSubmitShopping } = useForm({
-    defaultValues: { shopping: false },
-  });
-
-  const { control: controlTemporyBlock, handleSubmit: handleSubmitTemporaryBlock } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues: { temporaryBlock: false },
   });
 
@@ -70,28 +66,8 @@ export default function CardConfiguration() {
           </HandleCard>
 
           <HandleCard
-            avatar={<WebPageIcon color="primary" sx={{ p: '3px' }} />}
-            icon={
-              <InputSwitch
-                onChange={() => handleSubmitShopping(onSubmit)()}
-                name="shopping"
-                control={controlShopping}
-              />
-            }
-          >
-            <Typography variant="subtitle2">Compras por internet</Typography>
-            <Typography fontSize={10}>Estatus: Activada</Typography>
-          </HandleCard>
-
-          <HandleCard
             avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />}
-            icon={
-              <InputSwitch
-                onChange={() => handleSubmitTemporaryBlock(onSubmit)()}
-                name="temporaryBlock"
-                control={controlTemporyBlock}
-              />
-            }
+            icon={<InputSwitch onChange={() => handleSubmit(onSubmit)()} name="temporaryBlock" control={control} />}
           >
             <Typography variant="subtitle2">Bloqueo temporal</Typography>
             <Typography fontSize={10}>Estatus: Tarjeta bloqueada</Typography>
