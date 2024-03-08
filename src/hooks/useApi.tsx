@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 //Internal app
 import { verifyJWT } from '@/utils/jwt';
