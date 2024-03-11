@@ -48,7 +48,7 @@ api.interceptors.request.use(
       const encryptedData = { data: jwe };
       request.data = encryptedData;
 
-      if (url !== '/auth/get-token') {
+      if (url !== '/v1/gettoken') {
         const jws = await signJWE(jwsPrivateKey, jwe);
         request.headers[JWS_HEADER] = jws;
       }
@@ -77,7 +77,7 @@ api.interceptors.response.use(
 
     if (data) {
       const payload = data.data;
-      if (url !== '/auth/get-token' && jwsApiPublicKey) {
+      if (url !== '/v1/gettoken' && jwsApiPublicKey) {
         const jws = response.headers[JWS_HEADER];
         if (jws) {
           /**
