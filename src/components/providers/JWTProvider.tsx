@@ -13,20 +13,24 @@ export const JwtProvider: React.FC<ChildrenProps> = ({ children }) => {
   const api = useApi();
 
   useEffect(() => {
-    if (jwePublicKey && jwsPublicKey && !token) {
-      (async () => {
-        try {
-          /**
-           * Generando token JWT
-           */
-          const response = await api.post('/auth/get-token', { jwePublicKey, jwsPublicKey });
-          const token = response.data.data as string;
-          setToken(token);
-          setJwtToken(token);
-        } catch (error) {
-          console.error('Error generating JWT token:', error);
-        }
-      })();
+    if (!token) {
+      if (jwePublicKey && jwsPublicKey) {
+        (async () => {
+          try {
+            /**
+             * Generando token JWT
+             */
+            const response = await api.post('/auth/get-token', { jwePublicKey, jwsPublicKey });
+            const token = response.data.data as string;
+            setToken(token);
+            setJwtToken(token);
+          } catch (error) {
+            console.error('Error generating JWT token:', error);
+          }
+        })();
+      }
+    } else {
+      setJwtToken(token);
     }
   }, [api, jwePublicKey, jwsPublicKey, setToken, token]);
 
