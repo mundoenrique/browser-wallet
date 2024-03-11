@@ -94,7 +94,14 @@ export default function Landing() {
         <Box sx={{ display: { sm: 'none' } }}>
           <LogoPurple width={71} height={40} />
         </Box>
-        <Image src={welcome} width={360} height={426} alt="animation" priority />
+        <Zoom in={true}>
+          <Box>
+            <WelcomeAnimation
+              animation={animationState[currentImageIndex].src}
+              text={animationState[currentImageIndex].text}
+            />
+          </Box>
+        </Zoom>
       </Box>
       <Box sx={{ textAlign: 'center' }}>
         <Typography variant="subtitle1" sx={{ color: fuchsiaBlue[800], mb: { xs: 7, sm: 3 } }}>
