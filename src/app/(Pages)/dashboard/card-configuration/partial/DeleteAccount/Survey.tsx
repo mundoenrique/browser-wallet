@@ -93,7 +93,7 @@ export default function Survey() {
         </Box>
       </ContainerLayout>
 
-      <ModalOtp open={openOtp} handleClose={() => setOpenOtp(false)} onSubmit={onSubmitOtp} />
+      <ModalOtp open={openOtp} handleClose={() => setOpenOtp(false)} onSubmit={onSubmitOtp} closeApp />
 
       <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>
         <Typography variant="subtitle1" mb={3}>

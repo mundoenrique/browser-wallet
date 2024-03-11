@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { useTheme } from '@mui/material/styles';
-import { Box, Typography } from '@mui/material';
 import dayjs from 'dayjs';
+import { Box, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { useEffect, useRef, useState, useCallback } from 'react';
 //Internal app
-import { InputSelect, LastMovements, Linking } from '@/components';
-import { useMenuStore, useNavTitleStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
+import { useMenuStore, useNavTitleStore } from '@/store';
+import { InputSelect, LastMovements, Linking } from '@/components';
 
 /**
  * Generates the months that would be used for filtering

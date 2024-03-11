@@ -16,10 +16,11 @@ import ModalResponsive from './ModalResponsive';
  * @param handleClose - Function of the modal to close it with the X.
  * @param open - State of the modal to show it or not.
  * @param onSubmit - Function that sends the data obtained in the form.
+ * @param closeModal - Function used to close the modal with a button in the account deletion flow.
  * @returns Json with the verification code
  */
 export default function ModalOtp(props: ModalOtpProps): JSX.Element {
-  const { handleClose, open, onSubmit } = props;
+  const { handleClose, open, onSubmit, closeApp } = props;
   const schemaFormOtp = getSchema(['otp']);
 
   const { control, handleSubmit, reset, formState } = useForm({
@@ -45,9 +46,14 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
             text="Ingresa el código enviado a tu número celular +51 *** *** 1214"
           />
         </Box>
-        <Button variant="contained" type="submit" sx={{ maxWidth: 284, width: '100%', mx: 'auto' }}>
+        <Button variant="contained" type="submit" sx={{ width: '100%', mx: 'auto' }}>
           Continuar
         </Button>
+        {closeApp && (
+          <Button variant="outlined" sx={{ width: '100%', mx: 'auto', mt: 2 }} onClick={handleClose}>
+            Conservar cuenta Yiro
+          </Button>
+        )}
       </Box>
     </ModalResponsive>
   );
