@@ -6,7 +6,6 @@ import { Button, Box, Typography, Zoom } from '@mui/material';
 //Internal app
 import { useRegisterStore } from '@/store';
 import LogoPurple from '%/images/LogoPurple';
-import welcome from '%/images/arts/Stage01.png';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { WelcomeAnimationProps } from '@/interfaces';
 import animation1 from '%/images/pwa/animation1.png';
