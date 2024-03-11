@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect } from 'react';
-import { Button, Box, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Button, Box, Typography, Zoom } from '@mui/material';
 //Internal app
 import { useRegisterStore } from '@/store';
 import LogoPurple from '%/images/LogoPurple';
@@ -62,6 +62,20 @@ const WelcomeAnimation = ({ animation, text }: WelcomeAnimationProps) => {
 
 export default function Landing() {
   const { inc, setShowHeader } = useRegisterStore();
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+
+  useEffect(() => {
+    let timer = setInterval(() => {});
+    if (currentImageIndex < 2) {
+      timer = setInterval(() => {
+        setCurrentImageIndex((prevIndex) => prevIndex + 1);
+      }, 3000);
+    }
+
+    return () => {
+      clearInterval(timer);
+    };
+  });
 
   useEffect(() => {
     setShowHeader(true);
