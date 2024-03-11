@@ -2,13 +2,15 @@
 
 import Confetti from 'react-confetti';
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import Arrow from '@mui/icons-material/ArrowBackIos';
 import { Box, IconButton, Typography } from '@mui/material';
 //Internal app
 import { useNavTitleStore } from '@/store';
 import { PurpleLayoutProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
-
+import pelcasDesktop from '%/images/pelcas/pelcasDesktop.png';
+import pelcasMobile from '%/images/pelcas/pelcasMobile.png';
 /**
  * Purple container used to display response messages
  *
@@ -35,7 +37,7 @@ export default function PurpleLayout({
 
   useEffect(() => {
     if (divRef.current) {
-      const width = divRef.current.offsetWidth;
+      const width = divRef.current.clientWidth;
       setWidth(width);
       const height = divRef?.current?.offsetHeight;
       setHeight(height);
@@ -62,8 +64,8 @@ export default function PurpleLayout({
           width: '100%',
           height: '100%',
           backgroundImage: {
-            xs: `url('/images/pelcas/pelcasMobile.png')`,
-            sm: `url('/images/pelcas/pelcasDesktop.png')`,
+            // xs: `url('/images/pelcas/pelcasMobile.png')`,
+            // sm: `url('/images/pelcas/pelcasDesktop.png')`,
           },
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
@@ -76,6 +78,31 @@ export default function PurpleLayout({
       }}
     >
       {confetti && <Confetti width={width} height={height} numberOfPieces={500} tweenDuration={40000} />}
+
+      <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+        <Image
+          src={pelcasDesktop}
+          alt="background"
+          fill
+          sizes="100vw"
+          style={{
+            objectFit: 'cover',
+          }}
+          priority
+        />
+      </Box>
+      <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+        <Image
+          src={pelcasMobile}
+          alt="background"
+          fill
+          sizes="100vw"
+          style={{
+            objectFit: 'cover',
+          }}
+          priority
+        />
+      </Box>
 
       {navbar && (
         <Box

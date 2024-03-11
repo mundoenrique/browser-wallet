@@ -40,7 +40,6 @@ export default function Movements() {
 
   const theme = useTheme();
 
-  //TODO: Direccion del scroll
   const scrollHandle = useCallback(async () => {
     if (containerDesktop.current && !isLoading && currentPage <= lastPage - 1) {
       let scroll = containerDesktop.current?.scrollHeight - window.scrollY - window.innerHeight;
@@ -99,32 +98,35 @@ export default function Movements() {
         }}
         ref={containerDesktop}
       >
-        <Box sx={{ paddingX: 3 }}>
-          <Typography
-            variant="h6"
-            align="center"
-            color={fuchsiaBlue[800]}
-            sx={{ mb: '40px', display: { xs: 'none', md: 'block' } }}
-          >
-            Movimientos
-          </Typography>
+        <>
+          {isLoading ? <p>True</p> : <p>False</p>}
+          <Box sx={{ paddingX: 3 }}>
+            <Typography
+              variant="h6"
+              align="center"
+              color={fuchsiaBlue[800]}
+              sx={{ mb: '40px', display: { xs: 'none', md: 'block' } }}
+            >
+              Movimientos
+            </Typography>
 
-          <Linking
-            href="/dashboard"
-            label="Volver"
-            mb={'20px'}
-            color={fuchsiaBlue[800]}
-            iconSize={{ height: 20, width: 20 }}
-          />
-          <InputSelect
-            name="Historial"
-            options={dateRank()}
-            value={filterMonth}
-            onChange={(event: any, newValue: any) => {
-              setFilterMonth(newValue.value);
-            }}
-          />
-        </Box>
+            <Linking
+              href="/dashboard"
+              label="Volver"
+              mb={'20px'}
+              color={fuchsiaBlue[800]}
+              iconSize={{ height: 20, width: 20 }}
+            />
+            <InputSelect
+              name="Historial"
+              options={dateRank()}
+              value={filterMonth}
+              onChange={(event: any, newValue: any) => {
+                setFilterMonth(newValue.value);
+              }}
+            />
+          </Box>
+        </>
         <Box
           onScroll={() => {
             scrollHandle();
