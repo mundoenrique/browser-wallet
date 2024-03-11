@@ -17,7 +17,7 @@ export const JwtProvider: React.FC<ChildrenProps> = ({ children }) => {
       if (jwePublicKey && jwsPublicKey) {
         (async () => {
           try {
-            const response = await api.post('/auth/get-token', { jwePublicKey, jwsPublicKey });
+            const response = await api.post('/v1/gettoken', { jwePublicKey, jwsPublicKey });
             const token = response.data.data as string;
             setToken(token);
             setJwtToken(token);
