@@ -35,8 +35,8 @@ export default function InfoVerification() {
       country: 'pe',
       celular: '132156456456',
       email: 'carolina123@gmail.com',
-      term: '',
-      policy: '',
+      term: false,
+      policy: false,
     },
     resolver: yupResolver(schema),
   });

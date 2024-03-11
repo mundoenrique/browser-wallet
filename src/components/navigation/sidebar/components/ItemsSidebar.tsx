@@ -12,7 +12,7 @@ import {
   useTheme,
 } from '@mui/material';
 //Internal app
-import { useMenuStore } from '@/store';
+import { useMenuStore, useDrawerStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { ArrowsIcons, CardIcons, CashIcons, FileIcons, GainIcons, HomeIcons, KeyIcons, ToolIcons } from '%/Icons';
 
@@ -22,6 +22,7 @@ import { ArrowsIcons, CardIcons, CashIcons, FileIcons, GainIcons, HomeIcons, Key
 export default function ItemsSidebar(): JSX.Element {
   const theme = useTheme();
   const { currentItem, setCurrentItem } = useMenuStore();
+  const { updateDrawerStatus } = useDrawerStore();
   const match = useMediaQuery(theme.breakpoints.up('md'));
 
   const itemMenu = match
@@ -127,7 +128,14 @@ export default function ItemsSidebar(): JSX.Element {
               },
             }}
           >
-            <ListItem disablePadding onClick={() => setCurrentItem(menu.id)} sx={{ width: 244, mx: 'auto', my: 1 / 2 }}>
+            <ListItem
+              disablePadding
+              onClick={() => {
+                setCurrentItem(menu.id);
+                updateDrawerStatus(false);
+              }}
+              sx={{ width: 244, mx: 'auto', my: 1 / 2 }}
+            >
               <ListItemButton
                 disabled={currentItemMenu}
                 component={Link}
