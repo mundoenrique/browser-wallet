@@ -1,8 +1,8 @@
 'use client';
 
+import Image from 'next/image';
 import Confetti from 'react-confetti';
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import Arrow from '@mui/icons-material/ArrowBackIos';
 import { Box, IconButton, Typography } from '@mui/material';
 //Internal app
@@ -63,10 +63,6 @@ export default function PurpleLayout({
           position: 'absolute',
           width: '100%',
           height: '100%',
-          backgroundImage: {
-            // xs: `url('/images/pelcas/pelcasMobile.png')`,
-            // sm: `url('/images/pelcas/pelcasDesktop.png')`,
-          },
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           backgroundSize: 'cover',
