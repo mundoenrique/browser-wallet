@@ -7,6 +7,7 @@ import { ChildrenProps } from '@/interfaces';
 import Navbar from '../navigation/navbar/Navbar';
 import Sidebar from '../navigation/sidebar/Sidebar';
 import NavbarLower from '../navigation/navbar/NavbarLower';
+import { useDrawerStore } from '@/store';
 
 /**
  * Container used in the internal views of the application
@@ -15,12 +16,14 @@ import NavbarLower from '../navigation/navbar/NavbarLower';
  */
 export default function MainLayout({ children }: ChildrenProps): JSX.Element {
   const drawerWidth = 315;
-  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
+
   const [isClosing, setIsClosing] = useState<boolean>(false);
+
+  const { showStatus, updateDrawerStatus } = useDrawerStore();
 
   const handleDrawerClose = () => {
     setIsClosing(true);
-    setMobileOpen(false);
+    updateDrawerStatus(false);
   };
 
   const handleDrawerTransitionEnd = () => {
@@ -29,14 +32,14 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
 
   const handleDrawerToggle = () => {
     if (!isClosing) {
-      setMobileOpen(!mobileOpen);
+      updateDrawerStatus(!showStatus);
     }
   };
   return (
     <Box sx={{ display: 'flex' }}>
       <Navbar onClick={handleDrawerToggle} />
       <Sidebar
-        open={mobileOpen}
+        open={showStatus}
         onTransitionEnd={handleDrawerTransitionEnd}
         onClose={handleDrawerClose}
         drawerWidth={drawerWidth}

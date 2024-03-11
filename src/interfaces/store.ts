@@ -23,6 +23,17 @@ export type JwtStoreProps = {
 };
 
 /**
+ * Drawer showing
+ *
+ * @typeParam showStatus: boolean
+ * @typeParam updateDrawerStatus: (status: boolean) => void
+ */
+export interface DrawerStatus {
+  showStatus: boolean;
+  updateDrawerStatus: (status: boolean) => void;
+}
+
+/**
  * Active menu item
  *
  * @typeParam title: string
