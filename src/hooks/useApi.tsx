@@ -23,7 +23,6 @@ export function useApi() {
           }
 
           if (url !== '/auth/get-token') {
-            console.log('default JWT_HEADER: ', api.defaults.headers.common[JWT_HEADER]);
             if (!api.defaults.headers.common[JWT_HEADER]) {
               setJwtToken(token);
               request.headers[JWT_HEADER] = token;
@@ -44,15 +43,15 @@ export function useApi() {
       async (response) => {
         const url = response.config.url;
         const jwtAuth = response.headers[JWT_HEADER];
-        const jwsApiPublicKey = process.env.NEXT_PUBLIC_JWS_PUBLIC_KEY;
+        const jweApiPublicKey = process.env.NEXT_PUBLIC_JWE_PUBLIC_KEY;
 
         if (url === '/auth/generate-keys' || url === '/auth/get-token') {
           return response;
         }
 
         if (jwtAuth) {
-          if (jwsApiPublicKey) {
-            await verifyJWT(jwtAuth, jwsApiPublicKey);
+          if (jweApiPublicKey) {
+            await verifyJWT(jwtAuth, jweApiPublicKey);
 
             setToken(jwtAuth);
           } else {
