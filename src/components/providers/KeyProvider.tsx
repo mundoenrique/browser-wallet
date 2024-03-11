@@ -32,6 +32,8 @@ export const KeyProvider: React.FC<ChildrenProps> = ({ children }) => {
           console.error('Error getting keys:', error);
         }
       })();
+    } else {
+      setprivateKeys(jwePrivateKey, jwsPrivateKey);
     }
   }, [jwePrivateKey, jwePublicKey, jwsPrivateKey, jwsPublicKey, setKeys]);
 
