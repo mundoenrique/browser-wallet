@@ -4,8 +4,8 @@ import { IJWTPayload } from '@/interfaces/api';
 import { getEnvVariable, handleError, getUserInfo, handleResponse, verifyJWT, JWT_HEADER } from '@/utils';
 
 export async function GET(request: NextRequest) {
-  const apiPublicKey = getEnvVariable('PUBLIC_KEY');
-  const apiPrivateKey = getEnvVariable('PRIVATE_KEY');
+  const jweApiPublicKey = getEnvVariable('JWE_PUBLIC_KEY');
+  const jwsApiPrivateKey = getEnvVariable('JWS_PRIVATE_KEY');
 
   let jwtPayload: IJWTPayload;
 
@@ -16,12 +16,12 @@ export async function GET(request: NextRequest) {
       throw new Error('JWT was not provided. Please make sure your request includes a valid JWT.');
     }
 
-    jwtPayload = (await verifyJWT(jwt, apiPublicKey)) as unknown as IJWTPayload;
+    jwtPayload = (await verifyJWT(jwt, jweApiPublicKey)) as unknown as IJWTPayload;
   } catch (error) {
     return handleError('Error verifying JWT: ', error, 400);
   }
 
-  const appPublicKey: string = jwtPayload.publicKey;
+  const jweAppPublicKey = jwtPayload.jwePublicKey;
   const id: number = jwtPayload.id as number;
 
   /**
@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
    * Handles the creation and sending of the response
    */
   try {
-    return await handleResponse(responseObj, appPublicKey, apiPrivateKey);
+    return await handleResponse(responseObj, jweAppPublicKey, jwsApiPrivateKey);
   } catch (error) {
     return handleError((error as Error).message, error, 500);
   }

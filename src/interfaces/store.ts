@@ -1,14 +1,18 @@
 /**
  * Public and private key
  *
- * @typeParam publicKey: string | null
- * @typeParam privateKey: string | null
- * @typeParam setKeys: (_keys: { publicKey: string; privateKey: string }) => void
+ * @typeParam jwePublicKey: string | null
+ * @typeParam jwePrivateKey: string | null
+ * @typeParam jwsPublicKey: string | null
+ * @typeParam jwsPrivateKey: string | null
+ * @typeParam setKeys: (_keys: { jwePublicKey: string; jwePrivateKey: string; jwsPublicKey: string; jwsPrivateKey: string }) => void
  */
 export type KeyStoreProps = {
-  publicKey: string | null;
-  privateKey: string | null;
-  setKeys: (_keys: { publicKey: string; privateKey: string }) => void;
+  jwePublicKey: string | null;
+  jwePrivateKey: string | null;
+  jwsPublicKey: string | null;
+  jwsPrivateKey: string | null;
+  setKeys: (_keys: { jwePublicKey: string; jwePrivateKey: string; jwsPublicKey: string; jwsPrivateKey: string }) => void;
 };
 
 /**
