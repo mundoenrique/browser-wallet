@@ -1,3 +1,4 @@
+import Questions from './Questions';
 //pwa
 export { default as QRCodeReader } from './PWA/QRCodeReader';
 export { default as PWAInstallBar } from './PWA/PWAInstallBar';
@@ -52,3 +53,5 @@ export { default as StatusReport } from './errors/StatusReport';
 export { default as NotFoundError } from './errors/NotFoundError';
 //Term and conditions
 export { default as Terms } from './Terms';
+// Frequent questions
+export { default as Questions } from './Questions';

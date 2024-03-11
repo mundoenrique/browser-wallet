@@ -1,10 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 //Internal app
-import { useNavTitleStore, useMenuStore } from '@/store';
-import { Accordions, ContainerLayout, Linking } from '@/components';
+import { Accordions } from '.';
 
 const questions = [
   {
@@ -20,35 +18,11 @@ const questions = [
 ];
 
 export default function Questions() {
-  const { updateTitle } = useNavTitleStore();
-  const { setCurrentItem } = useMenuStore();
-
-  useEffect(() => {
-    updateTitle('Preguntas frecuentes');
-    setCurrentItem('help');
-  }, [updateTitle, setCurrentItem]);
-
   return (
-    <ContainerLayout>
-      <Typography
-        variant="h6"
-        color="primary"
-        sx={{ color: 'primary.main', mb: 6, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
-      >
-        Preguntas frecuentes
-      </Typography>
-
-      <Linking href="/dashboard/help" label="Volver" />
-
-      <Typography variant="body2" mb={2}>
-        Selecciona el tema que necesitas
-      </Typography>
-
-      <Stack spacing={2}>
-        {questions.map((item, i) => (
-          <Accordions key={i} title={item.title} content={item.content} />
-        ))}
-      </Stack>
-    </ContainerLayout>
+    <Stack spacing={2}>
+      {questions.map((item, i) => (
+        <Accordions key={i} title={item.title} content={item.content} />
+      ))}
+    </Stack>
   );
 }

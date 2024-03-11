@@ -63,12 +63,12 @@ export default function ItemsSidebar(): JSX.Element {
           icon: <KeyIcons />,
           id: 'password-change',
         },
-        {
-          item: 'Ayuda',
-          url: '/dashboard/help',
-          icon: <ToolIcons />,
-          id: 'help',
-        },
+        // {
+        //   item: 'Ayuda',
+        //   url: '/dashboard/help',
+        //   icon: <ToolIcons />,
+        //   id: 'help',
+        // },
         {
           item: 'Términos y condiciones',
           url: '/dashboard/legal',
@@ -89,12 +89,12 @@ export default function ItemsSidebar(): JSX.Element {
           icon: <KeyIcons />,
           id: 'password-change',
         },
-        {
-          item: 'Ayuda',
-          url: '/dashboard/help',
-          icon: <ToolIcons />,
-          id: 'help',
-        },
+        // {
+        //   item: 'Ayuda',
+        //   url: '/dashboard/help',
+        //   icon: <ToolIcons />,
+        //   id: 'help',
+        // },
         {
           item: 'Términos y condiciones',
           url: '/dashboard/legal',
