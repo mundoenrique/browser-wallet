@@ -2,9 +2,7 @@
 
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Box, Stack, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import { useMediaQuery } from '@mui/material';
+import { Box, Stack, Typography, useTheme, useMediaQuery } from '@mui/material';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
 //Internal app
 import { useNavTitleStore, useMenuStore, useConfigCardStore } from '@/store';
