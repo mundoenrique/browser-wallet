@@ -21,14 +21,12 @@ export async function POST(request: NextRequest) {
      *Create a JWT
      */
     const token = await signJWT(jwePrivateKey, { jwePublicKey, jwsPublicKey });
-    console.log('token', token);
 
     /**
      * Encrypt the response with the received public key
      */
     const responsePayload = { success: true, message: 'JWT created successfully', data: token };
     const encryptedResponse = await encryptJWE(responsePayload, jwePublicKey);
-    console.log('encryptedResponse', encryptedResponse);
 
     return Response.json({ data: encryptedResponse });
   } catch (error) {
