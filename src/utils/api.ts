@@ -57,7 +57,6 @@ api.interceptors.request.use(
   },
 
   (error) => {
-    console.error('Error in response:', error);
     return Promise.reject(error);
   }
 );
@@ -90,7 +89,6 @@ api.interceptors.response.use(
         }
       }
       const decryptedData = await decryptJWE(payload, jwePrivateKey);
-      console.log('decryptedData:', decryptedData);
       response.data = decryptedData;
     }
     return response;

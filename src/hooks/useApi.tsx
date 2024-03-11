@@ -33,7 +33,6 @@ export function useApi() {
           return request;
         },
         (error) => {
-          console.error('Error in request:', error);
           return Promise.reject(error);
         }
       );
@@ -63,7 +62,6 @@ export function useApi() {
         return response;
       },
       (error) => {
-        console.error('Error in response:', error);
         return Promise.reject(error);
       }
     );
