@@ -28,3 +28,20 @@ export interface IJWTPayload {
   publicKey: string;
   id?: number;
 }
+
+/**
+ * API Params
+ * @typeParam params: {
+ *
+ * onboardingId (Optional): string
+ *
+ * userId (Optional): string
+ *
+ * }
+ */
+export type ApiParams = {
+  params: {
+    onboardingId?: string;
+    userId?: string;
+  };
+};
