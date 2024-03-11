@@ -50,3 +50,5 @@ export { default as UserWelcome } from './UserWelcome';
 //error
 export { default as StatusReport } from './errors/StatusReport';
 export { default as NotFoundError } from './errors/NotFoundError';
+//Term and conditions
+export { default as Terms } from './Terms';
