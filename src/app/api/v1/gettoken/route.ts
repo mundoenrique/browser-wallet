@@ -13,18 +13,18 @@ export async function POST(request: NextRequest) {
      * Decrypt the JWE payload and obtain public key.
      */
     const decryptedPayload = await decryptJWE(data, jwePrivateKey);
-    const { publicKey } = decryptedPayload as { publicKey: string };
+    const { jwePublicKey, jwsPublicKey } = decryptedPayload as { jwePublicKey: string; jwsPublicKey: string };
 
     /**
      *Create a JWT
      */
-    const token = await signJWT(jwePrivateKey, { publicKey });
+    const token = await signJWT(jwePrivateKey, { jwePublicKey, jwsPublicKey });
 
     /**
      * Encrypt the response with the received public key
      */
     const responsePayload = { success: true, message: 'JWT created successfully', data: token };
-    const encryptedResponse = await encryptJWE(responsePayload, publicKey);
+    const encryptedResponse = await encryptJWE(responsePayload, jwePublicKey);
 
     return Response.json({ data: encryptedResponse });
   } catch (error) {
