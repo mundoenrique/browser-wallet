@@ -23,7 +23,7 @@ export default function InfoVerification() {
   const [editEmail, setEditEmail] = useState<boolean>(false);
   const [editCelular, setEditCelular] = useState<boolean>(false);
   const [openTerms, setOpenTerms] = useState<boolean>(false);
-  const schema = getSchema(['email', 'term', 'country', 'policy']);
+  const schema = getSchema(['email', 'term', 'country']);
 
   const schemaEmail = getSchema(['email']);
   const schemaCelular = getSchema(['celular']);
@@ -163,15 +163,11 @@ export default function InfoVerification() {
           </Card>
           <InputCheck
             name="term"
-            labelHandle="Al continuar estoy aceptando los Términos y Condiciones."
+            labelHandle="Acepto Términos y Condiciones y Política de Privacidad de Datos"
             control={control}
             onClick={handleModalTerm}
           />
-          <InputCheck
-            name="policy"
-            label="Acepto la política de privacidad de datos y cláusula de protección de datos."
-            control={control}
-          />
+          <InputCheck name="policy" label="Autorizo el envío de publicidad" control={control} />
         </Box>
         <Button
           variant="contained"
