@@ -19,9 +19,6 @@ export default function UserWelcome(): JSX.Element {
     if (!userInfo) {
       (async () => {
         try {
-          /**
-           * Obteniendo UserInfo
-           */
           const response = await api.get('/user/info');
           const data = response.data.data as string;
           setUserInfo(data);
