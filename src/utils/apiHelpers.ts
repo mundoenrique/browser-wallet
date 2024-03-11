@@ -4,7 +4,7 @@ import { JWT_HEADER, JWS_HEADER } from './constants';
 import { IEncryptedBody, IJWTPayload } from '@/interfaces';
 import { verifyJWT, encryptJWE, decryptJWE, signJWE, verifyDetachedJWS } from './jwt';
 
-type EnvVariableKey = 'API_BASE_URL' | 'PRIVATE_KEY' | 'PUBLIC_KEY';
+type EnvVariableKey = 'API_BASE_URL' | 'JWE_PRIVATE_KEY' | 'JWE_PUBLIC_KEY' | 'JWS_PRIVATE_KEY' | 'JWS_PUBLIC_KEY';
 
 /**
  * Function to handle errors in API requests.

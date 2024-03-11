@@ -5,20 +5,20 @@ import { useEffect } from 'react';
 import { verifyJWT } from '@/utils/jwt';
 import { JWT_HEADER } from '@/utils/constants';
 import { useJwtStore, useKeyStore } from '@/store';
-import { api, setJwtToken, setprivateKey } from '@/utils/api';
+import { api, setJwtToken, setprivateKeys } from '@/utils/api';
 
 export function useApi() {
   const { token, setToken } = useJwtStore();
-  const { privateKey } = useKeyStore();
+  const { jwePrivateKey, jwsPrivateKey } = useKeyStore();
 
   useEffect(() => {
-    if (token && privateKey) {
+    if (token && jwePrivateKey && jwsPrivateKey) {
       api.interceptors.request.use(
         async (request) => {
-          const apiPublicKey: string | undefined = process.env.NEXT_PUBLIC_KEY;
+          const jweApiPublicKey: string | undefined = process.env.NEXT_PUBLIC_JWE_PUBLIC_KEY;
           const url = request.url;
 
-          if (!apiPublicKey) {
+          if (!jweApiPublicKey) {
             return Promise.reject('API publicKey is not defined');
           }
 
@@ -27,7 +27,7 @@ export function useApi() {
             if (!api.defaults.headers.common[JWT_HEADER]) {
               setJwtToken(token);
               request.headers[JWT_HEADER] = token;
-              setprivateKey(privateKey);
+              setprivateKeys(jwePrivateKey, jwsPrivateKey);
             }
           }
 
@@ -44,19 +44,19 @@ export function useApi() {
       async (response) => {
         const url = response.config.url;
         const jwtAuth = response.headers[JWT_HEADER];
-        const apiPublicKey = process.env.NEXT_PUBLIC_KEY;
+        const jwsApiPublicKey = process.env.NEXT_PUBLIC_JWS_PUBLIC_KEY;
 
         if (url === '/auth/generate-keys' || url === '/auth/get-token') {
           return response;
         }
 
         if (jwtAuth) {
-          if (apiPublicKey) {
-            await verifyJWT(jwtAuth, apiPublicKey);
+          if (jwsApiPublicKey) {
+            await verifyJWT(jwtAuth, jwsApiPublicKey);
 
             setToken(jwtAuth);
           } else {
-            return Promise.reject('apiPublicKey is undefined');
+            return Promise.reject('jwsApiPublicKey is undefined');
           }
           return response;
         }
@@ -68,7 +68,7 @@ export function useApi() {
         return Promise.reject(error);
       }
     );
-  }, [privateKey, setToken, token]);
+  }, [jwePrivateKey, jwsPrivateKey, setToken, token]);
 
   return api;
 }

@@ -13,8 +13,8 @@ import {
 } from '@/utils';
 
 export async function POST(request: NextRequest) {
-  const apiPublicKey = getEnvVariable('PUBLIC_KEY');
-  const apiPrivateKey = getEnvVariable('PRIVATE_KEY');
+  const apiPublicKey = getEnvVariable('JWE_PUBLIC_KEY');
+  const apiPrivateKey = getEnvVariable('JWE_PRIVATE_KEY');
 
   let jwtPayload: IJWTPayload;
   let appPublicKey: string;

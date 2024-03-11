@@ -8,18 +8,18 @@ import { ChildrenProps } from '@/interfaces';
 import { useKeyStore, useJwtStore } from '@/store';
 
 export const JwtProvider: React.FC<ChildrenProps> = ({ children }) => {
-  const { publicKey } = useKeyStore();
+  const { jwePublicKey, jwsPublicKey } = useKeyStore();
   const { token, setToken } = useJwtStore();
   const api = useApi();
 
   useEffect(() => {
-    if (publicKey && !token) {
+    if (jwePublicKey && jwsPublicKey && !token) {
       (async () => {
         try {
           /**
            * Generando token JWT
            */
-          const response = await api.post('/auth/get-token', { publicKey });
+          const response = await api.post('/auth/get-token', { jwePublicKey, jwsPublicKey });
           const token = response.data.data as string;
           setToken(token);
           setJwtToken(token);
@@ -28,7 +28,7 @@ export const JwtProvider: React.FC<ChildrenProps> = ({ children }) => {
         }
       })();
     }
-  }, [api, publicKey, setToken, token]);
+  }, [api, jwePublicKey, jwsPublicKey, setToken, token]);
 
   return <>{children}</>;
 };

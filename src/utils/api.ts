@@ -10,10 +10,12 @@ const api = axios.create({
   },
 });
 
-let privateKey = '';
+let jwePrivateKey = '';
+let jwsPrivateKey = '';
 
-function setprivateKey(privKey: string) {
-  privateKey = privKey;
+function setprivateKeys(_jwePrivateKeyy: string, _jwsPrivateKey: string) {
+  jwePrivateKey = _jwePrivateKeyy;
+  jwsPrivateKey = _jwsPrivateKey;
 }
 
 function setJwtToken(token: string) {
@@ -22,16 +24,16 @@ function setJwtToken(token: string) {
 
 api.interceptors.request.use(
   async (request) => {
-    const apiPublicKey: string | undefined = process.env.NEXT_PUBLIC_KEY;
+    const jweApiPublicKey: string | undefined = process.env.NEXT_PUBLIC_JWE_PUBLIC_KEY;
     const url = request.url;
     const data = request.data;
 
-    if (!apiPublicKey) {
+    if (!jweApiPublicKey) {
       return Promise.reject('API publicKey is not defined');
     }
 
-    if (!privateKey) {
-      return Promise.reject('privateKey is not defined');
+    if (!jwsPrivateKey) {
+      return Promise.reject('jwsPrivateKey is not defined');
     }
 
     /**
@@ -42,12 +44,12 @@ api.interceptors.request.use(
       /**
        * Encrypt Data
        */
-      const jwe = await encryptJWE(data, apiPublicKey);
+      const jwe = await encryptJWE(data, jweApiPublicKey);
       const encryptedData = { data: jwe };
       request.data = encryptedData;
 
       if (url !== '/auth/get-token') {
-        const jws = await signJWE(privateKey, jwe);
+        const jws = await signJWE(jwsPrivateKey, jwe);
         request.headers[JWS_HEADER] = jws;
       }
     }
@@ -62,7 +64,7 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   async (response) => {
-    const apiPublicKey = process.env.NEXT_PUBLIC_KEY;
+    const jwsApiPublicKey = process.env.NEXT_PUBLIC_JWS_PUBLIC_KEY;
     const url = response.config.url;
     const data = response.data;
 
@@ -70,24 +72,24 @@ api.interceptors.response.use(
      * Response API
      */
 
-    if (url === '/auth/generate-keys' || !privateKey) {
+    if (url === '/auth/generate-keys' || !jwePrivateKey) {
       return response;
     }
 
     if (data) {
       const payload = data.data;
-      if (url !== '/auth/get-token' && apiPublicKey) {
+      if (url !== '/auth/get-token' && jwsApiPublicKey) {
         const jws = response.headers[JWS_HEADER];
         if (jws) {
           /**
            * Verify JWS...
            */
-          await verifyDetachedJWS(jws, apiPublicKey, payload);
+          await verifyDetachedJWS(jws, jwsApiPublicKey, payload);
         } else {
           return Promise.reject('JWS header not found in the response');
         }
       }
-      const decryptedData = await decryptJWE(payload, privateKey);
+      const decryptedData = await decryptJWE(payload, jwePrivateKey);
       console.log('decryptedData:', decryptedData);
       response.data = decryptedData;
     }
@@ -102,4 +104,4 @@ api.interceptors.response.use(
   }
 );
 
-export { api, setprivateKey, setJwtToken };
+export { api, setprivateKeys, setJwtToken };
