@@ -63,7 +63,7 @@ export default function Dashboard() {
           const data = response.data.data as string;
           setCardInfo(data);
         } catch (error) {
-          console.error('Error generating JWT token:', error);
+          console.error('Error generating card info:', error);
         }
       })();
     }
