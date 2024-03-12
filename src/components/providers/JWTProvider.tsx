@@ -7,7 +7,7 @@ import { setJwtToken } from '@/utils/api';
 import { ChildrenProps } from '@/interfaces';
 import { useKeyStore, useJwtStore } from '@/store';
 
-export const JwtProvider: React.FC<ChildrenProps> = ({ children }) => {
+export default function JwtProvider({ children }: ChildrenProps): JSX.Element {
   const { jwePublicKey, jwsPublicKey } = useKeyStore();
   const { token, setToken } = useJwtStore();
   const api = useApi();
@@ -32,4 +32,4 @@ export const JwtProvider: React.FC<ChildrenProps> = ({ children }) => {
   }, [api, jwePublicKey, jwsPublicKey, setToken, token]);
 
   return <>{children}</>;
-};
+}

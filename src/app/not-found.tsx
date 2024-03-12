@@ -1,5 +1,5 @@
 import { NotFoundError } from '@/components';
 
 export default function NotFound() {
-  return <NotFoundError />;
+  return <NotFoundError code={404} />;
 }

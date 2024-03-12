@@ -1,6 +1,7 @@
 import { createTheme } from '@mui/material/styles';
-
 import { Montserrat, Mulish } from 'next/font/google';
+//Internal app
+import './theme.d';
 
 const montserrat = Montserrat({
   weight: ['700'],
@@ -12,9 +13,6 @@ const mulish = Mulish({
   subsets: ['latin'],
   display: 'swap',
 });
-
-//Internal app
-import './theme.d';
 
 const success = '#99F462';
 const borderRadius = 10;
@@ -122,7 +120,11 @@ const theme = createTheme({
     },
     MuiCssBaseline: {
       styleOverrides: `
-      .eye-show {
+      body{
+        padding-right: 0 !important;
+      }
+
+      .check-circle{
         position: absolute;
         animation: circleAnimation .6s;
       }
@@ -226,6 +228,53 @@ const theme = createTheme({
             fontWeight: 700,
             width: '100%',
             '&:hover': { backgroundColor: 'white', color: fuchsiaBlue[800] },
+            '&.Mui-disabled': { opacity: 0.3 },
+          },
+        },
+        {
+          props: { variant: 'payment' },
+          style: {
+            backgroundColor: fuchsiaBlue[800],
+            color: 'white',
+            display: 'grid',
+            fontWeight: 700,
+            height: '144px',
+            justifyItems: 'center',
+            maxWidth: '144px',
+            minWidth: 'auto',
+            padding: '16px',
+            width: '100%',
+            '&:hover': {
+              backgroundColor: fuchsiaBlue[800],
+              color: 'white',
+            },
+          },
+        },
+        {
+          props: { variant: 'return' },
+          style: {
+            backgroundColor: 'transparent',
+            color: fuchsiaBlue[800],
+            fontWeight: 400,
+            fontSize: '12px',
+            lineHeight: '16px',
+            letterSpacing: '0.1px',
+            justifyContent: 'start',
+            padding: '0',
+            // margin: '0',
+            // boxShadow: 'none',
+            '&:hover': {
+              backgroundColor: 'transparent',
+              color: fuchsiaBlue[800],
+            },
+          },
+        },
+        {
+          props: { variant: 'text' },
+          style: {
+            color: slate[700],
+            fontWeight: 700,
+            '&:hover': { backgroundColor: 'transparent' },
           },
         },
       ],
@@ -364,6 +413,9 @@ const theme = createTheme({
           '&.Mui-disabled': {
             backgroundColor: fuchsiaBlue[200],
           },
+          '&.Mui-error': {
+            backgroundColor: '#FBE5E5',
+          },
         },
         input: {
           borderRadius: borderRadius,
@@ -376,6 +428,9 @@ const theme = createTheme({
         root: {
           '&:hover .MuiOutlinedInput-notchedOutline, &.Mui-focused .MuiOutlinedInput-notchedOutline': {
             borderColor: success,
+          },
+          '&.Mui-error .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#ef5350',
           },
         },
       },

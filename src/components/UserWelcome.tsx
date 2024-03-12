@@ -13,7 +13,6 @@ export default function UserWelcome(): JSX.Element {
   const [userInfo, setUserInfo] = useState<any>(null);
   const api = useApi();
   const user = 'Andrea';
-  const currentUser = user[0];
 
   useEffect(() => {
     if (!userInfo) {
@@ -31,7 +30,18 @@ export default function UserWelcome(): JSX.Element {
 
   return (
     <Box sx={{ display: 'flex', mb: { xs: 2, md: 0 }, mt: { md: 5 } }}>
-      <Avatar sx={{ width: 32, height: 32, bgcolor: fuchsiaBlue[400], mr: 3 / 2 }}>{currentUser}</Avatar>
+      <Avatar
+        sx={{
+          width: 32,
+          height: 32,
+          bgcolor: fuchsiaBlue[400],
+          fontSize: 16,
+          fontWeight: 700,
+          mr: 3 / 2,
+        }}
+      >
+        {user[0]}
+      </Avatar>
       <Box>
         <Typography variant="h6">¡Hola {userInfo ? userInfo.name : user}! 👋</Typography>
         <Typography variant="caption">Bienvenido a yiro</Typography>

@@ -25,5 +25,25 @@ export function passwordValidation(msg: string) {
     .required(msg)
     .min(6, 'La contraseña debe tener 6 caracteres')
     .max(6, 'La contraseña debe tener 6 caracteres')
-    .test('Contraseña invalida', 'Ingrese una contraseña valida', (value) => !regularExpressions.password?.test(value));
+    .test('contraseña invalida', 'La contraseña debe ser numérica', (value) => regularExpressions.numeric?.test(value))
+    .test(
+      'digitos consecutivos grupales',
+      'La contraseña no debe contener consecutivos',
+      (value) => !regularExpressions.password?.consecutive_group?.test(value)
+    )
+    .test(
+      'digitos consecutivos ascendentes',
+      'La contraseña no debe contener consecutivos',
+      (value) => !regularExpressions.password?.consecutive_ascedant?.test(value)
+    )
+    .test(
+      'digitos consecutivos descendentes',
+      'La contraseña no debe contener consecutivos',
+      (value) => !regularExpressions.password?.consecutive_descendant?.test(value)
+    )
+    .test(
+      'digitos repetidos',
+      'La contraseña no debe contener digitos repetidos',
+      (value) => !regularExpressions.password?.repeated?.test(value)
+    );
 }

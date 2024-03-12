@@ -27,6 +27,17 @@ export type JwtStoreProps = {
 };
 
 /**
+ * Drawer showing
+ *
+ * @typeParam showStatus: boolean
+ * @typeParam updateDrawerStatus: (status: boolean) => void
+ */
+export interface DrawerStatus {
+  showStatus: boolean;
+  updateDrawerStatus: (status: boolean) => void;
+}
+
+/**
  * Active menu item
  *
  * @typeParam title: string
@@ -57,6 +68,17 @@ export interface NavTitleStore {
 }
 
 /**
+ * Config Card component routing
+ *
+ * @typeParam title: string
+ * @typeParam updateTitle: (newTitle: string) => void
+ */
+export interface ConfigCardStore {
+  page: string;
+  updatePage: (_newPage: string) => void;
+}
+
+/**
  * Global status for registration flow
  *
  * @typeParam step - number
@@ -83,4 +105,25 @@ export interface RegisterStore {
   ocupationFormState: object | null;
   pepFormState: object | null;
   biometricFormState: null;
+}
+
+/** Client Store
+ *
+ * @typeParam client - Initial state {@defaultValue `null`}
+ * @typeParam setClient - Function that sets the new value
+ */
+
+export interface IClientProps {
+  date: Date;
+  name: string;
+  amount: number;
+  status: string;
+  status_type: string;
+  month: string;
+  number: string;
+}
+
+export interface ClientStore {
+  client: IClientProps | null;
+  setClient: (data: IClientProps) => void;
 }

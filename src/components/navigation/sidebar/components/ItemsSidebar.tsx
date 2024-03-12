@@ -12,7 +12,7 @@ import {
   useTheme,
 } from '@mui/material';
 //Internal app
-import { useMenuStore } from '@/store';
+import { useMenuStore, useDrawerStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { ArrowsIcons, CardIcons, CashIcons, FileIcons, GainIcons, HomeIcons, KeyIcons, ToolIcons } from '%/Icons';
 
@@ -22,9 +22,10 @@ import { ArrowsIcons, CardIcons, CashIcons, FileIcons, GainIcons, HomeIcons, Key
 export default function ItemsSidebar(): JSX.Element {
   const theme = useTheme();
   const { currentItem, setCurrentItem } = useMenuStore();
-  const matche = useMediaQuery(theme.breakpoints.up('md'));
+  const { updateDrawerStatus } = useDrawerStore();
+  const match = useMediaQuery(theme.breakpoints.up('md'));
 
-  const itemMenu = matche
+  const itemMenu = match
     ? [
         {
           item: 'Inicio',
@@ -46,9 +47,9 @@ export default function ItemsSidebar(): JSX.Element {
         },
         {
           item: 'Cobrar',
-          url: '/dashboard/payment',
+          url: '/dashboard/collect',
           icon: <CashIcons />,
-          id: 'payment',
+          id: 'collect',
         },
         {
           item: 'Configuración tarjeta',
@@ -62,12 +63,12 @@ export default function ItemsSidebar(): JSX.Element {
           icon: <KeyIcons />,
           id: 'password-change',
         },
-        {
-          item: 'Ayuda',
-          url: '/dashboard/help',
-          icon: <ToolIcons />,
-          id: 'help',
-        },
+        // {
+        //   item: 'Ayuda',
+        //   url: '/dashboard/help',
+        //   icon: <ToolIcons />,
+        //   id: 'help',
+        // },
         {
           item: 'Términos y condiciones',
           url: '/dashboard/legal',
@@ -88,12 +89,12 @@ export default function ItemsSidebar(): JSX.Element {
           icon: <KeyIcons />,
           id: 'password-change',
         },
-        {
-          item: 'Ayuda',
-          url: '/dashboard/help',
-          icon: <ToolIcons />,
-          id: 'help',
-        },
+        // {
+        //   item: 'Ayuda',
+        //   url: '/dashboard/help',
+        //   icon: <ToolIcons />,
+        //   id: 'help',
+        // },
         {
           item: 'Términos y condiciones',
           url: '/dashboard/legal',
@@ -127,7 +128,14 @@ export default function ItemsSidebar(): JSX.Element {
               },
             }}
           >
-            <ListItem disablePadding onClick={() => setCurrentItem(menu.id)} sx={{ width: 244, mx: 'auto', my: 1 / 2 }}>
+            <ListItem
+              disablePadding
+              onClick={() => {
+                setCurrentItem(menu.id);
+                updateDrawerStatus(false);
+              }}
+              sx={{ width: 244, mx: 'auto', my: 1 / 2 }}
+            >
               <ListItemButton
                 disabled={currentItemMenu}
                 component={Link}

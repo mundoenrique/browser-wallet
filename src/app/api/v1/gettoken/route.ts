@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     const { jwePublicKey, jwsPublicKey } = decryptedPayload as { jwePublicKey: string; jwsPublicKey: string };
 
     /**
-     *Create a JWT
+     * Create a JWT
      */
     const token = await signJWT(jwePrivateKey, { jwePublicKey, jwsPublicKey });
 

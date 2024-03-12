@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   description: 'Historial de movimientos en Yiro',
 };
 
-export default function DashbaordLayout({ children }: ChildrenProps) {
+export default function MovementsLayout({ children }: ChildrenProps) {
   return <>{children}</>;
 }
