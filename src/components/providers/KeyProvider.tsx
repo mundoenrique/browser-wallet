@@ -8,7 +8,7 @@ import { ChildrenProps } from '@/interfaces';
 import { useKeyStore } from '@/store/keyStore';
 import { removePEMHeadersAndFooters } from '@/utils/jwt';
 
-export const KeyProvider: React.FC<ChildrenProps> = ({ children }) => {
+export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   const { jwePublicKey, jwePrivateKey, jwsPublicKey, jwsPrivateKey, setKeys } = useKeyStore();
 
   useEffect(() => {
@@ -38,4 +38,4 @@ export const KeyProvider: React.FC<ChildrenProps> = ({ children }) => {
   }, [jwePrivateKey, jwePublicKey, jwsPrivateKey, jwsPublicKey, setKeys]);
 
   return <>{children}</>;
-};
+}

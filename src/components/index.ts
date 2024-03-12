@@ -42,8 +42,8 @@ export { default as History } from './tables/HistoryMovements';
 //accordions
 export { default as Accordions } from './Accordions';
 //providers
-export * from './providers/KeyProvider';
-export * from './providers/JWTProvider';
+export { default as KeyProvider } from './providers/KeyProvider';
+export { default as JwtProvider } from './providers/JWTProvider';
 export { default as MuiProvider } from './providers/MuiProvider';
 export { default as HydrationProvider } from './providers/HydrationProvider';
 //user welcome
@@ -55,3 +55,5 @@ export { default as NotFoundError } from './errors/NotFoundError';
 export { default as Terms } from './Terms';
 // Frequent questions
 export { default as Questions } from './Questions';
+//Pelca image
+export { default as Pelca } from './Pelca';
