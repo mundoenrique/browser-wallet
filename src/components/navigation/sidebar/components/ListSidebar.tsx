@@ -40,7 +40,7 @@ export default function ListSidebar(): JSX.Element {
       >
         <Card variant="detailCard" sx={{ mt: { xs: 10, md: 'auto' }, mb: { xs: 0, md: 'auto' } }}>
           <Box sx={{ mr: 3, display: 'flex', alignItems: 'center' }}>
-            <Image src={card} width={70} height={44} alt="Tarjeta Yiro" />
+            <Image src={card} width={70} height={44} alt="Tarjeta Yiro" priority />
           </Box>
           <Typography fontSize="14px" fontWeight={700} mr={4}>
             ¿Ya solicitaste tu tarjeta?

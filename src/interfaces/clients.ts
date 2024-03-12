@@ -1,7 +1,19 @@
-import { InputCheckGroupOptionProps, InputCheckGroupOptionsProps } from './forms';
+import { InputCheckGroupOptionProps } from './forms';
 
+/**
+ * Clients filter
+ *
+ * @typeParam handleChangeView: (view: string) => void
+ * @typeParam checkboxOptions: InputCheckGroupOptionProps[]
+ * @typeParam checkboxOptionDefault: string
+ * @typeParam onChangeCheckbox: (option: InputCheckGroupOptionProps) => void
+ * @typeParam months: InputCheckGroupOptionProps[]
+ * @typeParam onChangeMonth: (option: InputCheckGroupOptionProps) => void
+ * @typeParam monthDefault: InputCheckGroupOptionProps
+ * @typeParam handleFilters: () => void
+ */
 export interface IFiltersProps {
-  handleChangeView: () => void;
+  handleChangeView: (view: string) => void;
   checkboxOptions: InputCheckGroupOptionProps[];
   checkboxOptionDefault: string;
   onChangeCheckbox: (option: InputCheckGroupOptionProps) => void;

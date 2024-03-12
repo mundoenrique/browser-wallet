@@ -2,6 +2,10 @@
 
 import { Stack, Typography } from '@mui/material';
 
+/**
+ *
+ * Component used to display the terms and conditions and as a webview in the mobile application
+ */
 export default function Terms() {
   return (
     <>

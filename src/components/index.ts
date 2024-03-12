@@ -25,6 +25,7 @@ export { default as NavExternal } from './navigation/navbar/NavExternal';
 // export { default as ModalOtp } from './modal/ModalOtp';
 export { default as ModalResponsive } from './modal/ModalResponsive';
 //layout
+export { default as Pelca } from './Pelca';
 export { default as MainLayout } from './layout/MainLayout';
 export { default as LoginLayout } from './layout/LoginLayout';
 export { default as PurpleLayout } from './layout/PurpleLayout';
@@ -52,9 +53,7 @@ export { default as UserWelcome } from './UserWelcome';
 //error
 export { default as StatusReport } from './errors/StatusReport';
 export { default as NotFoundError } from './errors/NotFoundError';
-//Term and conditions
+//WebViews
 export { default as Terms } from './Terms';
-// Frequent questions
 export { default as Questions } from './Questions';
-//Pelca image
-export { default as Pelca } from './Pelca';
+export { default as Conditions } from './Conditions';

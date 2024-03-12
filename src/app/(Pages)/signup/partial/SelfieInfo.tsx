@@ -23,9 +23,9 @@ export default function SelfieInfo() {
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 / 2 }}>
           {match ? (
-            <Image src={selfieDesktop} height={156} width={224} alt="DNI" />
+            <Image src={selfieDesktop} height={156} width={224} alt="DNI" priority />
           ) : (
-            <Image src={selfiePwa} height={261} width={148} alt="DNI" />
+            <Image src={selfiePwa} height={261} width={148} alt="DNI" priority />
           )}
         </Box>
       </Box>

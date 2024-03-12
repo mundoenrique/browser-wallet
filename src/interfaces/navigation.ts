@@ -68,5 +68,5 @@ export interface LinkingProps {
   hidenArrow?: boolean;
   iconSize?: { height: number | string; width: number | string };
   fontSize?: number | string;
-  onClick?: () => void;
+  onClick?: (e: any) => void;
 }

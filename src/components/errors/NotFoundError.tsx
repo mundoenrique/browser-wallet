@@ -19,7 +19,7 @@ export default function NotFoundError({ code }: NotFoundErrorProps) {
     <PurpleLayout hidePelca>
       <Box sx={{ width: { xs: 'auto', sm: 542 }, display: 'grid', justifyItems: 'center', textAlign: 'center', mx: 3 }}>
         <Box mb={11 / 2}>
-          <Image src={Pet} height={229} width={336} alt="Error" />
+          <Image src={Pet} height={229} width={336} alt="Error" priority />
         </Box>
         <Stack spacing={3 / 2} mb={4}>
           <Box>

@@ -23,9 +23,9 @@ export default function DniInfo() {
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 / 2 }}>
           {match ? (
-            <Image src={dniDesktop} height={156} width={224} alt="DNI" />
+            <Image src={dniDesktop} height={156} width={224} alt="DNI" priority />
           ) : (
-            <Image src={dniPwa} height={255} width={142} alt="DNI" />
+            <Image src={dniPwa} height={255} width={142} alt="DNI" priority />
           )}
         </Box>
       </Box>

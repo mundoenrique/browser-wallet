@@ -1,12 +1,12 @@
 'use client';
-import { Box, Button, Typography } from '@mui/material';
-import { use, useCallback, useEffect, useRef, useState } from 'react';
-//Internal app
 
+import { Box, Button, Typography } from '@mui/material';
+import { useCallback, useEffect, useRef, useState } from 'react';
+//Internal app
 import { FilterIcons } from '%/Icons';
+import { ClientList, Filters } from './partial';
 import { InputCheckGroupOptionProps } from '@/interfaces';
 import theme, { fuchsiaBlue } from '@/theme/theme-default';
-import { ClientList, Filters } from './partial';
 
 const checkboxOptions = [
   { text: 'Todos mis cobros', value: '' },
@@ -36,9 +36,9 @@ export default function Clients() {
     FILTERS: 'FILTERS',
   };
 
-  const [currentView, setCurrentView] = useState(ENUM_VIEW.FILTERS);
-  const [paymentStatusCode, setPaymentStatusCode] = useState(checkboxOptions[0].value);
-  const [paymentStatus, setPaymentStatus] = useState('Todos mis cobros');
+  const [currentView, setCurrentView] = useState<string>(ENUM_VIEW.FILTERS);
+  const [paymentStatusCode, setPaymentStatusCode] = useState<string>(checkboxOptions[0].value);
+  const [paymentStatus, setPaymentStatus] = useState<string>('Todos mis cobros');
   const [month, setMonth] = useState<InputCheckGroupOptionProps>({ text: '', value: '1' });
   const [isLoading, setIsloading] = useState<boolean>(false);
   //Scroll
@@ -110,15 +110,10 @@ export default function Clients() {
   }, [scrollHandle]);
 
   useEffect(() => {
-    console.log('useEffect', currentPage);
     async () => {
       setIsloading(true);
       const response = await fetch(`./clients/api?limit=10&currentPage=${currentPage}`);
-      // const response = await fetch(
-      //   `./clients/api?limit=10&currentPage=${currentPage}&month=${month.value}&status=${paymentStatusCode}`
-      // );
       const data: any = await response.json();
-      console.log('useEffect-data:', data.data);
       const newData: never[] | any = [...clientsData, ...data.data];
       setClientsData(newData);
       setLastPage(data.metadata.LastPage);
@@ -138,25 +133,26 @@ export default function Clients() {
         overflow: 'auto',
         [theme.breakpoints.up('sm')]: {
           minHeight: 'calc(100vh + 100px)',
-          width: '360px',
+          width: 360,
         },
       }}
       ref={containerDesktop}
     >
       <Box>
-        <Box sx={{ paddingX: 3 }}>
+        <Box sx={{ px: 3 }}>
           <Typography
             variant="h6"
             align="center"
             color={fuchsiaBlue[800]}
-            sx={{ mb: '40px', display: { xs: 'none', md: 'block' } }}
+            sx={{ mb: 5, display: { xs: 'none', md: 'block' } }}
           >
             Mis clientes
           </Typography>
           <Typography
             align="center"
             color={fuchsiaBlue[800]}
-            sx={{ fontSize: '12px', lineHeight: '16px', fontWeight: 700, letterSpacing: '0.1px' }}
+            variant="caption"
+            sx={{ lineHeight: '16px', fontWeight: 700, letterSpacing: '0.1px' }}
           >
             Total deuda clientes
           </Typography>
@@ -165,7 +161,7 @@ export default function Clients() {
             variant="h6"
             align="center"
             color={fuchsiaBlue[800]}
-            sx={{ mb: '40px', display: { xs: 'none', md: 'block' } }}
+            sx={{ mb: 5, display: { xs: 'none', md: 'block' } }}
           >
             S/ 720.00
           </Typography>
@@ -187,11 +183,10 @@ export default function Clients() {
               display: 'flex',
               flexDirection: 'column',
               background: { xs: 'white', md: 'none' },
-
               borderRadius: { xs: '12px ', md: '0' },
             }}
           >
-            <Box sx={{ paddingX: 3, paddingY: 2 }}>
+            <Box sx={{ px: 3, py: 2 }}>
               <Button
                 variant="text"
                 color="secondary"
@@ -212,10 +207,10 @@ export default function Clients() {
                 display: 'block',
                 height: { xs: 'calc(100% + 100px)', md: 'auto' },
                 background: { xs: 'white', md: 'none' },
-                borderRadius: { xs: '12px ', md: '0' },
+                borderRadius: { xs: '12px', md: '0' },
                 overflow: { xs: 'auto', md: 'hidden' },
-                paddingX: 3,
-                paddingY: 2,
+                px: 3,
+                py: 2,
               }}
             >
               <ClientList data={clientsData} loading={isLoading} />
