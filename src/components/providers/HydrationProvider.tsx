@@ -21,6 +21,21 @@ export default function HydrationProvider({ children }: ChildrenProps): JSX.Elem
 
   if (isHydrated)
     return (
+      // <Box
+      //   sx={{
+      //     display: 'flex',
+      //     justifyContent: 'center',
+      //     alignItems: 'center',
+      //     height: '100vh',
+      //     zIndex: (theme) => theme.zIndex.drawer + 1,
+      //     backgroundColor: '#5F3F9850',
+      //   }}
+      // >
+      //   <Box sx={{ display: 'grid', justifyItems: 'center' }}>
+      //     <LogoPurple />
+      //     <CircularProgress thickness={5} color="primary" />
+      //   </Box>
+      // </Box>
       <PurpleLayout>
         <LogoGreen />
       </PurpleLayout>
