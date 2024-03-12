@@ -91,6 +91,7 @@ export default function Movements() {
             iconSize={{ height: 20, width: 20 }}
           />
           <InputSelect
+            label="Historial"
             name="Historial"
             options={[
               { text: 'Enero', value: '1' },
