@@ -1,5 +1,3 @@
-'use client';
-
 import { Stack } from '@mui/material';
 //Internal app
 import { Accordions } from '.';
@@ -17,6 +15,10 @@ const questions = [
   },
 ];
 
+/**
+ *
+ * Component used to display the help flow FAQ and as a webview in the mobile application
+ */
 export default function Questions() {
   return (
     <Stack spacing={2}>

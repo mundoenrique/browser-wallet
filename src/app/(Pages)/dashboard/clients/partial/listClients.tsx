@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import { useRouter } from 'next/navigation';
-import { Box, Skeleton, Typography } from '@mui/material';
-import dayjs from 'dayjs';
+'use client';
 
+import dayjs from 'dayjs';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import IconButton from '@mui/material/IconButton';
+import { Box, Skeleton, Typography, Avatar } from '@mui/material';
 //Internal app
-import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
-import { fuchsiaBlue, slate } from '@/theme/theme-default';
-import { CashIcons, DeleteIcons } from '%/Icons';
 import { useClientStore } from '@/store';
+import { CashIcons, DeleteIcons } from '%/Icons';
+import { stringAvatar } from '@/utils/toolHelper';
+import { fuchsiaBlue, slate } from '@/theme/theme-default';
 import { IClientProps, IListClientsProps } from '@/interfaces';
+import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 
 export default function ClientList(props: IListClientsProps): JSX.Element {
   const { data, loading } = props;
@@ -18,7 +19,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
   const LoadingSkeleton = [];
   for (var i = 0; i < 5; i++) {
     LoadingSkeleton.push(
-      <Box key={i} sx={{ display: 'flex', flexDirection: 'row', marginY: '8px' }}>
+      <Box key={i} sx={{ display: 'flex', flexDirection: 'row', my: 1 }}>
         <Skeleton animation="wave" variant="circular" width={40} height={40} />
         <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
           <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
@@ -69,7 +70,6 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
         },
       }}
     >
-      {/* Lista de clientes */}
       {data.map((client: IClientProps, index: number) => (
         <Box
           key={index}
@@ -77,19 +77,25 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
           sx={{
             height: '60px',
             display: 'flex',
-            backgroundColor: slate[100],
+            bgcolor: slate[100],
             alignItems: 'center',
             justifyContent: 'flex-end',
-            borderBottom: ` 1px  solid ${slate[300]}`,
-            paddingLeft: '10px',
-            gap: '12px',
+            borderBottom: ` 1px solid ${slate[300]}`,
+            pl: '10px',
+            gap: 3 / 2,
           }}
         >
           <Box>
             <Avatar
-              alt={client.name}
-              // src={`/avatars/${client.name}.jpg`}
-              sx={{ width: '28px', height: '28px', bgcolor: fuchsiaBlue[400] }}
+              sx={{
+                bgcolor: fuchsiaBlue[200],
+                color: 'primary.main',
+                fontSize: 12,
+                fontWeight: 700,
+                height: 28,
+                width: 28,
+              }}
+              {...stringAvatar(client.name)}
             />
           </Box>
           <Box
@@ -105,11 +111,11 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
             <Box>
               <Typography
                 variant="subtitle2"
-                sx={{ maxWidth: '140px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+                sx={{ maxWidth: 140, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
               >
                 {client.name}
               </Typography>
-              <Typography sx={{ fontSize: '10px', lineHeight: '16px' }}>
+              <Typography fontSize={10} lineHeight="16px">
                 {dayjs(client.date).format('MMMM D, h:mm a')}
               </Typography>
             </Box>
@@ -117,10 +123,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
               <Typography variant="subtitle2" color={client.status === 'Vencido' ? '#EE2737' : slate[700]}>
                 S/ {client.amount}
               </Typography>
-              <Typography
-                sx={{ fontSize: '10px', lineHeight: '16px' }}
-                color={client.status === 'Vencido' ? '#EE2737' : slate[700]}
-              >
+              <Typography fontSize={10} lineHeight="16px" color={client.status === 'Vencido' ? '#EE2737' : slate[700]}>
                 {client.status}
               </Typography>
             </Box>
@@ -148,8 +151,8 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
               <Box
                 sx={{
                   bgcolor: '#FBE5E5',
-                  height: '59px',
-                  width: '59px',
+                  height: 59,
+                  width: 59,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

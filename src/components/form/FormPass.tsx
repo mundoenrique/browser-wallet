@@ -1,12 +1,12 @@
 'use client';
 
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 //Internal app
 import { getSchema } from '@/config';
 import { FormPassProps } from '@/interfaces';
-import { InputCheck, InputPass, ModalResponsive } from '@/components';
+import { Conditions, InputCheck, InputPass, ModalResponsive } from '@/components';
 import { useState } from 'react';
 
 /**
@@ -68,26 +68,7 @@ export default function FormPass(porps: FormPassProps): JSX.Element {
           setShowModal(false);
         }}
       >
-        <Typography variant="h6" align="left" sx={{ mb: 3 }}>
-          Condiciones de contrato de dinero electónico.
-        </Typography>
-        <Typography textAlign={'left'} variant="body2" sx={{ mb: 3 }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
-        </Typography>
-        <Typography variant="h6" align="left" sx={{ mb: 3 }}>
-          Lorem ipsum dolor sit amet
-        </Typography>
-        <Typography textAlign={'left'} variant="body2" sx={{ mb: 3 }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
-        </Typography>
+        <Conditions />
       </ModalResponsive>
     </>
   );

@@ -93,11 +93,11 @@ export default function Collect() {
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button variant="payment" type="submit" sx={{ width: 144, p: 2 }} id="wallets">
               Billetera digital, Banco o agencia
-              <Image src={wallets} alt="Billetas y bancos" />
+              <Image src={wallets} alt="Billetas y bancos" priority />
             </Button>
             <Button variant="payment" type="submit" sx={{ width: 144, p: 2 }} id="cards">
               Tarjeta de crédito o débito
-              <Image src={franchises} alt="Billetas y bancos" />
+              <Image src={franchises} alt="Billetas y bancos" priority />
             </Button>
           </Box>
         </Box>
