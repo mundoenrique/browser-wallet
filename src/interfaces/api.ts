@@ -25,6 +25,24 @@ export interface IEncryptedBody {
  * @typeParam id (Optional): number
  */
 export interface IJWTPayload {
-  publicKey: string;
+  jwsPublicKey: string;
+  jwePublicKey: string;
   id?: number;
 }
+
+/**
+ * API Params
+ * @typeParam params: {
+ *
+ * onboardingId (Optional): string
+ *
+ * userId (Optional): string
+ *
+ * }
+ */
+export type ApiParams = {
+  params: {
+    onboardingId?: string;
+    userId?: string;
+  };
+};

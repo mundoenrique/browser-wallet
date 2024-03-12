@@ -6,8 +6,10 @@ import { KeyStoreProps } from '@/interfaces';
 /**
  * Store the public and private key
  *
- * @param publicKey - Initial state {@defaultValue `null`}
- * @param privateKey - Initial state {@defaultValue `null`}
+ * @param jwePublicKey - Initial state {@defaultValue `null`}
+ * @param jwePrivateKey - Initial state {@defaultValue `null`}
+ * @param jwsPublicKey - Initial state {@defaultValue `null`}
+ * @param jwsPrivateKey - Initial state {@defaultValue `null`}
  * @param setKeys - Function that sets the new value
  *
  * @remarks This state persists in sessionStorage
@@ -19,15 +21,23 @@ export const useKeyStore = create<KeyStoreProps>()(
         /**
          * Current public key
          */
-        publicKey: null,
+        jwePublicKey: null,
         /**
          * Current private key
          */
-        privateKey: null,
+        jwePrivateKey: null,
+        /**
+         * Current public key
+         */
+        jwsPublicKey: null,
+        /**
+         * Current private key
+         */
+        jwsPrivateKey: null,
         /**
          * Set value for public and private key
          */
-        setKeys: (keys) => set({ publicKey: keys.publicKey, privateKey: keys.privateKey }),
+        setKeys: (keys) => set({ jwePublicKey: keys.jwePublicKey, jwePrivateKey: keys.jwePrivateKey, jwsPublicKey: keys.jwsPublicKey, jwsPrivateKey: keys.jwsPrivateKey  }),
       }),
       {
         name: 'key-store',

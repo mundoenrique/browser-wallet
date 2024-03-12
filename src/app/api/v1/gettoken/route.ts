@@ -13,7 +13,6 @@ export async function POST(request: NextRequest) {
      * Decrypt the JWE payload and obtain public key.
      */
     const decryptedPayload = await decryptJWE(data, jwePrivateKey);
-
     const { jwePublicKey, jwsPublicKey } = decryptedPayload as { jwePublicKey: string; jwsPublicKey: string };
 
     /**
