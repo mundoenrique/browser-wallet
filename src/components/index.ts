@@ -40,6 +40,7 @@ export { default as Accordions } from './Accordions';
 //providers
 export * from './providers/KeyProvider';
 export * from './providers/JWTProvider';
+export * from './providers/OAuth2Provider';
 export { default as MuiProvider } from './providers/MuiProvider';
 export { default as HydrationProvider } from './providers/HydrationProvider';
 //user welcome

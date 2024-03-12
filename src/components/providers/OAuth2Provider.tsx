@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { useOAuth2Store } from '@/store';
 import { ChildrenProps } from '@/interfaces/constans';
-import { api } from '@/utils/apiGee';
+import { api, configureAccessToken } from '@/utils/apiGee';
 
 export const OAuth2Provider: React.FC<ChildrenProps> = ({ children }) => {
   const { accessToken, setAccessToken } = useOAuth2Store();
@@ -13,20 +13,19 @@ export const OAuth2Provider: React.FC<ChildrenProps> = ({ children }) => {
 
   useEffect(() => {
     if (!accessToken) {
-      const generateJwtToken = async () => {
+      (async () => {
         try {
-          console.log('Generando token OAuth2...');
           const response = await api.post('/oauth2/v1/token', { grant_type, client_id, client_secret });
           const token = response.data?.['access_token'] as string;
 
-          console.log('access_token:', token);
           setAccessToken(token);
+          configureAccessToken(token);
         } catch (error) {
           console.error('Error al generar el token OAuth2:', error);
         }
-      };
-
-      generateJwtToken();
+      })();
+    } else {
+      configureAccessToken(accessToken);
     }
   }, [accessToken, client_id, client_secret, setAccessToken]);
 
