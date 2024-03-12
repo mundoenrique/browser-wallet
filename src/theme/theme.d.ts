@@ -27,6 +27,7 @@ export declare module '@mui/material/Button' {
     primary: true;
     secondary: true;
     payment: true;
+    return: true;
   }
 }
 

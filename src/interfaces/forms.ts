@@ -1,5 +1,6 @@
 import { SxProps } from '@mui/material';
 import { DateView } from '@mui/x-date-pickers';
+import { IClientProps } from './store';
 
 /**
  * Form global variables
@@ -139,4 +140,53 @@ export interface FormPassProps {
  */
 export interface AuthOtpFormProps {
   setOTP: (_value: boolean) => void;
+}
+
+/**
+ * InputCheckGroup
+ *
+ * @typeParam name: string
+ * @typeParam onChange (Optional): (option: string) => void
+ * @typeParam defaultValue (Optional): string
+ */
+
+export interface InputCheckGroupProps {
+  name: string;
+  onChange?: (option: InputCheckGroupOptionProps) => void;
+  defaultValue?: string;
+}
+
+/**
+ * InputCheckGroup options
+ *
+ * @typeParam options: {
+ *
+ * value: string
+ * text: string
+ *
+ * }[]
+ */
+export interface InputCheckGroupOptionsProps extends InputCheckGroupProps {
+  options: InputCheckGroupOptionProps[];
+}
+
+/**
+ * InputCheckGroup option
+ *
+ * @typeParam value: string
+ * @typeParam text: string
+ */
+
+export interface InputCheckGroupOptionProps {
+  value: string;
+  text: string;
+}
+
+/**
+ * List of clients
+ * @typeParam data: IClientProps []
+ */
+export interface IListClientsProps {
+  data: IClientProps[];
+  loading: boolean;
 }

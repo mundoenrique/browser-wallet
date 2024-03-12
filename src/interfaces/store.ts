@@ -106,3 +106,24 @@ export interface RegisterStore {
   pepFormState: object | null;
   biometricFormState: null;
 }
+
+/** Client Store
+ *
+ * @typeParam client - Initial state {@defaultValue `null`}
+ * @typeParam setClient - Function that sets the new value
+ */
+
+export interface IClientProps {
+  date: Date;
+  name: string;
+  amount: number;
+  status: string;
+  status_type: string;
+  month: string;
+  number: string;
+}
+
+export interface ClientStore {
+  client: IClientProps | null;
+  setClient: (data: IClientProps) => void;
+}

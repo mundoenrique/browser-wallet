@@ -249,6 +249,33 @@ const theme = createTheme({
             },
           },
         },
+        {
+          props: { variant: 'return' },
+          style: {
+            backgroundColor: 'transparent',
+            color: fuchsiaBlue[800],
+            fontWeight: 400,
+            fontSize: '12px',
+            lineHeight: '16px',
+            letterSpacing: '0.1px',
+            justifyContent: 'start',
+            padding: '0',
+            // margin: '0',
+            // boxShadow: 'none',
+            '&:hover': {
+              backgroundColor: 'transparent',
+              color: fuchsiaBlue[800],
+            },
+          },
+        },
+        {
+          props: { variant: 'text' },
+          style: {
+            color: slate[700],
+            fontWeight: 700,
+            '&:hover': { backgroundColor: 'transparent' },
+          },
+        },
       ],
       styleOverrides: {
         root: {

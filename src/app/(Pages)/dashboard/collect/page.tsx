@@ -11,25 +11,41 @@ import { getSchema } from '@/config';
 import SuccessCards from './partial/SuccessCards';
 import wallets from '%/images/suppliers/wallets.png';
 import SuccessWallets from './partial/SuccessWallets';
-import { useMenuStore, useNavTitleStore } from '@/store';
+import { useMenuStore, useNavTitleStore, useClientStore } from '@/store';
 import franchises from '%/images/suppliers/franchises.png';
 import { ContainerLayout, InputText, InputTextPay } from '@/components';
+import { set } from 'date-fns';
 
 export default function Collect() {
   const [showActionBtn, setShowActionBtn] = useState<string>('');
   const { updateTitle } = useNavTitleStore();
   const { setCurrentItem } = useMenuStore();
+  const { client } = useClientStore();
   const schema = getSchema(['nameClient', 'numberClient', 'amount']);
 
-  const { control, handleSubmit, reset } = useForm({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    setValue: setValueClient,
+  } = useForm({
     defaultValues: { nameClient: '', numberClient: '', amount: '' },
     resolver: yupResolver(schema),
   });
+
+  console.log('client', client);
 
   useEffect(() => {
     updateTitle('Crear solicitud de cobro');
     setCurrentItem('collect');
   }, [updateTitle, setCurrentItem]);
+
+  useEffect(() => {
+    setValueClient('nameClient', client?.name);
+    setValueClient('numberClient', client?.number);
+    setValueClient('amount', client?.amount);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [client]);
 
   const rcViews: any = {
     wallets: <SuccessWallets />,

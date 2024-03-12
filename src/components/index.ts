@@ -14,6 +14,7 @@ export { default as InputSelect } from './form/InputSelect';
 export { default as InputTextPay } from './form/InputTextPay';
 export { default as InputDatePicker } from './form/InputDatePicker';
 export { default as InputCheckCondition } from './form/InputCheckCondition';
+export { default as InputCheckGroup } from './form/InputCheckGroup';
 //navigation
 export { default as Linking } from './navigation/Linking';
 export { default as Navbar } from './navigation/navbar/Navbar';

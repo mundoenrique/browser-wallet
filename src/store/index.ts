@@ -6,3 +6,4 @@ export * from '@/store/registerStore';
 export * from '@/store/navTitleStore';
 export * from '@/store/configCardStore';
 export * from '@/store/drawerStore';
+export * from '@/store/clientStore';
