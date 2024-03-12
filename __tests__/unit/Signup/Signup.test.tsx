@@ -18,7 +18,7 @@ jest.mock('mui-one-time-password-input', () => {
   };
 });
 
-describe('CardStep', () => {
+describe('Signup', () => {
   let submitButton: Node | Window;
 
   beforeEach(() => {
