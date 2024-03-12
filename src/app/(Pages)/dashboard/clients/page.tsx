@@ -84,7 +84,6 @@ export default function Clients() {
     } else if (containerPWA.current && !isLoading && currentPage <= lastPage - 1) {
       let scroll =
         containerPWA.current?.scrollHeight - containerPWA.current?.scrollTop - containerPWA.current?.clientHeight;
-      console.log(scroll);
       if (scroll <= 20) {
         setCurrentPage((prevPage) => prevPage + 1);
       }
@@ -96,7 +95,6 @@ export default function Clients() {
       `./clients/api?limit=10&currentPage=${currentPage}&month=${month.value}&status=${paymentStatusCode}`
     );
     const data: any = await response.json();
-    console.log('getClientAPI', data.data);
     const newData: never[] | any = [...clientsData, ...data.data];
     setClientsData(newData);
     setLastPage(data.metadata.LastPage);
@@ -110,20 +108,17 @@ export default function Clients() {
   }, [scrollHandle]);
 
   useEffect(() => {
-    console.log('useEffect', currentPage);
-    async () => {
+    (async () => {
       setIsloading(true);
-      const response = await fetch(`./clients/api?limit=10&currentPage=${currentPage}`);
-      // const response = await fetch(
-      //   `./clients/api?limit=10&currentPage=${currentPage}&month=${month.value}&status=${paymentStatusCode}`
-      // );
+      const response = await fetch(
+        `./clients/api?limit=10&currentPage=${currentPage}&month=${month.value}&status=${paymentStatusCode}`
+      );
       const data: any = await response.json();
-      console.log('useEffect-data:', data.data);
       const newData: never[] | any = [...clientsData, ...data.data];
       setClientsData(newData);
       setLastPage(data.metadata.LastPage);
       setIsloading(false);
-    };
+    })();
   }, [currentPage]); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (

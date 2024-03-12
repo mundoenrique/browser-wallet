@@ -229,8 +229,6 @@ export async function GET(request: NextRequest) {
     return item;
   });
 
-  console.log('datosFiltrados', datosFiltrados.length);
-
   const responseJson = {
     metadata: {
       total: clientsData.length,
