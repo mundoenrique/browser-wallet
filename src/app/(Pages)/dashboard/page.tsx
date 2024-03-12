@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
 //Internal app
-import { useMenuStore } from '@/store';
+import { useMenuStore, useOAuth2Store } from '@/store';
 import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
+import { useApi } from '@/hooks/useApiGee';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
 
 const movementData = [
@@ -42,12 +43,31 @@ const movementData = [
 ];
 
 export default function Dashboard() {
+  const [cardInfo, setCardInfo] = useState<any>(null);
+  const { accessToken } = useOAuth2Store();
+
   const { push } = useRouter();
   const { setCurrentItem } = useMenuStore();
+  const api = useApi();
+  const cardId = '502c2656-7110-4994-a820-f593e468c6b4';
 
   useEffect(() => {
     setCurrentItem('home');
   }, [setCurrentItem]);
+
+  useEffect(() => {
+    if (accessToken && !cardInfo) {
+      (async () => {
+        try {
+          const response = await api.get('/api/v1.3/cards/' + cardId);
+          const data = response.data.data as string;
+          setCardInfo(data);
+        } catch (error) {
+          console.error('Error generating JWT token:', error);
+        }
+      })();
+    }
+  }, [accessToken, api, cardInfo]);
 
   return (
     <Box
