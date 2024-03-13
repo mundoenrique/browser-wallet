@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 //Internal app
-import { decryptJWE, encryptJWE, getEnvVariable, handleError, handleResponse, signJWT } from '@/utils';
+import { decryptJWE, getEnvVariable, handleError, handleResponse, signJWT } from '@/utils';
 
 export async function POST(request: NextRequest) {
   try {
