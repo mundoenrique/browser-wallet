@@ -182,7 +182,9 @@ export async function verifyDetachedJWS(jws: string | null, publicKey: string, p
 
     const base64UrlPayload = base64url.encode(payload);
 
-    const parts = jws.split('.');
+    const jwsSlice = jws.slice(4);
+
+    const parts = jwsSlice.split('.');
     const completeJws = `${parts[0]}.${base64UrlPayload}.${parts[2]}`;
 
     await verifyJWS(completeJws, publicKey);

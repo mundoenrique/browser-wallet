@@ -50,7 +50,7 @@ api.interceptors.request.use(
 
       if (url !== '/v1/gettoken') {
         const jws = await signJWE(jwsPrivateKey, jwe);
-        request.headers[JWS_HEADER] = jws;
+        request.headers[JWS_HEADER] = `JWS ${jws}`;
       }
     }
     return request;
