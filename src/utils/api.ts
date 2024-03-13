@@ -77,7 +77,7 @@ api.interceptors.response.use(
 
     if (data) {
       const payload = data.data;
-      if (url !== '/v1/gettoken' && jwsApiPublicKey) {
+      if (jwsApiPublicKey) {
         const jws = response.headers[JWS_HEADER];
         if (jws) {
           /**
