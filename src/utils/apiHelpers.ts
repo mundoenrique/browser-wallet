@@ -120,7 +120,7 @@ export async function handleResponse(
     const jws: string = await signJWE(jwsApiPrivateKey, jwe);
 
     const response = Response.json(encryptedResponse);
-    response.headers.set(JWS_HEADER, jws);
+    response.headers.set(JWS_HEADER, `JWS ${jws}`);
 
     return response;
   } catch (error) {
