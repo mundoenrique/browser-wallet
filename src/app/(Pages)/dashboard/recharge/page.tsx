@@ -28,7 +28,6 @@ export default function Recharge() {
 
   const onSubmit = async (data: any) => {
     setOpenRc(true);
-    console.log('🚀 ~ onSubmit ~ data:', data);
   };
 
   return (
@@ -44,7 +43,7 @@ export default function Recharge() {
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           <InputTextPay name="amount" control={control} label="¿Cuánto deseas recargar?" />
           <Button variant="contained" type="submit" fullWidth>
-            Generar recarga
+            Recargar
           </Button>
         </Box>
       </ContainerLayout>
