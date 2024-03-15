@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { ChildrenProps } from '@/interfaces';
 
 export const metadata: Metadata = {
-  title: 'Ayuda',
+  title: 'Ayuda | Yiro',
   description: 'Sección de ayuda para las dudas que tengas de tu billetera Yiro',
 };
 

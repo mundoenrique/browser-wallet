@@ -1,15 +1,12 @@
 'use client';
 
 import { Box, Button } from '@mui/material';
-import Arrow from '@mui/icons-material/ArrowBackIos';
 //Internal app
 import { IFiltersProps } from '@/interfaces';
-import { InputCheckGroup, InputSelect, Linking } from '@/components';
-import { fuchsiaBlue } from '@/theme/theme-default';
+import { InputCheckGroup, InputSelect } from '@/components';
 
 export default function Filters(props: IFiltersProps): JSX.Element {
   const {
-    handleChangeView,
     checkboxOptions,
     checkboxOptionDefault,
     onChangeCheckbox,
@@ -20,14 +17,6 @@ export default function Filters(props: IFiltersProps): JSX.Element {
   } = props;
   return (
     <Box sx={{ px: 3 }} component="form" onSubmit={handleFilters}>
-      <Linking
-        onClick={handleChangeView}
-        href="#"
-        label="Volver"
-        mb={'20px'}
-        color={fuchsiaBlue[800]}
-        iconSize={{ height: 20, width: 20 }}
-      />
       <InputSelect
         name="Por el mes:"
         options={months}

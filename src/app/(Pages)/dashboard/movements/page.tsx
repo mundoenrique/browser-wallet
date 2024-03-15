@@ -81,70 +81,66 @@ export default function Movements() {
   }, [updateTitle, setCurrentItem]);
 
   return (
-    <>
-      <Box
-        sx={{
-          height: { xs: 'calc(100vh - 120px)', md: 'auto' },
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: { xs: 'start', md: 'center' },
-          width: { xs: '100%', sm: '360px' },
-          mx: { xs: 'auto', md: 0 },
-          overflow: 'auto',
-          [theme.breakpoints.up('sm')]: {
-            minHeight: 'calc(100vh + 100px)',
-            width: '360px',
-          },
-        }}
-        ref={containerDesktop}
-      >
-        <>
-          {isLoading ? <p>True</p> : <p>False</p>}
-          <Box sx={{ paddingX: 3 }}>
-            <Typography
-              variant="h6"
-              align="center"
-              color={fuchsiaBlue[800]}
-              sx={{ mb: '40px', display: { xs: 'none', md: 'block' } }}
-            >
-              Movimientos
-            </Typography>
-
-            <Linking
-              href="/dashboard"
-              label="Volver"
-              mb={'20px'}
-              color={fuchsiaBlue[800]}
-              iconSize={{ height: 20, width: 20 }}
-            />
-            <InputSelect
-              name="Historial"
-              options={dateRank()}
-              value={filterMonth}
-              onChange={(event: any, newValue: any) => {
-                setFilterMonth(newValue.value);
-              }}
-            />
-          </Box>
-        </>
-        <Box
-          onScroll={() => {
-            scrollHandle();
-          }}
-          ref={containerPWA}
-          sx={{
-            display: 'block',
-            height: { xs: 'calc(100% + 100px)', md: 'auto' },
-            background: { xs: 'white', md: 'none' },
-            borderRadius: { xs: '12px ', md: '0' },
-            overflow: { xs: 'auto', md: 'hidden' },
-            paddingX: 3,
-            paddingY: 2,
-          }}
+    <Box
+      sx={{
+        height: { xs: 'calc(100vh - 120px)', md: 'auto' },
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: { xs: 'flex-start', md: 'center' },
+        width: { xs: '100%', md: 360 },
+        overflow: 'auto',
+        [theme.breakpoints.up('md')]: {
+          minHeight: 'calc(100vh + 100px)',
+          width: 360,
+        },
+      }}
+      ref={containerDesktop}
+    >
+      <Box sx={{ px: 3 }}>
+        <Typography
+          variant="h6"
+          align="center"
+          color={fuchsiaBlue[800]}
+          sx={{ mb: 5, display: { xs: 'none', md: 'block' } }}
         >
-          <LastMovements data={movementData} loading={isLoading} />
-        </Box>
+          Movimientos
+        </Typography>
+
+        <Linking
+          href="/dashboard"
+          label="Volver"
+          mb={'20px'}
+          color={fuchsiaBlue[800]}
+          iconSize={{ height: 20, width: 20 }}
+        />
+
+        <InputSelect
+          name="Historial"
+          options={dateRank()}
+          value={filterMonth}
+          onChange={(e: any, newValue: any) => {
+            setFilterMonth(newValue.value);
+          }}
+        />
       </Box>
-    </>
+
+      <Box
+        onScroll={() => {
+          scrollHandle();
+        }}
+        ref={containerPWA}
+        sx={{
+          display: 'block',
+          height: { xs: 'calc(100% + 100px)', md: 'auto' },
+          background: { xs: 'white', md: 'none' },
+          borderRadius: { xs: '14px ', md: '0' },
+          overflow: { xs: 'auto', md: 'hidden' },
+          px: 3,
+          py: 2,
+        }}
+      >
+        <LastMovements data={movementData} loading={isLoading} />
+      </Box>
+    </Box>
   );
 }

@@ -5,6 +5,7 @@ import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
 import { FormControl, FormHelperText, Checkbox, FormControlLabel, FormGroup, Typography } from '@mui/material';
 //Internal App
+import { OffCheck, OnCheck } from '%/Icons';
 import { InputCheckProps } from '@/interfaces';
 
 function InputCheckMUI(props: InputCheckProps): JSX.Element {
@@ -29,7 +30,9 @@ function InputCheckMUI(props: InputCheckProps): JSX.Element {
           value={value}
           disabled={disabled}
           checked
-          control={<Checkbox id={name} checked={checked} onChange={onChange} />}
+          control={
+            <Checkbox id={name} checked={checked} icon={<OffCheck />} checkedIcon={<OnCheck />} onChange={onChange} />
+          }
           label={
             labelHandle ? (
               <Typography onClick={onClick} variant="body2" sx={{ textDecoration: 'underline' }}>
@@ -40,7 +43,7 @@ function InputCheckMUI(props: InputCheckProps): JSX.Element {
             )
           }
           sx={{ alignItems: 'flex-start', '&>.MuiFormControlLabel-label': { fontSize: 14 }, mr: 0 }}
-        ></FormControlLabel>
+        />
       </FormGroup>
       <FormHelperText
         sx={{

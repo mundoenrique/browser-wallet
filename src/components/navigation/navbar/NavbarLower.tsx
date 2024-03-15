@@ -54,7 +54,7 @@ export default function NavbarLower(): JSX.Element {
         bottom: 0,
         position: 'fixed',
         width: '100%',
-        boxShadow: 1,
+        boxShadow: '0 4px 24px 0px rgba(0, 0, 0, 0.5);',
         zIndex: 1199,
       }}
     >

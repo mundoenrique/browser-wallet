@@ -1,4 +1,3 @@
-import Questions from './Questions';
 //pwa
 export { default as QRCodeReader } from './PWA/QRCodeReader';
 export { default as PWAInstallBar } from './PWA/PWAInstallBar';

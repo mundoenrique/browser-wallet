@@ -1,12 +1,12 @@
 'use client';
 
+import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import { useForm } from 'react-hook-form';
 import ModalOtp from '@/components/modal/ModalOtp';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavTitleStore, useConfigCardStore } from '@/store';
 import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/components';
 

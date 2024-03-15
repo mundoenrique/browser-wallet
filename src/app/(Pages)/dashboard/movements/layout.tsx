@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { ChildrenProps } from '@/interfaces';
 
 export const metadata: Metadata = {
-  title: 'Movimientos',
+  title: 'Movimientos | Yiro',
   description: 'Historial de movimientos en Yiro',
 };
 

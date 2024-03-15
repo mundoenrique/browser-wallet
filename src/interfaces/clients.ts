@@ -3,7 +3,6 @@ import { InputCheckGroupOptionProps } from './forms';
 /**
  * Clients filter
  *
- * @typeParam handleChangeView: (view: string) => void
  * @typeParam checkboxOptions: InputCheckGroupOptionProps[]
  * @typeParam checkboxOptionDefault: string
  * @typeParam onChangeCheckbox: (option: InputCheckGroupOptionProps) => void
@@ -13,7 +12,6 @@ import { InputCheckGroupOptionProps } from './forms';
  * @typeParam handleFilters: () => void
  */
 export interface IFiltersProps {
-  handleChangeView: (view: string) => void;
   checkboxOptions: InputCheckGroupOptionProps[];
   checkboxOptionDefault: string;
   onChangeCheckbox: (option: InputCheckGroupOptionProps) => void;
