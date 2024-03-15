@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { ChildrenProps } from '@/interfaces';
 
 export const metadata: Metadata = {
-  title: 'Onboarding',
+  title: 'Registro',
   description: 'Proceso de registro en tu bolsillo',
 };
 

@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { ChildrenProps } from '@/interfaces';
 
 export const metadata: Metadata = {
-  title: 'Configuración Tarjeta',
+  title: 'Configuración Tarjeta | Yiro',
   description: 'Configuración de la tarjeta física o virtual Yiro',
 };
 

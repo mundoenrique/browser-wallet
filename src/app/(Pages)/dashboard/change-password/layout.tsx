@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { ChildrenProps } from '@/interfaces';
 
 export const metadata: Metadata = {
-  title: 'Cambiar contraseña',
+  title: 'Cambiar contraseña | Yiro',
   description: 'Cambiar contraseña en Yiro',
 };
 

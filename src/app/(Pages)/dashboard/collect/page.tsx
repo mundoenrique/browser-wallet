@@ -11,10 +11,9 @@ import { getSchema } from '@/config';
 import SuccessCards from './partial/SuccessCards';
 import wallets from '%/images/suppliers/wallets.png';
 import SuccessWallets from './partial/SuccessWallets';
-import { useMenuStore, useNavTitleStore, useClientStore } from '@/store';
 import franchises from '%/images/suppliers/franchises.png';
 import { ContainerLayout, InputText, InputTextPay } from '@/components';
-import { set } from 'date-fns';
+import { useMenuStore, useNavTitleStore, useClientStore } from '@/store';
 
 export default function Collect() {
   const [showActionBtn, setShowActionBtn] = useState<string>('');
@@ -32,8 +31,6 @@ export default function Collect() {
     defaultValues: { nameClient: '', numberClient: '', amount: '' },
     resolver: yupResolver(schema),
   });
-
-  console.log('client', client);
 
   useEffect(() => {
     updateTitle('Crear solicitud de cobro');

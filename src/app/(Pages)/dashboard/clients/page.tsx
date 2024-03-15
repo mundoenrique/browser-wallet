@@ -1,12 +1,14 @@
 'use client';
 
-import { Box, Button, Typography } from '@mui/material';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Avatar, Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { FilterIcons } from '%/Icons';
 import { ClientList, Filters } from './partial';
+import { fuchsiaBlue } from '@/theme/theme-default';
+import { Linking, ModalResponsive } from '@/components';
+import { useMenuStore, useNavTitleStore } from '@/store';
 import { InputCheckGroupOptionProps } from '@/interfaces';
-import theme, { fuchsiaBlue } from '@/theme/theme-default';
 
 const checkboxOptions = [
   { text: 'Todos mis cobros', value: '' },
@@ -32,11 +34,16 @@ const months = [
 
 export default function Clients() {
   const ENUM_VIEW = {
-    PRINCIPAL: 'PRINCIPAL',
+    MAIN: 'MAIN',
     FILTERS: 'FILTERS',
   };
 
-  const [currentView, setCurrentView] = useState<string>(ENUM_VIEW.FILTERS);
+  const theme = useTheme();
+  const { updateTitle } = useNavTitleStore();
+  const { setCurrentItem } = useMenuStore();
+  const [open, setOpen] = useState<boolean>(false);
+  const match = useMediaQuery(theme.breakpoints.up('md'));
+  const [currentView, setCurrentView] = useState<string>(ENUM_VIEW.MAIN);
   const [paymentStatusCode, setPaymentStatusCode] = useState<string>(checkboxOptions[0].value);
   const [paymentStatus, setPaymentStatus] = useState<string>('Todos mis cobros');
   const [month, setMonth] = useState<InputCheckGroupOptionProps>({ text: '', value: '1' });
@@ -47,15 +54,12 @@ export default function Clients() {
   const [lastPage, setLastPage] = useState<number>(1);
   const containerDesktop = useRef<HTMLDivElement | null>(null);
   const containerPWA = useRef<HTMLDivElement | null>(null);
+  const filterActive = currentView === ENUM_VIEW.FILTERS;
 
   const reset = () => {
     setCurrentPage(1);
     setClientsData([]);
     setLastPage(1);
-  };
-
-  const handleChangeView = (view: string) => {
-    setCurrentView(view);
   };
 
   const onChangeCheckbox = (item: InputCheckGroupOptionProps) => {
@@ -69,7 +73,7 @@ export default function Clients() {
   };
 
   const handleFilters = async () => {
-    setCurrentView(ENUM_VIEW.PRINCIPAL);
+    setCurrentView(ENUM_VIEW.MAIN);
     reset();
     await getClientAPI();
   };
@@ -121,24 +125,28 @@ export default function Clients() {
     })();
   }, [currentPage]); //eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    updateTitle('Mis clientes');
+    setCurrentItem('Inicio');
+  }, [updateTitle, setCurrentItem]);
+
   return (
-    <Box
-      sx={{
-        minHeight: { xs: 'calc(100vh - 120px)', md: '1000px' },
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: { xs: 'start', md: 'center' },
-        width: 360,
-        mx: { xs: 'auto', md: 0 },
-        overflow: 'auto',
-        [theme.breakpoints.up('sm')]: {
-          minHeight: 'calc(100vh + 100px)',
-          width: 360,
-        },
-      }}
-      ref={containerDesktop}
-    >
-      <Box>
+    <>
+      <Box
+        sx={{
+          height: { xs: 'calc(100vh - 120px)', md: 'auto' },
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: { xs: 'flex-start', md: 'center' },
+          width: { xs: '100%', md: 360 },
+          overflow: 'auto',
+          [theme.breakpoints.up('md')]: {
+            minHeight: 'calc(100vh + 100px)',
+            width: 360,
+          },
+        }}
+        ref={containerDesktop}
+      >
         <Box sx={{ px: 3 }}>
           <Typography
             variant="h6"
@@ -148,76 +156,83 @@ export default function Clients() {
           >
             Mis clientes
           </Typography>
-          <Typography
-            align="center"
-            color={fuchsiaBlue[800]}
-            variant="caption"
-            sx={{ lineHeight: '16px', fontWeight: 700, letterSpacing: '0.1px' }}
-          >
+
+          <Typography align="center" color={fuchsiaBlue[800]} variant="body1" fontWeight={700} fontSize={12}>
             Total deuda clientes
           </Typography>
 
-          <Typography
-            variant="h6"
-            align="center"
-            color={fuchsiaBlue[800]}
-            sx={{ mb: 5, display: { xs: 'none', md: 'block' } }}
-          >
+          <Typography variant="h6" align="center" color={fuchsiaBlue[800]} sx={{ mb: 2 }}>
             S/ 720.00
           </Typography>
+
+          <Linking
+            onClick={() => (filterActive ? setCurrentView(ENUM_VIEW.MAIN) : undefined)}
+            href={!filterActive ? '/dashboard' : '#'}
+            label="Volver"
+            mb={2}
+            color={fuchsiaBlue[800]}
+            iconSize={{ height: 20, width: 20 }}
+          />
         </Box>
-        {currentView === ENUM_VIEW.FILTERS ? (
+
+        {filterActive ? (
           <Filters
-            handleChangeView={handleChangeView}
-            checkboxOptions={checkboxOptions}
-            checkboxOptionDefault={paymentStatusCode}
-            onChangeCheckbox={(item: InputCheckGroupOptionProps) => onChangeCheckbox(item)}
             months={months}
-            onChangeMonth={(item: InputCheckGroupOptionProps) => onChangeMonth(item)}
             monthDefault={month}
+            checkboxOptions={checkboxOptions}
             handleFilters={() => handleFilters()}
+            checkboxOptionDefault={paymentStatusCode}
+            onChangeMonth={(item: InputCheckGroupOptionProps) => onChangeMonth(item)}
+            onChangeCheckbox={(item: InputCheckGroupOptionProps) => onChangeCheckbox(item)}
           />
         ) : (
           <Box
+            onScroll={() => {
+              scrollHandle();
+            }}
+            ref={containerPWA}
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
+              display: 'block',
+              height: { xs: 'calc(100% + 100px)', md: 'auto' },
               background: { xs: 'white', md: 'none' },
-              borderRadius: { xs: '12px ', md: '0' },
+              borderRadius: { xs: '12px', md: '0' },
+              overflow: { xs: 'auto', md: 'hidden' },
+              px: 3,
+              pb: 2,
             }}
           >
-            <Box sx={{ px: 3, py: 2 }}>
-              <Button
-                variant="text"
-                color="secondary"
-                startIcon={<FilterIcons color="primary" />}
-                onClick={() => setCurrentView(ENUM_VIEW.FILTERS)}
-              >
-                {month.text && paymentStatus && `${month.text} - ${paymentStatus}  `}
-                {month.text && !paymentStatus && `${month.text}`}
-                {!month.text && paymentStatus && `${paymentStatus}`}
-              </Button>
-            </Box>
-            <Box
-              onScroll={() => {
-                scrollHandle();
-              }}
-              ref={containerPWA}
-              sx={{
-                display: 'block',
-                height: { xs: 'calc(100% + 100px)', md: 'auto' },
-                background: { xs: 'white', md: 'none' },
-                borderRadius: { xs: '12px', md: '0' },
-                overflow: { xs: 'auto', md: 'hidden' },
-                px: 3,
-                py: 2,
-              }}
+            <Button
+              variant="text"
+              color="secondary"
+              startIcon={
+                <Avatar sx={{ width: 28, height: 28, bgcolor: fuchsiaBlue[100] }}>
+                  <FilterIcons color="primary" fontSize="small" />
+                </Avatar>
+              }
+              onClick={() => (match ? setCurrentView(ENUM_VIEW.FILTERS) : setOpen(true))}
             >
-              <ClientList data={clientsData} loading={isLoading} />
-            </Box>
+              {month.text && paymentStatus && `${month.text} - ${paymentStatus}  `}
+              {month.text && !paymentStatus && `${month.text}`}
+              {!month.text && paymentStatus && `${paymentStatus}`}
+            </Button>
+            <ClientList data={clientsData} loading={isLoading} />
           </Box>
         )}
       </Box>
-    </Box>
+
+      <ModalResponsive open={open} handleClose={() => setOpen(false)}>
+        <Box sx={{ textAlign: 'start' }}>
+          <Filters
+            months={months}
+            monthDefault={month}
+            checkboxOptions={checkboxOptions}
+            handleFilters={() => handleFilters()}
+            checkboxOptionDefault={paymentStatusCode}
+            onChangeMonth={(item: InputCheckGroupOptionProps) => onChangeMonth(item)}
+            onChangeCheckbox={(item: InputCheckGroupOptionProps) => onChangeCheckbox(item)}
+          />
+        </Box>
+      </ModalResponsive>
+    </>
   );
 }

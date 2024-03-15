@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { ChildrenProps } from '@/interfaces';
 
 export const metadata: Metadata = {
-  title: 'Transferir',
+  title: 'Transferir | Yiro',
   description: 'Transfiere dinero a otro consultor con tu Yiro',
 };
 
