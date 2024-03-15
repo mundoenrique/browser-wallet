@@ -3,22 +3,45 @@
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
-import { FormControl, FormHelperText, Checkbox, FormControlLabel, FormGroup, Box, Typography } from '@mui/material';
+import { FormControl, FormHelperText, Checkbox, FormControlLabel, FormGroup, Typography } from '@mui/material';
 //Internal App
+import { OffCheck, OnCheck } from '%/Icons';
 import { InputCheckProps } from '@/interfaces';
 
 function InputCheckMUI(props: InputCheckProps): JSX.Element {
-  const { name, label, labelError, onChange, checked, value, error, disabled, mtError = 0 } = props;
+  const {
+    name,
+    label,
+    labelError,
+    onChange,
+    checked,
+    value,
+    error,
+    disabled,
+    mtError = 0,
+    labelHandle,
+    onClick,
+  } = props;
 
   return (
-    <FormControl component="fieldset" variant="standard" fullWidth>
+    <FormControl component="fieldset" variant="standard" fullWidth sx={{ width: labelHandle ? 'auto' : '100%' }}>
       <FormGroup>
         <FormControlLabel
           value={value}
           disabled={disabled}
           checked
-          control={<Checkbox id={name} checked={checked} onChange={onChange} />}
-          label={label}
+          control={
+            <Checkbox id={name} checked={checked} icon={<OffCheck />} checkedIcon={<OnCheck />} onChange={onChange} />
+          }
+          label={
+            labelHandle ? (
+              <Typography onClick={onClick} variant="body2" sx={{ textDecoration: 'underline' }}>
+                {labelHandle}
+              </Typography>
+            ) : (
+              label
+            )
+          }
           sx={{ alignItems: 'flex-start', '&>.MuiFormControlLabel-label': { fontSize: 14 }, mr: 0 }}
         />
       </FormGroup>
@@ -70,50 +93,22 @@ export default function InputCheck(props: InputCheckProps): JSX.Element {
         <Controller
           name={name}
           control={control}
-          render={({ field, fieldState: { error } }) =>
-            !labelHandle ? (
-              <InputCheckMUI
-                name={name}
-                value={field.value}
-                checked={field.value ? true : false}
-                onChange={(e) => {
-                  setIsChecked(!isChecked);
-                  onChange && onChange(e);
-                  field.onChange(e);
-                }}
-                error={error}
-                {...restProps}
-              />
-            ) : (
-              <Box sx={{ display: 'flex', alignContent: 'center' }}>
-                <InputCheckMUI
-                  name={name}
-                  value={field.value}
-                  checked={field.value ? true : false}
-                  onChange={(e) => {
-                    setIsChecked(!isChecked);
-                    onChange && onChange(e);
-                    field.onChange(e);
-                  }}
-                  mtError={3}
-                  error={error}
-                  {...restProps}
-                />
-                <Typography
-                  onClick={onClick}
-                  variant="body2"
-                  sx={{
-                    textDecoration: 'underline',
-                    position: 'absolute',
-                    ml: '31px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {labelHandle}
-                </Typography>
-              </Box>
-            )
-          }
+          render={({ field, fieldState: { error } }) => (
+            <InputCheckMUI
+              name={name}
+              value={field.value}
+              checked={field.value ? true : false}
+              onChange={(e) => {
+                setIsChecked(!isChecked);
+                onChange && onChange(e);
+                field.onChange(e);
+              }}
+              error={error}
+              labelHandle={labelHandle}
+              onClick={onClick}
+              {...restProps}
+            />
+          )}
         />
       ) : (
         <InputCheckMUI name={name} onChange={onChange} onClick={onClick} {...restProps} />

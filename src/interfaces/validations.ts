@@ -30,7 +30,12 @@ export interface RegularExpressions {
   emailValid: RegExp;
   alphanumunder: RegExp;
   alphanum: RegExp;
-  password: RegExp;
+  password: {
+    consecutive_group?: RegExp;
+    consecutive_ascedant?: RegExp;
+    consecutive_descendant?: RegExp;
+    repeated: RegExp;
+  };
   numeric: RegExp;
   phone: RegExp;
   phoneMasked: RegExp;

@@ -59,8 +59,14 @@ export const validationRules: ValidationRule = {
   }),
   relatives: yup.array().of(
     yup.object().shape({
-      fullName: yup.string().required('Ingresa el nombre completo'),
-      documentNumber: yup.string().required('Ingresa el número de identificación'),
+      fullName: yup
+        .string()
+        .required('Ingresa el nombre completo')
+        .test('amountValid', 'El campo es de texto', (value) => regularExpressions.namesValid?.test(value)),
+      documentNumber: yup
+        .string()
+        .required('Ingresa el número de identificación')
+        .test('amountValid', 'El campo es númerico', (value) => regularExpressions.numeric?.test(value)),
       documentType: yup.string().required('Selecciona el tipo de documento '),
     })
   ),
@@ -69,6 +75,14 @@ export const validationRules: ValidationRule = {
   confirmPin: pinValidation('Confirma tu nuevo Pin').oneOf([yup.ref('newPin')], 'Los Pines no coinciden'),
   amount: yup
     .string()
-    .required('Ingresa un monto')
-    .test('amountValid', 'Ingresa un monto', (value) => regularExpressions.onlyNumber?.test(value)),
+    .required('Campo obligatorio')
+    .test('amountValid', 'Ingresa un monto', (value) => regularExpressions.floatAmount?.test(value)),
+  nameClient: yup
+    .string()
+    .required('Campo obligatorio')
+    .test('nameClientValid', 'Ingrese un nombre valido', (value) => regularExpressions.alphaName?.test(value)),
+  numberClient: yup
+    .string()
+    .required('Campo obligatorio')
+    .test('numberClientValid', 'Ingrese un teléfono valido', (value) => regularExpressions.phone?.test(value)),
 };

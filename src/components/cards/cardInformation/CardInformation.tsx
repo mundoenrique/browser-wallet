@@ -3,9 +3,9 @@
 import { useState } from 'react';
 //Internal app
 import ModalOtp from '@/components/modal/ModalOtp';
-import BackInformation from './components/BackInformation';
-import FrontInformation from './components/FrontInformation';
-import { BodyCard, BodyCardAction } from './components/BodyCards';
+import BackInformation from './partial/BackInformation';
+import FrontInformation from './partial/FrontInformation';
+import { BodyCard, BodyCardAction } from './partial/BodyCards';
 
 /**
  * Shows the 3D card with all the cardholder information

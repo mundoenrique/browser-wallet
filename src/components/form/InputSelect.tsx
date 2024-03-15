@@ -24,11 +24,11 @@ function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
           disabled={disabled}
           readOnly={readOnly}
           getOptionLabel={(option) => {
-            const getData = options.find((obj) => (obj as any).value === option);
+            const getData = options.find((obj) => (obj as any).value == option);
             return option.text ?? getData?.text;
           }}
           isOptionEqualToValue={(option) => {
-            return option.value === value;
+            return option.value == value;
           }}
           onChange={onChange}
           sx={{ width: '100%' }}
@@ -98,7 +98,7 @@ export default function InputSelect(props: InputOptionsProps): JSX.Element {
           }}
         />
       ) : (
-        <AutocompleteMUI name={name} onChange={onChange} options={options} />
+        <AutocompleteMUI name={name} onChange={onChange} options={options} {...restProps} />
       )}
     </>
   );

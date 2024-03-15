@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 //Internal
-import OTP from './components/OTP';
-import UpdatePass from './components/UpdatePass';
+import OTP from './partial/OTP';
+import UpdatePass from './partial/UpdatePass';
 
 export default function Recover() {
   const [otpValid, setOtpValid] = useState<boolean>(false);

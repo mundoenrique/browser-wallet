@@ -6,7 +6,6 @@
  * @typeParam bigModal (Optional): boolean
  * @typeParam left (Optional): boolean
  * @typeParam navbar (Optional): boolean
- * @typeParam HandleNavbar (Optional): () => void
  * @typeParam confetti (Optional): boolean
  */
 export interface PurpleLayoutProps {
@@ -15,7 +14,6 @@ export interface PurpleLayoutProps {
   bigModal?: boolean;
   left?: boolean;
   navbar?: boolean;
-  HandleNavbar?: () => void;
   confetti?: boolean;
 }
 
@@ -41,4 +39,13 @@ export interface StatusReportProps {
   title: string;
   description: string;
   onClick: () => void;
+}
+
+/**
+ * Not found Error
+ *
+ * @typeParam code: 404 | 500;
+ */
+export interface NotFoundErrorProps {
+  code: 404 | 500;
 }

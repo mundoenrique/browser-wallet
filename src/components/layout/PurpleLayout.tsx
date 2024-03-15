@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import Arrow from '@mui/icons-material/ArrowBackIos';
 import { Box, IconButton, Typography } from '@mui/material';
 //Internal app
+import { Pelca } from '..';
 import { useNavTitleStore } from '@/store';
 import { PurpleLayoutProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
@@ -17,7 +18,6 @@ import { fuchsiaBlue } from '@/theme/theme-default';
  * @param bigModal - Overview.
  * @param left - Content on the left.
  * @param navbar - Show the navigation bar.
- * @param HandleNavbar - Navigation management function.}
  * @param confetti - Show confetti animation.
  */
 export default function PurpleLayout({
@@ -26,17 +26,17 @@ export default function PurpleLayout({
   bigModal,
   left,
   navbar,
-  HandleNavbar,
   confetti,
 }: PurpleLayoutProps): JSX.Element {
   const { title } = useNavTitleStore();
   const [width, setWidth] = useState<number>();
   const [height, setHeight] = useState<number>();
+  const [hideLayout, setHideLayout] = useState<boolean>(true);
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (divRef.current) {
-      const width = divRef.current.offsetWidth;
+      const width = divRef.current.clientWidth;
       setWidth(width);
       const height = divRef?.current?.offsetHeight;
       setHeight(height);
@@ -47,7 +47,7 @@ export default function PurpleLayout({
     <Box
       ref={divRef}
       sx={{
-        display: 'flex',
+        display: hideLayout ? 'flex' : 'none',
         flexDirection: 'column',
         alignItems: left ? 'flex-start' : 'center',
         justifyContent: 'center',
@@ -57,26 +57,14 @@ export default function PurpleLayout({
         zIndex: bigModal ? 1200 : 'initial',
         width: bigModal ? { xs: '100%', md: 'calc(100% - 315px)' } : 'auto',
         top: bigModal ? 0 : 'auto',
-        '&:before': {
-          content: hidePelca ? 'none' : `' '`,
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          backgroundImage: {
-            xs: `url('/images/pelcas/pelcasMobile.png')`,
-            sm: `url('/images/pelcas/pelcasDesktop.png')`,
-          },
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-          top: { xs: 0, sm: '-70px' },
-        },
         '& > canvas': {
           zIndex: '0 !important',
         },
       }}
     >
       {confetti && <Confetti width={width} height={height} numberOfPieces={500} tweenDuration={40000} />}
+
+      {!hidePelca && <Pelca />}
 
       {navbar && (
         <Box
@@ -90,7 +78,7 @@ export default function PurpleLayout({
             mb: 3,
           }}
         >
-          <IconButton onClick={HandleNavbar}>
+          <IconButton onClick={() => setHideLayout(!hideLayout)}>
             <Arrow sx={{ color: 'white' }} />
           </IconButton>
 
@@ -101,7 +89,7 @@ export default function PurpleLayout({
           <Box width={40} />
         </Box>
       )}
-      {children}
+      <Box sx={{ zIndex: 2, mx: { xs: 'auto', md: 0 } }}>{children}</Box>
     </Box>
   );
 }

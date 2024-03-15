@@ -91,7 +91,7 @@ export default function Dashboard() {
           <CardInformation />
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3, mb: 2 }}>
             <CardDebt onClick={() => push('/dashboard/debt')} />
-            <CardDebt OweMe />
+            <CardDebt OweMe onClick={() => push('/dashboard/clients')} />
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
             <Typography variant="subtitle1">Últimos movimientos</Typography>

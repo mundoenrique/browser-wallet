@@ -2,6 +2,7 @@
 
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
+import { Pelca } from '..';
 import { ChildrenProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
@@ -18,22 +19,9 @@ const ContainerLayout = ({ children }: ChildrenProps) => {
         minHeight: { xs: '85%', sm: '100vh' },
         position: { xs: 'absolute', sm: 'initial' },
         width: { xs: '100%', sm: 'auto' },
-        '&::before': {
-          content: `' '`,
-          backgroundImage: {
-            xs: `url('/images/pelcas/pelcasMobile.png')`,
-            sm: `url('/images/pelcas/pelcasDesktop.png')`,
-          },
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: { xs: 'initial', sm: 'center' },
-          backgroundSize: 'cover',
-          height: '100%',
-          position: 'absolute',
-          top: { xs: 0, sm: '-70px' },
-          width: '100%',
-        },
       }}
     >
+      <Pelca />
       {children}
     </Box>
   );
@@ -46,11 +34,11 @@ const ContainerLayout = ({ children }: ChildrenProps) => {
  */
 export default function LoginLayout({ children }: ChildrenProps): JSX.Element {
   const theme = useTheme();
-  const matche = useMediaQuery(theme.breakpoints.down('sm'));
+  const match = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <>
-      {matche ? (
+      {match ? (
         <Box
           sx={{
             backgroundColor: 'secondary.main',
