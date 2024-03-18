@@ -9,7 +9,7 @@ import LogoGreen from '%/images/LogoGreen';
 import { PurpleLayout } from '@/components';
 
 export default function Ending() {
-  const { push } = useRouter();
+  const { replace } = useRouter();
   const { setShowHeader } = useRegisterStore();
 
   //TODO:timeEvent es de implementacion temporal
@@ -26,10 +26,10 @@ export default function Ending() {
           return timeEvent(1500);
         })
         .then(() => {
-          push('/signin');
+          replace('/signin');
         });
     })();
-  }, [setShowHeader, push]);
+  }, [setShowHeader, replace]);
 
   return (
     <PurpleLayout>

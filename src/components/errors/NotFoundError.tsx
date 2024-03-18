@@ -3,8 +3,8 @@
 import Image from 'next/image';
 import { Box, Typography, Stack } from '@mui/material';
 //Internal app
-import Linking from '../navigation/Linking';
 import Pet from '%/images/arts/pet.png';
+import Linking from '../navigation/Linking';
 import PurpleLayout from '../layout/PurpleLayout';
 import { NotFoundErrorProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
