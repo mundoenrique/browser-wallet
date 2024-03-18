@@ -2,6 +2,10 @@ import { useRouter } from 'next/navigation';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
 import Recharge from '@/app/(Pages)/dashboard/recharge/page';
+import {
+  emptyField,
+  renderInput
+} from '../../../tools/unitTestHelper';
 import { createMockRouter } from '@/utils/mocks';
 
 const routerPushMock = jest.fn();
@@ -30,19 +34,20 @@ describe('Recharge', () => {
     submitButton = screen.getByRole('button', { name: /recargar/i });
   });
 
-  //** Renders a title, subtitles and button
-  test('should render all necessary elements', async () => {
+  //** Renders a title, subtitles.
+  it('should render all text, titles, subtitles.', () => {
     expect(screen.getByText(/generar recarga/i)).toBeInTheDocument();
-    expect(amountInput).toBeInTheDocument();
-    expect(submitButton).toBeInTheDocument();
+  });
+
+  //** Renders a inputs, buttons.
+  it('should render all inputs, buttons.', () => {
+    renderInput(amountInput);
+    renderInput(submitButton);
   });
 
   //** Displays an error message when the user submits the form with an empty password field.
   it('should display an error message for empty recharge field', async () => {
-    fireEvent.click(submitButton);
-    await waitFor(() => {
-      expect(screen.getByText(/ingresa un monto/i)).toBeInTheDocument();
-    });
+    emptyField(submitButton, 'ingresa un monto');
   });
 
   it('should render the form and submit the recharge amount', async () => {

@@ -58,7 +58,7 @@ describe('Signin', () => {
   });
 
   //** Renders a inputs, buttons.
-  it('should render all text, titles, subtitles.', () => {
+  it('should render all inputs, buttons.', () => {
     renderInput(passwordInput);
     renderInput(toggleButton);
     renderInput(passwordRecoveryLink);
