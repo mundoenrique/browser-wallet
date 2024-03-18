@@ -42,10 +42,10 @@ export { default as LastMovements } from './tables/LastMovements';
 //accordions
 export { default as Accordions } from './Accordions';
 //providers
-export * from './providers/OAuth2Provider';
 export { default as KeyProvider } from './providers/KeyProvider';
 export { default as JwtProvider } from './providers/JWTProvider';
 export { default as MuiProvider } from './providers/MuiProvider';
+export { default as OAuth2Provider } from './providers/OAuth2Provider';
 export { default as HydrationProvider } from './providers/HydrationProvider';
 //user welcome
 export { default as UserWelcome } from './UserWelcome';

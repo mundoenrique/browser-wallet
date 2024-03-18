@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useEffect } from 'react';
+//Internal app
 import { useOAuth2Store } from '@/store';
 import { ChildrenProps } from '@/interfaces/constans';
 import { api, configureAccessToken } from '@/utils/apiGee';
 
-export const OAuth2Provider: React.FC<ChildrenProps> = ({ children }) => {
+export default function OAuth2Provider({ children }: ChildrenProps) {
   const { accessToken, setAccessToken } = useOAuth2Store();
   const grant_type: string = 'client_credentials';
   const client_id: string | undefined = process.env.NEXT_PUBLIC_APIGEE_APP_CREDENTIALS_KEY;
@@ -21,7 +22,7 @@ export const OAuth2Provider: React.FC<ChildrenProps> = ({ children }) => {
           setAccessToken(token);
           configureAccessToken(token);
         } catch (error) {
-          console.error('Error al generar el token OAuth2:', error);
+          console.error('Error generating OAuth2 token:', error);
         }
       })();
     } else {
@@ -30,4 +31,4 @@ export const OAuth2Provider: React.FC<ChildrenProps> = ({ children }) => {
   }, [accessToken, client_id, client_secret, setAccessToken]);
 
   return <>{children}</>;
-};
+}
