@@ -39,7 +39,6 @@ export { default as CardInfoOperation } from './cards/cardSuccess/CardInfoOperat
 // export { default as CardInformation } from './cards/cardInformation/CardInformation';
 //tables
 export { default as LastMovements } from './tables/LastMovements';
-export { default as History } from './tables/HistoryMovements';
 //accordions
 export { default as Accordions } from './Accordions';
 //providers
