@@ -2,7 +2,6 @@ import { useRouter } from 'next/navigation';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
 import Recharge from '@/app/(Pages)/dashboard/recharge/page';
-import ResponseCode from '@/app/(Pages)/dashboard/debt/components/ResponseCode';
 import { createMockRouter } from '@/utils/mocks';
 
 const routerPushMock = jest.fn();
