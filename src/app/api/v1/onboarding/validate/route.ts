@@ -9,7 +9,6 @@ export async function GET(req: Request) {
     consultantCode: searchParams.get('consultantCode'),
     countryCode: searchParams.get('countryCode'),
   };
-  console.log(process.env.APP_ENV);
-  console.log(process.env.NEXT_PUBLIC_APP_ENV);
+
   return NextResponse.json(data, { status: 200 });
 }
