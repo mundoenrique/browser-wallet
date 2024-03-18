@@ -3,33 +3,39 @@
 import NodeRSA from 'node-rsa';
 import React, { useEffect } from 'react';
 //Internal app
-import { setprivateKey } from '@/utils/api';
+import { setprivateKeys } from '@/utils/api';
 import { ChildrenProps } from '@/interfaces';
 import { useKeyStore } from '@/store/keyStore';
 import { removePEMHeadersAndFooters } from '@/utils/jwt';
 
-export const KeyProvider: React.FC<ChildrenProps> = ({ children }) => {
-  const { publicKey, privateKey, setKeys } = useKeyStore();
+export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
+  const { jwePublicKey, jwePrivateKey, jwsPublicKey, jwsPrivateKey, setKeys } = useKeyStore();
 
   useEffect(() => {
-    if (!publicKey || !privateKey) {
-      const generateKeys = () => {
+    if (!jwePublicKey || !jwePrivateKey || !jwsPublicKey || !jwsPrivateKey) {
+      (function () {
         try {
           /**
-           * Generating RSA key pair.
+           * Generating RSA key pairs.
            */
-          const keypair = new NodeRSA({ b: 2048 });
-          const privateKey = removePEMHeadersAndFooters(keypair.exportKey('pkcs8-private-pem'));
-          const publicKey = removePEMHeadersAndFooters(keypair.exportKey('pkcs8-public-pem'));
-          setKeys({ publicKey, privateKey });
-          setprivateKey(privateKey);
+          const jweKeypair = new NodeRSA({ b: 2048 });
+          const jwePrivateKey = removePEMHeadersAndFooters(jweKeypair.exportKey('pkcs8-private-pem'));
+          const jwePublicKey = removePEMHeadersAndFooters(jweKeypair.exportKey('pkcs8-public-pem'));
+
+          const jwsKeypair = new NodeRSA({ b: 2048 });
+          const jwsPrivateKey = removePEMHeadersAndFooters(jwsKeypair.exportKey('pkcs8-private-pem'));
+          const jwsPublicKey = removePEMHeadersAndFooters(jwsKeypair.exportKey('pkcs8-public-pem'));
+
+          setKeys({ jwePublicKey, jwePrivateKey, jwsPublicKey, jwsPrivateKey });
+          setprivateKeys(jwePrivateKey, jwsPrivateKey);
         } catch (error) {
           console.error('Error getting keys:', error);
         }
-      };
-      generateKeys();
+      })();
+    } else {
+      setprivateKeys(jwePrivateKey, jwsPrivateKey);
     }
-  }, [privateKey, publicKey, setKeys]);
+  }, [jwePrivateKey, jwePublicKey, jwsPrivateKey, jwsPublicKey, setKeys]);
 
   return <>{children}</>;
-};
+}

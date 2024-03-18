@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { ChildrenProps } from '@/interfaces';
 
 export const metadata: Metadata = {
-  title: 'Legal',
+  title: 'Legal | Yiro',
   description: 'Términos y condiciones del servicio Yiro',
 };
 

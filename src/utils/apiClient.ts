@@ -25,7 +25,6 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.error(error);
     return Promise.reject(error);
   }
 );

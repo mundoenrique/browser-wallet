@@ -60,13 +60,13 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
 
   return (
     <>
+      <Typography fontWeight={700} mb={3}>
+        {title}
+      </Typography>
+      <Typography variant="body2" mb="12px">
+        {text}
+      </Typography>
       <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%' }}>
-        <Typography fontWeight={700} mb={3}>
-          {title}
-        </Typography>
-        <Typography variant="body2" mb="12px">
-          {text}
-        </Typography>
         <Controller
           name={name}
           control={control}

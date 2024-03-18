@@ -4,7 +4,7 @@ import { JWT_HEADER, JWS_HEADER } from './constants';
 import { IEncryptedBody, IJWTPayload } from '@/interfaces';
 import { verifyJWT, encryptJWE, decryptJWE, signJWE, verifyDetachedJWS } from './jwt';
 
-type EnvVariableKey = 'API_BASE_URL' | 'PRIVATE_KEY' | 'PUBLIC_KEY';
+type EnvVariableKey = 'API_BASE_URL' | 'JWE_PRIVATE_KEY' | 'JWE_PUBLIC_KEY' | 'JWS_PRIVATE_KEY' | 'JWS_PUBLIC_KEY';
 
 /**
  * Function to handle errors in API requests.
@@ -76,20 +76,24 @@ export async function handleJWT(request: NextRequest, apiPublicKey: string): Pro
  * Handles the extraction, decryption of the JWE and verification of the JWS.
  *
  * @param request - The NextRequest request.
- * @param appPublicKey - The APP's public key.
- * @param apiPrivateKey - The API's private key.
+ * @param jwsAppPublicKey - The APP's public key.
+ * @param jweApiPrivateKey - The API's private key.
  * @returns The decrypted data.
  * @throws If there is an error verifying the JWS or decrypting the JWE.
  */
-export async function handleJWE(request: NextRequest, appPublicKey: string, apiPrivateKey: string): Promise<object> {
+export async function handleJWE(
+  request: NextRequest,
+  jwsAppPublicKey: string,
+  jweApiPrivateKey: string
+): Promise<object> {
   try {
     const encryptedBody: IEncryptedBody = await request.json();
     const paylaod: string = encryptedBody.data;
     const jws: string | null = request.headers.get(JWS_HEADER);
 
-    await verifyDetachedJWS(jws, appPublicKey, paylaod);
+    await verifyDetachedJWS(jws, jwsAppPublicKey, paylaod);
 
-    const data = await decryptJWE(paylaod, apiPrivateKey);
+    const data = await decryptJWE(paylaod, jweApiPrivateKey);
     return data;
   } catch (error) {
     throw new Error('Error in the handling of JWE: ' + (error as Error).message);
@@ -100,19 +104,23 @@ export async function handleJWE(request: NextRequest, appPublicKey: string, apiP
  * Handles the creation and sending of the response.
  *
  * @param responseObj - The response object.
- * @param appPublicKey - The application's public key.
- * @param apiPrivateKey - The API's private key.
+ * @param jweAppPublicKey - The application's public key.
+ * @param jwsApiPrivateKey - The API's private key.
  * @returns The encrypted and signed response.
  * @throws If there is an error encrypting or signing the response.
  */
-export async function handleResponse(responseObj: any, appPublicKey: string, apiPrivateKey: string): Promise<Response> {
+export async function handleResponse(
+  responseObj: any,
+  jweAppPublicKey: string,
+  jwsApiPrivateKey: string
+): Promise<Response> {
   try {
-    const jwe: string = await encryptJWE(responseObj, appPublicKey);
+    const jwe: string = await encryptJWE(responseObj, jweAppPublicKey);
     const encryptedResponse = { data: jwe };
-    const jws: string = await signJWE(apiPrivateKey, jwe);
+    const jws: string = await signJWE(jwsApiPrivateKey, jwe);
 
     const response = Response.json(encryptedResponse);
-    response.headers.set(JWS_HEADER, jws);
+    response.headers.set(JWS_HEADER, `JWS ${jws}`);
 
     return response;
   } catch (error) {
