@@ -4,7 +4,7 @@ import { JWS_HEADER, JWT_HEADER } from './constants';
 import { decryptJWE, encryptJWE, signJWE, verifyDetachedJWS } from './jwt';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: '/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -48,7 +48,7 @@ api.interceptors.request.use(
       const encryptedData = { data: jwe };
       request.data = encryptedData;
 
-      if (url !== '/v1/gettoken') {
+      if (url !== '/gettoken') {
         const jws = await signJWE(jwsPrivateKey, jwe);
         request.headers[JWS_HEADER] = `JWS ${jws}`;
       }
@@ -71,7 +71,7 @@ api.interceptors.response.use(
      * Response API
      */
 
-    if (url === '/auth/generate-keys' || !jwePrivateKey) {
+    if (!jwePrivateKey) {
       return response;
     }
 
