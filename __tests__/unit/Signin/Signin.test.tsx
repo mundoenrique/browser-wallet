@@ -2,7 +2,11 @@ import { useRouter } from 'next/navigation';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
 import Signin from '@/app/(Pages)/signin/page';
-import { togglePasswordVisibility, emptyPasswordField } from '../../tools/unitTestHelper';
+import {
+  togglePasswordVisibility,
+  emptyField,
+  renderInput
+} from '../../tools/unitTestHelper';
 import { createMockRouter } from '@/utils/mocks';
 
 const routerPushMock = jest.fn();
@@ -39,23 +43,31 @@ describe('Signin', () => {
     jest.restoreAllMocks();
   });
 
-  //** Renders a form with a logo, a title, subtitles, a password input field, toggle button to show/hide the password., and a submit button.
-  it('should render all necessary elements', () => {
+  //** Renders a form with a logo.
+  it('should render form and logo', () => {
     expect(screen.getByTestId('signin-form')).toBeInTheDocument();
     expect(screen.getByRole('img', { name: /logo/i })).toBeInTheDocument();
+  });
+
+  //** Renders a title, subtitles.
+  it('should render all text, titles, subtitles.', () => {
     expect(screen.getByText(/dinero en tu bolsillo/i)).toBeInTheDocument();
     expect(screen.getByText(/¡sin complicaciones!/i)).toBeInTheDocument();
     expect(screen.getByText(/¡hola andrea!/i)).toBeInTheDocument();
     expect(screen.getByText(/para continuar, ingresa la contraseña de tu cuenta digital./i)).toBeInTheDocument();
-    expect(passwordInput).toBeInTheDocument();
-    expect(toggleButton).toBeInTheDocument();
-    expect(screen.getByText(/olvide mi contraseña/i)).toBeInTheDocument();
-    expect(submitButton).toBeInTheDocument();
+  });
+
+  //** Renders a inputs, buttons.
+  it('should render all text, titles, subtitles.', () => {
+    renderInput(passwordInput);
+    renderInput(toggleButton);
+    renderInput(passwordRecoveryLink);
+    renderInput(submitButton);
   });
 
   //** Displays an error message when the user submits the form with an empty password field.
-  it('should display an error message for empty password field', async () => {
-    emptyPasswordField(submitButton);
+  it('should display an error message for empty field', async () => {
+    emptyField(submitButton, 'ingrese una contraseña');
   });
 
   //** Displays a toggle button to show/hide the password.
@@ -63,13 +75,10 @@ describe('Signin', () => {
     togglePasswordVisibility(passwordInput, toggleButton);
   });
 
-  //** Display a link to the password recovery page
+  //** Display a link to the password recovery page and navigate to password recovery page when link is clicked.
   it('should render password recovery link', () => {
     expect(passwordRecoveryLink).toBeInTheDocument();
     expect(passwordRecoveryLink.getAttribute('href')).toBe('/password-recover');
-  });
-
-   it('should navigate to password recovery page when link is clicked', async () => {
     fireEvent.click(passwordRecoveryLink);
     waitFor(() => {
       expect(router.push).toHaveBeenCalledWith('/password-recover');

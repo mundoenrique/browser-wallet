@@ -6,11 +6,16 @@ export const renderComponent = (component: any) => {
   render(component);
 };
 
+//** Function to validate render inputs
+export const renderInput = async (inputName: any) => {
+  expect(inputName).toBeInTheDocument();
+};
+
 //** Function to wshow error message when the user submits the form with an empty password field.
-export const emptyPasswordField = async (submitButton: any) => {
+export const emptyField = async (submitButton: any, erroMsg: string) => {
   fireEvent.click(submitButton);
   await waitFor(() => {
-    expect(screen.getByText(/ingrese una contraseña/i)).toBeInTheDocument();
+    expect(screen.getByText(erroMsg)).toBeInTheDocument();
   });
 };
 
