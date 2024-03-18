@@ -39,7 +39,7 @@ describe('Dashboard', () => {
   });
 
   //** Renders a title, subtitles.
-  it('should render all necessary elements', () => {
+  it('should render all text, titles, subtitles.', () => {
     expect(screen.getByText('Últimos movimientos')).toBeInTheDocument();
   });
 
