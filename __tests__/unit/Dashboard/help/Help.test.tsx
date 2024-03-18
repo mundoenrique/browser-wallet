@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
-import Help from '@/app/(Pages)/dashboard/help/page';
+import Help from '@/app/(Pages)/dashboard/(help)/page';
 import { createMockRouter } from '@/utils/mocks';
 
 const routerPushMock = jest.fn();
@@ -26,8 +26,8 @@ describe('Help', () => {
     expect(render).toBeTruthy();
   });
 
-  //** Renders a title, subtitles and button
-  test('should render all necessary elements', async () => {
+  //** Renders a title, subtitles.
+  it('should render all text, titles, subtitles.', () => {
     expect(screen.getByText('Ayuda')).toBeInTheDocument();
     expect(screen.getByText(/¿necesitas contactarnos?/i)).toBeInTheDocument();
     expect(screen.getByText(/preguntas frecuentes/i)).toBeInTheDocument();
@@ -42,8 +42,9 @@ describe('Help', () => {
 
   //** Display a link to the frequent questions
   it('should navigate to frequent questions page when link is clicked', async () => {
-    const questionsLink = screen.getByText(/preguntas frecuentes/i);
-    fireEvent.click(questionsLink);
+    expect(screen.getByText(/preguntas frecuentes/i)).toBeInTheDocument();
+    expect(screen.getByText(/preguntas frecuentes/i).getAttribute('href')).toBe('/dashboard/help/frequent-questions');
+    fireEvent.click(screen.getByText(/preguntas frecuentes/i));
     waitFor(() => {
       expect(router.push).toHaveBeenCalledWith('/dashboard/help/frequent-questions');
     });
