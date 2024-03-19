@@ -43,3 +43,36 @@ export const handleDownload = async (element: HTMLElement, fileName: string, bac
   link.download = fileName;
   link.click();
 };
+
+/**
+ * Handles the sharing of an image based on the specified parameters.
+ *
+ * @param element - The HTML element to be captured as an image.
+ * @param shareData - The data to be shared, including the URL and files.
+ * @param backgroundColor - The background color for the captured image.
+ */
+export const handleShare = async (element: HTMLElement, shareData: any, backgroundColor: string) => {
+  const webShareSupported = 'canShare' in navigator;
+
+  try {
+    const canvas = await html2canvas(element, {
+      removeContainer: false,
+      allowTaint: true,
+      backgroundColor: backgroundColor,
+    });
+    if (webShareSupported) {
+      const blob: Blob = await new Promise((resolve: any) => canvas.toBlob(resolve, 'image/png'));
+      const file: File = new File([blob], 'cobro.png', { type: 'image/png' });
+      shareData['files'].push(file);
+      await navigator.share(shareData);
+    } else {
+      const image = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = image;
+      link.download = 'ticket.png';
+      link.click();
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
