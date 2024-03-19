@@ -7,7 +7,7 @@ import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 import { CopyIcons } from '%/Icons';
 import Qr from '%/images/arts/QR.png';
 import CardReport from './CardReport';
-import { copyToClipboard, handleDownload } from '@/utils/toolHelper';
+import { copyToClipboard, handleDownload, handleShare } from '@/utils/toolHelper';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardPagoEfectivoProps } from '@/interfaces';
 import PagoEfectivo from '%/images/suppliers/pagoEfectivo.png';
@@ -27,35 +27,13 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
     src: PagoEfectivo,
     alt: 'Logo Pago Efectivo',
   };
+  const shareData: any = {
+    url: 'https://www.pagoefectivo.la/pe/como-pagar',
+    files: [],
+  };
 
-  const handleShare = async () => {
-    const webShareSupported = 'canShare' in navigator;
-    const shareData: any = {
-      url: 'https://www.pagoefectivo.la/pe/como-pagar',
-      files: [],
-    };
-
-    try {
-      const canvas = await html2canvas(componentRef.current, {
-        removeContainer: false,
-        allowTaint: true,
-        backgroundColor: fuchsiaBlue[800],
-      });
-      if (webShareSupported) {
-        const blob: Blob = await new Promise((resolve: any) => canvas.toBlob(resolve, 'image/png'));
-        const file: File = new File([blob], 'cobro.png', { type: 'image/png' });
-        shareData['files'].push(file);
-        await navigator.share(shareData);
-      } else {
-        const image = canvas.toDataURL('image/png');
-        const link = document.createElement('a');
-        link.href = image;
-        link.download = 'ticket.png';
-        link.click();
-      }
-    } catch (err) {
-      console.error(err);
-    }
+  const handleShareClick = () => {
+    handleShare(componentRef.current, shareData, fuchsiaBlue[800]);
   };
 
   const handleDownloadClick = () => {
@@ -121,7 +99,7 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
       )}
 
       {share && (
-        <Button variant="secondary" onClick={handleShare} sx={{ mb: 4 }}>
+        <Button variant="secondary" onClick={handleShareClick} sx={{ mb: 4 }}>
           {label}
         </Button>
       )}
