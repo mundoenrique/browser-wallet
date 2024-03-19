@@ -53,6 +53,7 @@ api.interceptors.request.use(
         request.headers[JWS_HEADER] = `JWS ${jws}`;
       }
     }
+
     return request;
   },
 
