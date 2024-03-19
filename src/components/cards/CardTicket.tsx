@@ -6,6 +6,7 @@ import { Avatar, Box, Button, Card } from '@mui/material';
 import ShareIcon from '@mui/icons-material/ShareOutlined';
 //Internal app
 import { CardTicketProps } from '@/interfaces';
+import { handleDownload } from '@/utils/toolHelper';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import CheckCircleIcon from '%/images/arts/CheckCircleIcon';
 
@@ -22,17 +23,8 @@ export default function CardTicket(props: CardTicketProps) {
   const { children, textBotton, download, shared, onClick } = props;
   const componentRef = useRef<any>(null);
 
-  const handleDownLoad = async () => {
-    const canvas = await html2canvas(componentRef.current, {
-      removeContainer: false,
-      allowTaint: true,
-      backgroundColor: fuchsiaBlue[800],
-    });
-    const image = canvas.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.href = image;
-    link.download = 'omprobante.png';
-    link.click();
+  const handleDownloadClick = () => {
+    handleDownload(componentRef.current, 'comprobante.png', fuchsiaBlue[800]);
   };
 
   const handleShare = async () => {
@@ -124,7 +116,7 @@ export default function CardTicket(props: CardTicketProps) {
         )}
 
         {download && (
-          <Button variant="contained" fullWidth onClick={handleDownLoad}>
+          <Button variant="contained" fullWidth onClick={handleDownloadClick}>
             {textBotton}
           </Button>
         )}

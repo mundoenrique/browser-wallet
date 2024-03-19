@@ -7,7 +7,7 @@ import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 import { CopyIcons } from '%/Icons';
 import Qr from '%/images/arts/QR.png';
 import CardReport from './CardReport';
-import { copyToClipboard } from '@/utils/toolHelper';
+import { copyToClipboard, handleDownload } from '@/utils/toolHelper';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardPagoEfectivoProps } from '@/interfaces';
 import PagoEfectivo from '%/images/suppliers/pagoEfectivo.png';
@@ -58,17 +58,8 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
     }
   };
 
-  const handleDownLoad = async () => {
-    const canvas = await html2canvas(componentRef.current, {
-      removeContainer: false,
-      allowTaint: true,
-      backgroundColor: fuchsiaBlue[800],
-    });
-    const image = canvas.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.href = image;
-    link.download = 'recarga.png';
-    link.click();
+  const handleDownloadClick = () => {
+    handleDownload(componentRef.current, 'recarga.png', fuchsiaBlue[800]);
   };
 
   copyToClipboard(cip);
@@ -124,7 +115,7 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
       {children}
 
       {download && (
-        <Button variant="secondary" onClick={handleDownLoad} sx={{ mb: 4 }}>
+        <Button variant="secondary" onClick={handleDownloadClick} sx={{ mb: 4 }}>
           {label}
         </Button>
       )}
