@@ -7,6 +7,7 @@ import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 import { CopyIcons } from '%/Icons';
 import Qr from '%/images/arts/QR.png';
 import CardReport from './CardReport';
+import { copyToClipboard } from '@/utils/toolHelper';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardPagoEfectivoProps } from '@/interfaces';
 import PagoEfectivo from '%/images/suppliers/pagoEfectivo.png';
@@ -70,13 +71,7 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
     link.click();
   };
 
-  const copyText = async () => {
-    try {
-      await navigator.clipboard.writeText(cip);
-    } catch (error) {
-      console.error('Error copying text:', error);
-    }
-  };
+  copyToClipboard(cip);
 
   return (
     <>
@@ -102,7 +97,7 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
             </Typography>
             <Typography variant="subtitle1" sx={{ display: 'flex', color: 'primary.main', alignItems: 'center' }}>
               {cip}
-              <IconButton aria-label="delete" size="small" sx={{ p: 0, ml: 1 }} onClick={copyText}>
+              <IconButton aria-label="delete" size="small" sx={{ p: 0, ml: 1 }} onClick={copyToClipboard}>
                 <CopyIcons sx={{ color: 'primary.main' }} />
               </IconButton>
             </Typography>
