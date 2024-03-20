@@ -5,7 +5,7 @@ import Recharge from '@/app/(Pages)/dashboard/recharge/page';
 import {
   emptyField,
   renderInput
-} from '../../../tools/unitTestHelper';
+} from '../../../tools/unitTestHelper.test';
 import { createMockRouter } from '@/utils/mocks';
 
 const routerPushMock = jest.fn();
