@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
 import Dashboard from '@/app/(Pages)/dashboard/page';
+import { redirectLinks } from '../../tools/unitTestHelper.test';
 import { createMockRouter } from '@/utils/mocks';
 
 const routerPushMock = jest.fn();
@@ -43,13 +44,9 @@ describe('Dashboard', () => {
     expect(screen.getByText('Últimos movimientos')).toBeInTheDocument();
   });
 
-  it('should navigate to movements page when link is clicked', async () => {
-    const link = screen.getByText('Ver todo');
-    expect(link).toBeInTheDocument();
-    expect(link).toHaveStyle('text-decoration: underline');
-    fireEvent.click(link);
-    waitFor(() => {
-      expect(router.push).toHaveBeenCalledWith('/dashboard/movements');
-    });
+  it('should navigate to movements page when link movements is clicked', async () => {
+    const textLink = screen.getByText('Ver todo');
+    const routePath = '/dashboard/movements'
+    redirectLinks(textLink, routePath, router)
   });
 });
