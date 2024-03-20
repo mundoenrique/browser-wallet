@@ -17,7 +17,7 @@ export default function Terms() {
         TÉRMINOS Y CONDICIONES E Commerce y Mi Tienda Online- CLIENTE DE LA CONSULTORA
       </Typography>
 
-      <Stack spacing={2} sx={{ px: { xs: 2, md: 0 }, textAlign: 'justify' }}>
+      <Stack spacing={2} sx={{ px: { xs: 2, md: 0 }, textAlign: 'justify', mb: { xs: 10, md: 0 } }}>
         <Typography variant="subtitle1">Actualización: febrero 2023</Typography>
 
         <Typography paragraph>
@@ -47,11 +47,27 @@ export default function Terms() {
           siguientes empresas según el país que corresponda:
         </Typography>
 
-        <Grid container columns={4}>
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Grid
+          container
+          columns={4}
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'colunm', md: 'row' },
+            justifyContent: { xs: 'flex-start', md: 'center' },
+          }}
+        >
+          <Grid
+            item
+            xs={1}
+            sx={{
+              display: 'flex',
+              justifyContent: { xs: 'flex-start', md: 'center' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+            }}
+          >
             <Typography variant="subtitle1">Perú:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">Empresa: Cetco S.A.</Typography>
             <Typography variant="body1">
               Domicilio: Av. Pardo y Aliaga Nº 652, int. 1201, San Isidro, Lima, Perú
@@ -59,10 +75,19 @@ export default function Terms() {
             <Typography variant="body1">RUC: 20100123763</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{
+              display: 'flex',
+              justifyContent: { xs: 'flex-start', md: 'center' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+            }}
+          >
             <Typography variant="subtitle1">Colombia:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">Empresa: Bel Star S.A.</Typography>
             <Typography variant="body1">
               Domicilio: Km. 22 Carretera Central del Norte, Parque Industrial Canavita, Vereda Canavita, Tocancipá, San
@@ -71,10 +96,19 @@ export default function Terms() {
             <Typography variant="body1">NIT: 8000183591</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{
+              display: 'flex',
+              justifyContent: { xs: 'flex-start', md: 'center' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+            }}
+          >
             <Typography variant="subtitle1">Chile:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">Empresa: Promotora de Belleza S.A.</Typography>
             <Typography variant="body1">Rol Único Tributario: 96.524.830-7</Typography>
             <Typography variant="body1">Domicilio: Av. Aeropuerto Nº 860, Quilicura, Santiago, Chile</Typography>
@@ -82,10 +116,19 @@ export default function Terms() {
             <Typography variant="body1">RUT: 96.524.830-7</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{
+              display: 'flex',
+              justifyContent: { xs: 'flex-start', md: 'center' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+            }}
+          >
             <Typography variant="subtitle1">México:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">Empresa: Transbel S.A. de C.V.</Typography>
             <Typography variant="body1">
               Domicilio: Edificio Torre Reforma - Piso 32, Calle Paseo de la Reforma 483, Colonia Cuauhtémoc, Delegación
@@ -94,10 +137,19 @@ export default function Terms() {
             <Typography variant="body1">RFC:TRA950227PX7</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{
+              display: 'flex',
+              justifyContent: { xs: 'flex-start', md: 'center' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+            }}
+          >
             <Typography variant="subtitle1">Ecuador</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">Empresa: Grupo Transbel S.A.</Typography>
             <Typography variant="body1">
               Domicilio: Inglaterra E3-266 y Avenida Amazonas, esquina Edificio Stratta, Piso 5 y 6, ciudad de Quito,
@@ -106,10 +158,19 @@ export default function Terms() {
             <Typography variant="body1">RUC: 1791412540001</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{
+              display: 'flex',
+              justifyContent: { xs: 'flex-start', md: 'center' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+            }}
+          >
             <Typography variant="subtitle1">Panamá</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">Empresa: L’bel Paris S.A.</Typography>
             <Typography variant="body1">
               Domicilio: Oceanía Business Plaza, Punta Pacifica, Torre 1000 Piso 25 Local G, Ciudad de Panamá
@@ -308,56 +369,178 @@ export default function Terms() {
           comercialización digital de LA EMPRESA y en los siguientes links, según aplique:
         </Typography>
 
-        <Grid container columns={4}>
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Typography variant="subtitle1">Perú:</Typography>
+        <Grid
+          container
+          columns={4}
+          sx={{
+            width: { xs: 320, sm: 'auto' },
+            maxWidth: { xs: '100%', sm: 'fit-content' },
+            whiteSpace: 'wrap',
+            overflowX: { xs: 'auto', sm: 'hidden' },
+          }}
+        >
+          <Grid
+            item
+            xs={1}
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'colunm', md: 'row' },
+              justifyContent: { xs: 'flex-start', md: 'center' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+            }}
+          >
+            <Typography
+              variant="subtitle1"
+              sx={{
+                display: 'flex',
+                justifyContent: { xs: 'flex-start', md: 'center' },
+                alignItems: { xs: 'flex-start', md: 'center' },
+              }}
+            >
+              Perú:
+            </Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} sx={{ p: { xs: 0, md: 3 } }}>
             <Typography variant="body1">https://beautytech.lbel.com/pe/avanzadodiagnosticodepiel</Typography>
             <Typography variant="body1">https://beautytech.esika.com/pe/diagnosticodepielonline</Typography>
             <Typography variant="body1">https://beautytech.cyzone.com/pe/diagnosticodepiel</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Typography variant="subtitle1">Colombia:</Typography>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'colunm', md: 'row' },
+              justifyContent: { xs: 'flex-start', md: 'center' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+            }}
+          >
+            <Typography
+              variant="subtitle1"
+              sx={{
+                display: 'flex',
+                justifyContent: { xs: 'flex-start', md: 'center' },
+                alignItems: { xs: 'flex-start', md: 'center' },
+              }}
+            >
+              Colombia:
+            </Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} sx={{ p: { xs: 0, md: 3 } }}>
             <Typography variant="body1">https://beautytech.lbel.com/co/avanzadodiagnosticodepiel</Typography>
             <Typography variant="body1">https://beautytech.esika.com/co/diagnosticodepielonline</Typography>
             <Typography variant="body1">https://beautytech.cyzone.com/co/diagnosticodepiel</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Typography variant="subtitle1">Chile:</Typography>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'colunm', md: 'row' },
+              justifyContent: { xs: 'flex-start', md: 'center' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+            }}
+          >
+            <Typography
+              variant="subtitle1"
+              sx={{
+                display: 'flex',
+                justifyContent: { xs: 'flex-start', md: 'center' },
+                alignItems: { xs: 'flex-start', md: 'center' },
+              }}
+            >
+              Chile:
+            </Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} sx={{ p: { xs: 0, md: 3 } }}>
             <Typography variant="body1">https://beautytech.lbel.com/cl/avanzadodiagnosticodepiel</Typography>
             <Typography variant="body1">https://beautytech.esika.com/cl/diagnosticodepielonline</Typography>
             <Typography variant="body1">https://beautytech.cyzone.com/cl/diagnosticodepiel</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Typography variant="subtitle1">México:</Typography>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'colunm', md: 'row' },
+              justifyContent: { xs: 'flex-start', md: 'center' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+            }}
+          >
+            <Typography
+              variant="subtitle1"
+              sx={{
+                display: 'flex',
+                justifyContent: { xs: 'flex-start', md: 'center' },
+                alignItems: { xs: 'flex-start', md: 'center' },
+              }}
+            >
+              México:
+            </Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} sx={{ p: { xs: 0, md: 3 } }}>
             <Typography variant="body1">https://beautytech.lbel.com/mx/avanzadodiagnosticodepiel</Typography>
             <Typography variant="body1">https://beautytech.esika.com/mx/diagnosticodepielonline</Typography>
             <Typography variant="body1">https://beautytech.cyzone.com/mx/diagnosticodepiel</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Typography variant="subtitle1">Ecuador:</Typography>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'colunm', md: 'row' },
+              justifyContent: { xs: 'flex-start', md: 'center' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+            }}
+          >
+            <Typography
+              variant="subtitle1"
+              sx={{
+                display: 'flex',
+                justifyContent: { xs: 'flex-start', md: 'center' },
+                alignItems: { xs: 'flex-start', md: 'center' },
+              }}
+            >
+              Ecuador:
+            </Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} sx={{ p: { xs: 0, md: 3 } }}>
             <Typography variant="body1">https://beautytech.lbel.com/ec/avanzadodiagnosticodepiel</Typography>
             <Typography variant="body1">https://beautytech.esika.com/ec/diagnosticodepielonline</Typography>
             <Typography variant="body1">https://beautytech.cyzone.com/ec/diagnosticodepiel</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Typography variant="subtitle1">Panamá:</Typography>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'colunm', md: 'row' },
+              justifyContent: { xs: 'flex-start', md: 'center' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+            }}
+          >
+            <Typography
+              variant="subtitle1"
+              sx={{
+                display: 'flex',
+                justifyContent: { xs: 'flex-start', md: 'center' },
+                alignItems: { xs: 'flex-start', md: 'center' },
+              }}
+            >
+              Panamá:
+            </Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} sx={{ p: { xs: 0, md: 3 } }}>
             <Typography variant="body1">https://beautytech.lbel.com/pa/avanzadodiagnosticodepiel</Typography>
             <Typography variant="body1">https://beautytech.cyzone.com/pa/diagnosticodepiel</Typography>
           </Grid>
@@ -594,56 +777,86 @@ export default function Terms() {
         </Typography>
 
         <Grid container columns={4}>
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Para Colombia:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">• Bogotá: 2 a 3 días hábiles.</Typography>
             <Typography variant="body1">• Provincias: 3 a 16 días hábiles.</Typography>
             <Typography variant="body1">• Horario: Lunes a Viernes (7:30 a 18:00) y Sábados (7:30 a 13:00).</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Para México:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">• Ciudad de México: 2 a 5 días hábiles.</Typography>
             <Typography variant="body1">• Provincias: 3 a 8 días hábiles.</Typography>
             <Typography variant="body1">• Horario: Lunes a Viernes (9:00 a 18:30) y Sábados (9:00 a 14:00).</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Para Chile:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">• Santiago RM: 2 a 3 días hábiles.</Typography>
             <Typography variant="body1">• Provincias: 3 a 19 días hábiles.</Typography>
             <Typography variant="body1">• Horario: Lunes a Viernes (9:00 a 17:00).</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Para Perú:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">• Lima metropolitana: 2 a 3 días hábiles.</Typography>
             <Typography variant="body1">• Provincias: 3 a 11 días hábiles.</Typography>
             <Typography variant="body1">• Horario: Lunes a Viernes (8:30 a 18:30) y Sábados (8:30 a 12:00)</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Para Ecuador:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">• Quito: 2 a 3 días hábiles.</Typography>
             <Typography variant="body1">• Guayaquil: 3 a 4 días hábiles.</Typography>
             <Typography variant="body1">• Provincias: 4 a 6 días hábiles</Typography>
             <Typography variant="body1">• Horario: Lunes a Viernes (7:30 a 18:00) y Sábados (7:30 a 13:00)</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Para Panamá:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">• Ciudad: 2 a 3 días hábiles.</Typography>
             <Typography variant="body1">• Afueras: 3 a 4 días hábiles.</Typography>
             <Typography variant="body1">• Provincias: 3 a 4 días hábiles</Typography>
@@ -709,50 +922,79 @@ export default function Terms() {
         </Typography>
 
         <Grid container columns={4}>
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Perú:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">consultacompraspe@belcorp.biz</Typography>
             <Typography variant="body1">Horario de atención: De L-V de 8:00 am a 8:00 pm</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Colombia:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">consultacomprasco@belcorp.biz</Typography>
             <Typography variant="body1">Horario de atención: De L-V de 8:00 am a 8:00 pm</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Chile:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">consultacomprascl@belcorp.biz</Typography>
             <Typography variant="body1">Horario de atención: De L-V de 8:00 am a 8:00 pm.</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">México:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">consultacomprasmx@belcorp.biz</Typography>
             <Typography variant="body1">Horario de atención: De L-V de 8:00 am a 8:00 pm.</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Ecuador:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">consultacomprasec@belcorp.biz</Typography>
             <Typography variant="body1">Horario de atención: de L-V de 8:00am a 8:00pm</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Panamá:</Typography>
           </Grid>
-          <Grid item xs={3} p={3}>
+          <Grid item xs={4} md={3} p={3}>
             <Typography variant="body1">consultacomprasPA@belcorp.biz</Typography>
             <Typography variant="body1">Horario de atención: de L-V de 8:00am a 8:00pm</Typography>
           </Grid>
@@ -926,45 +1168,75 @@ export default function Terms() {
         </Typography>
 
         <Grid container columns={4}>
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Perú:</Typography>
           </Grid>
-          <Grid item xs={3} p={1}>
+          <Grid item xs={4} md={3} p={1}>
             <Typography variant="body1">consultacompraspe@belcorp.biz</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Colombia:</Typography>
           </Grid>
-          <Grid item xs={3} p={1}>
+          <Grid item xs={4} md={3} p={1}>
             <Typography variant="body1">consultacomprasco@belcorp.biz</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Chile:</Typography>
           </Grid>
-          <Grid item xs={3} p={1}>
+          <Grid item xs={4} md={3} p={1}>
             <Typography variant="body1">consultacomprascl@belcorp.biz</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">México:</Typography>
           </Grid>
-          <Grid item xs={3} p={1}>
+          <Grid item xs={4} md={3} p={1}>
             <Typography variant="body1">consultacomprasmx@belcorp.biz</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Ecuador:</Typography>
           </Grid>
-          <Grid item xs={3} p={1}>
+          <Grid item xs={4} md={3} p={1}>
             <Typography variant="body1">consultacomprasec@belcorp.biz</Typography>
           </Grid>
 
-          <Grid item xs={1} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid
+            item
+            xs={4}
+            md={1}
+            sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}
+          >
             <Typography variant="subtitle1">Panamá:</Typography>
           </Grid>
-          <Grid item xs={3} p={1}>
+          <Grid item xs={4} md={3} p={1}>
             <Typography variant="body1">consultacomprasPA@belcorp.biz</Typography>
           </Grid>
         </Grid>
