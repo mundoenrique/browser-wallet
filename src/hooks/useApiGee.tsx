@@ -10,7 +10,7 @@ export function useApi() {
       api.interceptors.request.use(
         async (request) => {
           configureHeaders(request, accessToken);
-          handleRequest(request);
+          // handleRequest(request);
 
           return request;
         },
@@ -22,7 +22,7 @@ export function useApi() {
 
       api.interceptors.response.use(
         async (response) => {
-          handleResponse(response);
+          // handleResponse(response);
 
           return response;
         },
