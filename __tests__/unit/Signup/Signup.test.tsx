@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import Signup from '@/app/(Pages)/signup/page';
 import {
   renderInput
-} from '../../tools/unitTestHelper';
+} from '../../tools/unitTestHelper.test';
 
 jest.mock('jose', () => {
   return {

@@ -6,7 +6,7 @@ import {
   togglePasswordVisibility,
   emptyField,
   renderInput
-} from '../../tools/unitTestHelper';
+} from '../../tools/unitTestHelper.test';
 import { createMockRouter } from '@/utils/mocks';
 
 const routerPushMock = jest.fn();
