@@ -10,6 +10,7 @@ type EnvVariableKey =
   | 'JWE_PUBLIC_KEY'
   | 'JWS_PRIVATE_KEY'
   | 'JWS_PUBLIC_KEY'
+  | 'APIGEE_HOST'
   | 'TENANT_ID';
 
 /**
