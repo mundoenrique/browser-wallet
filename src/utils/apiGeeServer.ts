@@ -35,12 +35,12 @@ apiGee.interceptors.request.use(
 
 export function configureDefaultHeaders(headers: Headers) {
   const authorization = headers.get('Authorization');
-  const tenantId = process.env.TENANT_ID;
+  const tenantId = headers.get('X-Tenant-Id');
   const jws = headers.get('X-Token');
 
   apiGee.defaults.headers.common = {
     Authorization: authorization,
-    // 'X-Tenant-Id': tenantId,
+    'X-Tenant-Id': tenantId,
     'X-Token': jws,
   };
 }

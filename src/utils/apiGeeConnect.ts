@@ -11,10 +11,13 @@ export const apiGee = axios.create({
   },
 });
 
-export async function configureHeaders(request: InternalAxiosRequestConfig<any>, accessToken: string) {
+export function configureHeaders(
+  request: InternalAxiosRequestConfig<any>,
+  accessToken: string
+): InternalAxiosRequestConfig {
   const url = request.url;
   if (url !== '/gettoken') {
-    request.headers['X-Tenant-Id'] = process.env.TENANT_ID;
+    request.headers['X-Tenant-Id'] = process.env.NEXT_PUBLIC_TENANT_ID;
     if (!request.headers['Authorization']) {
       request.headers['Authorization'] = `Bearer ${accessToken}`;
     }

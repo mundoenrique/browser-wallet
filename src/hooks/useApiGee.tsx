@@ -9,7 +9,7 @@ export function useApi() {
     if (accessToken) {
       apiGee.interceptors.request.use(
         async (request) => {
-          configureHeaders(request, accessToken);
+          request = configureHeaders(request, accessToken);
           return request;
         },
         (error) => {
