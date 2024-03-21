@@ -27,8 +27,7 @@ export default function Signin() {
 
   const onSubmit = async (data: any) => {
     try {
-      // pass 357689
-      const payload = { email: 'jllerena@novopayment.com', password: data.password };
+      const payload = { email: 'jllerena@novopayment.com', password: data.password || 357689 };
       const response = await api.post('/auth/login', payload);
       if (response.status === 200) return push('/dashboard');
     } catch (error) {

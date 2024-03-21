@@ -13,17 +13,20 @@ import {
 } from '@/utils';
 
 export async function POST(request: NextRequest) {
-  const apiPublicKey = getEnvVariable('PUBLIC_KEY');
-  const apiPrivateKey = getEnvVariable('PRIVATE_KEY');
+  const jweApiPublicKey = getEnvVariable('JWE_PUBLIC_KEY');
+  const jweApiPrivateKey = getEnvVariable('JWE_PRIVATE_KEY');
+  const jwsApiPrivateKey = getEnvVariable('JWS_PRIVATE_KEY');
 
   let jwtPayload: IJWTPayload;
-  let appPublicKey: string;
+  let jwsAppPublicKey: string;
+  let jweAppPublicKey: string;
   let credentials: ICredentials;
 
   try {
-    jwtPayload = await handleJWT(request, apiPublicKey);
-    appPublicKey = jwtPayload.publicKey;
-    const data = await handleJWE(request, appPublicKey, apiPrivateKey);
+    jwtPayload = await handleJWT(request, jweApiPublicKey);
+    jweAppPublicKey = jwtPayload.jwePublicKey;
+    jwsAppPublicKey = jwtPayload.jwsPublicKey;
+    const data = await handleJWE(request, jwsAppPublicKey, jweApiPrivateKey);
     credentials = data as ICredentials;
   } catch (error) {
     return handleError((error as Error).message);
@@ -58,14 +61,18 @@ export async function POST(request: NextRequest) {
    */
   let response: Response;
   try {
-    response = await handleResponse(responseObj, appPublicKey, apiPrivateKey);
+    response = await handleResponse(responseObj, jweAppPublicKey, jwsApiPrivateKey);
   } catch (error) {
     return handleError((error as Error).message, error);
   }
   /**
    * Sign the JWT with the API privateKey, including the user ID
    */
-  const jwt: string = await signJWT(apiPrivateKey, { publicKey: appPublicKey, id: userId });
+  const jwt: string = await signJWT(jweApiPrivateKey, {
+    jwePublicKey: jweAppPublicKey,
+    jwsPublicKey: jwsAppPublicKey,
+    id: userId,
+  });
   response.headers.set(JWT_HEADER, jwt);
 
   return response;

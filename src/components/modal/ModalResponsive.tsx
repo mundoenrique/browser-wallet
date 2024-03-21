@@ -65,13 +65,13 @@ const CloseButtonContainer = styled(Box, {
 const ModalResponsive = forwardRef(function MyModalResponsive(props: MuiModalProps, ref: any) {
   const { open, handleClose, children, ...others } = props;
   const theme = useTheme();
-  const matche = useMediaQuery(theme.breakpoints.down('sm'));
+  const match = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <RootModal
       open={open}
       onClose={() => {
-        matche && handleClose();
+        match && handleClose();
       }}
       ref={ref}
     >

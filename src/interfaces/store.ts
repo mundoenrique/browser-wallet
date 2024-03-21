@@ -1,14 +1,18 @@
 /**
  * Public and private key
  *
- * @typeParam publicKey: string | null
- * @typeParam privateKey: string | null
- * @typeParam setKeys: (_keys: { publicKey: string; privateKey: string }) => void
+ * @typeParam jwePublicKey: string | null
+ * @typeParam jwePrivateKey: string | null
+ * @typeParam jwsPublicKey: string | null
+ * @typeParam jwsPrivateKey: string | null
+ * @typeParam setKeys: (_keys: { jwePublicKey: string; jwePrivateKey: string; jwsPublicKey: string; jwsPrivateKey: string }) => void
  */
 export type KeyStoreProps = {
-  publicKey: string | null;
-  privateKey: string | null;
-  setKeys: (_keys: { publicKey: string; privateKey: string }) => void;
+  jwePublicKey: string | null;
+  jwePrivateKey: string | null;
+  jwsPublicKey: string | null;
+  jwsPrivateKey: string | null;
+  setKeys: (_keys: { jwePublicKey: string; jwePrivateKey: string; jwsPublicKey: string; jwsPrivateKey: string }) => void;
 };
 
 /**
@@ -21,6 +25,17 @@ export type JwtStoreProps = {
   token: string | null;
   setToken: (_token: string) => void;
 };
+
+/**
+ * Drawer showing
+ *
+ * @typeParam showStatus: boolean
+ * @typeParam updateDrawerStatus: (status: boolean) => void
+ */
+export interface DrawerStatus {
+  showStatus: boolean;
+  updateDrawerStatus: (status: boolean) => void;
+}
 
 /**
  * Active menu item
@@ -53,6 +68,17 @@ export interface NavTitleStore {
 }
 
 /**
+ * Config Card component routing
+ *
+ * @typeParam title: string
+ * @typeParam updateTitle: (newTitle: string) => void
+ */
+export interface ConfigCardStore {
+  page: string;
+  updatePage: (_newPage: string) => void;
+}
+
+/**
  * Global status for registration flow
  *
  * @typeParam step - number
@@ -79,4 +105,25 @@ export interface RegisterStore {
   ocupationFormState: object | null;
   pepFormState: object | null;
   biometricFormState: null;
+}
+
+/** Client Store
+ *
+ * @typeParam client - Initial state {@defaultValue `null`}
+ * @typeParam setClient - Function that sets the new value
+ */
+
+export interface IClientProps {
+  date: Date;
+  name: string;
+  amount: number;
+  status: string;
+  status_type: string;
+  month: string;
+  number: string;
+}
+
+export interface ClientStore {
+  client: IClientProps | null;
+  setClient: (data: IClientProps) => void;
 }
