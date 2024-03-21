@@ -2,26 +2,19 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
-  console.log('middleware');
-  const url = request.nextUrl.clone();
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set('x-url', url.pathname);
+  const { url } = request;
+  const pathname = request.nextUrl.pathname;
+  const apiGeeConnectUrl = '/api/apiGee/connect';
 
-  if (url.pathname === '/api/apiGee/connect' || url.pathname === '/api/apiGee/gettoken') {
+  if (pathname === apiGeeConnectUrl || pathname === '/api/apiGee/gettoken') {
     return NextResponse.next();
   }
 
-  let response = NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  });
-
-  response = NextResponse.redirect(new URL('/api/apiGee/connect', request.url));
-
+  const response = NextResponse.rewrite(new URL(apiGeeConnectUrl, url));
+  response.headers.set('x-url', pathname.replace('/apiGee', '/v1.3'));
   return response;
 }
 
 export const config = {
-  matcher: '/api/:path*',
+  matcher: '/api/apiGee/:path*',
 };
