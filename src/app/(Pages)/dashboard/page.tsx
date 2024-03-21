@@ -7,7 +7,7 @@ import { Box, Typography } from '@mui/material';
 import { useMenuStore, useOAuth2Store } from '@/store';
 import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
-import { apiGee } from '@/utils/apiGeeConnect';
+// import { apiGee } from '@/utils/apiGeeConnect';
 import { useApi } from '@/hooks/useApiGee';
 
 const movementData = [
@@ -57,20 +57,42 @@ export default function Dashboard() {
   }, [setCurrentItem]);
 
   useEffect(() => {
-    if (accessToken && !cardInfo) {
+    if (accessToken) {
       (async () => {
+        const data = {
+          currentPhaseCode: 'ONB_PHASES_PEP',
+          onboardingUuId: 'a4f97d13-0d69-4d6d-9042-a857cb08e391',
+          request: {
+            consultant: {
+              address: '7 Fifth Ave.',
+              consultantCode: '0098789',
+              countryCode: 'PE',
+              documentNumber: '12345678',
+              documentType: 'DNI',
+              email: 'email@email.com',
+              firstName: 'Max',
+              lastName: 'Smith',
+              phoneNumber: '956896253',
+            },
+            terms: [
+              {
+                uuid: 'a4f97d13-99999-4d6d-9042-a857cb08e391',
+              },
+            ],
+          },
+        };
         try {
-          const response = await apiGee.get('/cards/' + cardId);
+          const response = await apiGee.post('/onboarding/termsandconditions', data);
           console.log('response-page', response.data);
-          if (response.data.data) {
-            setCardInfo(response.data.data);
-          }
+          // if (response.data.data) {
+          //   setCardInfo(response.data.data);
+          // }
         } catch (error) {
           console.error('Error generating card info:', error);
         }
       })();
     }
-  }, [accessToken, apiGee, cardInfo]);
+  }, [accessToken, apiGee]);
 
   return (
     <Box

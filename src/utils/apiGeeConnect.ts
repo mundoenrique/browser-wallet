@@ -3,8 +3,7 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 export const apiGee = axios.create({
   baseURL: '/api/apiGee',
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    Accept: 'application/json',
+    'Content-Type': 'application/json',
   },
   validateStatus: function (status) {
     return status >= 200 && status < 500;
