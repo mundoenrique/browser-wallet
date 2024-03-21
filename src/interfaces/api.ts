@@ -46,3 +46,13 @@ export type ApiParams = {
     userId?: string;
   };
 };
+
+/**
+ * ApiGee Object Request
+ * @typeParam jwe: string
+ * @typeParam jws: string
+ */
+export type ApiGeeObjectRequest = {
+  jwe: string;
+  jws: string;
+};

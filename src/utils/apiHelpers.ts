@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 //Internal app
 import { JWT_HEADER, JWS_HEADER } from './constants';
-import { IEncryptedBody, IJWTPayload } from '@/interfaces';
+import { ApiGeeObjectRequest, IEncryptedBody, IJWTPayload } from '@/interfaces';
 import { verifyJWT, encryptJWE, decryptJWE, signJWE, verifyDetachedJWS } from './jwt';
 
 type EnvVariableKey =
@@ -132,5 +132,19 @@ export async function handleResponse(
     return response;
   } catch (error) {
     throw new Error('Error in response handling: ' + (error as Error).message);
+  }
+}
+
+export async function handleApiGeeRequest(request: NextRequest): Promise<any> {
+  const jwe_public_key: string = process.env.APIGEE_JWE_PUBLIC_KEY || '';
+  const jws_private_key: string = process.env.JWS_PRIVATE_KEY || '';
+  const requestData = await request.json();
+  try {
+    const jwe: string = await encryptJWE(requestData, jwe_public_key);
+    const jws: string = await signJWE(jws_private_key, jwe);
+    const object = { jwe, jws };
+    return object;
+  } catch (error) {
+    throw new Error('Error in request handling: ' + (error as Error).message);
   }
 }

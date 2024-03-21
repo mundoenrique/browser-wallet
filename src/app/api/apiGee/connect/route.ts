@@ -1,19 +1,15 @@
-import { getEnvVariable } from '@/utils';
+import { JWS_HEADER, handleApiGeeRequest } from '@/utils';
 import { connect } from '@/utils/apiGeeServer';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
-  // console.log('POST', request);
-  const data = await request.json();
-  console.log('POST-data', data);
   const url = request.headers.get('x-url');
   request.headers.delete('x-url');
-  // Se debe obtener la data y cifrarla para enviarla en el connect
-  const encryptedData = {};
-
+  const { jwe, jws } = await handleApiGeeRequest(request);
+  request.headers.set(JWS_HEADER, `JWS ${jws}`);
   if (url) {
     try {
-      const response = await connect('post', url, request.headers, encryptedData);
+      const response = await connect('post', url, request.headers, jwe);
       return NextResponse.json(response.data, { status: response.status });
     } catch (error) {
       console.log('Ha ocurrido un error: ', error);
