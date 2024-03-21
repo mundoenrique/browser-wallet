@@ -4,25 +4,24 @@ import React, { useEffect } from 'react';
 //Internal app
 
 import { ChildrenProps } from '@/interfaces/constans';
-import { api } from '@/utils/apiGee';
+import { useOAuth2Store } from '@/store/oAuth2Store';
+import { apiGee } from '@/utils/apiGeeConnect';
 
 export default function OAuth2Provider({ children }: ChildrenProps) {
-  const grant_type: string = 'client_credentials';
-  const client_id: string | undefined = process.env.NEXT_PUBLIC_APIGEE_APP_CREDENTIALS_KEY;
-  const client_secret: string | undefined = process.env.NEXT_PUBLIC_APIGEE_APP_CREDENTIALS_SECRET;
+  const { accessToken, setAccessToken } = useOAuth2Store();
 
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await api.post('/api/apiGee/gettoken', { grant_type, client_id, client_secret });
-        console.log('response', response);
-
-        const token = response.data?.['access_token'] as string;
-      } catch (error) {
-        console.error('Error generating OAuth2 token:', error);
-      }
-    })();
-  }, [, client_id, client_secret]);
+    if (!accessToken) {
+      (async () => {
+        try {
+          const response = await apiGee.post('/gettoken');
+          setAccessToken(response.data.data);
+        } catch (error) {
+          console.error('Error generating OAuth2 token:', error);
+        }
+      })();
+    }
+  }, [accessToken, setAccessToken]);
 
   return <>{children}</>;
 }
