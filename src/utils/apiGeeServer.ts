@@ -2,6 +2,7 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import { getEnvVariable } from './apiHelpers';
 
 const baseURL = getEnvVariable('APIGEE_HOST');
+const tenantId = getEnvVariable('TENANT_ID');
 
 export const apiGee = axios.create({
   baseURL,
@@ -35,7 +36,6 @@ apiGee.interceptors.request.use(
 
 export function configureDefaultHeaders(headers: Headers) {
   const authorization = headers.get('Authorization');
-  const tenantId = headers.get('X-Tenant-Id');
   const jws = headers.get('X-Token');
 
   apiGee.defaults.headers.common = {

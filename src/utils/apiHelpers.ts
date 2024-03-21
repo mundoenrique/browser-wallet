@@ -137,8 +137,10 @@ export async function handleResponse(
 
 export async function handleApiGeeRequest(request: NextRequest): Promise<any> {
   const jwe_public_key: string = process.env.APIGEE_JWE_PUBLIC_KEY || '';
-  const jws_private_key: string = process.env.JWS_PRIVATE_KEY || '';
+  const jws_private_key: string = process.env.APIGEE_JWS_PRIVATE_KEY || '';
   const requestData = await request.json();
+  console.log('requestData: ', requestData);
+
   try {
     const jwe: string = await encryptJWE(requestData, jwe_public_key);
     const jws: string = await signJWE(jws_private_key, jwe);

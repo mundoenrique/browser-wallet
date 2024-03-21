@@ -16,7 +16,6 @@ export function configureHeaders(
 ): InternalAxiosRequestConfig {
   const url = request.url;
   if (url !== '/gettoken') {
-    request.headers['X-Tenant-Id'] = process.env.NEXT_PUBLIC_TENANT_ID;
     if (!request.headers['Authorization']) {
       request.headers['Authorization'] = `Bearer ${accessToken}`;
     }

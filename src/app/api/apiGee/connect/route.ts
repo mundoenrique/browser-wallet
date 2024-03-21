@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   const url = request.headers.get('x-url');
   request.headers.delete('x-url');
+
   const { jwe, jws } = await handleApiGeeRequest(request);
   request.headers.set(JWS_HEADER, `JWS ${jws}`);
   if (url) {

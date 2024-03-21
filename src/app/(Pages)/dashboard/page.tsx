@@ -59,30 +59,33 @@ export default function Dashboard() {
   useEffect(() => {
     if (accessToken) {
       (async () => {
+        // const data = {
+        //   currentPhaseCode: 'ONB_PHASES_PEP',
+        //   onboardingUuId: 'a4f97d13-0d69-4d6d-9042-a857cb08e391',
+        //   request: {
+        //     consultant: {
+        //       address: '7 Fifth Ave.',
+        //       consultantCode: '0098789',
+        //       countryCode: 'PE',
+        //       documentNumber: '12345678',
+        //       documentType: 'DNI',
+        //       email: 'email@email.com',
+        //       firstName: 'Max',
+        //       lastName: 'Smith',
+        //       phoneNumber: '956896253',
+        //     },
+        //     terms: [
+        //       {
+        //         uuid: 'a4f97d13-99999-4d6d-9042-a857cb08e391',
+        //       },
+        //     ],
+        //   },
+        // };
         const data = {
-          currentPhaseCode: 'ONB_PHASES_PEP',
-          onboardingUuId: 'a4f97d13-0d69-4d6d-9042-a857cb08e391',
-          request: {
-            consultant: {
-              address: '7 Fifth Ave.',
-              consultantCode: '0098789',
-              countryCode: 'PE',
-              documentNumber: '12345678',
-              documentType: 'DNI',
-              email: 'email@email.com',
-              firstName: 'Max',
-              lastName: 'Smith',
-              phoneNumber: '956896253',
-            },
-            terms: [
-              {
-                uuid: 'a4f97d13-99999-4d6d-9042-a857cb08e391',
-              },
-            ],
-          },
+          otpProcessCode: 'CHANGE_PASSWORD',
         };
         try {
-          const response = await apiGee.post('/onboarding/termsandconditions', data);
+          const response = await apiGee.post('/onboarding/a4f97d13-0d69-4d6d-9042-a857cb08e391/tfa', data);
           console.log('response-page', response.data);
           // if (response.data.data) {
           //   setCardInfo(response.data.data);
