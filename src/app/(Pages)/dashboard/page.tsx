@@ -6,8 +6,9 @@ import { Box, Typography } from '@mui/material';
 //Internal app
 import { useMenuStore, useOAuth2Store } from '@/store';
 import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
-import { useApi } from '@/hooks/useApiGee';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
+import { apiGee } from '@/utils/apiGeeConnect';
+import { useApi } from '@/hooks/useApiGee';
 
 const movementData = [
   {
@@ -43,64 +44,33 @@ const movementData = [
 ];
 
 export default function Dashboard() {
-  // const grant_type: string = 'client_credentials';
-  // const client_id: string | undefined = process.env.NEXT_PUBLIC_APIGEE_APP_CREDENTIALS_KEY;
-  // const client_secret: string | undefined = process.env.NEXT_PUBLIC_APIGEE_APP_CREDENTIALS_SECRET;
-
   const [cardInfo, setCardInfo] = useState<any>(null);
   const { accessToken } = useOAuth2Store();
+  const apiGee = useApi();
 
   const { push } = useRouter();
   const { setCurrentItem } = useMenuStore();
-  const api = useApi();
   const cardId = '502c2656-7110-4994-a820-f593e468c6b4';
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await fetch('/api/apiGee/gettoken', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Accept: 'application/json',
-          },
-        });
-        console.log('response-page', response);
-
-        // const token = response.data?.['access_token'] as string;
-      } catch (error) {
-        console.error('Error generating OAuth2 token:', error);
-      }
-    })();
-  }, []);
 
   useEffect(() => {
     setCurrentItem('home');
   }, [setCurrentItem]);
 
   useEffect(() => {
-    // if (accessToken && !cardInfo) {
-    (async () => {
-      try {
-        // const response = await api.get('/api/v1.3/cards/' + cardId);
-        // const data = response.data.data as string;
-        // setCardInfo(data);
-        const response = await fetch(`/api/v1.3/cards/${cardId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Accept: 'application/json',
-          },
-        });
-        console.log('response-page', response.json());
-        return response.json();
-      } catch (error) {
-        console.error('Error generating card info:', error);
-      }
-    })();
-    // }
-  }, []);
-  // }, [accessToken, api, cardInfo]);
+    if (accessToken && !cardInfo) {
+      (async () => {
+        try {
+          const response = await apiGee.get('/cards/' + cardId);
+          console.log('response-page', response.data);
+          if (response.data.data) {
+            setCardInfo(response.data.data);
+          }
+        } catch (error) {
+          console.error('Error generating card info:', error);
+        }
+      })();
+    }
+  }, [accessToken, apiGee, cardInfo]);
 
   return (
     <Box
