@@ -1,28 +1,38 @@
 import { getEnvVariable } from '@/utils';
-import { connect } from '@/utils/apiGee';
+import { connect } from '@/utils/apiGeeServer';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
-  console.log('connect-POST');
-  const TENANT_ID = getEnvVariable('TENANT_ID');
-  const parameters = await req.json();
-  console.log('handler-parameters:', parameters);
-  const { method, url, data } = parameters;
-  const response = await connect(method, url, data);
-  return NextResponse.json(response.data, { status: 200 });
+export async function POST(request: NextRequest) {
+  const url = request.headers.get('x-url');
+  request.headers.delete('x-url');
+  // Se debe obtener la data y cifrarla para enviarla en el connect
+  const encryptedData = {};
+
+  if (url) {
+    try {
+      const response = await connect('get', url, request.headers, encryptedData);
+      return NextResponse.json(response.data, { status: response.status });
+    } catch (error) {
+      console.log('Ha ocurrido un error: ', error);
+      return NextResponse.json({ message: 'Ha ocurrido un error' }, { status: 500 });
+    }
+  }
+  return NextResponse.json({ message: 'No url provided' }, { status: 400 });
 }
 
-export async function GET(req: NextRequest) {
-  console.log('connect-GET');
-  const TENANT_ID = getEnvVariable('TENANT_ID');
+export async function GET(request: NextRequest) {
+  const url = request.headers.get('x-url');
+  request.headers.delete('x-url');
 
-  const url = req.headers.get('x-url');
   if (url) {
-    const auth2_token = req.cookies.get('auth2_token');
-    req.headers.set('Authorization', `Bearer ${auth2_token}`);
-    req.headers.set('X-Tenant-Id', TENANT_ID);
-    const response = await connect('GET', url, null);
-    return NextResponse.json(response.data, { status: 200 });
+    try {
+      const response = await connect('get', url, request.headers);
+      return NextResponse.json(response.data, { status: response.status });
+      // Falta verificar si la data viene cifrada, descifrarla
+    } catch (error) {
+      console.log('Ha ocurrido un error: ', error);
+      return NextResponse.json({ message: 'Ha ocurrido un error' }, { status: 500 });
+    }
   }
   return NextResponse.json({ message: 'No url provided' }, { status: 400 });
 }
