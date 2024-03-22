@@ -8,6 +8,8 @@ export const JWT_HEADER = 'x-jwt-auth';
 export const AUDIENCE = 'Audiencia';
 export const ISSUER = 'Emisor';
 
+export const APIGEE_HEADERS_NAME = ['Authorization', 'X-Tenant-Id', 'X-Token', 'X-Request-Id'];
+
 export const URL_BASE = {
   cards: 'api/v1.3/cards',
   onboarding: 'api/v0/onboarding',

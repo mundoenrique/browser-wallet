@@ -21,7 +21,7 @@ export function useApi() {
         }
       );
     }
-  }, [accessToken]);
+  }, [accessToken, jwsPrivateKey, token]);
 
   return apiGee;
 }
