@@ -22,7 +22,7 @@ export function useApi() {
             return Promise.reject('API publicKey is not defined');
           }
 
-          if (url !== '/v1/gettoken') {
+          if (url !== '/gettoken') {
             if (!api.defaults.headers.common[JWT_HEADER]) {
               setJwtToken(token);
               request.headers[JWT_HEADER] = token;
@@ -44,7 +44,7 @@ export function useApi() {
         const jwtAuth = response.headers[JWT_HEADER];
         const jweApiPublicKey = process.env.NEXT_PUBLIC_JWE_PUBLIC_KEY;
 
-        if (url === '/auth/generate-keys' || url === '/v1/gettoken') {
+        if (url === '/gettoken') {
           return response;
         }
 
