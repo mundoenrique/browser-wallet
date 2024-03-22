@@ -1,9 +1,9 @@
-import axios, { InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestHeaders, InternalAxiosRequestConfig } from 'axios';
 import { getEnvVariable } from './apiHelpers';
 import uuid4 from 'uuid4';
+import { APIGEE_HEADERS_NAME } from './constants';
 
 const baseURL = getEnvVariable('APIGEE_HOST');
-const tenantId = getEnvVariable('TENANT_ID');
 
 export const apiGee = axios.create({
   baseURL,
@@ -20,12 +20,7 @@ apiGee.interceptors.request.use(
   (request) => {
     const url = request.url;
     const body = request.data;
-    const headers = {
-      Authorization: request.headers['Authorization'],
-      'X-Tenant-Id': request.headers['X-Tenant-Id'],
-      'X-Token': request.headers['X-Token'],
-      'X-Request-Id': request.headers['X-Request-Id'],
-    };
+    const headers = filterHeaders(request.headers);
 
     console.log('---------------apiGeeServer Request---------------- ');
     console.log({ url, body, headers });
@@ -48,15 +43,25 @@ apiGee.interceptors.response.use(
   }
 );
 
-export function configureDefaultHeaders(headers: Headers) {
-  const authorization = headers.get('Authorization');
-  const jws = headers.get('X-Token');
+export function filterHeaders(headers: Headers | AxiosRequestHeaders) {
+  const filteredHeaders: { [key: string]: string } = {};
 
+  APIGEE_HEADERS_NAME.forEach((name) => {
+    let value: string | null | undefined;
+    value = headers instanceof Headers ? headers.get(name) : headers[name];
+    if (value !== undefined && value !== null) {
+      filteredHeaders[name] = value;
+    }
+  });
+
+  return filteredHeaders;
+}
+
+export function configureDefaultHeaders(headers: Headers) {
+  const tenantId = getEnvVariable('TENANT_ID');
   apiGee.defaults.headers.common = {
-    Authorization: authorization,
+    ...filterHeaders(headers),
     'X-Tenant-Id': tenantId,
-    'X-Token': jws,
-    'X-Request-Id': uuid4(),
   };
 }
 
