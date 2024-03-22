@@ -63,10 +63,9 @@ export async function handleRequest(
   return request;
 }
 
-export async function handleResponse(response: AxiosResponse<any, any>) {
+export async function handleResponse(response: AxiosResponse<any, any>, jwePrivateKey: string) {
   const url = response.config.url;
   const data = response.data;
-  const jwePrivateKey: string | undefined = process.env.NEXT_PUBLIC_APIGEE_JWE_PRIVATE_KEY;
 
   if (url !== '/oauth2/v1/token' && data) {
     if (!jwePrivateKey) {

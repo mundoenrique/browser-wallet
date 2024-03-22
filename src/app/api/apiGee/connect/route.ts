@@ -24,10 +24,8 @@ export async function POST(request: NextRequest) {
   if (url) {
     try {
       const response = await connect('post', url, request.headers, { data: jwe });
-      const encryptedResponse = await handleApiGeeResponse(response.data, jweAppPublicKey, jwsAppPublicKey);
-      // return NextResponse.json(encryptedResponse, { status: response.status });
+      const encryptedResponse = await handleApiGeeResponse(response.data, jweAppPublicKey);
       return encryptedResponse;
-      // return NextResponse.json({ message: 'Ha ocurrido un error' }, { status: 200 });
     } catch (error) {
       return NextResponse.json({ message: 'Ha ocurrido un error' }, { status: 500 });
     }
@@ -36,24 +34,23 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  console.log('GET');
   const url = request.headers.get('x-url');
   request.headers.delete('x-url');
+  console.log('--------------- ApiGee Connect GET to ---------------');
+  console.log('url: ', url);
 
-  const jweApiPublicKey = getEnvVariable('JWE_PUBLIC_KEY');
-  const jweApiPrivateKey = getEnvVariable('JWE_PRIVATE_KEY');
+  const { data, jweAppPublicKey, jwsAppPublicKey } = await handleApiRequest(request);
 
-  const jwtPayload = await handleJWT(request, jweApiPublicKey);
-  const jweAppPublicKey = jwtPayload.jwePublicKey;
-  const jwsAppPublicKey = jwtPayload.jwsPublicKey;
+  const { jwe, jws } = await handleApiGeeRequest(data);
+
+  request.headers.set(JWS_HEADER, `JWS ${jws}`);
 
   if (url) {
     try {
-      const response = await connect('get', url, request.headers);
-      const encryptedResponse = await handleApiGeeResponse(response.data, jweAppPublicKey, jwsAppPublicKey);
+      const response = await connect('post', url, request.headers, { data: jwe });
+      const encryptedResponse = await handleApiGeeResponse(response.data, jweAppPublicKey);
       return encryptedResponse;
     } catch (error) {
-      console.log('Ha ocurrido un error: ', error);
       return NextResponse.json({ message: 'Ha ocurrido un error' }, { status: 500 });
     }
   }

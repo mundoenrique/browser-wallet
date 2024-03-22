@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
-import { apiGee, configureHeaders, handleRequest } from '@/utils/apiGeeConnect';
+import { apiGee, configureHeaders, handleRequest, handleResponse } from '@/utils/apiGeeConnect';
 import { useJwtStore, useKeyStore, useOAuth2Store } from '@/store';
-import { handleResponse } from '@/utils';
 
 export function useApi() {
   const { accessToken } = useOAuth2Store();
@@ -21,17 +20,17 @@ export function useApi() {
           return Promise.reject(error);
         }
       );
-      // apiGee.interceptors.response.use(
-      //   async (response) => {
-      //     return await handleResponse(response, jwePrivateKey);
-      //   },
-      //   (error) => {
-      //     console.error('Error in request:', error);
-      //     return Promise.reject(error);
-      //   }
-      // );
+      apiGee.interceptors.response.use(
+        async (response) => {
+          return await handleResponse(response, jwePrivateKey);
+        },
+        (error) => {
+          console.error('Error in request:', error);
+          return Promise.reject(error);
+        }
+      );
     }
-  }, [accessToken, jwsPrivateKey, token]);
+  }, [accessToken, jwsPrivateKey, token, jwePrivateKey]);
 
   return apiGee;
 }
