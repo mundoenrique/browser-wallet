@@ -121,6 +121,7 @@ export async function handleResponse(
   jweAppPublicKey: string,
   jwsApiPrivateKey: string
 ): Promise<Response> {
+  console.log('---------handleResponse-------------------', responseObj);
   try {
     const jwe: string = await encryptJWE(responseObj, jweAppPublicKey);
     const encryptedResponse = { data: jwe };
@@ -149,11 +150,7 @@ export async function handleApiGeeRequest(data: object): Promise<any> {
   }
 }
 
-export async function handleApiGeeResponse(
-  responseObj: IApiGeeResponse,
-  jweAppPublicKey: string,
-  jwsAppPublicKey: string
-): Promise<any> {
+export async function handleApiGeeResponse(responseObj: IApiGeeResponse, jweAppPublicKey: string): Promise<any> {
   console.log('---------handleApiGeeResponse-------------------');
   const jweApiGeePrivateKey = getEnvVariable('APIGEE_JWE_PRIVATE_KEY');
 
@@ -161,6 +158,8 @@ export async function handleApiGeeResponse(
     const decryptData = await decryptJWE(responseObj.data, jweApiGeePrivateKey);
     responseObj.data = decryptData;
   }
-  const response = await handleApiResponse(responseObj, jweAppPublicKey, jwsAppPublicKey);
+
+  const response = await handleApiResponse(responseObj, jweAppPublicKey);
+
   return response;
 }

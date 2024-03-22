@@ -1,4 +1,11 @@
-import { JWS_HEADER, decryptJWE, getEnvVariable, handleApiGeeRequest, handleApiGeeResponse, handleJWT } from '@/utils';
+import {
+  JWS_HEADER,
+  getEnvVariable,
+  handleApiGeeRequest,
+  handleApiGeeResponse,
+  handleApiRequest,
+  handleJWT,
+} from '@/utils';
 import { connect } from '@/utils/apiGeeServer';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -8,18 +15,7 @@ export async function POST(request: NextRequest) {
   console.log('--------------- ApiGee Connect POST to ---------------');
   console.log('url: ', url);
 
-<<<<<<< HEAD
-  const jweApiPublicKey = getEnvVariable('JWE_PUBLIC_KEY');
-  const jweApiPrivateKey = getEnvVariable('JWE_PRIVATE_KEY');
-
-  const payload = await request.json();
-  const jwtPayload = await handleJWT(request, jweApiPublicKey);
-  const jweAppPublicKey = jwtPayload.jwePublicKey;
-  const jwsAppPublicKey = jwtPayload.jwsPublicKey;
-  const data = await decryptJWE(payload.data, jweApiPrivateKey);
-=======
   const { data, jweAppPublicKey, jwsAppPublicKey } = await handleApiRequest(request);
->>>>>>> 67b7635815626484844930c6604163090401796d
 
   const { jwe, jws } = await handleApiGeeRequest(data);
 
@@ -54,7 +50,6 @@ export async function GET(request: NextRequest) {
   if (url) {
     try {
       const response = await connect('get', url, request.headers);
-
       const encryptedResponse = await handleApiGeeResponse(response.data, jweAppPublicKey, jwsAppPublicKey);
       return encryptedResponse;
     } catch (error) {

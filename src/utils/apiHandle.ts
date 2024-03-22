@@ -34,18 +34,10 @@ export async function handleApiRequest(request: NextRequest) {
   };
 }
 
-export async function handleApiResponse(response: object | null, jweAppPublicKey: string, jwsAppPublicKey: string) {
-  const jweApiPrivateKey = getEnvVariable('JWE_PRIVATE_KEY');
+export async function handleApiResponse(response: object | null, jweAppPublicKey: string) {
   const jwsApiPrivateKey = getEnvVariable('JWS_PRIVATE_KEY');
 
   const data = await handleResponse(response, jweAppPublicKey, jwsApiPrivateKey);
-
-  const jwt: string = await signJWT(jweApiPrivateKey, {
-    jwePublicKey: jweAppPublicKey,
-    jwsPublicKey: jwsAppPublicKey,
-  });
-
-  data.headers.set(JWT_HEADER, jwt);
 
   return data;
 }
