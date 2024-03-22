@@ -1,9 +1,10 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { Avatar, Box, Skeleton, Typography } from '@mui/material';
+import { Avatar, Box, Typography } from '@mui/material';
 import { NorthEast, SouthEast } from '@mui/icons-material';
 //Internal app
+import { SkeletonTable } from '@/components';
 import { TableDataProps } from '@/interfaces';
 import { stringAvatar } from '@/utils/toolHelper';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
@@ -21,18 +22,6 @@ import { fuchsiaBlue, slate } from '@/theme/theme-default';
  * }]
  */
 export default function LastMovements({ data, loading }: TableDataProps): JSX.Element {
-  const LoadingSkeleton = [];
-  for (var i = 0; i < 5; i++) {
-    LoadingSkeleton.push(
-      <Box key={i} sx={{ display: 'flex', flexDirection: 'row', marginY: '8px' }}>
-        <Skeleton animation="wave" variant="circular" width={40} height={40} />
-        <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
-          <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-          <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-        </Box>
-      </Box>
-    );
-  }
 
   return (
     <Box
@@ -110,7 +99,7 @@ export default function LastMovements({ data, loading }: TableDataProps): JSX.El
           </Box>
         </Box>
       ))}
-      {loading && LoadingSkeleton}
+      {loading && <SkeletonTable />}
     </Box>
   );
 }
