@@ -145,7 +145,7 @@ export async function handleApiGeeRequest(data: object): Promise<any> {
     const object = { jwe, jws };
     return object;
   } catch (error) {
-    throw new Error('Error in request handling: ' + (error as Error).message);
+    throw new Error('Error in apiGee request handling: ' + (error as Error).message);
   }
 }
 
@@ -162,6 +162,5 @@ export async function handleApiGeeResponse(
     responseObj.data = decryptData;
   }
   const response = await handleApiResponse(responseObj, jweAppPublicKey, jwsAppPublicKey);
-  console.log('---------handleApiGeeResponse-handleApiResponse-response-------------------', response);
   return response;
 }

@@ -14,16 +14,10 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   const url = request.headers.get('x-url');
   request.headers.delete('x-url');
+  console.log('--------------- ApiGee Connect POST to ---------------');
+  console.log('url: ', url);
 
-  const jweApiPublicKey = getEnvVariable('JWE_PUBLIC_KEY');
-  const jweApiPrivateKey = getEnvVariable('JWE_PRIVATE_KEY');
-
-  const payload = await request.json();
-  const jwtPayload = await handleJWT(request, jweApiPublicKey);
-  const jweAppPublicKey = jwtPayload.jwePublicKey;
-  const jwsAppPublicKey = jwtPayload.jwsPublicKey;
-  // const { jweAppPublicKey, jwsAppPublicKey } = await handleJWT(request, jweApiPublicKey);
-  const data = await decryptJWE(payload.data, jweApiPrivateKey);
+  const { data, jweAppPublicKey, jwsAppPublicKey } = await handleApiRequest(request);
 
   const { jwe, jws } = await handleApiGeeRequest(data);
 
@@ -33,7 +27,6 @@ export async function POST(request: NextRequest) {
     try {
       const response = await connect('post', url, request.headers, { data: jwe });
       const encryptedResponse = await handleApiGeeResponse(response.data, jweAppPublicKey, jwsAppPublicKey);
-      console.log('encryptedResponse: ', encryptedResponse);
 
       // return NextResponse.json(encryptedResponse, { status: response.status });
       return encryptedResponse;

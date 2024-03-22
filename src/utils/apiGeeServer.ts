@@ -22,7 +22,7 @@ apiGee.interceptors.request.use(
     const body = request.data;
     const headers = filterHeaders(request.headers);
 
-    console.log('---------------apiGeeServer Request---------------- ');
+    console.log('--------------- apiGeeServer Request ---------------');
     console.log({ url, body, headers });
     return request;
   },
@@ -34,7 +34,7 @@ apiGee.interceptors.request.use(
 apiGee.interceptors.response.use(
   (response) => {
     const body = response.data;
-    console.log('---------------apiGeeServer Response---------------- ');
+    console.log('--------------- apiGeeServer Response ---------------');
     console.log({ body });
     return response;
   },
