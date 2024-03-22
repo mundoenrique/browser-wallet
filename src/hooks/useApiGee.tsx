@@ -1,15 +1,18 @@
 import { useEffect } from 'react';
-import { apiGee, configureHeaders } from '@/utils/apiGeeConnect';
-import { useOAuth2Store } from '@/store';
+import { apiGee, configureHeaders, handleRequest } from '@/utils/apiGeeConnect';
+import { useJwtStore, useKeyStore, useOAuth2Store } from '@/store';
 
 export function useApi() {
   const { accessToken } = useOAuth2Store();
-
+  const { jwsPrivateKey } = useKeyStore();
+  const { token } = useJwtStore();
   useEffect(() => {
-    if (accessToken) {
+    if (accessToken && jwsPrivateKey && token) {
       apiGee.interceptors.request.use(
         async (request) => {
-          request = configureHeaders(request, accessToken);
+          request = configureHeaders(request, accessToken, token);
+          request = await handleRequest(request, jwsPrivateKey);
+
           return request;
         },
         (error) => {

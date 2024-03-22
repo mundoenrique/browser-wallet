@@ -59,33 +59,33 @@ export default function Dashboard() {
   useEffect(() => {
     if (accessToken) {
       (async () => {
-        // const data = {
-        //   currentPhaseCode: 'ONB_PHASES_PEP',
-        //   onboardingUuId: 'a4f97d13-0d69-4d6d-9042-a857cb08e391',
-        //   request: {
-        //     consultant: {
-        //       address: '7 Fifth Ave.',
-        //       consultantCode: '0098789',
-        //       countryCode: 'PE',
-        //       documentNumber: '12345678',
-        //       documentType: 'DNI',
-        //       email: 'email@email.com',
-        //       firstName: 'Max',
-        //       lastName: 'Smith',
-        //       phoneNumber: '956896253',
-        //     },
-        //     terms: [
-        //       {
-        //         uuid: 'a4f97d13-99999-4d6d-9042-a857cb08e391',
-        //       },
-        //     ],
-        //   },
-        // };
         const data = {
-          otpProcessCode: 'CHANGE_PASSWORD',
+          currentPhaseCode: 'ONB_PHASES_TERMS',
+          request: {
+            consultant: {
+              consultantCode: '00123457',
+              firstName: 'RAUL',
+              lastName: 'RAMOS',
+              documentType: 'DNI',
+              documentNumber: '44556678',
+              address: 'fsdfjsdj 1234',
+              email: 'griniramos@gmail.com',
+              phoneNumber: '987654322',
+              countryCode: 'PE',
+            },
+            terms: [
+              {
+                uuid: '30036e69-5f3e-430a-a8ee-8ce59e9e1320',
+              },
+              {
+                uuid: 'a4e18adf-95af-4b9f-8b95-06c985aca5ef',
+              },
+            ],
+          },
         };
+
         try {
-          const response = await apiGee.post('/onboarding/a4f97d13-0d69-4d6d-9042-a857cb08e391/tfa', data);
+          const response = await apiGee.post('/onboarding/termsandconditions', data);
           console.log('response-page', response.data);
           // if (response.data.data) {
           //   setCardInfo(response.data.data);

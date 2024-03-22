@@ -1,5 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 import { getEnvVariable } from './apiHelpers';
+import uuid4 from 'uuid4';
 
 const baseURL = getEnvVariable('APIGEE_HOST');
 const tenantId = getEnvVariable('TENANT_ID');
@@ -7,7 +8,7 @@ const tenantId = getEnvVariable('TENANT_ID');
 export const apiGee = axios.create({
   baseURL,
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Type': 'application/json',
     Accept: 'application/json',
   },
   validateStatus: function (status) {
@@ -18,16 +19,29 @@ export const apiGee = axios.create({
 apiGee.interceptors.request.use(
   (request) => {
     const url = request.url;
-    const data = request.data;
+    const body = request.data;
     const headers = {
       Authorization: request.headers['Authorization'],
       'X-Tenant-Id': request.headers['X-Tenant-Id'],
       'X-Token': request.headers['X-Token'],
+      'X-Request-Id': request.headers['X-Request-Id'],
     };
 
-    console.log('apiGeeServer Request: ');
-    console.log({ url, data, headers });
+    console.log('---------------apiGeeServer Request---------------- ');
+    console.log({ url, body, headers });
     return request;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+apiGee.interceptors.response.use(
+  (response) => {
+    const body = response.data;
+    console.log('---------------apiGeeServer Response---------------- ');
+    console.log({ body });
+    return response;
   },
   (error) => {
     return Promise.reject(error);
@@ -42,6 +56,7 @@ export function configureDefaultHeaders(headers: Headers) {
     Authorization: authorization,
     'X-Tenant-Id': tenantId,
     'X-Token': jws,
+    'X-Request-Id': uuid4(),
   };
 }
 
@@ -49,9 +64,15 @@ export async function getToken() {
   const grant_type: string = 'client_credentials';
   const client_id: string | undefined = process.env.APIGEE_APP_CREDENTIALS_KEY;
   const client_secret: string | undefined = process.env.APIGEE_APP_CREDENTIALS_SECRET;
-  const response = await apiGee.post(`/oauth2/v1/token`, { grant_type, client_id, client_secret });
-  console.log('response.data', response.data);
-
+  const response = await apiGee.post(
+    `/oauth2/v1/token`,
+    { grant_type, client_id, client_secret },
+    {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }
+  );
   const { data } = response;
   return data;
 }

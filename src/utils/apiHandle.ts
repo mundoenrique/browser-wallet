@@ -1,15 +1,35 @@
 import type { NextRequest } from 'next/server';
 //Internal app
-import { JWT_HEADER, getEnvVariable, handleJWE, handleJWT, handleResponse, signJWT } from './';
+import {
+  JWS_HEADER,
+  JWT_HEADER,
+  getEnvVariable,
+  handleJWE,
+  handleJWT,
+  handleResponse,
+  signJWT,
+  verifyDetachedJWS,
+} from './';
+import { IEncryptedBody } from '@/interfaces/api';
 
 export async function handleApiRequest(request: NextRequest) {
+  const requestCloneJWT = request;
+  const requestCloneJWE = request;
   const jweApiPublicKey = getEnvVariable('JWE_PUBLIC_KEY');
   const jweApiPrivateKey = getEnvVariable('JWE_PRIVATE_KEY');
 
-  const jwtPayload = await handleJWT(request, jweApiPublicKey);
+  const jwtPayload = await handleJWT(requestCloneJWT, jweApiPublicKey);
+
   const jweAppPublicKey = jwtPayload.jwePublicKey;
   const jwsAppPublicKey = jwtPayload.jwsPublicKey;
-  const data = await handleJWE(request, jwsAppPublicKey, jweApiPrivateKey);
+
+  const data = await handleJWE(requestCloneJWE, jwsAppPublicKey, jweApiPrivateKey);
+
+  // const paylaod: string = encryptedBody.data;
+
+  // const jws: string | null = request.headers.get(JWS_HEADER);
+
+  console.log('handleJWE-data', data);
 
   return {
     data,
@@ -32,4 +52,8 @@ export async function handleApiResponse(response: object | null, jweAppPublicKey
   data.headers.set(JWT_HEADER, jwt);
 
   return data;
+}
+
+function decryptJWE(paylaod: string, jweApiPrivateKey: string) {
+  throw new Error('Function not implemented.');
 }

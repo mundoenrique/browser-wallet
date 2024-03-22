@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 //Internal app
 import { JWT_HEADER, JWS_HEADER } from './constants';
-import { ApiGeeObjectRequest, IEncryptedBody, IJWTPayload } from '@/interfaces';
+import { ApiGeeObjectRequest, IApiGeeResponse, IEncryptedBody, IJWTPayload } from '@/interfaces';
 import { verifyJWT, encryptJWE, decryptJWE, signJWE, verifyDetachedJWS } from './jwt';
+import { handleApiResponse } from '.';
 
 type EnvVariableKey =
   | 'API_BASE_URL'
@@ -11,7 +12,8 @@ type EnvVariableKey =
   | 'JWS_PRIVATE_KEY'
   | 'JWS_PUBLIC_KEY'
   | 'APIGEE_HOST'
-  | 'TENANT_ID';
+  | 'TENANT_ID'
+  | 'APIGEE_JWE_PRIVATE_KEY';
 
 /**
  * Function to handle errors in API requests.
@@ -97,9 +99,7 @@ export async function handleJWE(
     const encryptedBody: IEncryptedBody = await request.json();
     const paylaod: string = encryptedBody.data;
     const jws: string | null = request.headers.get(JWS_HEADER);
-
     await verifyDetachedJWS(jws, jwsAppPublicKey, paylaod);
-
     const data = await decryptJWE(paylaod, jweApiPrivateKey);
     return data;
   } catch (error) {
@@ -135,18 +135,33 @@ export async function handleResponse(
   }
 }
 
-export async function handleApiGeeRequest(request: NextRequest): Promise<any> {
+export async function handleApiGeeRequest(data: object): Promise<any> {
   const jwe_public_key: string = process.env.APIGEE_JWE_PUBLIC_KEY || '';
   const jws_private_key: string = process.env.APIGEE_JWS_PRIVATE_KEY || '';
-  const requestData = await request.json();
-  console.log('requestData: ', requestData);
 
   try {
-    const jwe: string = await encryptJWE(requestData, jwe_public_key);
+    const jwe: string = await encryptJWE(data, jwe_public_key);
     const jws: string = await signJWE(jws_private_key, jwe);
     const object = { jwe, jws };
     return object;
   } catch (error) {
     throw new Error('Error in request handling: ' + (error as Error).message);
   }
+}
+
+export async function handleApiGeeResponse(
+  responseObj: IApiGeeResponse,
+  jweAppPublicKey: string,
+  jwsAppPublicKey: string
+): Promise<any> {
+  console.log('---------handleApiGeeResponse-------------------');
+  const jweApiGeePrivateKey = getEnvVariable('APIGEE_JWE_PRIVATE_KEY');
+
+  if (responseObj.data) {
+    const decryptData = await decryptJWE(responseObj.data, jweApiGeePrivateKey);
+    responseObj.data = decryptData;
+  }
+  const response = await handleApiResponse(responseObj, jweAppPublicKey, jwsAppPublicKey);
+  console.log('---------handleApiGeeResponse-handleApiResponse-response-------------------', response);
+  return response;
 }
