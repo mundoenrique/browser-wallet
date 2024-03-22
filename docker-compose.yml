@@ -1,0 +1,33 @@
+version: '3.9'
+services:
+  yiroWallet:
+    image: yiro-wallet
+    container_name: yiro-wallet
+    build: .
+    networks:
+     - yiro_wallet_network
+    env_file:
+      - ./.env
+    restart: always
+    environment:
+      DB_HOST: ${REDIS_HOST}
+    ports:
+      - ${APP_PORT}:3000
+
+  redisDb:
+    image: redis:7-alpine
+    container_name: redis-db
+    networks:
+     - yiro_wallet_network
+    env_file:
+      - ./.env
+    restart: always
+    ports:
+     - '${REDIS_PORT}:6379'
+    volumes:
+     - ${REDIS_DIRECTORY_DATA}:/data
+    command: redis-server --loglevel warning --requirepass ${REDIS_PASSWORD}
+
+networks:
+  yiro_wallet_network:
+    name: yiro_wallet_network
