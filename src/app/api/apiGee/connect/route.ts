@@ -5,7 +5,10 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   const url = request.headers.get('x-url');
   request.headers.delete('x-url');
+  console.log('--------------- ApiGee Connect POST to ---------------');
+  console.log('url: ', url);
 
+<<<<<<< HEAD
   const jweApiPublicKey = getEnvVariable('JWE_PUBLIC_KEY');
   const jweApiPrivateKey = getEnvVariable('JWE_PRIVATE_KEY');
 
@@ -14,6 +17,9 @@ export async function POST(request: NextRequest) {
   const jweAppPublicKey = jwtPayload.jwePublicKey;
   const jwsAppPublicKey = jwtPayload.jwsPublicKey;
   const data = await decryptJWE(payload.data, jweApiPrivateKey);
+=======
+  const { data, jweAppPublicKey, jwsAppPublicKey } = await handleApiRequest(request);
+>>>>>>> 67b7635815626484844930c6604163090401796d
 
   const { jwe, jws } = await handleApiGeeRequest(data);
 
@@ -23,7 +29,7 @@ export async function POST(request: NextRequest) {
     try {
       const response = await connect('post', url, request.headers, { data: jwe });
       const encryptedResponse = await handleApiGeeResponse(response.data, jweAppPublicKey, jwsAppPublicKey);
-      console.log('encryptedResponse: ', encryptedResponse);
+      // return NextResponse.json(encryptedResponse, { status: response.status });
       return encryptedResponse;
       // return NextResponse.json({ message: 'Ha ocurrido un error' }, { status: 200 });
     } catch (error) {

@@ -25,11 +25,7 @@ export async function handleApiRequest(request: NextRequest) {
 
   const data = await handleJWE(requestCloneJWE, jwsAppPublicKey, jweApiPrivateKey);
 
-  // const paylaod: string = encryptedBody.data;
-
-  // const jws: string | null = request.headers.get(JWS_HEADER);
-
-  console.log('handleJWE-data', data);
+  console.log('Decrypted data: ', JSON.stringify(data, null, 2));
 
   return {
     data,
