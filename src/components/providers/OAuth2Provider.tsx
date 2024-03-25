@@ -14,7 +14,7 @@ export default function OAuth2Provider({ children }: ChildrenProps) {
     if (!accessToken) {
       (async () => {
         try {
-          const response = await apiGee.post('/gettoken');
+          const response = await apiGee.post('/gettokenauth');
           setAccessToken(response.data.data);
         } catch (error) {
           console.error('Error generating OAuth2 token:', error);

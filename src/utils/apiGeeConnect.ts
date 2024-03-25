@@ -4,7 +4,7 @@ import { JWT_HEADER } from './constants';
 import uuid4 from 'uuid4';
 
 export const apiGee = axios.create({
-  baseURL: '/api/apiGee',
+  baseURL: '/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -19,7 +19,7 @@ export function configureHeaders(
   jwtToken: string
 ): InternalAxiosRequestConfig {
   const url = request.url;
-  if (url !== '/gettoken') {
+  if (url !== '/gettokenAuth') {
     if (!request.headers['Authorization']) {
       request.headers['Authorization'] = `Bearer ${accessToken}`;
       request.headers[JWT_HEADER] = jwtToken;
@@ -41,7 +41,7 @@ export async function handleRequest(
   console.log('handleRequest-url', request.url);
   console.log('handleRequest-data', data);
 
-  if (url !== '/gettoken' && data) {
+  if (url !== '/gettokenAuth' && data) {
     /**
      * Encrypt Data and sign JWE
      */

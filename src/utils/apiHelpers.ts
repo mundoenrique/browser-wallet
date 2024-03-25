@@ -13,7 +13,7 @@ type EnvVariableKey =
   | 'JWS_PUBLIC_KEY'
   | 'APIGEE_HOST'
   | 'TENANT_ID'
-  | 'APIGEE_JWE_PRIVATE_KEY';
+  | 'BACK_JWE_PRIVATE_KEY';
 
 /**
  * Function to handle errors in API requests.
@@ -137,8 +137,8 @@ export async function handleResponse(
 }
 
 export async function handleApiGeeRequest(data: object): Promise<any> {
-  const jwe_public_key: string = process.env.APIGEE_JWE_PUBLIC_KEY || '';
-  const jws_private_key: string = process.env.APIGEE_JWS_PRIVATE_KEY || '';
+  const jwe_public_key: string = process.env.BACK_JWE_PUBLIC_KEY || '';
+  const jws_private_key: string = process.env.BACK_JWS_PRIVATE_KEY || '';
 
   try {
     const jwe: string = await encryptJWE(data, jwe_public_key);
@@ -152,7 +152,7 @@ export async function handleApiGeeRequest(data: object): Promise<any> {
 
 export async function handleApiGeeResponse(responseObj: IApiGeeResponse, jweAppPublicKey: string): Promise<any> {
   console.log('---------handleApiGeeResponse-------------------');
-  const jweApiGeePrivateKey = getEnvVariable('APIGEE_JWE_PRIVATE_KEY');
+  const jweApiGeePrivateKey = getEnvVariable('BACK_JWE_PRIVATE_KEY');
 
   if (responseObj.data) {
     const decryptData = await decryptJWE(responseObj.data, jweApiGeePrivateKey);
