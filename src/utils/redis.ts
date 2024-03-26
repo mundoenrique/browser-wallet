@@ -4,7 +4,7 @@ import Redis, { RedisOptions } from 'ioredis';
 const redis = {
   host: process.env.REDIS_HOST || '',
   password: process.env.REDIS_PASSWORD || '',
-  port: parseInt(process.env.REDIS_PORT || '') || 0,
+  port: parseInt(process.env.REDIS_PORT || '6379'),
   db: 0,
   prefix: process.env.REDIX_PREFIX || '',
 };
@@ -29,12 +29,12 @@ export function createRedisInstance(config = getRedisConfiguration()) {
       keyPrefix: config.prefix,
       lazyConnect: true,
       showFriendlyErrorStack: true,
-			enableAutoPipelining: false,
-			maxRetriesPerRequest: null,
+      enableAutoPipelining: false,
+      maxRetriesPerRequest: null,
       retryStrategy: (times: number) => {
-				if (times == 1) {
+        if (times == 1) {
           return undefined;
-				}
+        }
         return Math.min(times * 200, 1000);
       },
     };
