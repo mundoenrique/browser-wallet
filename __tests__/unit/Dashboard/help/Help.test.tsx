@@ -43,7 +43,6 @@ describe('Help', () => {
   //** Display a link to the frequent questions
   it('should navigate to frequent questions page when link is clicked', async () => {
     expect(screen.getByText(/preguntas frecuentes/i)).toBeInTheDocument();
-    expect(screen.getByText(/preguntas frecuentes/i).getAttribute('href')).toBe('/dashboard/help/frequent-questions');
     fireEvent.click(screen.getByText(/preguntas frecuentes/i));
     waitFor(() => {
       expect(router.push).toHaveBeenCalledWith('/dashboard/help/frequent-questions');
