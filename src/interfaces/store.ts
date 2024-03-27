@@ -12,7 +12,12 @@ export type KeyStoreProps = {
   jwePrivateKey: string | null;
   jwsPublicKey: string | null;
   jwsPrivateKey: string | null;
-  setKeys: (_keys: { jwePublicKey: string; jwePrivateKey: string; jwsPublicKey: string; jwsPrivateKey: string }) => void;
+  setKeys: (_keys: {
+    jwePublicKey: string;
+    jwePrivateKey: string;
+    jwsPublicKey: string;
+    jwsPrivateKey: string;
+  }) => void;
 };
 
 /**
@@ -114,6 +119,7 @@ export interface RegisterStore {
  */
 
 export interface IClientProps {
+  id: number;
   date: Date;
   name: string;
   amount: number;

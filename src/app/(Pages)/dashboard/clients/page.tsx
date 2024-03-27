@@ -6,7 +6,7 @@ import { Avatar, Box, Button, Typography, useTheme, useMediaQuery } from '@mui/m
 import { FilterIcons } from '%/Icons';
 import { ClientList, Filters } from './partial';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { Linking, ModalResponsive } from '@/components';
+import { ContainerLayout, Linking, ModalResponsive } from '@/components';
 import { useMenuStore, useNavTitleStore } from '@/store';
 import { InputCheckGroupOptionProps } from '@/interfaces';
 
@@ -15,6 +15,7 @@ const checkboxOptions = [
   { text: 'Cobrado', value: '2' },
   { text: 'Cobros pendientes', value: '3' },
   { text: 'Cobros vencidos', value: '4' },
+  { text: 'Cancelado', value: '5' },
 ];
 
 const months = [
@@ -55,6 +56,7 @@ export default function Clients() {
   const containerDesktop = useRef<HTMLDivElement | null>(null);
   const containerPWA = useRef<HTMLDivElement | null>(null);
   const filterActive = currentView === ENUM_VIEW.FILTERS;
+  const disabledBtnDelete = '3';
 
   const reset = () => {
     setCurrentPage(1);
@@ -132,94 +134,95 @@ export default function Clients() {
 
   return (
     <>
-      <Box
-        sx={{
-          height: { xs: 'calc(100vh - 120px)', md: 'auto' },
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: { xs: 'flex-start', md: 'center' },
-          width: { xs: '100%', md: 360 },
-          overflow: 'auto',
-          [theme.breakpoints.up('md')]: {
-            minHeight: 'calc(100vh + 100px)',
-            width: 360,
-          },
-        }}
-        ref={containerDesktop}
-      >
-        <Box sx={{ px: 3 }}>
-          <Typography
-            variant="h6"
-            align="center"
-            color={fuchsiaBlue[800]}
-            sx={{ mb: 5, display: { xs: 'none', md: 'block' } }}
-          >
-            Mis clientes
-          </Typography>
-
-          <Typography align="center" color={fuchsiaBlue[800]} variant="body1" fontWeight={700} fontSize={12}>
-            Total deuda clientes
-          </Typography>
-
-          <Typography variant="h6" align="center" color={fuchsiaBlue[800]} sx={{ mb: 2 }}>
-            S/ 720.00
-          </Typography>
-
-          <Linking
-            onClick={() => (filterActive ? setCurrentView(ENUM_VIEW.MAIN) : undefined)}
-            href={!filterActive ? '/dashboard' : '#'}
-            label="Volver"
-            mb={2}
-            color={fuchsiaBlue[800]}
-            iconSize={{ height: 20, width: 20 }}
-          />
-        </Box>
-
-        {filterActive ? (
-          <Filters
-            months={months}
-            monthDefault={month}
-            checkboxOptions={checkboxOptions}
-            handleFilters={() => handleFilters()}
-            checkboxOptionDefault={paymentStatusCode}
-            onChangeMonth={(item: InputCheckGroupOptionProps) => onChangeMonth(item)}
-            onChangeCheckbox={(item: InputCheckGroupOptionProps) => onChangeCheckbox(item)}
-          />
-        ) : (
-          <Box
-            onScroll={() => {
-              scrollHandle();
-            }}
-            ref={containerPWA}
-            sx={{
-              display: 'block',
-              height: { xs: 'calc(100% + 100px)', md: 'auto' },
-              background: { xs: 'white', md: 'none' },
-              borderRadius: { xs: '12px', md: '0' },
-              overflow: { xs: 'auto', md: 'hidden' },
-              px: 3,
-              pb: 2,
-            }}
-          >
-            <Button
-              variant="text"
-              color="secondary"
-              startIcon={
-                <Avatar sx={{ width: 28, height: 28, bgcolor: fuchsiaBlue[100] }}>
-                  <FilterIcons color="primary" fontSize="small" />
-                </Avatar>
-              }
-              onClick={() => (match ? setCurrentView(ENUM_VIEW.FILTERS) : setOpen(true))}
+      <ContainerLayout>
+        <Box
+          sx={{
+            //   height: { xs: 'calc(100vh - 120px)', md: 'auto' },
+            // display: 'flex',
+            // flexDirection: 'column',
+            // justifyContent: { xs: 'flex-start', md: 'center' },
+            width: { xs: '100%', md: 360 },
+            //   overflow: 'auto',
+            [theme.breakpoints.up('md')]: {
+              // minHeight: 'calc(100vh + 100px)',
+              width: 360,
+            },
+          }}
+          ref={containerDesktop}
+        >
+          <Box sx={{ px: 3 }}>
+            <Typography
+              variant="h6"
+              align="center"
+              color={fuchsiaBlue[800]}
+              sx={{ mb: 5, display: { xs: 'none', md: 'block' } }}
             >
-              {month.text && paymentStatus && `${month.text} - ${paymentStatus}  `}
-              {month.text && !paymentStatus && `${month.text}`}
-              {!month.text && paymentStatus && `${paymentStatus}`}
-            </Button>
-            <ClientList data={clientsData} loading={isLoading} />
-          </Box>
-        )}
-      </Box>
+              Mis clientes
+            </Typography>
 
+            <Typography align="center" color={fuchsiaBlue[800]} variant="body1" fontWeight={700} fontSize={12}>
+              Total deuda clientes
+            </Typography>
+
+            <Typography variant="h6" align="center" color={fuchsiaBlue[800]} sx={{ mb: 2 }}>
+              S/ 720.00
+            </Typography>
+
+            <Linking
+              onClick={() => (filterActive ? setCurrentView(ENUM_VIEW.MAIN) : undefined)}
+              href={!filterActive ? '/dashboard' : '#'}
+              label="Volver"
+              mb={2}
+              color={fuchsiaBlue[800]}
+              iconSize={{ height: 20, width: 20 }}
+            />
+          </Box>
+
+          {filterActive ? (
+            <Filters
+              months={months}
+              monthDefault={month}
+              checkboxOptions={checkboxOptions}
+              handleFilters={() => handleFilters()}
+              checkboxOptionDefault={paymentStatusCode}
+              onChangeMonth={(item: InputCheckGroupOptionProps) => onChangeMonth(item)}
+              onChangeCheckbox={(item: InputCheckGroupOptionProps) => onChangeCheckbox(item)}
+            />
+          ) : (
+            <Box
+              onScroll={() => {
+                scrollHandle();
+              }}
+              ref={containerPWA}
+              sx={{
+                display: 'block',
+                height: { xs: 'calc(100% + 100px)', md: 'auto' },
+                background: { xs: 'white', md: 'none' },
+                borderRadius: { xs: '12px', md: '0' },
+                overflow: { xs: 'auto', md: 'hidden' },
+                px: 3,
+                pb: 2,
+              }}
+            >
+              <Button
+                variant="text"
+                color="secondary"
+                startIcon={
+                  <Avatar sx={{ width: 28, height: 28, bgcolor: fuchsiaBlue[100] }}>
+                    <FilterIcons color="primary" fontSize="small" />
+                  </Avatar>
+                }
+                onClick={() => (match ? setCurrentView(ENUM_VIEW.FILTERS) : setOpen(true))}
+              >
+                {month.text && paymentStatus && `${month.text} - ${paymentStatus}  `}
+                {month.text && !paymentStatus && `${month.text}`}
+                {!month.text && paymentStatus && `${paymentStatus}`}
+              </Button>
+              <ClientList data={clientsData} loading={isLoading} disabledBtnDelete={disabledBtnDelete} />
+            </Box>
+          )}
+        </Box>
+      </ContainerLayout>
       <ModalResponsive open={open} handleClose={() => setOpen(false)}>
         <Box sx={{ textAlign: 'start' }}>
           <Filters

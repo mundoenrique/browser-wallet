@@ -15,13 +15,17 @@ import { IClientProps, IListClientsProps } from '@/interfaces';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 
 export default function ClientList(props: IListClientsProps): JSX.Element {
-  const { data, loading } = props;
+  const { data, loading, disabledBtnDelete } = props;
+  // console.log('data', data);
 
   const router = useRouter();
 
   const { setClient } = useClientStore();
 
   const [showOptions, setShowOptions] = useState(null);
+  const [clientsData, setClientsData] = useState<IClientProps[]>(data);
+
+  console.log('clientsData', clientsData);
 
   const handleOptionsClick = (index: any) => {
     setShowOptions(showOptions === index ? null : index);
@@ -33,9 +37,21 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
     setShowOptions(null);
   };
 
-  const handleDelete = (index: number) => {
-    data.splice(index, 1);
-    setShowOptions(null);
+  const handleDelete = (client: IClientProps) => {
+    console.log('handleDelete', client);
+
+    const newClientsData = clientsData.map((item) => {
+      if (item.id === client.id) {
+        return {
+          ...item,
+          status_type: '5',
+          status: 'Cancelado',
+        };
+      }
+      return item;
+    });
+    setClientsData(newClientsData);
+    // setShowOptions(null);
   };
 
   const handleNameClick = (index: number) => {
@@ -58,7 +74,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
         },
       }}
     >
-      {data.map((client: IClientProps, index: number) => (
+      {clientsData.map((client: IClientProps, index: number) => (
         <Box
           key={index}
           component="li"
@@ -147,8 +163,8 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
                     justifyContent: 'center',
                   }}
                 >
-                  <IconButton onClick={() => handleDelete(index)}>
-                    <DeleteIcons sx={{ color: slate[700] }} />
+                  <IconButton onClick={() => handleDelete(client)} disabled={client.status_type === disabledBtnDelete}>
+                    <DeleteIcons sx={{ color: client.status_type !== disabledBtnDelete ? slate[700] : '' }} />
                   </IconButton>
                 </Box>
               </Box>

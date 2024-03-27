@@ -189,4 +189,5 @@ export interface InputCheckGroupOptionProps {
 export interface IListClientsProps {
   data: IClientProps[];
   loading: boolean;
+  disabledBtnDelete: string;
 }

@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 
 const clientsData = [
   {
+    id: 1,
     date: '2023-10-29T05:44:36Z',
     name: 'Ingaborg Yatman',
     amount: 984,
@@ -11,6 +12,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 2,
     date: '2024-02-07T04:43:42Z',
     name: 'Clem Longbottom',
     amount: 889,
@@ -20,6 +22,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 3,
     date: '2023-05-23T14:48:24Z',
     name: 'Nani Fullagar',
     amount: 355,
@@ -29,6 +32,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 4,
     date: '2023-06-21T18:54:46Z',
     name: 'Pyotr Aizikov',
     amount: 361,
@@ -38,6 +42,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 5,
     date: '2023-08-13T11:19:41Z',
     name: 'Mab Bing',
     amount: 402,
@@ -47,6 +52,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 6,
     date: '2024-02-07T04:43:42Z',
     name: 'Clem Longbottom',
     amount: 889,
@@ -56,6 +62,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 7,
     date: '2023-05-23T14:48:24Z',
     name: 'Nani Fullagar',
     amount: 355,
@@ -65,6 +72,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 8,
     date: '2023-06-21T18:54:46Z',
     name: 'Pyotr Aizikov',
     amount: 361,
@@ -74,6 +82,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 9,
     date: '2023-08-13T11:19:41Z',
     name: 'Mab Bing',
     amount: 402,
@@ -83,6 +92,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 10,
     date: '2023-10-29T05:44:36Z',
     name: 'Ingaborg Yatman',
     amount: 984,
@@ -92,15 +102,17 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 11,
     date: '2024-02-07T04:43:42Z',
     name: 'Clem Longbottom',
     amount: 889,
-    status: 'Vencido',
-    status_type: '4',
+    status: 'Pendiente',
+    status_type: '3',
     month: '1',
     number: '987654321',
   },
   {
+    id: 12,
     date: '2023-05-23T14:48:24Z',
     name: 'Nani Fullagar',
     amount: 355,
@@ -110,6 +122,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 13,
     date: '2023-06-21T18:54:46Z',
     name: 'Pyotr Aizikov',
     amount: 361,
@@ -119,6 +132,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 14,
     date: '2023-08-13T11:19:41Z',
     name: 'Mab Bing',
     amount: 402,
@@ -128,15 +142,17 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 15,
     date: '2023-10-29T05:44:36Z',
     name: 'Ingaborg Yatman',
     amount: 984,
-    status: 'Cobrado',
-    status_type: '2',
+    status: 'Pendiente',
+    status_type: '3',
     month: '1',
     number: '987654321',
   },
   {
+    id: 16,
     date: '2024-02-07T04:43:42Z',
     name: 'Clem Longbottom',
     amount: 889,
@@ -146,6 +162,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 17,
     date: '2023-05-23T14:48:24Z',
     name: 'Nani Fullagar',
     amount: 355,
@@ -155,15 +172,17 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 18,
     date: '2023-06-21T18:54:46Z',
     name: 'Pyotr Aizikov',
     amount: 361,
-    status: 'Cobrado',
-    status_type: '1',
+    status: 'Pendiente',
+    status_type: '3',
     month: '1',
     number: '987654321',
   },
   {
+    id: 19,
     date: '2023-08-13T11:19:41Z',
     name: 'Mab Bing',
     amount: 402,
@@ -173,6 +192,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 20,
     date: '2023-10-29T05:44:36Z',
     name: 'Ingaborg Yatman',
     amount: 984,
@@ -182,6 +202,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 21,
     date: '2024-02-07T04:43:42Z',
     name: 'Clem Longbottom',
     amount: 889,
@@ -191,6 +212,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 22,
     date: '2023-05-23T14:48:24Z',
     name: 'Nani Fullagar',
     amount: 355,
@@ -200,6 +222,7 @@ const clientsData = [
     number: '987654321',
   },
   {
+    id: 23,
     date: '2023-06-21T18:54:46Z',
     name: 'Pyotr Aizikov',
     amount: 361,
