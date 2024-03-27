@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
   const apiGetTokenAuthUrl = '/api/v1/gettoken';
   console.log('middleware-pathname: ', pathname);
 
-  if (pathname === apiConnectUrl || pathname === apiGetTokenAuthUrl || pathname === '/api/v1/gettokenAuth') {
+  if (pathname === apiConnectUrl || pathname === apiGetTokenAuthUrl || pathname === '/api/v1/gettokenoauth') {
     return NextResponse.next();
   }
   const response = NextResponse.rewrite(new URL(apiConnectUrl, url));
