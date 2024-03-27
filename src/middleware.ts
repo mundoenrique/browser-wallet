@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { URL_BASE } from '@/utils/constants';
+import { IUrlBase } from './interfaces';
 
 export async function middleware(request: NextRequest) {
   const { url } = request;

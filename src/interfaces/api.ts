@@ -73,3 +73,11 @@ export type IApiGeeResponse = {
   message: string;
   data: string | any;
 };
+
+/**
+ * Url Base
+ * @typeParam [key: string]: string
+ */
+export interface IUrlBase {
+  [key: string]: string;
+}

@@ -1,6 +1,5 @@
 import axios, { AxiosRequestHeaders, InternalAxiosRequestConfig } from 'axios';
 import { getEnvVariable } from './apiHelpers';
-import uuid4 from 'uuid4';
 import { APIGEE_HEADERS_NAME } from './constants';
 
 const baseURL = getEnvVariable('APIGEE_HOST');
@@ -98,6 +97,9 @@ export async function connect(method: string, url: string, headers: Headers, dat
       break;
     case 'patch':
       response = await apiGee.patch(url, data);
+      break;
+    case 'delete':
+      response = await apiGee.delete(url);
       break;
     default:
       throw new Error(`Invalid method: ${method}`);
