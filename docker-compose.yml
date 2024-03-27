@@ -6,13 +6,14 @@ services:
     container_name: yiro-app
     build:
       context: .
+      args:
+        - APP_ENV=./env/.env.${APP_ENV}
     restart: always
     ports:
       - ${APP_EXP_PORT}:3000
     networks:
       - yiro_network
-    env_file:
-      - ./.env
+
   redis:
     image: redis:7-alpine
     container_name: yiro-redis
