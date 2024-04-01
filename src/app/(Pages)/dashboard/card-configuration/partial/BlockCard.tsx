@@ -64,6 +64,7 @@ export default function BlockCard() {
             updatePage('main');
           }}
           label="Volver"
+          adormentStart
         />
 
         <Typography variant="body2" mb={3}>

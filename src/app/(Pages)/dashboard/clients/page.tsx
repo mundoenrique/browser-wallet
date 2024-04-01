@@ -175,6 +175,7 @@ export default function Clients() {
               mb={2}
               color={fuchsiaBlue[800]}
               iconSize={{ height: 20, width: 20 }}
+              adormentStart
             />
           </Box>
 

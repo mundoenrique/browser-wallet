@@ -33,7 +33,7 @@ export default function UpdatePass() {
         }
         buttons={
           <Button variant="primary" type="submit" sx={{ maxWidth: 284, width: '100%' }}>
-            Continuar
+            Guardar
           </Button>
         }
       />

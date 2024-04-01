@@ -78,6 +78,7 @@ export default function Survey() {
           }}
           href="#"
           label="Volver"
+          adormentStart
         />
 
         <Typography variant="body2" mb={3}>
@@ -93,7 +94,14 @@ export default function Survey() {
         </Box>
       </ContainerLayout>
 
-      <ModalOtp open={openOtp} handleClose={() => setOpenOtp(false)} onSubmit={onSubmitOtp} closeApp />
+      <ModalOtp
+        open={openOtp}
+        handleClose={() => setOpenOtp(false)}
+        onSubmit={onSubmitOtp}
+        title="🎰 Verifica tu identidad para eliminar cuenta"
+        textButton="Eliminar cuenta Yiro"
+        closeApp
+      />
 
       <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>
         <Typography variant="subtitle1" mb={3}>

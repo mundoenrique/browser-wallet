@@ -58,6 +58,8 @@ export interface ItemSecondarySidebarProps {
  * @typeParam underline (Optional): boolean
  * @typeParam hidenArrow (Optional): boolean
  * @typeParam fontSize (Optional): number | string
+ * @typeParam adormentStart?: boolean;
+ * @typeParam adormentEnd?: boolean;
  */
 export interface LinkingProps {
   href: string;
@@ -69,4 +71,6 @@ export interface LinkingProps {
   iconSize?: { height: number | string; width: number | string };
   fontSize?: number | string;
   onClick?: (e: any) => void;
+  adormentStart?: boolean;
+  adormentEnd?: boolean;
 }

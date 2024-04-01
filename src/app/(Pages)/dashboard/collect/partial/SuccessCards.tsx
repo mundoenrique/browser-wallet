@@ -39,7 +39,7 @@ export default function SuccessCards() {
             Comparte esta información para que te paguen con tarjeta de crédito o débito
           </Typography>
           <CardReport avatarText="TC">
-            <Typography variant="h6" sx={{ display: 'flex', color: 'primary.main', alignItems: 'center' }}>
+            <Typography variant="h6" sx={{ display: 'flex', color: 'primary.main', alignItems: 'center', pb: 1 }}>
               https://link.io/1234
               <IconButton aria-label="delete" size="small" sx={{ p: 0, ml: 1 }} onClick={copyToClipboard}>
                 <CopyIcons sx={{ color: 'primary.main' }} />

@@ -20,10 +20,14 @@ export interface MuiModalProps extends BoxProps {
  * @typeParam open: boolean
  * @typeParam onSubmit: (data: any) => Promise<void>
  * @typeParam closeApp (Optional): boolean
+ * @typeParam title (Optional): string | boolean;
+ * @typeParam textButton (Optional): string | boolean;
  */
 export interface ModalOtpProps {
   handleClose: () => void;
   open: boolean;
   onSubmit: (_data: any) => Promise<void>;
   closeApp?: boolean;
+  title?: string | boolean;
+  textButton?: string | boolean;
 }
