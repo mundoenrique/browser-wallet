@@ -3,6 +3,7 @@
 import { Box, Chip, Divider, IconButton, Stack, Typography } from '@mui/material';
 //Internal app
 import { CopyIcons } from '%/Icons';
+import { copyToClipboard } from '@/utils/toolHelper';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { BackInformationProps } from '@/interfaces';
 
@@ -18,13 +19,7 @@ import { BackInformationProps } from '@/interfaces';
 export default function BackInformation(props: BackInformationProps): JSX.Element {
   const { hideDetails, holder, cardNumber, expDate, cvc } = props;
 
-  const copyText = async () => {
-    try {
-      await navigator.clipboard.writeText(cardNumber);
-    } catch (error) {
-      console.error('Error copying text:', error);
-    }
-  };
+  copyToClipboard(cardNumber);
 
   return (
     <Box
@@ -65,7 +60,7 @@ export default function BackInformation(props: BackInformationProps): JSX.Elemen
           <Typography variant="body2">Número de tarjeta</Typography>
           <Typography variant="subtitle2" color={fuchsiaBlue[700]}>
             {cardNumber}
-            <IconButton aria-label="delete" sx={{ color: fuchsiaBlue[700], py: 0 }} onClick={copyText}>
+            <IconButton aria-label="delete" sx={{ color: fuchsiaBlue[700], py: 0 }} onClick={copyToClipboard}>
               <CopyIcons />
             </IconButton>
           </Typography>
