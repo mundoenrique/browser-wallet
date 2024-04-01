@@ -4,8 +4,9 @@ import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import IconButton from '@mui/material/IconButton';
-import { Box, Skeleton, Typography, Avatar, Slide } from '@mui/material';
+import { Box, Typography, Avatar, Slide } from '@mui/material';
 //Internal app
+import { SkeletonTable } from '@/components';
 import { useClientStore } from '@/store';
 import { CashIcons, DeleteIcons } from '%/Icons';
 import { stringAvatar } from '@/utils/toolHelper';
@@ -15,19 +16,6 @@ import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 
 export default function ClientList(props: IListClientsProps): JSX.Element {
   const { data, loading } = props;
-
-  const LoadingSkeleton = [];
-  for (var i = 0; i < 5; i++) {
-    LoadingSkeleton.push(
-      <Box key={i} sx={{ display: 'flex', flexDirection: 'row', my: 1 }}>
-        <Skeleton animation="wave" variant="circular" width={40} height={40} />
-        <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
-          <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-          <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-        </Box>
-      </Box>
-    );
-  }
 
   const router = useRouter();
 
@@ -168,7 +156,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
           )}
         </Box>
       ))}
-      {loading && LoadingSkeleton}
+      {loading && <SkeletonTable />}
     </Box>
   );
 }
