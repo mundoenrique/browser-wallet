@@ -25,7 +25,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ARG APP_ENV
-COPY ${APP_ENV} ./.env
+COPY ./env/.env.${APP_ENV} ./.env
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry

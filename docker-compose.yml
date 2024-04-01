@@ -7,7 +7,7 @@ services:
     build:
       context: .
       args:
-        - APP_ENV=./env/.env.${APP_ENV}
+        - APP_ENV=${APP_ENV}
     restart: always
     ports:
       - ${APP_EXP_PORT}:3000
