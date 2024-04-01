@@ -7,10 +7,10 @@ import { handleApiResponse } from '.';
 
 type EnvVariableKey =
   | 'API_BASE_URL'
-  | 'JWE_PRIVATE_KEY'
-  | 'JWE_PUBLIC_KEY'
-  | 'JWS_PRIVATE_KEY'
-  | 'JWS_PUBLIC_KEY'
+  | 'MIDDLE_JWE_PRIVATE_KEY'
+  | 'MIDDLE_JWE_PUBLIC_KEY'
+  | 'MIDDLE_JWS_PRIVATE_KEY'
+  | 'MIDDLE_JWS_PUBLIC_KEY'
   | 'APIGEE_HOST'
   | 'TENANT_ID'
   | 'BACK_JWE_PRIVATE_KEY';

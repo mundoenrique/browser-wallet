@@ -4,8 +4,8 @@ import { IJWTPayload } from '@/interfaces/api';
 import { getEnvVariable, handleError, getUserInfo, handleResponse, verifyJWT, JWT_HEADER } from '@/utils';
 
 export async function GET(request: NextRequest) {
-  const jweApiPublicKey = getEnvVariable('JWE_PUBLIC_KEY');
-  const jwsApiPrivateKey = getEnvVariable('JWS_PRIVATE_KEY');
+  const jweApiPublicKey = getEnvVariable('MIDDLE_JWE_PUBLIC_KEY');
+  const jwsApiPrivateKey = getEnvVariable('MIDDLE_JWS_PRIVATE_KEY');
 
   let jwtPayload: IJWTPayload;
 

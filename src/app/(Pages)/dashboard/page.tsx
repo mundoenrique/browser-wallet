@@ -58,6 +58,9 @@ export default function Dashboard() {
   }, [setCurrentItem]);
 
   useEffect(() => {
+    console.log('accessToken', accessToken);
+    console.log('token', token);
+
     if (accessToken && token) {
       (async () => {
         const data = {
@@ -84,13 +87,9 @@ export default function Dashboard() {
             ],
           },
         };
-
         try {
           const response = await apiGee.post('/onboarding/termsandconditions', data);
           console.log('response-page', response.data);
-          // if (response.data.data) {
-          //   setCardInfo(response.data.data);
-          // }
         } catch (error) {
           console.error('Error generating card info:', error);
         }

@@ -15,8 +15,8 @@ import { IEncryptedBody } from '@/interfaces/api';
 export async function handleApiRequest(request: NextRequest) {
   const requestCloneJWT = request;
   const requestCloneJWE = request;
-  const jweApiPublicKey = getEnvVariable('JWE_PUBLIC_KEY');
-  const jweApiPrivateKey = getEnvVariable('JWE_PRIVATE_KEY');
+  const jweApiPublicKey = getEnvVariable('MIDDLE_JWE_PUBLIC_KEY');
+  const jweApiPrivateKey = getEnvVariable('MIDDLE_JWE_PRIVATE_KEY');
 
   const jwtPayload = await handleJWT(requestCloneJWT, jweApiPublicKey);
 
@@ -35,7 +35,7 @@ export async function handleApiRequest(request: NextRequest) {
 }
 
 export async function handleApiResponse(response: object | null, jweAppPublicKey: string) {
-  const jwsApiPrivateKey = getEnvVariable('JWS_PRIVATE_KEY');
+  const jwsApiPrivateKey = getEnvVariable('MIDDLE_JWS_PRIVATE_KEY');
 
   const data = await handleResponse(response, jweAppPublicKey, jwsApiPrivateKey);
 
