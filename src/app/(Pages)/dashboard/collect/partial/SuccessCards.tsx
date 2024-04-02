@@ -12,11 +12,15 @@ export default function SuccessCards() {
   const textRef = useRef<null>(null);
 
   const copyText = async () => {
+    navigator.clipboard.writeText('https://link.io/1234').catch((error) => {
+      console.error('Error copying text:', error);
+    });
+    /*
     try {
-      await navigator.clipboard.writeText('https://link.io/1234');
+      await navigator.clipboard.writeText('https://link.io/1234')
     } catch (error) {
       console.error('Error copying text:', error);
-    }
+    }*/
   };
 
   const handleShareText = async () => {

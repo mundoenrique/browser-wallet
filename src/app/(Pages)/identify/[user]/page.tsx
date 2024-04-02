@@ -1,13 +1,18 @@
+//Internal app
 import LogoGreen from '%/images/LogoGreen';
 import { PurpleLayout } from '@/components';
-
-export default function page({ params }: any) {
+import Identity from '../partial/Identity';
+export default async function page({ params }: any) {
   const { user } = params;
+
   console.log('🚀 ~ page ~ user:', user);
 
   return (
-    <PurpleLayout>
-      <LogoGreen />
-    </PurpleLayout>
+    <>
+      <Identity userId={user} />
+      <PurpleLayout>
+        <LogoGreen />
+      </PurpleLayout>
+    </>
   );
 }

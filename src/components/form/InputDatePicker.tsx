@@ -6,6 +6,7 @@ import Info from '@mui/icons-material/InfoOutlined';
 import { FormHelperText, InputLabel } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 //Internal App
 import { CalendarIcons } from '%/Icons';
@@ -92,7 +93,7 @@ export default function InputDatePicker(props: InputDatePickerProps): JSX.Elemen
           render={({ field, fieldState: { error } }) => (
             <DatePickerMUI
               name={name}
-              value={field.value}
+              value={dayjs(field.value)}
               onChange={(e) => {
                 field.onChange(e);
                 onChange && onChange(e);

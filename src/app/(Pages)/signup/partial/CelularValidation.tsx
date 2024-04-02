@@ -1,25 +1,73 @@
 'use client';
 
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 //internal app
 import { getSchema } from '@/config';
-import { useRegisterStore } from '@/store';
+import { useRegisterStore, useUiStore } from '@/store';
 import { Box, Button } from '@mui/material';
 import InputOTP from '@/components/form/InputOTP';
 
 export default function CelularValidation() {
   const schema = getSchema(['otp']);
-  const { inc, dec } = useRegisterStore();
+  const [optUuid, setOtpUuid] = useState<string>('');
+  const { inc, dec, onboardingUuid } = useRegisterStore();
+  const { setLoadingScreen } = useUiStore();
 
   const { handleSubmit, control } = useForm({
     defaultValues: { otp: '' },
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = () => {
-    inc();
+  const requestTFACode = useCallback(async () => {
+    setLoadingScreen(true);
+
+    await new Promise((resolve) => {
+      setTimeout(resolve, 1000);
+    });
+    //TODO: Validar documentacion
+    //https://sandbox-api.novopayment.com/api/v0/onboarding/{onboardingId}/tfa
+    await fetch(`/api/v1/onboarding/tfa/${onboardingUuid}`, {
+      method: 'POST',
+      body: '{"otpProcessCode":"CHANGE_PASSWORD"}',
+    }).then(async (response) => {
+      const data = await response.json();
+      setOtpUuid(data.data.otpUuId);
+    });
+
+    setLoadingScreen(false);
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+
+  const onSubmit = async (data: any) => {
+    const code = data.otp; //TODO: encode otp input
+
+    const request = {
+      otpProcessCode: 'CHANGE_PASSWORD_OTP',
+      otpUuId: optUuid,
+      otpCode: code,
+      currentPhaseCode: 'ONB_PHASES_OPT',
+    };
+
+    await new Promise((resolve) => {
+      setTimeout(resolve, 500);
+    });
+
+    await fetch(`/api/v1/onboarding/tfa/validate/${onboardingUuid}`, {
+      method: 'POST',
+      body: JSON.stringify(request),
+    })
+      .then(() => {
+        inc();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
+
+  useEffect(() => {
+    requestTFACode();
+  }, [requestTFACode]);
 
   return (
     <Box

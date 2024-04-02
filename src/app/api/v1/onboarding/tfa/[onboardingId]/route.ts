@@ -9,7 +9,9 @@ export async function POST(req: Request, { params }: ApiParams) {
     method: req.method,
     XRequestId,
     onboardingId,
-    ...request,
+    data: {
+      otpUuId: '5586c921-7706-4a3a-bdf7-ab6f7699f761',
+    },
   };
 
   return NextResponse.json(data, { status: 200 });

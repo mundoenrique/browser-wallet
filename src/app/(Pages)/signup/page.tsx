@@ -1,5 +1,5 @@
 'use client';
-
+import { useCallback, useEffect } from 'react';
 import { Card, Typography, useMediaQuery, useTheme } from '@mui/material';
 // Internal app
 import { useRegisterStore } from '@/store';
@@ -20,14 +20,7 @@ import {
   Ending,
 } from './partial';
 
-// const phaseToStep = (phase: string) => {
-//   const phasesSteps: { [key: string]: number } = {
-//     ONB_PHASES_TERMS: 0,
-//     ONB_PHASES_CONSULT_DATA: 3,
-//     ONB_PHASES_PEP: 4,
-//   };
-//   return phasesSteps[phase] || 0;
-// };
+import { useMockStore } from '@/store/mockStore';
 
 const CardStep = (props: StepperProps) => {
   const theme = useTheme();
@@ -46,9 +39,18 @@ const CardStep = (props: StepperProps) => {
     </Card>
   );
 };
+
 export default function Signup() {
   const { step } = useRegisterStore();
+  const { mockData } = useMockStore();
 
+  const validateUser = useCallback(() => {
+    console.log(mockData);
+  }, [mockData]);
+
+  useEffect(() => {
+    validateUser();
+  }, [validateUser]);
   return (
     <SignupStepper currentStep={step}>
       <Landing />

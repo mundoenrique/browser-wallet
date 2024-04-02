@@ -12,7 +12,12 @@ export type KeyStoreProps = {
   jwePrivateKey: string | null;
   jwsPublicKey: string | null;
   jwsPrivateKey: string | null;
-  setKeys: (_keys: { jwePublicKey: string; jwePrivateKey: string; jwsPublicKey: string; jwsPrivateKey: string }) => void;
+  setKeys: (_keys: {
+    jwePublicKey: string;
+    jwePrivateKey: string;
+    jwsPublicKey: string;
+    jwsPrivateKey: string;
+  }) => void;
 };
 
 /**
@@ -27,14 +32,25 @@ export type JwtStoreProps = {
 };
 
 /**
- * Drawer showing
+ * loading screen show/hide
  *
- * @typeParam showStatus: boolean
- * @typeParam updateDrawerStatus: (status: boolean) => void
+ * @typeParam loadingScreen: boolean
+ * @typeParam setLoadingScreen: (status: boolean) => void
+ */
+export interface LoadingScreenStore {
+  loadingScreen: boolean;
+  setLoadingScreen: (status: boolean) => void;
+}
+
+/**
+ * Drawer show/hide
+ *
+ * @typeParam drawerStatus: boolean
+ * @typeParam setDrawerStatus: (status: boolean) => void
  */
 export interface DrawerStatus {
-  showStatus: boolean;
-  updateDrawerStatus: (status: boolean) => void;
+  drawerStatus: boolean;
+  setDrawerStatus: (status: boolean) => void;
 }
 
 /**
@@ -101,9 +117,11 @@ export interface RegisterStore {
   dec: () => void;
   updateStep: (_amount: number) => void;
   updateFormState: (_form: string, _data: {}) => void;
-  verificationFormState: object | null;
-  ocupationFormState: object | null;
-  pepFormState: object | null;
+  ONB_PHASES_TERMS: { [key: string]: any } | null;
+  ONB_PHASES_CONSULT_DATA: { [key: string]: any } | null;
+  ONB_PHASES_PEP: { [key: string]: any } | null;
+  termsDefinition: { [key: string]: string }[];
+  onboardingUuid: string;
   biometricFormState: null;
 }
 

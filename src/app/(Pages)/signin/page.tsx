@@ -6,11 +6,13 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Link as LinkMui, Typography, useMediaQuery, useTheme } from '@mui/material';
+
 //Internal app
 import { getSchema } from '@/config';
 import { useApi } from '@/hooks/useApi';
 import LogoGreen from '%/images/LogoGreen';
 import { InputPass, ModalResponsive } from '@/components';
+import { useMockStore } from '@/store/mockStore';
 
 export default function Signin() {
   const api = useApi();
@@ -19,27 +21,33 @@ export default function Signin() {
   const [open, setOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const schema = getSchema(['password']);
-
+  const { mockData } = useMockStore();
   const { control, handleSubmit } = useForm({
     defaultValues: { password: '' },
     resolver: yupResolver(schema),
   });
 
   const onSubmit = async (data: any) => {
-    try {
-      const payload = { email: 'jllerena@novopayment.com', password: data.password || 357689 };
-      const response = await api.post('/auth/login', payload);
-      if (response.status === 200) return push('/dashboard');
-    } catch (error) {
-      if (error instanceof Error && 'response' in error) {
-        const axiosError = error as any;
-        if (axiosError.response && axiosError.response.status === 401) return setErrorMessage('Contraseña incorrecta');
-        return setErrorMessage('Ocurrió un error inesperado');
-      } else {
-        setErrorMessage('Ocurrió un error inesperado');
-      }
-      setOpen(true);
-    }
+    const payload = { email: 'jllerena@novopayment.com', password: data.password || 357689 };
+
+    api
+      .post('/auth/login', payload)
+      .then((response) => {
+        if (response.status === 200) {
+          return push('/dashboard');
+        }
+      })
+      .catch((error) => {
+        if (error instanceof Error && 'response' in error) {
+          const axiosError = error as any;
+          if (axiosError.response && axiosError.response.status === 401)
+            return setErrorMessage('Contraseña incorrecta');
+          return setErrorMessage('Ocurrió un error inesperado');
+        } else {
+          setErrorMessage('Ocurrió un error inesperado');
+        }
+        setOpen(true);
+      });
   };
 
   return (
@@ -71,7 +79,7 @@ export default function Signin() {
             </Typography>
           </Box>
           <Typography variant="h6" color="white">
-            ¡Hola Andrea!
+            ¡Hola {mockData.user?.firstName || 'Usuario'}!
           </Typography>
           <Typography color="white">Para continuar, ingresa la contraseña de tu cuenta digital.</Typography>
           <Box sx={{ mt: 3, textAlign: 'start' }}>

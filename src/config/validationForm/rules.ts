@@ -19,8 +19,8 @@ export const validationRules: ValidationRule = {
   password: passwordValidation('Ingrese una contraseña'),
   roles: yup.string().required('Debes seleccionar una opción'),
   initialDate: yup.string().required('Ingresa una fecha'),
-  country: yup.string().required('Selecciona un país'),
-  term: yup.string().required('Acepta los terminos'),
+  countryCode: yup.string().required('Selecciona un país'),
+  term: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
   policy: yup.string().required('Acepta la política'),
   otp: yup
     .string()
@@ -37,13 +37,14 @@ export const validationRules: ValidationRule = {
     'Las contraseñas no coinciden'
   ),
   legal: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
-  ocupation: yup.string().required('Selecciona una ocupación'),
+  occupationUuid: yup.string().required('Selecciona una ocupación'),
   enterpriseType: yup.string().required('Selecciona el tipo de empresa'),
-  enterprises: yup.string().required('Ingresa el nombre de la empresa'),
-  position: yup.string().required('Ingrese su posición en la empresa'),
-  celular: yup
+  companyName: yup.string().required('Ingresa el nombre de la empresa'),
+  companyPosition: yup.string().required('Ingrese su posición en la empresa'),
+  phoneNumber: yup
     .string()
     .required('Ingresa un numero de celular')
+    .max(9, 'Número de celular no válido')
     .test('celularValid', 'Ingresa un numero de celular', (value) => regularExpressions.onlyNumber?.test(value)),
   isPep: yup.string().nonNullable().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
   pepForm: yup.object().shape({

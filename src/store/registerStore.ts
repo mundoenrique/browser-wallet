@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { devtools, persist, createJSONStorage } from 'zustand/middleware';
+import { persist, createJSONStorage, devtools } from 'zustand/middleware';
 //Internal app
 import { RegisterStore } from '@/interfaces';
 
@@ -37,19 +37,39 @@ export const useRegisterStore = create<RegisterStore>()(
         /**
          * Storage of the verification form data
          */
-        verificationFormState: null,
+        ONB_PHASES_TERMS: null,
         /**
          * Storage of the ocupation form data
          */
-        ocupationFormState: null,
+        ONB_PHASES_CONSULT_DATA: null,
         /**
          * Storage of the pep form data
          */
-        pepFormState: null,
+        ONB_PHASES_PEP: null,
         /**
          * Storage of the biometric form data
          */
         biometricFormState: null,
+        /**
+         * Storeage de terms info
+         */
+        termsDefinition: [
+          {
+            name: 'TERMINO 1',
+            description: 'Lorem ipsum...',
+            uuid: 'a4e18adf-95af-4b9f-8b95-06c985aca5ef',
+          },
+
+          {
+            name: 'TERMINO 2',
+            description: 'Lorem ipsum...',
+            uuid: '30036e69-5f3e-430a-a8ee-8ce59e9e1320',
+          },
+        ],
+        /**
+         * Storeage de terms info
+         */
+        onboardingUuid: '202c2656-7110-4994-a820-f593e468c6b7',
         /**
          * Function to set the data of completed forms
          */

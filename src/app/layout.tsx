@@ -3,6 +3,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 //Internal app
 import { ChildrenProps } from '@/interfaces';
 import { HydrationProvider, JwtProvider, KeyProvider, MuiProvider } from '@/components';
+import LoadingScreen from '@/components/layout/LoadingScreen';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: ChildrenProps) {
           <MuiProvider>
             <HydrationProvider>
               <KeyProvider>
+                <LoadingScreen />
                 <JwtProvider>{children}</JwtProvider>
               </KeyProvider>
             </HydrationProvider>

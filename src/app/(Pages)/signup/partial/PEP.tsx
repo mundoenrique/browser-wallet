@@ -6,12 +6,10 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { Box, Button, Collapse, Link as LinkMui, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import { useRegisterStore } from '@/store';
+import { useRegisterStore, useUiStore } from '@/store';
 import { slate } from '@/theme/theme-default';
 import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResponsive } from '@/components';
-
-//TODO:Only for DEV
-//import { DevTool } from '@hookform/devtools';
+import dayjs from 'dayjs';
 
 const options: any = [
   { text: 'Sí', value: 'true' },
@@ -32,25 +30,37 @@ export default function PEP() {
   const [showPepInfo, setShowPepInfo] = useState<boolean>(false);
   const [parentIndex, setParentIndex] = useState<number>(-1);
 
-  const { dec, inc, updateFormState, pepFormState, setShowHeader } = useRegisterStore();
+  const { setLoadingScreen } = useUiStore();
+
+  const { dec, inc, updateFormState, ONB_PHASES_PEP, setShowHeader, onboardingUuid } = useRegisterStore();
 
   const schema = isPep ? getSchema(['isPep', 'pepForm', 'relatives']) : getSchema(['isPep']);
 
   const { control, watch, handleSubmit, getValues, reset } = useForm({
-    defaultValues: pepFormState || {
-      isPep: '',
-      pepForm: {
-        isFamilyAlive: '',
-        position: '',
-        companyName: '',
-        address: '',
-        district: null,
-        province: null,
-        department: null,
-        endDate: '',
-        holdShare: '',
-      },
-    },
+    defaultValues: ONB_PHASES_PEP
+      ? {
+          ...ONB_PHASES_PEP,
+          isPep: ONB_PHASES_PEP.isPep ? 'true' : 'false',
+          pepForm: {
+            ...ONB_PHASES_PEP.pepForm,
+            isFamilyAlive: ONB_PHASES_PEP.pepForm.isFamilyAlive ? 'true' : 'false',
+            holdShare: ONB_PHASES_PEP.pepForm.holdShare ? 'true' : 'false',
+          },
+        }
+      : {
+          isPep: '',
+          pepForm: {
+            isFamilyAlive: '',
+            position: '',
+            companyName: '',
+            address: '',
+            district: null,
+            province: null,
+            department: null,
+            endDate: new Date(),
+            holdShare: '',
+          },
+        },
     resolver: yupResolver(schema),
   });
 
@@ -62,10 +72,31 @@ export default function PEP() {
   const watchIsPep = watch('isPep');
   const WatchIsFamilyAlive = watch('pepForm.isFamilyAlive');
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-    updateFormState('pepFormState', data);
-    inc();
+  const onSubmit = async (data: any) => {
+    const requestData = {
+      currentPhaseCode: 'ONB_PHASES_PEP',
+      onboardingUuId: onboardingUuid,
+      request: {
+        ...data,
+        isPep: data.isPep.toLowerCase() === 'true',
+        pepForm: {
+          ...data.pepForm,
+          isFamilyAlive: data.pepForm.isFamilyAlive.toLowerCase() === 'true',
+          holdShare: data.pepForm.holdShare.toLowerCase() === 'true',
+        },
+      },
+    };
+    updateFormState('ONB_PHASES_PEP', data);
+    setLoadingScreen(true);
+    await new Promise((resolve) => {
+      setTimeout(resolve, 1000);
+    });
+
+    await fetch('/api/v1/onboarding/pep', { method: 'POST', body: JSON.stringify(requestData) }).then(() => {
+      inc();
+
+      setLoadingScreen(false);
+    });
   };
 
   useEffect(() => {
@@ -106,6 +137,7 @@ export default function PEP() {
     <>
       <Box
         component="form"
+        autoComplete="off"
         onSubmit={handleSubmit(onSubmit)}
         sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}
       >

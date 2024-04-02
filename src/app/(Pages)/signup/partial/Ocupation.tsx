@@ -6,23 +6,26 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Collapse, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import { useRegisterStore } from '@/store';
+import { useRegisterStore, useUiStore } from '@/store';
 import { InputSelect, InputText } from '@/components';
 
 export default function Ocupation() {
   const [ocupations, setOcupations] = useState<boolean>(false);
-  const { updateStep, inc, updateFormState, ocupationFormState } = useRegisterStore();
+  const { updateStep, inc, updateFormState, ONB_PHASES_CONSULT_DATA, onboardingUuid } = useRegisterStore();
+  const { setLoadingScreen, loadingScreen } = useUiStore();
   const schema = ocupations
-    ? getSchema(['ocupation', 'enterpriseType', 'enterprises', 'position'])
+    ? getSchema(['occupationUuid', 'enterpriseType', 'companyName', 'companyPosition'])
     : getSchema(['ocupation']);
 
   const { handleSubmit, control, watch, reset, getValues } = useForm({
-    defaultValues: ocupationFormState || {
-      ocupation: 'pi',
-      enterpriseType: 'prv',
-      enterprises: '',
-      position: '',
-    },
+    defaultValues: ONB_PHASES_CONSULT_DATA
+      ? ONB_PHASES_CONSULT_DATA.consultant
+      : {
+          occupationUuid: '',
+          enterpriseType: '',
+          companyName: '',
+          companyPosition: '',
+        },
     resolver: yupResolver(schema),
   });
 
@@ -42,14 +45,34 @@ export default function Ocupation() {
     }
   }, [getValues, personOcupation, reset]);
 
-  const onSubmit = (data: any) => {
-    updateFormState('ocupationFormState', data);
-    inc();
+  const onSubmit = async (data: any) => {
+    updateFormState('ONB_PHASES_CONSULT_DATA', data);
+
+    const requestData = {
+      currentPhaseCode: 'ONB_PHASES_CONSULT_DATA',
+      onboardingUuid: onboardingUuid,
+      request: {
+        consultant: { ...data },
+      },
+    };
+    const requestOptions = { method: 'PUT', body: JSON.stringify(requestData) };
+
+    setLoadingScreen(true);
+
+    await new Promise((resolve) => {
+      setTimeout(resolve, 300);
+    });
+
+    await fetch('/api/v1/onboarding/consultantdata', requestOptions).then(() => {
+      setLoadingScreen(false);
+      inc();
+    });
   };
 
   return (
     <Box
       component="form"
+      autoComplete="off"
       onSubmit={handleSubmit(onSubmit)}
       sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}
     >
@@ -59,7 +82,7 @@ export default function Ocupation() {
         </Typography>
         <Box>
           <InputSelect
-            name="ocupation"
+            name="occupationUuid"
             label="¿Cuál es tu ocupación?"
             options={[
               { text: 'Consultora de belleza independiente', value: 'pi' },
@@ -78,8 +101,8 @@ export default function Ocupation() {
               ]}
               control={control}
             />
-            <InputText name="enterprises" label="Nombre empresa" control={control} />
-            <InputText name="position" label="Cargo empresa" control={control} />
+            <InputText name="companyName" label="Nombre empresa" control={control} />
+            <InputText name="companyPosition" label="Cargo empresa" control={control} />
           </Collapse>
         </Box>
       </Box>
@@ -93,7 +116,7 @@ export default function Ocupation() {
         >
           Anterior
         </Button>
-        <Button variant="contained" type="submit">
+        <Button variant="contained" type="submit" disabled={loadingScreen}>
           Siguiente
         </Button>
       </Box>
