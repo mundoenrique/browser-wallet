@@ -1,7 +1,7 @@
 'use client';
 
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import IconButton from '@mui/material/IconButton';
 import { Box, Typography, Avatar, Slide } from '@mui/material';
@@ -16,7 +16,6 @@ import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 
 export default function ClientList(props: IListClientsProps): JSX.Element {
   const { data, loading, disabledBtnDelete } = props;
-  // console.log('data', data);
 
   const router = useRouter();
 
@@ -25,7 +24,9 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
   const [showOptions, setShowOptions] = useState(null);
   const [clientsData, setClientsData] = useState<IClientProps[]>(data);
 
-  console.log('clientsData', clientsData);
+  useEffect(() => {
+    setClientsData(data);
+  }, [data]);
 
   const handleOptionsClick = (index: any) => {
     setShowOptions(showOptions === index ? null : index);
@@ -38,8 +39,6 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
   };
 
   const handleDelete = (client: IClientProps) => {
-    console.log('handleDelete', client);
-
     const newClientsData = clientsData.map((item) => {
       if (item.id === client.id) {
         return {
@@ -51,7 +50,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
       return item;
     });
     setClientsData(newClientsData);
-    // setShowOptions(null);
+    setShowOptions(null);
   };
 
   const handleNameClick = (index: number) => {
@@ -107,7 +106,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
               display: 'flex',
               flex: 1,
               justifyContent: 'space-between',
-              minWidth: 200,
+              minWidth: 170,
               cursor: 'pointer',
             }}
             onClick={() => handleNameClick(index)}
@@ -163,8 +162,8 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
                     justifyContent: 'center',
                   }}
                 >
-                  <IconButton onClick={() => handleDelete(client)} disabled={client.status_type === disabledBtnDelete}>
-                    <DeleteIcons sx={{ color: client.status_type !== disabledBtnDelete ? slate[700] : '' }} />
+                  <IconButton onClick={() => handleDelete(client)} disabled={client.status_type !== disabledBtnDelete}>
+                    <DeleteIcons sx={{ color: client.status_type === disabledBtnDelete ? slate[700] : '' }} />
                   </IconButton>
                 </Box>
               </Box>

@@ -101,7 +101,7 @@ export default function Clients() {
       `./clients/api?limit=10&currentPage=${currentPage}&month=${month.value}&status=${paymentStatusCode}`
     );
     const data: any = await response.json();
-    const newData: never[] | any = [...clientsData, ...data.data];
+    const newData: never[] | any = data.data;
     setClientsData(newData);
     setLastPage(data.metadata.LastPage);
   };
@@ -137,14 +137,10 @@ export default function Clients() {
       <ContainerLayout>
         <Box
           sx={{
-            //   height: { xs: 'calc(100vh - 120px)', md: 'auto' },
-            // display: 'flex',
-            // flexDirection: 'column',
-            // justifyContent: { xs: 'flex-start', md: 'center' },
+            height: { xs: 'calc(100vh - 120px)', md: 'auto' },
             width: { xs: '100%', md: 360 },
-            //   overflow: 'auto',
             [theme.breakpoints.up('md')]: {
-              // minHeight: 'calc(100vh + 100px)',
+              minHeight: 'calc(100vh + 100px)',
               width: 360,
             },
           }}
@@ -213,6 +209,7 @@ export default function Clients() {
                     <FilterIcons color="primary" fontSize="small" />
                   </Avatar>
                 }
+                sx={{ justifyContent: 'flex-start' }}
                 onClick={() => (match ? setCurrentView(ENUM_VIEW.FILTERS) : setOpen(true))}
               >
                 {month.text && paymentStatus && `${month.text} - ${paymentStatus}  `}
