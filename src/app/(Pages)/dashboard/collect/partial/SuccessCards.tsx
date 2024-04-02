@@ -4,8 +4,8 @@ import { useRef, useState } from 'react';
 import { Box, Button, IconButton, Typography } from '@mui/material';
 //Internal app
 import { CopyIcons } from '%/Icons';
-import { copyToClipboard } from '@/utils/toolHelper';
 import { ModalCollect } from './ModalCollect';
+import { copyToClipboard } from '@/utils/toolHelper';
 import { CardInfoOperation, CardReport, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
 export default function SuccessCards() {
