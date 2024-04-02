@@ -4,8 +4,9 @@ import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import IconButton from '@mui/material/IconButton';
-import { Box, Skeleton, Typography, Avatar } from '@mui/material';
+import { Box, Typography, Avatar, Slide } from '@mui/material';
 //Internal app
+import { SkeletonTable } from '@/components';
 import { useClientStore } from '@/store';
 import { CashIcons, DeleteIcons } from '%/Icons';
 import { stringAvatar } from '@/utils/toolHelper';
@@ -15,19 +16,6 @@ import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 
 export default function ClientList(props: IListClientsProps): JSX.Element {
   const { data, loading } = props;
-
-  const LoadingSkeleton = [];
-  for (var i = 0; i < 5; i++) {
-    LoadingSkeleton.push(
-      <Box key={i} sx={{ display: 'flex', flexDirection: 'row', my: 1 }}>
-        <Skeleton animation="wave" variant="circular" width={40} height={40} />
-        <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
-          <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-          <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-        </Box>
-      </Box>
-    );
-  }
 
   const router = useRouter();
 
@@ -61,12 +49,12 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
         display: 'flex',
         flexDirection: 'column',
 
-        borderRadius: '24px',
+        borderRadius: '14px',
         '& li:first-of-type': {
-          borderRadius: '16px 16px 0 0',
+          borderRadius: '14px 14px 0 0',
         },
         '& li:last-of-type': {
-          borderRadius: '0 0 16px 16px ',
+          borderRadius: '0 0 14px 14px ',
         },
       }}
     >
@@ -75,7 +63,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
           key={index}
           component="li"
           sx={{
-            height: '60px',
+            height: 60,
             display: 'flex',
             bgcolor: slate[100],
             alignItems: 'center',
@@ -103,7 +91,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
               display: 'flex',
               flex: 1,
               justifyContent: 'space-between',
-              minWidth: '200px',
+              minWidth: 200,
               cursor: 'pointer',
             }}
             onClick={() => handleNameClick(index)}
@@ -133,40 +121,42 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
               <MoreVertOutlinedIcon />
             </IconButton>
           ) : (
-            <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: '#D3FCB6' }}>
-              <Box
-                sx={{
-                  bgcolor: '#D3FCB6',
-                  height: '59px',
-                  width: '59px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <IconButton onClick={() => handleCash(client)}>
-                  <CashIcons sx={{ color: slate[700] }} />
-                </IconButton>
+            <Slide direction="left" in={showOptions === index} mountOnEnter unmountOnExit timeout={500}>
+              <Box sx={{ display: 'flex', alignItems: 'center', bgcolor: '#D3FCB6' }}>
+                <Box
+                  sx={{
+                    bgcolor: '#D3FCB6',
+                    height: '59px',
+                    width: '59px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <IconButton onClick={() => handleCash(client)}>
+                    <CashIcons sx={{ color: slate[700] }} />
+                  </IconButton>
+                </Box>
+                <Box
+                  sx={{
+                    bgcolor: '#FBE5E5',
+                    height: 59,
+                    width: 59,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <IconButton onClick={() => handleDelete(index)}>
+                    <DeleteIcons sx={{ color: slate[700] }} />
+                  </IconButton>
+                </Box>
               </Box>
-              <Box
-                sx={{
-                  bgcolor: '#FBE5E5',
-                  height: 59,
-                  width: 59,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <IconButton onClick={() => handleDelete(index)}>
-                  <DeleteIcons sx={{ color: slate[700] }} />
-                </IconButton>
-              </Box>
-            </Box>
+            </Slide>
           )}
         </Box>
       ))}
-      {loading && LoadingSkeleton}
+      {loading && <SkeletonTable />}
     </Box>
   );
 }

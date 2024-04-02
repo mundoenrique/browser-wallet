@@ -1,10 +1,7 @@
 'use client';
 import { useCallback, useEffect } from 'react';
-import { Card, Typography, useMediaQuery, useTheme } from '@mui/material';
 // Internal app
 import { useRegisterStore } from '@/store';
-import { StepperProps } from '@/interfaces';
-import BiometricValidation from './partial/BiometricValidation';
 import {
   SignupStepper,
   Landing,
@@ -17,28 +14,11 @@ import {
   SelfieInfo,
   SelfieUpload,
   PasswordCreation,
+  BiometricValidation,
   Ending,
 } from './partial';
 
 import { useMockStore } from '@/store/mockStore';
-
-const CardStep = (props: StepperProps) => {
-  const theme = useTheme();
-  const { children, stepNumber } = props;
-
-  return (
-    <Card variant="signup">
-      <Typography
-        variant={useMediaQuery(theme.breakpoints.down('sm')) ? 'subtitle1' : 'h6'}
-        align="center"
-        mb={{ sm: 4 }}
-      >
-        Paso {stepNumber}/4
-      </Typography>
-      {children}
-    </Card>
-  );
-};
 
 export default function Signup() {
   const { step } = useRegisterStore();
@@ -55,43 +35,25 @@ export default function Signup() {
     <SignupStepper currentStep={step}>
       <Landing />
 
-      <CardStep stepNumber="1">
-        <InfoVerification />
-      </CardStep>
+      <InfoVerification />
 
-      <CardStep stepNumber="2">
-        <CelularValidation />
-      </CardStep>
+      <CelularValidation />
 
-      <CardStep stepNumber="3">
-        <Ocupation />
-      </CardStep>
+      <Ocupation />
 
-      <CardStep stepNumber="3">
-        <PEP />
-      </CardStep>
+      <PEP />
 
-      <CardStep stepNumber="4">
-        <DniInfo />
-      </CardStep>
+      <DniInfo />
 
-      <CardStep stepNumber="4">
-        <DniUpload />
-      </CardStep>
+      <DniUpload />
 
-      <CardStep stepNumber="4">
-        <SelfieInfo />
-      </CardStep>
+      <SelfieInfo />
 
-      <CardStep stepNumber="4">
-        <SelfieUpload />
-      </CardStep>
+      <SelfieUpload />
 
       <BiometricValidation />
 
-      <CardStep stepNumber="4">
-        <PasswordCreation />
-      </CardStep>
+      <PasswordCreation />
 
       <Ending />
     </SignupStepper>

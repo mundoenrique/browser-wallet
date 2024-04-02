@@ -1,3 +1,5 @@
+'use client';
+
 //Internal app
 import { Conditions } from '@/components';
 

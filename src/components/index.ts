@@ -1,4 +1,3 @@
-import Questions from './Questions';
 //pwa
 export { default as QRCodeReader } from './PWA/QRCodeReader';
 export { default as PWAInstallBar } from './PWA/PWAInstallBar';
@@ -41,6 +40,7 @@ export { default as CardInfoOperation } from './cards/cardSuccess/CardInfoOperat
 //tables
 export { default as LastMovements } from './tables/LastMovements';
 export { default as History } from './tables/HistoryMovements';
+export { default as SkeletonTable } from './tables/SkeletonTable';
 //accordions
 export { default as Accordions } from './Accordions';
 //providers

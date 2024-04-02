@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { ChildrenProps } from '@/interfaces';
 
 export const metadata: Metadata = {
-  title: 'Preguntas frecuentes',
+  title: 'Preguntas frecuentes | Yiro',
   description: 'Sección de ayuda con las preguntas frecuentes de Yiro',
 };
 

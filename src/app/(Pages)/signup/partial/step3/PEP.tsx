@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Box, Button, Collapse, Link as LinkMui, Typography } from '@mui/material';
 //Internal app
+import { CardStep } from '..';
 import { getSchema } from '@/config';
 import { useRegisterStore, useUiStore } from '@/store';
 import { slate } from '@/theme/theme-default';
@@ -134,7 +135,7 @@ export default function PEP() {
   }, [setShowHeader]);
 
   return (
-    <>
+    <CardStep stepNumber="3">
       <Box
         component="form"
         autoComplete="off"
@@ -218,7 +219,7 @@ export default function PEP() {
                           }}
                           sx={{ color: slate[700], cursor: 'pointer' }}
                         >
-                          Eliminar
+                          Eliminar pariente
                         </LinkMui>
                       )}
                     </Box>
@@ -308,6 +309,6 @@ export default function PEP() {
           </Button>
         </Box>
       </ModalResponsive>
-    </>
+    </CardStep>
   );
 }

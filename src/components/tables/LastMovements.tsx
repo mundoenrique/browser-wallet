@@ -1,9 +1,10 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { Avatar, Box, Skeleton, Typography } from '@mui/material';
+import { Avatar, Box, Typography } from '@mui/material';
 import { NorthEast, SouthEast } from '@mui/icons-material';
 //Internal app
+import { SkeletonTable } from '@/components';
 import { TableDataProps } from '@/interfaces';
 import { stringAvatar } from '@/utils/toolHelper';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
@@ -21,18 +22,6 @@ import { fuchsiaBlue, slate } from '@/theme/theme-default';
  * }]
  */
 export default function LastMovements({ data, loading }: TableDataProps): JSX.Element {
-  const LoadingSkeleton = [];
-  for (var i = 0; i < 5; i++) {
-    LoadingSkeleton.push(
-      <Box key={i} sx={{ display: 'flex', flexDirection: 'row', marginY: '8px' }}>
-        <Skeleton animation="wave" variant="circular" width={40} height={40} />
-        <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
-          <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-          <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-        </Box>
-      </Box>
-    );
-  }
 
   return (
     <Box
@@ -41,12 +30,12 @@ export default function LastMovements({ data, loading }: TableDataProps): JSX.El
         flexDirection: 'column',
         overflow: 'auto',
         mb: 10,
-        borderRadius: '24px',
+        borderRadius: '14px',
         '& li:first-of-type': {
-          borderRadius: '16px 16px 0 0',
+          borderRadius: '14px 14px 0 0',
         },
         '& li:last-of-type': {
-          borderRadius: '0 0 16px 16px ',
+          borderRadius: '0 0 14px 14px ',
         },
       }}
       onScroll={() => {
@@ -58,13 +47,13 @@ export default function LastMovements({ data, loading }: TableDataProps): JSX.El
           key={idx}
           component="li"
           sx={{
-            height: '60px',
+            height: 60,
             display: 'flex',
             backgroundColor: slate[100],
             alignItems: 'center',
-            borderBottom: ` 1px  solid ${slate[300]}`,
-            paddingX: '16px',
-            gap: '12px',
+            borderBottom: ` 1px solid ${slate[300]}`,
+            px: 2,
+            gap: 3 / 2,
           }}
         >
           <Box>
@@ -88,32 +77,29 @@ export default function LastMovements({ data, loading }: TableDataProps): JSX.El
             }}
           >
             <Box>
-              <Typography
-                variant="subtitle2"
-                sx={{ maxWidth: '140px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
-              >
+              <Typography variant="subtitle2" noWrap sx={{ maxWidth: 140 }}>
                 {row.title}
               </Typography>
-              <Typography sx={{ fontSize: '10px', lineHeight: '16px' }}>
+              <Typography sx={{ fontSize: 10, lineHeight: '16px' }}>
                 {dayjs(row.date).format('MMMM D, h:mm a')}
               </Typography>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 / 2 }}>
               <Typography variant="subtitle2" color={row.incoming ? slate[700] : '#EE2737'}>
                 S/ {row.amount}
               </Typography>
-              <Avatar sx={{ bgcolor: row.incoming ? '#C8EDC5' : '#FFC8C8', height: '16px', width: '16px' }}>
+              <Avatar sx={{ bgcolor: row.incoming ? '#C8EDC5' : '#FFC8C8', height: 16, width: 16 }}>
                 {row.incoming ? (
-                  <NorthEast sx={{ height: '12px', width: '12px', color: '#307E0D' }} />
+                  <NorthEast sx={{ height: 12, width: 12, color: '#307E0D' }} />
                 ) : (
-                  <SouthEast sx={{ height: '12px', width: '12px', color: '#FF230D' }} />
+                  <SouthEast sx={{ height: 12, width: 12, color: '#FF230D' }} />
                 )}
               </Avatar>
             </Box>
           </Box>
         </Box>
       ))}
-      {loading && LoadingSkeleton}
+      {loading && <SkeletonTable />}
     </Box>
   );
 }
