@@ -7,7 +7,6 @@ import { Button, Box, Typography, Zoom } from '@mui/material';
 import { useRegisterStore } from '@/store';
 import LogoPurple from '%/images/LogoPurple';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { WelcomeAnimationProps } from '@/interfaces';
 import animation1 from '%/images/pwa/animation1.png';
 import animation2 from '%/images/pwa/animation2.png';
 import animation3 from '%/images/pwa/animation3.png';
@@ -33,31 +32,11 @@ const animationState = [
     src: animation3,
     text: (
       <>
-        Organiza tus
-        <br /> finanzas y tu negocio
+        Organiza tus <br /> finanzas y tu negocio
       </>
     ),
   },
 ];
-
-const WelcomeAnimation = ({ animation, text }: WelcomeAnimationProps) => {
-  return (
-    <Box>
-      <Image src={animation} width={468} height={291} alt="animation" priority />
-      <Typography
-        sx={{
-          color: fuchsiaBlue[800],
-          mb: { xs: 7, sm: 3 },
-          fontSize: 28,
-          fontWeight: 700,
-          textAlign: 'center',
-        }}
-      >
-        {text}
-      </Typography>
-    </Box>
-  );
-};
 
 export default function Landing() {
   const { inc, setShowHeader } = useRegisterStore();
@@ -95,10 +74,18 @@ export default function Landing() {
         </Box>
         <Zoom in={true}>
           <Box>
-            <WelcomeAnimation
-              animation={animationState[currentImageIndex].src}
-              text={animationState[currentImageIndex].text}
-            />
+            <Image src={animationState[currentImageIndex].src} width={360} height={223} alt="animation" priority />
+            <Typography
+              sx={{
+                color: fuchsiaBlue[800],
+                mb: { xs: 7, sm: 3 },
+                fontSize: 28,
+                fontWeight: 700,
+                textAlign: 'center',
+              }}
+            >
+              {animationState[currentImageIndex].text}
+            </Typography>
           </Box>
         </Zoom>
       </Box>
