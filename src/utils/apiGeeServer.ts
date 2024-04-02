@@ -66,8 +66,8 @@ export function configureDefaultHeaders(headers: Headers) {
 
 export async function getToken() {
   const grant_type: string = 'client_credentials';
-  const client_id: string | undefined = process.env.BACK_APP_CREDENTIALS_KEY;
-  const client_secret: string | undefined = process.env.BACK_APP_CREDENTIALS_SECRET;
+  const client_id: string | undefined = process.env.CREDENTIALS_KEY;
+  const client_secret: string | undefined = process.env.CREDENTIALS_SECRET;
   const response = await apiGee.post(
     `/oauth2/v1/token`,
     { grant_type, client_id, client_secret },
