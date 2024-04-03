@@ -1,25 +1,16 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Box, Typography, Zoom } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Fade, Slide, Typography, Zoom } from '@mui/material';
 //Internal app
 import { useRegisterStore } from '@/store';
-import ending1 from '%/images/ending1.svg';
-import ending2 from '%/images/ending2.svg';
 import LogoGreen from '%/images/LogoGreen';
 import { PurpleLayout } from '@/components';
+import animation1 from '%/images/animation1.svg';
+import animation2 from '%/images/animation2.svg';
 import { fuchsiaBlue } from '@/theme/theme-default';
-
-const animationEnding = [
-  {
-    src: ending1,
-  },
-  {
-    src: ending2,
-  },
-];
 
 export default function Ending() {
   const { push } = useRouter();
@@ -60,48 +51,32 @@ export default function Ending() {
   return (
     <PurpleLayout>
       <Box sx={{ zIndex: 1, display: 'grid', justifyContent: 'center' }}>
-        <Zoom in={true}>
-          <Box
-            sx={{
-              position: 'relative',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            {currentImageIndex < 2 && (
-              <Image
-                src={animationEnding[currentImageIndex].src}
-                width={468}
-                height={291}
-                alt={`Animation Yiro ${currentImageIndex}`}
-                priority
-              />
+        {currentImageIndex < 2 && (
+          <>
+            {currentImageIndex === 0 && (
+              <Fade in={true}>
+                <Box mb={3}>
+                  <Image
+                    src={animation1}
+                    width={360}
+                    height={345}
+                    alt={`Animation Yiro ${currentImageIndex}`}
+                    priority
+                  />
+                </Box>
+              </Fade>
             )}
-            {currentImageIndex >= 1 && (
-              <Box
-                sx={{
-                  position: currentImageIndex === 1 ? 'absolute' : 'relative',
-                  width: 468,
-                  height: 291,
-                  top: '38%',
-                  left: '38%',
-                  display: 'flex',
-                  '&>svg': {
-                    transition: 'transform 0.5s',
-                    transform: currentImageIndex === 1 ? 'scale(0.8)' : 'scale(1.0)',
-                    width: currentImageIndex === 1 ? '110px' : '132px',
-                    height: currentImageIndex === 1 ? '61px' : '74px',
-                  },
-                }}
-              >
-                <LogoGreen />
-              </Box>
+            {currentImageIndex === 1 && (
+              <Zoom in={true}>
+                <Image src={animation2} width={360} height={345} alt={`Animation Yiro ${currentImageIndex}`} priority />
+              </Zoom>
             )}
-          </Box>
-        </Zoom>
-        <Box>
-          {currentImageIndex < 2 && (
+          </>
+        )}
+      </Box>
+      <Box>
+        {currentImageIndex === 1 && (
+          <Zoom in={true}>
             <Typography
               sx={{
                 color: fuchsiaBlue[200],
@@ -113,9 +88,16 @@ export default function Ending() {
             >
               ¡Felicidades! <br /> Ya eres parte de <br /> Yiro
             </Typography>
-          )}
-        </Box>
+          </Zoom>
+        )}
       </Box>
+      {currentImageIndex === 2 && (
+        <Zoom in={true} timeout={1000}>
+          <Box>
+            <LogoGreen />
+          </Box>
+        </Zoom>
+      )}
     </PurpleLayout>
   );
 }
