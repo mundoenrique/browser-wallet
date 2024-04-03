@@ -1,17 +1,28 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
-//** Renders components
+/**
+ * Function to Renders components
+ * @param component - imported component name
+ */
 async function renderComponent(component: any) {
   render(component);
 };
 
-//** validate that the inputs exist and that it is initialized to empty
+/**
+ * Function to validate that the inputs exist and that it is initialized to empty
+ * @param inputName - input field name
+ */
 async function renderInput(inputName: any) {
   expect(inputName).toBeInTheDocument();
   expect(inputName).toHaveValue('');
 }
 
-//** Function to validate redirect links
+/**
+ * Funciton to validate redirect links
+ * @param textLink - text link name
+ * @param routePath - redirect link
+ * @param router - router mock
+ */
 async function redirectLinks(textLink: any, routePath: string, router: any) {
   expect(textLink).toBeInTheDocument();
   fireEvent.click(textLink);
@@ -20,7 +31,11 @@ async function redirectLinks(textLink: any, routePath: string, router: any) {
   });
 };
 
-//** Function to wshow error message when the user submits the form with an empty password field.
+/**
+ * Funciton to show error message when the user submits the form with an empty password field.
+ * @param submitButton - button name
+ * @param erroMsg - error message
+ */
 async function emptyField(submitButton: any, erroMsg: string) {
   fireEvent.click(submitButton);
   await waitFor(() => {
@@ -28,7 +43,11 @@ async function emptyField(submitButton: any, erroMsg: string) {
   });
 };
 
-//** Function to display a toggle button to show/hide the password.
+/**
+ * Function to display a toggle button to show/hide the password.
+ * @param passwordInput - input field name
+ * @param toggleButton - button to hide/show password
+ */
 async function togglePasswordVisibility(passwordInput: any, toggleButton: any) {
   expect(passwordInput).toHaveAttribute('type', 'password');
   fireEvent.click(toggleButton);
