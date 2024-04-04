@@ -71,6 +71,7 @@ export interface InputOTPProps extends FormMUIProps {
  */
 export interface InputOptionsProps extends FormMUIProps {
   options: { value: string; text: string }[];
+  onClick?: (e: any) => void;
 }
 
 /**

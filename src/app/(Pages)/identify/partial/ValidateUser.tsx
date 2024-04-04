@@ -5,16 +5,16 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useRegisterStore } from '@/store';
 import { useMockStore } from '@/store/mockStore';
 
-export default function Identity({ userId }: { userId: any }) {
+export default function ValidateUser({ userId }: { userId: any }) {
   const [userValidation, setUserValidation] = useState<any>(null);
   const { push } = useRouter();
   const { updateFormState, updateStep } = useRegisterStore();
   const { setMockData } = useMockStore();
 
   /**
-   *
-   * @param phase
-   * @returns phase number in onboarding in process
+   * Convert phasename
+   * @param phase - Phase name
+   * @returns Phase step (number) in onboarding in process
    */
   const phaseToStep = (phase: string) => {
     const phasesSteps: { [key: string]: number } = {
@@ -33,14 +33,14 @@ export default function Identity({ userId }: { userId: any }) {
     const registerData = userValidationResponse.data;
 
     const redirectObject: { [key: string]: { path: string; store: Function } } = {
-      //TODO:DONE
+      //User register finished
       PH_REGISTER: {
         path: '/signin',
         store: () => {
           setMockData({ user: { ...registerData.user } });
         },
       },
-      //TODO: new register
+      // User rew register
       PH_PENDING: {
         path: '/signup',
         store: () => {
@@ -48,15 +48,13 @@ export default function Identity({ userId }: { userId: any }) {
           updateFormState('ONB_PHASES_TERMS', registerData);
         },
       },
-      //TODO:In pogress
+      //User register in progress
       PH_IN_PROGRESS: {
         path: '/signup',
         store: () => {
           registerData.onboardingPhases.forEach((phase: any) => {
             updateFormState(phase.onboardingPhaseCode, phase.metadata);
           });
-
-          console.log(registerData);
           updateStep(phaseToStep(registerData.currentOnboardingPhaseCode));
         },
       },

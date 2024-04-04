@@ -10,7 +10,6 @@ import { getSchema } from '@/config';
 import { useRegisterStore, useUiStore } from '@/store';
 import { slate } from '@/theme/theme-default';
 import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResponsive } from '@/components';
-import dayjs from 'dayjs';
 
 const options: any = [
   { text: 'Sí', value: 'true' },
@@ -58,9 +57,10 @@ export default function PEP() {
             district: null,
             province: null,
             department: null,
-            endDate: new Date(),
+            endDate: '',
             holdShare: '',
           },
+          relatives: [],
         },
     resolver: yupResolver(schema),
   });
@@ -88,7 +88,9 @@ export default function PEP() {
       },
     };
     updateFormState('ONB_PHASES_PEP', data);
+
     setLoadingScreen(true);
+
     await new Promise((resolve) => {
       setTimeout(resolve, 1000);
     });
@@ -101,20 +103,11 @@ export default function PEP() {
   };
 
   useEffect(() => {
-    watchIsPep && setIsPep(watchIsPep.toLowerCase() === 'true');
-    WatchIsFamilyAlive && setHasParents(WatchIsFamilyAlive.toLowerCase() === 'true');
-
-    if (hasParents && !getValues('isAlive')) {
-      append({ documentNumber: '', documentType: null, fullName: '' });
-    } else {
-      remove();
-    }
-
     if (watchIsPep !== '' && watchIsPep.toLowerCase() !== 'true') {
       reset({
         isPep: 'false',
         pepForm: {
-          isFamilyAlive: '',
+          isRelativeAlive: '',
           position: '',
           companyName: '',
           address: '',
@@ -124,11 +117,17 @@ export default function PEP() {
           endDate: '',
           holdShare: '',
         },
+        relatives: [],
       });
       remove();
       setHasParents(false);
     }
-  }, [watchIsPep, WatchIsFamilyAlive, hasParents, reset, watch, append, remove, getValues]);
+  }, [watchIsPep, hasParents]); //eslint-disable
+
+  useEffect(() => {
+    watchIsPep && setIsPep(watchIsPep.toLowerCase() === 'true');
+    WatchIsFamilyAlive && setHasParents(WatchIsFamilyAlive.toLowerCase() === 'true');
+  }, [watchIsPep, WatchIsFamilyAlive]);
 
   useEffect(() => {
     setShowHeader(true);
@@ -194,7 +193,18 @@ export default function PEP() {
                 },
               }}
             >
-              <InputCheckCondition name="pepForm.isFamilyAlive" options={options} control={control} />
+              <InputCheckCondition
+                name="pepForm.isFamilyAlive"
+                options={options}
+                control={control}
+                onClick={(e) => {
+                  if (e.target.value === 'true') {
+                    append({ documentNumber: '', documentType: null, fullName: '' });
+                  } else {
+                    remove();
+                  }
+                }}
+              />
             </Box>
 
             <Collapse in={hasParents} timeout={300}>

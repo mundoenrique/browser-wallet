@@ -39,8 +39,8 @@ export default function InfoVerification() {
       countryCode: ONB_PHASES_TERMS && ONB_PHASES_TERMS.consultant?.countryCode,
       phoneNumber: ONB_PHASES_TERMS && ONB_PHASES_TERMS.consultant?.phoneNumber,
       email: ONB_PHASES_TERMS && ONB_PHASES_TERMS.consultant?.email,
-      term: false,
-      policy: false,
+      term1: false,
+      term2: false,
     },
     resolver: yupResolver(schema),
   });
@@ -132,8 +132,9 @@ export default function InfoVerification() {
 
   useEffect(() => {
     setShowHeader(true);
-    console.log('phase terms', ONB_PHASES_TERMS);
-  }, [setShowHeader, ONB_PHASES_TERMS]);
+  }, [setShowHeader]);
+
+  useEffect(() => {});
 
   return (
     <CardStep stepNumber="1">

@@ -56,14 +56,16 @@ export const useRegisterStore = create<RegisterStore>()(
         termsDefinition: [
           {
             name: 'TERMINO 1',
-            description: 'Lorem ipsum...',
-            uuid: 'a4e18adf-95af-4b9f-8b95-06c985aca5ef',
+            code: 'TERM1',
           },
 
           {
             name: 'TERMINO 2',
-            description: 'Lorem ipsum...',
-            uuid: '30036e69-5f3e-430a-a8ee-8ce59e9e1320',
+            code: 'TERM2',
+          },
+          {
+            name: 'TERMINO 3',
+            code: 'TERM3',
           },
         ],
         /**

@@ -1,7 +1,7 @@
 //Internal app
 import LogoGreen from '%/images/LogoGreen';
 import { PurpleLayout } from '@/components';
-import Identity from '../partial/Identity';
+import ValidateUser from '../partial/ValidateUser';
 export default async function page({ params }: any) {
   const { user } = params;
 
@@ -9,7 +9,7 @@ export default async function page({ params }: any) {
 
   return (
     <>
-      <Identity userId={user} />
+      <ValidateUser userId={user} />
       <PurpleLayout>
         <LogoGreen />
       </PurpleLayout>
