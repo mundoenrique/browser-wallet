@@ -1,14 +1,13 @@
 'use client';
 
 import { useRef } from 'react';
-import html2canvas from 'html2canvas';
 import { Avatar, Box, Button, Card } from '@mui/material';
 import ShareIcon from '@mui/icons-material/ShareOutlined';
 //Internal app
 import { CardTicketProps } from '@/interfaces';
-import { handleDownload, handleShare } from '@/utils/toolHelper';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import CheckCircleIcon from '%/images/arts/CheckCircleIcon';
+import { handleDownload, handleShare } from '@/utils/toolHelper';
 
 /**
  * Card used to display the generated result
