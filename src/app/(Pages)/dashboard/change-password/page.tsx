@@ -50,10 +50,12 @@ export default function ChangePassword() {
           Cambiar contraseña
         </Typography>
 
-        <Typography variant="body2">Elige 6 números que recuerdes.</Typography>
+        <Typography variant="body2" fontWeight={700}>
+          Elige 6 números que recuerdes.
+        </Typography>
 
         <Typography variant="body2" mb={3}>
-          Evita utilizar tu fecha de cumpleaños para que sea más segura
+          Evita fechas de cumpleaños, números consecutivos ó iguales.
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>

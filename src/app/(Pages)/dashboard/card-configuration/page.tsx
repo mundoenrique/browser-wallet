@@ -19,7 +19,7 @@ export default function CardConfiguration() {
   const { page, updatePage } = useConfigCardStore();
 
   useEffect(() => {
-    updateTitle('Cambiar contraseña');
+    updateTitle('Configuración de mi tarjeta');
     setCurrentItem('card-settings');
     updatePage('main');
   }, [updateTitle, setCurrentItem, updatePage]);

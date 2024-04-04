@@ -10,6 +10,7 @@ import { ContainerLayout, HandleCard, Linking } from '@/components';
 export default function ActivatePhysicalCard() {
   const { updateTitle } = useNavTitleStore();
   const { updatePage } = useConfigCardStore();
+
   useEffect(() => {
     updateTitle('Activación de tarjeta física');
   }, [updateTitle]);
@@ -30,6 +31,7 @@ export default function ActivatePhysicalCard() {
           updatePage('main');
         }}
         label="Volver"
+        adormentStart
       />
 
       <Typography variant="body2" mb={3}>
