@@ -3,13 +3,14 @@
 import { useEffect, useState } from 'react';
 import { Avatar, Box, Button, Card, Stack, Typography } from '@mui/material';
 //Internal app
-import { useNavTitleStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { ContainerLayout, ModalResponsive } from '@/components';
+import { useConfigCardStore, useNavTitleStore } from '@/store';
+import { ContainerLayout, Linking, ModalResponsive } from '@/components';
 
 export default function RequestPhysicalCard() {
   const { updateTitle } = useNavTitleStore();
   const [open, setOpen] = useState<boolean>(false);
+  const { updatePage } = useConfigCardStore();
 
   useEffect(() => {
     updateTitle('Solicitar tarjeta física');
@@ -29,6 +30,15 @@ export default function RequestPhysicalCard() {
         >
           Solicitar tarjeta física
         </Typography>
+
+        <Linking
+          href="#"
+          onClick={() => {
+            updatePage('main');
+          }}
+          label="Volver"
+          adormentStart
+        />
 
         <Typography variant="body2" mb={3}>
           Haz click en el botón “Solicitar tarjeta” y te la enviaremos en tu siguiente pedido.

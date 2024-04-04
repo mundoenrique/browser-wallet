@@ -3,7 +3,7 @@
 import { forwardRef } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import { Close as CloseIcon } from '@mui/icons-material';
-import { Box, Link as MuiLink, Modal, useMediaQuery, Typography } from '@mui/material/';
+import { Box, Link as MuiLink, Modal, useMediaQuery, Typography, Slide } from '@mui/material/';
 //Internal app
 import { MuiModalProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
@@ -35,7 +35,7 @@ const BodyModal = styled(Box, {
         position: 'absolute',
         top: '50%',
         left: '50%',
-        transform: 'translate(-50%, -50%)',
+        transform: 'translate(-50%,-50%) !important',
         padding: '0px 20px 32px 20px',
         borderRadius: '16px',
         width: 400,
@@ -49,8 +49,8 @@ const BodyModal = styled(Box, {
 const CloseButtonContainer = styled(Box, {
   name: 'ModalResponsive',
   slot: 'closeButton',
-})(({ theme }) => ({
-  display: useMediaQuery(theme.breakpoints.down('sm')) ? 'none' : 'flex',
+})(() => ({
+  display: 'flex',
   justifyContent: 'right',
   height: 52,
 }));
@@ -76,24 +76,26 @@ const ModalResponsive = forwardRef(function MyModalResponsive(props: MuiModalPro
       ref={ref}
     >
       <Box>
-        <BodyModal {...others}>
-          <CloseButtonContainer onClick={handleClose}>
-            <MuiLink
-              sx={{
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                color: fuchsiaBlue[800],
-                textDecoration: 'none',
-              }}
-            >
-              <Typography>Cerrar</Typography>
-              <CloseIcon />
-            </MuiLink>
-          </CloseButtonContainer>
-          {children}
-        </BodyModal>
+        <Slide direction="up" in={open} mountOnEnter unmountOnExit>
+          <BodyModal {...others}>
+            <CloseButtonContainer onClick={handleClose}>
+              <MuiLink
+                sx={{
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  color: fuchsiaBlue[800],
+                  textDecoration: 'none',
+                }}
+              >
+                <Typography>Cerrar</Typography>
+                <CloseIcon />
+              </MuiLink>
+            </CloseButtonContainer>
+            {children}
+          </BodyModal>
+        </Slide>
       </Box>
     </RootModal>
   );
