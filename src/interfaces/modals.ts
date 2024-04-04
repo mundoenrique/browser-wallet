@@ -31,3 +31,14 @@ export interface ModalOtpProps {
   title?: string | boolean;
   textButton?: string | boolean;
 }
+
+/**
+ * Modal used to display error messages
+ *
+ * @typeParam title: Title of the error that is generated.
+ * @typeParam description: The description of the error generated.
+ */
+export interface ModalErrorProps {
+  title: string;
+  description: string;
+}
