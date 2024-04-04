@@ -23,12 +23,10 @@ export default function ChangePassword() {
   });
 
   const onSubmit = async (data: any) => {
-    console.log(data);
     setOpenOtp(true);
   };
 
   const onSubmitOtp = async (data: any) => {
-    console.log(data);
     setOpenOtp(false);
     setOpenRc(true);
     reset();
@@ -68,7 +66,7 @@ export default function ChangePassword() {
 
       <ModalOtp open={openOtp} handleClose={() => setOpenOtp(false)} onSubmit={onSubmitOtp} />
 
-      <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>
+      <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)} data-testid="modal-succes">
         <Typography variant="subtitle2">🥳 Actualización exitosa</Typography>
       </ModalResponsive>
     </>

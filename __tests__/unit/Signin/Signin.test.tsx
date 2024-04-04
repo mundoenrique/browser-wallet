@@ -1,11 +1,12 @@
 import { useRouter } from 'next/navigation';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 //Internal app
 import Signin from '@/app/(Pages)/signin/page';
 import {
   togglePasswordVisibility,
   emptyField,
-  renderInput
+  renderInput,
+  redirectLinks
 } from '../../tools/unitTestHelper.test';
 import { createMockRouter } from '@/utils/mocks';
 
@@ -26,7 +27,6 @@ describe('Signin', () => {
   let passwordInput: Node | Window;
   let submitButton: Node | Window;
   let toggleButton: HTMLElement;
-  let passwordRecoveryLink: any;
   let router = createMockRouter({});
 
   beforeEach(() => {
@@ -36,7 +36,6 @@ describe('Signin', () => {
     passwordInput = screen.getByLabelText(/contraseña/i);
     toggleButton = screen.getByLabelText(/toggle password visibility/i);
     submitButton = screen.getByRole('button', { name: /ingresar/i });
-    passwordRecoveryLink = screen.getByText(/olvide mi contraseña/i);
   });
 
   afterEach(() => {
@@ -61,7 +60,6 @@ describe('Signin', () => {
   it('should render all inputs, buttons.', () => {
     renderInput(passwordInput);
     renderInput(toggleButton);
-    renderInput(passwordRecoveryLink);
     renderInput(submitButton);
   });
 
@@ -77,11 +75,8 @@ describe('Signin', () => {
 
   //** Display a link to the password recovery page and navigate to password recovery page when link is clicked.
   it('should render password recovery link', () => {
-    expect(passwordRecoveryLink).toBeInTheDocument();
-    expect(passwordRecoveryLink.getAttribute('href')).toBe('/password-recover');
-    fireEvent.click(passwordRecoveryLink);
-    waitFor(() => {
-      expect(router.push).toHaveBeenCalledWith('/password-recover');
-    });
+    const textLink = screen.getByText(/olvide mi contraseña/i);
+    const routePath = '/password-recover';
+    redirectLinks(textLink, routePath, router);
   });
 });
