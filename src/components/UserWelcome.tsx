@@ -22,7 +22,7 @@ export default function UserWelcome(): JSX.Element {
           const data = response.data.data as string;
           setUserInfo(data);
         } catch (error) {
-          console.error('Error generating JWT token:', error);
+          // console.error('Error generating JWT token:', error);
         }
       })();
     }
