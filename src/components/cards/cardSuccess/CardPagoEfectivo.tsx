@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import { isBrowser, isMobile, isTablet } from 'react-device-detect';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 //Internal app
 import { CopyIcons } from '%/Icons';
@@ -21,29 +22,37 @@ import { copyToClipboard, handleDownload, handleShare } from '@/utils/toolHelper
  * @param share - handling for image shared
  */
 export default function CardPagoEfectivo({ cip, children, label, download, share }: CardPagoEfectivoProps) {
-  const componentRef = useRef<any>(null);
+  const codeQrRef = useRef<any>(null);
+  const ticketRef = useRef<any>(null);
+
   const ImagePagoEfectivo = {
     src: PagoEfectivo,
     alt: 'Logo Pago Efectivo',
   };
   const shareData: any = {
-    url: 'https://www.pagoefectivo.la/pe/como-pagar',
     files: [],
+    text: `¡Hola! 👋 en el siguiente link tendras los detalles para realizar la transferencia:\n\nPaga por Yape, Plin u otras billeteras escaneando el código QR que figura arriba.\n\nPaga en agentes o banca en línea por PagoEfectivo en soles con este Código CIP: 8462 1935 7079\n\n ¿Cómo pagar?\nhttps://www.pagoefectivo.la/pe/como-pagar`,
   };
 
   const handleShareClick = () => {
-    handleShare(componentRef.current, shareData, fuchsiaBlue[800]);
+    if (isBrowser) {
+      handleShare(ticketRef.current, shareData, fuchsiaBlue[800]);
+    }
+
+    if (isMobile || isTablet) {
+      handleShare(codeQrRef.current, shareData, 'white');
+    }
   };
 
   const handleDownloadClick = () => {
-    handleDownload(componentRef.current, 'recarga.png', fuchsiaBlue[800]);
+    handleDownload(codeQrRef.current, 'recarga.png', fuchsiaBlue[800]);
   };
 
   copyToClipboard(cip);
 
   return (
     <>
-      <Box ref={componentRef} sx={{ padding: '24px 4px 4px 4px', position: 'relative' }}>
+      <Box ref={ticketRef} sx={{ padding: '24px 4px 4px 4px', position: 'relative' }}>
         <CardReport avatarImage={ImagePagoEfectivo}>
           <Box
             sx={{
@@ -83,7 +92,7 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
             <Typography fontWeight={700} mb={3}>
               Yape, Plin u otras billeteras:
             </Typography>
-            <picture>
+            <picture ref={codeQrRef}>
               <img src={Qr.src} alt="Qr Code" />
             </picture>
           </Box>
