@@ -42,7 +42,7 @@ export default function Debt() {
           Pagar deuda con ésika
         </Typography>
 
-        <Linking href="/dashboard" label="Volver" />
+        <Linking href="/dashboard" label="Volver" adormentStart />
 
         <Card sx={{ boxShadow: 'none', bgcolor: fuchsiaBlue[300], px: 3, py: 1, mb: 4, borderRadius: '16px' }}>
           <Stack spacing={1} sx={{ display: 'grid', justifyContent: 'center', justifyItems: 'center' }}>

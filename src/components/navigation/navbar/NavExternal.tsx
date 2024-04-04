@@ -41,9 +41,9 @@ export default function NavExternal({ image, color, closeApp }: MuiNavExternalPr
         }}
       >
         {!closeApp ? (
-          <Linking href="/signin" label="Volver" mb={0} />
+          <Linking href="/signin" label="Volver" mb={0} adormentStart />
         ) : (
-          <Linking href="#" label="Volver a ésika Conmigo" mb={0} color={color} />
+          <Linking href="#" label="Volver a ésika Conmigo" mb={0} color={color} adormentStart />
         )}
       </Box>
     </Box>

@@ -55,6 +55,7 @@ export default function ChangePin() {
           onClick={() => {
             updatePage('main');
           }}
+          adormentStart
         />
 
         <Typography variant="body2" mb={3}>
