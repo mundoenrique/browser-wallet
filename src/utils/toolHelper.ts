@@ -20,7 +20,7 @@ export const copyToClipboard = async (text: any) => {
   try {
     await navigator.clipboard.writeText(text);
   } catch (error) {
-    console.error('Error copying text:', error);
+    // console.error('Error copying text:', error);
   }
 };
 
