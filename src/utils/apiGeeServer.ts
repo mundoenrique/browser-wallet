@@ -2,7 +2,7 @@ import axios, { AxiosRequestHeaders, InternalAxiosRequestConfig } from 'axios';
 import { getEnvVariable } from './apiHelpers';
 import { APIGEE_HEADERS_NAME } from './constants';
 
-const baseURL = getEnvVariable('APIGEE_HOST');
+const baseURL = getEnvVariable('BACK_URL');
 
 export const apiGee = axios.create({
   baseURL,

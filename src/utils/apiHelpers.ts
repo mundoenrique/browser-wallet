@@ -6,12 +6,11 @@ import { verifyJWT, encryptJWE, decryptJWE, signJWE, verifyDetachedJWS } from '.
 import { handleApiResponse } from '.';
 
 type EnvVariableKey =
-  | 'API_BASE_URL'
+  | 'BACK_URL'
   | 'MIDDLE_JWE_PRIVATE_KEY'
   | 'MIDDLE_JWE_PUBLIC_KEY'
   | 'MIDDLE_JWS_PRIVATE_KEY'
   | 'MIDDLE_JWS_PUBLIC_KEY'
-  | 'APIGEE_HOST'
   | 'TENANT_ID'
   | 'BACK_JWE_PRIVATE_KEY';
 

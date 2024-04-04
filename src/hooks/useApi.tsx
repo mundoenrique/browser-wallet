@@ -15,7 +15,7 @@ export function useApi() {
     if (token && jwePrivateKey && jwsPrivateKey) {
       api.interceptors.request.use(
         async (request) => {
-          const jweApiPublicKey: string | undefined = process.env.NEXT_PUBLIC_JWE_PUBLIC_KEY;
+          const jweApiPublicKey: string | undefined = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY;
           const url = request.url;
 
           if (!jweApiPublicKey) {
@@ -42,7 +42,7 @@ export function useApi() {
       async (response) => {
         const url = response.config.url;
         const jwtAuth = response.headers[JWT_HEADER];
-        const jweApiPublicKey = process.env.NEXT_PUBLIC_JWE_PUBLIC_KEY;
+        const jweApiPublicKey = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY;
 
         if (url === '/gettoken') {
           return response;

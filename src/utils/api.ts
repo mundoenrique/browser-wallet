@@ -24,7 +24,7 @@ function setJwtToken(token: string) {
 
 api.interceptors.request.use(
   async (request) => {
-    const jweApiPublicKey: string | undefined = process.env.NEXT_PUBLIC_JWE_PUBLIC_KEY;
+    const jweApiPublicKey: string | undefined = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY;
     const url = request.url;
     const data = request.data;
 
@@ -64,7 +64,7 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   async (response) => {
-    const jwsApiPublicKey = process.env.NEXT_PUBLIC_JWS_PUBLIC_KEY;
+    const jwsApiPublicKey = process.env.NEXT_PUBLIC_MIDDLE_JWS_PUBLIC_KEY;
     const url = response.config.url;
     const data = response.data;
 

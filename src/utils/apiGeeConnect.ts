@@ -36,7 +36,7 @@ export async function handleRequest(
 ): Promise<InternalAxiosRequestConfig<any>> {
   const data = request.data;
   const url = request.url;
-  const jwePublicKey: string | undefined = process.env.NEXT_PUBLIC_JWE_PUBLIC_KEY;
+  const jwePublicKey: string | undefined = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY;
 
   console.log('handleRequest-url', request.url);
   console.log('handleRequest-data', data);

@@ -2,7 +2,7 @@ import axios from 'axios';
 //Internal app
 import { getEnvVariable } from '@/utils/apiHelpers';
 
-const baseURL = getEnvVariable('API_BASE_URL');
+const baseURL = getEnvVariable('BACK_URL');
 
 export const apiClient = axios.create({
   baseURL,
