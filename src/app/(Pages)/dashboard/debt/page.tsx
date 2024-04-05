@@ -23,7 +23,6 @@ export default function Debt() {
   });
 
   const onSubmit = async (data: any) => {
-    console.log('🚀 ~ onSubmit ~ data:', data);
     setOpenRc(true);
   };
 
