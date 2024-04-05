@@ -53,7 +53,7 @@ export interface TextFieldProps extends FormMUIProps {
  * @typeParam length: number
  */
 export interface InputOTPProps extends FormMUIProps {
-  title: string;
+  title: string | boolean;
   text: string;
   length: number;
 }
@@ -189,4 +189,5 @@ export interface InputCheckGroupOptionProps {
 export interface IListClientsProps {
   data: IClientProps[];
   loading: boolean;
+  disabledBtnDelete: string;
 }

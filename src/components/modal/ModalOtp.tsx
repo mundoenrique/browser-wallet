@@ -17,10 +17,12 @@ import ModalResponsive from './ModalResponsive';
  * @param open - State of the modal to show it or not.
  * @param onSubmit - Function that sends the data obtained in the form.
  * @param closeModal - Function used to close the modal with a button in the account deletion flow.
+ * @param title - Title of the form.
+ * @param textButon - Text for the main button.
  * @returns Json with the verification code
  */
 export default function ModalOtp(props: ModalOtpProps): JSX.Element {
-  const { handleClose, open, onSubmit, closeApp } = props;
+  const { handleClose, open, onSubmit, closeApp, title, textButton } = props;
   const schemaFormOtp = getSchema(['otp']);
 
   const { control, handleSubmit, reset, formState } = useForm({
@@ -42,12 +44,12 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
             name="otp"
             control={control}
             length={4}
-            title="🎰 Verificación en dos pasos"
+            title={title ? title : '🎰 Verificación en dos pasos'}
             text="Ingresa el código enviado a tu número celular +51 *** *** 1214"
           />
         </Box>
         <Button variant="contained" type="submit" sx={{ width: '100%', mx: 'auto' }}>
-          Continuar
+          {textButton ? textButton : 'Verificar'}
         </Button>
         {closeApp && (
           <Button variant="outlined" sx={{ width: '100%', mx: 'auto', mt: 2 }} onClick={handleClose}>

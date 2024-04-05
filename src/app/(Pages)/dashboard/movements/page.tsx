@@ -112,6 +112,7 @@ export default function Movements() {
           mb={'20px'}
           color={fuchsiaBlue[800]}
           iconSize={{ height: 20, width: 20 }}
+          adormentStart
         />
 
         <InputSelect

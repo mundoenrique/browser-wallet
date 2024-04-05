@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import Visibility from '@mui/icons-material/RemoveRedEyeOutlined';
+import VisibilityOff from '@mui/icons-material/VisibilityOffOutlined';
 //Internal app
 import card from '%/images/cardYiro.svg';
 import { FrontInformationProps } from '@/interfaces';
@@ -49,7 +50,11 @@ export default function FrontInformation(props: FrontInformationProps): JSX.Elem
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Box width={130}>
               <Button sx={{ height: 0, minWidth: 0, p: 0 }} onClick={() => setShowBalance(!showBalance)}>
-                <Visibility sx={{ pr: 1, color: 'white' }} />
+                {showBalance ? (
+                  <VisibilityOff sx={{ pr: 1, color: 'white' }} />
+                ) : (
+                  <Visibility sx={{ pr: 1, color: 'white' }} />
+                )}
                 <Typography variant="caption" sx={{ textDecoration: 'underline', color: 'white' }}>
                   {showBalance ? 'Ocultar saldo' : 'Mostrar saldo'}
                 </Typography>

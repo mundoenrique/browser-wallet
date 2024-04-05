@@ -130,6 +130,7 @@ export interface RegisterStore {
  */
 
 export interface IClientProps {
+  id: number;
   date: Date;
   name: string;
   amount: number;
