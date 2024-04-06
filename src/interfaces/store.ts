@@ -43,17 +43,6 @@ export interface DrawerStatus {
 }
 
 /**
- * OAuth2 token
- *
- * @typeParam accessToken: string | null
- * @typeParam setAccessToken: (_token: string) => void
- */
-export type oAuth2StoreProps = {
-  accessToken: string | null;
-  setAccessToken: (_token: string) => void;
-};
-
-/**
  * Active menu item
  *
  * @typeParam title: string

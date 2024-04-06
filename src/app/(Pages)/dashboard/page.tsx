@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
 //Internal app
-import { useJwtStore, useMenuStore, useOAuth2Store } from '@/store';
+import { useJwtStore, useMenuStore } from '@/store';
 import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
 // import { apiGee } from '@/utils/apiGeeConnect';
@@ -44,8 +44,6 @@ const movementData = [
 ];
 
 export default function Dashboard() {
-  const [cardInfo, setCardInfo] = useState<any>(null);
-  const { accessToken } = useOAuth2Store();
   const { token } = useJwtStore();
   const apiGee = useApi();
 
@@ -58,10 +56,9 @@ export default function Dashboard() {
   }, [setCurrentItem]);
 
   useEffect(() => {
-    console.log('accessToken', accessToken);
     console.log('token', token);
 
-    if (accessToken && token) {
+    if (token) {
       (async () => {
         const data = {
           currentPhaseCode: 'ONB_PHASES_TERMS',
@@ -95,7 +92,7 @@ export default function Dashboard() {
         }
       })();
     }
-  }, [accessToken, apiGee, token]);
+  }, [apiGee, token]);
 
   return (
     <Box

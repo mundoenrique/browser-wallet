@@ -1,6 +1,7 @@
 import axios, { AxiosRequestHeaders, InternalAxiosRequestConfig } from 'axios';
 import { getEnvVariable } from './apiHelpers';
 import { APIGEE_HEADERS_NAME } from './constants';
+import { createRedisInstance } from './redis';
 
 const baseURL = getEnvVariable('BACK_URL');
 
@@ -56,9 +57,12 @@ export function filterHeaders(headers: Headers | AxiosRequestHeaders) {
   return filteredHeaders;
 }
 
-export function configureDefaultHeaders(headers: Headers) {
+export async function configureDefaultHeaders(headers: Headers) {
   const tenantId = getEnvVariable('TENANT_ID');
+  const oauthToken = await getOauthBearer();
+
   apiGee.defaults.headers.common = {
+    Authorization: `Bearer ${oauthToken}`,
     ...filterHeaders(headers),
     'X-Tenant-Id': tenantId,
   };
@@ -81,8 +85,36 @@ export async function getToken() {
   return data;
 }
 
+export async function getOauthBearer() {
+  const redis = createRedisInstance();
+  let bearer = await redis.get('bearer');
+
+  if (!bearer) {
+    const grant_type = 'client_credentials';
+    const client_id = process.env.CREDENTIALS_KEY;
+    const client_secret = process.env.CREDENTIALS_SECRET;
+
+    const response = await apiGee.post(
+      `/oauth2/v1/token`,
+      { grant_type, client_id, client_secret },
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
+
+    const { data } = response;
+    await redis.set('bearer', data.access_token);
+    await redis.expire('bearer', 1740);
+    bearer = data.access_token;
+  }
+
+  return bearer;
+}
+
 export async function connect(method: string, url: string, headers: Headers, data: any = undefined) {
-  configureDefaultHeaders(headers);
+  await configureDefaultHeaders(headers);
 
   let response;
   switch (method.toLowerCase()) {
@@ -104,5 +136,6 @@ export async function connect(method: string, url: string, headers: Headers, dat
     default:
       throw new Error(`Invalid method: ${method}`);
   }
+
   return response;
 }

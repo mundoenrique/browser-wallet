@@ -15,17 +15,11 @@ export const apiGee = axios.create({
 
 export function configureHeaders(
   request: InternalAxiosRequestConfig<any>,
-  accessToken: string,
   jwtToken: string
 ): InternalAxiosRequestConfig {
   const url = request.url;
-  if (url !== '/gettokenAuth') {
-    if (!request.headers['Authorization']) {
-      request.headers['Authorization'] = `Bearer ${accessToken}`;
-      request.headers[JWT_HEADER] = jwtToken;
-      request.headers['X-Request-Id'] = uuid4();
-    }
-  }
+  request.headers[JWT_HEADER] = jwtToken;
+  request.headers['X-Request-Id'] = uuid4();
 
   return request;
 }

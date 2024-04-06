@@ -1,16 +1,15 @@
 import { useEffect } from 'react';
 import { apiGee, configureHeaders, handleRequest, handleResponse } from '@/utils/apiGeeConnect';
-import { useJwtStore, useKeyStore, useOAuth2Store } from '@/store';
+import { useJwtStore, useKeyStore } from '@/store';
 
 export function useApi() {
-  const { accessToken } = useOAuth2Store();
   const { jwsPrivateKey, jwePrivateKey } = useKeyStore();
   const { token } = useJwtStore();
   useEffect(() => {
-    if (accessToken && jwsPrivateKey && token && jwePrivateKey) {
+    if (jwsPrivateKey && token && jwePrivateKey) {
       apiGee.interceptors.request.use(
         async (request) => {
-          request = configureHeaders(request, accessToken, token);
+          request = configureHeaders(request, token);
           request = await handleRequest(request, jwsPrivateKey);
 
           return request;
@@ -30,7 +29,7 @@ export function useApi() {
         }
       );
     }
-  }, [accessToken, jwsPrivateKey, token, jwePrivateKey]);
+  }, [jwsPrivateKey, token, jwePrivateKey]);
 
   return apiGee;
 }

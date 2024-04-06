@@ -1,5 +1,4 @@
 export * from '@/store/jwtStore';
-export * from '@/store/oAuth2Store';
 export * from '@/store/keyStore';
 export * from '@/store/menuStore';
 export * from '@/store/qrCodeStore';
