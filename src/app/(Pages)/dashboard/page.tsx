@@ -67,22 +67,22 @@ export default function Dashboard() {
           currentPhaseCode: 'ONB_PHASES_TERMS',
           request: {
             consultant: {
-              consultantCode: '00123457',
-              firstName: 'RAUL',
-              lastName: 'RAMOS',
-              documentType: 'DNI',
-              documentNumber: '44556678',
-              address: 'fsdfjsdj 1234',
-              email: 'griniramos@gmail.com',
-              phoneNumber: '987654322',
+              address: 'CUZCO 144',
+              consultantCode: '000001252',
               countryCode: 'PE',
+              documentNumber: '0002610351',
+              documentType: 'DNI',
+              email: 'otra@gmail.com',
+              firstName: 'AURA ESTELA',
+              lastName: 'PALACIOS ZAPATA',
+              phoneNumber: '977149371',
             },
             terms: [
               {
-                uuid: '30036e69-5f3e-430a-a8ee-8ce59e9e1320',
+                code: 'TERM1',
               },
               {
-                uuid: 'a4e18adf-95af-4b9f-8b95-06c985aca5ef',
+                code: 'TERM2',
               },
             ],
           },
