@@ -1,21 +1,17 @@
 'use client';
+
 import { useCallback, useEffect } from 'react';
 // Internal app
 import { useRegisterStore } from '@/store';
 import {
-  SignupStepper,
+  PEP,
+  Ending,
   Landing,
+  Ocupation,
+  SignupStepper,
   InfoVerification,
   CelularValidation,
-  Ocupation,
-  PEP,
-  DniInfo,
-  DniUpload,
-  SelfieInfo,
-  SelfieUpload,
   PasswordCreation,
-  BiometricValidation,
-  Ending,
 } from './partial';
 
 import { useMockStore } from '@/store/mockStore';
@@ -31,6 +27,7 @@ export default function Signup() {
   useEffect(() => {
     validateUser();
   }, [validateUser]);
+
   return (
     <SignupStepper currentStep={step}>
       <Landing />
@@ -42,16 +39,6 @@ export default function Signup() {
       <Ocupation />
 
       <PEP />
-
-      <DniInfo />
-
-      <DniUpload />
-
-      <SelfieInfo />
-
-      <SelfieUpload />
-
-      <BiometricValidation />
 
       <PasswordCreation />
 
