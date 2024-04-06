@@ -49,7 +49,6 @@ export default function Dashboard() {
 
   const { push } = useRouter();
   const { setCurrentItem } = useMenuStore();
-  const cardId = '502c2656-7110-4994-a820-f593e468c6b4';
 
   useEffect(() => {
     setCurrentItem('home');

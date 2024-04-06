@@ -68,10 +68,16 @@ export async function configureDefaultHeaders(headers: Headers) {
   };
 }
 
-export async function getToken() {
-  const grant_type: string = 'client_credentials';
-  const client_id: string | undefined = process.env.CREDENTIALS_KEY;
-  const client_secret: string | undefined = process.env.CREDENTIALS_SECRET;
+export async function getOauthBearer() {
+  const redis = createRedisInstance();
+  // let bearer = await redis.get('bearer');
+  let bearer: string;
+
+  // if (!bearer) {
+  const grant_type = 'client_credentials';
+  const client_id = process.env.CREDENTIALS_KEY;
+  const client_secret = process.env.CREDENTIALS_SECRET;
+
   const response = await apiGee.post(
     `/oauth2/v1/token`,
     { grant_type, client_id, client_secret },
@@ -81,34 +87,12 @@ export async function getToken() {
       },
     }
   );
+
   const { data } = response;
-  return data;
-}
-
-export async function getOauthBearer() {
-  const redis = createRedisInstance();
-  let bearer = await redis.get('bearer');
-
-  if (!bearer) {
-    const grant_type = 'client_credentials';
-    const client_id = process.env.CREDENTIALS_KEY;
-    const client_secret = process.env.CREDENTIALS_SECRET;
-
-    const response = await apiGee.post(
-      `/oauth2/v1/token`,
-      { grant_type, client_id, client_secret },
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      }
-    );
-
-    const { data } = response;
-    await redis.set('bearer', data.access_token);
-    await redis.expire('bearer', 1740);
-    bearer = data.access_token;
-  }
+  bearer = data.access_token;
+  await redis.set('bearer', bearer);
+  await redis.expire('bearer', 1740);
+  // }
 
   return bearer;
 }

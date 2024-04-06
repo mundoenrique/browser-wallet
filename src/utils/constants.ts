@@ -14,4 +14,5 @@ export const APIGEE_HEADERS_NAME = ['Authorization', 'X-Tenant-Id', 'X-Token', '
 
 export const URL_BASE: IUrlBase = {
   onboarding: 'api/v0/onboarding',
+  search: 'api/v0/search',
 };

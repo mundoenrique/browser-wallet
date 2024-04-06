@@ -29,31 +29,29 @@ export async function handleRequest(
   jwsPrivateKey: string
 ): Promise<InternalAxiosRequestConfig<any>> {
   const data = request.data;
-  const url = request.url;
+
   const jwePublicKey: string | undefined = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY;
 
   console.log('handleRequest-url', request.url);
   console.log('handleRequest-data', data);
-
-  if (url !== '/gettokenAuth' && data) {
-    /**
-     * Encrypt Data and sign JWE
-     */
-    if (!jwePublicKey) {
-      return Promise.reject('jwePublicKey is not defined');
-    }
-
-    if (!jwsPrivateKey) {
-      return Promise.reject('jwsPrivateKey is not defined');
-    }
-
-    const jwe = await encryptJWE(data, jwePublicKey);
-    const encryptedData = { data: jwe };
-    request.data = encryptedData;
-
-    const jws = await signJWE(jwsPrivateKey, jwe);
-    request.headers['X-token'] = 'JWS ' + jws;
+  /**
+   * Encrypt Data and sign JWE
+   */
+  if (!jwePublicKey) {
+    return Promise.reject('jwePublicKey is not defined');
   }
+
+  if (!jwsPrivateKey) {
+    return Promise.reject('jwsPrivateKey is not defined');
+  }
+
+  const jwe = await encryptJWE(data, jwePublicKey);
+  const encryptedData = { data: jwe };
+  request.data = encryptedData;
+
+  const jws = await signJWE(jwsPrivateKey, jwe);
+  request.headers['X-token'] = 'JWS ' + jws;
+
   return request;
 }
 
