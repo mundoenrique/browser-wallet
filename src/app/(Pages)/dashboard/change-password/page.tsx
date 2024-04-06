@@ -23,12 +23,10 @@ export default function ChangePassword() {
   });
 
   const onSubmit = async (data: any) => {
-    console.log(data);
     setOpenOtp(true);
   };
 
   const onSubmitOtp = async (data: any) => {
-    console.log(data);
     setOpenOtp(false);
     setOpenRc(true);
     reset();
@@ -50,10 +48,12 @@ export default function ChangePassword() {
           Cambiar contraseña
         </Typography>
 
-        <Typography variant="body2">Elige 6 números que recuerdes.</Typography>
+        <Typography variant="body2" fontWeight={700}>
+          Elige 6 números que recuerdes.
+        </Typography>
 
         <Typography variant="body2" mb={3}>
-          Evita utilizar tu fecha de cumpleaños para que sea más segura
+          Evita fechas de cumpleaños, números consecutivos ó iguales.
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
@@ -68,7 +68,7 @@ export default function ChangePassword() {
 
       <ModalOtp open={openOtp} handleClose={() => setOpenOtp(false)} onSubmit={onSubmitOtp} />
 
-      <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>
+      <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)} data-testid="modal-succes">
         <Typography variant="subtitle2">🥳 Actualización exitosa</Typography>
       </ModalResponsive>
     </>

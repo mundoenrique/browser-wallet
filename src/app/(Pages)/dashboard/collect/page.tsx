@@ -50,7 +50,6 @@ export default function Collect() {
   };
 
   const onSubmit = async (data: any, e: any) => {
-    console.log('🚀 ~ onSubmit ~ data:', data);
     e.preventDefault();
 
     if (e.nativeEvent.submitter.id === 'wallets') {
