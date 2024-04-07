@@ -8,12 +8,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Link as LinkMui, Typography, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import { useApi } from '@/hooks/useApi';
 import LogoGreen from '%/images/LogoGreen';
 import { InputPass, ModalResponsive } from '@/components';
 
 export default function Signin() {
-  const api = useApi();
   const theme = useTheme();
   const { push } = useRouter();
   const [open, setOpen] = useState<boolean>(false);
@@ -26,20 +24,7 @@ export default function Signin() {
   });
 
   const onSubmit = async (data: any) => {
-    try {
-      const payload = { email: 'jllerena@novopayment.com', password: data.password || 357689 };
-      const response = await api.post('/login', payload);
-      if (response.status === 200) return push('/dashboard');
-    } catch (error) {
-      if (error instanceof Error && 'response' in error) {
-        const axiosError = error as any;
-        if (axiosError.response && axiosError.response.status === 401) return setErrorMessage('Contraseña incorrecta');
-        return setErrorMessage('Ocurrió un error inesperado');
-      } else {
-        setErrorMessage('Ocurrió un error inesperado');
-      }
-      setOpen(true);
-    }
+    console.log(data);
   };
 
   return (
