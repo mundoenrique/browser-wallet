@@ -1,16 +1,15 @@
 'use client';
 
+import { LoginLayout } from '@/components';
+import { useApi } from '@/hooks/useApi';
 import { Typography, Button } from '@mui/material';
 import { Box } from '@mui/system';
-// Internal App
-import { LoginLayout } from '@/components';
-import { WebApi } from '@/hooks/useWebApi';
 
 export default function TestPage() {
-  const apiGee = WebApi();
+  const apiGee = useApi();
   const handValidate = async () => {
     try {
-      const response = await apiGee.get('/validate?consultantCode=000001252&countryCode=PE');
+      const response = await apiGee.get('/onboarding/validate?consultantCode=000001252&countryCode=PE');
       console.log('response-page', response.data);
     } catch (error) {
       throw new Error('Error in apiGee request handling: ' + (error as Error).message);
@@ -47,7 +46,7 @@ export default function TestPage() {
       const response = await apiGee.post('/onboarding/termsandconditions', data);
       console.log('response-page', response.data);
     } catch (error) {
-      throw new Error('Error in apiGee request handling: ' + (error as Error).message);
+      console.error('Error generating card info:', error);
     }
   };
 
@@ -69,7 +68,7 @@ export default function TestPage() {
       const response = await apiGee.put('/onboarding/consultantdata', data);
       console.log('consultantdata', response.data);
     } catch (error) {
-      throw new Error('Error in apiGee request handling: ' + (error as Error).message);
+      console.error('Error generating card info:', error);
     }
   };
 

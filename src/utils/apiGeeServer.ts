@@ -1,7 +1,7 @@
 import axios, { AxiosRequestHeaders } from 'axios';
-import { NextRequest, NextResponse } from 'next/server';
 import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './apiHelpers';
 import { APIGEE_HEADERS_NAME } from './constants';
+import { NextRequest, NextResponse } from 'next/server';
 import { handleApiRequest } from './apiHandle';
 
 const baseURL = getEnvVariable('BACK_URL');
@@ -23,6 +23,9 @@ apiGee.interceptors.request.use(
     const body = request.data;
     const headers = filterHeaders(request.headers);
 
+    console.log('--------------- apiGeeServer Request ---------------');
+    console.log({ url, body, headers });
+
     return request;
   },
   (error) => {
@@ -33,7 +36,8 @@ apiGee.interceptors.request.use(
 apiGee.interceptors.response.use(
   (response) => {
     const body = response.data;
-
+    console.log('--------------- apiGeeServer Response ---------------');
+    console.log({ body });
     return response;
   },
   (error) => {
@@ -101,14 +105,14 @@ export async function getOauthBearer() {
 }
 
 export async function HandleCustomerRequest(request: NextRequest) {
+  const { method, headers } = request;
   let jwsString: string = '';
   let jweString: string = '';
-
-  const { method } = request;
-  const url = request.headers.get('x-url') as string;
-  request.headers.delete('x-url');
+  const url = headers.get('x-url') as string;
+  headers.delete('x-url');
 
   const { data, jweAppPublicKey } = await handleApiRequest(request);
+
   if (method.toLowerCase() !== 'get') {
     const { jwe, jws } = await handleApiGeeRequest(data);
     jweString = jwe;
@@ -116,7 +120,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
   }
 
   const oauthToken = await getOauthBearer();
-  await configureDefaultHeaders(request.headers, oauthToken, jwsString);
+  await configureDefaultHeaders(headers, oauthToken, jwsString);
 
   let responseBack;
   switch (method.toLowerCase()) {
@@ -124,16 +128,16 @@ export async function HandleCustomerRequest(request: NextRequest) {
       responseBack = await apiGee.get(url);
       break;
     case 'post':
-      responseBack = await apiGee.post(url, jweString);
+      responseBack = await apiGee.post(url, { data: jweString });
       break;
     case 'put':
-      responseBack = await apiGee.put(url, jweString);
+      responseBack = await apiGee.put(url, { data: jweString });
       break;
     case 'patch':
-      responseBack = await apiGee.patch(url, jweString);
+      responseBack = await apiGee.patch(url, { data: jweString });
       break;
     case 'delete':
-      responseBack = await apiGee.delete(url);
+      responseBack = await apiGee.delete(url, { data: jweString });
       break;
     default:
       responseBack = { data: Error(`Invalid method: ${method}`) };
