@@ -1,7 +1,7 @@
 import axios, { AxiosRequestHeaders } from 'axios';
 import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './apiHelpers';
 import { APIGEE_HEADERS_NAME } from './constants';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { handleApiRequest } from './apiHandle';
 
 const baseURL = getEnvVariable('BACK_URL');
@@ -145,5 +145,5 @@ export async function HandleCustomerRequest(request: NextRequest) {
 
   const encryptedResponse = await handleApiGeeResponse(responseBack.data, jweAppPublicKey);
 
-  return NextResponse.json(encryptedResponse);
+  return encryptedResponse;
 }
