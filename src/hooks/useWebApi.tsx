@@ -12,7 +12,7 @@ export function WebApi() {
       async (request) => {
         let jwtToken = jwt;
 
-        if (!jwtToken) {
+        if (!jwt) {
           const response = await api.post('/gettoken', { jwePublicKey, jwsPublicKey });
           const token = response.data.data as string;
           setJwt(token);

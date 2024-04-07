@@ -24,9 +24,10 @@ export default function Belcorp() {
 
   const onSubmit = async (dataUser: any) => {
     const { consultantCode, countryCode } = dataUser;
-    const response = await fetch(`/api/v1/setcode/?consultantCode=${consultantCode}&countryCode=${countryCode}`);
-    const { data } = await response.json();
-    replace(data);
+    // const response = await fetch(`/api/v1/setcode/?consultantCode=${consultantCode}&countryCode=${countryCode}`);
+    // const { data } = await response.json();
+    // replace(data);
+    replace(`/identify/?consultantCode=${consultantCode}&countryCode=${countryCode}`);
   };
 
   return (

@@ -3,7 +3,7 @@ import { createRedisInstance } from '@/utils/redis';
 import { NotFoundError } from '@/components';
 import DataUser from './partial/DataUser';
 
-export default async function page({ params }: any) {
+export default async function UserPage({ params }: any) {
   const redis = createRedisInstance();
   const { user } = params;
   const userData = await redis.get(`${user}`);
