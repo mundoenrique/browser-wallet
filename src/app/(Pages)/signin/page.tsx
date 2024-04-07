@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Link as LinkMui, Typography, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
@@ -13,7 +12,7 @@ import { InputPass, ModalResponsive } from '@/components';
 
 export default function Signin() {
   const theme = useTheme();
-  const { push } = useRouter();
+
   const [open, setOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const schema = getSchema(['password']);
