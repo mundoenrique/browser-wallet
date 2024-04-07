@@ -1,9 +1,8 @@
 import axios, { AxiosRequestHeaders } from 'axios';
-import { NextRequest } from 'next/server';
-import { getEnvVariable, handleApiGeeRequest } from './apiHelpers';
+import { NextRequest, NextResponse } from 'next/server';
+import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './apiHelpers';
 import { APIGEE_HEADERS_NAME } from './constants';
 import { handleApiRequest } from './apiHandle';
-import { useJwtStore } from '@/store';
 
 const baseURL = getEnvVariable('BACK_URL');
 
@@ -24,9 +23,6 @@ apiGee.interceptors.request.use(
     const body = request.data;
     const headers = filterHeaders(request.headers);
 
-    console.log('--------------- apiGeeServer Request ---------------');
-    console.log({ url, body, headers });
-
     return request;
   },
   (error) => {
@@ -37,8 +33,7 @@ apiGee.interceptors.request.use(
 apiGee.interceptors.response.use(
   (response) => {
     const body = response.data;
-    console.log('--------------- apiGeeServer Response ---------------');
-    console.log(JSON.stringify({ body }, null, 2));
+
     return response;
   },
   (error) => {
@@ -60,14 +55,14 @@ export function filterHeaders(headers: Headers | AxiosRequestHeaders) {
   return filteredHeaders;
 }
 
-export async function configureDefaultHeaders(headers: Headers) {
+export async function configureDefaultHeaders(headers: Headers, oauth: string, jws: string) {
   const tenantId = getEnvVariable('TENANT_ID');
-  const oauthToken = await getOauthBearer();
 
   apiGee.defaults.headers.common = {
-    Authorization: `Bearer ${oauthToken}`,
-    ...filterHeaders(headers),
+    Authorization: `Bearer ${oauth}`,
     'X-Tenant-Id': tenantId,
+    'X-Token': `JWS ${jws}`,
+    'X-Request-Id': headers.get('X-Request-Id'),
   };
 }
 
@@ -80,6 +75,11 @@ export async function getOauthBearer() {
   const grant_type = 'client_credentials';
   const client_id = process.env.CREDENTIALS_KEY;
   const client_secret = process.env.CREDENTIALS_SECRET;
+
+  delete apiGee.defaults.headers.common['Authorization'];
+  delete apiGee.defaults.headers.common['X-Tenant-Id'];
+  delete apiGee.defaults.headers.common['X-Token'];
+  delete apiGee.defaults.headers.common['X-Request-Id'];
 
   const response = await apiGee.post(
     `/oauth2/v1/token`,
@@ -100,62 +100,46 @@ export async function getOauthBearer() {
   return bearer;
 }
 
-export async function connect(method: string, url: string, headers: Headers, data: any = undefined) {
-  await configureDefaultHeaders(headers);
-
-  let response;
-  switch (method.toLowerCase()) {
-    case 'get':
-      response = await apiGee.get(url);
-      break;
-    case 'post':
-      response = await apiGee.post(url, data);
-      break;
-    case 'put':
-      response = await apiGee.put(url, data);
-      break;
-    case 'patch':
-      response = await apiGee.patch(url, data);
-      break;
-    case 'delete':
-      response = await apiGee.delete(url);
-      break;
-    default:
-      response = { data: Error(`Invalid method: ${method}`) };
-  }
-
-  return response;
-}
-
 export async function HandleCustomerRequest(request: NextRequest) {
+  let jwsString: string = '';
+  let jweString: string = '';
+
   const { method } = request;
   const url = request.headers.get('x-url') as string;
   request.headers.delete('x-url');
 
   const { data, jweAppPublicKey } = await handleApiRequest(request);
-
-  const { jwe, jws } = await handleApiGeeRequest(data);
-
-  let response;
-  switch (method.toLowerCase()) {
-    case 'get':
-      response = await apiGee.get(url);
-      break;
-    case 'post':
-      response = await apiGee.post(url, jwe);
-      break;
-    case 'put':
-      response = await apiGee.put(url, jwe);
-      break;
-    case 'patch':
-      response = await apiGee.patch(url, jwe);
-      break;
-    case 'delete':
-      response = await apiGee.delete(url);
-      break;
-    default:
-      response = { data: Error(`Invalid method: ${method}`) };
+  if (method.toLowerCase() !== 'get') {
+    const { jwe, jws } = await handleApiGeeRequest(data);
+    jweString = jwe;
+    jwsString = jws;
   }
 
-  return response;
+  const oauthToken = await getOauthBearer();
+  await configureDefaultHeaders(request.headers, oauthToken, jwsString);
+
+  let responseBack;
+  switch (method.toLowerCase()) {
+    case 'get':
+      responseBack = await apiGee.get(url);
+      break;
+    case 'post':
+      responseBack = await apiGee.post(url, jweString);
+      break;
+    case 'put':
+      responseBack = await apiGee.put(url, jweString);
+      break;
+    case 'patch':
+      responseBack = await apiGee.patch(url, jweString);
+      break;
+    case 'delete':
+      responseBack = await apiGee.delete(url);
+      break;
+    default:
+      responseBack = { data: Error(`Invalid method: ${method}`) };
+  }
+
+  const encryptedResponse = await handleApiGeeResponse(responseBack.data, jweAppPublicKey);
+
+  return NextResponse.json(encryptedResponse);
 }

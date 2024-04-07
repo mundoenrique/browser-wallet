@@ -3,19 +3,22 @@ import type { NextRequest } from 'next/server';
 import { getEnvVariable, handleJWE, handleJWT, handleResponse } from './';
 
 export async function handleApiRequest(request: NextRequest) {
+  const { method } = request;
   const requestCloneJWT = request;
   const requestCloneJWE = request;
   const jweApiPublicKey = getEnvVariable('MIDDLE_JWE_PUBLIC_KEY');
   const jweApiPrivateKey = getEnvVariable('MIDDLE_JWE_PRIVATE_KEY');
+  let data = {};
 
   const jwtPayload = await handleJWT(requestCloneJWT, jweApiPublicKey);
 
   const jweAppPublicKey = jwtPayload.jwePublicKey;
   const jwsAppPublicKey = jwtPayload.jwsPublicKey;
 
-  const data = await handleJWE(requestCloneJWE, jwsAppPublicKey, jweApiPrivateKey);
-
-  console.log('Decrypted data: ', JSON.stringify(data, null, 2));
+  if (method.toLowerCase() !== 'get') {
+    data = await handleJWE(requestCloneJWE, jwsAppPublicKey, jweApiPrivateKey);
+    console.log('Decrypted data: ', JSON.stringify(data, null, 2));
+  }
 
   return {
     data,
