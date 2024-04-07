@@ -3,7 +3,7 @@ import axios from 'axios';
 import { JWS_HEADER, JWT_HEADER } from './constants';
 import { decryptJWE, encryptJWE, signJWE, verifyDetachedJWS } from './jwt';
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: '/api/v1',
   headers: {
     'Content-Type': 'application/json',
@@ -13,27 +13,34 @@ const api = axios.create({
 let jwePrivateKey = '';
 let jwsPrivateKey = '';
 
-function setprivateKeys(_jwePrivateKeyy: string, _jwsPrivateKey: string) {
+export function setprivateKeys(_jwePrivateKeyy: string, _jwsPrivateKey: string) {
   jwePrivateKey = _jwePrivateKeyy;
   jwsPrivateKey = _jwsPrivateKey;
 }
 
-function setJwtToken(jwt: string) {
-  api.defaults.headers.common[JWT_HEADER] = jwt;
-}
-
 api.interceptors.request.use(
   async (request) => {
-    const jweApiPublicKey = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY as string;
+    const jweApiPublicKey: string | undefined = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY;
+    const url = request.url;
     const data = request.data;
+
+    if (!jweApiPublicKey) {
+      return Promise.reject('API publicKey is not defined');
+    }
+
+    if (!jwsPrivateKey) {
+      return Promise.reject('jwsPrivateKey is not defined');
+    }
 
     if (data) {
       const jwe = await encryptJWE(data, jweApiPublicKey);
       const encryptedData = { data: jwe };
       request.data = encryptedData;
 
-      const jws = await signJWE(jwsPrivateKey, jwe);
-      request.headers[JWS_HEADER] = `JWS ${jws}`;
+      if (url !== '/gettoken') {
+        const jws = await signJWE(jwsPrivateKey, jwe);
+        request.headers[JWS_HEADER] = `JWS ${jws}`;
+      }
     }
 
     return request;
@@ -50,10 +57,6 @@ api.interceptors.response.use(
     const url = response.config.url;
     const data = response.data;
 
-    /**
-     * Response API
-     */
-
     if (!jwePrivateKey) {
       return response;
     }
@@ -63,9 +66,6 @@ api.interceptors.response.use(
       if (jwsApiPublicKey) {
         const jws = response.headers[JWS_HEADER];
         if (jws) {
-          /**
-           * Verify JWS...
-           */
           await verifyDetachedJWS(jws, jwsApiPublicKey, payload);
         } else {
           return Promise.reject('JWS header not found in the response');
@@ -84,5 +84,3 @@ api.interceptors.response.use(
     });
   }
 );
-
-export { api, setprivateKeys, setJwtToken };

@@ -29,6 +29,7 @@ export function handleError(
 ): NextResponse {
   if (error) {
     const errorMessage = error.message ? error.message : error;
+
     if (!status) {
       status = error.status ? error.status : 500;
     }

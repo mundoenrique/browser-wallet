@@ -27,8 +27,8 @@ export type KeyStoreProps = {
  * @typeParam setToken: (_token: string) => void
  */
 export type JwtStoreProps = {
-  jwt: string | null;
-  setJwt: (_jwt: string) => void;
+  token: string | null;
+  setToken: (_token: string) => void;
 };
 
 /**
