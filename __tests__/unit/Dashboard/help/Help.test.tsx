@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
-import Help from '@/app/(Pages)/dashboard/(help)/page';
+import Help from '@/app/(Pages)/dashboard/help/page';
 import { createMockRouter } from '@/utils/mocks';
 
 const routerPushMock = jest.fn();

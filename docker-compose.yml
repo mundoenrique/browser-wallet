@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  web:
+    image: yiro:0.0.1
+    container_name: yiro-app
+    build:
+      context: .
+      args:
+        - APP_ENV=${APP_ENV}
+    restart: always
+    ports:
+      - ${APP_EXP_PORT}:3000
+    networks:
+      - yiro_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: yiro-redis
+    restart: always
+    networks:
+      - yiro_network
+    ports:
+      - ${REDIS_EXP_PORT}:6379
+    volumes:
+      - ${REDIS_DIR_DATA}:/data
+    command: redis-server --loglevel warning --requirepass ${REDIS_PASSWORD}
+
+networks:
+  yiro_network:
+    name: yiro_network
