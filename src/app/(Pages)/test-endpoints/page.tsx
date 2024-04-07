@@ -1,14 +1,20 @@
 'use client';
 
-import { LoginLayout } from '@/components';
-import { useApi } from '@/hooks/useApi';
 import { Typography, Button } from '@mui/material';
 import { Box } from '@mui/system';
+// Internal App
+import { LoginLayout } from '@/components';
+import { WebApi } from '@/hooks/useWebApi';
 
 export default function TestPage() {
-  const apiGee = useApi();
-  const handValidate = () => {
-    console.log('here');
+  const apiGee = WebApi();
+  const handValidate = async () => {
+    try {
+      const response = await apiGee.get('/validate?consultantCode=000001252&countryCode=PE');
+      console.log('response-page', response.data);
+    } catch (error) {
+      console.error('Error generating card info:', error);
+    }
   };
 
   const handTemrs = async () => {

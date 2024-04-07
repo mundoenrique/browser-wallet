@@ -4,11 +4,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
 //Internal app
-import { useJwtStore, useMenuStore } from '@/store';
+import { useMenuStore } from '@/store';
 import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
-// import { apiGee } from '@/utils/apiGeeConnect';
-import { useApi } from '@/hooks/useApiGee';
 
 const movementData = [
   {
@@ -44,54 +42,12 @@ const movementData = [
 ];
 
 export default function Dashboard() {
-  const { token } = useJwtStore();
-  const apiGee = useApi();
-
   const { push } = useRouter();
   const { setCurrentItem } = useMenuStore();
 
   useEffect(() => {
     setCurrentItem('home');
   }, [setCurrentItem]);
-
-  useEffect(() => {
-    console.log('token', token);
-
-    if (token) {
-      (async () => {
-        const data = {
-          currentPhaseCode: 'ONB_PHASES_TERMS',
-          request: {
-            consultant: {
-              address: 'CUZCO 144',
-              consultantCode: '000001252',
-              countryCode: 'PE',
-              documentNumber: '0002610351',
-              documentType: 'DNI',
-              email: 'otra@gmail.com',
-              firstName: 'AURA ESTELA',
-              lastName: 'PALACIOS ZAPATA',
-              phoneNumber: '977149371',
-            },
-            terms: [
-              {
-                code: 'TERM1',
-              },
-              {
-                code: 'TERM2',
-              },
-            ],
-          },
-        };
-        try {
-          const response = await apiGee.post('/onboarding/termsandconditions', data);
-          console.log('response-page', response.data);
-        } catch (error) {
-          console.error('Error generating card info:', error);
-        }
-      })();
-    }
-  }, [apiGee, token]);
 
   return (
     <Box

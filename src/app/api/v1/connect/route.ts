@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
 
   if (url) {
     try {
-      const response = await connect('post', url, request.headers, { data: jwe });
+      const response = await connect('get', url, request.headers);
       const encryptedResponse = await handleApiGeeResponse(response.data, jweAppPublicKey);
       return encryptedResponse;
     } catch (error) {

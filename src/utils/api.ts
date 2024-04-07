@@ -18,40 +18,22 @@ function setprivateKeys(_jwePrivateKeyy: string, _jwsPrivateKey: string) {
   jwsPrivateKey = _jwsPrivateKey;
 }
 
-function setJwtToken(token: string) {
-  api.defaults.headers.common[JWT_HEADER] = token;
+function setJwtToken(jwt: string) {
+  api.defaults.headers.common[JWT_HEADER] = jwt;
 }
 
 api.interceptors.request.use(
   async (request) => {
-    const jweApiPublicKey: string | undefined = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY;
-    const url = request.url;
+    const jweApiPublicKey = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY as string;
     const data = request.data;
 
-    if (!jweApiPublicKey) {
-      return Promise.reject('API publicKey is not defined');
-    }
-
-    if (!jwsPrivateKey) {
-      return Promise.reject('jwsPrivateKey is not defined');
-    }
-
-    /**
-     * Request API
-     */
-
     if (data) {
-      /**
-       * Encrypt Data
-       */
       const jwe = await encryptJWE(data, jweApiPublicKey);
       const encryptedData = { data: jwe };
       request.data = encryptedData;
 
-      if (url !== '/gettoken') {
-        const jws = await signJWE(jwsPrivateKey, jwe);
-        request.headers[JWS_HEADER] = `JWS ${jws}`;
-      }
+      const jws = await signJWE(jwsPrivateKey, jwe);
+      request.headers[JWS_HEADER] = `JWS ${jws}`;
     }
 
     return request;

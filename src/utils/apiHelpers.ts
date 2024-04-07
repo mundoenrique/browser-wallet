@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 //Internal app
 import { JWT_HEADER, JWS_HEADER } from './constants';
-import { ApiGeeObjectRequest, IApiGeeResponse, IEncryptedBody, IJWTPayload } from '@/interfaces';
+import { IApiGeeResponse, IEncryptedBody, IJWTPayload } from '@/interfaces';
 import { verifyJWT, encryptJWE, decryptJWE, signJWE, verifyDetachedJWS } from './jwt';
 import { handleApiResponse } from '.';
 
@@ -32,9 +32,11 @@ export function handleError(
     if (!status) {
       status = error.status ? error.status : 500;
     }
+
     return NextResponse.json({ message, error: errorMessage }, { status });
   } else {
     status = status ? status : 500;
+
     return NextResponse.json({ message }, { status });
   }
 }
@@ -100,6 +102,7 @@ export async function handleJWE(
     const jws: string | null = request.headers.get(JWS_HEADER);
     await verifyDetachedJWS(jws, jwsAppPublicKey, paylaod);
     const data = await decryptJWE(paylaod, jweApiPrivateKey);
+
     return data;
   } catch (error) {
     throw new Error('Error in the handling of JWE: ' + (error as Error).message);
@@ -120,7 +123,6 @@ export async function handleResponse(
   jweAppPublicKey: string,
   jwsApiPrivateKey: string
 ): Promise<Response> {
-  console.log('---------handleResponse-------------------', responseObj);
   try {
     const jwe: string = await encryptJWE(responseObj, jweAppPublicKey);
     const encryptedResponse = { data: jwe };
@@ -142,15 +144,14 @@ export async function handleApiGeeRequest(data: object): Promise<any> {
   try {
     const jwe: string = await encryptJWE(data, jwe_public_key);
     const jws: string = await signJWE(jws_private_key, jwe);
-    const object = { jwe, jws };
-    return object;
+
+    return { jwe, jws };
   } catch (error) {
     throw new Error('Error in apiGee request handling: ' + (error as Error).message);
   }
 }
 
 export async function handleApiGeeResponse(responseObj: IApiGeeResponse, jweAppPublicKey: string): Promise<any> {
-  console.log('---------handleApiGeeResponse-------------------');
   const jweApiGeePrivateKey = getEnvVariable('BACK_JWE_PRIVATE_KEY');
 
   if (responseObj.data) {

@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 //Internal app
 import { ChildrenProps } from '@/interfaces';
-import { HydrationProvider, JwtProvider, KeyProvider, MuiProvider } from '@/components';
+import { HydrationProvider, KeyProvider, MuiProvider } from '@/components';
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
@@ -29,9 +29,7 @@ export default function RootLayout({ children }: ChildrenProps) {
         <AppRouterCacheProvider>
           <MuiProvider>
             <HydrationProvider>
-              <KeyProvider>
-                <JwtProvider>{children}</JwtProvider>
-              </KeyProvider>
+              <KeyProvider>{children}</KeyProvider>
             </HydrationProvider>
           </MuiProvider>
         </AppRouterCacheProvider>

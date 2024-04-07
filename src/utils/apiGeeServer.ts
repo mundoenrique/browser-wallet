@@ -1,6 +1,9 @@
-import axios, { AxiosRequestHeaders, InternalAxiosRequestConfig } from 'axios';
-import { getEnvVariable } from './apiHelpers';
+import axios, { AxiosRequestHeaders } from 'axios';
+import { NextRequest } from 'next/server';
+import { getEnvVariable, handleApiGeeRequest } from './apiHelpers';
 import { APIGEE_HEADERS_NAME } from './constants';
+import { handleApiRequest } from './apiHandle';
+import { useJwtStore } from '@/store';
 
 const baseURL = getEnvVariable('BACK_URL');
 
@@ -35,7 +38,7 @@ apiGee.interceptors.response.use(
   (response) => {
     const body = response.data;
     console.log('--------------- apiGeeServer Response ---------------');
-    console.log({ body });
+    console.log(JSON.stringify({ body }, null, 2));
     return response;
   },
   (error) => {
@@ -58,9 +61,9 @@ export function filterHeaders(headers: Headers | AxiosRequestHeaders) {
 }
 
 export async function configureDefaultHeaders(headers: Headers) {
-  console.log('configureDefaultHeaders **************************', headers);
   const tenantId = getEnvVariable('TENANT_ID');
   const oauthToken = await getOauthBearer();
+
   apiGee.defaults.headers.common = {
     Authorization: `Bearer ${oauthToken}`,
     ...filterHeaders(headers),
@@ -118,7 +121,40 @@ export async function connect(method: string, url: string, headers: Headers, dat
       response = await apiGee.delete(url);
       break;
     default:
-      throw new Error(`Invalid method: ${method}`);
+      response = { data: Error(`Invalid method: ${method}`) };
+  }
+
+  return response;
+}
+
+export async function HandleCustomerRequest(request: NextRequest) {
+  const { method } = request;
+  const url = request.headers.get('x-url') as string;
+  request.headers.delete('x-url');
+
+  const { data, jweAppPublicKey } = await handleApiRequest(request);
+
+  const { jwe, jws } = await handleApiGeeRequest(data);
+
+  let response;
+  switch (method.toLowerCase()) {
+    case 'get':
+      response = await apiGee.get(url);
+      break;
+    case 'post':
+      response = await apiGee.post(url, jwe);
+      break;
+    case 'put':
+      response = await apiGee.put(url, jwe);
+      break;
+    case 'patch':
+      response = await apiGee.patch(url, jwe);
+      break;
+    case 'delete':
+      response = await apiGee.delete(url);
+      break;
+    default:
+      response = { data: Error(`Invalid method: ${method}`) };
   }
 
   return response;
