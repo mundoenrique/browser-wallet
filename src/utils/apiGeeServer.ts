@@ -1,7 +1,6 @@
 import axios, { AxiosRequestHeaders, InternalAxiosRequestConfig } from 'axios';
 import { getEnvVariable } from './apiHelpers';
 import { APIGEE_HEADERS_NAME } from './constants';
-import { createRedisInstance } from './redis';
 
 const baseURL = getEnvVariable('BACK_URL');
 
@@ -24,6 +23,7 @@ apiGee.interceptors.request.use(
 
     console.log('--------------- apiGeeServer Request ---------------');
     console.log({ url, body, headers });
+
     return request;
   },
   (error) => {
@@ -58,9 +58,9 @@ export function filterHeaders(headers: Headers | AxiosRequestHeaders) {
 }
 
 export async function configureDefaultHeaders(headers: Headers) {
+  console.log('configureDefaultHeaders **************************', headers);
   const tenantId = getEnvVariable('TENANT_ID');
   const oauthToken = await getOauthBearer();
-
   apiGee.defaults.headers.common = {
     Authorization: `Bearer ${oauthToken}`,
     ...filterHeaders(headers),
@@ -69,7 +69,7 @@ export async function configureDefaultHeaders(headers: Headers) {
 }
 
 export async function getOauthBearer() {
-  const redis = createRedisInstance();
+  // const redis = createRedisInstance();
   // let bearer = await redis.get('bearer');
   let bearer: string;
 
@@ -90,8 +90,8 @@ export async function getOauthBearer() {
 
   const { data } = response;
   bearer = data.access_token;
-  await redis.set('bearer', bearer);
-  await redis.expire('bearer', 1740);
+  // await redis.set('bearer', bearer);
+  // await redis.expire('bearer', 1740);
   // }
 
   return bearer;

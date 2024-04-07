@@ -1,21 +1,12 @@
-import {
-  JWS_HEADER,
-  getEnvVariable,
-  handleApiGeeRequest,
-  handleApiGeeResponse,
-  handleApiRequest,
-  handleJWT,
-} from '@/utils';
+import { JWS_HEADER, handleApiGeeRequest, handleApiGeeResponse, handleApiRequest } from '@/utils';
 import { connect } from '@/utils/apiGeeServer';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   const url = request.headers.get('x-url');
   request.headers.delete('x-url');
-  console.log('--------------- ApiGee Connect POST to ---------------');
-  console.log('url: ', url);
 
-  const { data, jweAppPublicKey, jwsAppPublicKey } = await handleApiRequest(request);
+  const { data, jweAppPublicKey } = await handleApiRequest(request);
 
   const { jwe, jws } = await handleApiGeeRequest(data);
 
@@ -36,8 +27,6 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   const url = request.headers.get('x-url');
   request.headers.delete('x-url');
-  console.log('--------------- ApiGee Connect GET to ---------------');
-  console.log('url: ', url);
 
   const { data, jweAppPublicKey, jwsAppPublicKey } = await handleApiRequest(request);
 
@@ -54,5 +43,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: 'Ha ocurrido un error' }, { status: 500 });
     }
   }
+
   return NextResponse.json({ message: 'No url provided' }, { status: 400 });
 }

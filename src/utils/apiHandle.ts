@@ -1,16 +1,6 @@
 import type { NextRequest } from 'next/server';
 //Internal app
-import {
-  JWS_HEADER,
-  JWT_HEADER,
-  getEnvVariable,
-  handleJWE,
-  handleJWT,
-  handleResponse,
-  signJWT,
-  verifyDetachedJWS,
-} from './';
-import { IEncryptedBody } from '@/interfaces/api';
+import { getEnvVariable, handleJWE, handleJWT, handleResponse } from './';
 
 export async function handleApiRequest(request: NextRequest) {
   const requestCloneJWT = request;
@@ -40,8 +30,4 @@ export async function handleApiResponse(response: object | null, jweAppPublicKey
   const data = await handleResponse(response, jweAppPublicKey, jwsApiPrivateKey);
 
   return data;
-}
-
-function decryptJWE(paylaod: string, jweApiPrivateKey: string) {
-  throw new Error('Function not implemented.');
 }
