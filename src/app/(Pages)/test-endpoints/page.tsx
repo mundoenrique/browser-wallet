@@ -13,7 +13,7 @@ export default function TestPage() {
       const response = await apiGee.get('/validate?consultantCode=000001252&countryCode=PE');
       console.log('response-page', response.data);
     } catch (error) {
-      console.error('Error generating card info:', error);
+      throw new Error('Error in apiGee request handling: ' + (error as Error).message);
     }
   };
 
@@ -47,7 +47,29 @@ export default function TestPage() {
       const response = await apiGee.post('/onboarding/termsandconditions', data);
       console.log('response-page', response.data);
     } catch (error) {
-      console.error('Error generating card info:', error);
+      throw new Error('Error in apiGee request handling: ' + (error as Error).message);
+    }
+  };
+
+  const handUPdate = async () => {
+    const data = {
+      onboardingUuId: '59c6078b-8298-4448-b23d-ddb2111b5be9',
+      currentPhaseCode: 'ONB_PHASES_CONSULT_DATA',
+      request: {
+        consultant: {
+          occupationCode: 'SELF_EMPLOYED',
+          companyType: 'Privado',
+          companyName: 'cadena 2',
+          companyPosition: 'cadena 3',
+        },
+      },
+    };
+
+    try {
+      const response = await apiGee.put('/onboarding/consultantdata', data);
+      console.log('consultantdata', response.data);
+    } catch (error) {
+      throw new Error('Error in apiGee request handling: ' + (error as Error).message);
     }
   };
 
@@ -66,6 +88,9 @@ export default function TestPage() {
         </Button>
         <Button variant="secondary" type="button" fullWidth onClick={handTemrs}>
           Accept Terms and Conditions
+        </Button>
+        <Button variant="secondary" type="button" fullWidth onClick={handUPdate}>
+          Update Consultant Data
         </Button>
       </Box>
     </LoginLayout>
