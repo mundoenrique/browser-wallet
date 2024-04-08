@@ -16,7 +16,7 @@ export default function CelularValidation() {
   const [optUuid, setOtpUuid] = useState<string>('');
   const { inc, dec, onboardingUuid } = useRegisterStore();
   const { setLoadingScreen } = useUiStore();
-  const { requestError, setRequestError } = useState<boolean>(false);
+  const [requestError, setRequestError] = useState<boolean>(false);
 
   const { handleSubmit, control } = useForm({
     defaultValues: { otp: '' },
