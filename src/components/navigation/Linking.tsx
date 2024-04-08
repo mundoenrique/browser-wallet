@@ -49,6 +49,7 @@ export default function Linking(props: LinkingProps): JSX.Element {
       fontWeight={700}
       fontSize={fontSize}
       onClick={onClick}
+      replace
     >
       {!hidenArrow && adormentStart && <Arrow sx={{ mr: 2, width: iconSize.width, height: iconSize.height }} />}
       {label}

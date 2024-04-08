@@ -1,3 +1,6 @@
+import exp from 'constants';
+import { object, string } from 'yup';
+
 /**
  * Login credentials
  *
@@ -46,3 +49,35 @@ export type ApiParams = {
     userId?: string;
   };
 };
+
+/**
+ * ApiGee Object Request
+ * @typeParam jwe: string
+ * @typeParam jws: string
+ */
+export type ApiGeeObjectRequest = {
+  jwe: string;
+  jws: string;
+};
+
+/**
+ * ApiGee Response
+ * @typeParam code: string
+ * @typeParam datetime: string
+ * @typeParam message: string
+ * @typeParam data: string
+ */
+export type IApiGeeResponse = {
+  code: string;
+  datetime: string;
+  message: string;
+  data: string | any;
+};
+
+/**
+ * Url Base
+ * @typeParam [key: string]: string
+ */
+export interface IUrlBase {
+  [key: string]: string;
+}

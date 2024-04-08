@@ -13,7 +13,7 @@ import animation2 from '%/images/animation2.svg';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function Ending() {
-  const { push } = useRouter();
+  const { replace } = useRouter();
   const { setShowHeader } = useRegisterStore();
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
@@ -43,10 +43,10 @@ export default function Ending() {
           return timeEvent(1500);
         })
         .then(() => {
-          push('/signin');
+          replace('/signin');
         });
     })();
-  }, [setShowHeader, push]);
+  }, [setShowHeader, replace]);
 
   return (
     <PurpleLayout>

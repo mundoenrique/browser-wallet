@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 //Internal app
-import { JwtStoreProps } from '@/interfaces';
+import { JwtStoreProps } from '@/interfaces/store';
 
 /**
  * Store for JWT

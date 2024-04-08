@@ -1,18 +1,18 @@
 //Internal app
-import LogoGreen from '%/images/LogoGreen';
-import { PurpleLayout } from '@/components';
-import ValidateUser from '../partial/ValidateUser';
-export default async function page({ params }: any) {
+import { createRedisInstance } from '@/utils/redis';
+import { NotFoundError } from '@/components';
+import DataUser from './partial/DataUser';
+
+export default async function UserPage({ params }: any) {
+  const redis = createRedisInstance();
   const { user } = params;
+  const userData = await redis.get(`${user}`);
+  redis.del(`${user}`);
+  redis.quit();
 
-  console.log('🚀 ~ page ~ user:', user);
+  if (!userData) {
+    return <NotFoundError code={404} />;
+  }
 
-  return (
-    <>
-      <ValidateUser userId={user} />
-      <PurpleLayout>
-        <LogoGreen />
-      </PurpleLayout>
-    </>
-  );
+  return <DataUser user={userData} />;
 }

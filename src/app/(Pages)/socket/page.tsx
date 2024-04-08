@@ -13,7 +13,7 @@ export default function Card() {
   const { SVG } = useQRCode();
   const [dataUser, setDataUser] = useState<any>(null);
   const [showModal, setShowModal] = useState<boolean>(true);
-  const [url] = useState<string>(`${process.env.NEXT_PUBLIC_PATH_URL}/qr`);
+  const [url] = useState<string>(`/qr`);
 
   useEffect(() => {
     const socketInit = async () => {

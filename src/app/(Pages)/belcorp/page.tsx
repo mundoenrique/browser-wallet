@@ -1,31 +1,33 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Link as LinkMui, Typography, useMediaQuery, useTheme } from '@mui/material';
-
 //Internal app
 import { getSchema } from '@/config';
 import LogoGreen from '%/images/LogoGreen';
-import { InputPass, ModalResponsive } from '@/components';
-import { useMockStore } from '@/store/mockStore';
+import { InputText, ModalResponsive } from '@/components';
 
-export default function Signin() {
+export default function Belcorp() {
   const theme = useTheme();
-
+  const { replace } = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const schema = getSchema(['password']);
-  const { mockData } = useMockStore();
-  const { control, handleSubmit } = useForm({
-    defaultValues: { password: '' },
+  const schema = getSchema(['consultantCode', 'countryCode']);
+
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues: { consultantCode: '', countryCode: '' },
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: any) => {
-    console.log(data);
+  const onSubmit = async (dataUser: any) => {
+    const { consultantCode, countryCode } = dataUser;
+    // const response = await fetch(`/api/v1/setcode/?consultantCode=${consultantCode}&countryCode=${countryCode}`);
+    // const { data } = await response.json();
+    // replace(data);
+    replace(`/identify/?consultantCode=${consultantCode}&countryCode=${countryCode}`);
   };
 
   return (
@@ -48,25 +50,12 @@ export default function Signin() {
           <Box mb={3}>
             <LogoGreen />
           </Box>
-          <Box mb={8}>
-            <Typography variant="body2" color="white">
-              Dinero en tu bolsillo,
-            </Typography>
-            <Typography color="success.main" variant="h6">
-              ¡Sin complicaciones!
-            </Typography>
-          </Box>
-          <Typography variant="h6" color="white">
-            ¡Hola {mockData.user?.firstName || 'Usuario'}!
-          </Typography>
-          <Typography color="white">Para continuar, ingresa la contraseña de tu cuenta digital.</Typography>
+
           <Box sx={{ mt: 3, textAlign: 'start' }}>
-            <InputPass name="password" control={control} label="Contraseña" colorText="white" />
-            <Box sx={{ width: '100%', py: 2, textAlign: 'center', mb: { xs: 6, sm: 0 } }}>
-              <LinkMui component={Link} href="/password-recover" sx={{ color: 'white', textDecorationColor: 'white' }}>
-                Olvide mi contraseña
-              </LinkMui>
-            </Box>
+            <InputText name="consultantCode" control={control} label="Código de la consultora" colorText="white" />
+          </Box>
+          <Box sx={{ mt: 3, textAlign: 'start' }}>
+            <InputText name="countryCode" control={control} label="País" colorText="white" />
           </Box>
         </Box>
         <Button
@@ -75,7 +64,7 @@ export default function Signin() {
           type="submit"
           fullWidth
         >
-          Ingresar
+          Enviar
         </Button>
       </Box>
 

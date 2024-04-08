@@ -1,10 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 //Internal app
 import { JWT_HEADER, JWS_HEADER } from './constants';
-import { IEncryptedBody, IJWTPayload } from '@/interfaces';
+import { IApiGeeResponse, IEncryptedBody, IJWTPayload } from '@/interfaces';
 import { verifyJWT, encryptJWE, decryptJWE, signJWE, verifyDetachedJWS } from './jwt';
+import { handleApiResponse } from '.';
 
-type EnvVariableKey = 'API_BASE_URL' | 'JWE_PRIVATE_KEY' | 'JWE_PUBLIC_KEY' | 'JWS_PRIVATE_KEY' | 'JWS_PUBLIC_KEY';
+type EnvVariableKey =
+  | 'BACK_URL'
+  | 'MIDDLE_JWE_PRIVATE_KEY'
+  | 'MIDDLE_JWE_PUBLIC_KEY'
+  | 'MIDDLE_JWS_PRIVATE_KEY'
+  | 'MIDDLE_JWS_PUBLIC_KEY'
+  | 'TENANT_ID'
+  | 'BACK_JWE_PRIVATE_KEY';
 
 /**
  * Function to handle errors in API requests.
@@ -21,12 +29,15 @@ export function handleError(
 ): NextResponse {
   if (error) {
     const errorMessage = error.message ? error.message : error;
+
     if (!status) {
       status = error.status ? error.status : 500;
     }
+
     return NextResponse.json({ message, error: errorMessage }, { status });
   } else {
     status = status ? status : 500;
+
     return NextResponse.json({ message }, { status });
   }
 }
@@ -90,10 +101,9 @@ export async function handleJWE(
     const encryptedBody: IEncryptedBody = await request.json();
     const paylaod: string = encryptedBody.data;
     const jws: string | null = request.headers.get(JWS_HEADER);
-
     await verifyDetachedJWS(jws, jwsAppPublicKey, paylaod);
-
     const data = await decryptJWE(paylaod, jweApiPrivateKey);
+
     return data;
   } catch (error) {
     throw new Error('Error in the handling of JWE: ' + (error as Error).message);
@@ -126,4 +136,31 @@ export async function handleResponse(
   } catch (error) {
     throw new Error('Error in response handling: ' + (error as Error).message);
   }
+}
+
+export async function handleApiGeeRequest(data: object): Promise<any> {
+  const jwe_public_key: string = process.env.BACK_JWE_PUBLIC_KEY || '';
+  const jws_private_key: string = process.env.BACK_JWS_PRIVATE_KEY || '';
+
+  try {
+    const jwe: string = await encryptJWE(data, jwe_public_key);
+    const jws: string = await signJWE(jws_private_key, jwe);
+
+    return { jwe, jws };
+  } catch (error) {
+    throw new Error('Error in apiGee request handling: ' + (error as Error).message);
+  }
+}
+
+export async function handleApiGeeResponse(responseObj: IApiGeeResponse, jweAppPublicKey: string): Promise<any> {
+  const jweApiGeePrivateKey = getEnvVariable('BACK_JWE_PRIVATE_KEY');
+
+  if (responseObj.data) {
+    const decryptData = await decryptJWE(responseObj.data, jweApiGeePrivateKey);
+    responseObj.data = decryptData;
+  }
+
+  const response = await handleApiResponse(responseObj, jweAppPublicKey);
+
+  return response;
 }
