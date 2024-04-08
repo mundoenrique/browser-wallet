@@ -1,8 +1,9 @@
-import axios, { AxiosRequestHeaders } from 'axios';
-import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './apiHelpers';
-import { APIGEE_HEADERS_NAME } from './constants';
 import { NextRequest } from 'next/server';
+import axios, { AxiosRequestHeaders } from 'axios';
+//Internal app
 import { handleApiRequest } from './apiHandle';
+import { APIGEE_HEADERS_NAME } from './constants';
+import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './apiHelpers';
 
 const baseURL = getEnvVariable('BACK_URL');
 

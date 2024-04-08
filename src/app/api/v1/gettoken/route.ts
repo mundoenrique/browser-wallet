@@ -6,35 +6,24 @@ export async function POST(request: NextRequest) {
   try {
     const encryptedBody = await request.json();
     const { data } = encryptedBody;
-
     const jwePrivateKey = getEnvVariable('MIDDLE_JWE_PRIVATE_KEY');
     const jwSPrivateKey = getEnvVariable('MIDDLE_JWS_PRIVATE_KEY');
 
-    /**
-     * Decrypt the JWE payload and obtain public key.
-     */
     const decryptedPayload = await decryptJWE(data, jwePrivateKey);
+
     const { jwePublicKey, jwsPublicKey } = decryptedPayload as { jwePublicKey: string; jwsPublicKey: string };
 
-    /**
-     * Create a JWT
-     */
     const token = await signJWT(jwePrivateKey, { jwePublicKey, jwsPublicKey });
 
-    /**
-     * Encrypt the response with the received public key
-     */
-    const responsePayload = { code: true, message: 'JWT created successfully', data: token };
+    const responsePayload = { code: '200.00.000', message: 'Process Ok', data: token };
 
     let response: Response;
-    try {
-      response = await handleResponse(responsePayload, jwePublicKey, jwSPrivateKey);
-    } catch (error) {
-      return handleError((error as Error).message, error);
-    }
+
+    response = await handleResponse(responsePayload, jwePublicKey, jwSPrivateKey);
 
     return response;
   } catch (error) {
-    return handleError('An error occurred while processing the request:', error);
+    // return handleError('An error occurred while processing the request:', error);
+    return Response.json({ code: '500.00.000', message: 'Fail' });
   }
 }

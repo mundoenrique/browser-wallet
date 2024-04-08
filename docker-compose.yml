@@ -6,6 +6,7 @@ services:
     container_name: yiro-app
     build:
       context: .
+      dockerfile: Dockerfile-belcorp
       args:
         - APP_ENV=${APP_ENV}
     restart: always

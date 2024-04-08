@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 //Internal app
+import { handleApiResponse } from '.';
 import { JWT_HEADER, JWS_HEADER } from './constants';
 import { IApiGeeResponse, IEncryptedBody, IJWTPayload } from '@/interfaces';
 import { verifyJWT, encryptJWE, decryptJWE, signJWE, verifyDetachedJWS } from './jwt';
-import { handleApiResponse } from '.';
 
 type EnvVariableKey =
   | 'BACK_URL'

@@ -1,6 +1,7 @@
-import { NextResponse, NextRequest } from 'next/server';
-import { createRedisInstance } from '@/utils/redis';
 import uuid4 from 'uuid4';
+import { NextResponse, NextRequest } from 'next/server';
+//Internal app
+import { createRedisInstance } from '@/utils/redis';
 
 export async function GET(request: NextRequest) {
   const redis = createRedisInstance();
