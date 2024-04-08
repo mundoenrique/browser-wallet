@@ -22,6 +22,7 @@ export { default as NavbarLower } from './navigation/navbar/NavbarLower';
 export { default as NavExternal } from './navigation/navbar/NavExternal';
 //modal
 // export { default as ModalOtp } from './modal/ModalOtp';
+export { default as ModalError } from './modal/ModalError';
 export { default as ModalResponsive } from './modal/ModalResponsive';
 //layout
 export { default as Pelca } from './Pelca';
@@ -39,13 +40,11 @@ export { default as CardInfoOperation } from './cards/cardSuccess/CardInfoOperat
 // export { default as CardInformation } from './cards/cardInformation/CardInformation';
 //tables
 export { default as LastMovements } from './tables/LastMovements';
-export { default as History } from './tables/HistoryMovements';
 export { default as SkeletonTable } from './tables/SkeletonTable';
 //accordions
 export { default as Accordions } from './Accordions';
 //providers
 export { default as KeyProvider } from './providers/KeyProvider';
-export { default as JwtProvider } from './providers/JWTProvider';
 export { default as MuiProvider } from './providers/MuiProvider';
 export { default as HydrationProvider } from './providers/HydrationProvider';
 //user welcome

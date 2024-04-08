@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
 //Internal app
@@ -58,26 +58,44 @@ export default function Dashboard() {
         flexDirection: 'column',
       }}
     >
-      <Box sx={{ width: 320, mx: { xs: 'auto', md: 3 } }}>
+      <Box sx={{ width: { xs: '100%', sm: 320 }, mx: { xs: 'auto', md: 3 } }}>
         <UserWelcome />
+
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
             minHeight: 'calc(100vh - 92px)',
+            alignItems: 'center',
             justifyContent: { xs: 'flex-start', md: 'center' },
           }}
         >
           <CardInformation />
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3, mb: 2 }}>
-            <CardDebt onClick={() => push('/dashboard/debt')} />
-            <CardDebt OweMe onClick={() => push('/dashboard/clients')} />
+
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              width: '100%',
+              bgcolor: { xs: 'white', sm: 'initial' },
+              borderRadius: '14px',
+              mt: 2,
+              pb: { xs: 3, sm: 'auto' },
+            }}
+          >
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, mt: 2, width: 320 }}>
+              <CardDebt onClick={() => push('/dashboard/debt')} />
+              <CardDebt OweMe onClick={() => push('/dashboard/clients')} />
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, width: 320 }}>
+              <Typography variant="subtitle1">Últimos movimientos</Typography>
+              <Linking href="/dashboard/movements" color="primary.main" label="Ver todo" mb={0} hidenArrow underline />
+            </Box>
+            <Box sx={{ width: 320 }}>
+              <LastMovements data={movementData} />
+            </Box>
           </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-            <Typography variant="subtitle1">Últimos movimientos</Typography>
-            <Linking href="/dashboard/movements" color="primary.main" label="Ver todo" mb={0} hidenArrow underline />
-          </Box>
-          <LastMovements data={movementData} />
         </Box>
       </Box>
     </Box>

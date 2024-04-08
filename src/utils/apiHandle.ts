@@ -1,15 +1,24 @@
 import type { NextRequest } from 'next/server';
 //Internal app
-import { JWT_HEADER, getEnvVariable, handleJWE, handleJWT, handleResponse, signJWT } from './';
+import { getEnvVariable, handleJWE, handleJWT, handleResponse } from './';
 
 export async function handleApiRequest(request: NextRequest) {
-  const jweApiPublicKey = getEnvVariable('JWE_PUBLIC_KEY');
-  const jweApiPrivateKey = getEnvVariable('JWE_PRIVATE_KEY');
+  const { method } = request;
+  const requestCloneJWT = request;
+  const requestCloneJWE = request;
+  const jweApiPublicKey = getEnvVariable('MIDDLE_JWE_PUBLIC_KEY');
+  const jweApiPrivateKey = getEnvVariable('MIDDLE_JWE_PRIVATE_KEY');
+  let data = {};
 
-  const jwtPayload = await handleJWT(request, jweApiPublicKey);
+  const jwtPayload = await handleJWT(requestCloneJWT, jweApiPublicKey);
+
   const jweAppPublicKey = jwtPayload.jwePublicKey;
   const jwsAppPublicKey = jwtPayload.jwsPublicKey;
-  const data = await handleJWE(request, jwsAppPublicKey, jweApiPrivateKey);
+
+  if (method.toLowerCase() !== 'get') {
+    data = await handleJWE(requestCloneJWE, jwsAppPublicKey, jweApiPrivateKey);
+    console.log('Decrypted data: ', JSON.stringify(data, null, 2));
+  }
 
   return {
     data,
@@ -18,18 +27,10 @@ export async function handleApiRequest(request: NextRequest) {
   };
 }
 
-export async function handleApiResponse(response: object | null, jweAppPublicKey: string, jwsAppPublicKey: string) {
-  const jweApiPrivateKey = getEnvVariable('JWE_PRIVATE_KEY');
-  const jwsApiPrivateKey = getEnvVariable('JWS_PRIVATE_KEY');
+export async function handleApiResponse(response: object | null, jweAppPublicKey: string) {
+  const jwsApiPrivateKey = getEnvVariable('MIDDLE_JWS_PRIVATE_KEY');
 
   const data = await handleResponse(response, jweAppPublicKey, jwsApiPrivateKey);
-
-  const jwt: string = await signJWT(jweApiPrivateKey, {
-    jwePublicKey: jweAppPublicKey,
-    jwsPublicKey: jwsAppPublicKey,
-  });
-
-  data.headers.set(JWT_HEADER, jwt);
 
   return data;
 }

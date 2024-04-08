@@ -17,6 +17,8 @@ import { LinkingProps } from '@/interfaces';
  * @param hidenArrow - Hide the arrow icon.
  * @param fontSize - Font size.
  * @param iconSize - Object with height and width for the icon.
+ * @param adormentStart - Show the icon at the beginning of the element.
+ * @param adormentEnd - Show the icon at the end of the element.
  */
 export default function Linking(props: LinkingProps): JSX.Element {
   const {
@@ -29,6 +31,8 @@ export default function Linking(props: LinkingProps): JSX.Element {
     fontSize = 12,
     iconSize = { height: 14, width: 14 },
     onClick,
+    adormentStart,
+    adormentEnd,
   } = props;
 
   return (
@@ -45,9 +49,11 @@ export default function Linking(props: LinkingProps): JSX.Element {
       fontWeight={700}
       fontSize={fontSize}
       onClick={onClick}
+      replace
     >
-      {!hidenArrow && <Arrow sx={{ mr: 2, width: iconSize.width, height: iconSize.height }} />}
+      {!hidenArrow && adormentStart && <Arrow sx={{ mr: 2, width: iconSize.width, height: iconSize.height }} />}
       {label}
+      {!hidenArrow && adormentEnd && <Arrow sx={{ ml: 2, width: iconSize.width, height: iconSize.height }} />}
     </LinkMui>
   );
 }

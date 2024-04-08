@@ -110,19 +110,20 @@ export default function PEP() {
         onSubmit={handleSubmit(onSubmit)}
         sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}
       >
-        <Box sx={{ mb: { sm: 3 }, display: 'flex', flexDirection: 'column', gap: 3, flex: 1 }}>
-          <Typography variant="subtitle1" align="center">
+        <Box sx={{ mb: { sm: 3 }, display: 'flex', flexDirection: 'column', flex: 1 }}>
+          <Typography variant="subtitle1" align="center" mb={3}>
             Queremos saber más de ti
           </Typography>
           <Typography
             variant="body2"
-            sx={{ textDecoration: 'underline', cursor: 'pointer', textAlign: { md: 'center' } }}
+            sx={{ textDecoration: 'underline', cursor: 'pointer', textAlign: { sm: 'center' } }}
             onClick={() => {
               setShowPepInfo(true);
             }}
           >
             ¿Eres una Persona Políticamente Expuesta (PEP)?
-            <br />
+          </Typography>
+          <Typography variant="body2" sx={{ textAlign: { sm: 'center' }, mb: 3 }}>
             ¿Ocupas una posición con personas a tu cargo en entidades gubernamentales?
           </Typography>
           <Box>
@@ -136,7 +137,7 @@ export default function PEP() {
             <InputSelect name="pepForm.district" label="Distrito" options={selectOptions} control={control} />
             <InputSelect name="pepForm.province" label="Provincia" options={selectOptions} control={control} />
             <InputSelect name="pepForm.department" label="Departamento" options={selectOptions} control={control} />
-            <InputDatePicker name="pepForm.endDate" label="Fecha" control={control} />
+            <InputDatePicker name="pepForm.endDate" label="Fecha de salida" control={control} />
 
             <Typography variant="body2" align="left" sx={{ mb: 3 }}>
               ¿Posees participación, aporte o capital social igual o mayor al 25% en alguna (s) empresa (s)?

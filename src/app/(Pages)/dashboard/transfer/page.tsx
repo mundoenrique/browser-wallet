@@ -68,7 +68,7 @@ export default function Transfer() {
         </Box>
       </ContainerLayout>
 
-      <ModalResponsive open={openModal} handleClose={() => setOpenModal(false)}>
+      <ModalResponsive data-testid="modalResponsive" open={openModal} handleClose={() => setOpenModal(false)}>
         <Typography variant="subtitle1" mb={3}>
           ✋¿Deseas transferir el dinero?
         </Typography>

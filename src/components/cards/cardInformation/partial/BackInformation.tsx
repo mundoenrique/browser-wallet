@@ -3,9 +3,9 @@
 import { Box, Chip, Divider, IconButton, Stack, Typography } from '@mui/material';
 //Internal app
 import { CopyIcons } from '%/Icons';
-import { copyToClipboard } from '@/utils/toolHelper';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { BackInformationProps } from '@/interfaces';
+import { copyToClipboard } from '@/utils/toolHelper';
 
 /**
  * Shows information on the back of the 3D card

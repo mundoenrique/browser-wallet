@@ -31,6 +31,7 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
         justifyContent: 'space-between',
         borderRadius: '14px',
         cursor: onClick ? 'pointer' : 'initial',
+        bgcolor: fuchsiaBlue[50],
       }}
       onClick={onClick}
     >
@@ -55,7 +56,7 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
               color: 'white',
             }}
           >
-            {OweMe ? 'Gestionar' : 'Cobrar'}
+            {OweMe ? 'Gestionar' : 'Pagar'}
           </Typography>
         </Box>
       </Box>

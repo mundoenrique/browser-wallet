@@ -1,19 +1,18 @@
-import { cookies } from 'next/headers';
 //Internal app
-import LogoGreen from '%/images/LogoGreen';
-import { NotFoundError, PurpleLayout } from '@/components';
+import { createRedisInstance } from '@/utils/redis';
+import { NotFoundError } from '@/components';
+import DataUser from './partial/DataUser';
 
-export default function page({ params }: any) {
+export default async function UserPage({ params }: any) {
+  const redis = createRedisInstance();
   const { user } = params;
-  const userData = cookies().get(`${user}`)?.value.split('-');
+  const userData = await redis.get(`${user}`);
+  redis.del(`${user}`);
+  redis.quit();
 
   if (!userData) {
     return <NotFoundError code={404} />;
   }
 
-  return (
-    <PurpleLayout>
-      <LogoGreen />
-    </PurpleLayout>
-  );
+  return <DataUser user={userData} />;
 }

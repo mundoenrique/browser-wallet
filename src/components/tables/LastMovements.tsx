@@ -22,7 +22,6 @@ import { fuchsiaBlue, slate } from '@/theme/theme-default';
  * }]
  */
 export default function LastMovements({ data, loading }: TableDataProps): JSX.Element {
-
   return (
     <Box
       sx={{

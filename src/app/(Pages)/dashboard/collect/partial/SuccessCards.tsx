@@ -4,8 +4,8 @@ import { useRef, useState } from 'react';
 import { Box, Button, IconButton, Typography } from '@mui/material';
 //Internal app
 import { CopyIcons } from '%/Icons';
-import { copyToClipboard } from '@/utils/toolHelper';
 import { ModalCollect } from './ModalCollect';
+import { copyToClipboard } from '@/utils/toolHelper';
 import { CardInfoOperation, CardReport, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
 export default function SuccessCards() {
@@ -39,7 +39,7 @@ export default function SuccessCards() {
             Comparte esta información para que te paguen con tarjeta de crédito o débito
           </Typography>
           <CardReport avatarText="TC">
-            <Typography variant="h6" sx={{ display: 'flex', color: 'primary.main', alignItems: 'center' }}>
+            <Typography variant="h6" sx={{ display: 'flex', color: 'primary.main', alignItems: 'center', pb: 1 }}>
               https://link.io/1234
               <IconButton aria-label="delete" size="small" sx={{ p: 0, ml: 1 }} onClick={copyToClipboard}>
                 <CopyIcons sx={{ color: 'primary.main' }} />

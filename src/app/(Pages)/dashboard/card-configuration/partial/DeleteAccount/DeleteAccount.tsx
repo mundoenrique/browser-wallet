@@ -30,6 +30,7 @@ export default function DeleteAccount() {
         }}
         href="#"
         label="Volver"
+        adormentStart
       />
 
       <Stack spacing={3}>

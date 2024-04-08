@@ -1,6 +1,7 @@
 # dependencies
 node_modules
 redis
+logs
 README.md
 .git
 .editorconfig
