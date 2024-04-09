@@ -40,7 +40,12 @@ export function createRedisInstance(config = getRedisConfiguration()) {
         }
         return Math.min(times * 200, 1000);
       },
-      tls: process.env.REDIS_SSL === 'ON' ? {} : undefined,
+      tls:
+        process.env.REDIS_SSL === 'ON'
+          ? {
+              servername: config.host,
+            }
+          : undefined,
     };
 
     const redis = new Redis(options);
