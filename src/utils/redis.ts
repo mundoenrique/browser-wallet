@@ -3,15 +3,17 @@ import Redis, { RedisOptions } from 'ioredis';
 
 const redis = {
   host: process.env.REDIS_HOST || '',
-  password: process.env.REDIS_PASSWORD || '',
   port: parseInt(process.env.REDIS_PORT || '6379'),
+  username: process.env.REDIS_USER || '',
+  password: process.env.REDIS_PASSWORD || '',
   db: 0,
   prefix: process.env.REDIX_PREFIX || '',
 };
 
 function getRedisConfiguration(): {
-  port: number;
   host: string;
+  port: number;
+  username: string;
   password: string;
   db: number;
   prefix: string;
@@ -24,8 +26,9 @@ export function createRedisInstance(config = getRedisConfiguration()) {
     const options: RedisOptions = {
       host: config.host,
       port: config.port,
-      db: config.db,
+      username: config.username,
       password: config.password,
+      db: config.db,
       keyPrefix: config.prefix,
       lazyConnect: true,
       showFriendlyErrorStack: true,
@@ -37,6 +40,7 @@ export function createRedisInstance(config = getRedisConfiguration()) {
         }
         return Math.min(times * 200, 1000);
       },
+      tls: process.env.REDIS_SSL === 'ON' ? {} : undefined,
     };
 
     const redis = new Redis(options);
