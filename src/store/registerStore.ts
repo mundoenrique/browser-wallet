@@ -51,7 +51,11 @@ export const useRegisterStore = create<RegisterStore>()(
          */
         biometricFormState: null,
         /**
-         * Storeage de terms info
+         * Storaage user info
+         */
+        user: null,
+        /**
+         * Storage of terms info
          */
         termsDefinition: [
           {
@@ -69,9 +73,9 @@ export const useRegisterStore = create<RegisterStore>()(
           },
         ],
         /**
-         * Storeage de terms info
+         * Storage of terms info
          */
-        onboardingUuid: '202c2656-7110-4994-a820-f593e468c6b7',
+        onboardingUuid: null,
         /**
          * Function to set the data of completed forms
          */

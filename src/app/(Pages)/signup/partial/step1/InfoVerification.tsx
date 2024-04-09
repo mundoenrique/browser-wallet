@@ -9,7 +9,6 @@ import { CardStep } from '..';
 import { getSchema } from '@/config';
 import { useRegisterStore, useUiStore } from '@/store';
 import { InputCheck, InputText, ModalResponsive, InputSelect, Terms } from '@/components';
-import { useMockStore } from '@/store/mockStore';
 
 //TODO: data de ejemplo
 const nationality = [
@@ -26,12 +25,10 @@ export default function InfoVerification() {
 
   const schema = getSchema(['email', 'term', 'country']);
 
-  const { mockData } = useMockStore();
-
   const schemaEmail = getSchema(['email']);
   const schemaPhoneNumber = getSchema(['phoneNumber']);
 
-  const { inc, updateFormState, ONB_PHASES_TERMS, setShowHeader, onboardingUuid, termsDefinition } = useRegisterStore();
+  const { inc, updateFormState, ONB_PHASES_TERMS, setShowHeader, termsDefinition } = useRegisterStore();
   const { setLoadingScreen, loadingScreen } = useUiStore();
 
   const { handleSubmit, control, setValue, getValues } = useForm({
@@ -78,12 +75,14 @@ export default function InfoVerification() {
       'TERMINO 2': data.policy,
     };
 
+    const { uuid, ...consultantData } = ONB_PHASES_TERMS?.consultant;
+
     const requestData = {
       currentPhaseCode: 'ONB_PHASES_TERMS',
-      onboardingUuId: onboardingUuid, //TODO:¿de donde sale?
+      ...(ONB_PHASES_TERMS?.consultant?.uuid && { uuid: ONB_PHASES_TERMS?.consultant.uuid }),
       request: {
         consultant: {
-          ...mockData.consultant,
+          ...consultantData,
           email: data.email,
           phoneNumber: data.phoneNumber,
         },
@@ -98,19 +97,17 @@ export default function InfoVerification() {
     };
 
     updateFormState('verificationFormState', requestData);
+    console.log('requestDAta', requestData);
 
-    const requestOptions = { method: 'POST', body: JSON.stringify(requestData) };
-
+    /*
     setLoadingScreen(true);
 
-    await new Promise((resolve) => {
-      setTimeout(resolve, 600);
-    });
 
-    await fetch('/api/v1/onboarding/termsandconditions', requestOptions).then(() => {
-      inc();
+
+
       setLoadingScreen(false);
-    });
+
+    */
   };
 
   const handleModalTerm = (e: any) => {

@@ -121,7 +121,7 @@ export interface RegisterStore {
   ONB_PHASES_CONSULT_DATA: { [key: string]: any } | null;
   ONB_PHASES_PEP: { [key: string]: any } | null;
   termsDefinition: { [key: string]: string }[];
-  onboardingUuid: string;
+  onboardingUuid: string | null;
   biometricFormState: null;
 }
 
