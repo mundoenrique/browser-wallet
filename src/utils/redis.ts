@@ -1,15 +1,6 @@
 import Redis, { RedisOptions } from 'ioredis';
 //Internal app
-// tls:
-//         process.env.REDIS_SSL === 'ON'
-//           ? {
-//               servername: config.host,
-//               host: config.host,
-//               port: config.port,
-//               key: config.password,
-//             }
-//           : undefined,
-//     };
+
 const redis = {
   host: process.env.REDIS_HOST || '',
   port: parseInt(process.env.REDIS_PORT || '6379'),
@@ -49,9 +40,12 @@ export function createRedisInstance(config = getRedisConfiguration()) {
         }
         return Math.min(times * 200, 1000);
       },
-      tls: {
-        rejectUnauthorized: false,
-      },
+      tls:
+        process.env.REDIS_SSL === 'ON'
+          ? {
+              rejectUnauthorized: false,
+            }
+          : undefined,
     };
 
     const redis = new Redis(options);
