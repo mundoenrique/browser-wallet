@@ -228,7 +228,7 @@ const theme = createTheme({
             fontWeight: 700,
             width: '100%',
             '&:hover': { backgroundColor: 'white', color: fuchsiaBlue[800] },
-            '&.Mui-disabled': { opacity: 0.3 },
+            '&.Mui-disabled': { backgroundColor: fuchsiaBlue[200] },
           },
         },
         {
