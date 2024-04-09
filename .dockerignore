@@ -1,38 +1,37 @@
-# dependencies
-redis
-logs
-README.md
-.git
+# Config files
+
 .editorconfig
+.env.example
+.env*.local
+.DS_Store
+.gitignore
+docker-compose.yml
+Dockerfile-belcorp
 .pnp
 .pnp.js
+*.pem
+*.tsbuildinfo
+next-env.d.ts
 .yarn/install-state.gz
 
-# testing
-coverage
-
-# next.js
+# Config folders
+.git
+.github
+.swc
+.vscode
+.vercel
 out
 
-# production
+# Info files
+README.md
+
+# Info folders
+coverage
+logs
+redis
 build
 
-# misc
-.DS_Store
-*.pem
-
-# debug
+# log Folders
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# local env files
-.env*.local
-env/.env.local
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
