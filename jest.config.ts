@@ -16,7 +16,6 @@ const config: Config = {
   },
   collectCoverage: true,
   collectCoverageFrom: [
-    'src/app/**/dashboard/*page.tsx',
     'src/app/**/dashboard/**/frequent-questions/*page.tsx',
     'src/app/**/dashboard/card-configuration/*page.tsx',
     'src/app/**/dashboard/legal/*page.tsx',

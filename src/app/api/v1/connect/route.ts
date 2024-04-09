@@ -1,5 +1,6 @@
-import { HandleCustomerRequest } from '@/utils/apiGeeServer';
 import { NextRequest } from 'next/server';
+//Internal app
+import { HandleCustomerRequest } from '@/utils/apiGeeServer';
 
 export async function GET(request: NextRequest) {
   return HandleCustomerRequest(request);
