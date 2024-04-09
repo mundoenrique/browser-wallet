@@ -8,6 +8,9 @@ export async function GET() {
 
   try {
     await redis.set(`session:ConectOk`, JSON.stringify({ accessToken: 'token' }));
+    await redis.expire('session:ConectOk', 180);
+    await redis.quit();
+
     return new NextResponse(
       JSON.stringify({
         host: `REDIS_HOST ${process.env.REDIS_HOST}`,
