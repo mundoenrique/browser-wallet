@@ -44,6 +44,9 @@ export function createRedisInstance(config = getRedisConfiguration()) {
         process.env.REDIS_SSL === 'ON'
           ? {
               servername: config.host,
+              host: config.host,
+              port: config.port,
+              key: config.password,
             }
           : undefined,
     };
