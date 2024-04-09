@@ -20,7 +20,7 @@ export const validationRules: ValidationRule = {
   roles: yup.string().required('Debes seleccionar una opción'),
   initialDate: yup.string().required('Ingresa una fecha'),
   countryCode: yup.string().required('Selecciona un país'),
-  term: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
+  terms: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
   policy: yup.string().required('Acepta la política'),
   otp: yup
     .string()

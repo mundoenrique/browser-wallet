@@ -146,3 +146,9 @@ export interface ClientStore {
   client: IClientProps | null;
   setClient: (data: IClientProps) => void;
 }
+
+export interface CatalogsStore {
+  countriesCatalog: { text: string; value: string }[];
+  termsCatalog: [];
+  updateCatalog: (_form: string, _data: {} | []) => void;
+}

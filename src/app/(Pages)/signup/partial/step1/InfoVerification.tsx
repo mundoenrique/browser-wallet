@@ -7,37 +7,33 @@ import { Box, Button, Card, Chip, Divider, Typography } from '@mui/material';
 //internal app
 import { CardStep } from '..';
 import { getSchema } from '@/config';
-import { useRegisterStore, useUiStore } from '@/store';
+import { useRegisterStore, useUiStore, catalogsStore } from '@/store';
 import { InputCheck, InputText, ModalResponsive, InputSelect, Terms } from '@/components';
-
-//TODO: data de ejemplo
-const nationality = [
-  { text: 'Peruana', value: 'PE' },
-  { text: 'Colombiana', value: 'CO' },
-  { text: 'Venezolana', value: 'VE' },
-  { text: 'Ecuatoriana', value: 'EC' },
-];
+import { useApi } from '@/hooks/useApi';
 
 export default function InfoVerification() {
+  const customApi = useApi();
   const [editEmail, setEditEmail] = useState<boolean>(false);
   const [editPhoneNumber, setEditPhoneNumber] = useState<boolean>(false);
   const [openTerms, setOpenTerms] = useState<boolean>(false);
+  const [countryLoading, setCountryLoading] = useState<boolean>(false);
 
-  const schema = getSchema(['email', 'term', 'country']);
+  const schema = getSchema(['email', 'terms', 'countryCode']);
 
   const schemaEmail = getSchema(['email']);
   const schemaPhoneNumber = getSchema(['phoneNumber']);
 
   const { inc, updateFormState, ONB_PHASES_TERMS, setShowHeader, termsDefinition } = useRegisterStore();
   const { setLoadingScreen, loadingScreen } = useUiStore();
+  const { updateCatalog, countriesCatalog, termsCatalog } = catalogsStore();
 
   const { handleSubmit, control, setValue, getValues } = useForm({
     defaultValues: {
       countryCode: ONB_PHASES_TERMS && ONB_PHASES_TERMS.consultant?.countryCode,
       phoneNumber: ONB_PHASES_TERMS && ONB_PHASES_TERMS.consultant?.phoneNumber,
       email: ONB_PHASES_TERMS && ONB_PHASES_TERMS.consultant?.email,
-      term1: false,
-      term2: false,
+      terms: false,
+      policy: false,
     },
     resolver: yupResolver(schema),
   });
@@ -83,6 +79,7 @@ export default function InfoVerification() {
       request: {
         consultant: {
           ...consultantData,
+          countryCode: data.countryCode,
           email: data.email,
           phoneNumber: data.phoneNumber,
         },
@@ -97,17 +94,8 @@ export default function InfoVerification() {
     };
 
     updateFormState('verificationFormState', requestData);
-    console.log('requestDAta', requestData);
 
-    /*
-    setLoadingScreen(true);
-
-
-
-
-      setLoadingScreen(false);
-
-    */
+    console.log(requestData);
   };
 
   const handleModalTerm = (e: any) => {
@@ -131,7 +119,48 @@ export default function InfoVerification() {
     setShowHeader(true);
   }, [setShowHeader]);
 
-  useEffect(() => {});
+  /**
+   * Fetch country Catalog
+   */
+
+  useEffect(() => {
+    const retrieveCountryList = async () => {
+      try {
+        const countries = await customApi.post(`/catalogs/search`, {
+          catalogCode: 'COUNTRIES_CATALOG',
+        });
+        updateCatalog(
+          'countriesCatalog',
+          countries.data.data.data.map((country: { value: string; code: string }) => ({
+            text: country.value,
+            value: country.code.slice(0, 2),
+          }))
+        );
+      } catch (error) {
+        throw new Error('Error in apiGee request handling: ' + (error as Error).message);
+      }
+    };
+    {
+      countriesCatalog.length === 0 && retrieveCountryList();
+    }
+  }, []); //eslint-disable-line
+
+  useEffect(() => {
+    const retrieveTermsList = async () => {
+      try {
+        const terms = await customApi.post(`/catalogs/search`, {
+          catalogCode: 'TERMS',
+        });
+        updateCatalog('termsCatalog', terms);
+        console.log('terminos', terms);
+      } catch (error) {
+        throw new Error('Error in apiGee request handling: ' + (error as Error).message);
+      }
+    };
+    {
+      true && retrieveTermsList();
+    }
+  }, []); //eslint-disable-line
 
   return (
     <CardStep stepNumber="1">
@@ -162,7 +191,7 @@ export default function InfoVerification() {
             </Box>
             <Divider />
             <Box sx={{ px: 5 / 2, pt: 3 / 2 }}>
-              <InputSelect name="countryCode" label="Nacionalidad" options={nationality} control={control} />
+              <InputSelect name="countryCode" label="Nacionalidad" options={countriesCatalog} control={control} />
             </Box>
             <Divider />
             <Box
@@ -214,7 +243,7 @@ export default function InfoVerification() {
             </Box>
           </Card>
           <InputCheck
-            name="term"
+            name="terms"
             labelHandle="Acepto Términos y Condiciones y Política de Privacidad de Datos"
             control={control}
             onClick={handleModalTerm}
