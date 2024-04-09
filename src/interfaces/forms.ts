@@ -63,6 +63,8 @@ export interface InputOTPProps extends FormMUIProps {
 /**
  * DatePicker input
  *
+ * @typeParam onClick (Optional): (e: any) => void;
+ * @typeParam disableClearable (Optional): boolean;
  * @typeParam options: {
  *
  * value: string
@@ -74,6 +76,7 @@ export interface InputOTPProps extends FormMUIProps {
 export interface InputOptionsProps extends FormMUIProps {
   options: { value: string; text: string }[];
   onClick?: (e: any) => void;
+  disableClearable?: boolean;
 }
 
 /**
