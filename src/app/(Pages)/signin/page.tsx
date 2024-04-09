@@ -10,7 +10,6 @@ import { Box, Button, Link as LinkMui, Typography, useMediaQuery, useTheme } fro
 import { getSchema } from '@/config';
 import LogoGreen from '%/images/LogoGreen';
 import { InputPass, ModalResponsive } from '@/components';
-import { useMockStore } from '@/store/mockStore';
 
 export default function Signin() {
   const theme = useTheme();
@@ -18,7 +17,6 @@ export default function Signin() {
   const [open, setOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const schema = getSchema(['password']);
-  const { mockData } = useMockStore();
   const { control, handleSubmit } = useForm({
     defaultValues: { password: '' },
     resolver: yupResolver(schema),
@@ -57,7 +55,7 @@ export default function Signin() {
             </Typography>
           </Box>
           <Typography variant="h6" color="white">
-            ¡Hola {mockData.user?.firstName || 'Usuario'}!
+            ¡Hola Andrea!
           </Typography>
           <Typography color="white">Para continuar, ingresa la contraseña de tu cuenta digital.</Typography>
           <Box sx={{ mt: 3, textAlign: 'start' }}>

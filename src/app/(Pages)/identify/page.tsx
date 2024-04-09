@@ -1,18 +1,17 @@
 'use client';
 
+import { Typography, Box } from '@mui/material';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState, useCallback } from 'react';
 //Internal app
-import { PurpleLayout } from '@/components';
-import LogoGreen from '%/images/LogoGreen';
-import { Typography } from '@mui/material';
-import { Box } from '@mui/system';
 import { useApi } from '@/hooks/useApi';
-
+import LogoGreen from '%/images/LogoGreen';
 import { useRegisterStore } from '@/store';
+import { PurpleLayout } from '@/components';
 
 /**
  * Convert phasename
+ *
  * @param phase - Phase name
  * @returns Phase step (number) in onboarding in process
  */
@@ -82,7 +81,6 @@ export default function UserPage() {
           `/onboarding/validate?consultantCode=${consultantCode}&countryCode=${countryCode}`
         );
         setUserValidation(userData.data);
-        console.log(userData);
       } catch (error) {
         throw new Error('Error in apiGee request handling: ' + (error as Error).message);
       }
