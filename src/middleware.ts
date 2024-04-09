@@ -1,11 +1,10 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
+//Internal app
 import { URL_BASE } from '@/utils/constants';
 
 export async function middleware(request: NextRequest) {
   const { url, method, nextUrl } = request;
   const pathname = nextUrl.pathname;
-
   const apiConnectUrl = '/api/v1/connect';
   const apiGetTokenAuthUrl = '/api/v1/gettoken';
   const SetCode = '/api/v1/setcode';
@@ -21,6 +20,7 @@ export async function middleware(request: NextRequest) {
   const url_api_name: string = partsUrl[3] || '';
   const resUrlBase = pathname.substring(pathname.indexOf(url_api_name) + url_api_name.length);
   const apiUrl: string = URL_BASE[url_api_name] + resUrlBase + nextUrl.search;
+
   response.headers.set('x-url', apiUrl);
 
   console.log(`backURL ${apiUrl}, method ${method}`);

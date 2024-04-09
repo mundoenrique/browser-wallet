@@ -1,5 +1,4 @@
 # dependencies
-node_modules
 redis
 logs
 README.md
@@ -13,7 +12,6 @@ README.md
 coverage
 
 # next.js
-.next
 out
 
 # production

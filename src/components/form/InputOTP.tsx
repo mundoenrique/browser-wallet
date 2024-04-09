@@ -114,7 +114,7 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
         )}
 
         <Button onClick={handleResend} sx={{ color: 'primary.main', height: 20 }} disabled={time === 0 ? false : true}>
-          Renviar código
+          Reenviar código
         </Button>
       </Box>
 
