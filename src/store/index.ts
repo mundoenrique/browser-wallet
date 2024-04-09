@@ -8,3 +8,4 @@ export * from '@/store/configCardStore';
 export * from '@/store/drawerStore';
 export * from '@/store/clientStore';
 export * from '@/store/uiStore';
+export * from '@/store/catalogsStore';
