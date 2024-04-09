@@ -14,6 +14,7 @@ interface dataUser {
 export default function DataUser(user: dataUser) {
   console.log(user);
   const { replace } = useRouter();
+  // copíar código de page principal de aquí en adelante y redirecioar de acuerdo al resultado de la integración
   setTimeout(() => {
     replace('/signin');
   }, 2000);

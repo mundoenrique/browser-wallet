@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import axios, { AxiosRequestHeaders } from 'axios';
 //Internal app
+import { createRedisInstance } from './redis';
 import { handleApiRequest } from './apiHandle';
 import { APIGEE_HEADERS_NAME } from './constants';
 import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './apiHelpers';
@@ -72,35 +73,35 @@ export async function configureDefaultHeaders(headers: Headers, oauth: string, j
 }
 
 export async function getOauthBearer() {
-  // const redis = createRedisInstance();
-  // let bearer = await redis.get('bearer');
-  let bearer: string;
+  const redis = createRedisInstance();
+  let bearer = (await redis.get('bearer')) as string;
 
-  // if (!bearer) {
-  const grant_type = 'client_credentials';
-  const client_id = process.env.CREDENTIALS_KEY;
-  const client_secret = process.env.CREDENTIALS_SECRET;
+  if (!bearer) {
+    const grant_type = 'client_credentials';
+    const client_id = process.env.CREDENTIALS_KEY;
+    const client_secret = process.env.CREDENTIALS_SECRET;
 
-  delete apiGee.defaults.headers.common['Authorization'];
-  delete apiGee.defaults.headers.common['X-Tenant-Id'];
-  delete apiGee.defaults.headers.common['X-Token'];
-  delete apiGee.defaults.headers.common['X-Request-Id'];
+    delete apiGee.defaults.headers.common['Authorization'];
+    delete apiGee.defaults.headers.common['X-Tenant-Id'];
+    delete apiGee.defaults.headers.common['X-Token'];
+    delete apiGee.defaults.headers.common['X-Request-Id'];
 
-  const response = await apiGee.post(
-    `/oauth2/v1/token`,
-    { grant_type, client_id, client_secret },
-    {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    }
-  );
+    const response = await apiGee.post(
+      `/oauth2/v1/token`,
+      { grant_type, client_id, client_secret },
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
 
-  const { data } = response;
-  bearer = data.access_token;
-  // await redis.set('bearer', bearer);
-  // await redis.expire('bearer', 1740);
-  // }
+    const { data } = response;
+    bearer = data.access_token;
+    await redis.set('bearer', bearer);
+    await redis.expire('bearer', 1740);
+    await redis.quit();
+  }
 
   return bearer;
 }
