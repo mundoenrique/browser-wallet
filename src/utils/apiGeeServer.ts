@@ -145,7 +145,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
       responseBack = { data: Error(`Invalid method: ${method}`) };
   }
 
-  const encryptedResponse = await handleApiGeeResponse(responseBack.data, jweAppPublicKey);
+  const encryptedResponse = await handleApiGeeResponse(responseBack.data, responseBack.status ?? 400, jweAppPublicKey);
 
   return encryptedResponse;
 }

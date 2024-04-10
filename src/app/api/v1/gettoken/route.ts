@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 //Internal app
 import { decryptJWE, getEnvVariable, handleError, handleResponse, signJWT } from '@/utils';
 
@@ -17,13 +17,13 @@ export async function POST(request: NextRequest) {
 
     const responsePayload = { code: '200.00.000', message: 'Process Ok', data: token };
 
-    let response: Response;
+    let response: NextResponse;
 
     response = await handleResponse(responsePayload, jwePublicKey, jwSPrivateKey);
 
     return response;
   } catch (error) {
     // return handleError('An error occurred while processing the request:', error);
-    return Response.json({ code: '500.00.000', message: 'Fail' });
+    return NextResponse.json({ code: '500.00.000', message: 'Fail' }, { status: 500 });
   }
 }
