@@ -1,18 +1,14 @@
 'use client';
 
-import { useEffect, useCallback, useState } from 'react';
-import { Box } from '@mui/system';
-import { Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { Typography, Box } from '@mui/material';
+import { useEffect, useCallback, useState } from 'react';
 //Internal app
-import { PurpleLayout, NotFoundError } from '@/components';
+import { useApi } from '@/hooks/useApi';
 import LogoGreen from '%/images/LogoGreen';
 import { useRegisterStore } from '@/store';
-import { useApi } from '@/hooks/useApi';
-import { stringify } from 'querystring';
-interface dataUser {
-  user: string;
-}
+import { DataUserProps } from '@/interfaces';
+import { PurpleLayout, NotFoundError } from '@/components';
 
 /**
  * Convert phasename
@@ -32,7 +28,7 @@ const phaseToStep = (phase: string) => {
   return phasesSteps[phase] || 0;
 };
 
-export default function DataUser(user: dataUser) {
+export default function DataUser(user: DataUserProps) {
   const userObject = JSON.parse(user.user);
   const customApi = useApi();
   const [userValidation, setUserValidation] = useState<any>(null);

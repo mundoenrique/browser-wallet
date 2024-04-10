@@ -1,7 +1,7 @@
 //Internal app
-import { createRedisInstance } from '@/utils/redis';
-import { NotFoundError } from '@/components';
 import DataUser from './partial/DataUser';
+import { NotFoundError } from '@/components';
+import { createRedisInstance } from '@/utils/redis';
 
 export default async function UserPage({ params }: any) {
   const redis = createRedisInstance();
