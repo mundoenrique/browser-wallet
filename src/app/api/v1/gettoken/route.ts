@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 //Internal app
-import { decryptJWE, getEnvVariable, handleError, handleResponse, signJWT } from '@/utils';
+import { decryptJWE, getEnvVariable, handleResponse, signJWT } from '@/utils';
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,7 +23,6 @@ export async function POST(request: NextRequest) {
 
     return response;
   } catch (error) {
-    // return handleError('An error occurred while processing the request:', error);
     return NextResponse.json({ code: '500.00.000', message: 'Fail' }, { status: 500 });
   }
 }
