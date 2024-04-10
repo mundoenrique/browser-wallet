@@ -25,10 +25,10 @@ export async function handleApiRequest(request: NextRequest) {
   };
 }
 
-export async function handleApiResponse(response: object | null, jweAppPublicKey: string) {
+export async function handleApiResponse(response: object | null, status: number, jweAppPublicKey: string) {
   const jwsApiPrivateKey = getEnvVariable('MIDDLE_JWS_PRIVATE_KEY');
 
-  const data = await handleResponse(response, jweAppPublicKey, jwsApiPrivateKey);
+  const data = await handleResponse(response, jweAppPublicKey, jwsApiPrivateKey, status);
 
   return data;
 }
