@@ -1,12 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
+import uuid4 from 'uuid4';
 //Internal app
+import { api } from '@/utils/api';
 import { verifyJWT } from '@/utils/jwt';
 import { JWT_HEADER } from '@/utils/constants';
 import { useJwtStore, useKeyStore } from '@/store';
-import { api } from '@/utils/api';
-import uuid4 from 'uuid4';
 
 export function useApi() {
   const { token, setToken } = useJwtStore();
