@@ -44,7 +44,7 @@ export const validationRules: ValidationRule = {
   phoneNumber: yup
     .string()
     .required('Ingresa un numero de celular')
-    .max(9, 'Número de celular no válido')
+    .max(10, 'Número de celular no válido')
     .test('celularValid', 'Ingresa un numero de celular', (value) => regularExpressions.onlyNumber?.test(value)),
   isPep: yup.string().nonNullable().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
   pepForm: yup.object().shape({
