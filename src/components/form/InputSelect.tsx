@@ -19,6 +19,7 @@ function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
           value={value}
           popupIcon={<ArrowForwardIosIcon />}
           id={name}
+          disableClearable={disableClearable}
           disabledItemsFocusable
           options={options}
           disabled={disabled}
@@ -87,6 +88,7 @@ export default function InputSelect(props: InputOptionsProps): JSX.Element {
               <AutocompleteMUI
                 name={name}
                 value={field.value}
+                disableClearable={disableClearable}
                 options={options}
                 onChange={(e, data) => {
                   field.onChange(data?.value);

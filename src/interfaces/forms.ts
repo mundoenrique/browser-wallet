@@ -1,5 +1,6 @@
 import { SxProps } from '@mui/material';
 import { DateView } from '@mui/x-date-pickers';
+//Internal app
 import { IClientProps } from './store';
 
 /**
@@ -29,6 +30,7 @@ export interface FormMUIProps {
   getOptionLabel?: Function;
   disabled?: boolean;
   readOnly?: boolean;
+  sx?: SxProps;
 }
 
 /**
@@ -61,6 +63,8 @@ export interface InputOTPProps extends FormMUIProps {
 /**
  * DatePicker input
  *
+ * @typeParam onClick (Optional): (e: any) => void;
+ * @typeParam disableClearable (Optional): boolean;
  * @typeParam options: {
  *
  * value: string
@@ -73,6 +77,7 @@ export interface InputOptionsProps extends FormMUIProps {
   options: { value: string; text: string }[];
   disableClearable?: boolean;
   onClick?: (e: any) => void;
+  disableClearable?: boolean;
 }
 
 /**
