@@ -8,7 +8,7 @@ import { FormControl, FormHelperText, Autocomplete, TextField, InputLabel } from
 import { InputOptionsProps } from '@/interfaces';
 
 function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
-  const { name, label, options, labelError, error, value, onChange, disabled, readOnly, ...restProps } = props;
+  const { name, label, options, labelError, error, value, onChange, disabled, readOnly, disableClearable } = props;
   const textLabel = label ?? name;
 
   return (
@@ -30,6 +30,7 @@ function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
           isOptionEqualToValue={(option) => {
             return option.value == value;
           }}
+          disableClearable={disableClearable}
           onChange={onChange}
           sx={{ width: '100%' }}
           renderInput={(params) => <TextField {...params} placeholder="Selecciona una opción" />}
@@ -73,7 +74,7 @@ function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
  * @label Material UI - {@link https://mui.com/material-ui/react-autocomplete/}
  */
 export default function InputSelect(props: InputOptionsProps): JSX.Element {
-  const { name, control, onChange, options, ...restProps } = props;
+  const { name, control, onChange, options, disableClearable, ...restProps } = props;
 
   return (
     <>
@@ -91,6 +92,7 @@ export default function InputSelect(props: InputOptionsProps): JSX.Element {
                   field.onChange(data?.value);
                   onChange && onChange(e, data);
                 }}
+                disableClearable={disableClearable}
                 error={error}
                 {...restProps}
               />

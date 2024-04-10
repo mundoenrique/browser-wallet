@@ -149,6 +149,6 @@ export interface ClientStore {
 
 export interface CatalogsStore {
   countriesCatalog: { text: string; value: string }[];
-  termsCatalog: [];
+  termsCatalog: { code: string; value: string }[];
   updateCatalog: (_form: string, _data: {} | []) => void;
 }

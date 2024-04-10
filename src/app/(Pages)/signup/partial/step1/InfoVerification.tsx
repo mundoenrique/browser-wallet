@@ -16,7 +16,6 @@ export default function InfoVerification() {
   const [editEmail, setEditEmail] = useState<boolean>(false);
   const [editPhoneNumber, setEditPhoneNumber] = useState<boolean>(false);
   const [openTerms, setOpenTerms] = useState<boolean>(false);
-  const [countryLoading, setCountryLoading] = useState<boolean>(false);
 
   const schema = getSchema(['email', 'terms', 'countryCode']);
 
@@ -64,16 +63,19 @@ export default function InfoVerification() {
     resolver: yupResolver(schemaPhoneNumber),
   });
 
-  //Method For send main form
+  /**
+   * Send Form data
+   *  @param data - Form data
+   */
   const onSubmit = async (data: any) => {
     const termsObject: { [key: string]: boolean } = {
-      'TERMINO 1': data.term,
+      'TERMINO 1': data.terms,
       'TERMINO 2': data.policy,
     };
 
     const { uuid, ...consultantData } = ONB_PHASES_TERMS?.consultant;
 
-    const requestData = {
+    const requestFormData = {
       currentPhaseCode: 'ONB_PHASES_TERMS',
       ...(ONB_PHASES_TERMS?.consultant?.uuid && { uuid: ONB_PHASES_TERMS?.consultant.uuid }),
       request: {
@@ -83,19 +85,28 @@ export default function InfoVerification() {
           email: data.email,
           phoneNumber: data.phoneNumber,
         },
-        terms: termsDefinition
-          .filter((e: any) => {
-            return termsObject[e.name];
-          })
-          .map((e: any) => {
-            return { uuid: e.uuid };
-          }),
+        terms: termsCatalog.reduce((acc: any[], e) => {
+          termsObject[e.value] && acc.push({ code: e.code });
+          return acc;
+        }, []),
       },
     };
+    console.log('send', requestFormData);
 
-    updateFormState('verificationFormState', requestData);
-
-    console.log(requestData);
+    setLoadingScreen(true);
+    await customApi
+      .post('/onboarding/termsandconditions', requestFormData)
+      .then((response) => {
+        console.log('termsAndCondition', response);
+        updateFormState('verificationFormState', requestFormData);
+        inc();
+      })
+      .catch((error) => {
+        throw new Error('Error in apiGee request handling: ' + (error as Error).message);
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
   };
 
   const handleModalTerm = (e: any) => {
@@ -145,21 +156,28 @@ export default function InfoVerification() {
     }
   }, []); //eslint-disable-line
 
+  /**
+   * Fetch Terms Catalog
+   */
+
   useEffect(() => {
     const retrieveTermsList = async () => {
       try {
         const terms = await customApi.post(`/catalogs/search`, {
-          catalogCode: 'TERMS',
+          catalogCode: 'TERMS_AND_CONDITIONS_CATALOG',
+          parameters: [
+            {
+              code: 'TERMS_CATEGORY',
+              value: 'ONB_PHASES_TERMS',
+            },
+          ],
         });
-        updateCatalog('termsCatalog', terms);
-        console.log('terminos', terms);
+        updateCatalog('termsCatalog', terms.data.data.data);
       } catch (error) {
         throw new Error('Error in apiGee request handling: ' + (error as Error).message);
       }
     };
-    {
-      true && retrieveTermsList();
-    }
+    retrieveTermsList();
   }, []); //eslint-disable-line
 
   return (
@@ -185,13 +203,23 @@ export default function InfoVerification() {
                 {ONB_PHASES_TERMS ? ONB_PHASES_TERMS.consultant?.lastName : ''}
               </Typography>
               <Typography variant="subtitle2">
-                {ONB_PHASES_TERMS ? ONB_PHASES_TERMS.consultant?.documentType : ''}:{' '}
+                {ONB_PHASES_TERMS ? ONB_PHASES_TERMS.consultant?.documentType : ''}
                 {ONB_PHASES_TERMS ? ONB_PHASES_TERMS.consultant?.documentNumber : ''}
               </Typography>
             </Box>
             <Divider />
             <Box sx={{ px: 5 / 2, pt: 3 / 2 }}>
-              <InputSelect name="countryCode" label="Nacionalidad" options={countriesCatalog} control={control} />
+              {countriesCatalog.length > 0 ? (
+                <InputSelect
+                  name="countryCode"
+                  label="Nacionalidad"
+                  options={countriesCatalog}
+                  control={control}
+                  disableClearable
+                />
+              ) : (
+                <InputSelect name="default" label="Nacionalidad" options={[]} disableClearable disabled />
+              )}
             </Box>
             <Divider />
             <Box

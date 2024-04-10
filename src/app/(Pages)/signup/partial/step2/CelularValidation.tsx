@@ -26,10 +26,6 @@ export default function CelularValidation() {
   const requestTFACode = useCallback(async () => {
     setLoadingScreen(true);
 
-    await new Promise((resolve) => {
-      setTimeout(resolve, 1000);
-    });
-    setRequestError(true);
     //TODO: Validar documentacion
     //https://sandbox-api.novopayment.com/api/v0/onboarding/{onboardingId}/tfa
     await fetch(`/api/v1/onboarding/tfa/${onboardingUuid}`, {
@@ -39,8 +35,6 @@ export default function CelularValidation() {
       const data = await response.json();
       setOtpUuid(data.data.otpUuId);
     });
-
-    setLoadingScreen(false);
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   const onSubmit = async (data: any) => {
@@ -52,10 +46,7 @@ export default function CelularValidation() {
       otpCode: code,
       currentPhaseCode: 'ONB_PHASES_OPT',
     };
-
-    await new Promise((resolve) => {
-      setTimeout(resolve, 500);
-    });
+    /*
 
     await fetch(`/api/v1/onboarding/tfa/validate/${onboardingUuid}`, {
       method: 'POST',
@@ -67,12 +58,13 @@ export default function CelularValidation() {
       .catch((error) => {
         console.error(error);
       });
+      */
   };
-
+  /*
   useEffect(() => {
     requestTFACode();
   }, [requestTFACode]);
-
+*/
   return (
     <>
       <CardStep stepNumber="2">

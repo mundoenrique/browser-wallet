@@ -1,23 +1,99 @@
 'use client';
 
+import { useEffect, useCallback, useState } from 'react';
 import { Box } from '@mui/system';
 import { Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 //Internal app
-import { PurpleLayout } from '@/components';
+import { PurpleLayout, NotFoundError } from '@/components';
 import LogoGreen from '%/images/LogoGreen';
-
+import { useRegisterStore } from '@/store';
+import { useApi } from '@/hooks/useApi';
+import { stringify } from 'querystring';
 interface dataUser {
   user: string;
 }
 
+/**
+ * Convert phasename
+ *
+ * @param phase - Phase name
+ * @returns Phase step (number) in onboarding in process
+ */
+const phaseToStep = (phase: string) => {
+  const phasesSteps: { [key: string]: number } = {
+    ONB_PHASES_TERMS: 1,
+    ONB_PHASES_OTP: 2,
+    ONB_PHASES_CONSULT_DATA: 3,
+    ONB_PHASES_PEP: 4,
+    ONB_PHASES_VALIDATE_BIOMETRIC: 5,
+    ONB_PHASES_PASSWORD: 10,
+  };
+  return phasesSteps[phase] || 0;
+};
+
 export default function DataUser(user: dataUser) {
-  console.log(user);
+  const userObject = JSON.parse(user.user);
+  const customApi = useApi();
+  const [userValidation, setUserValidation] = useState<any>(null);
+  const { updateFormState, updateStep } = useRegisterStore();
   const { replace } = useRouter();
-  // copíar código de page principal de aquí en adelante y redirecioar de acuerdo al resultado de la integración
-  setTimeout(() => {
-    replace('/signin');
-  }, 2000);
+
+  /**
+   * Verify the user and redirect
+   */
+  const userRedirect = useCallback(async (userValidationResponse: any) => {
+    const status = userValidationResponse.data?.status.code;
+    const registerData = userValidationResponse.data;
+
+    const redirectObject: { [key: string]: { path: string; store: Function } } = {
+      //User register finished
+      PH_REGISTER: {
+        path: '/signin',
+        store: () => {
+          updateFormState('user', registerData.user);
+        },
+      },
+      // User rew register
+      PH_PENDING: {
+        path: '/signup',
+        store: () => {
+          updateFormState('ONB_PHASES_TERMS', registerData);
+        },
+      },
+      //User register in progress
+      PH_IN_PROGRESS: {
+        path: '/signup',
+        store: () => {
+          registerData.onboardingPhases.forEach((phase: any) => {
+            updateFormState(phase.onboardingPhaseCode, phase.metadata);
+          });
+          updateStep(phaseToStep(registerData.currentOnboardingPhaseCode));
+        },
+      },
+    };
+    Object.hasOwn(redirectObject, status) && (await redirectObject[status].store());
+
+    Object.hasOwn(redirectObject, status) ? replace(redirectObject[status].path) : <NotFoundError code={404} />;
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const validateOnboarding = async () => {
+      try {
+        const userData = await customApi.get(
+          `/onboarding/validate?consultantCode=${userObject.code}&countryCode=${userObject.country}`
+        );
+        setUserValidation(userData.data);
+      } catch (error) {
+        throw new Error('Error in apiGee request handling: ' + (error as Error).message);
+      }
+    };
+    validateOnboarding();
+  }, []); //eslint-disable-line
+
+  useEffect(() => {
+    userValidation && userRedirect(userValidation);
+  }, [userValidation, userRedirect]);
 
   return (
     <PurpleLayout>

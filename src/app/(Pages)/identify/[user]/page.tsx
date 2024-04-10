@@ -4,13 +4,13 @@ import { NotFoundError } from '@/components';
 import DataUser from './partial/DataUser';
 
 export default async function UserPage({ params }: any) {
-  // const redis = createRedisInstance();
+  const redis = createRedisInstance();
   const { user } = params;
-  let userData;
-  /*   const userData = await redis.get(`${user}`);
+
+  const userData = await redis.get(`${user}`);
   redis.del(`${user}`);
-  redis.quit(); */
-  console.log(user);
+  redis.quit();
+
   if (!userData) {
     return <NotFoundError code={404} />;
   }
