@@ -1,6 +1,6 @@
 const winston = require('winston');
-const DailyRotateFile = require('winston-daily-rotate-file');
 const { printf } = winston.format;
+const DailyRotateFile = require('winston-daily-rotate-file');
 //Internal app
 import { LogData } from '@/interfaces';
 

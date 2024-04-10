@@ -1,5 +1,4 @@
 import Redis, { RedisOptions } from 'ioredis';
-//Internal app
 
 const redis = {
   host: process.env.REDIS_HOST || '',
