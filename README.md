@@ -165,7 +165,7 @@ Para ejemplificar el despliegue se usa docker compose (**No recomendado para pro
      - ConsultantCode: es el código de la consultora
      - CountryCode: es el País donde opera la consultora
 
-2. La aplicación responderá una URL a la que deben redirigir el navegador
+2. La aplicación responderá una URI
 
 ```
 {
