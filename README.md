@@ -29,7 +29,7 @@
 
 - Salida a internet para descarga de imagen base
 - Llaves RSA JWE, JWS para middleware web y backend Novopayment
-- Instancia de REDIS cache para Pruebas de aceptación del usuario (uat) y Producción (prod)
+- Instancia de REDIS cache para pruebas de aceptación del usuario (uat) y producción (prod)
 
 ## Llaves RSA
 
@@ -98,25 +98,25 @@ REDIS_PASSWORD={{REDIS_PASSWORD}} \* Escribir '' en caso de no configurar
 
 WEB_URL={{WEB_HOST_NAME}} \* URL de acceso a la aplicación
 
-TENANT_ID={{TENANT_ID}} \* Tentn Id Generado en la seremonia
+TENANT_ID={{TENANT_ID}} \* Tenant Id Generado en la ceremonia
 
-CREDENTIALS_KEY={{CREDENTIALS_KEY}} Id Oath Generado en la seremonia
+CREDENTIALS_KEY={{CREDENTIALS_KEY}} Id Oath Generado en la ceremonia
 
-CREDENTIALS_SECRET={{CREDENTIALS_SECRET}} Id Oath Generado en la seremonia
+CREDENTIALS_SECRET={{CREDENTIALS_SECRET}} Id Oath Generado en la ceremonia
 
-MIDDLE_JWE_PRIVATE_KEY="{{MIDDLE_JWE_PRIVATE_KEY}}" \* Llave pkcs8 genarada en el paso anterior
+MIDDLE_JWE_PRIVATE_KEY="{{MIDDLE_JWE_PRIVATE_KEY}}" \* Llave pkcs8 generada en el paso anterior
 
-MIDDLE_JWE_PUBLIC_KEY="{{MIDDLE_JWE_PUBLIC_KEY}}" \* Llave genarada en el paso anterior
+MIDDLE_JWE_PUBLIC_KEY="{{MIDDLE_JWE_PUBLIC_KEY}}" \* Llave generada en el paso anterior
 
-MIDDLE_JWS_PRIVATE_KEY="{{MIDDLE_JWS_PRIVATE_KEY}}" \* Llave pkcs8 genarada en el paso anterior
+MIDDLE_JWS_PRIVATE_KEY="{{MIDDLE_JWS_PRIVATE_KEY}}" \* Llave pkcs8 generada en el paso anterior
 
-MIDDLE_JWS_PUBLIC_KEY="{{MIDDLE_JWS_PUBLIC_KEY}}" \* Llave genarada en el paso anterior
+MIDDLE_JWS_PUBLIC_KEY="{{MIDDLE_JWS_PUBLIC_KEY}}" \* Llave generada en el paso anterior
 
-BACK_JWE_PRIVATE_KEY="{{BACK_JWE_PRIVATE_KEY}}" \* Llave pkcs8 genarada en el paso anterior
+BACK_JWE_PRIVATE_KEY="{{BACK_JWE_PRIVATE_KEY}}" \* Llave pkcs8 generada en el paso anterior
 
-BACK_JWE_PUBLIC_KEY="{{BACK_JWE_PUBLIC_KEY}}" \* Generada en la seremonia
+BACK_JWE_PUBLIC_KEY="{{BACK_JWE_PUBLIC_KEY}}" \* Generada en la ceremonia
 
-BACK_JWS_PRIVATE_KEY="{{BACK_JWS_PRIVATE_KEY}}" \* pkcs8 genarada en el paso anterior
+BACK_JWS_PRIVATE_KEY="{{BACK_JWS_PRIVATE_KEY}}" \* pkcs8 generada en el paso anterior
 
 ## Ejemplo de despliegue
 
@@ -136,11 +136,11 @@ Para ejemplificar el despliegue se usa docker compose (**No recomendado para pro
 - REDIS_USER=''
 - REDIS_PASSWORD=qPVPjootJC^4CUve6B%D2H
 
-4. Ejecutar en la raiz de la aplicación Yiro
+4. Ejecutar en la raíz de la aplicación Yiro
 
 - docker compose up --build -d
 
 ## Consideraciones generales
 
-1. Tomar en cuenta las instrucciones del Dockerfile-belcorp para la construccón del Dockerfile en el orquestador de su preferencia
-2. Garantizar que el orquestador envíe el Argumento APP_ENV=${{uat | prod}}
+1. Tomar en cuenta las instrucciones del Dockerfile-belcorp para la construcción del Dockerfile en el orquestador de su preferencia
+2. Garantizar que el orquestador envíe el argumento APP_ENV=${{uat | prod}}
