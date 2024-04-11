@@ -9,6 +9,7 @@ import LogoGreen from '%/images/LogoGreen';
 import { useRegisterStore } from '@/store';
 import { DataUserProps } from '@/interfaces';
 import { PurpleLayout, NotFoundError } from '@/components';
+import { useJwtStore } from '@/store';
 
 /**
  * Convert phasename
@@ -34,7 +35,8 @@ export default function DataUser(user: DataUserProps) {
   const [userValidation, setUserValidation] = useState<any>(null);
   const { updateFormState, updateStep } = useRegisterStore();
   const { replace } = useRouter();
-
+  const { uuid, setUuid } = useJwtStore();
+  setUuid(userObject.uuid);
   /**
    * Verify the user and redirect
    */

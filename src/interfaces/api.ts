@@ -81,3 +81,15 @@ export type IApiGeeResponse = {
 export interface IUrlBase {
   [key: string]: string;
 }
+
+/**
+ * TUserDetailParams
+ * @typeParam params: {
+ * userId: string
+ * }
+ */
+export type TUserDetailParams = {
+  params: {
+    userId: string;
+  };
+};

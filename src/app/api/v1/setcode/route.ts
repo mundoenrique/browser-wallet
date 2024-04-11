@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   const countryCode = searchParams.get('countryCode');
   const user = uuid4();
 
-  await redis.set(`${user}`, JSON.stringify({ code: consultantCode, country: countryCode }));
+  await redis.set(`${user}`, JSON.stringify({ code: consultantCode, country: countryCode, uuid: user }));
   await redis.expire(`${user}`, 180);
   redis.quit();
 

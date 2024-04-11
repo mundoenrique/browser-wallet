@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Link as LinkMui, Typography, useMediaQuery, useTheme } from '@mui/material';
@@ -9,8 +9,10 @@ import { Box, Button, Link as LinkMui, Typography, useMediaQuery, useTheme } fro
 import { getSchema } from '@/config';
 import LogoGreen from '%/images/LogoGreen';
 import { InputPass, ModalResponsive } from '@/components';
+import { useApi } from '@/hooks/useApi';
 
 export default function Signin() {
+  const customApi = useApi();
   const theme = useTheme();
   const [open, setOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -24,6 +26,19 @@ export default function Signin() {
   const onSubmit = async (data: any) => {
     console.log(data);
   };
+
+  const getUserDetails = async (userId: string) => {
+    try {
+      const response = await customApi.get(`/users/${userId}`);
+      console.log('getUserDetails', response.data);
+    } catch (error) {
+      console.error('Error getUserDetails:', error);
+    }
+  };
+
+  useEffect(() => {
+    getUserDetails('a4f97d13-0d69-4d6d-9042-a860cb08e391');
+  }, []);
 
   return (
     <>
