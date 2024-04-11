@@ -1,5 +1,12 @@
 # Wallet YIRO
 
+<div align='center'>
+<img src="https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />&nbsp;&nbsp;
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />&nbsp;&nbsp;
+<img src="https://img.shields.io/badge/next%20js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" />&nbsp;&nbsp;
+<img src="https://img.shields.io/badge/redis-CC0000.svg?&style=for-the-badge&logo=redis&logoColor=white" />
+</div>
+
 ## Manual de configuración para la aplicación YIRO
 
 [Versión](#versión)
@@ -11,6 +18,8 @@
 [Variables de entorno](#variables-de-entorno)
 
 [Ejemplo de despliegue](#ejemplo-de-despliegue)
+
+[Consideraciones generales](#consideraciones-generales)
 
 ## Versión
 
@@ -108,3 +117,30 @@ BACK_JWE_PRIVATE_KEY="{{BACK_JWE_PRIVATE_KEY}}" \* Llave pkcs8 genarada en el pa
 BACK_JWE_PUBLIC_KEY="{{BACK_JWE_PUBLIC_KEY}}" \* Generada en la seremonia
 
 BACK_JWS_PRIVATE_KEY="{{BACK_JWS_PRIVATE_KEY}}" \* pkcs8 genarada en el paso anterior
+
+## Ejemplo de despliegue
+
+Para ejemplificar el despliegue se usa docker compose (**No recomendado para producción**)
+
+1. Configurar DNS y VHOST
+
+2. Editar el archivo .env
+
+- APP_ENV={{uat | prod}}
+
+3. Editar el archivo (./env/.env.{{uat | prod}})
+
+- REDIS_HOST=redis
+- REDIS_PORT=6379
+- REDIS_SSL=OFF
+- REDIS_USER=''
+- REDIS_PASSWORD=qPVPjootJC^4CUve6B%D2H
+
+4. Ejecutar en la raiz de la aplicación Yiro
+
+- docker compose up --build -d
+
+## Consideraciones generales
+
+1. Tomar en cuenta las instrucciones del Dockerfile-belcorp para la construccón del Dockerfile en el orquestador de su preferencia
+2. Garantizar que el orquestador envíe el Argumento APP_ENV=${{uat | prod}}
