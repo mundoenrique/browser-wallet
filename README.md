@@ -21,6 +21,8 @@
 
 [Consideraciones generales](#consideraciones-generales)
 
+[Conexión desde Somos Belcorp](#conexión-desde-somos-belcorp)
+
 ## Versión
 
 0.0.1 (Versión preliminar)
@@ -138,9 +140,40 @@ Para ejemplificar el despliegue se usa docker compose (**No recomendado para pro
 
 4. Ejecutar en la raíz de la aplicación Yiro
 
-- docker compose up --build -d
+   ```
+   docker compose up --build -d
+   ```
 
 ## Consideraciones generales
 
 1. Tomar en cuenta las instrucciones del Dockerfile-belcorp para la construcción del Dockerfile en el orquestador de su preferencia
 2. Garantizar que el orquestador envíe el argumento APP_ENV=${{uat | prod}}
+
+## Conexión desde Somos Belcorp
+
+1. Desde la aplicación somos Belcorp realizar una petición GET a la aplicación Yiro.
+
+   - CURL:
+
+     ```
+     '{{BASE_URL}}/api/v1/setcode?consultantCode=1234568&countryCode=PE' \
+      --header 'X-Request-Id: e30b625a-e085-42a5-aac2-3d52f73ad8fe'
+     ```
+
+   - Donde:
+     - BASE_URL: es el HOSTNAME de la aplicación YIRO definido por BELCORP.
+     - ConsultantCode: es el código de la consultora
+     - CountryCode: es el País donde opera la consultora
+
+2. La aplicación responderá una URL a la que deben redirigir el navegador
+
+```
+{
+    "data": "/identify/88bd1e1f-b454-4c9a-b242-ec6c6c1fa985"
+}
+
+```
+
+3. Desde Somos Belcorp deben redireccionar el navegador del usuario a la URL
+
+- {{BASE_URL}}/identify/88bd1e1f-b454-4c9a-b242-ec6c6c1fa985
