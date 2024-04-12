@@ -37,41 +37,41 @@
 
 - **Json Web Encryption (Middleware)** privada y pública para middleware **YIRO (web y/o SDK)**
 
-  - Generar JWE middleware privada PKCS#1
+  - Generar JWE middleware privada PKCS#1:
 
     openssl genpkey -algorithm RSA -out jwe_midd_private_key_pkcs1.pem -pkeyopt rsa_keygen_bits:2048
 
-  - Convertir JWE middleware privada PKCS#1 a PKCS#8
+  - Convertir JWE middleware privada PKCS#1 a PKCS#8:
 
     openssl pkcs8 -in jwe_midd_private_key_pkcs1.pem -topk8 -nocrypt -out jwe_midd_private_key_pkcs8.pem
 
-  - Generar JWE middleware pública
+  - Generar JWE middleware pública:
 
     openssl rsa -in jwe_midd_private_key_pkcs8.pem -pubout -out jwe_midd_public_key.pem
 
 - **Json Web Signature (Middleware)** privada y pública para middleware **YIRO (web y/o SDK)**
 
-  - Generar JWS middleware privada PKCS#1
+  - Generar JWS middleware privada PKCS#1:
 
     openssl genpkey -algorithm RSA -out jws_midd_private_key_pkcs1.pem -pkeyopt rsa_keygen_bits:2048
 
-  - Convertir JWS middleware privada PKCS#1 a PKCS#8
+  - Convertir JWS middleware privada PKCS#1 a PKCS#8:
 
     openssl pkcs8 -in jws_midd_private_key_pkcs1.pem -topk8 -nocrypt -out jws_midd_private_key_pkcs8.pem
 
-  - Generar JWS middleware pública
+  - Generar JWS middleware pública:
 
     openssl rsa -in jws_midd_private_key_pkcs8.pem -pubout -out jws_midd_public_key.pem
 
 - **Json Web Encryption (Backend)** privada para conexión con backend **NOVOPAYMENT**
 
-  - Convertir JWE backend privada PKCS#1 a PKCS#8
+  - Convertir JWE backend privada PKCS#1 a PKCS#8:
 
     openssl pkcs8 -in {{llave-rsa-jwe-back}}.pem -topk8 -nocrypt -out jwe_back_private_key_pkcs8.pem
 
 - **Json Web Signature (Backend)** privada para conexión con backend **NOVOPAYMENT**
 
-  - Convertir JWS backend privada PKCS#1 a PKCS#8
+  - Convertir JWS backend privada PKCS#1 a PKCS#8:
 
     openssl pkcs8 -in {{llave-rsa-jws-back}}.pem -topk8 -nocrypt -out jws_back_private_key_pkcs8.pem
 
