@@ -31,19 +31,15 @@ export default function Signin() {
   });
 
   const onSubmit = async (data: any) => {
-    console.log('🚀 ~ onSubmit ~ data:', data);
     const { password } = data;
     const payload = {
-      // userId: userData?.userId,
-      userId: '59c6078b-8298-4448-b23d-ddb2111b5be9',
-      password: encryptForge('claveDificil'),
+      userId: userData?.userId,
+      password: encryptForge(password),
     };
-    console.log('🚀 ~ handleSignin ~ payload:', payload);
     setLoadingScreen(true);
     await customApi
       .post('/users/credentials', payload)
       .then((response) => {
-        console.log('🚀 ~ handleSignin ~ response:', response);
         const { status } = response;
         if (status === 200) {
           router.push('/dashboard');
@@ -62,7 +58,6 @@ export default function Signin() {
     await customApi
       .get(`/users/${userId}`)
       .then((response) => {
-        console.log('🚀 ~ getUserDetails ~ response:', response.data);
         setUserData(response.data.data);
       })
       .catch((error) => {

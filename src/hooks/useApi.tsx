@@ -8,16 +8,14 @@ import { JWT_HEADER } from '@/utils/constants';
 import { useJwtStore, useKeyStore } from '@/store';
 
 export function useApi() {
-  const { token, uuid, setToken } = useJwtStore();
+  const { token, setToken } = useJwtStore();
   const { jwePrivateKey, jwsPrivateKey } = useKeyStore();
 
   if (token && jwePrivateKey && jwsPrivateKey) {
     api.interceptors.request.use(
       async (request) => {
-        console.log('🚀 ~ request:', request);
         const jweApiPublicKey = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY;
         const url = request.url;
-        console.log('🚀 ~ url:', url);
 
         if (!jweApiPublicKey) {
           return Promise.reject('API publicKey is not defined');
@@ -27,8 +25,6 @@ export function useApi() {
           request.headers[JWT_HEADER] = token;
           request.headers['X-Request-Id'] = uuid4();
         }
-        request.headers['X-Request-Uuid'] = uuid;
-        console.log('🚀 ~ request:', request);
 
         return request;
       },
