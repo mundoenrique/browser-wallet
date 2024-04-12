@@ -5,19 +5,24 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Link as LinkMui, Skeleton, Typography, capitalize, useMediaQuery, useTheme } from '@mui/material';
+import { useRouter } from 'next/navigation';
 //Internal app
 import { getSchema } from '@/config';
 import LogoGreen from '%/images/LogoGreen';
 import { InputPass, ModalResponsive } from '@/components';
 import { useApi } from '@/hooks/useApi';
 import { TUserDetail } from '@/interfaces';
+import { encryptForge } from '@/utils/toolHelper';
+import { useUiStore } from '@/store';
 
 export default function Signin() {
   const customApi = useApi();
   const theme = useTheme();
+  const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [userData, setUserData] = useState<TUserDetail | null>(null);
+  const { setLoadingScreen, loadingScreen } = useUiStore();
   const schema = getSchema(['password']);
 
   const { control, handleSubmit } = useForm({
@@ -26,17 +31,46 @@ export default function Signin() {
   });
 
   const onSubmit = async (data: any) => {
-    console.log(data);
+    console.log('🚀 ~ onSubmit ~ data:', data);
+    const { password } = data;
+    const payload = {
+      // userId: userData?.userId,
+      userId: '59c6078b-8298-4448-b23d-ddb2111b5be9',
+      password: encryptForge('claveDificil'),
+    };
+    console.log('🚀 ~ handleSignin ~ payload:', payload);
+    setLoadingScreen(true);
+    await customApi
+      .post('/users/credentials', payload)
+      .then((response) => {
+        console.log('🚀 ~ handleSignin ~ response:', response);
+        const { status } = response;
+        if (status === 200) {
+          router.push('/dashboard');
+        }
+      })
+      .catch((error) => {
+        throw new Error('Error in apiGee request handling: ' + (error as Error).message);
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
   };
 
   const getUserDetails = async (userId: string) => {
-    try {
-      const response = await customApi.get(`/users/${userId}`);
-      setUserData(response.data.data);
-      console.log('🚀 ~ getUserDetails ~ response:', response.data);
-    } catch (error) {
-      console.error('Error getUserDetails:', error);
-    }
+    setLoadingScreen(true);
+    await customApi
+      .get(`/users/${userId}`)
+      .then((response) => {
+        console.log('🚀 ~ getUserDetails ~ response:', response.data);
+        setUserData(response.data.data);
+      })
+      .catch((error) => {
+        throw new Error('Error in apiGee request handling: ' + (error as Error).message);
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
   };
 
   useEffect(() => {
@@ -93,6 +127,7 @@ export default function Signin() {
           sx={{ mb: '10%' }}
           type="submit"
           fullWidth
+          disabled={loadingScreen}
         >
           Ingresar
         </Button>

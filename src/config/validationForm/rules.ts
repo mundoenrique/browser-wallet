@@ -16,7 +16,7 @@ export const validationRules: ValidationRule = {
     .required('Ingresa un email para continuar')
     .min(7, 'Ingresa un email válido')
     .test('emailValid', 'Ingresa un email válido', (value) => regularExpressions.emailValid?.test(value)),
-  password: passwordValidation('Ingrese una contraseña'),
+  password: yup.string().required('Ingresa una contraseña'),
   roles: yup.string().required('Debes seleccionar una opción'),
   initialDate: yup.string().required('Ingresa una fecha'),
   countryCode: yup.string().required('Selecciona un país'),
