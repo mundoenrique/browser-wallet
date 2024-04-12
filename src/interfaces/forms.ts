@@ -75,7 +75,6 @@ export interface InputOTPProps extends FormMUIProps {
  */
 export interface InputOptionsProps extends FormMUIProps {
   options: { value: string; text: string }[];
-  disableClearable?: boolean;
   onClick?: (e: any) => void;
   disableClearable?: boolean;
 }

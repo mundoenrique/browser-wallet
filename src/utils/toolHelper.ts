@@ -1,5 +1,5 @@
 import html2canvas from 'html2canvas';
-
+import forge from 'node-forge';
 /**
  * Handle text initials on the avatar
  *
@@ -75,4 +75,38 @@ export const handleShare = async (element: HTMLElement, shareData: any, backgrou
   } catch (err) {
     console.error(err);
   }
+};
+
+export const encryptForge = (data: any) => {
+  const key: string = process.env.NEXT_PUBLIC_AES_KEY || '';
+
+  const cipher = forge.cipher.createCipher('AES-ECB', key);
+
+  cipher.start();
+
+  cipher.update(forge.util.createBuffer(data, 'utf8'));
+
+  cipher.finish();
+
+  const encryptedData = forge.util.encode64(cipher.output.getBytes());
+
+  return encryptedData;
+};
+
+export const decryptForge = (encryptedData: any) => {
+  const key: string = process.env.NEXT_PUBLIC_AES_KEY || '';
+
+  const decipher = forge.cipher.createDecipher('AES-ECB', key);
+
+  const rawData = forge.util.decode64(encryptedData);
+
+  decipher.start();
+
+  decipher.update(forge.util.createBuffer(rawData, 'raw'));
+
+  decipher.finish();
+
+  const decryptedData = decipher.output.toString();
+
+  return decryptedData;
 };

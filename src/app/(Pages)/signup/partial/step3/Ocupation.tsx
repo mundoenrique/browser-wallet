@@ -1,45 +1,47 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Collapse, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import { useRegisterStore, useUiStore } from '@/store';
+import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 import { InputSelect, InputText } from '@/components';
 import CardStep from '../CardStep';
+import { useApi } from '@/hooks/useApi';
 
 export default function Ocupation() {
   const [ocupations, setOcupations] = useState<boolean>(false);
-  const { updateStep, inc, updateFormState, ONB_PHASES_CONSULT_DATA, onboardingUuid } = useRegisterStore();
+  const { updateStep, inc, updateFormState, ONB_PHASES_CONSULT_DATA, onboardingUuId } = useRegisterStore();
   const { setLoadingScreen, loadingScreen } = useUiStore();
+  const { updateCatalog, occupationCatalog } = useCatalogsStore();
+  const customApi = useApi();
+
   const schema = ocupations
-    ? getSchema(['occupationUuid', 'enterpriseType', 'companyName', 'companyPosition'])
+    ? getSchema(['occupationCode', 'companyType', 'companyName', 'companyPosition'])
     : getSchema(['ocupation']);
 
   const { handleSubmit, control, watch, reset, getValues } = useForm({
-    defaultValues: ONB_PHASES_CONSULT_DATA
-      ? ONB_PHASES_CONSULT_DATA.consultant
-      : {
-          occupationUuid: '',
-          enterpriseType: '',
-          companyName: '',
-          companyPosition: '',
-        },
+    defaultValues: {
+      occupationCode: ONB_PHASES_CONSULT_DATA?.consultant?.occupationCode ?? null,
+      companyType: ONB_PHASES_CONSULT_DATA?.consultant?.companyType ?? null,
+      companyName: ONB_PHASES_CONSULT_DATA?.consultant?.companyName ?? '',
+      companyPosition: ONB_PHASES_CONSULT_DATA?.consultant?.companyPosition ?? '',
+    },
     resolver: yupResolver(schema),
   });
 
-  const personOcupation = watch('ocupation');
+  const personOcupation = watch('occupationCode');
 
   useEffect(() => {
-    if (personOcupation === 'pi') {
+    if (['SELF_EMPLOYED'].includes(personOcupation)) {
       setOcupations(false);
       reset({
         ...getValues(),
-        enterpriseType: 'prv',
-        enterprises: '',
-        position: '',
+        companyType: null,
+        companyName: '',
+        companyPosition: '',
       });
     } else {
       setOcupations(true);
@@ -47,28 +49,53 @@ export default function Ocupation() {
   }, [getValues, personOcupation, reset]);
 
   const onSubmit = async (data: any) => {
-    updateFormState('ONB_PHASES_CONSULT_DATA', data);
-
-    const requestData = {
+    const requestFormData = {
       currentPhaseCode: 'ONB_PHASES_CONSULT_DATA',
-      onboardingUuid: onboardingUuid,
+      onboardingUuId: onboardingUuId,
       request: {
-        consultant: { ...data },
+        consultant: {
+          occupationCode: data.occupationCode,
+          ...(ocupations && {
+            companyType: data.companyType,
+            companyName: data.companyName,
+            companyPosition: data.companyPosition,
+          }),
+        },
       },
     };
-    const requestOptions = { method: 'PUT', body: JSON.stringify(requestData) };
 
     setLoadingScreen(true);
 
-    await new Promise((resolve) => {
-      setTimeout(resolve, 300);
-    });
+    console.log('ocupation request data', requestFormData);
 
-    await fetch('/api/v1/onboarding/consultantdata', requestOptions).then(() => {
-      setLoadingScreen(false);
-      inc();
-    });
+    customApi
+      .put('/onboarding/consultantdata', requestFormData)
+      .then((response) => {
+        console.log('ocupation form request', response);
+        updateFormState('ONB_PHASES_CONSULT_DATA', requestFormData.request);
+        inc();
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
   };
+
+  const getOccupationsCatalg = useCallback(async () => {
+    customApi.post('/catalogs/search', { catalogCode: 'OCCUPATIONS_CATALOG' }).then((response) => {
+      console.log('occupation catalog', response);
+      updateCatalog(
+        'occupationCatalog',
+        response.data.data.data.map((occupation: { value: string; code: string }) => ({
+          text: occupation.value,
+          value: occupation.code,
+        }))
+      );
+    });
+  }, []); //eslint-disable-line
+
+  useEffect(() => {
+    getOccupationsCatalg();
+  }, [getOccupationsCatalg]);
 
   return (
     <CardStep stepNumber="3">
@@ -83,23 +110,25 @@ export default function Ocupation() {
             Queremos saber más de ti
           </Typography>
           <Box>
-            <InputSelect
-              name="occupationUuid"
-              label="¿Cuál es tu ocupación?"
-              options={[
-                { text: 'Consultora de belleza independiente', value: 'pi' },
-                { text: 'Doctor', value: 'doc' },
-                { text: 'Contador', value: 'cont' },
-              ]}
-              control={control}
-            />
+            {occupationCatalog.length > 0 ? (
+              <InputSelect
+                name="occupationCode"
+                label="¿Cuál es tu ocupación?"
+                disableClearable
+                options={occupationCatalog}
+                control={control}
+              />
+            ) : (
+              <InputSelect name="default" label="¿Cuál es tu ocupación?" options={[]} disableClearable disabled />
+            )}
             <Collapse in={ocupations} timeout={300}>
               <InputSelect
-                name="enterpriseType"
+                name="companyType"
                 label="Tipo de empresa"
+                disableClearable
                 options={[
-                  { text: 'Privada', value: 'prv' },
-                  { text: 'Publica', value: 'pbc' },
+                  { text: 'Privada', value: 'Privado' },
+                  { text: 'Publica', value: 'Publico' },
                 ]}
                 control={control}
               />

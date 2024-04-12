@@ -18,12 +18,12 @@ import { PurpleLayout, NotFoundError } from '@/components';
  */
 const phaseToStep = (phase: string) => {
   const phasesSteps: { [key: string]: number } = {
-    ONB_PHASES_TERMS: 1,
-    ONB_PHASES_OTP: 2,
-    ONB_PHASES_CONSULT_DATA: 3,
-    ONB_PHASES_PEP: 4,
-    ONB_PHASES_VALIDATE_BIOMETRIC: 5,
-    ONB_PHASES_PASSWORD: 10,
+    ONB_PHASES_TERMS: 2,
+    ONB_PHASES_OTP: 3,
+    ONB_PHASES_CONSULT_DATA: 4,
+    ONB_PHASES_PEP: 5,
+    //ONB_PHASES_VALIDATE_BIOMETRIC: 5,
+    ONB_PHASES_PASSWORD: 6,
   };
   return phasesSteps[phase] || 0;
 };
@@ -61,6 +61,8 @@ export default function DataUser(user: DataUserProps) {
       PH_IN_PROGRESS: {
         path: '/signup',
         store: () => {
+          //TODO: Hay un porblema con la variable onboardingUuid que esta pendiente de ajustar el nombre
+          updateFormState('onboardingUuId', registerData.status.onboardingUuid);
           registerData.onboardingPhases.forEach((phase: any) => {
             updateFormState(phase.onboardingPhaseCode, phase.metadata);
           });
@@ -89,6 +91,7 @@ export default function DataUser(user: DataUserProps) {
 
   useEffect(() => {
     userValidation && userRedirect(userValidation);
+    console.log('identify', userValidation);
   }, [userValidation, userRedirect]);
 
   return (
