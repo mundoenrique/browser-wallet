@@ -1,7 +1,6 @@
 import { render, screen,waitFor } from '@testing-library/react';
 import UserPage from '@/app/(Pages)/identify/[user]/page';
 import { createRedisInstance } from '@/utils/redis';
-
 import ErrorBoundary from '@/components/errorBoundary';
 
 jest.mock('@/utils/redis', () => ({
@@ -22,8 +21,6 @@ describe('UserPage', () => {
   });
 
   it('renders ErrorBoundary when an unexpected error occurs', async () => {
-    console.error = jest.fn();
-    const consoleError = console.error;
     const redisClient = {
       get: jest.fn().mockResolvedValue(JSON.stringify(() => { throw new Error('Unexpected error'); })),
       del: jest.fn(),
@@ -38,7 +35,6 @@ describe('UserPage', () => {
     );
 
     await waitFor(() => expect(screen.getByText('Something went wrong.')).toBeInTheDocument());
-    console.error = consoleError;
   });
 
   it('renders NotFoundError when user data is not found', async () => {
