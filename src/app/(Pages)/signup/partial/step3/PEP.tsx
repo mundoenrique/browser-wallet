@@ -41,15 +41,15 @@ export default function PEP() {
     defaultValues: {
       isPep: ONB_PHASES_PEP?.isPep.toString() ?? '',
       pepForm: {
-        isRelativeAlive: ONB_PHASES_PEP?.pepForm?.isFamilyAlive.toString() ?? '',
+        isRelativeAlive: ONB_PHASES_PEP?.pepForm?.isRelativeAlive.toString() ?? '',
         position: ONB_PHASES_PEP?.pepForm?.position ?? '',
         companyName: ONB_PHASES_PEP?.pepForm?.companyName ?? '',
         address: ONB_PHASES_PEP?.pepForm?.address ?? '',
-        districtCode: ONB_PHASES_PEP?.pepForm?.district ?? null,
-        provinceCode: ONB_PHASES_PEP?.pepForm?.province ?? null,
-        departmentCode: ONB_PHASES_PEP?.pepForm?.department ?? null,
+        districtCode: ONB_PHASES_PEP?.pepForm?.districtCode ?? null,
+        provinceCode: ONB_PHASES_PEP?.pepForm?.provinceCode ?? null,
+        departmentCode: ONB_PHASES_PEP?.pepForm?.departmentCode ?? null,
         endDate: ONB_PHASES_PEP?.pepForm?.endDate ?? '',
-        holdShare: ONB_PHASES_PEP?.pepForm?.isRelativeAlive.toString() ?? '',
+        holdShare: ONB_PHASES_PEP?.pepForm?.holdShare.toString() ?? '',
       },
       relatives: [],
     },
@@ -301,6 +301,9 @@ export default function PEP() {
                 options={departamentsCatalog}
                 control={control}
                 disableClearable
+                onChange={() => {
+                  console.log('change');
+                }}
               />
             ) : (
               <InputSelect name="pepForm.departmentCode" label="Departamento" options={[]} disabled />
