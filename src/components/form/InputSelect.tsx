@@ -31,7 +31,6 @@ function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
           isOptionEqualToValue={(option) => {
             return option.value == value;
           }}
-          disableClearable={disableClearable}
           onChange={onChange}
           sx={{ width: '100%' }}
           renderInput={(params) => <TextField {...params} placeholder="Selecciona una opción" />}
@@ -94,7 +93,6 @@ export default function InputSelect(props: InputOptionsProps): JSX.Element {
                   field.onChange(data?.value);
                   onChange && onChange(e, data);
                 }}
-                disableClearable={disableClearable}
                 error={error}
                 {...restProps}
               />

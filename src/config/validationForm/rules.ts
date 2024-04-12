@@ -37,8 +37,8 @@ export const validationRules: ValidationRule = {
     'Las contraseñas no coinciden'
   ),
   legal: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
-  occupationUuid: yup.string().required('Selecciona una ocupación'),
-  enterpriseType: yup.string().required('Selecciona el tipo de empresa'),
+  occupationCode: yup.string().required('Selecciona una ocupación'),
+  companyType: yup.string().required('Selecciona el tipo de empresa'),
   companyName: yup.string().required('Ingresa el nombre de la empresa'),
   companyPosition: yup.string().required('Ingrese su posición en la empresa'),
   phoneNumber: yup
@@ -48,13 +48,13 @@ export const validationRules: ValidationRule = {
     .test('celularValid', 'Ingresa un numero de celular', (value) => regularExpressions.onlyNumber?.test(value)),
   isPep: yup.string().nonNullable().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
   pepForm: yup.object().shape({
-    isFamilyAlive: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
+    isRelativeAlive: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
     position: yup.string().required('Ingrese su posición en la empresa'),
     companyName: yup.string().required('Ingresa el nombre de la empresa'),
     address: yup.string().required('Ingresa la dirección de la empresa'),
-    district: yup.string().required('Selecciona el distrito'),
-    province: yup.string().required('Selecciona la provincia'),
-    department: yup.string().required('Selecciona el departamento'),
+    districtCode: yup.string().required('Selecciona el distrito'),
+    provinceCode: yup.string().required('Selecciona la provincia'),
+    departmentCode: yup.string().required('Selecciona el departamento'),
     endDate: yup.string().required('Ingresa la fecha'),
     holdShare: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
   }),

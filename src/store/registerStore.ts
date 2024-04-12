@@ -75,7 +75,7 @@ export const useRegisterStore = create<RegisterStore>()(
         /**
          * Storage of terms info
          */
-        onboardingUuid: null,
+        onboardingUuId: null,
         /**
          * Function to set the data of completed forms
          */

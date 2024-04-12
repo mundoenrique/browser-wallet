@@ -1,26 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Box, Button, Collapse, Link as LinkMui, Typography } from '@mui/material';
+import dayjs from 'dayjs';
 //Internal app
 import { CardStep } from '..';
 import { getSchema } from '@/config';
-import { useRegisterStore, useUiStore } from '@/store';
+import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 import { slate } from '@/theme/theme-default';
 import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResponsive } from '@/components';
+import { useApi } from '@/hooks/useApi';
 
+//Optios to map to <inputCheck >
 const options: any = [
   { text: 'Sí', value: 'true' },
   { text: 'No', value: 'false' },
-];
-
-const selectOptions = [
-  { text: 'Opción A', value: 'A' },
-  { text: 'Opción B', value: 'B' },
-  { text: 'Opción C', value: 'C' },
-  { text: 'Opción D', value: 'D' },
 ];
 
 export default function PEP() {
@@ -30,38 +26,33 @@ export default function PEP() {
   const [showPepInfo, setShowPepInfo] = useState<boolean>(false);
   const [parentIndex, setParentIndex] = useState<number>(-1);
 
+  const customApi = useApi();
+
   const { setLoadingScreen } = useUiStore();
 
-  const { dec, inc, updateFormState, ONB_PHASES_PEP, setShowHeader, onboardingUuid } = useRegisterStore();
+  const { updateCatalog, departamentsCatalog, provincesCatalog, districtsCatalog, documentTypesCatalog } =
+    useCatalogsStore();
+
+  const { dec, inc, updateFormState, ONB_PHASES_PEP, setShowHeader, onboardingUuId } = useRegisterStore();
 
   const schema = isPep ? getSchema(['isPep', 'pepForm', 'relatives']) : getSchema(['isPep']);
 
-  const { control, watch, handleSubmit, getValues, reset } = useForm({
-    defaultValues: ONB_PHASES_PEP
-      ? {
-          ...ONB_PHASES_PEP,
-          isPep: ONB_PHASES_PEP.isPep ? 'true' : 'false',
-          pepForm: {
-            ...ONB_PHASES_PEP.pepForm,
-            isFamilyAlive: ONB_PHASES_PEP.pepForm.isFamilyAlive ? 'true' : 'false',
-            holdShare: ONB_PHASES_PEP.pepForm.holdShare ? 'true' : 'false',
-          },
-        }
-      : {
-          isPep: '',
-          pepForm: {
-            isFamilyAlive: '',
-            position: '',
-            companyName: '',
-            address: '',
-            district: null,
-            province: null,
-            department: null,
-            endDate: '',
-            holdShare: '',
-          },
-          relatives: [],
-        },
+  const { control, watch, handleSubmit, setValue, reset } = useForm({
+    defaultValues: {
+      isPep: ONB_PHASES_PEP?.isPep.toString() ?? '',
+      pepForm: {
+        isRelativeAlive: ONB_PHASES_PEP?.pepForm?.isFamilyAlive.toString() ?? '',
+        position: ONB_PHASES_PEP?.pepForm?.position ?? '',
+        companyName: ONB_PHASES_PEP?.pepForm?.companyName ?? '',
+        address: ONB_PHASES_PEP?.pepForm?.address ?? '',
+        districtCode: ONB_PHASES_PEP?.pepForm?.district ?? null,
+        provinceCode: ONB_PHASES_PEP?.pepForm?.province ?? null,
+        departmentCode: ONB_PHASES_PEP?.pepForm?.department ?? null,
+        endDate: ONB_PHASES_PEP?.pepForm?.endDate ?? '',
+        holdShare: ONB_PHASES_PEP?.pepForm?.isRelativeAlive.toString() ?? '',
+      },
+      relatives: [],
+    },
     resolver: yupResolver(schema),
   });
 
@@ -70,36 +61,45 @@ export default function PEP() {
     name: 'relatives',
   });
 
+  const watchDepartment = watch('pepForm.departmentCode');
+
+  const watchProvince = watch('pepForm.provinceCode');
+
   const watchIsPep = watch('isPep');
-  const WatchIsFamilyAlive = watch('pepForm.isFamilyAlive');
+
+  const WatchIsFamilyAlive = watch('pepForm.isRelativeAlive');
 
   const onSubmit = async (data: any) => {
-    const requestData = {
+    const requestFormData = {
       currentPhaseCode: 'ONB_PHASES_PEP',
-      onboardingUuId: onboardingUuid,
+      onboardingUuId: onboardingUuId,
       request: {
         ...data,
         isPep: data.isPep.toLowerCase() === 'true',
         pepForm: {
           ...data.pepForm,
-          isFamilyAlive: data.pepForm.isFamilyAlive.toLowerCase() === 'true',
+          isRelativeAlive: data.pepForm.isRelativeAlive.toLowerCase() === 'true',
           holdShare: data.pepForm.holdShare.toLowerCase() === 'true',
+          endDate: dayjs(data.endDate).format('YYYY-MM-DD'),
         },
       },
     };
-    updateFormState('ONB_PHASES_PEP', data);
 
     setLoadingScreen(true);
+    console.log(requestFormData);
 
-    await new Promise((resolve) => {
-      setTimeout(resolve, 1000);
-    });
-
-    await fetch('/api/v1/onboarding/pep', { method: 'POST', body: JSON.stringify(requestData) }).then(() => {
-      inc();
-
-      setLoadingScreen(false);
-    });
+    customApi
+      .post('/onboarding/pep', requestFormData)
+      .then(() => {
+        updateFormState('ONB_PHASES_PEP', requestFormData.request);
+        inc();
+      })
+      .catch((error) => {
+        console.log('pep Error', error);
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
   };
 
   useEffect(() => {
@@ -111,9 +111,9 @@ export default function PEP() {
           position: '',
           companyName: '',
           address: '',
-          district: null,
-          province: null,
-          department: null,
+          districtCode: null,
+          provinceCode: null,
+          departmentCode: null,
           endDate: '',
           holdShare: '',
         },
@@ -122,7 +122,7 @@ export default function PEP() {
       remove();
       setHasParents(false);
     }
-  }, [watchIsPep, hasParents]); //eslint-disable
+  }, [watchIsPep, hasParents]); //eslint-disable-line
 
   useEffect(() => {
     watchIsPep && setIsPep(watchIsPep.toLowerCase() === 'true');
@@ -132,6 +132,135 @@ export default function PEP() {
   useEffect(() => {
     setShowHeader(true);
   }, [setShowHeader]);
+
+  useEffect(() => {
+    const getDepartmentsCatalog = async () => {
+      customApi
+        .post('/catalogs/search', {
+          catalogCode: 'GEO_LOCATION_LEVEL_ONE_CATALOG',
+          parameters: [
+            {
+              code: 'COUNTRY_CODE',
+              value: 'PER',
+            },
+            {
+              code: 'GEO_TYPE_CODE',
+              value: 'GEO_LOCATION_LEVEL_ONE',
+            },
+          ],
+        })
+        .then((response) => {
+          console.log('department catalog', response);
+          updateCatalog(
+            'departamentsCatalog',
+            response.data.data.data.map((department: { value: string; code: string }) => ({
+              text: department.value,
+              value: department.code,
+            }))
+          );
+        });
+    };
+    getDepartmentsCatalog();
+  }, []);
+
+  useEffect(() => {
+    updateCatalog('provincesCatalog', []);
+    updateCatalog('districtsCatalog', []);
+    setValue('pepForm.provinceCode', null);
+    setValue('pepForm.districtCode', null);
+    const getProvincesCatalog = async () => {
+      customApi
+        .post('/catalogs/search', {
+          catalogCode: 'GEO_LOCATION_LEVEL_TWO_CATALOG',
+          parameters: [
+            {
+              code: 'COUNTRY_CODE',
+              value: 'PER',
+            },
+            {
+              code: 'GEO_TYPE_CODE',
+              value: 'GEO_LOCATION_LEVEL_TWO',
+            },
+            {
+              code: 'LOCATION_LEVEL_ONE',
+              value: watchDepartment,
+            },
+          ],
+        })
+        .then((response) => {
+          console.log('Provinces catalog', response);
+          updateCatalog(
+            'provincesCatalog',
+            response.data.data.data.map((province: { value: string; code: string }) => ({
+              text: province.value,
+              value: province.code,
+            }))
+          );
+        });
+    };
+
+    getProvincesCatalog();
+  }, [watchDepartment]);
+
+  useEffect(() => {
+    updateCatalog('districsCatalog', []);
+
+    setValue('pepForm.districtCode', null);
+
+    const getDistrictsCatalog = async () => {
+      customApi
+        .post('/catalogs/search', {
+          catalogCode: 'GEO_LOCATION_LEVEL_THREE_CATALOG',
+          parameters: [
+            {
+              code: 'COUNTRY_CODE',
+              value: 'PER',
+            },
+            {
+              code: 'GEO_TYPE_CODE',
+              value: 'GEO_LOCATION_LEVEL_THREE',
+            },
+            {
+              code: 'LOCATION_LEVEL_TWO',
+              value: watchProvince,
+            },
+          ],
+        })
+        .then((response) => {
+          console.log('Districts catalog', response);
+          updateCatalog(
+            'districtsCatalog',
+            response.data.data.data.map((district: { value: string; code: string }) => ({
+              text: district.value,
+              value: district.code,
+            }))
+          );
+        });
+    };
+
+    getDistrictsCatalog();
+  }, [watchProvince]);
+
+  useEffect(() => {
+    const getDocumentsCatalog = async () => {
+      customApi
+        .post('/catalogs/search', {
+          catalogCode: 'DOCUMENTS_TYPE_CATALOG',
+        })
+        .then((response) => {
+          console.log('Documents', response);
+          updateCatalog(
+            'documentTypesCatalog',
+            response.data.data.data.map((documentType: { value: string; code: string }) => ({
+              text: documentType.value,
+              value: documentType.code,
+            }))
+          );
+        });
+    };
+
+    getDocumentsCatalog();
+  }, []);
 
   return (
     <CardStep stepNumber="3">
@@ -165,9 +294,39 @@ export default function PEP() {
             <InputText name="pepForm.position" label="Cargo en la institución pública" control={control} />
             <InputText name="pepForm.companyName" label="Nombre de la institución" control={control} />
             <InputText name="pepForm.address" label="Dirección" control={control} />
-            <InputSelect name="pepForm.district" label="Distrito" options={selectOptions} control={control} />
-            <InputSelect name="pepForm.province" label="Provincia" options={selectOptions} control={control} />
-            <InputSelect name="pepForm.department" label="Departamento" options={selectOptions} control={control} />
+            {departamentsCatalog.length > 0 ? (
+              <InputSelect
+                name="pepForm.departmentCode"
+                label="Departamento"
+                options={departamentsCatalog}
+                control={control}
+                disableClearable
+              />
+            ) : (
+              <InputSelect name="pepForm.departmentCode" label="Departamento" options={[]} disabled />
+            )}
+            {provincesCatalog.length > 0 ? (
+              <InputSelect
+                name="pepForm.provinceCode"
+                label="Provincia"
+                options={provincesCatalog}
+                control={control}
+                disableClearable
+              />
+            ) : (
+              <InputSelect name="pepForm.provinceCode" label="Provincia" options={[]} disabled />
+            )}
+            {districtsCatalog.length > 0 ? (
+              <InputSelect
+                name="pepForm.districtCode"
+                label="Distrito"
+                options={districtsCatalog}
+                control={control}
+                disableClearable
+              />
+            ) : (
+              <InputSelect name="pepForm.districtCode" label="Distrito" options={[]} disabled />
+            )}
             <InputDatePicker name="pepForm.endDate" label="Fecha de salida" control={control} />
 
             <Typography variant="body2" align="left" sx={{ mb: 3 }}>
@@ -195,7 +354,7 @@ export default function PEP() {
               }}
             >
               <InputCheckCondition
-                name="pepForm.isFamilyAlive"
+                name="pepForm.isRelativeAlive"
                 options={options}
                 control={control}
                 onClick={(e) => {
@@ -235,12 +394,23 @@ export default function PEP() {
                       )}
                     </Box>
                   </Box>
-                  <InputSelect
-                    name={`relatives.${index}.documentType`}
-                    label="Tipo de documento"
-                    options={selectOptions}
-                    control={control}
-                  />
+
+                  {documentTypesCatalog.length > 0 ? (
+                    <InputSelect
+                      name={`relatives.${index}.documentType`}
+                      label="Tipo de documento"
+                      options={documentTypesCatalog}
+                      control={control}
+                      disableClearable
+                    />
+                  ) : (
+                    <InputSelect
+                      name={`relatives.${index}.documentType`}
+                      label="Tipo de documento"
+                      options={[]}
+                      disabled
+                    />
+                  )}
                   <InputText name={`relatives.${index}.documentNumber`} label="Número de documento" control={control} />
                   <InputText name={`relatives.${index}.fullName`} label="Nombre completo" control={control} />
                 </Box>

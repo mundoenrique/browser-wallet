@@ -1,13 +1,13 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Card, Chip, Divider, Typography } from '@mui/material';
 //internal app
 import { CardStep } from '..';
 import { getSchema } from '@/config';
-import { useRegisterStore, useUiStore, catalogsStore } from '@/store';
+import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 import { InputCheck, InputText, ModalResponsive, InputSelect, Terms } from '@/components';
 import { useApi } from '@/hooks/useApi';
 
@@ -22,15 +22,38 @@ export default function InfoVerification() {
   const schemaEmail = getSchema(['email']);
   const schemaPhoneNumber = getSchema(['phoneNumber']);
 
-  const { inc, updateFormState, ONB_PHASES_TERMS, setShowHeader, termsDefinition } = useRegisterStore();
+  const { inc, updateFormState, ONB_PHASES_TERMS, setShowHeader } = useRegisterStore();
   const { setLoadingScreen, loadingScreen } = useUiStore();
-  const { updateCatalog, countriesCatalog, termsCatalog } = catalogsStore();
+  const { updateCatalog, countriesCatalog, termsCatalog } = useCatalogsStore();
+
+  const setTermsValue = useCallback(
+    (term: any) => {
+      if (ONB_PHASES_TERMS?.terms && termsCatalog.length > 0) {
+        const code: any = termsCatalog.find((el) => {
+          return el.value == term;
+        });
+
+        if (!code) {
+          return false; // Si el término no existe, retornar false
+        }
+        return ONB_PHASES_TERMS.terms.some((el: any) => {
+          return el.code === code.code;
+        });
+      }
+    },
+    [termsCatalog, ONB_PHASES_TERMS]
+  );
+
+  useEffect(() => {
+    setValue('terms', setTermsValue('TERMINO 1'));
+    setValue('policy', setTermsValue('TERMINO 2'));
+  }, [setTermsValue, termsCatalog, ONB_PHASES_TERMS]); //eslint-disable-line
 
   const { handleSubmit, control, setValue, getValues } = useForm({
     defaultValues: {
-      countryCode: ONB_PHASES_TERMS && ONB_PHASES_TERMS.consultant?.countryCode,
-      phoneNumber: ONB_PHASES_TERMS && ONB_PHASES_TERMS.consultant?.phoneNumber,
-      email: ONB_PHASES_TERMS && ONB_PHASES_TERMS.consultant?.email,
+      countryCode: ONB_PHASES_TERMS?.consultant?.countryCode ?? '',
+      phoneNumber: ONB_PHASES_TERMS?.consultant?.phoneNumber ?? '',
+      email: ONB_PHASES_TERMS?.consultant?.email ?? '',
       terms: false,
       policy: false,
     },
@@ -91,14 +114,15 @@ export default function InfoVerification() {
         }, []),
       },
     };
-    console.log('send', requestFormData);
+    console.log('send Terms Form', requestFormData);
 
     setLoadingScreen(true);
     await customApi
       .post('/onboarding/termsandconditions', requestFormData)
       .then((response) => {
-        console.log('termsAndCondition', response);
-        updateFormState('verificationFormState', requestFormData);
+        console.log('termsAndCondition response', response);
+        updateFormState('ONB_PHASES_TERMS', requestFormData.request);
+        updateFormState('onboardingUuId', response.data.data.onboardingUuId);
         inc();
       })
       .catch((error) => {
@@ -203,7 +227,7 @@ export default function InfoVerification() {
                 {ONB_PHASES_TERMS ? ONB_PHASES_TERMS.consultant?.lastName : ''}
               </Typography>
               <Typography variant="subtitle2">
-                {ONB_PHASES_TERMS ? ONB_PHASES_TERMS.consultant?.documentType : ''}
+                {ONB_PHASES_TERMS ? `${ONB_PHASES_TERMS.consultant?.documentType}:` : ''}{' '}
                 {ONB_PHASES_TERMS ? ONB_PHASES_TERMS.consultant?.documentNumber : ''}
               </Typography>
             </Box>
@@ -232,7 +256,7 @@ export default function InfoVerification() {
               }}
             >
               <Box>
-                <Typography variant="body2">Número de Celular:</Typography>
+                <Typography variant="body2">Número de celular:</Typography>
                 <Typography variant="body2">{control._formValues.phoneNumber}</Typography>
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>

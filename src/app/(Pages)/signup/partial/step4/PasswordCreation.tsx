@@ -1,18 +1,58 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { CardStep } from '..';
 import { FormPass } from '@/components';
-import { useRegisterStore } from '@/store';
+import { useRegisterStore, useUiStore } from '@/store';
+import { useApi } from '@/hooks/useApi';
+import { encryptForge } from '@/utils/toolHelper';
 
 export default function PasswordCreation() {
-  const { updateStep, inc, setShowHeader } = useRegisterStore();
+  const { dec, inc, setShowHeader } = useRegisterStore();
+  const { setLoadingScreen, loadingScreen } = useUiStore();
+  const customApi = useApi();
+
+  const getTermsCatalog = useCallback(() => {
+    customApi.post('/catalog/search', {
+      catalogCode: 'TERMS_AND_CONDITIONS_CATALOG',
+      parameters: [
+        {
+          code: 'TERMS_CATEGORY',
+          value: 'ONB_PHASES_PASSWORD',
+        },
+      ],
+    });
+  }, []);
+
+  useEffect(() => {
+    getTermsCatalog();
+  }, []);
 
   const onSubmit = async (data: any) => {
     console.log(data);
-    inc();
+    const cipherPassword = encryptForge(data.newPassword);
+    const requestFormData = {
+      currentPhaseCode: 'ONB_PHASES_PASSWORD',
+      onboardingUuid: 'a4f97d13-0d69-4d6d-9042-a857cb08e391',
+      request: {
+        password: cipherPassword,
+        terms: [
+          {
+            code: 'TERM1',
+          },
+        ],
+      },
+    };
+
+    customApi
+      .post('/onboarding/credentials', requestFormData)
+      .then(() => {
+        inc();
+      })
+      .catch(() => {})
+      .finally(() => {});
   };
 
   useEffect(() => {
@@ -43,7 +83,7 @@ export default function PasswordCreation() {
             <Button
               variant="outlined"
               onClick={() => {
-                updateStep(8);
+                dec();
               }}
             >
               Anterior

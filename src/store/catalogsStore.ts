@@ -6,30 +6,30 @@ import { CatalogsStore } from '@/interfaces';
 /**
  * Stores catalogs data for de inputs
  */
-export const catalogsStore = create<CatalogsStore>()(
+export const useCatalogsStore = create<CatalogsStore>()(
   devtools(
     persist(
       (set) => ({
         /**
-         * Storage of the verification form data
+         * Storage of the level one geo-location
          */
-        departaments: null,
+        departamentsCatalog: [],
         /**
          * Storage of the ocupation form data
          */
-        province: null,
+        provincesCatalog: [],
         /**
-         * Storage of the pep form data
+         *  Storage of the level two geo-location
          */
-        districs: null,
+        districtsCatalog: [],
         /**
-         * Storage of the biometric form data
+         *  Storage of the documentType
          */
-        companyType: null,
+        documentTypesCatalog: [],
         /**
-         * Storaage user info
+         *  Storage of the level three geo-location
          */
-        ocupation: null,
+        occupationCatalog: [],
         /**
          * Storage of countries info
          */
@@ -39,11 +39,11 @@ export const catalogsStore = create<CatalogsStore>()(
          */
         termsCatalog: [],
         /**
-         * Function to set the data of completed forms
+         * Function to set the data of catalogs
          */
         updateCatalog: (catalog, data) => set((state) => ({ ...state, [catalog]: data })),
       }),
-      { name: 'catalogStore', storage: createJSONStorage(() => sessionStorage) }
+      { name: 'catalogStore', storage: createJSONStorage(() => localStorage) }
     )
   )
 );
