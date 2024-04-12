@@ -19,12 +19,10 @@ export const useJwtStore = create<JwtStoreProps>()(
          * Current token
          */
         token: null,
-        uuid: null,
         /**
          * Replaces the current token
          */
         setToken: (token) => set({ token }),
-        setUuid: (uuid: string) => set({ uuid }),
       }),
       {
         name: 'jwt-store',

@@ -14,6 +14,7 @@ export async function POST(request: NextRequest) {
     const { jwePublicKey, jwsPublicKey } = decryptedPayload as { jwePublicKey: string; jwsPublicKey: string };
 
     const token = await signJWT(jwePrivateKey, { jwePublicKey, jwsPublicKey });
+    console.log('🚀 ~ POST ~ token:', token);
 
     const responsePayload = { code: '200.00.000', message: 'Process Ok', data: token };
 

@@ -9,7 +9,8 @@ import LogoGreen from '%/images/LogoGreen';
 import { useRegisterStore } from '@/store';
 import { DataUserProps } from '@/interfaces';
 import { PurpleLayout, NotFoundError } from '@/components';
-import { useJwtStore } from '@/store';
+import { useSessionStore } from '@/store';
+import { set } from 'react-hook-form';
 
 /**
  * Convert phasename
@@ -35,8 +36,8 @@ export default function DataUser(user: DataUserProps) {
   const [userValidation, setUserValidation] = useState<any>(null);
   const { updateFormState, updateStep } = useRegisterStore();
   const { replace } = useRouter();
-  const { uuid, setUuid } = useJwtStore();
-  setUuid(userObject.uuid);
+  const { uuid, setUuid } = useSessionStore();
+  // setUuid(userObject.uuid);
   /**
    * Verify the user and redirect
    */
@@ -91,6 +92,7 @@ export default function DataUser(user: DataUserProps) {
 
   useEffect(() => {
     userValidation && userRedirect(userValidation);
+    setUuid(userObject.uuid);
   }, [userValidation, userRedirect]);
 
   return (

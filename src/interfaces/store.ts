@@ -28,8 +28,16 @@ export type KeyStoreProps = {
  */
 export type JwtStoreProps = {
   token: string | null;
-  uuid: string | null;
   setToken: (_token: string) => void;
+};
+
+/**
+ * Session store
+ * @typeParam uuid: string | null
+ * @typeParam setUuid: (_uuid: string) => void
+ */
+export type SessionStoreProps = {
+  uuid: string | null;
   setUuid: (_uuid: string) => void;
 };
 
@@ -153,4 +161,9 @@ export interface CatalogsStore {
   countriesCatalog: { text: string; value: string }[];
   termsCatalog: { code: string; value: string }[];
   updateCatalog: (_form: string, _data: {} | []) => void;
+}
+
+export interface UserStore {
+  user: any | null;
+  setUser: (_data: any) => void;
 }
