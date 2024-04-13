@@ -41,4 +41,6 @@ export interface ModalOtpProps {
 export interface ModalErrorProps {
   title: string;
   description: string;
+  open: boolean;
+  handleClose: () => void;
 }

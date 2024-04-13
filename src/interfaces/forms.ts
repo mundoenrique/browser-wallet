@@ -1,5 +1,5 @@
 import { SxProps } from '@mui/material';
-import { DateView } from '@mui/x-date-pickers';
+import { DateView, DesktopDatePickerProps } from '@mui/x-date-pickers';
 //Internal app
 import { IClientProps } from './store';
 
@@ -88,6 +88,7 @@ export interface InputOptionsProps extends FormMUIProps {
 export interface InputDatePickerProps extends FormMUIProps {
   views?: DateView[];
   format?: string;
+  datePickerProps?: DesktopDatePickerProps<any>;
 }
 
 /**

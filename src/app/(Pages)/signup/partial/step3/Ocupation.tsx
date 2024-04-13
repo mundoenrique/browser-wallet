@@ -1,20 +1,20 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useCallback, useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Collapse, Typography } from '@mui/material';
 //Internal app
-import { getSchema } from '@/config';
 import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
+import { useApi } from '@/hooks/useApi';
+import { getSchema } from '@/config';
 import { InputSelect, InputText } from '@/components';
 import CardStep from '../CardStep';
-import { useApi } from '@/hooks/useApi';
 
 export default function Ocupation() {
   const [ocupations, setOcupations] = useState<boolean>(false);
   const { updateStep, inc, updateFormState, ONB_PHASES_CONSULT_DATA, onboardingUuId } = useRegisterStore();
-  const { setLoadingScreen, loadingScreen } = useUiStore();
+  const { setLoadingScreen, loadingScreen, setModalError } = useUiStore();
   const { updateCatalog, occupationCatalog } = useCatalogsStore();
   const customApi = useApi();
 
@@ -66,36 +66,41 @@ export default function Ocupation() {
 
     setLoadingScreen(true);
 
-    console.log('ocupation request data', requestFormData);
-
     customApi
       .put('/onboarding/consultantdata', requestFormData)
       .then((response) => {
-        console.log('ocupation form request', response);
         updateFormState('ONB_PHASES_CONSULT_DATA', requestFormData.request);
         inc();
+      })
+      .catch(() => {
+        setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
       })
       .finally(() => {
         setLoadingScreen(false);
       });
   };
 
-  const getOccupationsCatalg = useCallback(async () => {
-    customApi.post('/catalogs/search', { catalogCode: 'OCCUPATIONS_CATALOG' }).then((response) => {
-      console.log('occupation catalog', response);
-      updateCatalog(
-        'occupationCatalog',
-        response.data.data.data.map((occupation: { value: string; code: string }) => ({
-          text: occupation.value,
-          value: occupation.code,
-        }))
-      );
-    });
-  }, []); //eslint-disable-line
-
   useEffect(() => {
-    getOccupationsCatalg();
-  }, [getOccupationsCatalg]);
+    const fetchOccupationsCatalg = async () => {
+      customApi
+        .post('/catalogs/search', { catalogCode: 'OCCUPATIONS_CATALOG' })
+        .then((response) => {
+          updateCatalog(
+            'occupationCatalog',
+            response.data.data.data.map((occupation: { value: string; code: string }) => ({
+              text: occupation.value,
+              value: occupation.code,
+            }))
+          );
+        })
+        .catch(() => {
+          setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
+        });
+    };
+    {
+      occupationCatalog.length === 0 && fetchOccupationsCatalg();
+    }
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <CardStep stepNumber="3">

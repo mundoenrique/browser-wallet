@@ -4,6 +4,8 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { ChildrenProps } from '@/interfaces';
 import { HydrationProvider, KeyProvider, MuiProvider } from '@/components';
 import LoadingScreen from '@/components/layout/LoadingScreen';
+
+import GlobalErrorMessage from '@/components/layout/GlobalError';
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
@@ -31,6 +33,7 @@ export default function RootLayout({ children }: ChildrenProps) {
           <MuiProvider>
             <HydrationProvider>
               <LoadingScreen />
+              <GlobalErrorMessage />
               <KeyProvider>{children}</KeyProvider>
             </HydrationProvider>
           </MuiProvider>

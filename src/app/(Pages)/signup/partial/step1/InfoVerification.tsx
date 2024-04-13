@@ -1,15 +1,15 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
 import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Card, Chip, Divider, Typography } from '@mui/material';
 //internal app
-import { CardStep } from '..';
-import { getSchema } from '@/config';
 import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
-import { InputCheck, InputText, ModalResponsive, InputSelect, Terms } from '@/components';
 import { useApi } from '@/hooks/useApi';
+import { getSchema } from '@/config';
+import { InputCheck, InputText, ModalResponsive, InputSelect, Terms } from '@/components';
+import { CardStep } from '..';
 
 export default function InfoVerification() {
   const customApi = useApi();
@@ -23,7 +23,7 @@ export default function InfoVerification() {
   const schemaPhoneNumber = getSchema(['phoneNumber']);
 
   const { inc, updateFormState, ONB_PHASES_TERMS, setShowHeader } = useRegisterStore();
-  const { setLoadingScreen, loadingScreen } = useUiStore();
+  const { setLoadingScreen, loadingScreen, setModalError } = useUiStore();
   const { updateCatalog, countriesCatalog, termsCatalog } = useCatalogsStore();
 
   const setTermsValue = useCallback(
@@ -34,7 +34,7 @@ export default function InfoVerification() {
         });
 
         if (!code) {
-          return false; // Si el término no existe, retornar false
+          return false; // Return false for inexistent term
         }
         return ONB_PHASES_TERMS.terms.some((el: any) => {
           return el.code === code.code;
@@ -114,19 +114,17 @@ export default function InfoVerification() {
         }, []),
       },
     };
-    console.log('send Terms Form', requestFormData);
 
     setLoadingScreen(true);
-    await customApi
+    customApi
       .post('/onboarding/termsandconditions', requestFormData)
       .then((response) => {
-        console.log('termsAndCondition response', response);
         updateFormState('ONB_PHASES_TERMS', requestFormData.request);
         updateFormState('onboardingUuId', response.data.data.onboardingUuId);
         inc();
       })
       .catch((error) => {
-        throw new Error('Error in apiGee request handling: ' + (error as Error).message);
+        setModalError({ title: 'Occurió un error', description: 'Intentalo nuevamente' });
       })
       .finally(() => {
         setLoadingScreen(false);
@@ -159,35 +157,37 @@ export default function InfoVerification() {
    */
 
   useEffect(() => {
-    const retrieveCountryList = async () => {
-      try {
-        const countries = await customApi.post(`/catalogs/search`, {
-          catalogCode: 'COUNTRIES_CATALOG',
+    const fetchCountryList = async () => {
+      customApi
+        .post(`/catalogs/search`, {
+          catalogCode: 'NATIONALITIES_CATALOG',
+        })
+        .then((response) => {
+          updateCatalog(
+            'countriesCatalog',
+            response.data.data.data.map((country: { value: string; code: string }) => ({
+              text: country.value,
+              value: country.code.slice(0, 2),
+            }))
+          );
+        })
+        .catch(() => {
+          setModalError({ title: 'Occurió un error', description: 'Intentalo nuevamente' });
         });
-        updateCatalog(
-          'countriesCatalog',
-          countries.data.data.data.map((country: { value: string; code: string }) => ({
-            text: country.value,
-            value: country.code.slice(0, 2),
-          }))
-        );
-      } catch (error) {
-        throw new Error('Error in apiGee request handling: ' + (error as Error).message);
-      }
     };
     {
-      countriesCatalog.length === 0 && retrieveCountryList();
+      countriesCatalog.length === 0 && fetchCountryList();
     }
-  }, []); //eslint-disable-line
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   /**
    * Fetch Terms Catalog
    */
 
   useEffect(() => {
-    const retrieveTermsList = async () => {
-      try {
-        const terms = await customApi.post(`/catalogs/search`, {
+    const fetchTermsList = async () => {
+      customApi
+        .post(`/catalogs/search`, {
           catalogCode: 'TERMS_AND_CONDITIONS_CATALOG',
           parameters: [
             {
@@ -195,14 +195,18 @@ export default function InfoVerification() {
               value: 'ONB_PHASES_TERMS',
             },
           ],
+        })
+        .then((response) => {
+          updateCatalog('termsCatalog', response.data.data.data);
+        })
+        .catch((error) => {
+          setModalError({ title: 'Occurió un error', description: 'Intentalo nuevamente' });
         });
-        updateCatalog('termsCatalog', terms.data.data.data);
-      } catch (error) {
-        throw new Error('Error in apiGee request handling: ' + (error as Error).message);
-      }
     };
-    retrieveTermsList();
-  }, []); //eslint-disable-line
+    {
+      termsCatalog.length === 0 && fetchTermsList();
+    }
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <CardStep stepNumber="1">

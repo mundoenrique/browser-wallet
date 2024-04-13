@@ -1,15 +1,16 @@
 'use client';
 
+import { useEffect, useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Typography, Box } from '@mui/material';
-import { useEffect, useCallback, useState } from 'react';
+
 //Internal app
+import { useRegisterStore, useUiStore } from '@/store';
 import { useApi } from '@/hooks/useApi';
 import LogoGreen from '%/images/LogoGreen';
-import { useRegisterStore } from '@/store';
-import { DataUserProps } from '@/interfaces';
 import { PurpleLayout, NotFoundError } from '@/components';
 
+import { DataUserProps } from '@/interfaces';
 /**
  * Convert phasename
  *
@@ -34,7 +35,7 @@ export default function DataUser(user: DataUserProps) {
   const [userValidation, setUserValidation] = useState<any>(null);
   const { updateFormState, updateStep } = useRegisterStore();
   const { replace } = useRouter();
-
+  const { setModalError } = useUiStore();
   /**
    * Verify the user and redirect
    */
@@ -77,21 +78,20 @@ export default function DataUser(user: DataUserProps) {
 
   useEffect(() => {
     const validateOnboarding = async () => {
-      try {
-        const userData = await customApi.get(
-          `/onboarding/validate?consultantCode=${userObject.code}&countryCode=${userObject.country}`
-        );
-        setUserValidation(userData.data);
-      } catch (error) {
-        throw new Error('Error in apiGee request handling: ' + (error as Error).message);
-      }
+      customApi
+        .get(`/onboarding/validate?consultantCode=${userObject.code}&countryCode=${userObject.country}`)
+        .then((response) => {
+          setUserValidation(response.data.userData.data);
+        })
+        .catch(() => {
+          setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
+        });
     };
     validateOnboarding();
-  }, []); //eslint-disable-line
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     userValidation && userRedirect(userValidation);
-    console.log('identify', userValidation);
   }, [userValidation, userRedirect]);
 
   return (
