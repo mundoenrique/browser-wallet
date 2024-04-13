@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { Box, Fade, Slide, Typography, Zoom } from '@mui/material';
+import { Box, Fade, Typography, Zoom } from '@mui/material';
 //Internal app
 import { useRegisterStore } from '@/store';
 import LogoGreen from '%/images/LogoGreen';
@@ -74,23 +74,21 @@ export default function Ending() {
           </>
         )}
       </Box>
-      <Box>
-        {currentImageIndex === 1 && (
-          <Zoom in={true}>
-            <Typography
-              sx={{
-                color: fuchsiaBlue[200],
-                mb: { xs: 7, sm: 3 },
-                fontSize: 28,
-                fontWeight: 700,
-                textAlign: 'center',
-              }}
-            >
-              ¡Felicidades! <br /> Ya eres parte de <br /> Yiro
-            </Typography>
-          </Zoom>
-        )}
-      </Box>
+      {currentImageIndex === 1 && (
+        <Zoom in={true}>
+          <Typography
+            sx={{
+              color: fuchsiaBlue[200],
+              mb: { xs: 7, sm: 3 },
+              fontSize: 28,
+              fontWeight: 700,
+              textAlign: 'center',
+            }}
+          >
+            ¡Felicidades! <br /> Ya eres parte de <br /> Yiro
+          </Typography>
+        </Zoom>
+      )}
       {currentImageIndex === 2 && (
         <Zoom in={true} timeout={1000}>
           <Box>
