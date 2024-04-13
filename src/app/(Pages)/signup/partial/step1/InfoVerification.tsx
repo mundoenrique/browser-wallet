@@ -363,7 +363,7 @@ export default function InfoVerification() {
           maxHeight: { sm: 600, xs: '80vh' },
         }}
       >
-        <Box sx={{ height: '90%', overflow: 'auto' }}>
+        <Box sx={{ height: '90%', overflow: 'auto', px: 2 }}>
           <Terms />
         </Box>
       </ModalResponsive>
