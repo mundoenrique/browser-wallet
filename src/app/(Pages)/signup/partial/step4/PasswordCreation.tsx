@@ -3,17 +3,17 @@
 import { useEffect } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
-import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
+import { CardStep } from '..';
+import { FormPass } from '@/components';
 import { useApi } from '@/hooks/useApi';
 import { encryptForge } from '@/utils/toolHelper';
-import { FormPass } from '@/components';
-import { CardStep } from '..';
+import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 
 export default function PasswordCreation() {
+  const customApi = useApi();
   const { dec, inc, setShowHeader, onboardingUuId } = useRegisterStore();
   const { setLoadingScreen, setModalError } = useUiStore();
   const { updateCatalog, passwordTermsCatalog } = useCatalogsStore();
-  const customApi = useApi();
 
   useEffect(() => {
     const fetchTermPasswordCatalog = async () => {

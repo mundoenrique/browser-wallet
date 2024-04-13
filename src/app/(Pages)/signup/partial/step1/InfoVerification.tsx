@@ -1,15 +1,15 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Card, Chip, Divider, Typography } from '@mui/material';
 //internal app
-import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
-import { useApi } from '@/hooks/useApi';
-import { getSchema } from '@/config';
-import { InputCheck, InputText, ModalResponsive, InputSelect, Terms } from '@/components';
 import { CardStep } from '..';
+import { getSchema } from '@/config';
+import { useApi } from '@/hooks/useApi';
+import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
+import { InputCheck, InputText, ModalResponsive, InputSelect, Terms } from '@/components';
 
 export default function InfoVerification() {
   const customApi = useApi();
@@ -86,10 +86,6 @@ export default function InfoVerification() {
     resolver: yupResolver(schemaPhoneNumber),
   });
 
-  /**
-   * Send Form data
-   *  @param data - Form data
-   */
   const onSubmit = async (data: any) => {
     const termsObject: { [key: string]: boolean } = {
       'TERMINO 1': data.terms,
@@ -136,7 +132,7 @@ export default function InfoVerification() {
     setOpenTerms(true);
   };
 
-  //Method For set email value
+  //Method for set email value
   const handleEditEmail = async (data: any) => {
     setValue('email', data.email);
     setEditEmail(false);
@@ -151,10 +147,6 @@ export default function InfoVerification() {
   useEffect(() => {
     setShowHeader(true);
   }, [setShowHeader]);
-
-  /**
-   * Fetch country Catalog
-   */
 
   useEffect(() => {
     const fetchCountryList = async () => {
@@ -179,10 +171,6 @@ export default function InfoVerification() {
       countriesCatalog.length === 0 && fetchCountryList();
     }
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
-
-  /**
-   * Fetch Terms Catalog
-   */
 
   useEffect(() => {
     const fetchTermsList = async () => {

@@ -1,18 +1,17 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { Info } from '@mui/icons-material';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, FormHelperText, Typography } from '@mui/material';
-import { Info } from '@mui/icons-material';
+import { useCallback, useEffect, useState } from 'react';
 import { MuiOtpInput } from 'mui-one-time-password-input';
-
+import { Box, Button, FormHelperText, Typography } from '@mui/material';
 //internal app
-import { useRegisterStore, useUiStore } from '@/store';
+import { CardStep } from '..';
+import { getSchema } from '@/config';
 import { useApi } from '@/hooks/useApi';
 import { encryptForge } from '@/utils/toolHelper';
-import { getSchema } from '@/config';
-import { CardStep } from '..';
+import { useRegisterStore, useUiStore } from '@/store';
 
 export default function CelularValidation() {
   const schema = getSchema(['otp']);

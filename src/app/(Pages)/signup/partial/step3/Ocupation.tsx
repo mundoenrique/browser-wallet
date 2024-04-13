@@ -1,22 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Collapse, Typography } from '@mui/material';
 //Internal app
-import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
-import { useApi } from '@/hooks/useApi';
-import { getSchema } from '@/config';
-import { InputSelect, InputText } from '@/components';
 import CardStep from '../CardStep';
+import { getSchema } from '@/config';
+import { useApi } from '@/hooks/useApi';
+import { InputSelect, InputText } from '@/components';
+import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 
 export default function Ocupation() {
+  const customApi = useApi();
   const [ocupations, setOcupations] = useState<boolean>(false);
   const { updateStep, inc, updateFormState, ONB_PHASES_CONSULT_DATA, onboardingUuId } = useRegisterStore();
   const { setLoadingScreen, loadingScreen, setModalError } = useUiStore();
   const { updateCatalog, occupationCatalog } = useCatalogsStore();
-  const customApi = useApi();
 
   const schema = ocupations
     ? getSchema(['occupationCode', 'companyType', 'companyName', 'companyPosition'])
