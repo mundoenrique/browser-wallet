@@ -1,6 +1,6 @@
 import axios from 'axios';
 //Internal app
-import { JWS_HEADER, JWT_HEADER } from './constants';
+import { JWS_HEADER } from './constants';
 import { decryptJWE, encryptJWE, signJWE, verifyDetachedJWS } from './jwt';
 
 export const api = axios.create({

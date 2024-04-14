@@ -9,10 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function BelcorpLayout({ children }: ChildrenProps) {
-  return (
-    <LoginLayout>
-      <NavExternal color="white" closeApp />
-      {children}
-    </LoginLayout>
-  );
+  return <LoginLayout>{children}</LoginLayout>;
 }

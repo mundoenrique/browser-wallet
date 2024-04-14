@@ -36,6 +36,7 @@ const config: Config = {
     '<rootDir>/__tests__/unit/Dashboard/card-configuration',
     '<rootDir>/__tests__/unit/Dashboard/legal',
     '<rootDir>/__tests__/unit/Dashboard/recharge',
+    '<rootDir>/__tests__/unit/Identify',
   ],
 };
 

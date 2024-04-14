@@ -3,29 +3,15 @@
 // Internal app
 import { useRegisterStore } from '@/store';
 import {
-  SignupStepper,
+  PEP,
+  Ending,
   Landing,
+  Ocupation,
+  SignupStepper,
   InfoVerification,
   CelularValidation,
-  Ocupation,
-  PEP,
-  DniInfo,
-  DniUpload,
-  SelfieInfo,
-  SelfieUpload,
   PasswordCreation,
-  BiometricValidation,
-  Ending,
 } from './partial';
-
-// const phaseToStep = (phase: string) => {
-//   const phasesSteps: { [key: string]: number } = {
-//     ONB_PHASES_TERMS: 0,
-//     ONB_PHASES_CONSULT_DATA: 3,
-//     ONB_PHASES_PEP: 4,
-//   };
-//   return phasesSteps[phase] || 0;
-// };
 
 export default function Signup() {
   const { step } = useRegisterStore();
@@ -41,16 +27,6 @@ export default function Signup() {
       <Ocupation />
 
       <PEP />
-
-      <DniInfo />
-
-      <DniUpload />
-
-      <SelfieInfo />
-
-      <SelfieUpload />
-
-      <BiometricValidation />
 
       <PasswordCreation />
 

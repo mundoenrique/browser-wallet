@@ -32,14 +32,30 @@ export type JwtStoreProps = {
 };
 
 /**
- * Drawer showing
+ * loading screen show/hide
  *
- * @typeParam showStatus: boolean
- * @typeParam updateDrawerStatus: (status: boolean) => void
+ * @typeParam loadingScreen: boolean
+ * @typeParam setLoadingScreen: (status: boolean) => void
+ */
+export interface UiStore {
+  loadingScreen: boolean;
+  setLoadingScreen: (status: boolean) => void;
+  showModalError: boolean;
+  setModalError: (status: any) => void;
+  modalErrorTitle: string;
+  modalErrorDesc: string;
+  closeModalError: () => void;
+}
+
+/**
+ * Drawer show/hide
+ *
+ * @typeParam drawerStatus: boolean
+ * @typeParam setDrawerStatus: (status: boolean) => void
  */
 export interface DrawerStatus {
-  showStatus: boolean;
-  updateDrawerStatus: (status: boolean) => void;
+  drawerStatus: boolean;
+  setDrawerStatus: (status: boolean) => void;
 }
 
 /**
@@ -106,9 +122,11 @@ export interface RegisterStore {
   dec: () => void;
   updateStep: (_amount: number) => void;
   updateFormState: (_form: string, _data: {}) => void;
-  verificationFormState: object | null;
-  ocupationFormState: object | null;
-  pepFormState: object | null;
+  ONB_PHASES_TERMS: { [key: string]: any } | null;
+  ONB_PHASES_CONSULT_DATA: { [key: string]: any } | null;
+  ONB_PHASES_PEP: { [key: string]: any } | null;
+  termsDefinition: { [key: string]: string }[];
+  onboardingUuId: string | null;
   biometricFormState: null;
 }
 
@@ -132,4 +150,24 @@ export interface IClientProps {
 export interface ClientStore {
   client: IClientProps | null;
   setClient: (data: IClientProps) => void;
+}
+
+export interface CatalogsStore {
+  termsCatalog: { code: string; value: string }[];
+  passwordTermsCatalog: { code: string; value: string }[];
+  occupationCatalog: { text: string; value: string }[];
+  documentTypesCatalog: { text: string; value: string }[];
+  countriesCatalog: { text: string; value: string }[];
+  departamentsCatalog: { text: string; value: string }[];
+  provincesCatalog: { text: string; value: string }[];
+  districtsCatalog: { text: string; value: string }[];
+  updateCatalog: (_form: string, _data: {} | []) => void;
+}
+
+export interface OtpStore {
+  otpTimeLeft: number;
+  initialized: boolean;
+  setInitialized: (value: boolean) => void;
+  countdown: () => void;
+  resetOtp: () => void;
 }

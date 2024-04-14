@@ -6,13 +6,27 @@ import Info from '@mui/icons-material/InfoOutlined';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { FormHelperText, InputLabel } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 //Internal App
 import { CalendarIcons } from '%/Icons';
 import { InputDatePickerProps } from '@/interfaces';
 
 function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
-  const { name, label, labelError, error, onChange, value, views, format, disabled, readOnly } = props;
+  const {
+    name,
+    label,
+    labelError,
+    error,
+    onChange,
+    value,
+    views,
+    format,
+    disabled,
+    readOnly,
+    datePickerProps,
+    ...restProps
+  } = props;
 
   const inputLabel = label ?? name;
 
@@ -46,6 +60,8 @@ function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
               p: '4px',
             },
           }}
+          {...datePickerProps}
+          {...restProps}
         />
         <FormHelperText
           sx={{ color: 'error.main', height: 20, ml: 0, display: 'flex', alignItems: 'center' }}
@@ -81,7 +97,7 @@ function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
  * @label dayjs - {@link https://www.npmjs.com/package/dayjs}
  */
 export default function InputDatePicker(props: InputDatePickerProps): JSX.Element {
-  const { name, control, onChange, ...restProps } = props;
+  const { name, control, onChange, datePickerProps, ...restProps } = props;
 
   return (
     <>
@@ -92,18 +108,19 @@ export default function InputDatePicker(props: InputDatePickerProps): JSX.Elemen
           render={({ field, fieldState: { error } }) => (
             <DatePickerMUI
               name={name}
-              value={field.value}
+              value={dayjs(field.value)}
               onChange={(e) => {
                 field.onChange(e);
                 onChange && onChange(e);
               }}
               error={error}
+              datePickerProps={datePickerProps}
               {...restProps}
             />
           )}
         />
       ) : (
-        <DatePickerMUI name={name} onChange={onChange} {...restProps} />
+        <DatePickerMUI name={name} onChange={onChange} {...restProps} datePickerProps={datePickerProps} />
       )}
     </>
   );
