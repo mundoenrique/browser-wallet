@@ -84,6 +84,7 @@ export default function DataUser(user: DataUserProps) {
         const userData = await customApi.get(
           `/onboarding/validate?consultantCode=${userObject.code}&countryCode=${userObject.country}`
         );
+        console.log('🚀 ~ validateOnboarding ~ userData:', userData);
         setUserValidation(userData.data);
       } catch (error) {
         throw new Error('Error in apiGee request handling: ' + (error as Error).message);

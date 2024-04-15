@@ -11,9 +11,9 @@ import { getSchema } from '@/config';
 import LogoGreen from '%/images/LogoGreen';
 import { InputPass, ModalResponsive } from '@/components';
 import { useApi } from '@/hooks/useApi';
-import { TUserDetail } from '@/interfaces';
+import { TCredentials, TUserDetail } from '@/interfaces';
 import { encryptForge } from '@/utils/toolHelper';
-import { useUiStore } from '@/store';
+import { useRegisterStore, useUiStore } from '@/store';
 
 export default function Signin() {
   const customApi = useApi();
@@ -22,8 +22,11 @@ export default function Signin() {
   const [open, setOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [userData, setUserData] = useState<TUserDetail | null>(null);
-  const { setLoadingScreen, loadingScreen } = useUiStore();
   const schema = getSchema(['password']);
+
+  const { setLoadingScreen, loadingScreen } = useUiStore();
+  const { user } = useRegisterStore();
+  console.log('🚀 ~ Signin ~ user:', user);
 
   const { control, handleSubmit } = useForm({
     defaultValues: { password: '' },
@@ -32,13 +35,13 @@ export default function Signin() {
 
   const onSubmit = async (data: any) => {
     const { password } = data;
-    const payload = {
-      userId: userData?.userId,
+    const requestData: TCredentials = {
+      userId: userData?.userId || '',
       password: encryptForge(password),
     };
     setLoadingScreen(true);
     await customApi
-      .post('/users/credentials', payload)
+      .post('/users/credentials', requestData)
       .then((response) => {
         const { status } = response;
         if (status === 200) {

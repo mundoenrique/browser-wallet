@@ -29,3 +29,13 @@ export type TCardSolutions = {
   userId: string;
   cardId: string;
 };
+
+/**
+ * Credentials Interface
+ * @typeParam userId: string
+ * @typeParam password: string
+ */
+export type TCredentials = {
+  userId: string;
+  password: string;
+};
