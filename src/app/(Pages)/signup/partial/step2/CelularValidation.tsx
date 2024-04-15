@@ -19,12 +19,11 @@ export default function CelularValidation() {
   const initialized = useRef<boolean>(false);
   const { inc, dec, onboardingUuId, ONB_PHASES_TERMS } = useRegisterStore();
   const { timeLeft, countdown, counting, setCounting, setTime } = useOtpStore();
+  const timerRef = useRef<any>();
 
   const { setModalError } = useUiStore();
 
   const customApi = useApi();
-
-  //const [time, setTime] = useState<number>(60);
 
   const { handleSubmit, control } = useForm({
     defaultValues: { otp: '' },
@@ -65,32 +64,8 @@ export default function CelularValidation() {
       });
   };
 
-  /*
   const timer = useCallback(async () => {
-    const timerRef = setInterval(() => countdown, 1000);
-  }, []); //eslint-disable-line react-hooks/exhaustive-deps
-
-
-  useEffect(() => {
-    const timerRef = setInterval(() => {
-      setTime((prev) => {
-        if (prev > 0) {
-          return prev - 1;
-        } else {
-          return 0;
-        }
-      });
-    }, 1000);
-    return () => clearTimeout(timerRef);
-  }, [timer]);
-
-  useEffect(() => {
-    requestTFACode();
-  }, []); //eslint-disable-line react-hooks/exhaustive-deps
-
-*/
-  const timer = useCallback(async () => {
-    setInterval(() => countdown(), 1000);
+    timerRef.current = setInterval(() => countdown(), 1000);
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -102,13 +77,17 @@ export default function CelularValidation() {
       timer();
       setCounting(true);
       initialized.current = true;
-      console.log('time 1');
     } else if (counting && !initialized.current) {
       timer();
       initialized.current = true;
-      console.log('time 2');
     }
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (timeLeft === 0 && counting) {
+      clearInterval(timerRef.current);
+    }
+  }, [timeLeft]);
 
   return (
     <>
@@ -173,8 +152,8 @@ export default function CelularValidation() {
               </Typography>
             )}
             <Button
-              onClick={() => {
-                requestTFACode();
+              onClick={async () => {
+                await requestTFACode();
                 setTime(60);
                 timer();
                 setCounting(true);
