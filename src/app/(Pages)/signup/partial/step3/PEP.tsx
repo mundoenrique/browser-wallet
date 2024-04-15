@@ -1,19 +1,20 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { Box, Button, Collapse, Link as LinkMui, Typography } from '@mui/material';
 import dayjs from 'dayjs';
+import { Box, Button, Collapse, Link as LinkMui, Typography } from '@mui/material';
+
 //Internal app
-import { CardStep } from '..';
-import { getSchema } from '@/config';
 import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
+import { useApi } from '@/hooks/useApi';
+import { getSchema } from '@/config';
 import { slate } from '@/theme/theme-default';
 import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResponsive } from '@/components';
-import { useApi } from '@/hooks/useApi';
+import { CardStep } from '..';
 
-//Optios to map to <inputCheck >
+//Optios to map to <inputCheck >. Don't delete
 const options: any = [
   { text: 'Sí', value: 'true' },
   { text: 'No', value: 'false' },
@@ -28,7 +29,7 @@ export default function PEP() {
 
   const customApi = useApi();
 
-  const { setLoadingScreen } = useUiStore();
+  const { setLoadingScreen, setModalError } = useUiStore();
 
   const { updateCatalog, departamentsCatalog, provincesCatalog, districtsCatalog, documentTypesCatalog } =
     useCatalogsStore();
@@ -51,7 +52,7 @@ export default function PEP() {
         endDate: ONB_PHASES_PEP?.pepForm?.endDate ?? '',
         holdShare: ONB_PHASES_PEP?.pepForm?.holdShare.toString() ?? '',
       },
-      relatives: [],
+      relatives: ONB_PHASES_PEP?.relatives ?? [],
     },
     resolver: yupResolver(schema),
   });
@@ -67,8 +68,11 @@ export default function PEP() {
 
   const watchIsPep = watch('isPep');
 
-  const WatchIsFamilyAlive = watch('pepForm.isRelativeAlive');
+  const WatchIsRelativeAlive = watch('pepForm.isRelativeAlive');
 
+  /**
+   * Submit form
+   */
   const onSubmit = async (data: any) => {
     const requestFormData = {
       currentPhaseCode: 'ONB_PHASES_PEP',
@@ -86,8 +90,6 @@ export default function PEP() {
     };
 
     setLoadingScreen(true);
-    console.log(requestFormData);
-
     customApi
       .post('/onboarding/pep', requestFormData)
       .then(() => {
@@ -95,13 +97,16 @@ export default function PEP() {
         inc();
       })
       .catch((error) => {
-        console.log('pep Error', error);
+        setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
       })
       .finally(() => {
         setLoadingScreen(false);
       });
   };
 
+  /**
+   * Reset pepForm when ispep is false
+   */
   useEffect(() => {
     if (watchIsPep !== '' && watchIsPep.toLowerCase() !== 'true') {
       reset({
@@ -122,19 +127,22 @@ export default function PEP() {
       remove();
       setHasParents(false);
     }
-  }, [watchIsPep, hasParents]); //eslint-disable-line
+  }, [watchIsPep, hasParents]); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     watchIsPep && setIsPep(watchIsPep.toLowerCase() === 'true');
-    WatchIsFamilyAlive && setHasParents(WatchIsFamilyAlive.toLowerCase() === 'true');
-  }, [watchIsPep, WatchIsFamilyAlive]);
+    WatchIsRelativeAlive && setHasParents(WatchIsRelativeAlive.toLowerCase() === 'true');
+  }, [watchIsPep, WatchIsRelativeAlive]);
 
   useEffect(() => {
     setShowHeader(true);
   }, [setShowHeader]);
 
+  /**
+   * Fecth departments catalog
+   */
   useEffect(() => {
-    const getDepartmentsCatalog = async () => {
+    const fetchDepartmentsCatalog = async () => {
       customApi
         .post('/catalogs/search', {
           catalogCode: 'GEO_LOCATION_LEVEL_ONE_CATALOG',
@@ -150,7 +158,6 @@ export default function PEP() {
           ],
         })
         .then((response) => {
-          console.log('department catalog', response);
           updateCatalog(
             'departamentsCatalog',
             response.data.data.data.map((department: { value: string; code: string }) => ({
@@ -158,17 +165,21 @@ export default function PEP() {
               value: department.code,
             }))
           );
+        })
+        .catch(() => {
+          setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
         });
     };
-    getDepartmentsCatalog();
-  }, []);
+    {
+      departamentsCatalog.length === 0 && fetchDepartmentsCatalog();
+    }
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
+  /**
+   * Fecth provinces catalog
+   */
   useEffect(() => {
-    updateCatalog('provincesCatalog', []);
-    updateCatalog('districtsCatalog', []);
-    setValue('pepForm.provinceCode', null);
-    setValue('pepForm.districtCode', null);
-    const getProvincesCatalog = async () => {
+    const fetchProvincesCatalog = async () => {
       customApi
         .post('/catalogs/search', {
           catalogCode: 'GEO_LOCATION_LEVEL_TWO_CATALOG',
@@ -188,7 +199,6 @@ export default function PEP() {
           ],
         })
         .then((response) => {
-          console.log('Provinces catalog', response);
           updateCatalog(
             'provincesCatalog',
             response.data.data.data.map((province: { value: string; code: string }) => ({
@@ -196,18 +206,22 @@ export default function PEP() {
               value: province.code,
             }))
           );
+        })
+        .catch(() => {
+          setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
         });
     };
 
-    getProvincesCatalog();
-  }, [watchDepartment]);
+    {
+      provincesCatalog.length === 0 && fetchProvincesCatalog();
+    }
+  }, [watchDepartment]); //eslint-disable-line react-hooks/exhaustive-deps
 
+  /**
+   * Fecth districts catalog
+   */
   useEffect(() => {
-    updateCatalog('districsCatalog', []);
-
-    setValue('pepForm.districtCode', null);
-
-    const getDistrictsCatalog = async () => {
+    const fetchDistrictsCatalog = async () => {
       customApi
         .post('/catalogs/search', {
           catalogCode: 'GEO_LOCATION_LEVEL_THREE_CATALOG',
@@ -227,7 +241,6 @@ export default function PEP() {
           ],
         })
         .then((response) => {
-          console.log('Districts catalog', response);
           updateCatalog(
             'districtsCatalog',
             response.data.data.data.map((district: { value: string; code: string }) => ({
@@ -235,20 +248,28 @@ export default function PEP() {
               value: district.code,
             }))
           );
+        })
+        .catch(() => {
+          setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
         });
     };
 
-    getDistrictsCatalog();
-  }, [watchProvince]);
+    {
+      districtsCatalog.length === 0 && fetchDistrictsCatalog();
+    }
+  }, [watchProvince]); //eslint-disable-line react-hooks/exhaustive-deps
+
+  /**
+   * Fecth DocumentTypes catalog
+   */
 
   useEffect(() => {
-    const getDocumentsCatalog = async () => {
+    const fetchDocumentsCatalog = async () => {
       customApi
         .post('/catalogs/search', {
           catalogCode: 'DOCUMENTS_TYPE_CATALOG',
         })
         .then((response) => {
-          console.log('Documents', response);
           updateCatalog(
             'documentTypesCatalog',
             response.data.data.data.map((documentType: { value: string; code: string }) => ({
@@ -256,11 +277,16 @@ export default function PEP() {
               value: documentType.code,
             }))
           );
+        })
+        .catch(() => {
+          setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
         });
     };
 
-    getDocumentsCatalog();
-  }, []);
+    {
+      documentTypesCatalog.length === 0 && fetchDocumentsCatalog();
+    }
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <CardStep stepNumber="3">
@@ -302,7 +328,10 @@ export default function PEP() {
                 control={control}
                 disableClearable
                 onChange={() => {
-                  console.log('change');
+                  updateCatalog('provincesCatalog', []);
+                  updateCatalog('districtsCatalog', []);
+                  setValue('pepForm.provinceCode', null);
+                  setValue('pepForm.districtCode', null);
                 }}
               />
             ) : (
@@ -315,6 +344,10 @@ export default function PEP() {
                 options={provincesCatalog}
                 control={control}
                 disableClearable
+                onChange={() => {
+                  updateCatalog('districtsCatalog', []);
+                  setValue('pepForm.districtCode', null);
+                }}
               />
             ) : (
               <InputSelect name="pepForm.provinceCode" label="Provincia" options={[]} disabled />
@@ -330,7 +363,12 @@ export default function PEP() {
             ) : (
               <InputSelect name="pepForm.districtCode" label="Distrito" options={[]} disabled />
             )}
-            <InputDatePicker name="pepForm.endDate" label="Fecha de salida" control={control} />
+            <InputDatePicker
+              name="pepForm.endDate"
+              label="Fecha de salida"
+              control={control}
+              datePickerProps={{ disableFuture: true }}
+            />
 
             <Typography variant="body2" align="left" sx={{ mb: 3 }}>
               ¿Posees participación, aporte o capital social igual o mayor al 25% en alguna (s) empresa (s)?

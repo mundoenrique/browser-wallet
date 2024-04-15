@@ -39,6 +39,10 @@ export const useCatalogsStore = create<CatalogsStore>()(
          */
         termsCatalog: [],
         /**
+         * Storage of terms for password
+         */
+        passwordTermsCatalog: [],
+        /**
          * Function to set the data of catalogs
          */
         updateCatalog: (catalog, data) => set((state) => ({ ...state, [catalog]: data })),

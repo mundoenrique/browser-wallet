@@ -1,50 +1,62 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { CardStep } from '..';
 import { FormPass } from '@/components';
-import { useRegisterStore, useUiStore } from '@/store';
 import { useApi } from '@/hooks/useApi';
 import { encryptForge } from '@/utils/toolHelper';
+import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 
 export default function PasswordCreation() {
-  const { dec, inc, setShowHeader } = useRegisterStore();
-  const { setLoadingScreen, loadingScreen } = useUiStore();
   const customApi = useApi();
-
-  const getTermsCatalog = useCallback(() => {
-    customApi.post('/catalog/search', {
-      catalogCode: 'TERMS_AND_CONDITIONS_CATALOG',
-      parameters: [
-        {
-          code: 'TERMS_CATEGORY',
-          value: 'ONB_PHASES_PASSWORD',
-        },
-      ],
-    });
-  }, []);
+  const { dec, inc, setShowHeader, onboardingUuId } = useRegisterStore();
+  const { setLoadingScreen, setModalError } = useUiStore();
+  const { updateCatalog, passwordTermsCatalog } = useCatalogsStore();
 
   useEffect(() => {
-    getTermsCatalog();
-  }, []);
+    const fetchTermPasswordCatalog = async () => {
+      customApi
+        .post('/catalogs/search', {
+          catalogCode: 'TERMS_AND_CONDITIONS_CATALOG',
+          parameters: [
+            {
+              code: 'TERMS_CATEGORY',
+              value: 'ONB_PHASES_CONTRASENNIA',
+            },
+          ],
+        })
+        .then((response) => {
+          updateCatalog('passwordTermsCatalog', response.data.data.data);
+        })
+        .catch(() => {
+          setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
+        });
+    };
+    {
+      passwordTermsCatalog.length === 0 && fetchTermPasswordCatalog();
+    }
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   const onSubmit = async (data: any) => {
-    console.log(data);
+    const termsObject: { [key: string]: boolean } = {
+      'TERMINO 3': data.policy,
+    };
+
     const cipherPassword = encryptForge(data.newPassword);
     const requestFormData = {
-      currentPhaseCode: 'ONB_PHASES_PASSWORD',
-      onboardingUuid: 'a4f97d13-0d69-4d6d-9042-a857cb08e391',
+      currentPhaseCode: 'ONB_PHASES_CONTRASENNIA',
+      onboardingUuId: onboardingUuId,
       request: {
         password: cipherPassword,
-        terms: [
-          {
-            code: 'TERM1',
-          },
-        ],
+        terms: passwordTermsCatalog.reduce((acc: any[], e) => {
+          termsObject[e.value] && acc.push({ code: e.code });
+          return acc;
+        }, []),
       },
     };
+    setLoadingScreen(true);
 
     customApi
       .post('/onboarding/credentials', requestFormData)
@@ -52,7 +64,9 @@ export default function PasswordCreation() {
         inc();
       })
       .catch(() => {})
-      .finally(() => {});
+      .finally(() => {
+        setLoadingScreen(false);
+      });
   };
 
   useEffect(() => {

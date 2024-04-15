@@ -13,7 +13,20 @@ import { CalendarIcons } from '%/Icons';
 import { InputDatePickerProps } from '@/interfaces';
 
 function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
-  const { name, label, labelError, error, onChange, value, views, format, disabled, readOnly } = props;
+  const {
+    name,
+    label,
+    labelError,
+    error,
+    onChange,
+    value,
+    views,
+    format,
+    disabled,
+    readOnly,
+    datePickerProps,
+    ...restProps
+  } = props;
 
   const inputLabel = label ?? name;
 
@@ -47,6 +60,8 @@ function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
               p: '4px',
             },
           }}
+          {...datePickerProps}
+          {...restProps}
         />
         <FormHelperText
           sx={{ color: 'error.main', height: 20, ml: 0, display: 'flex', alignItems: 'center' }}
@@ -82,7 +97,7 @@ function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
  * @label dayjs - {@link https://www.npmjs.com/package/dayjs}
  */
 export default function InputDatePicker(props: InputDatePickerProps): JSX.Element {
-  const { name, control, onChange, ...restProps } = props;
+  const { name, control, onChange, datePickerProps, ...restProps } = props;
 
   return (
     <>
@@ -99,12 +114,13 @@ export default function InputDatePicker(props: InputDatePickerProps): JSX.Elemen
                 onChange && onChange(e);
               }}
               error={error}
+              datePickerProps={datePickerProps}
               {...restProps}
             />
           )}
         />
       ) : (
-        <DatePickerMUI name={name} onChange={onChange} {...restProps} />
+        <DatePickerMUI name={name} onChange={onChange} {...restProps} datePickerProps={datePickerProps} />
       )}
     </>
   );

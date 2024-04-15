@@ -1,61 +1,57 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { Info } from '@mui/icons-material';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, CircularProgress, FormHelperText, Typography } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
 import { MuiOtpInput } from 'mui-one-time-password-input';
-
+import { Box, Button, FormHelperText, Typography } from '@mui/material';
 //internal app
-import { getSchema } from '@/config';
-import { useRegisterStore, useUiStore, useOtpStore } from '@/store';
-
 import { CardStep } from '..';
-
+import { getSchema } from '@/config';
 import { useApi } from '@/hooks/useApi';
-import { decryptForge, encryptForge } from '@/utils/toolHelper';
-import { Info } from '@mui/icons-material';
-import { ModalError } from '@/components';
+import { encryptForge } from '@/utils/toolHelper';
+import { useRegisterStore, useUiStore } from '@/store';
 
 export default function CelularValidation() {
   const schema = getSchema(['otp']);
   const [optUuid, setOtpUuid] = useState<string>('');
-  const [loadingTfa, setLoadingTfa] = useState<boolean>(false);
+
   const { inc, dec, onboardingUuId, ONB_PHASES_TERMS } = useRegisterStore();
 
-  const { otpTimeLeft, countdown } = useOtpStore();
+  const { setModalError } = useUiStore();
 
   const customApi = useApi();
+
+  const [time, setTime] = useState<number>(60);
 
   const { handleSubmit, control } = useForm({
     defaultValues: { otp: '' },
     resolver: yupResolver(schema),
   });
 
-  const updateTimer = useCallback(() => {
-    if (otpTimeLeft > 0) {
-      countdown();
-    } else {
-      return 0;
-    }
-    // const timerId = setInterval(updateTimer, 1000);
-  }, [countdown, otpTimeLeft]);
+  const timer = useCallback(async () => {
+    const timerRef = setInterval(() => {
+      setTime((prev) => {
+        if (prev > 0) {
+          return prev - 1;
+        } else {
+          return 0;
+        }
+      });
+    }, 1000);
+  }, [time]); //eslint-disable-line react-hooks/exhaustive-deps
 
   const requestTFACode = useCallback(async () => {
-    setLoadingTfa(true);
     customApi
       .post(`/onboarding/${onboardingUuId}/tfa`, { otpProcessCode: 'ONBOARDING_OTP' })
       .then((response) => {
-        console.log('send OTP', response);
         setOtpUuid(response.data.data.otpUuId);
-        setInterval(updateTimer, 1000);
       })
       .catch((error) => {
-        console.log('get error tfa', error);
+        setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
       })
-      .finally(() => {
-        setLoadingTfa(false);
-      });
+      .finally(() => {});
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   const onSubmit = async (data: any) => {
@@ -71,19 +67,31 @@ export default function CelularValidation() {
     customApi
       .post(`/onboarding/${onboardingUuId}/validate/tfa`, request)
       .then((response) => {
-        console.log(response);
         if (response.data.code === '200.00.000') {
           inc();
         }
       })
       .catch((error) => {
-        console.error(error);
+        setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
       });
   };
 
   useEffect(() => {
+    const timerRef = setInterval(() => {
+      setTime((prev) => {
+        if (prev > 0) {
+          return prev - 1;
+        } else {
+          return 0;
+        }
+      });
+    }, 1000);
+    return () => clearTimeout(timerRef);
+  }, [timer]);
+
+  useEffect(() => {
     requestTFACode();
-  }, [requestTFACode]);
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -107,7 +115,6 @@ export default function CelularValidation() {
               render={({ field, fieldState: { error } }: any) => (
                 <Box sx={{ justifyContent: 'center' }}>
                   <MuiOtpInput
-                    TextFieldsProps={{ disabled: loadingTfa }}
                     sx={{
                       p: 0,
                       gap: 3 / 2,
@@ -139,7 +146,26 @@ export default function CelularValidation() {
                 </Box>
               )}
             />
-            {loadingTfa ? <CircularProgress /> : <Typography>Tiempo restante - {otpTimeLeft} </Typography>}
+            {time === 0 ? (
+              <Typography variant="body2" mb={5}>
+                De necesitarlo, ya puedes solicitar un nuevo código
+              </Typography>
+            ) : (
+              <Typography variant="body2" mb={5} color="primary.main">
+                Tiempo restante - 0:{time}
+              </Typography>
+            )}
+            <Button
+              onClick={() => {
+                requestTFACode();
+                setTime(60);
+                timer();
+              }}
+              sx={{ color: 'primary.main', height: 20 }}
+              disabled={time === 0 ? false : true}
+            >
+              Reenviar código
+            </Button>
           </Box>
 
           <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 / 2, mb: { xs: 3, sm: 0 } }}>

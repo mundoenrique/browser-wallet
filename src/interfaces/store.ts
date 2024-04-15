@@ -163,13 +163,14 @@ export interface ClientStore {
 }
 
 export interface CatalogsStore {
-  countriesCatalog: { text: string; value: string }[];
   termsCatalog: { code: string; value: string }[];
+  passwordTermsCatalog: { code: string; value: string }[];
   occupationCatalog: { text: string; value: string }[];
+  documentTypesCatalog: { text: string; value: string }[];
+  countriesCatalog: { text: string; value: string }[];
   departamentsCatalog: { text: string; value: string }[];
   provincesCatalog: { text: string; value: string }[];
   districtsCatalog: { text: string; value: string }[];
-  documentTypesCatalog: { text: string; value: string }[];
   updateCatalog: (_form: string, _data: {} | []) => void;
 }
 
@@ -185,6 +186,8 @@ export interface UserStore {
 
 export interface OtpStore {
   otpTimeLeft: number;
+  initialized: boolean;
+  setInitialized: (value: boolean) => void;
   countdown: () => void;
   resetOtp: () => void;
 }
