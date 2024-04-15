@@ -25,8 +25,8 @@ export default function Signin() {
   const schema = getSchema(['password']);
 
   const { setLoadingScreen, loadingScreen } = useUiStore();
-  const { user } = useRegisterStore();
-  console.log('🚀 ~ Signin ~ user:', user);
+  const { getUserId } = useRegisterStore();
+  const { setModalError } = useUiStore();
 
   const { control, handleSubmit } = useForm({
     defaultValues: { password: '' },
@@ -49,7 +49,7 @@ export default function Signin() {
         }
       })
       .catch((error) => {
-        throw new Error('Error in apiGee request handling: ' + (error as Error).message);
+        setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
       })
       .finally(() => {
         setLoadingScreen(false);
@@ -64,7 +64,7 @@ export default function Signin() {
         setUserData(response.data.data);
       })
       .catch((error) => {
-        throw new Error('Error in apiGee request handling: ' + (error as Error).message);
+        setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
       })
       .finally(() => {
         setLoadingScreen(false);
@@ -72,7 +72,8 @@ export default function Signin() {
   };
 
   useEffect(() => {
-    getUserDetails('59c6078b-8298-4448-b23d-ddb2111b5be9');
+    const userId: string = getUserId();
+    getUserDetails(userId);
   }, []);
 
   return (

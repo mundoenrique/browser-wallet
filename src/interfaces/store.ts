@@ -1,3 +1,5 @@
+import { TUserRegisterProps } from './register';
+
 /**
  * Public and private key
  *
@@ -123,6 +125,7 @@ export interface ConfigCardStore {
  * @typeParam ocupationFormState - object | null
  * @typeParam pepFormState - object | null
  * @typeParam biometricFormState - null
+ * @typeParam user - object | null
  */
 export interface RegisterStore {
   step: number;
@@ -138,7 +141,22 @@ export interface RegisterStore {
   termsDefinition: { [key: string]: string }[];
   onboardingUuId: string | null;
   biometricFormState: null;
+  user: IUserRegisterProps | null;
+  getUserId: () => string;
 }
+
+/**
+ * User register
+ *
+ * @typeParam firstName: String
+ * @typeParam lastName: String
+ * @typeParam userId: String
+ */
+export type IUserRegisterProps = {
+  firstName: String;
+  lastName: String;
+  userId: String;
+};
 
 /** Client Store
  *
