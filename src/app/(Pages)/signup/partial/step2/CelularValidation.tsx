@@ -3,7 +3,7 @@
 import { Info } from '@mui/icons-material';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import { Box, Button, FormHelperText, Typography } from '@mui/material';
 //internal app
@@ -11,36 +11,25 @@ import { CardStep } from '..';
 import { getSchema } from '@/config';
 import { useApi } from '@/hooks/useApi';
 import { encryptForge } from '@/utils/toolHelper';
-import { useRegisterStore, useUiStore } from '@/store';
+import { useOtpStore, useRegisterStore, useUiStore } from '@/store';
 
 export default function CelularValidation() {
   const schema = getSchema(['otp']);
   const [optUuid, setOtpUuid] = useState<string>('');
-
+  const initialized = useRef<boolean>(false);
   const { inc, dec, onboardingUuId, ONB_PHASES_TERMS } = useRegisterStore();
+  const { timeLeft, countdown, counting, setCounting, setTime } = useOtpStore();
 
   const { setModalError } = useUiStore();
 
   const customApi = useApi();
 
-  const [time, setTime] = useState<number>(60);
+  //const [time, setTime] = useState<number>(60);
 
   const { handleSubmit, control } = useForm({
     defaultValues: { otp: '' },
     resolver: yupResolver(schema),
   });
-
-  const timer = useCallback(async () => {
-    const timerRef = setInterval(() => {
-      setTime((prev) => {
-        if (prev > 0) {
-          return prev - 1;
-        } else {
-          return 0;
-        }
-      });
-    }, 1000);
-  }, [time]); //eslint-disable-line react-hooks/exhaustive-deps
 
   const requestTFACode = useCallback(async () => {
     customApi
@@ -48,7 +37,7 @@ export default function CelularValidation() {
       .then((response) => {
         setOtpUuid(response.data.data.otpUuId);
       })
-      .catch((error) => {
+      .catch(() => {
         setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
       })
       .finally(() => {});
@@ -76,6 +65,12 @@ export default function CelularValidation() {
       });
   };
 
+  /*
+  const timer = useCallback(async () => {
+    const timerRef = setInterval(() => countdown, 1000);
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+
+
   useEffect(() => {
     const timerRef = setInterval(() => {
       setTime((prev) => {
@@ -91,6 +86,28 @@ export default function CelularValidation() {
 
   useEffect(() => {
     requestTFACode();
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+
+*/
+  const timer = useCallback(async () => {
+    setInterval(() => countdown(), 1000);
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!counting && !initialized.current) {
+      (async () => {
+        await requestTFACode();
+      })();
+      setTime(60);
+      timer();
+      setCounting(true);
+      initialized.current = true;
+      console.log('time 1');
+    } else if (counting && !initialized.current) {
+      timer();
+      initialized.current = true;
+      console.log('time 2');
+    }
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -146,13 +163,13 @@ export default function CelularValidation() {
                 </Box>
               )}
             />
-            {time === 0 ? (
+            {timeLeft === 0 ? (
               <Typography variant="body2" mb={5}>
                 De necesitarlo, ya puedes solicitar un nuevo código
               </Typography>
             ) : (
               <Typography variant="body2" mb={5} color="primary.main">
-                Tiempo restante - 0:{time}
+                Tiempo restante - 0:{timeLeft}
               </Typography>
             )}
             <Button
@@ -160,9 +177,10 @@ export default function CelularValidation() {
                 requestTFACode();
                 setTime(60);
                 timer();
+                setCounting(true);
               }}
               sx={{ color: 'primary.main', height: 20 }}
-              disabled={time === 0 ? false : true}
+              disabled={timeLeft === 0 ? false : true}
             >
               Reenviar código
             </Button>
