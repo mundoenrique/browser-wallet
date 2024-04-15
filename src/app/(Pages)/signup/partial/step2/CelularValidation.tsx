@@ -87,7 +87,7 @@ export default function CelularValidation() {
     if (timeLeft === 0 && counting) {
       clearInterval(timerRef.current);
     }
-  }, [timeLeft]);
+  }, [timeLeft]); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
