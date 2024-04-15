@@ -13,8 +13,9 @@ export const validationRules: ValidationRule = {
   email: yup
     .string()
     .email('Ingresa un email válido')
-    .required('Ingresa un email para continuar')
-    .min(7, 'Ingresa un email válido')
+    .required('Ingresa un email')
+    .min(7, 'Debe tener minimo 7 caracteres')
+    .max(256, 'Debe tener maximo 256 caracteres')
     .test('emailValid', 'Ingresa un email válido', (value) => regularExpressions.emailValid?.test(value)),
   password: passwordValidation('Ingrese una contraseña'),
   roles: yup.string().required('Debes seleccionar una opción'),
@@ -44,7 +45,7 @@ export const validationRules: ValidationRule = {
   phoneNumber: yup
     .string()
     .required('Ingresa un numero de celular')
-    .max(10, 'Número de celular no válido')
+    .max(9, 'Número de celular no válido')
     .test('celularValid', 'Ingresa un numero de celular', (value) => regularExpressions.onlyNumber?.test(value)),
   isPep: yup.string().nonNullable().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
   pepForm: yup.object().shape({
