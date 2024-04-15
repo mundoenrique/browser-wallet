@@ -120,7 +120,7 @@ export default function InfoVerification() {
         inc();
       })
       .catch((error) => {
-        setModalError({ title: 'Occurió un error', description: 'Intentalo nuevamente' });
+        setModalError({ title: 'Algo salio mal', description: 'Intentalo nuevamente' });
       })
       .finally(() => {
         setLoadingScreen(false);
@@ -164,7 +164,7 @@ export default function InfoVerification() {
           );
         })
         .catch(() => {
-          setModalError({ title: 'Occurió un error', description: 'Intentalo nuevamente' });
+          setModalError({ title: 'Algo salio mal', description: 'No pudimos cargar las nacionalidades' });
         });
     };
     {

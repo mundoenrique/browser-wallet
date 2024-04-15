@@ -49,7 +49,7 @@ export default function CelularValidation() {
         setOtpUuid(response.data.data.otpUuId);
       })
       .catch((error) => {
-        setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
+        setModalError({ title: 'Algo salio mal', description: 'Intentalo nuevamente' });
       })
       .finally(() => {});
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
@@ -72,7 +72,7 @@ export default function CelularValidation() {
         }
       })
       .catch((error) => {
-        setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
+        setModalError({ title: 'Algo salio mal', description: 'Intentalo nuevamente' });
       });
   };
 
