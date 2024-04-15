@@ -52,7 +52,7 @@ export const validationRules: ValidationRule = {
     isRelativeAlive: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
     position: yup.string().required('Ingrese su posición en la empresa'),
     companyName: yup.string().required('Ingresa el nombre de la empresa'),
-    address: yup.string().required('Ingresa la dirección de la empresa'),
+    address: yup.string().required('Ingresa la dirección de la empresa').max(256, 'Debe tener maximo 256 caracteres'),
     districtCode: yup.string().required('Selecciona el distrito'),
     provinceCode: yup.string().required('Selecciona la provincia'),
     departmentCode: yup.string().required('Selecciona el departamento'),
@@ -64,6 +64,7 @@ export const validationRules: ValidationRule = {
       fullName: yup
         .string()
         .required('Ingresa el nombre completo')
+        .max(256, 'Debe tener maximo 256 caracteres')
         .test('amountValid', 'El campo es de texto', (value) => regularExpressions.namesValid?.test(value)),
       documentNumber: yup
         .string()
