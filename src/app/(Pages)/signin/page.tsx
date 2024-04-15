@@ -49,7 +49,7 @@ export default function Signin() {
         }
       })
       .catch((error) => {
-        setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
+        setModalError({ title: '¡Uups!', description: 'Credenciales invalidas, vuélvelo a intentar.' });
       })
       .finally(() => {
         setLoadingScreen(false);
