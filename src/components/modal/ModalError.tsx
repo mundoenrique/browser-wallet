@@ -1,10 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { Alert, AlertTitle, Collapse, Snackbar } from '@mui/material';
+import { Alert, AlertTitle, Snackbar } from '@mui/material';
 //Internal app
 import { ModalErrorProps } from '@/interfaces';
-import { useUiStore } from '@/store';
 
 export default function ModalError(props: ModalErrorProps) {
   const { title, description, open, handleClose } = props;
