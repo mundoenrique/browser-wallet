@@ -81,7 +81,7 @@ export default function DataUser(user: DataUserProps) {
       customApi
         .get(`/onboarding/validate?consultantCode=${userObject.code}&countryCode=${userObject.country}`)
         .then((response) => {
-          setUserValidation(response.data.userData.data);
+          setUserValidation(response.data);
         })
         .catch(() => {
           setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
