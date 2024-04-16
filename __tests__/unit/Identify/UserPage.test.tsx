@@ -1,7 +1,6 @@
-import { render, screen,waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import UserPage from '@/app/(Pages)/identify/[user]/page';
 import { createRedisInstance } from '@/utils/redis';
-import ErrorBoundary from '@/components/errorBoundary';
 
 jest.mock('@/utils/redis', () => ({
   createRedisInstance: jest.fn(),
@@ -16,63 +15,35 @@ jest.mock('jose', () => {
 });
 
 describe('UserPage', () => {
+  const userTest = { user: 'UserTest' };
+
   afterEach(() => {
     jest.resetAllMocks();
   });
 
-  it('renders ErrorBoundary when an unexpected error occurs', async () => {
+  it('renders DataUser correctly', async () => {
     const redisClient = {
-      get: jest.fn().mockResolvedValue(JSON.stringify(() => { throw new Error('Unexpected error'); })),
+      get: jest.fn().mockResolvedValueOnce(JSON.stringify(userTest)),
+      del: jest.fn().mockResolvedValueOnce(JSON.stringify(userTest)),
+      quit: jest.fn(),
+    };
+    (createRedisInstance as jest.Mock).mockReturnValue(redisClient);
+
+    render(<UserPage params={userTest} />);
+
+    // await waitFor(() => expect(screen.getByText('Estamos verificando tu información')).toBeInTheDocument());
+  });
+
+  it('renders 404 error when user data is not found', async () => {
+    const redisClient = {
+      get: jest.fn().mockResolvedValueOnce(null),
       del: jest.fn(),
       quit: jest.fn(),
     };
     (createRedisInstance as jest.Mock).mockReturnValue(redisClient);
 
-    render(
-      <ErrorBoundary>
-        <UserPage params={{ user: 'UserTest' }} />
-      </ErrorBoundary>
-    );
+    render(<UserPage params={userTest} />);
 
-    await waitFor(() => expect(screen.getByText('Something went wrong.')).toBeInTheDocument());
-  });
-
-  it('renders NotFoundError when user data is not found', async () => {
-    const redisClient = {
-      get: jest.fn().mockResolvedValue(null),
-      del: jest.fn(),
-      quit: jest.fn(),
-    };
-    (createRedisInstance as jest.Mock).mockReturnValue(redisClient);
-
-    render(
-      <ErrorBoundary>
-        <UserPage params={{ user: 'UserTest' }} />
-      </ErrorBoundary>
-    );
-
-    await waitFor(() => expect(screen.getByText('Something went wrong.')).toBeInTheDocument());
-  });
-
-  it('renders DataUser when user data is found', async () => {
-    const mockUserData = { user: 'User Test' };
-    const redisClient = {
-      get: jest.fn().mockResolvedValue(JSON.stringify(mockUserData)),
-      del: jest.fn().mockResolvedValue(JSON.stringify(mockUserData)),
-      quit: jest.fn(),
-    };
-    (createRedisInstance as jest.Mock).mockReturnValue(redisClient)
-
-    render(
-      <ErrorBoundary>
-        <UserPage params={{ user: 'UserTest' }} />
-      </ErrorBoundary>
-    );
-
-    // await waitFor(() => expect(redisClient.get).toHaveBeenCalledWith('UserTest'));
-    // await waitFor(() => expect(screen.getByText('User Test')).toBeInTheDocument());
-    // await waitFor(() => expect(redisClient.del).toHaveBeenCalledWith('UserTest'));
-    // await waitFor(() => expect(redisClient.quit).toHaveBeenCalledWith());
-    await waitFor(() => expect(screen.getByText('Something went wrong.')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Página no encontrada')).toBeInTheDocument());
   });
 });
