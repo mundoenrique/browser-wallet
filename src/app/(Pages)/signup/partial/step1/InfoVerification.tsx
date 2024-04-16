@@ -103,7 +103,6 @@ export default function InfoVerification() {
           countryCode: data.countryCode,
           email: data.email,
           phoneNumber: data.phoneNumber,
-          address: data.address.substring(0, 50),
         },
         terms: termsCatalog.reduce((acc: any[], e) => {
           termsObject[e.value] && acc.push({ code: e.code });
