@@ -7,17 +7,19 @@ import { FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/mat
 import { TextFieldProps } from '@/interfaces';
 
 function InputMUI(props: TextFieldProps): JSX.Element {
-  const { name, label, labelError, type, error, value, onChange, disabled, readOnly, endAdornment } = props;
+  const { name, label, labelError, type, error, value, onChange, disabled, readOnly, endAdornment, sx, colorText } =
+    props;
 
   const textLabel = label ?? name;
 
   return (
     <>
-      <InputLabel htmlFor={name} sx={{ mb: 3 / 2, textAlign: 'left' }}>
+      <InputLabel htmlFor={name} sx={{ mb: 3 / 2, textAlign: 'left', color: colorText }}>
         {textLabel}
       </InputLabel>
       <FormControl variant="outlined" error={!!error} sx={{ mb: '5px' }} fullWidth>
         <OutlinedInput
+          sx={sx}
           id={name}
           type={type ?? 'text'}
           label={textLabel}
@@ -67,7 +69,7 @@ function InputMUI(props: TextFieldProps): JSX.Element {
  * @label Material UI - {@link https://mui.com/material-ui/api/outlined-input/}
  */
 export default function InputText(props: TextFieldProps) {
-  const { name, control, onChange, endAdornment, ...restProps } = props;
+  const { name, control, onChange, endAdornment, sx, colorText, ...restProps } = props;
 
   return (
     <>
@@ -77,6 +79,8 @@ export default function InputText(props: TextFieldProps) {
           control={control}
           render={({ field, fieldState: { error } }) => (
             <InputMUI
+              colorText={colorText}
+              sx={sx}
               name={name}
               value={field.value}
               onChange={(e: any) => {

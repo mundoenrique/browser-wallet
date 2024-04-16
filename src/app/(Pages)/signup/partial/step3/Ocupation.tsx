@@ -5,53 +5,108 @@ import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Collapse, Typography } from '@mui/material';
 //Internal app
-import { CardStep } from '..';
+import CardStep from '../CardStep';
 import { getSchema } from '@/config';
-import { useRegisterStore } from '@/store';
+import { useApi } from '@/hooks/useApi';
 import { InputSelect, InputText } from '@/components';
+import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 
 export default function Ocupation() {
+  const customApi = useApi();
   const [ocupations, setOcupations] = useState<boolean>(false);
-  const { updateStep, inc, updateFormState, ocupationFormState } = useRegisterStore();
+  const { updateStep, inc, updateFormState, ONB_PHASES_CONSULT_DATA, onboardingUuId } = useRegisterStore();
+  const { setLoadingScreen, loadingScreen, setModalError } = useUiStore();
+  const { updateCatalog, occupationCatalog } = useCatalogsStore();
+
   const schema = ocupations
-    ? getSchema(['ocupation', 'enterpriseType', 'enterprises', 'position'])
+    ? getSchema(['occupationCode', 'companyType', 'companyName', 'companyPosition'])
     : getSchema(['ocupation']);
 
   const { handleSubmit, control, watch, reset, getValues } = useForm({
-    defaultValues: ocupationFormState || {
-      ocupation: 'pi',
-      enterpriseType: 'prv',
-      enterprises: '',
-      position: '',
+    defaultValues: {
+      occupationCode: ONB_PHASES_CONSULT_DATA?.consultant?.occupationCode ?? null,
+      companyType: ONB_PHASES_CONSULT_DATA?.consultant?.companyType ?? null,
+      companyName: ONB_PHASES_CONSULT_DATA?.consultant?.companyName ?? '',
+      companyPosition: ONB_PHASES_CONSULT_DATA?.consultant?.companyPosition ?? '',
     },
     resolver: yupResolver(schema),
   });
 
-  const personOcupation = watch('ocupation');
+  const personOcupation = watch('occupationCode');
 
   useEffect(() => {
-    if (personOcupation === 'pi') {
+    if (['SELF_EMPLOYED'].includes(personOcupation)) {
       setOcupations(false);
       reset({
         ...getValues(),
-        enterpriseType: 'prv',
-        enterprises: '',
-        position: '',
+        companyType: null,
+        companyName: '',
+        companyPosition: '',
       });
     } else {
       setOcupations(true);
     }
   }, [getValues, personOcupation, reset]);
 
-  const onSubmit = (data: any) => {
-    updateFormState('ocupationFormState', data);
-    inc();
+  const onSubmit = async (data: any) => {
+    const requestFormData = {
+      currentPhaseCode: 'ONB_PHASES_CONSULT_DATA',
+      onboardingUuId: onboardingUuId,
+      request: {
+        consultant: {
+          occupationCode: data.occupationCode,
+          ...(ocupations && {
+            companyType: data.companyType,
+            companyName: data.companyName,
+            companyPosition: data.companyPosition,
+          }),
+        },
+      },
+    };
+
+    setLoadingScreen(true);
+
+    customApi
+      .put('/onboarding/consultantdata', requestFormData)
+      .then((response) => {
+        updateFormState('ONB_PHASES_CONSULT_DATA', requestFormData.request);
+        inc();
+      })
+      .catch(() => {
+        setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
   };
+
+  useEffect(() => {
+    const fetchOccupationsCatalg = async () => {
+      customApi
+        .post('/catalogs/search', { catalogCode: 'OCCUPATIONS_CATALOG' })
+        .then((response) => {
+          updateCatalog(
+            'occupationCatalog',
+            response.data.data.data.map((occupation: { value: string; code: string }) => ({
+              text: occupation.value,
+              value: occupation.code,
+            }))
+          );
+        })
+        .catch(() => {
+          setModalError({ title: 'Algo salio mal', description: 'No pudimos cargas la lista de las ocupaciones' });
+        });
+    };
+    {
+      occupationCatalog.length === 0 && fetchOccupationsCatalg();
+    }
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <CardStep stepNumber="3">
       <Box
         component="form"
+        autoComplete="off"
         onSubmit={handleSubmit(onSubmit)}
         sx={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}
       >
@@ -60,28 +115,30 @@ export default function Ocupation() {
             Queremos saber más de ti
           </Typography>
           <Box>
-            <InputSelect
-              name="ocupation"
-              label="¿Cuál es tu ocupación?"
-              options={[
-                { text: 'Consultora de belleza independiente', value: 'pi' },
-                { text: 'Doctor', value: 'doc' },
-                { text: 'Contador', value: 'cont' },
-              ]}
-              control={control}
-            />
+            {occupationCatalog.length > 0 ? (
+              <InputSelect
+                name="occupationCode"
+                label="¿Cuál es tu ocupación?"
+                disableClearable
+                options={occupationCatalog}
+                control={control}
+              />
+            ) : (
+              <InputSelect name="default" label="¿Cuál es tu ocupación?" options={[]} disableClearable disabled />
+            )}
             <Collapse in={ocupations} timeout={300}>
               <InputSelect
-                name="enterpriseType"
+                name="companyType"
                 label="Tipo de empresa"
+                disableClearable
                 options={[
-                  { text: 'Privada', value: 'prv' },
-                  { text: 'Publica', value: 'pbc' },
+                  { text: 'Privada', value: 'Privado' },
+                  { text: 'Publica', value: 'Publico' },
                 ]}
                 control={control}
               />
-              <InputText name="enterprises" label="Nombre empresa" control={control} />
-              <InputText name="position" label="Cargo empresa" control={control} />
+              <InputText name="companyName" label="Nombre empresa" control={control} />
+              <InputText name="companyPosition" label="Cargo empresa" control={control} />
             </Collapse>
           </Box>
         </Box>
@@ -95,7 +152,7 @@ export default function Ocupation() {
           >
             Anterior
           </Button>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" disabled={loadingScreen}>
             Siguiente
           </Button>
         </Box>

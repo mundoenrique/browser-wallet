@@ -9,7 +9,7 @@ import { FormControl, FormLabel, FormHelperText, Radio, FormControlLabel, RadioG
 import { InputOptionsProps } from '@/interfaces';
 
 function InputRadioMUI(props: InputOptionsProps): JSX.Element {
-  const { name, label, labelError, error, value, onChange, options } = props;
+  const { name, label, labelError, error, value, onChange, options, onClick } = props;
 
   return (
     <FormControl component="fieldset" variant="standard" fullWidth>
@@ -19,6 +19,9 @@ function InputRadioMUI(props: InputOptionsProps): JSX.Element {
         value={value}
         onChange={onChange}
         sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}
+        onClick={(e: any) => {
+          onClick && onClick(e);
+        }}
       >
         <Stack spacing="12px" direction="row">
           {options.map((option, i: number) => (

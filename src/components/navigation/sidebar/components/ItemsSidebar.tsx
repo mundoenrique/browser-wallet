@@ -22,7 +22,7 @@ import { ArrowsIcons, CardIcons, CashIcons, FileIcons, GainIcons, HomeIcons, Key
 export default function ItemsSidebar(): JSX.Element {
   const theme = useTheme();
   const { currentItem, setCurrentItem } = useMenuStore();
-  const { updateDrawerStatus } = useDrawerStore();
+  const { setDrawerStatus } = useDrawerStore();
   const match = useMediaQuery(theme.breakpoints.up('md'));
 
   const itemMenu = match
@@ -132,7 +132,7 @@ export default function ItemsSidebar(): JSX.Element {
               disablePadding
               onClick={() => {
                 setCurrentItem(menu.id);
-                updateDrawerStatus(false);
+                setDrawerStatus(false);
               }}
               sx={{ width: 244, mx: 'auto', my: 1 / 2 }}
             >

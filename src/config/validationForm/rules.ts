@@ -13,14 +13,15 @@ export const validationRules: ValidationRule = {
   email: yup
     .string()
     .email('Ingresa un email válido')
-    .required('Ingresa un email para continuar')
-    .min(7, 'Ingresa un email válido')
+    .required('Ingresa un email')
+    .min(7, 'Debe tener minimo 7 caracteres')
+    .max(256, 'Debe tener maximo 256 caracteres')
     .test('emailValid', 'Ingresa un email válido', (value) => regularExpressions.emailValid?.test(value)),
   password: passwordValidation('Ingrese una contraseña'),
   roles: yup.string().required('Debes seleccionar una opción'),
   initialDate: yup.string().required('Ingresa una fecha'),
-  country: yup.string().required('Selecciona un país'),
-  term: yup.string().required('Acepta los terminos'),
+  countryCode: yup.string().required('Selecciona un país'),
+  terms: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
   policy: yup.string().required('Acepta la política'),
   otp: yup
     .string()
@@ -37,23 +38,25 @@ export const validationRules: ValidationRule = {
     'Las contraseñas no coinciden'
   ),
   legal: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
-  ocupation: yup.string().required('Selecciona una ocupación'),
-  enterpriseType: yup.string().required('Selecciona el tipo de empresa'),
-  enterprises: yup.string().required('Ingresa el nombre de la empresa'),
-  position: yup.string().required('Ingrese su posición en la empresa'),
-  celular: yup
+  occupationCode: yup.string().required('Selecciona una ocupación'),
+  companyType: yup.string().required('Selecciona el tipo de empresa'),
+  companyName: yup.string().required('Ingresa el nombre de la empresa'),
+  companyPosition: yup.string().required('Ingrese su posición en la empresa'),
+  phoneNumber: yup
     .string()
     .required('Ingresa un numero de celular')
+    .min(9, 'Número de celular no válido')
+    .max(9, 'Número de celular no válido')
     .test('celularValid', 'Ingresa un numero de celular', (value) => regularExpressions.onlyNumber?.test(value)),
   isPep: yup.string().nonNullable().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
   pepForm: yup.object().shape({
-    isFamilyAlive: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
+    isRelativeAlive: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
     position: yup.string().required('Ingrese su posición en la empresa'),
     companyName: yup.string().required('Ingresa el nombre de la empresa'),
-    address: yup.string().required('Ingresa la dirección de la empresa'),
-    district: yup.string().required('Selecciona el distrito'),
-    province: yup.string().required('Selecciona la provincia'),
-    department: yup.string().required('Selecciona el departamento'),
+    address: yup.string().required('Ingresa la dirección de la empresa').max(256, 'Debe tener maximo 256 caracteres'),
+    districtCode: yup.string().required('Selecciona el distrito'),
+    provinceCode: yup.string().required('Selecciona la provincia'),
+    departmentCode: yup.string().required('Selecciona el departamento'),
     endDate: yup.string().required('Ingresa la fecha'),
     holdShare: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
   }),
@@ -62,6 +65,7 @@ export const validationRules: ValidationRule = {
       fullName: yup
         .string()
         .required('Ingresa el nombre completo')
+        .max(256, 'Debe tener maximo 256 caracteres')
         .test('amountValid', 'El campo es de texto', (value) => regularExpressions.namesValid?.test(value)),
       documentNumber: yup
         .string()

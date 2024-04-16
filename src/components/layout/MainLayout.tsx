@@ -19,11 +19,11 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
 
   const [isClosing, setIsClosing] = useState<boolean>(false);
 
-  const { showStatus, updateDrawerStatus } = useDrawerStore();
+  const { drawerStatus, setDrawerStatus } = useDrawerStore();
 
   const handleDrawerClose = () => {
     setIsClosing(true);
-    updateDrawerStatus(false);
+    setDrawerStatus(false);
   };
 
   const handleDrawerTransitionEnd = () => {
@@ -32,14 +32,14 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
 
   const handleDrawerToggle = () => {
     if (!isClosing) {
-      updateDrawerStatus(!showStatus);
+      setDrawerStatus(!drawerStatus);
     }
   };
   return (
     <Box sx={{ display: 'flex' }}>
       <Navbar onClick={handleDrawerToggle} />
       <Sidebar
-        open={showStatus}
+        open={drawerStatus}
         onTransitionEnd={handleDrawerTransitionEnd}
         onClose={handleDrawerClose}
         drawerWidth={drawerWidth}

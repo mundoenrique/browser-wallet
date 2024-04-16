@@ -12,7 +12,6 @@ import { InputPass, ModalResponsive } from '@/components';
 
 export default function Signin() {
   const theme = useTheme();
-
   const [open, setOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const schema = getSchema(['password']);

@@ -116,20 +116,22 @@ export async function handleJWE(
  * @param responseObj - The response object.
  * @param jweAppPublicKey - The application's public key.
  * @param jwsApiPrivateKey - The API's private key.
+ * @param status - The HTTP status code for the response. Defaults to 200.
  * @returns The encrypted and signed response.
  * @throws If there is an error encrypting or signing the response.
  */
 export async function handleResponse(
   responseObj: any,
   jweAppPublicKey: string,
-  jwsApiPrivateKey: string
-): Promise<Response> {
+  jwsApiPrivateKey: string,
+  status: number = 200
+): Promise<NextResponse> {
   try {
     const jwe: string = await encryptJWE(responseObj, jweAppPublicKey);
     const encryptedResponse = { data: jwe };
     const jws: string = await signJWE(jwsApiPrivateKey, jwe);
 
-    const response = Response.json(encryptedResponse);
+    const response = NextResponse.json(encryptedResponse, { status });
     response.headers.set(JWS_HEADER, `JWS ${jws}`);
 
     return response;
@@ -152,7 +154,11 @@ export async function handleApiGeeRequest(data: object): Promise<any> {
   }
 }
 
-export async function handleApiGeeResponse(responseObj: IApiGeeResponse, jweAppPublicKey: string): Promise<any> {
+export async function handleApiGeeResponse(
+  responseObj: IApiGeeResponse,
+  status: number,
+  jweAppPublicKey: string
+): Promise<any> {
   const jweApiGeePrivateKey = getEnvVariable('BACK_JWE_PRIVATE_KEY');
 
   if (responseObj.data) {
@@ -160,7 +166,7 @@ export async function handleApiGeeResponse(responseObj: IApiGeeResponse, jweAppP
     responseObj.data = decryptData;
   }
 
-  const response = await handleApiResponse(responseObj, jweAppPublicKey);
+  const response = await handleApiResponse(responseObj, status, jweAppPublicKey);
 
   return response;
 }

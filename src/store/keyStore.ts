@@ -37,7 +37,13 @@ export const useKeyStore = create<KeyStoreProps>()(
         /**
          * Set value for public and private key
          */
-        setKeys: (keys) => set({ jwePublicKey: keys.jwePublicKey, jwePrivateKey: keys.jwePrivateKey, jwsPublicKey: keys.jwsPublicKey, jwsPrivateKey: keys.jwsPrivateKey  }),
+        setKeys: (keys) =>
+          set({
+            jwePublicKey: keys.jwePublicKey,
+            jwePrivateKey: keys.jwePrivateKey,
+            jwsPublicKey: keys.jwsPublicKey,
+            jwsPrivateKey: keys.jwsPrivateKey,
+          }),
       }),
       {
         name: 'key-store',
