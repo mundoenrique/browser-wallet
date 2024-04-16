@@ -8,7 +8,12 @@ export default function ModalError(props: ModalErrorProps) {
   const { title, description, open, handleClose } = props;
 
   return (
-    <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} open={open} autoHideDuration={6000}>
+    <Snackbar
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      open={open}
+      autoHideDuration={6000}
+      onClose={handleClose}
+    >
       <Alert
         sx={{ bgcolor: '#FBE5E5', border: `1px solid #ef5350`, minWidth: 250 }}
         severity="error"
