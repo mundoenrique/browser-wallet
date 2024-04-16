@@ -31,7 +31,7 @@ export default function PasswordCreation() {
           updateCatalog('passwordTermsCatalog', response.data.data.data);
         })
         .catch(() => {
-          setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
+          setModalError({ title: 'Algo salio mal', description: 'Intentalo nuevamente' });
         });
     };
     {
