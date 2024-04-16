@@ -4,11 +4,11 @@ import { getEnvVariable, handleJWE, handleJWT, handleResponse } from './';
 
 export async function handleApiRequest(request: NextRequest) {
   const { method } = request;
-  const jweApiPublicKey = getEnvVariable('MIDDLE_JWE_PUBLIC_KEY');
+  const jwsApiPublicKey = getEnvVariable('MIDDLE_JWS_PUBLIC_KEY');
   const jweApiPrivateKey = getEnvVariable('MIDDLE_JWE_PRIVATE_KEY');
   let data = {};
 
-  const jwtPayload = await handleJWT(request, jweApiPublicKey);
+  const jwtPayload = await handleJWT(request, jwsApiPublicKey);
 
   const jweAppPublicKey = jwtPayload.jwePublicKey;
   const jwsAppPublicKey = jwtPayload.jwsPublicKey;

@@ -39,15 +39,15 @@ export function useApi() {
     async (response) => {
       const url = response.config.url;
       const jwtAuth = response.headers[JWT_HEADER];
-      const jweApiPublicKey = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY;
+      const jwsApiPublicKey = process.env.NEXT_PUBLIC_MIDDLE_JWS_PUBLIC_KEY;
 
       if (url === '/gettoken') {
         return response;
       }
 
       if (jwtAuth) {
-        if (jweApiPublicKey) {
-          await verifyJWT(jwtAuth, jweApiPublicKey);
+        if (jwsApiPublicKey) {
+          await verifyJWT(jwtAuth, jwsApiPublicKey);
 
           setToken(jwtAuth);
         } else {
