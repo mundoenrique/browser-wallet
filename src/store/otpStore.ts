@@ -6,17 +6,18 @@ import { OtpStore } from '@/interfaces';
 export const useOtpStore = create<OtpStore>()(
   persist(
     (set, get) => ({
-      otpTimeLeft: 0,
-      initialized: false,
-      setInitialized: (value) => set({ initialized: value }),
-
+      timeLeft: 0,
+      counting: false,
+      setCounting: (value) => set({ counting: value }),
       countdown: () => {
-        const { otpTimeLeft } = get();
-        if (otpTimeLeft > 0) {
-          set((state: any) => ({ otpTimeLeft: state.otpTimeLeft - 1 }));
+        const { timeLeft } = get();
+        if (timeLeft > 0) {
+          set((state: any) => ({ timeLeft: state.timeLeft - 1 }));
+        } else {
+          set(() => ({ counting: false }));
         }
       },
-      resetOtp: () => set({ otpTimeLeft: 60, initialized: false }),
+      setTime: () => set({ timeLeft: 60 }),
     }),
     { name: 'timerStore', storage: createJSONStorage(() => sessionStorage) }
   )

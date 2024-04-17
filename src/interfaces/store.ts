@@ -203,9 +203,9 @@ export interface UserStore {
 }
 
 export interface OtpStore {
-  otpTimeLeft: number;
-  initialized: boolean;
-  setInitialized: (value: boolean) => void;
+  timeLeft: number;
+  counting: boolean;
+  setCounting: (value: boolean) => void;
   countdown: () => void;
-  resetOtp: () => void;
+  setTime: (value: number) => void;
 }

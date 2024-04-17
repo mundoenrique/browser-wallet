@@ -13,8 +13,9 @@ export const validationRules: ValidationRule = {
   email: yup
     .string()
     .email('Ingresa un email válido')
-    .required('Ingresa un email para continuar')
-    .min(7, 'Ingresa un email válido')
+    .required('Ingresa un email')
+    .min(7, 'Debe tener minimo 7 caracteres')
+    .max(256, 'Debe tener maximo 256 caracteres')
     .test('emailValid', 'Ingresa un email válido', (value) => regularExpressions.emailValid?.test(value)),
   password: yup.string().required('Ingresa una contraseña'),
   roles: yup.string().required('Debes seleccionar una opción'),
@@ -44,14 +45,15 @@ export const validationRules: ValidationRule = {
   phoneNumber: yup
     .string()
     .required('Ingresa un numero de celular')
-    .max(10, 'Número de celular no válido')
+    .min(9, 'Número de celular no válido')
+    .max(9, 'Número de celular no válido')
     .test('celularValid', 'Ingresa un numero de celular', (value) => regularExpressions.onlyNumber?.test(value)),
   isPep: yup.string().nonNullable().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
   pepForm: yup.object().shape({
     isRelativeAlive: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
     position: yup.string().required('Ingrese su posición en la empresa'),
     companyName: yup.string().required('Ingresa el nombre de la empresa'),
-    address: yup.string().required('Ingresa la dirección de la empresa'),
+    address: yup.string().required('Ingresa la dirección de la empresa').max(256, 'Debe tener maximo 256 caracteres'),
     districtCode: yup.string().required('Selecciona el distrito'),
     provinceCode: yup.string().required('Selecciona la provincia'),
     departmentCode: yup.string().required('Selecciona el departamento'),
@@ -63,11 +65,13 @@ export const validationRules: ValidationRule = {
       fullName: yup
         .string()
         .required('Ingresa el nombre completo')
+        .max(256, 'Debe tener maximo 256 caracteres')
         .test('amountValid', 'El campo es de texto', (value) => regularExpressions.namesValid?.test(value)),
       documentNumber: yup
         .string()
         .required('Ingresa el número de identificación')
-        .test('amountValid', 'El campo es númerico', (value) => regularExpressions.numeric?.test(value)),
+        .max(15, 'Número de identificación invalido')
+        .test('amountValid', 'Identificación invalida', (value) => regularExpressions.alphanum?.test(value)),
       documentType: yup.string().required('Selecciona el tipo de documento '),
     })
   ),
