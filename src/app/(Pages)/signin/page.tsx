@@ -1,28 +1,29 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, Link as LinkMui, Skeleton, Typography, capitalize, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { sendGTMEvent } from '@next/third-parties/google';
+import { Box, Button, Link as LinkMui, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import LogoGreen from '%/images/LogoGreen';
-import { InputPass, ModalResponsive } from '@/components';
 import { useApi } from '@/hooks/useApi';
-import { TCredentials, TUserDetail } from '@/interfaces';
+import LogoGreen from '%/images/LogoGreen';
 import { encryptForge } from '@/utils/toolHelper';
 import { useRegisterStore, useUiStore } from '@/store';
+import { TCredentials, TUserDetail } from '@/interfaces';
+import { InputPass, ModalResponsive } from '@/components';
 
 export default function Signin() {
-  const customApi = useApi();
   const theme = useTheme();
   const router = useRouter();
-  const [open, setOpen] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const [userData, setUserData] = useState<TUserDetail | null>(null);
+  const customApi = useApi();
   const schema = getSchema(['password']);
+  const [errorMessage] = useState<string>('');
+  const [open, setOpen] = useState<boolean>(false);
+  const [userData, setUserData] = useState<TUserDetail | null>(null);
 
   const { setLoadingScreen, loadingScreen } = useUiStore();
   const { getUserId } = useRegisterStore();
@@ -48,7 +49,7 @@ export default function Signin() {
           router.push('/dashboard');
         }
       })
-      .catch((error) => {
+      .catch(() => {
         setModalError({ title: '¡Uups!', description: 'Credenciales invalidas, vuélvelo a intentar.' });
       })
       .finally(() => {
@@ -63,7 +64,7 @@ export default function Signin() {
       .then((response) => {
         setUserData(response.data.data);
       })
-      .catch((error) => {
+      .catch(() => {
         setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
       })
       .finally(() => {
@@ -74,6 +75,21 @@ export default function Signin() {
   useEffect(() => {
     const userId: string = getUserId();
     getUserDetails(userId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: '/signin/interno',
+        page_title: 'Yiro :: login :: interno',
+        page_referrer: '/identify',
+        section: 'Yiro :: login :: interno',
+        previous_section: 'somosbelcorp',
+      },
+    });
   }, []);
 
   return (
@@ -115,7 +131,24 @@ export default function Signin() {
           <Box sx={{ mt: 3, textAlign: 'start' }}>
             <InputPass name="password" control={control} label="Contraseña" colorText="white" />
             <Box sx={{ width: '100%', py: 2, textAlign: 'center', mb: { xs: 6, sm: 0 } }}>
-              <LinkMui component={Link} href="/password-recover" sx={{ color: 'white', textDecorationColor: 'white' }}>
+              <LinkMui
+                component={Link}
+                href="/password-recover"
+                sx={{ color: 'white', textDecorationColor: 'white' }}
+                onClick={() =>
+                  sendGTMEvent({
+                    event: 'ga4.trackEvent',
+                    eventName: 'select_content',
+                    eventParams: {
+                      content_type: 'boton',
+                      section: 'Yiro :: login :: interno',
+                      previous_section: 'somosbelcorp',
+                      selected_content: 'Olvide mi contraseña',
+                      destination_page: '/password-recover',
+                    },
+                  })
+                }
+              >
                 Olvide mi contraseña
               </LinkMui>
             </Box>
@@ -127,6 +160,19 @@ export default function Signin() {
           type="submit"
           fullWidth
           disabled={loadingScreen}
+          onClick={() =>
+            sendGTMEvent({
+              event: 'ga4.trackEvent',
+              eventName: 'select_content',
+              eventParams: {
+                content_type: 'boton',
+                section: 'Yiro :: login :: interno',
+                previous_section: 'somosbelcorp',
+                selected_content: 'Ingresar',
+                destination_page: '/dashboard',
+              },
+            })
+          }
         >
           Ingresar
         </Button>
