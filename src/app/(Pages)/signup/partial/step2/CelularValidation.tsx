@@ -159,6 +159,7 @@ export default function CelularValidation() {
                 setTime(60);
                 timer();
                 setCounting(true);
+                reset();
               }}
               sx={{ color: 'primary.main', height: 20 }}
               disabled={timeLeft === 0 ? false : true}
