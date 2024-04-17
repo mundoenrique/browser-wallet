@@ -1,10 +1,10 @@
 'use client';
 
-import { Info } from '@mui/icons-material';
+import Info from '@mui/icons-material/InfoOutlined';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { MuiOtpInput } from 'mui-one-time-password-input';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Button, FormHelperText, Typography } from '@mui/material';
 //internal app
 import { CardStep } from '..';
@@ -25,7 +25,7 @@ export default function CelularValidation() {
 
   const customApi = useApi();
 
-  const { handleSubmit, control } = useForm({
+  const { handleSubmit, control, reset } = useForm({
     defaultValues: { otp: '' },
     resolver: yupResolver(schema),
   });
@@ -36,7 +36,7 @@ export default function CelularValidation() {
       .then((response) => {
         setOtpUuid(response.data.data.otpUuId);
       })
-      .catch((error) => {
+      .catch(() => {
         setModalError({ title: 'Algo salio mal', description: 'Intentalo nuevamente' });
       })
       .finally(() => {});
@@ -59,9 +59,11 @@ export default function CelularValidation() {
           inc();
         }
       })
-      .catch((error) => {
+      .catch(() => {
         setModalError({ title: 'Algo salio mal', description: 'Intentalo nuevamente' });
       });
+
+    reset();
   };
 
   const timer = useCallback(async () => {
