@@ -70,7 +70,8 @@ export const validationRules: ValidationRule = {
       documentNumber: yup
         .string()
         .required('Ingresa el número de identificación')
-        .test('amountValid', 'El campo es númerico', (value) => regularExpressions.numeric?.test(value)),
+        .max(15, 'Número de identificación invalido')
+        .test('amountValid', 'Identificación invalida', (value) => regularExpressions.alphanum?.test(value)),
       documentType: yup.string().required('Selecciona el tipo de documento '),
     })
   ),
