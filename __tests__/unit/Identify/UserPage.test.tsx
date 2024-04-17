@@ -1,11 +1,7 @@
-import { render, screen,waitFor } from '@testing-library/react';
-import UserPage from '@/app/(Pages)/identify/[user]/page';
 import { createRedisInstance } from '@/utils/redis';
-import ErrorBoundary from '@/components/errorBoundary';
-
-jest.mock('@/utils/redis', () => ({
-  createRedisInstance: jest.fn(),
-}));
+import UserPage from '@/app/(Pages)/identify/[user]/page';
+import NotFoundError from '@/components/errors/NotFoundError';
+import DataUser from '@/app/(Pages)/identify/[user]/partial/DataUser';
 
 jest.mock('jose', () => {
   return {
@@ -15,64 +11,47 @@ jest.mock('jose', () => {
   };
 });
 
+jest.mock('@/utils/redis', () => ({
+  createRedisInstance: jest.fn(),
+}));
+
+let mockRedis = {
+  get: jest.fn(),
+  del: jest.fn(),
+  quit: jest.fn(),
+};
+
 describe('UserPage', () => {
   afterEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
-  it('renders ErrorBoundary when an unexpected error occurs', async () => {
-    const redisClient = {
-      get: jest.fn().mockResolvedValue(JSON.stringify(() => { throw new Error('Unexpected error'); })),
-      del: jest.fn(),
-      quit: jest.fn(),
-    };
-    (createRedisInstance as jest.Mock).mockReturnValue(redisClient);
+  it('should return DataUser component with user data', async () => {
+    const params = { user: '943cc6d1-5f89-498d-933d-badba7a78045' };
+    const userData = { code: 'John Doe', country: 'PE' };
 
-    render(
-      <ErrorBoundary>
-        <UserPage params={{ user: 'UserTest' }} />
-      </ErrorBoundary>
-    );
+    (createRedisInstance as jest.Mock).mockReturnValue(mockRedis);
+    mockRedis.get.mockResolvedValueOnce(JSON.stringify(userData));
 
-    await waitFor(() => expect(screen.getByText('Something went wrong.')).toBeInTheDocument());
+    const result = await UserPage({ params });
+
+    expect(result.type).toBe(DataUser);
+    expect(result.props.user).toEqual(JSON.stringify(userData));
+    expect(mockRedis.get).toHaveBeenCalledWith('943cc6d1-5f89-498d-933d-badba7a78045');
+    expect(mockRedis.del).toHaveBeenCalledWith('943cc6d1-5f89-498d-933d-badba7a78045');
+    expect(mockRedis.quit).toHaveBeenCalled();
   });
 
-  it('renders NotFoundError when user data is not found', async () => {
-    const redisClient = {
-      get: jest.fn().mockResolvedValue(null),
-      del: jest.fn(),
-      quit: jest.fn(),
-    };
-    (createRedisInstance as jest.Mock).mockReturnValue(redisClient);
+  it('should return NotFoundError when user data is not found', async () => {
+    const params = { user: '943cc6d1-5f89-498d-933d-badba7a78046' };
+    mockRedis.get.mockResolvedValueOnce(null);
 
-    render(
-      <ErrorBoundary>
-        <UserPage params={{ user: 'UserTest' }} />
-      </ErrorBoundary>
-    );
+    const result = await UserPage({ params });
 
-    await waitFor(() => expect(screen.getByText('Something went wrong.')).toBeInTheDocument());
-  });
-
-  it('renders DataUser when user data is found', async () => {
-    const mockUserData = { user: 'User Test' };
-    const redisClient = {
-      get: jest.fn().mockResolvedValue(JSON.stringify(mockUserData)),
-      del: jest.fn().mockResolvedValue(JSON.stringify(mockUserData)),
-      quit: jest.fn(),
-    };
-    (createRedisInstance as jest.Mock).mockReturnValue(redisClient)
-
-    render(
-      <ErrorBoundary>
-        <UserPage params={{ user: 'UserTest' }} />
-      </ErrorBoundary>
-    );
-
-    // await waitFor(() => expect(redisClient.get).toHaveBeenCalledWith('UserTest'));
-    // await waitFor(() => expect(screen.getByText('User Test')).toBeInTheDocument());
-    // await waitFor(() => expect(redisClient.del).toHaveBeenCalledWith('UserTest'));
-    // await waitFor(() => expect(redisClient.quit).toHaveBeenCalledWith());
-    await waitFor(() => expect(screen.getByText('Something went wrong.')).toBeInTheDocument());
+    expect(result.type).toBe(NotFoundError);
+    expect(result.props.code).toBe(404);
+    expect(mockRedis.get).toHaveBeenCalledWith('943cc6d1-5f89-498d-933d-badba7a78046');
+    expect(mockRedis.del).toHaveBeenCalled();
+    expect(mockRedis.quit).toHaveBeenCalled();
   });
 });

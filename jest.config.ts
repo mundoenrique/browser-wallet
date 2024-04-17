@@ -15,7 +15,7 @@ const config: Config = {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
   collectCoverage: true,
-  collectCoverageFrom: ['src/app/**/signup/*page.tsx'],
+  collectCoverageFrom: ['src/app/**/signup/*page.tsx', 'src/app/**/identify/[user]/*page.tsx'],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   coverageProvider: 'v8',
   coveragePathIgnorePatterns: ['<rootDir>/public/', '<rootDir>/node_modules/'],
@@ -36,7 +36,6 @@ const config: Config = {
     '<rootDir>/__tests__/unit/Dashboard/card-configuration',
     '<rootDir>/__tests__/unit/Dashboard/legal',
     '<rootDir>/__tests__/unit/Dashboard/recharge',
-    '<rootDir>/__tests__/unit/Identify',
   ],
 };
 

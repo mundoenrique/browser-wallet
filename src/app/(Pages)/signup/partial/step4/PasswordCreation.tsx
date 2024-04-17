@@ -63,7 +63,9 @@ export default function PasswordCreation() {
       .then(() => {
         inc();
       })
-      .catch(() => {})
+      .catch(() => {
+        setModalError({ title: 'Algo salio mal', description: 'Intentalo nuevamente' });
+      })
       .finally(() => {
         setLoadingScreen(false);
       });
