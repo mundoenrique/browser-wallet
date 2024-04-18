@@ -27,6 +27,9 @@ export default function PEP() {
   const [showPepInfo, setShowPepInfo] = useState<boolean>(false);
   const [parentIndex, setParentIndex] = useState<number>(-1);
 
+  const maxDate = dayjs();
+  const minDate = maxDate.subtract(10, 'years');
+
   const customApi = useApi();
 
   const { setLoadingScreen, setModalError } = useUiStore();
@@ -367,7 +370,7 @@ export default function PEP() {
               name="pepForm.endDate"
               label="Fecha de salida"
               control={control}
-              datePickerProps={{ disableFuture: true }}
+              datePickerProps={{ disableFuture: true, minDate: minDate, maxDate: maxDate, yearsPerRow: 3 }}
             />
 
             <Typography variant="body2" align="left" sx={{ mb: 3 }}>

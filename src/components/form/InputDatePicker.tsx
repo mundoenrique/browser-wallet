@@ -4,13 +4,15 @@ import 'dayjs/locale/es';
 import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
-import { FormHelperText, InputLabel } from '@mui/material';
+import { FormHelperText, InputLabel, TextField } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 //Internal App
 import { CalendarIcons } from '%/Icons';
 import { InputDatePickerProps } from '@/interfaces';
+import { text } from 'node:stream/consumers';
+import { FilterList } from '@mui/icons-material';
 
 function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
   const {
@@ -42,6 +44,9 @@ function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
             textField: {
               error: !!error,
             },
+            field: {
+              disabled: true,
+            },
           }}
           label={inputLabel}
           value={value}
@@ -58,6 +63,13 @@ function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
               color: 'primary.main',
               mr: 3 / 2,
               p: '4px',
+            },
+            '&>.MuiInputBase-root.MuiOutlinedInput-root.Mui-disabled': {
+              background: 'white',
+              color: 'inherit !important',
+            },
+            '&>.MuiFormControl-root>.MuiTextField-root.MuiInputBase-root.MuiOutlinedInput-root.Mui-disabled': {
+              color: 'black',
             },
           }}
           {...datePickerProps}
