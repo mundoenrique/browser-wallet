@@ -1,18 +1,17 @@
 'use client';
 
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, useFieldArray } from 'react-hook-form';
-import dayjs from 'dayjs';
 import { Box, Button, Collapse, Link as LinkMui, Typography } from '@mui/material';
-
 //Internal app
-import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
-import { useApi } from '@/hooks/useApi';
-import { getSchema } from '@/config';
-import { slate } from '@/theme/theme-default';
-import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResponsive } from '@/components';
 import { CardStep } from '..';
+import { getSchema } from '@/config';
+import { useApi } from '@/hooks/useApi';
+import { slate } from '@/theme/theme-default';
+import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
+import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResponsive } from '@/components';
 
 //Optios to map to <inputCheck >. Don't delete
 const options: any = [

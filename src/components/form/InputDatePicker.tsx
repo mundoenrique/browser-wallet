@@ -66,10 +66,10 @@ function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
             },
             '&>.MuiInputBase-root.MuiOutlinedInput-root.Mui-disabled': {
               background: 'white',
-              color: 'inherit !important',
-            },
-            '&>.MuiFormControl-root>.MuiTextField-root.MuiInputBase-root.MuiOutlinedInput-root.Mui-disabled': {
-              color: 'black',
+              color: 'inherit',
+              '&>input': {
+                textFillColor: 'initial',
+              },
             },
           }}
           {...datePickerProps}
