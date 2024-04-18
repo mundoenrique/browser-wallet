@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import { Box } from '@mui/material';
 //Internal app
+import { useDrawerStore } from '@/store';
 import { ChildrenProps } from '@/interfaces';
 import Navbar from '../navigation/navbar/Navbar';
 import Sidebar from '../navigation/sidebar/Sidebar';
 import NavbarLower from '../navigation/navbar/NavbarLower';
-import { useDrawerStore } from '@/store';
 
 /**
  * Container used in the internal views of the application

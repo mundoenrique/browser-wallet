@@ -1,11 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-
 import React, { useEffect, useState } from 'react';
 import { Box, Fade, Typography, Zoom } from '@mui/material';
 //Internal app
-
 import LogoGreen from '%/images/LogoGreen';
 import { PurpleLayout } from '@/components';
 import animation1 from '%/images/animation1.svg';

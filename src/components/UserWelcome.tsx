@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 //Internal app
-import { fuchsiaBlue } from '@/theme/theme-default';
 import { useApi } from '@/hooks/useApi';
+import { fuchsiaBlue } from '@/theme/theme-default';
 
 /**
  * Module used to welcome the user.

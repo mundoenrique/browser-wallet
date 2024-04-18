@@ -2,8 +2,7 @@ import { Metadata } from 'next';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 //Internal app
 import { ChildrenProps } from '@/interfaces';
-import { HydrationProvider, KeyProvider, MuiProvider } from '@/components';
-import LoadingScreen from '@/components/layout/LoadingScreen';
+import { HydrationProvider, KeyProvider, LoadingScreen, MuiProvider } from '@/components';
 
 import GlobalErrorMessage from '@/components/layout/GlobalError';
 export async function generateMetadata(): Promise<Metadata> {

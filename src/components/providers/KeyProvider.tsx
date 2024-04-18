@@ -1,14 +1,13 @@
 'use client';
 
 import NodeRSA from 'node-rsa';
-import React, { useEffect } from 'react';
 //Internal app
+import { useJwtStore } from '@/store';
+import { useApi } from '@/hooks/useApi';
 import { setprivateKeys } from '@/utils/api';
 import { ChildrenProps } from '@/interfaces';
 import { useKeyStore } from '@/store/keyStore';
-import { useJwtStore } from '@/store';
 import { removePEMHeadersAndFooters } from '@/utils/jwt';
-import { useApi } from '@/hooks/useApi';
 
 export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   const { jwePublicKey, jwePrivateKey, jwsPublicKey, jwsPrivateKey, setKeys } = useKeyStore();

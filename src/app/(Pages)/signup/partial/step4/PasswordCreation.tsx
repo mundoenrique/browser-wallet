@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation';
 import { Backdrop, Box, Button, Typography } from '@mui/material';
 //Internal app
 import { CardStep } from '..';
+import Ending from '../Ending';
 import { FormPass } from '@/components';
 import { useApi } from '@/hooks/useApi';
 import { encryptForge } from '@/utils/toolHelper';
-import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import Ending from '../Ending';
+import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 
 export default function PasswordCreation() {
   const customApi = useApi();
