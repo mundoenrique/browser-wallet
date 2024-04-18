@@ -24,7 +24,7 @@ export default function Ocupation() {
 
   const { handleSubmit, control, watch, reset, getValues } = useForm({
     defaultValues: {
-      occupationCode: ONB_PHASES_CONSULT_DATA?.consultant?.occupationCode ?? null,
+      occupationCode: ONB_PHASES_CONSULT_DATA?.consultant?.occupationCode ?? 'SELF_EMPLOYED',
       companyType: ONB_PHASES_CONSULT_DATA?.consultant?.companyType ?? null,
       companyName: ONB_PHASES_CONSULT_DATA?.consultant?.companyName ?? '',
       companyPosition: ONB_PHASES_CONSULT_DATA?.consultant?.companyPosition ?? '',
