@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 
     const { jwePublicKey, jwsPublicKey } = decryptedPayload as { jwePublicKey: string; jwsPublicKey: string };
 
-    const token = await signJWT(jwePrivateKey, { jwePublicKey, jwsPublicKey });
+    const token = await signJWT(jwsPrivateKey, { jwePublicKey, jwsPublicKey });
     console.log('🚀 ~ POST ~ token:', token);
     // const token = await signJWT(jwsPrivateKey, { jwePublicKey, jwsPublicKey });
 
