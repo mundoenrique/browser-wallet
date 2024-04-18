@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -7,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { getSchema } from '@/config';
 import { FormPassProps } from '@/interfaces';
 import { Conditions, InputCheck, InputPass, ModalResponsive } from '@/components';
-import { useState } from 'react';
 
 /**
  * Form component for password management (Change and create password)

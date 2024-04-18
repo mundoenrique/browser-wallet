@@ -1,3 +1,5 @@
+'use client';
+
 import { Stack } from '@mui/material';
 //Internal app
 import { Accordions } from '.';

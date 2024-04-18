@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 //Internal app
+import { LoginLayout } from '@/components';
 import { ChildrenProps } from '@/interfaces';
-import { LoginLayout, NavExternal } from '@/components';
 
 export const metadata: Metadata = {
   title: 'Belcorp',
