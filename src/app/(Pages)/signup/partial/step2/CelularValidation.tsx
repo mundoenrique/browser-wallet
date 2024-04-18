@@ -21,7 +21,7 @@ export default function CelularValidation() {
   const { timeLeft, countdown, counting, setCounting, setTime } = useOtpStore();
   const timerRef = useRef<any>();
 
-  const { setModalError } = useUiStore();
+  const { setModalError, setLoadingScreen } = useUiStore();
 
   const customApi = useApi();
 
@@ -51,7 +51,7 @@ export default function CelularValidation() {
       otpCode: code,
       currentPhaseCode: 'ONB_PHASES_OPT',
     };
-
+    setLoadingScreen(true);
     customApi
       .post(`/onboarding/${onboardingUuId}/validate/tfa`, request)
       .then((response) => {
@@ -61,6 +61,9 @@ export default function CelularValidation() {
       })
       .catch((error) => {
         setModalError({ title: 'Algo salio mal', description: 'Intentalo nuevamente' });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
       });
 
     reset();
