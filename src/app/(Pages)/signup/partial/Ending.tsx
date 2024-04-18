@@ -1,11 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+
 import React, { useEffect, useState } from 'react';
 import { Box, Fade, Typography, Zoom } from '@mui/material';
 //Internal app
-import { useRegisterStore } from '@/store';
+
 import LogoGreen from '%/images/LogoGreen';
 import { PurpleLayout } from '@/components';
 import animation1 from '%/images/animation1.svg';
@@ -13,8 +13,6 @@ import animation2 from '%/images/animation2.svg';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function Ending() {
-  const { replace } = useRouter();
-  const { setShowHeader } = useRegisterStore();
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
   useEffect(() => {
@@ -28,25 +26,6 @@ export default function Ending() {
       clearInterval(timer);
     };
   }, [currentImageIndex]);
-
-  //TODO:timeEvent es de implementacion temporal
-  const timeEvent = (time: number) =>
-    new Promise((resolve) => {
-      setTimeout(() => resolve(true), time);
-    });
-
-  useEffect(() => {
-    setShowHeader(false);
-    (async () => {
-      timeEvent(4000)
-        .then(() => {
-          return timeEvent(1500);
-        })
-        .then(() => {
-          replace('/signin');
-        });
-    })();
-  }, [setShowHeader, replace]);
 
   return (
     <PurpleLayout>
