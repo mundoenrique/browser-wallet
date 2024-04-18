@@ -24,7 +24,7 @@ const phaseToStep = (phase: string) => {
     ONB_PHASES_CONSULT_DATA: 4,
     ONB_PHASES_PEP: 5,
     //ONB_PHASES_VALIDATE_BIOMETRIC: 5,
-    ONB_PHASES_PASSWORD: 6,
+    ONB_PHASES_CONTRASENNIA: 6,
   };
   return phasesSteps[phase] || 0;
 };
