@@ -29,8 +29,6 @@ export default function Signup() {
       <PEP />
 
       <PasswordCreation />
-
-      <Ending />
     </SignupStepper>
   );
 }

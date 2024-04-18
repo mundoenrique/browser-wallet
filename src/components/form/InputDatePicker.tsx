@@ -1,12 +1,12 @@
 'use client';
 
 import 'dayjs/locale/es';
+import dayjs from 'dayjs';
 import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { FormHelperText, InputLabel, TextField } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 //Internal App
 import { CalendarIcons } from '%/Icons';

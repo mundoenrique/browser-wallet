@@ -1,5 +1,6 @@
-import html2canvas from 'html2canvas';
 import forge from 'node-forge';
+import html2canvas from 'html2canvas';
+
 /**
  * Handle text initials on the avatar
  *

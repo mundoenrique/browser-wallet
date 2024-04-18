@@ -264,7 +264,6 @@ export default function PEP() {
   /**
    * Fecth DocumentTypes catalog
    */
-
   useEffect(() => {
     const fetchDocumentsCatalog = async () => {
       customApi
