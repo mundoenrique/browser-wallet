@@ -102,9 +102,9 @@ WEB_URL={{WEB_HOST_NAME}} \* URL de acceso a la aplicación
 
 TENANT_ID={{TENANT_ID}} \* Tenant Id Generado en la ceremonia
 
-CREDENTIALS_KEY={{CREDENTIALS_KEY}} Id Oath Generado en la ceremonia
+CREDENTIALS_KEY={{CREDENTIALS_KEY}} \* Id Oauth Generado en la ceremonia
 
-CREDENTIALS_SECRET={{CREDENTIALS_SECRET}} Id Oath Generado en la ceremonia
+CREDENTIALS_SECRET={{CREDENTIALS_SECRET}} \* Secret Oauth Generado en la ceremonia
 
 MIDDLE_JWE_PRIVATE_KEY="{{MIDDLE_JWE_PRIVATE_KEY}}" \* Llave pkcs8 generada en el paso anterior
 
