@@ -22,7 +22,7 @@ export const validationRules: ValidationRule = {
   initialDate: yup.string().required('Ingresa una fecha'),
   countryCode: yup.string().required('Selecciona un país'),
   terms: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
-  policy: yup.string().required('Acepta la política'),
+  policy: yup.boolean().oneOf([true], 'Acepta la política'),
   otp: yup
     .string()
     .required('Ingrese un código')
