@@ -1,6 +1,3 @@
-import exp from 'constants';
-import { object, string } from 'yup';
-
 /**
  * Login credentials
  *

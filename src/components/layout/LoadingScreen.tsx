@@ -1,8 +1,8 @@
 'use client';
 
+import { useUiStore } from '@/store';
 import { Backdrop } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useUiStore } from '@/store';
 
 export default function LoadingScreen() {
   const { loadingScreen } = useUiStore();

@@ -1,18 +1,17 @@
 'use client';
 
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, useFieldArray } from 'react-hook-form';
-import dayjs from 'dayjs';
 import { Box, Button, Collapse, Link as LinkMui, Typography } from '@mui/material';
-
 //Internal app
-import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
-import { useApi } from '@/hooks/useApi';
-import { getSchema } from '@/config';
-import { slate } from '@/theme/theme-default';
-import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResponsive } from '@/components';
 import { CardStep } from '..';
+import { getSchema } from '@/config';
+import { useApi } from '@/hooks/useApi';
+import { slate } from '@/theme/theme-default';
+import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
+import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResponsive } from '@/components';
 
 //Optios to map to <inputCheck >. Don't delete
 const options: any = [
@@ -26,6 +25,9 @@ export default function PEP() {
   const [showParentModal, setShowParentModal] = useState<boolean>(false);
   const [showPepInfo, setShowPepInfo] = useState<boolean>(false);
   const [parentIndex, setParentIndex] = useState<number>(-1);
+
+  const maxDate = dayjs();
+  const minDate = maxDate.subtract(10, 'years');
 
   const customApi = useApi();
 
@@ -262,7 +264,6 @@ export default function PEP() {
   /**
    * Fecth DocumentTypes catalog
    */
-
   useEffect(() => {
     const fetchDocumentsCatalog = async () => {
       customApi
@@ -367,7 +368,7 @@ export default function PEP() {
               name="pepForm.endDate"
               label="Fecha de salida"
               control={control}
-              datePickerProps={{ disableFuture: true }}
+              datePickerProps={{ disableFuture: true, minDate: minDate, maxDate: maxDate, yearsPerRow: 3 }}
             />
 
             <Typography variant="body2" align="left" sx={{ mb: 3 }}>
