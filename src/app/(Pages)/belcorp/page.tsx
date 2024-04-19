@@ -33,7 +33,6 @@ export default function Belcorp() {
     const response = await fetch(`/api/v1/setcode/?consultantCode=${consultantCode}&countryCode=${countryCode}`);
     const { data } = await response.json();
     replace(data);
-    // replace(`/identify/?consultantCode=${consultantCode}&countryCode=${countryCode}`);
   };
 
   return (

@@ -5,6 +5,7 @@ export * from './store';
 export * from './modals';
 export * from './logger';
 export * from './tables';
+export * from './clients';
 export * from './layouts';
 export * from './register';
 export * from './constans';

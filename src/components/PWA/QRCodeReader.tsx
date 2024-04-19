@@ -1,4 +1,5 @@
 'use client';
+
 import { useEffect } from 'react';
 import jsQR, { QRCode } from 'jsqr';
 //Typado

@@ -3,9 +3,8 @@ import { GoogleTagManager } from '@next/third-parties/google';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 //Internal app
 import { ChildrenProps } from '@/interfaces';
-import LoadingScreen from '@/components/layout/LoadingScreen';
+import { HydrationProvider, KeyProvider, LoadingScreen, MuiProvider } from '@/components';
 import GlobalErrorMessage from '@/components/layout/GlobalError';
-import { HydrationProvider, KeyProvider, MuiProvider } from '@/components';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
