@@ -1,16 +1,20 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { Box, Fade, Typography, Zoom } from '@mui/material';
+import { Box, Typography, Zoom } from '@mui/material';
 //Internal app
 import LogoGreen from '%/images/LogoGreen';
+import { useRegisterStore } from '@/store';
 import { PurpleLayout } from '@/components';
 import animation1 from '%/images/animation1.svg';
 import animation2 from '%/images/animation2.svg';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function Ending() {
+  const { replace } = useRouter();
+  const { setShowHeader } = useRegisterStore();
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
   useEffect(() => {
@@ -25,32 +29,41 @@ export default function Ending() {
     };
   }, [currentImageIndex]);
 
+  const timeEvent = (time: number) =>
+    new Promise((resolve) => {
+      setTimeout(() => resolve(true), time);
+    });
+
+  useEffect(() => {
+    setShowHeader(false);
+    (async () => {
+      timeEvent(4000000)
+        .then(() => {
+          return timeEvent(1500);
+        })
+        .then(() => {
+          replace('/signin');
+          sessionStorage.removeItem('appStore');
+        });
+    })();
+  }, [setShowHeader, replace]);
+
   return (
-    <PurpleLayout>
-      <Box sx={{ zIndex: 1, display: 'grid', justifyContent: 'center' }}>
-        {currentImageIndex < 2 && (
-          <>
-            {currentImageIndex === 0 && (
-              <Fade in={true}>
-                <Box mb={3}>
-                  <Image
-                    src={animation1}
-                    width={360}
-                    height={345}
-                    alt={`Animation Yiro ${currentImageIndex}`}
-                    priority
-                  />
-                </Box>
-              </Fade>
-            )}
-            {currentImageIndex === 1 && (
-              <Zoom in={true}>
-                <Image src={animation2} width={360} height={345} alt={`Animation Yiro ${currentImageIndex}`} priority />
-              </Zoom>
-            )}
-          </>
-        )}
-      </Box>
+    <PurpleLayout bigModal>
+      {currentImageIndex < 2 && (
+        <Box sx={{ zIndex: 1, display: 'grid', justifyContent: 'center' }}>
+          {currentImageIndex === 0 && (
+            <Box mb={3}>
+              <Image src={animation1} width={360} height={345} alt={`Animation Yiro ${currentImageIndex}`} priority />
+            </Box>
+          )}
+          {currentImageIndex === 1 && (
+            <Zoom in={true}>
+              <Image src={animation2} width={360} height={345} alt={`Animation Yiro ${currentImageIndex}`} priority />
+            </Zoom>
+          )}
+        </Box>
+      )}
       {currentImageIndex === 1 && (
         <Zoom in={true}>
           <Typography
@@ -66,7 +79,7 @@ export default function Ending() {
           </Typography>
         </Zoom>
       )}
-      {currentImageIndex === 2 && (
+      {currentImageIndex >= 2 && (
         <Zoom in={true} timeout={1000}>
           <Box>
             <LogoGreen />
