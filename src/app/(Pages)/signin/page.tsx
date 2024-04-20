@@ -15,6 +15,8 @@ import { encryptForge } from '@/utils/toolHelper';
 import { TCredentials, TUserDetail } from '@/interfaces';
 import { InputPass, ModalResponsive } from '@/components';
 import { useRegisterStore, useUiStore, useUserStore } from '@/store';
+//Eliminar este store despues de la certificacion de inicio de sesión
+import { accessSessionStore } from '@/store/accessSessionStore';
 
 export default function Signin() {
   const theme = useTheme();
@@ -29,6 +31,8 @@ export default function Signin() {
   const { getUserId } = useRegisterStore();
   const { setModalError } = useUiStore();
   const { setUser } = useUserStore();
+
+  const { setAccessSession } = accessSessionStore();
 
   const { control, handleSubmit } = useForm({
     defaultValues: { password: '' },
@@ -48,6 +52,7 @@ export default function Signin() {
         const { status } = response;
         if (status === 200) {
           router.push('/dashboard');
+          setAccessSession(true);
         }
       })
       .catch(() => {

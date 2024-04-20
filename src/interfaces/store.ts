@@ -1,5 +1,3 @@
-import { TUserRegisterProps } from './register';
-
 /**
  * Public and private key
  *
