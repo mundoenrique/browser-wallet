@@ -34,7 +34,7 @@ export default function PasswordCreation() {
           updateCatalog('passwordTermsCatalog', response.data.data.data);
         })
         .catch(() => {
-          setModalError({ title: 'Algo salio mal', description: 'Intentalo nuevamente' });
+          setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
         });
     };
     {
@@ -66,7 +66,7 @@ export default function PasswordCreation() {
         setLoadingModal(true);
       })
       .catch(() => {
-        setModalError({ title: 'Algo salio mal', description: 'Intentalo nuevamente' });
+        setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
       })
       .finally(() => {
         setLoadingScreen(false);
