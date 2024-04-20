@@ -200,6 +200,8 @@ export interface CatalogsStore {
 export interface UserStore {
   user: any | null;
   setUser: (_data: any) => void;
+  getUserId: () => string;
+  getUserPhone: () => string;
 }
 
 export interface OtpStore {

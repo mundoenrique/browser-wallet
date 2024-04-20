@@ -94,7 +94,7 @@ export default function Ocupation() {
           );
         })
         .catch(() => {
-          setModalError({ title: 'Algo salio mal', description: 'No pudimos cargas la lista de las ocupaciones' });
+          setModalError({ title: 'Algo salió mal', description: 'No pudimos cargas la lista de las ocupaciones' });
         });
     };
     {

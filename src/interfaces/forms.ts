@@ -147,6 +147,7 @@ export interface FormPassProps {
  */
 export interface AuthOtpFormProps {
   setOTP: (_value: boolean) => void;
+  optUuid: string | null;
 }
 
 /**

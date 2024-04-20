@@ -12,7 +12,7 @@ import { getSchema } from '@/config';
 import { useApi } from '@/hooks/useApi';
 import LogoGreen from '%/images/LogoGreen';
 import { encryptForge } from '@/utils/toolHelper';
-import { useRegisterStore, useUiStore } from '@/store';
+import { useRegisterStore, useUiStore, useUserStore } from '@/store';
 import { TCredentials, TUserDetail } from '@/interfaces';
 import { InputPass, ModalResponsive } from '@/components';
 
@@ -28,6 +28,7 @@ export default function Signin() {
   const { setLoadingScreen, loadingScreen } = useUiStore();
   const { getUserId } = useRegisterStore();
   const { setModalError } = useUiStore();
+  const { setUser } = useUserStore();
 
   const { control, handleSubmit } = useForm({
     defaultValues: { password: '' },
@@ -62,6 +63,7 @@ export default function Signin() {
     await customApi
       .get(`/users/${userId}`)
       .then((response) => {
+        setUser(response.data.data);
         setUserData(response.data.data);
       })
       .catch(() => {

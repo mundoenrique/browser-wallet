@@ -4,13 +4,45 @@ import { useState } from 'react';
 import { Button, Typography } from '@mui/material';
 //Internal app
 import { FormPass, ModalResponsive } from '@/components';
+import { useApi } from '@/hooks/useApi';
+import { useUiStore, useUserStore } from '@/store';
+import { encryptForge } from '@/utils/toolHelper';
+import { useRouter } from 'next/navigation';
 
 export default function UpdatePass() {
+  const customApi = useApi();
+  const router = useRouter();
+
   const [open, setOpen] = useState<boolean>(false);
+
+  const { setLoadingScreen, setModalError } = useUiStore();
+  const { getUserId } = useUserStore();
+
+  const userId: string = getUserId();
 
   const onSubmit = async (data: any) => {
     console.log(data);
-    setOpen(true);
+    const { newPasswordConfirmation } = data;
+    setLoadingScreen(true);
+    customApi
+      .put(`/users/${userId}/credentials`, { password: encryptForge(newPasswordConfirmation) })
+      .then((response) => {
+        const { status } = response;
+        if (status === 200) {
+          setOpen(true);
+        }
+      })
+      .catch((error) => {
+        setModalError({ title: 'Algo salió mal', description: 'Intentalo nuevamente' });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
+  };
+
+  const closeModal = () => {
+    setOpen(false);
+    router.push('/signin');
   };
 
   return (
@@ -38,7 +70,7 @@ export default function UpdatePass() {
         }
       />
 
-      <ModalResponsive open={open} handleClose={() => setOpen(false)}>
+      <ModalResponsive open={open} handleClose={closeModal}>
         <Typography py={2} fontWeight={700}>
           📟 !Nueva contraseña!
         </Typography>
