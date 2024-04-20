@@ -12,9 +12,9 @@ import { getSchema } from '@/config';
 import { useApi } from '@/hooks/useApi';
 import LogoGreen from '%/images/LogoGreen';
 import { encryptForge } from '@/utils/toolHelper';
-import { useRegisterStore, useUiStore, useUserStore } from '@/store';
 import { TCredentials, TUserDetail } from '@/interfaces';
 import { InputPass, ModalResponsive } from '@/components';
+import { useRegisterStore, useUiStore, useUserStore } from '@/store';
 
 export default function Signin() {
   const theme = useTheme();
@@ -50,7 +50,7 @@ export default function Signin() {
           router.push('/dashboard');
         }
       })
-      .catch((error) => {
+      .catch(() => {
         setModalError({ title: '¡Uups!', description: 'Credenciales invalidas, vuelve a intentarlo.' });
       })
       .finally(() => {
@@ -59,7 +59,6 @@ export default function Signin() {
   };
 
   const getUserDetails = async (userId: string) => {
-    setLoadingScreen(true);
     await customApi
       .get(`/users/${userId}`)
       .then((response) => {
@@ -67,7 +66,7 @@ export default function Signin() {
         setUserData(response.data.data);
       })
       .catch(() => {
-        setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
+        setModalError({ title: '¡Uups!', description: 'No pudimos obtener tus datos, inténtalo más tarde' });
       })
       .finally(() => {
         setLoadingScreen(false);
@@ -127,7 +126,7 @@ export default function Signin() {
               ¡Hola {userData?.firstName}!
             </Typography>
           ) : (
-            <Skeleton variant="text" sx={{ fontSize: '2rem' }} />
+            <Skeleton variant="text" sx={{ fontSize: '1.2rem' }} />
           )}
           <Typography color="white">Para continuar, ingresa la contraseña de tu cuenta digital.</Typography>
           <Box sx={{ mt: 3, textAlign: 'start' }}>
