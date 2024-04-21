@@ -139,8 +139,7 @@ export interface RegisterStore {
   termsDefinition: { [key: string]: string }[];
   onboardingUuId: string | null;
   biometricFormState: null;
-  user: IUserRegisterProps | null;
-  getUserId: () => string;
+  user: IUserRegisterProps;
 }
 
 /**
@@ -151,9 +150,9 @@ export interface RegisterStore {
  * @typeParam userId: String
  */
 export type IUserRegisterProps = {
-  firstName: String;
-  lastName: String;
-  userId: String;
+  firstName: string | null;
+  lastName: string | null;
+  userId: string | null;
 };
 
 /** Client Store
@@ -198,14 +197,16 @@ export interface CatalogsStore {
 export interface UserStore {
   user: any | null;
   setUser: (_data: any) => void;
-  getUserId: () => string;
+  // getUserId: () => string;
   getUserPhone: () => string;
 }
 
 export interface OtpStore {
+  otpValid: boolean;
   timeLeft: number;
   counting: boolean;
   setCounting: (value: boolean) => void;
   countdown: () => void;
   setTime: (value: number) => void;
+  setOTPValid: (value: boolean) => void;
 }

@@ -5,7 +5,7 @@ import { Button, Typography } from '@mui/material';
 //Internal app
 import { FormPass, ModalResponsive } from '@/components';
 import { useApi } from '@/hooks/useApi';
-import { useUiStore, useUserStore } from '@/store';
+import { useOtpStore, useUiStore, useUserStore } from '@/store';
 import { encryptForge } from '@/utils/toolHelper';
 import { useRouter } from 'next/navigation';
 
@@ -16,9 +16,10 @@ export default function UpdatePass() {
   const [open, setOpen] = useState<boolean>(false);
 
   const { setLoadingScreen, setModalError } = useUiStore();
-  const { getUserId } = useUserStore();
-
-  const userId: string = getUserId();
+  const { setOTPValid } = useOtpStore();
+  const {
+    user: { userId },
+  } = useUserStore();
 
   const onSubmit = async (data: any) => {
     console.log(data);
@@ -42,6 +43,7 @@ export default function UpdatePass() {
 
   const closeModal = () => {
     setOpen(false);
+    setOTPValid(false);
     router.push('/signin');
   };
 

@@ -9,7 +9,7 @@ import { RegisterStore } from '@/interfaces';
 export const useRegisterStore = create<RegisterStore>()(
   devtools(
     persist(
-      (set, get) => ({
+      (set) => ({
         /**
          * A variable representing the screen on which the onboarding process is currently in progress
          */
@@ -54,13 +54,9 @@ export const useRegisterStore = create<RegisterStore>()(
          * Storaage user info
          */
         user: {
-          firstName: '',
-          lastName: '',
-          userId: '',
-        },
-        getUserId: () => {
-          const { userId } = get().user;
-          return userId;
+          firstName: null,
+          lastName: null,
+          userId: null,
         },
         /**
          * Storage of terms info

@@ -10,7 +10,6 @@ export const useUserStore = create<UserStore>()(
       (set, get) => ({
         user: null,
         setUser: (data: TUserDetail) => set({ user: data }),
-        getUserId: () => get().user.userId,
         getUserPhone: () => {
           const { phoneNumber } = get().user;
           return decryptForge(phoneNumber);

@@ -5,22 +5,22 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import OTP from './partial/OTP';
 import UpdatePass from './partial/UpdatePass';
 import { useApi } from '@/hooks/useApi';
-import { useOtpStore, useRegisterStore, useUiStore } from '@/store';
+import { useOtpStore, useUiStore, useUserStore } from '@/store';
 
 export default function Recover() {
   const customApi = useApi();
 
-  const { getUserId } = useRegisterStore();
-  const { setLoadingScreen, loadingScreen, setModalError } = useUiStore();
-  const { timeLeft, countdown, counting, setCounting, setTime } = useOtpStore();
+  const {
+    user: { userId },
+  } = useUserStore();
+  const { setModalError } = useUiStore();
+  const { countdown, counting, setCounting, setTime, otpValid, setOTPValid } = useOtpStore();
 
   const initialized = useRef<boolean>(false);
   const timerRef = useRef<any>();
-  const [otpValid, setOtpValid] = useState<boolean>(false);
   const [optUuid, setOtpUuid] = useState<string>('');
 
   const requestTFACode = useCallback(async () => {
-    const userId: string = getUserId();
     customApi
       .post(`/users/${userId}/tfa`, { otpProcessCode: 'CHANGE_PASSWORD_OTP' })
       .then((response) => {
@@ -53,5 +53,7 @@ export default function Recover() {
     }
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
-  return <>{otpValid ? <UpdatePass /> : <OTP setOTP={setOtpValid} optUuid={optUuid} />}</>;
+  return (
+    <>{otpValid ? <UpdatePass /> : <OTP setOTP={setOTPValid} optUuid={optUuid} handleResendOTP={requestTFACode} />}</>
+  );
 }

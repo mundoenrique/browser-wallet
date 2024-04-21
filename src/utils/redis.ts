@@ -50,7 +50,6 @@ export function createRedisInstance(config = getRedisConfiguration()) {
     const redis = new Redis(options);
 
     redis.on('error', (error: unknown) => {
-      console.log('🚀 ~ redis.on ~ error:', error);
       return false;
     });
 

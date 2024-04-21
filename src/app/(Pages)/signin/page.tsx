@@ -28,7 +28,7 @@ export default function Signin() {
   const [userData, setUserData] = useState<TUserDetail | null>(null);
 
   const { setLoadingScreen, loadingScreen } = useUiStore();
-  const { getUserId } = useRegisterStore();
+  const { user } = useRegisterStore();
   const { setModalError } = useUiStore();
   const { setUser } = useUserStore();
 
@@ -63,7 +63,8 @@ export default function Signin() {
       });
   };
 
-  const getUserDetails = async (userId: string) => {
+  const getUserDetails = async () => {
+    const { userId } = user;
     await customApi
       .get(`/users/${userId}`)
       .then((response) => {
@@ -79,8 +80,7 @@ export default function Signin() {
   };
 
   useEffect(() => {
-    const userId: string = getUserId();
-    getUserDetails(userId);
+    getUserDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

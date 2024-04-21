@@ -58,6 +58,7 @@ export interface InputOTPProps extends FormMUIProps {
   title: string | boolean;
   text: string;
   length: number;
+  handleResendOTP: () => void;
 }
 
 /**
@@ -148,6 +149,7 @@ export interface FormPassProps {
 export interface AuthOtpFormProps {
   setOTP: (_value: boolean) => void;
   optUuid: string | null;
+  handleResendOTP: () => void;
 }
 
 /**

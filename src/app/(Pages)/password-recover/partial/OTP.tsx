@@ -8,16 +8,18 @@ import { getSchema } from '@/config';
 import { AuthOtpFormProps } from '@/interfaces';
 import InputOTP from '@/components/form/InputOTP';
 import { useApi } from '@/hooks/useApi';
-import { useRegisterStore, useUiStore, useUserStore } from '@/store';
+import { useUiStore, useUserStore } from '@/store';
 import { encryptForge } from '@/utils/toolHelper';
 
 export default function AuthOtp(props: AuthOtpFormProps) {
-  const { setOTP, optUuid } = props;
+  const { setOTP, optUuid, handleResendOTP } = props;
   const customApi = useApi();
   const schema = getSchema(['otp']);
 
   const { setLoadingScreen, loadingScreen, setModalError } = useUiStore();
-  const { getUserId } = useRegisterStore();
+  const {
+    user: { userId },
+  } = useUserStore();
   const { getUserPhone } = useUserStore();
 
   const phoneNumber: string = getUserPhone();
@@ -28,7 +30,6 @@ export default function AuthOtp(props: AuthOtpFormProps) {
 
   const onSubmit = async (data: any) => {
     const { otp } = data;
-    const userId: string = getUserId();
     setLoadingScreen(true);
     const payload = {
       otpProcessCode: 'CHANGE_PASSWORD_OTP',
@@ -69,6 +70,7 @@ export default function AuthOtp(props: AuthOtpFormProps) {
           length={4}
           title="Recupera tu contraseña"
           text={`Hemos enviado por tu seguridad un código SMS a tu celular ${phoneNumber}. Ingrésalo aquí.`}
+          handleResendOTP={handleResendOTP}
         />
       </Box>
       <Button variant="contained" type="submit" sx={{ maxWidth: 284, width: '100%', mx: 'auto', mb: { xs: 3, md: 0 } }}>
