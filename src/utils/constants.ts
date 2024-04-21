@@ -16,4 +16,5 @@ export const URL_BASE: IUrlBase = {
   onboarding: 'api/v0/onboarding',
   catalogs: 'api/v0/catalogs',
   users: 'api/v0/users',
+  cards: 'api/v0/cards',
 };

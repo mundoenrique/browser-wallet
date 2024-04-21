@@ -27,7 +27,7 @@ export default function FormPass(porps: FormPassProps): JSX.Element {
     : getSchema(['newPassword', 'newPasswordConfirmation']);
 
   const initialValues = register
-    ? { newPassword: '', newPasswordConfirmation: '', policy: '' }
+    ? { newPassword: '', newPasswordConfirmation: '', policy: false }
     : { newPassword: '', newPasswordConfirmation: '' };
 
   const { control, handleSubmit } = useForm({

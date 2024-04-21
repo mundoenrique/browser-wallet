@@ -23,7 +23,6 @@ export const regularExpressions: Partial<RegularExpressions> = {
     consecutive_descendant: /(0987|9876|8765|7654|6543|5432|4321|3210)/,
     repeated: /(\d)\1\1/,
   },
-
   numeric: /^[0-9]+$/,
   phone: /^[0-9]{7,15}$/,
   phoneMasked: /^[0-9*]{7,20}$/,

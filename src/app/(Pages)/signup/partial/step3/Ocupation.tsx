@@ -68,12 +68,12 @@ export default function Ocupation() {
 
     customApi
       .put('/onboarding/consultantdata', requestFormData)
-      .then((response) => {
+      .then(() => {
         updateFormState('ONB_PHASES_CONSULT_DATA', requestFormData.request);
         inc();
       })
       .catch(() => {
-        setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
+        setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
       })
       .finally(() => {
         setLoadingScreen(false);
@@ -94,7 +94,7 @@ export default function Ocupation() {
           );
         })
         .catch(() => {
-          setModalError({ title: 'Algo salió mal', description: 'No pudimos cargas la lista de las ocupaciones' });
+          setModalError({ title: 'Algo salió mal', description: 'No pudimos cargar la lista de las ocupaciones' });
         });
     };
     {

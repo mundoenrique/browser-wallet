@@ -40,8 +40,18 @@ export const validationRules: ValidationRule = {
   legal: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
   occupationCode: yup.string().required('Selecciona una ocupación'),
   companyType: yup.string().required('Selecciona el tipo de empresa'),
-  companyName: yup.string().required('Ingresa el nombre de la empresa'),
-  companyPosition: yup.string().required('Ingrese su posición en la empresa'),
+  companyName: yup
+    .string()
+    .required('Ingresa el nombre de la empresa')
+    .max(50, 'Debe tener maximo 50 caracteres')
+    .test('companyNameValid', 'Solo se aceptan números y letras', (value) =>
+      regularExpressions.namesValid?.test(value)
+    ),
+  companyPosition: yup
+    .string()
+    .required('Ingrese su posición en la empresa')
+    .max(50, 'Debe tener maximo 50 caracteres')
+    .test('companyPositionValid', 'Solo se aceptan letras', (value) => regularExpressions.namesValid?.test(value)),
   phoneNumber: yup
     .string()
     .required('Ingresa un numero de celular')
@@ -51,8 +61,16 @@ export const validationRules: ValidationRule = {
   isPep: yup.string().nonNullable().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
   pepForm: yup.object().shape({
     isRelativeAlive: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
-    position: yup.string().required('Ingrese su posición en la empresa'),
-    companyName: yup.string().required('Ingresa el nombre de la empresa'),
+    position: yup
+      .string()
+      .required('Ingrese su posición en la empresa')
+      .max(50, 'Debe tener maximo 50 caracteres')
+      .test('companyValid', 'Solo se aceptan letras', (value) => regularExpressions.namesValid?.test(value)),
+    companyName: yup
+      .string()
+      .required('Ingresa el nombre de la empresa')
+      .max(50, 'Debe tener maximo 50 caracteres')
+      .test('companyValid', 'Solo se aceptan letras', (value) => regularExpressions.namesValid?.test(value)),
     address: yup.string().required('Ingresa la dirección de la empresa').max(256, 'Debe tener maximo 256 caracteres'),
     districtCode: yup.string().required('Selecciona el distrito'),
     provinceCode: yup.string().required('Selecciona la provincia'),

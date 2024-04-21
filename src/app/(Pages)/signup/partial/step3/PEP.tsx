@@ -99,7 +99,7 @@ export default function PEP() {
         inc();
       })
       .catch((error) => {
-        setModalError({ title: 'Algo salió mal', description: 'Intentalo nuevamente' });
+        setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
       })
       .finally(() => {
         setLoadingScreen(false);

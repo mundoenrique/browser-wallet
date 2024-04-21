@@ -120,7 +120,7 @@ export default function InfoVerification() {
         inc();
       })
       .catch((error) => {
-        setModalError({ title: 'Algo salió mal', description: 'Intentalo nuevamente' });
+        setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
       })
       .finally(() => {
         setLoadingScreen(false);
@@ -188,7 +188,7 @@ export default function InfoVerification() {
           updateCatalog('termsCatalog', response.data.data.data);
         })
         .catch((error) => {
-          setModalError({ title: 'Occurió un error', description: 'Intentalo nuevamente' });
+          setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
         });
     };
     {

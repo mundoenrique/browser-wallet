@@ -1,22 +1,19 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Backdrop, Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { CardStep } from '..';
 import Ending from '../Ending';
 import { FormPass } from '@/components';
 import { useApi } from '@/hooks/useApi';
 import { encryptForge } from '@/utils/toolHelper';
-import { fuchsiaBlue } from '@/theme/theme-default';
 import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 
 export default function PasswordCreation() {
   const customApi = useApi();
-  const { replace } = useRouter();
   const { dec, setShowHeader, onboardingUuId } = useRegisterStore();
-  const { setModalError } = useUiStore();
+  const { setModalError, setLoadingScreen } = useUiStore();
   const { updateCatalog, passwordTermsCatalog } = useCatalogsStore();
 
   const [loadingModal, setLoadingModal] = useState<boolean>(false);
@@ -37,7 +34,7 @@ export default function PasswordCreation() {
           updateCatalog('passwordTermsCatalog', response.data.data.data);
         })
         .catch(() => {
-          setModalError({ title: 'Algo salió mal', description: 'Intentalo nuevamente' });
+          setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
         });
     };
     {
@@ -62,17 +59,17 @@ export default function PasswordCreation() {
         }, []),
       },
     };
-    setLoadingModal(true);
+    setLoadingScreen(true);
     customApi
       .post('/onboarding/credentials', requestFormData)
       .then(() => {
-        replace('/signin');
+        setLoadingModal(true);
       })
       .catch(() => {
-        setModalError({ title: 'Algo salió mal', description: 'Intentalo nuevamente' });
+        setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
       })
       .finally(() => {
-        setLoadingModal(false);
+        setLoadingScreen(false);
       });
   };
 
@@ -82,53 +79,45 @@ export default function PasswordCreation() {
 
   return (
     <>
-      {loadingModal && (
-        <Backdrop
-          open={true}
-          sx={{
-            color: '#fff',
-            zIndex: (theme) => theme.zIndex.drawer + 1,
-            background: `linear-gradient(180deg, ${fuchsiaBlue[500]} 0%, ${fuchsiaBlue[800]} 100%)`,
-          }}
-        >
-          <Ending />
-        </Backdrop>
+      {!loadingModal && (
+        <CardStep stepNumber="4">
+          <FormPass
+            register
+            onSubmit={onSubmit}
+            description={
+              <>
+                <Typography variant="subtitle1" sx={{ mb: 3, mx: 'auto' }}>
+                  Ahora es momento de activar tu cuenta
+                </Typography>
+                <Typography variant="body2" mb={3 / 2}>
+                  Para finalizar crea una contraseña segura
+                </Typography>
+                <Box sx={{ mb: 2 }}>
+                  <Typography variant="subtitle2">Elige 6 números que recuerdes.</Typography>
+                  <Typography variant="body2">Evita fechas de cumpleaños, números consecutivos ó iguales.</Typography>
+                </Box>
+              </>
+            }
+            buttons={
+              <>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    dec();
+                  }}
+                >
+                  Anterior
+                </Button>
+                <Button variant="contained" type="submit">
+                  Siguiente
+                </Button>
+              </>
+            }
+          />
+        </CardStep>
       )}
-      <CardStep stepNumber="4">
-        <FormPass
-          register
-          onSubmit={onSubmit}
-          description={
-            <>
-              <Typography variant="subtitle1" sx={{ mb: 3, mx: 'auto' }}>
-                Ahora es momento de activar tu cuenta
-              </Typography>
-              <Typography variant="body2" mb={3 / 2}>
-                Para finalizar crea una contraseña segura
-              </Typography>
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle2">Elige 6 números que recuerdes.</Typography>
-                <Typography variant="body2">Evita fechas de cumpleaños, números consecutivos ó iguales.</Typography>
-              </Box>
-            </>
-          }
-          buttons={
-            <>
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  dec();
-                }}
-              >
-                Anterior
-              </Button>
-              <Button variant="contained" type="submit">
-                Siguiente
-              </Button>
-            </>
-          }
-        />
-      </CardStep>
+
+      {loadingModal && <Ending />}
     </>
   );
 }

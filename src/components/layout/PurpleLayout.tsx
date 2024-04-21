@@ -19,6 +19,7 @@ import { fuchsiaBlue } from '@/theme/theme-default';
  * @param left - Content on the left.
  * @param navbar - Show the navigation bar.
  * @param confetti - Show confetti animation.
+ * @param width - style for width.
  */
 export default function PurpleLayout({
   children,
@@ -27,17 +28,18 @@ export default function PurpleLayout({
   left,
   navbar,
   confetti,
+  width = '100%',
 }: PurpleLayoutProps): JSX.Element {
   const { title } = useNavTitleStore();
-  const [width, setWidth] = useState<number>();
+  const [widthCurrent, setWidthCurrent] = useState<number>();
   const [height, setHeight] = useState<number>();
   const [hideLayout, setHideLayout] = useState<boolean>(true);
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (divRef.current) {
-      const width = divRef.current.clientWidth;
-      setWidth(width);
+      const setWidth = divRef.current.clientWidth;
+      setWidthCurrent(setWidth);
       const height = divRef?.current?.offsetHeight;
       setHeight(height);
     }
@@ -55,14 +57,14 @@ export default function PurpleLayout({
         position: bigModal ? 'absolute' : 'initial',
         background: `linear-gradient(180deg, ${fuchsiaBlue[500]} 0%, ${fuchsiaBlue[800]} 100%)`,
         zIndex: bigModal ? 1200 : 'initial',
-        width: bigModal ? { xs: '100%', md: 'calc(100% - 315px)' } : 'auto',
+        width: width,
         top: bigModal ? 0 : 'auto',
         '& > canvas': {
           zIndex: '0 !important',
         },
       }}
     >
-      {confetti && <Confetti width={width} height={height} numberOfPieces={500} tweenDuration={40000} />}
+      {confetti && <Confetti width={widthCurrent} height={height} numberOfPieces={500} tweenDuration={40000} />}
 
       {!hidePelca && <Pelca />}
 
