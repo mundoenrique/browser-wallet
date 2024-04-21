@@ -197,16 +197,15 @@ export interface CatalogsStore {
 export interface UserStore {
   user: any | null;
   setUser: (_data: any) => void;
-  // getUserId: () => string;
   getUserPhone: () => string;
 }
 
 export interface OtpStore {
-  otpValid: boolean;
+  otpValid: 'OTP' | 'PASSWORD' | 'ENDING' | string | undefined;
   timeLeft: number;
   counting: boolean;
   setCounting: (value: boolean) => void;
   countdown: () => void;
   setTime: (value: number) => void;
-  setOTPValid: (value: boolean) => void;
+  setOTPValid: (value: string) => void;
 }

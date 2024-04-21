@@ -3,26 +3,24 @@
 import { useState } from 'react';
 import { Button, Typography } from '@mui/material';
 //Internal app
-import { FormPass, ModalResponsive } from '@/components';
 import { useApi } from '@/hooks/useApi';
-import { useOtpStore, useUiStore, useUserStore } from '@/store';
-import { encryptForge } from '@/utils/toolHelper';
 import { useRouter } from 'next/navigation';
+import { encryptForge } from '@/utils/toolHelper';
+import { useUiStore, useUserStore } from '@/store';
+import { FormPass, ModalResponsive } from '@/components';
 
 export default function UpdatePass() {
   const customApi = useApi();
-  const router = useRouter();
+  const { push } = useRouter();
 
   const [open, setOpen] = useState<boolean>(false);
 
   const { setLoadingScreen, setModalError } = useUiStore();
-  const { setOTPValid } = useOtpStore();
   const {
     user: { userId },
   } = useUserStore();
 
   const onSubmit = async (data: any) => {
-    console.log(data);
     const { newPasswordConfirmation } = data;
     setLoadingScreen(true);
     customApi
@@ -33,7 +31,7 @@ export default function UpdatePass() {
           setOpen(true);
         }
       })
-      .catch((error) => {
+      .catch(() => {
         setModalError({ title: 'Algo salió mal', description: 'Intentalo nuevamente' });
       })
       .finally(() => {
@@ -43,8 +41,8 @@ export default function UpdatePass() {
 
   const closeModal = () => {
     setOpen(false);
-    setOTPValid(false);
-    router.push('/signin');
+    setLoadingScreen(false);
+    push('/signin');
   };
 
   return (

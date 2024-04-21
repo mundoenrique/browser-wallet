@@ -5,25 +5,31 @@ import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 //Internal app
 import { getSchema } from '@/config';
+import { useApi } from '@/hooks/useApi';
 import { AuthOtpFormProps } from '@/interfaces';
 import InputOTP from '@/components/form/InputOTP';
-import { useApi } from '@/hooks/useApi';
-import { useUiStore, useUserStore } from '@/store';
 import { encryptForge } from '@/utils/toolHelper';
+import { useOtpStore, useUiStore, useUserStore } from '@/store';
 
 export default function AuthOtp(props: AuthOtpFormProps) {
-  const { setOTP, optUuid, handleResendOTP } = props;
   const customApi = useApi();
   const schema = getSchema(['otp']);
+  const { optUuid, handleResendOTP } = props;
+  const { setOTPValid } = useOtpStore();
 
-  const { setLoadingScreen, loadingScreen, setModalError } = useUiStore();
+  const handleReset = () => {
+    handleResendOTP();
+    reset();
+  };
+
+  const { setLoadingScreen, setModalError } = useUiStore();
   const {
     user: { userId },
   } = useUserStore();
   const { getUserPhone } = useUserStore();
 
   const phoneNumber: string = getUserPhone();
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: { otp: '' },
     resolver: yupResolver(schema),
   });
@@ -41,14 +47,15 @@ export default function AuthOtp(props: AuthOtpFormProps) {
       .then((response) => {
         const { status } = response;
         if (status === 200) {
-          setOTP(true);
+          setOTPValid('PASSWORD');
         }
       })
-      .catch((error) => {
+      .catch(() => {
         setModalError({ title: 'Algo salió mal', description: 'Intentalo nuevamente' });
       })
       .finally(() => {
         setLoadingScreen(false);
+        reset();
       });
   };
 
@@ -70,7 +77,7 @@ export default function AuthOtp(props: AuthOtpFormProps) {
           length={4}
           title="Recupera tu contraseña"
           text={`Hemos enviado por tu seguridad un código SMS a tu celular ${phoneNumber}. Ingrésalo aquí.`}
-          handleResendOTP={handleResendOTP}
+          handleResendOTP={handleReset}
         />
       </Box>
       <Button variant="contained" type="submit" sx={{ maxWidth: 284, width: '100%', mx: 'auto', mb: { xs: 3, md: 0 } }}>

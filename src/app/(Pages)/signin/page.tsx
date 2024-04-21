@@ -14,7 +14,7 @@ import LogoGreen from '%/images/LogoGreen';
 import { encryptForge } from '@/utils/toolHelper';
 import { TCredentials, TUserDetail } from '@/interfaces';
 import { InputPass, ModalResponsive } from '@/components';
-import { useRegisterStore, useUiStore, useUserStore } from '@/store';
+import { useOtpStore, useRegisterStore, useUiStore, useUserStore } from '@/store';
 //Eliminar este store despues de la certificacion de inicio de sesión
 import { accessSessionStore } from '@/store/accessSessionStore';
 
@@ -29,6 +29,7 @@ export default function Signin() {
 
   const { setLoadingScreen, loadingScreen } = useUiStore();
   const { user } = useRegisterStore();
+  const { setOTPValid } = useOtpStore();
   const { setModalError } = useUiStore();
   const { setUser } = useUserStore();
 
@@ -81,6 +82,7 @@ export default function Signin() {
 
   useEffect(() => {
     getUserDetails();
+    setOTPValid('OTP');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -33,7 +33,6 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
     handleResendOTP();
     setTime(60);
     setOpen(!open);
-    console.log();
   };
 
   return (

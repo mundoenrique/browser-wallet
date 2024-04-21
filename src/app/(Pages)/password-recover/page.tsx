@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 //Internal
 import OTP from './partial/OTP';
-import UpdatePass from './partial/UpdatePass';
 import { useApi } from '@/hooks/useApi';
+import UpdatePass from './partial/UpdatePass';
 import { useOtpStore, useUiStore, useUserStore } from '@/store';
 
 export default function Recover() {
@@ -14,7 +14,7 @@ export default function Recover() {
     user: { userId },
   } = useUserStore();
   const { setModalError } = useUiStore();
-  const { countdown, counting, setCounting, setTime, otpValid, setOTPValid } = useOtpStore();
+  const { countdown, counting, setCounting, setTime, otpValid } = useOtpStore();
 
   const initialized = useRef<boolean>(false);
   const timerRef = useRef<any>();
@@ -29,7 +29,7 @@ export default function Recover() {
           setOtpUuid(data.data.otpUuId);
         }
       })
-      .catch((error) => {
+      .catch(() => {
         setModalError({ title: 'Algo salió mal', description: 'Intentalo nuevamente' });
       });
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
@@ -53,7 +53,16 @@ export default function Recover() {
     }
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
-  return (
-    <>{otpValid ? <UpdatePass /> : <OTP setOTP={setOTPValid} optUuid={optUuid} handleResendOTP={requestTFACode} />}</>
-  );
+  const handleSetView = (view: any) => {
+    switch (view) {
+      case 'OTP':
+        return <OTP optUuid={optUuid} handleResendOTP={requestTFACode} />;
+      case 'PASSWORD':
+        return <UpdatePass />;
+      default:
+        console.error('Failed enums password recover');
+    }
+  };
+
+  return handleSetView(otpValid);
 }

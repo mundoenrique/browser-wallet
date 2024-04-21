@@ -144,10 +144,10 @@ export interface FormPassProps {
 /**
  * OTP Form
  *
- * @typeParam setOTP: (value: boolean) => void
+ * @typeParam optUuid: string | null;
+ * @typeParam handleResendOTP: () => void;
  */
 export interface AuthOtpFormProps {
-  setOTP: (_value: boolean) => void;
   optUuid: string | null;
   handleResendOTP: () => void;
 }

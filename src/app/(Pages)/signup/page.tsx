@@ -4,7 +4,6 @@
 import { useRegisterStore } from '@/store';
 import {
   PEP,
-  Ending,
   Landing,
   Ocupation,
   SignupStepper,
