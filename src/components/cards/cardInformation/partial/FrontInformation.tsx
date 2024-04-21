@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Skeleton, Typography } from '@mui/material';
 import Visibility from '@mui/icons-material/RemoveRedEyeOutlined';
 import VisibilityOff from '@mui/icons-material/VisibilityOffOutlined';
 //Internal app
@@ -37,19 +37,25 @@ export default function FrontInformation(props: FrontInformationProps): JSX.Elem
       <Box sx={{ display: 'grid', position: 'relative', gap: 1, p: 2, height: 180, alignItems: 'end' }}>
         <Box>
           <Box mb={1}>
-            <Button sx={{ height: 0, minWidth: 0, p: 0 }} onClick={showDetails}>
+            <Button sx={{ height: 0, minWidth: 0, p: 0 }} onClick={showDetails} disabled={!cardNumber ? true : false}>
               <Visibility sx={{ pr: 1, color: 'white' }} />
               <Typography variant="caption" sx={{ textDecoration: 'underline', color: 'white' }}>
                 Ver número
               </Typography>
             </Button>
             <Typography variant="body1" color="white" fontWeight={400} sx={{ opacity: 0.5 }}>
-              {cardNumber}
+              {cardNumber ?? (
+                <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'white', width: '180px' }} />
+              )}
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Box width={130}>
-              <Button sx={{ height: 0, minWidth: 0, p: 0 }} onClick={() => setShowBalance(!showBalance)}>
+              <Button
+                sx={{ height: 0, minWidth: 0, p: 0 }}
+                onClick={() => setShowBalance(!showBalance)}
+                disabled={!balance ? true : false}
+              >
                 {showBalance ? (
                   <VisibilityOff sx={{ pr: 1, color: 'white' }} />
                 ) : (
@@ -59,8 +65,13 @@ export default function FrontInformation(props: FrontInformationProps): JSX.Elem
                   {showBalance ? 'Ocultar saldo' : 'Mostrar saldo'}
                 </Typography>
               </Button>
+
               <Typography variant="body1" color="white" fontWeight={400} noWrap sx={{ opacity: 0.5 }}>
-                S/ {showBalance ? balance : '******'}
+                {balance ? (
+                  ` S/ ${showBalance ? balance : '******'}`
+                ) : (
+                  <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'white', width: '100px' }} />
+                )}
               </Typography>
             </Box>
           </Box>

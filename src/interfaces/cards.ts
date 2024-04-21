@@ -45,8 +45,8 @@ export interface BackInformationProps {
  */
 export interface FrontInformationProps {
   showDetails: () => void;
-  cardNumber: string;
-  balance: string;
+  cardNumber: string | undefined;
+  balance: string | undefined;
 }
 
 /**
