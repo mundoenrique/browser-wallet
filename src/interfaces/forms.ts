@@ -58,7 +58,7 @@ export interface InputOTPProps extends FormMUIProps {
   title: string | boolean;
   text: string;
   length: number;
-  handleResendOTP: () => void;
+  handleResendOTP?: any;
 }
 
 /**

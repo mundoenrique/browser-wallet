@@ -1,14 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import { Box, Button, FormHelperText, Typography } from '@mui/material';
 //Internal app
+import { useOtpStore } from '@/store';
 import { InputOTPProps } from '@/interfaces';
 import ModalResponsive from '../modal/ModalResponsive';
-import { useOtpStore } from '@/store';
 
 /**
  * Field used to enter an otp code.
