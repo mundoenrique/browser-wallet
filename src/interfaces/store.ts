@@ -32,6 +32,16 @@ export type JwtStoreProps = {
 };
 
 /**
+ * Session store
+ * @typeParam uuid: string | null
+ * @typeParam setUuid: (_uuid: string) => void
+ */
+export type SessionStoreProps = {
+  uuid: string | null;
+  setUuid: (_uuid: string) => void;
+};
+
+/**
  * loading screen show/hide
  *
  * @typeParam loadingScreen: boolean
@@ -113,6 +123,7 @@ export interface ConfigCardStore {
  * @typeParam ocupationFormState - object | null
  * @typeParam pepFormState - object | null
  * @typeParam biometricFormState - null
+ * @typeParam user - object | null
  */
 export interface RegisterStore {
   step: number;
@@ -128,7 +139,21 @@ export interface RegisterStore {
   termsDefinition: { [key: string]: string }[];
   onboardingUuId: string | null;
   biometricFormState: null;
+  user: IUserRegisterProps;
 }
+
+/**
+ * User register
+ *
+ * @typeParam firstName: String
+ * @typeParam lastName: String
+ * @typeParam userId: String
+ */
+export type IUserRegisterProps = {
+  firstName: string | null;
+  lastName: string | null;
+  userId: string | null;
+};
 
 /** Client Store
  *
@@ -164,10 +189,23 @@ export interface CatalogsStore {
   updateCatalog: (_form: string, _data: {} | []) => void;
 }
 
+/**
+ * User store
+ * @typeParam user - Initial state {@defaultValue `null`}
+ * @typeParam setUser - Function that sets the new value
+ */
+export interface UserStore {
+  user: any | null;
+  setUser: (_data: any) => void;
+  getUserPhone: () => string;
+}
+
 export interface OtpStore {
+  otpValid: 'OTP' | 'PASSWORD' | 'ENDING' | string | undefined;
   timeLeft: number;
   counting: boolean;
   setCounting: (value: boolean) => void;
   countdown: () => void;
   setTime: (value: number) => void;
+  setOTPValid: (value: string) => void;
 }

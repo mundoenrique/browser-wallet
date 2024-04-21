@@ -53,7 +53,11 @@ export const useRegisterStore = create<RegisterStore>()(
         /**
          * Storaage user info
          */
-        user: null,
+        user: {
+          firstName: null,
+          lastName: null,
+          userId: null,
+        },
         /**
          * Storage of terms info
          */

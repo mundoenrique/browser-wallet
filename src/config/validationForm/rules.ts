@@ -17,7 +17,7 @@ export const validationRules: ValidationRule = {
     .min(7, 'Debe tener minimo 7 caracteres')
     .max(256, 'Debe tener maximo 256 caracteres')
     .test('emailValid', 'Ingresa un email válido', (value) => regularExpressions.emailValid?.test(value)),
-  password: passwordValidation('Ingrese una contraseña'),
+  password: yup.string().required('Ingresa una contraseña'),
   roles: yup.string().required('Debes seleccionar una opción'),
   initialDate: yup.string().required('Ingresa una fecha'),
   countryCode: yup.string().required('Selecciona un país'),

@@ -167,7 +167,7 @@ export default function CelularValidation() {
               sx={{ color: 'primary.main', height: 20 }}
               disabled={timeLeft === 0 ? false : true}
             >
-              Reenviar código
+              |
             </Button>
           </Box>
 

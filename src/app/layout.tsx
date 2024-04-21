@@ -1,10 +1,11 @@
 import { Metadata } from 'next';
+import { GoogleTagManager } from '@next/third-parties/google';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 //Internal app
 import { ChildrenProps } from '@/interfaces';
 import { HydrationProvider, KeyProvider, LoadingScreen, MuiProvider } from '@/components';
-
 import GlobalErrorMessage from '@/components/layout/GlobalError';
+
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: {
@@ -27,6 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function RootLayout({ children }: ChildrenProps) {
   return (
     <html lang="es">
+      <GoogleTagManager gtmId="GTM-M8QMC8" />
       <body>
         <AppRouterCacheProvider>
           <MuiProvider>

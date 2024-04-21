@@ -10,6 +10,8 @@ import LogoPurple from '%/images/LogoPurple';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { LogoutAppIcons, LogoutIcons } from '%/Icons';
 import ItemSecondarySidebar from './ItemSecondarySidebar';
+//Eliminar este store despues de la certificacion de inicio de sesión
+import { accessSessionStore } from '@/store/accessSessionStore';
 
 /**
  * Complete sidebar structure.
@@ -19,6 +21,9 @@ import ItemSecondarySidebar from './ItemSecondarySidebar';
  */
 export default function ListSidebar(): JSX.Element {
   const { updatePage } = useConfigCardStore();
+
+  //Eliminar este store despues de la certificacion de inicio de sesión
+  const { setAccessSession } = accessSessionStore();
 
   return (
     <>
@@ -51,9 +56,15 @@ export default function ListSidebar(): JSX.Element {
       </Box>
 
       <List>
-        <ItemSecondarySidebar text="Regresa a ésika conmigo" icon={<LogoutAppIcons />} />
+        <ItemSecondarySidebar href="#" text="Regresa a ésika conmigo" icon={<LogoutAppIcons />} />
         <Divider variant="middle" sx={{ bgcolor: `${fuchsiaBlue[400]}` }} />
-        <ItemSecondarySidebar text="Cerrar sesión" icon={<LogoutIcons />} color />
+        <ItemSecondarySidebar
+          href="/signin"
+          text="Cerrar sesión"
+          icon={<LogoutIcons />}
+          color
+          onClick={() => setAccessSession(false)}
+        />
       </List>
     </>
   );

@@ -10,3 +10,6 @@ export * from '@/store/catalogsStore';
 export * from '@/store/registerStore';
 export * from '@/store/navTitleStore';
 export * from '@/store/configCardStore';
+export * from '@/store/sessionStore';
+export * from '@/store/userStore';
+export * from '@/store/otpStore';
