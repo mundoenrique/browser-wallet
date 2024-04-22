@@ -16,7 +16,7 @@ export const regularExpressions: Partial<RegularExpressions> = {
   alphaLetter: /^[a-zA-Zñáéíóú]{4,20}$/,
   emailValid: /^[^@]{2,64}@[^_@]+\.[a-zA-Z]{2,}$/,
   alphanumunder: /^[wñÑ_]+$/,
-  alphanum: /^[a-zA-Z0-9ñáéíóúÑÁÉÍÓÚ]+[\s]+$/,
+  alphanum: /^[a-zA-Z0-9ñáéíóúÑÁÉÍÓÚ]+$/,
   company: /^[a-zA-Z0-9ñáéíóúÑÁÉÍÓÚ\s.]+$/,
   password: {
     consecutive_group: /(012|123|234|345|456|567|678|789|890)\1/,
