@@ -53,16 +53,13 @@ export default function Recover() {
     }
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleSetView = (view: any) => {
-    switch (view) {
-      case 'OTP':
-        return <OTP optUuid={optUuid} handleResendOTP={requestTFACode} />;
-      case 'PASSWORD':
-        return <UpdatePass />;
-      default:
-        console.error('Failed enums password recover');
-    }
+  const configRecoverRoutes = (page: any) => {
+    const routes: { [key: string]: any } = {
+      OTP: <OTP optUuid={optUuid} handleResendOTP={requestTFACode} />,
+      PASSWORD: <UpdatePass />,
+    };
+    return routes[page] || routes['OTP'];
   };
 
-  return handleSetView(otpValid);
+  return configRecoverRoutes(otpValid);
 }
