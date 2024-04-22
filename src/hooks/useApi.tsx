@@ -57,7 +57,8 @@ export function useApi() {
 
       return response;
     },
-    (error) => {
+    async (error) => {
+      console.log(error);
       return Promise.reject(error);
     }
   );

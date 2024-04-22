@@ -72,9 +72,6 @@ export default function Ocupation() {
         updateFormState('ONB_PHASES_CONSULT_DATA', requestFormData.request);
         inc();
       })
-      .catch(() => {
-        setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
-      })
       .finally(() => {
         setLoadingScreen(false);
       });
@@ -82,20 +79,15 @@ export default function Ocupation() {
 
   useEffect(() => {
     const fetchOccupationsCatalg = async () => {
-      customApi
-        .post('/catalogs/search', { catalogCode: 'OCCUPATIONS_CATALOG' })
-        .then((response) => {
-          updateCatalog(
-            'occupationCatalog',
-            response.data.data.data.map((occupation: { value: string; code: string }) => ({
-              text: occupation.value,
-              value: occupation.code,
-            }))
-          );
-        })
-        .catch(() => {
-          setModalError({ title: 'Algo salio mal', description: 'No pudimos cargas la lista de las ocupaciones' });
-        });
+      customApi.post('/catalogs/search', { catalogCode: 'OCCUPATIONS_CATALOG' }).then((response) => {
+        updateCatalog(
+          'occupationCatalog',
+          response.data.data.data.map((occupation: { value: string; code: string }) => ({
+            text: occupation.value,
+            value: occupation.code,
+          }))
+        );
+      });
     };
     {
       occupationCatalog.length === 0 && fetchOccupationsCatalg();

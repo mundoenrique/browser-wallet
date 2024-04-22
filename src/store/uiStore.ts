@@ -22,18 +22,13 @@ export const useUiStore = create<UiStore>()((set) => ({
    */
   showModalError: false,
   /**
-   * set  Modal title
+   * Modal title value
    */
-  modalErrorTitle: '',
-  /**
-   * set  Modal desc
-   */
-  modalErrorDesc: '',
+  modalErrorObject: null,
   /**
    * Change state Modal Error
    */
-  setModalError: (status: { title: string; description: string }) =>
-    set({ showModalError: true, modalErrorTitle: status.title, modalErrorDesc: status.description }),
+  setModalError: (value: any) => set({ showModalError: true, modalErrorObject: value }),
   /**
    * Close modal Error
    */

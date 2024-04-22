@@ -119,9 +119,7 @@ export default function InfoVerification() {
         updateFormState('onboardingUuId', response.data.data.onboardingUuId);
         inc();
       })
-      .catch((error) => {
-        setModalError({ title: 'Algo salio mal', description: 'Intentalo nuevamente' });
-      })
+
       .finally(() => {
         setLoadingScreen(false);
       });
@@ -162,9 +160,6 @@ export default function InfoVerification() {
               value: country.code.slice(0, 2),
             }))
           );
-        })
-        .catch(() => {
-          setModalError({ title: 'Algo salio mal', description: 'No pudimos cargar las nacionalidades' });
         });
     };
     {
@@ -186,9 +181,6 @@ export default function InfoVerification() {
         })
         .then((response) => {
           updateCatalog('termsCatalog', response.data.data.data);
-        })
-        .catch((error) => {
-          setModalError({ title: 'Occurió un error', description: 'Intentalo nuevamente' });
         });
     };
     {

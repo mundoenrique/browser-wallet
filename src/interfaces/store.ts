@@ -41,9 +41,8 @@ export interface UiStore {
   loadingScreen: boolean;
   setLoadingScreen: (status: boolean) => void;
   showModalError: boolean;
-  setModalError: (status: any) => void;
-  modalErrorTitle: string;
-  modalErrorDesc: string;
+  setModalError: (value: { title: string; description: string } | any) => void;
+  modalErrorObject: { title: string; description: string } | any;
   closeModalError: () => void;
 }
 
