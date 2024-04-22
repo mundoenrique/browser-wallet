@@ -44,9 +44,7 @@ export const validationRules: ValidationRule = {
     .string()
     .required('Ingresa el nombre de la empresa')
     .max(50, 'Debe tener maximo 50 caracteres')
-    .test('companyNameValid', 'Solo se aceptan números y letras', (value) =>
-      regularExpressions.namesValid?.test(value)
-    ),
+    .test('companyNameValid', 'Solo se aceptan números y letras', (value) => regularExpressions.company?.test(value)),
   companyPosition: yup
     .string()
     .required('Ingrese su posición en la empresa')
@@ -70,7 +68,7 @@ export const validationRules: ValidationRule = {
       .string()
       .required('Ingresa el nombre de la empresa')
       .max(50, 'Debe tener maximo 50 caracteres')
-      .test('companyValid', 'Solo se aceptan letras', (value) => regularExpressions.namesValid?.test(value)),
+      .test('companyValid', 'Solo se aceptan números y letras', (value) => regularExpressions.company?.test(value)),
     address: yup.string().required('Ingresa la dirección de la empresa').max(256, 'Debe tener maximo 256 caracteres'),
     districtCode: yup.string().required('Selecciona el distrito'),
     provinceCode: yup.string().required('Selecciona la provincia'),
@@ -89,7 +87,7 @@ export const validationRules: ValidationRule = {
         .string()
         .required('Ingresa el número de identificación')
         .max(15, 'Número de identificación invalido')
-        .test('amountValid', 'Identificación invalida', (value) => regularExpressions.alphanum?.test(value)),
+        .test('amountValid', 'Identificación invalida', (value) => regularExpressions.shortPhrase?.test(value)),
       documentType: yup.string().required('Selecciona el tipo de documento '),
     })
   ),
