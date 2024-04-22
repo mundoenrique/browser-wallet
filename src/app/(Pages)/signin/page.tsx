@@ -18,7 +18,7 @@ import { useOtpStore, useRegisterStore, useUiStore, useUserStore } from '@/store
 //Eliminar este store despues de la certificacion de inicio de sesión
 import { accessSessionStore } from '@/store/accessSessionStore';
 
-export default function Signin() {
+export default function Signin(params: any) {
   const theme = useTheme();
   const router = useRouter();
   const customApi = useApi();
