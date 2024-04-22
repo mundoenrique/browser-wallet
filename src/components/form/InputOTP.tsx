@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import { Box, Button, FormHelperText, Typography } from '@mui/material';
 //Internal app
+import { useOtpStore } from '@/store';
 import { InputOTPProps } from '@/interfaces';
 import ModalResponsive from '../modal/ModalResponsive';
 
@@ -24,39 +25,15 @@ import ModalResponsive from '../modal/ModalResponsive';
  * @label MUI Otp input - {@link https://viclafouch.github.io/mui-otp-input/}
  */
 export default function InputOTP(props: InputOTPProps): JSX.Element {
-  const { control, name, length, title, text, labelError } = props;
-  const [time, setTime] = useState<number>(60);
+  const { control, name, length, title, text, labelError, handleResendOTP } = props;
+  const { timeLeft, setTime } = useOtpStore();
   const [open, setOpen] = useState(false);
 
   const handleResend = () => {
+    handleResendOTP();
     setTime(60);
     setOpen(!open);
-    console.log();
   };
-
-  useEffect(() => {
-    const updateTimer = () => {
-      setTime((prevTime) => {
-        if (prevTime > 0) {
-          return prevTime - 1;
-        } else {
-          return 0;
-        }
-      });
-    };
-
-    const timerId = setInterval(updateTimer, 1000);
-
-    return () => clearInterval(timerId);
-  }, []);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setOpen(false);
-    }, 3000);
-
-    return () => clearTimeout(timeoutId);
-  }, [open]);
 
   return (
     <>
@@ -103,17 +80,21 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
             </Box>
           )}
         />
-        {time === 0 ? (
+        {timeLeft === 0 ? (
           <Typography variant="body2" mb={5}>
             De necesitarlo, ya puedes solicitar un nuevo código
           </Typography>
         ) : (
           <Typography variant="body2" mb={5} color="primary.main">
-            Tiempo restante - 0:{time}
+            Tiempo restante - 0:{timeLeft}
           </Typography>
         )}
 
-        <Button onClick={handleResend} sx={{ color: 'primary.main', height: 20 }} disabled={time === 0 ? false : true}>
+        <Button
+          onClick={handleResend}
+          sx={{ color: 'primary.main', height: 20 }}
+          disabled={timeLeft === 0 ? false : true}
+        >
           Reenviar código
         </Button>
       </Box>

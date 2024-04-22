@@ -9,6 +9,8 @@ import LogoGreen from '%/images/LogoGreen';
 import { DataUserProps } from '@/interfaces';
 import { useRegisterStore, useUiStore } from '@/store';
 import { PurpleLayout, NotFoundError } from '@/components';
+import { useSessionStore } from '@/store';
+import { set } from 'react-hook-form';
 
 /**
  * Convert phasename

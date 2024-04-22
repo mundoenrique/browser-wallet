@@ -120,7 +120,7 @@ export default function InfoVerification() {
         inc();
       })
       .catch((error) => {
-        setModalError({ title: 'Algo salio mal', description: 'Intentalo nuevamente' });
+        setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
       })
       .finally(() => {
         setLoadingScreen(false);
@@ -164,7 +164,7 @@ export default function InfoVerification() {
           );
         })
         .catch(() => {
-          setModalError({ title: 'Algo salio mal', description: 'No pudimos cargar las nacionalidades' });
+          setModalError({ title: 'Algo salió mal', description: 'No pudimos cargar las nacionalidades' });
         });
     };
     {
@@ -188,7 +188,7 @@ export default function InfoVerification() {
           updateCatalog('termsCatalog', response.data.data.data);
         })
         .catch((error) => {
-          setModalError({ title: 'Occurió un error', description: 'Intentalo nuevamente' });
+          setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
         });
     };
     {
