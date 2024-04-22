@@ -18,19 +18,10 @@ export default function CardInformation() {
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const customApi = useApi();
 
-  const [cardData, setCardData] = useState<cardResponse | null>(null);
+  const [cardData, setCardData] = useState<{ [key: string]: string } | null>(null);
   const [balance, setBalance] = useState<{ [key: string]: string } | null>(null);
-
-  interface cardResponse {
-    accountNumber: string;
-    blockType: {};
-    cardStatus: 'ACTIVE' | 'INACTIVE';
-    cardToken: string;
-    cardType: 'VIRTUAL' | 'PHYSIC';
-    holderName: string;
-    mask: string;
-    userToken: string;
-  }
+  const [cardInformationError, setCardInformationError] = useState<boolean>(false);
+  const [balanceError, setBalanceError] = useState<boolean>(false);
 
   const handleShowDetaild = () => {
     setOpen(true);
@@ -41,15 +32,34 @@ export default function CardInformation() {
     setOpen(false);
     setShowDetails(true);
   };
+  const fetchCardInformation = () => {
+    setCardInformationError(false);
+    customApi
+      .get('/cards/fd7d7993-53e5-45da-a7b5-d26481741466')
+      .then((response) => {
+        setCardData(response.data.data);
+      })
+      .catch(() => {
+        setCardInformationError(true);
+      });
+  };
+
+  const fetchBalance = () => {
+    setBalanceError(false);
+    customApi
+      .get('/cards/fd7d7993-53e5-45da-a7b5-d26481741466/balance')
+      .then((response) => {
+        setBalance(response.data.data);
+      })
+      .catch(() => {
+        setBalanceError(true);
+      });
+  };
 
   useEffect(() => {
-    customApi.get('/cards/fd7d7993-53e5-45da-a7b5-d26481741466').then((response) => {
-      setCardData(response.data.data);
-    });
-    customApi.get('/cards/fd7d7993-53e5-45da-a7b5-d26481741466/balance').then((response) => {
-      setBalance(response.data.data);
-    });
-  }, []);
+    fetchCardInformation();
+    fetchBalance();
+  }, []); //eslint-disable-line
 
   return (
     <>
@@ -59,6 +69,10 @@ export default function CardInformation() {
             showDetails={handleShowDetaild}
             cardNumber={cardData?.mask}
             balance={balance?.currentBalance}
+            cardInformationError={cardInformationError}
+            balanceError={balanceError}
+            fetchCardInformation={fetchCardInformation}
+            fetchBalance={fetchBalance}
           />
           <BackInformation
             hideDetails={() => setShowDetails(false)}

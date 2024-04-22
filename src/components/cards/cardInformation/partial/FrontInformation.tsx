@@ -2,8 +2,9 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Box, Button, Skeleton, Typography } from '@mui/material';
+import { Box, Button, IconButton, Skeleton, Typography } from '@mui/material';
 import Visibility from '@mui/icons-material/RemoveRedEyeOutlined';
+import ReplayIcon from '@mui/icons-material/Replay';
 import VisibilityOff from '@mui/icons-material/VisibilityOffOutlined';
 //Internal app
 import card from '%/images/cardYiro.svg';
@@ -17,7 +18,8 @@ import { FrontInformationProps } from '@/interfaces';
  * @param balance - The available account balance.
  */
 export default function FrontInformation(props: FrontInformationProps): JSX.Element {
-  const { showDetails, cardNumber, balance } = props;
+  const { showDetails, cardNumber, balance, cardInformationError, balanceError, fetchBalance, fetchCardInformation } =
+    props;
   const [showBalance, setShowBalance] = useState<boolean>(false);
 
   return (
@@ -43,11 +45,23 @@ export default function FrontInformation(props: FrontInformationProps): JSX.Elem
                 Ver número
               </Typography>
             </Button>
-            <Typography variant="body1" color="white" fontWeight={400} sx={{ opacity: 0.5 }}>
-              {cardNumber ?? (
-                <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'white', width: '180px' }} />
-              )}
-            </Typography>
+            {!cardInformationError ? (
+              <Typography variant="body1" color="white" fontWeight={400} sx={{ opacity: 0.5 }}>
+                {cardNumber ?? (
+                  <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'white', width: '180px' }} />
+                )}
+              </Typography>
+            ) : (
+              <IconButton
+                onClick={() => {
+                  fetchCardInformation();
+                }}
+                sx={{ color: 'white', display: 'block' }}
+                size="small"
+              >
+                <ReplayIcon sx={{ fontSize: '14px', display: 'block' }} />
+              </IconButton>
+            )}
           </Box>
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Box width={130}>
@@ -66,13 +80,25 @@ export default function FrontInformation(props: FrontInformationProps): JSX.Elem
                 </Typography>
               </Button>
 
-              <Typography variant="body1" color="white" fontWeight={400} noWrap sx={{ opacity: 0.5 }}>
-                {balance ? (
-                  ` S/ ${showBalance ? balance : '******'}`
-                ) : (
-                  <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'white', width: '100px' }} />
-                )}
-              </Typography>
+              {!balanceError ? (
+                <Typography variant="body1" color="white" fontWeight={400} noWrap sx={{ opacity: 0.5 }}>
+                  {balance ? (
+                    ` S/ ${showBalance ? balance : '******'}`
+                  ) : (
+                    <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'white', width: '100px' }} />
+                  )}
+                </Typography>
+              ) : (
+                <IconButton
+                  onClick={() => {
+                    fetchBalance();
+                  }}
+                  sx={{ color: 'white', display: 'block' }}
+                  size="small"
+                >
+                  <ReplayIcon sx={{ fontSize: '14px', display: 'block' }} />
+                </IconButton>
+              )}
             </Box>
           </Box>
         </Box>
