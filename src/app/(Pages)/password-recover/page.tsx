@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Card } from '@mui/material';
 //Internal
 import OTP from './partial/OTP';
 import { useApi } from '@/hooks/useApi';
@@ -61,5 +62,5 @@ export default function Recover() {
     return routes[page] || routes['OTP'];
   };
 
-  return configRecoverRoutes(otpValid);
+  return <Card variant="signup">{configRecoverRoutes(otpValid)}</Card>;
 }
