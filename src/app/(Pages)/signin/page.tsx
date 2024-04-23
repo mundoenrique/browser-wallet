@@ -72,8 +72,8 @@ export default function Signin() {
         setUser(response.data.data);
         setUserData(response.data.data);
       })
-      .catch(() => {
-        setModalError({ title: '¡Uups!', description: 'No pudimos obtener tus datos, inténtalo más tarde' });
+      .catch((e) => {
+        setModalError({ error: e });
       })
       .finally(() => {
         setLoadingScreen(false);

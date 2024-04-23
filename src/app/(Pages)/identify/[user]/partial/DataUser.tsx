@@ -83,6 +83,9 @@ export default function DataUser(user: DataUserProps) {
         .get(`/onboarding/validate?consultantCode=${userObject.code}&countryCode=${userObject.country}`)
         .then((response) => {
           setUserValidation(response.data);
+        })
+        .catch(() => {
+          setModalError();
         });
     };
     validateOnboarding();

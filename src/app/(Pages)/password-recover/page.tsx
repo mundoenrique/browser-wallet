@@ -30,8 +30,8 @@ export default function Recover() {
           setOtpUuid(data.data.otpUuId);
         }
       })
-      .catch(() => {
-        setModalError({ title: 'Algo salió mal', description: 'Intentalo nuevamente' });
+      .catch((e) => {
+        setModalError({ error: e });
       });
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
