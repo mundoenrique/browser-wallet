@@ -57,7 +57,11 @@ export default function Signin() {
         }
       })
       .catch(() => {
-        setModalError({ title: '¡Uups!', description: 'Credenciales invalidas, vuelve a intentarlo.' });
+        setModalError({
+          title: '¡Credenciales invalidas!',
+          description:
+            'Después de 3 intentos incorrectos el acceso se bloqueará. En caso no recuerdes tu clave, cámbiala.',
+        });
       })
       .finally(() => {
         setLoadingScreen(false);
