@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Card } from '@mui/material';
 //Internal
 import OTP from './partial/OTP';
 import { useApi } from '@/hooks/useApi';
@@ -29,8 +30,8 @@ export default function Recover() {
           setOtpUuid(data.data.otpUuId);
         }
       })
-      .catch(() => {
-        setModalError({ title: 'Algo salió mal', description: 'Intentalo nuevamente' });
+      .catch((e) => {
+        setModalError({ error: e });
       });
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
@@ -53,16 +54,13 @@ export default function Recover() {
     }
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleSetView = (view: any) => {
-    switch (view) {
-      case 'OTP':
-        return <OTP optUuid={optUuid} handleResendOTP={requestTFACode} />;
-      case 'PASSWORD':
-        return <UpdatePass />;
-      default:
-        console.error('Failed enums password recover');
-    }
+  const configRecoverRoutes = (page: any) => {
+    const routes: { [key: string]: any } = {
+      OTP: <OTP optUuid={optUuid} handleResendOTP={requestTFACode} />,
+      PASSWORD: <UpdatePass />,
+    };
+    return routes[page] || routes['OTP'];
   };
 
-  return handleSetView(otpValid);
+  return <Card variant="signup">{configRecoverRoutes(otpValid)}</Card>;
 }

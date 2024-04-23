@@ -98,8 +98,8 @@ export default function PEP() {
         updateFormState('ONB_PHASES_PEP', requestFormData.request);
         inc();
       })
-      .catch((error) => {
-        setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
+      .catch((e) => {
+        setModalError({ error: e });
       })
       .finally(() => {
         setLoadingScreen(false);
@@ -168,8 +168,8 @@ export default function PEP() {
             }))
           );
         })
-        .catch(() => {
-          setModalError({ title: 'Algo salió mal', description: 'No pudimos cargar el listado de los departamentos' });
+        .catch((e) => {
+          setModalError({ error: e });
         });
     };
     {
@@ -209,8 +209,8 @@ export default function PEP() {
             }))
           );
         })
-        .catch(() => {
-          setModalError({ title: 'Algo salió mal', description: 'No pudimos cargar el listado de las provincias' });
+        .catch((e) => {
+          setModalError({ error: e });
         });
     };
 
@@ -251,8 +251,8 @@ export default function PEP() {
             }))
           );
         })
-        .catch(() => {
-          setModalError({ title: 'Algo salió mal', description: 'No pudimos cargar el listado de los distritos' });
+        .catch((e) => {
+          setModalError({ error: e });
         });
     };
 
@@ -279,8 +279,8 @@ export default function PEP() {
             }))
           );
         })
-        .catch(() => {
-          setModalError({ title: 'Algo salió mal', description: 'No pudimos cargar los tipos de documentos' });
+        .catch((e) => {
+          setModalError({ error: e });
         });
     };
 

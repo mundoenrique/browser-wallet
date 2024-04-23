@@ -5,7 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Box, Button, FormHelperText, Typography } from '@mui/material';
+import { Box, Button, FormHelperText, Snackbar, Typography } from '@mui/material';
 //internal app
 import { CardStep } from '..';
 import { getSchema } from '@/config';
@@ -20,6 +20,7 @@ export default function CelularValidation() {
   const { inc, dec, onboardingUuId, ONB_PHASES_TERMS } = useRegisterStore();
   const { timeLeft, countdown, counting, setCounting, setTime } = useOtpStore();
   const timerRef = useRef<any>();
+  const [open, setOpen] = useState(false);
 
   const { setModalError, setLoadingScreen } = useUiStore();
 
@@ -36,8 +37,8 @@ export default function CelularValidation() {
       .then((response) => {
         setOtpUuid(response.data.data.otpUuId);
       })
-      .catch((error) => {
-        setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
+      .catch((e) => {
+        setModalError({ error: e });
       })
       .finally(() => {});
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
@@ -59,8 +60,8 @@ export default function CelularValidation() {
           inc();
         }
       })
-      .catch((error) => {
-        setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
+      .catch((e) => {
+        setModalError({ error: e });
       })
       .finally(() => {
         setLoadingScreen(false);
@@ -163,13 +164,24 @@ export default function CelularValidation() {
                 timer();
                 setCounting(true);
                 reset();
+                setOpen(!open);
               }}
               sx={{ color: 'primary.main', height: 20 }}
               disabled={timeLeft === 0 ? false : true}
             >
-              |
+              Reenviar código
             </Button>
           </Box>
+
+          <Snackbar
+            sx={{ '&>.MuiPaper-root': { bgcolor: 'white', borderRadius: '4px', color: 'initial', boxShadow: 2 } }}
+            open={open}
+            autoHideDuration={3000}
+            onClose={() => setOpen(false)}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            message="🎰 Nuevo código enviado"
+            key={'bottom' + 'center'}
+          />
 
           <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3 / 2, mb: { xs: 3, sm: 0 } }}>
             <Button

@@ -31,8 +31,8 @@ export default function UpdatePass() {
           setOpen(true);
         }
       })
-      .catch(() => {
-        setModalError({ title: 'Algo salió mal', description: 'Intentalo nuevamente' });
+      .catch((e) => {
+        setModalError({ error: e });
       })
       .finally(() => {
         setLoadingScreen(false);
