@@ -72,8 +72,8 @@ export default function Ocupation() {
         updateFormState('ONB_PHASES_CONSULT_DATA', requestFormData.request);
         inc();
       })
-      .catch(() => {
-        setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
+      .catch((e) => {
+        setModalError({ error: e });
       })
       .finally(() => {
         setLoadingScreen(false);
@@ -93,8 +93,8 @@ export default function Ocupation() {
             }))
           );
         })
-        .catch(() => {
-          setModalError({ title: 'Algo salió mal', description: 'No pudimos cargar la lista de las ocupaciones' });
+        .catch((e) => {
+          setModalError({ error: e });
         });
     };
     {

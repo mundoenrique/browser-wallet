@@ -4,11 +4,10 @@ import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
 import { MuiOtpInput } from 'mui-one-time-password-input';
-import { Box, Button, FormHelperText, Typography } from '@mui/material';
+import { Box, Button, FormHelperText, Snackbar, Typography } from '@mui/material';
 //Internal app
 import { useOtpStore } from '@/store';
 import { InputOTPProps } from '@/interfaces';
-import ModalResponsive from '../modal/ModalResponsive';
 
 /**
  * Field used to enter an otp code.
@@ -99,11 +98,15 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
         </Button>
       </Box>
 
-      <ModalResponsive open={open} handleClose={() => setOpen(false)}>
-        <Typography py={2} fontWeight={700}>
-          🎰 Nuevo código enviado
-        </Typography>
-      </ModalResponsive>
+      <Snackbar
+        sx={{ '&>.MuiPaper-root': { bgcolor: 'white', borderRadius: '4px', color: 'initial', boxShadow: 2 } }}
+        open={open}
+        autoHideDuration={3000}
+        onClose={() => setOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        message="🎰 Nuevo código enviado"
+        key={'bottom' + 'center'}
+      />
     </>
   );
 }

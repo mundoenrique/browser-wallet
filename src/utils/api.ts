@@ -77,10 +77,25 @@ api.interceptors.response.use(
     return response;
   },
 
-  (error) => {
-    return Promise.reject({
-      message: 'Error in response',
-      originalError: error,
-    });
+  async (error) => {
+    const data = error.response.data;
+    const jwsApiPublicKey = process.env.NEXT_PUBLIC_MIDDLE_JWS_PUBLIC_KEY;
+
+    if (data) {
+      const payload = data.data;
+      if (jwsApiPublicKey) {
+        const jws = error.response.headers[JWS_HEADER];
+        if (jws) {
+          await verifyDetachedJWS(jws, jwsApiPublicKey, payload);
+        } else {
+          return Promise.reject('JWS header not found in the response');
+        }
+      }
+      const decryptedData = await decryptJWE(payload, jwePrivateKey);
+      error.response.data.data = decryptedData;
+    }
+    // return error;
+
+    return Promise.reject(error);
   }
 );

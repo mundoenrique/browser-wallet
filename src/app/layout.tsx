@@ -4,7 +4,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 //Internal app
 import { ChildrenProps } from '@/interfaces';
 import { HydrationProvider, KeyProvider, LoadingScreen, MuiProvider } from '@/components';
-import GlobalErrorMessage from '@/components/layout/GlobalError';
+import GlobalErrorMessage from '@/components/layout/GlobalErrorMessage';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

@@ -10,6 +10,7 @@ import { AuthOtpFormProps } from '@/interfaces';
 import InputOTP from '@/components/form/InputOTP';
 import { encryptForge } from '@/utils/toolHelper';
 import { useOtpStore, useUiStore, useUserStore } from '@/store';
+import { error } from 'console';
 
 export default function AuthOtp(props: AuthOtpFormProps) {
   const customApi = useApi();
@@ -50,8 +51,8 @@ export default function AuthOtp(props: AuthOtpFormProps) {
           setOTPValid('PASSWORD');
         }
       })
-      .catch(() => {
-        setModalError({ title: 'Algo salió mal', description: 'Intentalo nuevamente' });
+      .catch((e) => {
+        setModalError({ error: e });
       })
       .finally(() => {
         setLoadingScreen(false);
