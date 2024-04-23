@@ -85,7 +85,7 @@ export default function DataUser(user: DataUserProps) {
           setUserValidation(response.data);
         })
         .catch(() => {
-          setModalError({ title: 'Ocurrió un error', description: 'Intentalo nuevamente' });
+          setModalError();
         });
     };
     validateOnboarding();
