@@ -15,6 +15,7 @@ export interface PurpleLayoutProps {
   left?: boolean;
   navbar?: boolean;
   confetti?: boolean;
+  width?: string;
 }
 
 /**

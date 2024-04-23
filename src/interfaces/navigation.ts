@@ -41,11 +41,15 @@ export interface SidebarProps {
  * @typeParam color (Optional): boolean
  * @typeParam text: string
  * @typeParam icon: React.ReactNode
+ * @typeParam href: string;
+ * @typeParam onClick (Optional): () => void;
  */
 export interface ItemSecondarySidebarProps {
   color?: boolean;
   text: string;
   icon: React.ReactNode;
+  href: string;
+  onClick?: () => void;
 }
 
 /**

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -7,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { getSchema } from '@/config';
 import { FormPassProps } from '@/interfaces';
 import { Conditions, InputCheck, InputPass, ModalResponsive } from '@/components';
-import { useState } from 'react';
 
 /**
  * Form component for password management (Change and create password)
@@ -27,7 +27,7 @@ export default function FormPass(porps: FormPassProps): JSX.Element {
     : getSchema(['newPassword', 'newPasswordConfirmation']);
 
   const initialValues = register
-    ? { newPassword: '', newPasswordConfirmation: '', policy: '' }
+    ? { newPassword: '', newPasswordConfirmation: '', policy: false }
     : { newPassword: '', newPasswordConfirmation: '' };
 
   const { control, handleSubmit } = useForm({

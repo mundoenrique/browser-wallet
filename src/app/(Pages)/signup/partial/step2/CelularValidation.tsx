@@ -21,7 +21,7 @@ export default function CelularValidation() {
   const { timeLeft, countdown, counting, setCounting, setTime } = useOtpStore();
   const timerRef = useRef<any>();
 
-  const { setModalError } = useUiStore();
+  const { setModalError, setLoadingScreen } = useUiStore();
 
   const customApi = useApi();
 
@@ -31,9 +31,15 @@ export default function CelularValidation() {
   });
 
   const requestTFACode = useCallback(async () => {
-    customApi.post(`/onboarding/${onboardingUuId}/tfa`, { otpProcessCode: 'ONBOARDING_OTP' }).then((response) => {
-      setOtpUuid(response.data.data.otpUuId);
-    });
+    customApi
+      .post(`/onboarding/${onboardingUuId}/tfa`, { otpProcessCode: 'ONBOARDING_OTP' })
+      .then((response) => {
+        setOtpUuid(response.data.data.otpUuId);
+      })
+      .catch((error) => {
+        setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
+      })
+      .finally(() => {});
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   const onSubmit = async (data: any) => {
@@ -45,12 +51,20 @@ export default function CelularValidation() {
       otpCode: code,
       currentPhaseCode: 'ONB_PHASES_OPT',
     };
-
-    customApi.post(`/onboarding/${onboardingUuId}/validate/tfa`, request).then((response) => {
-      if (response.data.code === '200.00.000') {
-        inc();
-      }
-    });
+    setLoadingScreen(true);
+    customApi
+      .post(`/onboarding/${onboardingUuId}/validate/tfa`, request)
+      .then((response) => {
+        if (response.data.code === '200.00.000') {
+          inc();
+        }
+      })
+      .catch((error) => {
+        setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
 
     reset();
   };

@@ -1,6 +1,3 @@
-import exp from 'constants';
-import { object, string } from 'yup';
-
 /**
  * Login credentials
  *
@@ -81,3 +78,15 @@ export type IApiGeeResponse = {
 export interface IUrlBase {
   [key: string]: string;
 }
+
+/**
+ * TUserDetailParams
+ * @typeParam params: {
+ * userId: string
+ * }
+ */
+export type TUserDetailParams = {
+  params: {
+    userId: string;
+  };
+};

@@ -1,11 +1,12 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage, devtools } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 //Internal app
 import { OtpStore } from '@/interfaces';
 
 export const useOtpStore = create<OtpStore>()(
   persist(
     (set, get) => ({
+      otpValid: 'OTP',
       timeLeft: 0,
       counting: false,
       setCounting: (value) => set({ counting: value }),
@@ -18,6 +19,7 @@ export const useOtpStore = create<OtpStore>()(
         }
       },
       setTime: () => set({ timeLeft: 60 }),
+      setOTPValid: (value) => set({ otpValid: value }),
     }),
     { name: 'timerStore', storage: createJSONStorage(() => sessionStorage) }
   )

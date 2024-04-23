@@ -17,12 +17,12 @@ export const validationRules: ValidationRule = {
     .min(7, 'Debe tener minimo 7 caracteres')
     .max(256, 'Debe tener maximo 256 caracteres')
     .test('emailValid', 'Ingresa un email válido', (value) => regularExpressions.emailValid?.test(value)),
-  password: passwordValidation('Ingrese una contraseña'),
+  password: yup.string().required('Ingresa una contraseña'),
   roles: yup.string().required('Debes seleccionar una opción'),
   initialDate: yup.string().required('Ingresa una fecha'),
   countryCode: yup.string().required('Selecciona un país'),
   terms: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
-  policy: yup.string().required('Acepta la política'),
+  policy: yup.boolean().oneOf([true], 'Acepta la política'),
   otp: yup
     .string()
     .required('Ingrese un código')
@@ -40,8 +40,16 @@ export const validationRules: ValidationRule = {
   legal: yup.boolean().oneOf([true], 'Debes aceptar la opción'),
   occupationCode: yup.string().required('Selecciona una ocupación'),
   companyType: yup.string().required('Selecciona el tipo de empresa'),
-  companyName: yup.string().required('Ingresa el nombre de la empresa'),
-  companyPosition: yup.string().required('Ingrese su posición en la empresa'),
+  companyName: yup
+    .string()
+    .required('Ingresa el nombre de la empresa')
+    .max(50, 'Debe tener maximo 50 caracteres')
+    .test('companyNameValid', 'Solo se aceptan números y letras', (value) => regularExpressions.company?.test(value)),
+  companyPosition: yup
+    .string()
+    .required('Ingrese su posición en la empresa')
+    .max(50, 'Debe tener maximo 50 caracteres')
+    .test('companyPositionValid', 'Solo se aceptan letras', (value) => regularExpressions.namesValid?.test(value)),
   phoneNumber: yup
     .string()
     .required('Ingresa un numero de celular')
@@ -51,8 +59,16 @@ export const validationRules: ValidationRule = {
   isPep: yup.string().nonNullable().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
   pepForm: yup.object().shape({
     isRelativeAlive: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
-    position: yup.string().required('Ingrese su posición en la empresa'),
-    companyName: yup.string().required('Ingresa el nombre de la empresa'),
+    position: yup
+      .string()
+      .required('Ingrese su posición en la empresa')
+      .max(50, 'Debe tener maximo 50 caracteres')
+      .test('positionValid', 'Solo se aceptan letras', (value) => regularExpressions.namesValid?.test(value)),
+    companyName: yup
+      .string()
+      .required('Ingresa el nombre de la empresa')
+      .max(50, 'Debe tener maximo 50 caracteres')
+      .test('companyNameValid', 'Solo se aceptan letras', (value) => regularExpressions.company?.test(value)),
     address: yup.string().required('Ingresa la dirección de la empresa').max(256, 'Debe tener maximo 256 caracteres'),
     districtCode: yup.string().required('Selecciona el distrito'),
     provinceCode: yup.string().required('Selecciona la provincia'),
@@ -66,12 +82,12 @@ export const validationRules: ValidationRule = {
         .string()
         .required('Ingresa el nombre completo')
         .max(256, 'Debe tener maximo 256 caracteres')
-        .test('amountValid', 'El campo es de texto', (value) => regularExpressions.namesValid?.test(value)),
+        .test('fullNameValid', 'El campo es de texto', (value) => regularExpressions.namesValid?.test(value)),
       documentNumber: yup
         .string()
         .required('Ingresa el número de identificación')
         .max(15, 'Número de identificación invalido')
-        .test('amountValid', 'Identificación invalida', (value) => regularExpressions.alphanum?.test(value)),
+        .test('documentNumberValid', 'Identificación invalida', (value) => regularExpressions.alphanum?.test(value)),
       documentType: yup.string().required('Selecciona el tipo de documento '),
     })
   ),

@@ -3,11 +3,14 @@
 import { useState } from 'react';
 import { Box } from '@mui/material';
 //Internal app
+import { useDrawerStore } from '@/store';
+import { useRouter } from 'next/navigation';
 import { ChildrenProps } from '@/interfaces';
 import Navbar from '../navigation/navbar/Navbar';
 import Sidebar from '../navigation/sidebar/Sidebar';
 import NavbarLower from '../navigation/navbar/NavbarLower';
-import { useDrawerStore } from '@/store';
+//Eliminar este store despues de la certificacion de inicio de sesión
+import { accessSessionStore } from '@/store/accessSessionStore';
 
 /**
  * Container used in the internal views of the application
@@ -16,6 +19,13 @@ import { useDrawerStore } from '@/store';
  */
 export default function MainLayout({ children }: ChildrenProps): JSX.Element {
   const drawerWidth = 315;
+
+  //Eliminar esta logica despues de la certificacion de inicio de sesión
+  const { accessSession } = accessSessionStore();
+  const { push } = useRouter();
+  if (accessSession == false) {
+    push('/signin');
+  }
 
   const [isClosing, setIsClosing] = useState<boolean>(false);
 

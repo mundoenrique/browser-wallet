@@ -4,7 +4,6 @@
 import { useRegisterStore } from '@/store';
 import {
   PEP,
-  Ending,
   Landing,
   Ocupation,
   SignupStepper,
@@ -36,8 +35,6 @@ export default function Signup() {
       <PEP />
 
       <PasswordCreation />
-
-      <Ending />
     </SignupStepper>
   );
 }

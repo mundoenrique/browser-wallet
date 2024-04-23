@@ -5,25 +5,58 @@ import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 //Internal app
 import { getSchema } from '@/config';
+import { useApi } from '@/hooks/useApi';
 import { AuthOtpFormProps } from '@/interfaces';
 import InputOTP from '@/components/form/InputOTP';
+import { encryptForge } from '@/utils/toolHelper';
+import { useOtpStore, useUiStore, useUserStore } from '@/store';
 
 export default function AuthOtp(props: AuthOtpFormProps) {
-  const { setOTP } = props;
+  const customApi = useApi();
   const schema = getSchema(['otp']);
+  const { optUuid, handleResendOTP } = props;
+  const { setOTPValid } = useOtpStore();
 
-  const { control, handleSubmit } = useForm({
+  const handleReset = () => {
+    handleResendOTP();
+    reset();
+  };
+
+  const { setLoadingScreen, setModalError } = useUiStore();
+  const {
+    user: { userId },
+  } = useUserStore();
+  const { getUserPhone } = useUserStore();
+
+  const phoneNumber: string = getUserPhone();
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: { otp: '' },
     resolver: yupResolver(schema),
   });
 
   const onSubmit = async (data: any) => {
-    console.log(data);
-    fetch('/signup').then((result) => {
-      console.log(result);
-
-      result.status === 200 && setOTP(true);
-    });
+    const { otp } = data;
+    setLoadingScreen(true);
+    const payload = {
+      otpProcessCode: 'CHANGE_PASSWORD_OTP',
+      otpUuId: optUuid,
+      otpCode: encryptForge(otp),
+    };
+    customApi
+      .post(`/users/${userId}/validate/tfa`, payload)
+      .then((response) => {
+        const { status } = response;
+        if (status === 200) {
+          setOTPValid('PASSWORD');
+        }
+      })
+      .catch(() => {
+        setModalError({ title: 'Algo salió mal', description: 'Intentalo nuevamente' });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+        reset();
+      });
   };
 
   return (
@@ -43,7 +76,8 @@ export default function AuthOtp(props: AuthOtpFormProps) {
           control={control}
           length={4}
           title="Recupera tu contraseña"
-          text="Hemos enviado por tu seguridad un código SMS a tu celular *6549. Ingrésalo aquí."
+          text={`Hemos enviado por tu seguridad un código SMS a tu celular ${phoneNumber}. Ingrésalo aquí.`}
+          handleResendOTP={handleReset}
         />
       </Box>
       <Button variant="contained" type="submit" sx={{ maxWidth: 284, width: '100%', mx: 'auto', mb: { xs: 3, md: 0 } }}>

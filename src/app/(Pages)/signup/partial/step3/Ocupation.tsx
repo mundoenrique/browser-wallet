@@ -24,7 +24,7 @@ export default function Ocupation() {
 
   const { handleSubmit, control, watch, reset, getValues } = useForm({
     defaultValues: {
-      occupationCode: ONB_PHASES_CONSULT_DATA?.consultant?.occupationCode ?? null,
+      occupationCode: ONB_PHASES_CONSULT_DATA?.consultant?.occupationCode ?? 'SELF_EMPLOYED',
       companyType: ONB_PHASES_CONSULT_DATA?.consultant?.companyType ?? null,
       companyName: ONB_PHASES_CONSULT_DATA?.consultant?.companyName ?? '',
       companyPosition: ONB_PHASES_CONSULT_DATA?.consultant?.companyPosition ?? '',
@@ -68,9 +68,12 @@ export default function Ocupation() {
 
     customApi
       .put('/onboarding/consultantdata', requestFormData)
-      .then((response) => {
+      .then(() => {
         updateFormState('ONB_PHASES_CONSULT_DATA', requestFormData.request);
         inc();
+      })
+      .catch(() => {
+        setModalError({ title: 'Algo salió mal', description: 'Inténtalo nuevamente' });
       })
       .finally(() => {
         setLoadingScreen(false);
@@ -79,15 +82,20 @@ export default function Ocupation() {
 
   useEffect(() => {
     const fetchOccupationsCatalg = async () => {
-      customApi.post('/catalogs/search', { catalogCode: 'OCCUPATIONS_CATALOG' }).then((response) => {
-        updateCatalog(
-          'occupationCatalog',
-          response.data.data.data.map((occupation: { value: string; code: string }) => ({
-            text: occupation.value,
-            value: occupation.code,
-          }))
-        );
-      });
+      customApi
+        .post('/catalogs/search', { catalogCode: 'OCCUPATIONS_CATALOG' })
+        .then((response) => {
+          updateCatalog(
+            'occupationCatalog',
+            response.data.data.data.map((occupation: { value: string; code: string }) => ({
+              text: occupation.value,
+              value: occupation.code,
+            }))
+          );
+        })
+        .catch(() => {
+          setModalError({ title: 'Algo salió mal', description: 'No pudimos cargar la lista de las ocupaciones' });
+        });
     };
     {
       occupationCatalog.length === 0 && fetchOccupationsCatalg();

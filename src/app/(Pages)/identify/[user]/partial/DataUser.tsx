@@ -1,16 +1,17 @@
 'use client';
 
-import { useEffect, useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Typography, Box } from '@mui/material';
-
+import { useEffect, useCallback, useState } from 'react';
 //Internal app
-import { useRegisterStore, useUiStore } from '@/store';
 import { useApi } from '@/hooks/useApi';
 import LogoGreen from '%/images/LogoGreen';
-import { PurpleLayout, NotFoundError } from '@/components';
-
 import { DataUserProps } from '@/interfaces';
+import { useRegisterStore, useUiStore } from '@/store';
+import { PurpleLayout, NotFoundError } from '@/components';
+import { useSessionStore } from '@/store';
+import { set } from 'react-hook-form';
+
 /**
  * Convert phasename
  *
@@ -24,7 +25,7 @@ const phaseToStep = (phase: string) => {
     ONB_PHASES_CONSULT_DATA: 4,
     ONB_PHASES_PEP: 5,
     //ONB_PHASES_VALIDATE_BIOMETRIC: 5,
-    ONB_PHASES_PASSWORD: 6,
+    ONB_PHASES_CONTRASENNIA: 5,
   };
   return phasesSteps[phase] || 0;
 };
