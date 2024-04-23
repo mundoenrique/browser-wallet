@@ -5,9 +5,11 @@ import ModalError from '../modal/ModalError';
 import { useEffect, useState } from 'react';
 
 export default function GlobalErrorMessage() {
-  const { modalErrorObject, showModalError, closeModalError, setModalError } = useUiStore();
+  const { modalErrorObject, showModalError, closeModalError } = useUiStore();
   const [title, setTitle] = useState<string>('');
   const [desc, secDesc] = useState<string>('');
+
+  console.log('error', modalErrorObject);
 
   if (modalErrorObject && 'title' in modalErrorObject && 'description' in modalErrorObject) {
     setTitle(modalErrorObject.title);
@@ -43,9 +45,6 @@ const setError = (eCode: any, context: any) => {
     '057': { description: 'Usuario bloqueado' },
     '464': { description: 'El código OTP no es válido' },
     '085': { description: 'El código OTP ha expirado' },
-    terms: {
-      '064': { description: 'El documento de identificacion ya está en uso' },
-    },
   };
 
   return { ...defaultError, ...errorsMessages[eCode] } ?? defaultError;
