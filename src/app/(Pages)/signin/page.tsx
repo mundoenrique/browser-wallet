@@ -56,8 +56,8 @@ export default function Signin() {
           setAccessSession(true);
         }
       })
-      .catch(() => {
-        setModalError({ title: '¡Uups!', description: 'Credenciales invalidas, vuelve a intentarlo.' });
+      .catch((e) => {
+        setModalError({ error: e });
       })
       .finally(() => {
         setLoadingScreen(false);
