@@ -17,7 +17,7 @@ export default function GlobalErrorMessage() {
         title = modalTitle;
         description = modalDescription;
       } else if ('error' in modalErrorObject) {
-        const errorCode = modalErrorObject.error.response.data.data.code ?? '';
+        const errorCode = modalErrorObject.error?.response?.data?.data?.code ?? '';
         const context = modalErrorObject?.context ?? '';
         const { title: modalTitle, description: modalDescription } = setError(errorCode, context);
         title = modalTitle;
