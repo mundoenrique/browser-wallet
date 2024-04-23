@@ -9,6 +9,7 @@ export default function ModalError(props: ModalErrorProps) {
 
   return (
     <Snackbar
+      sx={{ maxWidth: 533 }}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       open={open}
       autoHideDuration={6000}
