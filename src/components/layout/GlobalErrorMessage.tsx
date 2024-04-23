@@ -3,13 +3,9 @@
 import { useUiStore } from '@/store';
 import ModalError from '../modal/ModalError';
 import { useMemo } from 'react';
-import { usePathname } from 'next/navigation';
 
 export default function GlobalErrorMessage() {
   const { modalErrorObject, showModalError, closeModalError } = useUiStore();
-
-  const pathname = usePathname();
-  console.log(pathname);
 
   const modalMessage = useMemo(() => {
     let title = '';
