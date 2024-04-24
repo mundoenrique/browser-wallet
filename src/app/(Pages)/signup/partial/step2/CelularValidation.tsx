@@ -47,7 +47,7 @@ export default function CelularValidation() {
     const code = encryptForge(data.otp);
 
     const request = {
-      otpProcessCode: 'CHANGE_PASSWORD_OTP',
+      otpProcessCode: 'ONBOARDING_OTP',
       otpUuId: optUuid,
       otpCode: code,
       currentPhaseCode: 'ONB_PHASES_OPT',
