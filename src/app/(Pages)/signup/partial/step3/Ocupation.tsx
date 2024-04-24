@@ -133,7 +133,7 @@ export default function Ocupation() {
                 disableClearable
                 options={[
                   { text: 'Privada', value: 'Privado' },
-                  { text: 'Pública', value: 'Público' },
+                  { text: 'Pública', value: 'Publico' },
                 ]}
                 control={control}
               />
