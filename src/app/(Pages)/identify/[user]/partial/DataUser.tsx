@@ -9,8 +9,6 @@ import LogoGreen from '%/images/LogoGreen';
 import { DataUserProps } from '@/interfaces';
 import { useRegisterStore, useUiStore } from '@/store';
 import { PurpleLayout, NotFoundError } from '@/components';
-import { useSessionStore } from '@/store';
-import { set } from 'react-hook-form';
 
 /**
  * Convert phasename
@@ -63,7 +61,6 @@ export default function DataUser(user: DataUserProps) {
       PH_IN_PROGRESS: {
         path: '/signup',
         store: () => {
-          //TODO: Hay un porblema con la variable onboardingUuid que esta pendiente de ajustar el nombre
           updateFormState('onboardingUuId', registerData.status.onboardingUuid);
           registerData.onboardingPhases.forEach((phase: any) => {
             updateFormState(phase.onboardingPhaseCode, phase.metadata);

@@ -2,34 +2,50 @@
 
 import { useUiStore } from '@/store';
 import ModalError from '../modal/ModalError';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 export default function GlobalErrorMessage() {
   const { modalErrorObject, showModalError, closeModalError } = useUiStore();
-  const [title, setTitle] = useState<string>('');
-  const [desc, setDesc] = useState<string>('');
 
-  useMemo(() => {
-    if (modalErrorObject && 'title' in modalErrorObject && 'description' in modalErrorObject) {
-      const { title, description } = modalErrorObject;
-      setTitle(title);
-      setDesc(description);
-    } else if (modalErrorObject && 'error' in modalErrorObject) {
-      console.log('error', modalErrorObject);
-      const { title, description } = setError(
-        modalErrorObject.error?.response?.data?.data.code,
-        modalErrorObject?.context
-      );
-      setTitle(title);
-      setDesc(description);
-    } else {
-      const { title, description } = setError();
-      setTitle(title);
-      setDesc(description);
+  const modalMessage = useMemo(() => {
+    let title = '';
+    let description = '';
+
+    if (modalErrorObject) {
+      if ('title' in modalErrorObject && 'description' in modalErrorObject) {
+        const { title: modalTitle, description: modalDescription } = modalErrorObject;
+        title = modalTitle;
+        description = modalDescription;
+      } else if ('error' in modalErrorObject) {
+        const errorCode = modalErrorObject.error?.response?.data?.data?.code ?? '';
+        const context = modalErrorObject?.context ?? '';
+        const { title: modalTitle, description: modalDescription } = setError(errorCode, context);
+        title = modalTitle;
+        description = modalDescription;
+      } else {
+        const { title: modalTitle, description: modalDescription } = setError();
+        title = modalTitle;
+        description = modalDescription;
+      }
     }
-  }, [setTitle, setDesc, modalErrorObject]);
 
-  return <ModalError title={title} description={desc} open={showModalError} handleClose={closeModalError} />;
+    if (!title && !description) {
+      const { title: defaultTitle, description: defaultDescription } = setError();
+      title = defaultTitle;
+      description = defaultDescription;
+    }
+
+    return { title: title, description: description };
+  }, [modalErrorObject]);
+
+  return (
+    <ModalError
+      title={modalMessage.title}
+      description={modalMessage.description}
+      open={showModalError}
+      handleClose={closeModalError}
+    />
+  );
 }
 
 const setError = (eCode?: string, context?: string) => {

@@ -10,7 +10,6 @@ import { AuthOtpFormProps } from '@/interfaces';
 import InputOTP from '@/components/form/InputOTP';
 import { encryptForge } from '@/utils/toolHelper';
 import { useOtpStore, useUiStore, useUserStore } from '@/store';
-import { error } from 'console';
 
 export default function AuthOtp(props: AuthOtpFormProps) {
   const customApi = useApi();
