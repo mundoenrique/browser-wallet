@@ -200,11 +200,16 @@ export interface CatalogsStore {
 /**
  * User store
  * @typeParam user - Initial state {@defaultValue `null`}
- * @typeParam setUser - Function that sets the new value
+ * @typeParam userId: Initial state {@defaultValue `null`}
+ * @typeParam setUser: (_data: any) => void
+ * @typeParam setUserId: (_data: any) => void
+ * @typeParam getUserPhone: () => string
  */
 export interface UserStore {
   user: any | null;
+  userId: any | null;
   setUser: (_data: any) => void;
+  setUserId: (_data: any) => void;
   getUserPhone: () => string;
 }
 
