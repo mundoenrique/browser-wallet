@@ -37,7 +37,7 @@ export default function Ending() {
   useEffect(() => {
     setShowHeader(false);
     (async () => {
-      timeEvent(4000000)
+      timeEvent(4000)
         .then(() => {
           return timeEvent(1500);
         })
