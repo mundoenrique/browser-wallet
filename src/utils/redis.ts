@@ -66,3 +66,50 @@ export function createRedisInstance(config = getRedisConfiguration()) {
     throw new Error(`[Redis] Could not create a Redis instance`);
   }
 }
+
+export async function getRedis(dataGet: string) {
+
+  try {
+    const redis = createRedisInstance();
+    const resData: string | null = await redis.get(`session:${dataGet}`);
+    await redis.quit();
+
+    return resData
+  } catch (error) {
+    throw new Error('Error get data Redis.');
+  }
+}
+
+export async function postRedis(sessionId: any, newData: any) {
+
+  try {
+    const redis = createRedisInstance();
+
+    const dataRedis: string | null = await redis.get(`session:${sessionId}`);
+    if (dataRedis) {
+      const resDataObj = JSON.parse(dataRedis)
+      const dataUpdate = Object.assign({}, resDataObj, newData);
+      await redis.set(`session:${sessionId}`, JSON.stringify(dataUpdate));
+    } else {
+      await redis.set(`session:${sessionId}`, JSON.stringify(newData));
+    }
+    await redis.expire(`session:${sessionId}`, 3000);
+
+    redis.quit();
+
+  } catch (error) {
+    throw new Error('Error post data Redis: ');
+  }
+}
+
+export async function delRedis(sesionId:string) {
+
+  try {
+    const redis = createRedisInstance();
+    redis.del(sesionId);
+    redis.quit()
+
+  } catch (error) {
+    throw new Error('Error delete data Redis.');
+  }
+}

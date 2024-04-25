@@ -1,18 +1,16 @@
 import uuid4 from 'uuid4';
 import { NextResponse, NextRequest } from 'next/server';
 //Internal app
-import { createRedisInstance } from '@/utils/redis';
+import { postRedis } from '@/utils/redis';
 
 export async function GET(request: NextRequest) {
-  const redis = createRedisInstance();
   const searchParams = request.nextUrl.searchParams;
   const consultantCode = searchParams.get('consultantCode');
   const countryCode = searchParams.get('countryCode');
   const user = uuid4();
 
-  await redis.set(`${user}`, JSON.stringify({ code: consultantCode, country: countryCode, uuid: user }));
-  await redis.expire(`${user}`, 180);
-  redis.quit();
+  const data = { code: consultantCode, country: countryCode }
+  await postRedis(user,data)
 
   const response = {
     data: `/identify/${user}`,

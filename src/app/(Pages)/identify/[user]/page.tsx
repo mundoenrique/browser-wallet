@@ -1,15 +1,13 @@
 //Internal app
 import DataUser from './partial/DataUser';
 import { NotFoundError } from '@/components';
-import { createRedisInstance } from '@/utils/redis';
+import { delRedis, getRedis } from '@/utils/redis';
 
 export default async function UserPage({ params }: any) {
-  const redis = createRedisInstance();
   const { user } = params;
 
-  const userData = await redis.get(`${user}`);
-  redis.del(`${user}`);
-  redis.quit();
+  const userData = await getRedis(user)
+  await delRedis(user)
 
   if (!userData) return <NotFoundError code={404} />;
 
