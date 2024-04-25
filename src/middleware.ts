@@ -3,20 +3,37 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { URL_BASE } from '@/utils/constants';
 
 export async function middleware(request: NextRequest) {
+
   const { url, method, nextUrl } = request;
   const pathname = nextUrl.pathname;
-  const apiConnectUrl = '/api/v1/connect';
-  const apiGetTokenAuthUrl = '/api/v1/gettoken';
-  const SetCode = '/api/v1/setcode';
+  const partsUrl = pathname.split('/');
+  const protectedApiV1 = ['/api/v1/connect','/api/v1/gettoken','/api/v1/setcode','/api/v1/redis']
+  const protectedRoutes = ['signin','session']
+
+  const isProtectedRoute = protectedRoutes.includes(partsUrl[1])
+  /* if (isProtectedRoute) {
+    const sessionId = request.headers.get('X-Session') || '';
+    console.log('RUTA BUSCA REDIS ************ ', nextUrl.origin + `/api/v1/redis/?reqData=${sessionId}`)
+    const resRedis = await fetch(nextUrl.origin + `/api/v1/redis/?reqData=${sessionId}`);
+    const data = await resRedis.json();
+    const redisData = JSON.parse(data)
+    console.log('HE AQUI EL DATA DEL REDIS ', redisData)
+    if (!redisData) {
+      return NextResponse.redirect(nextUrl.origin + '/not-found');
+    } else {
+      return NextResponse.next();
+    }
+  } */
 
   console.log('middleware-pathname: ', pathname);
 
-  if (pathname === apiConnectUrl || pathname === apiGetTokenAuthUrl || pathname === SetCode) {
+  const isProtectedApi = protectedApiV1.includes(pathname)
+
+  if (isProtectedApi) {
     return NextResponse.next();
   }
 
-  const response = NextResponse.rewrite(new URL(apiConnectUrl, url));
-  const partsUrl = pathname.split('/');
+  const response = NextResponse.rewrite(new URL(protectedApiV1[0], url));
   const url_api_name: string = partsUrl[3] || '';
   const resUrlBase = pathname.substring(pathname.indexOf(url_api_name) + url_api_name.length);
   const apiUrl: string = URL_BASE[url_api_name] + resUrlBase + nextUrl.search;
@@ -29,5 +46,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/api/v1/:path*',
+  matcher: ['/api/v1/:path*'],
 };
