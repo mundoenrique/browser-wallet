@@ -25,10 +25,14 @@ export type KeyStoreProps = {
  *
  * @typeParam token: string | null
  * @typeParam setToken: (_token: string) => void
+ * @typeParam sessionId: string | null
+ * @typeParam setSessionId: (_setSessionId: string) => void
  */
 export type JwtStoreProps = {
   token: string | null;
+  sessionId: string | null;
   setToken: (_token: string) => void;
+  setSessionId: (_sessionId: string) => void;
 };
 
 /**

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 //Internal app
 import { handleApiResponse } from '.';
-import { JWT_HEADER, JWS_HEADER } from './constants';
+import { JWT_HEADER, JWS_HEADER, SESSION_ID } from './constants';
 import { IApiGeeResponse, IEncryptedBody, IJWTPayload } from '@/interfaces';
 import { verifyJWT, encryptJWE, decryptJWE, signJWE, verifyDetachedJWS } from './jwt';
 
@@ -133,6 +133,7 @@ export async function handleResponse(
 
     const response = NextResponse.json(encryptedResponse, { status });
     response.headers.set(JWS_HEADER, `JWS ${jws}`);
+    response.headers.set(SESSION_ID, `${responseObj.data.sessionId}`);
 
     return response;
   } catch (error) {

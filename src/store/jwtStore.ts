@@ -19,10 +19,12 @@ export const useJwtStore = create<JwtStoreProps>()(
          * Current token
          */
         token: null,
+        sessionId: null,
         /**
          * Replaces the current token
          */
         setToken: (token) => set({ token }),
+        setSessionId: (sessionId) => set({ sessionId }),
       }),
       {
         name: 'jwt-store',

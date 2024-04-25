@@ -4,11 +4,12 @@ import uuid4 from 'uuid4';
 //Internal app
 import { api } from '@/utils/api';
 import { verifyJWT } from '@/utils/jwt';
-import { JWT_HEADER } from '@/utils/constants';
+import { JWT_HEADER, SESSION_ID } from '@/utils/constants';
 import { useJwtStore, useKeyStore } from '@/store';
 
 export function useApi() {
   const { token, setToken } = useJwtStore();
+  const { sessionId } = useJwtStore();
   const { jwePrivateKey, jwsPrivateKey } = useKeyStore();
 
   if (token && jwePrivateKey && jwsPrivateKey) {
@@ -24,6 +25,7 @@ export function useApi() {
         if (url !== '/gettoken') {
           request.headers[JWT_HEADER] = token;
           request.headers['X-Request-Id'] = uuid4();
+          request.headers[SESSION_ID] = sessionId;
         }
 
         return request;

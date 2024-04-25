@@ -12,6 +12,7 @@ import { removePEMHeadersAndFooters } from '@/utils/jwt';
 export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   const { jwePublicKey, jwePrivateKey, jwsPublicKey, jwsPrivateKey, setKeys } = useKeyStore();
   const { token, setToken } = useJwtStore();
+  const { setSessionId } = useJwtStore();
   const api = useApi();
 
   if (!jwePublicKey || !jwePrivateKey || !jwsPublicKey || !jwsPrivateKey) {
@@ -33,17 +34,19 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
     setprivateKeys(jwePrivateKey, jwsPrivateKey);
   }
 
-  if (!token && jwePublicKey && jwsPublicKey) {
+  /* if (!token && jwePublicKey && jwsPublicKey) {
     (async () => {
       try {
         const response = await api.post('/gettoken', { jwePublicKey, jwsPublicKey });
-        const token = (await response.data.data) as string;
+        const token = (await response.data.data.jwt) as string;
+        const sessionId = (await response.data.data.sessionId) as string;
         setToken(token);
+        setSessionId(sessionId);
       } catch (error) {
         console.error('Error generating JWT token:', error);
       }
     })();
-  }
+  } */
 
   return <>{children}</>;
 }
