@@ -31,7 +31,7 @@ export default function Signin(params: any) {
   const { user } = useRegisterStore();
   const { setOTPValid } = useOtpStore();
   const { setModalError } = useUiStore();
-  const { setUser } = useUserStore();
+  const { setUser, userId } = useUserStore();
 
   const { setAccessSession } = accessSessionStore();
 
@@ -64,10 +64,9 @@ export default function Signin(params: any) {
       });
   };
 
-  const getUserDetails = async () => {
-    const { userId } = user;
+  const getUserDetails = async (id: string) => {
     await customApi
-      .get(`/users/${userId}`)
+      .get(`/users/${id}`)
       .then((response) => {
         setUser(response.data.data);
         setUserData(response.data.data);
@@ -81,7 +80,8 @@ export default function Signin(params: any) {
   };
 
   useEffect(() => {
-    getUserDetails();
+    const id = userId ? userId : user.userId;
+    getUserDetails(id);
     setOTPValid('OTP');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
