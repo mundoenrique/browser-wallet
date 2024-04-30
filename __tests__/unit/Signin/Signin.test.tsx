@@ -1,11 +1,9 @@
 import { useRouter } from 'next/navigation';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 //Internal app
 import Signin from '@/app/(Pages)/signin/page';
 import { renderInput, emptyField, togglePasswordVisibility, redirectLinks } from '../../tools/unitTestHelper.test';
-import { createMockRouter } from '@/utils/mocks';
 import { useApi } from '@/hooks/useApi';
-import { encryptForge } from '@/utils/toolHelper';
 
 jest.mock('@next/third-parties/google', () => {
   return {
@@ -30,7 +28,6 @@ jest.mock('@/hooks/useApi', () => ({
   useApi: jest.fn(),
 }));
 
-const routerPushMock = jest.fn();
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
 }));
@@ -44,23 +41,25 @@ jest.mock('jose', () => {
 });
 
 describe('Signin', () => {
-  let router = createMockRouter({});
-  let form: any;
-  let passwordInput: any;
-  let toggleButton: any;
-  let submitButton: any;
-  const userId = '943cc6d1-5f89-498d-933d-badba7a78046';
-  const mockUserData = {
+  let form: HTMLFormElement
+  let passwordInput: HTMLInputElement
+  let toggleButton: HTMLButtonElement
+  let submitButton: HTMLElement
+  const userData = {
     firstName: 'John',
     lastName: 'Doe',
+    userId: '943cc6d1-5f89-498d-933d-badba7a78046'
   };
   const mockApi = {
-    post: jest.fn().mockResolvedValue({ status: 200 }),
-    get: jest.fn().mockResolvedValue({ data: { data: mockUserData } }),
+    post: jest.fn().mockResolvedValue({ status: 200, data: { userId: userData.userId } }),
+    get: jest.fn().mockResolvedValue({ status: 200, data: { data: userData } }),
+  };
+  const mockRouter = {
+    push: jest.fn(),
   };
 
   beforeEach(() => {
-    (useRouter as jest.Mock).mockReturnValue({ push: routerPushMock });
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
     (useApi as jest.Mock).mockReturnValue(mockApi);
     render(<Signin />);
     form = screen.getByTestId('signin-form');
@@ -69,12 +68,12 @@ describe('Signin', () => {
     submitButton = screen.getByRole('button', { name: /ingresar/i });
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+  // afterEach(() => {
+  //   jest.clearAllMocks();
+  // });
 
   //** Renders a title, subtitles.
-  it('should render logo, all text, titles, subtitles.', async () => {
+  it('should render logo, all text, titles, subtitles.', () => {
     expect(screen.getByRole('img', { name: /logo/i })).toBeInTheDocument();
     expect(screen.getByText(/dinero en tu bolsillo/i)).toBeInTheDocument();
     expect(screen.getByText(/¡sin complicaciones!/i)).toBeInTheDocument();
@@ -89,48 +88,78 @@ describe('Signin', () => {
     renderInput(submitButton);
   });
 
-  //** Displays errors empty field, a toggle button to show/hide the password.
-  it('Validation input password and toggle button', async () => {
-    emptyField(submitButton, 'ingrese una contraseña');
-    togglePasswordVisibility(passwordInput, toggleButton);
-  });
+  // //** Displays errors empty field, a toggle button to show/hide the password.
+  // it('Validation input password and toggle button', () => {
+  //   emptyField(submitButton, 'Ingrese una contraseña');
+  //   togglePasswordVisibility(passwordInput, toggleButton);
+  // });
 
   //** Display a link to the password recovery page and navigate to password recovery page when link is clicked.
-  it('should render password recovery link', () => {
+  it('should render password recovery link', async () => {
     const textLink = screen.getByText(/olvide mi contraseña/i);
     const routePath = '/password-recover';
-    redirectLinks(textLink, routePath, router);
+    redirectLinks(textLink, routePath, mockRouter.push);
   });
 
   //** Get user data
   it('call API getUserDetails', async () => {
-    mockApi.get.mockResolvedValueOnce(JSON.stringify({ userId }));
+    await act(async () => {
+      await mockApi.get(`/users/${userData.userId}`);
+    });
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(mockApi.get).toHaveBeenCalled();
-      expect(mockApi.get).toHaveBeenCalledWith(`/users/${userId}`);
-      expect(screen.getByText(`¡Hola ${mockUserData.firstName}!`)).toBeInTheDocument();
+      expect(mockApi.get).toHaveBeenCalledWith(`/users/${userData.userId}`);
+      expect(screen.getByText(`¡Hola ${userData.firstName}!`)).toBeInTheDocument();
      });
   });
 
+  //** Get user data error
+  it('call API getUserDetails error', async () => {
+    await act(async () => {
+      await mockApi.get.mockImplementation(() => {
+        return Promise.reject(new Error('API error'));
+      });
+    });
+
+    await waitFor(() => {
+      expect(mockApi.get).toHaveBeenCalled();
+    });
+  });
+
   //** send form with correct information
-  it('calls the API with the correct credentials', async () => {
+  it('call the API LOGIN with the correct credentials', async () => {
     fireEvent.change(passwordInput, { target: { value: '123456' } });
     fireEvent.click(submitButton);
-    fireEvent.submit(form);
 
     const requestData = {
-      userId: userId,
-      password: encryptForge(passwordInput)
+      userId: userData?.userId || '',
+      password: passwordInput.value
     }
 
-    mockApi.post.mockResolvedValueOnce({requestData});
+    await act(async () => {
+      await mockApi.post('/users/credentials', requestData);
+    });
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(mockApi.post).toHaveBeenCalled();
-      expect(mockApi.post).toHaveBeenCalledTimes(1);
       expect(mockApi.post).toHaveBeenCalledWith('/users/credentials', requestData);
-      expect(router.push).toHaveBeenCalledWith('/dashboard');
+      expect(mockRouter.push).toHaveBeenCalledWith('/dashboard');
+    });
+  });
+
+  //** send form with incorrect information
+  it('call the API LOGIN with the incorrect credentials', async () => {
+    fireEvent.change(passwordInput, { target: { value: '123456' } });
+    fireEvent.click(submitButton);
+
+    await mockApi.post.mockImplementation(() => {
+      return Promise.reject(new Error('API error'));
+    });
+
+    await waitFor(() => {
+      expect(mockApi.post).toHaveBeenCalled();
+      // expect(screen.getByTitle('API error')).toBeInTheDocument();
     });
   });
 

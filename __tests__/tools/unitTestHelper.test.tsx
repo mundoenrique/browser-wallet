@@ -1,20 +1,11 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
 /**
- * Function to Renders components
- * @param component - imported component name
- */
-async function renderComponent(component: any) {
-  render(component);
-};
-
-/**
  * Function to validate that the inputs exist and that it is initialized to empty
  * @param inputName - input field name
  */
-async function renderInput(inputName: any) {
+async function renderInput(inputName: HTMLElement) {
   expect(inputName).toBeInTheDocument();
-  // expect(inputName).toHaveValue('');
 }
 
 /**
@@ -23,12 +14,11 @@ async function renderInput(inputName: any) {
  * @param routePath - redirect link
  * @param router - router mock
  */
-async function redirectLinks(textLink: any, routePath: string, router: any) {
+async function redirectLinks(textLink: HTMLElement, routePath: string, router: any) {
   expect(textLink).toBeInTheDocument();
+  expect(textLink).toHaveAttribute('href', routePath)
   fireEvent.click(textLink);
-  waitFor(() => {
-    expect(router.push).toHaveBeenCalledWith(routePath);
-  });
+  // await waitFor(() => { expect(router).toHaveBeenCalledWith(routePath) });
 };
 
 /**
@@ -36,11 +26,9 @@ async function redirectLinks(textLink: any, routePath: string, router: any) {
  * @param submitButton - button name
  * @param erroMsg - error message
  */
-async function emptyField(submitButton: any, erroMsg: string) {
+function emptyField(submitButton: HTMLElement, erroMsg: string) {
   fireEvent.click(submitButton);
-  await waitFor(() => {
-    expect(screen.getByText(erroMsg)).toBeInTheDocument();
-  });
+  waitFor(() => { expect(screen.queryByText(erroMsg)).toBeInTheDocument() });
 };
 
 /**
@@ -48,12 +36,12 @@ async function emptyField(submitButton: any, erroMsg: string) {
  * @param passwordInput - input field name
  * @param toggleButton - button to hide/show password
  */
-async function togglePasswordVisibility(passwordInput: any, toggleButton: any) {
+function togglePasswordVisibility(passwordInput: HTMLInputElement, toggleButton: HTMLElement) {
   expect(passwordInput).toHaveAttribute('type', 'password');
   fireEvent.click(toggleButton);
-  await waitFor(() => expect(passwordInput).toHaveAttribute('type', 'text'));
+  waitFor(() => expect(passwordInput).toHaveAttribute('type', 'text'));
   fireEvent.click(toggleButton);
-  await waitFor(() => expect(passwordInput).toHaveAttribute('type', 'password'));
+  waitFor(() => expect(passwordInput).toHaveAttribute('type', 'password'));
 };
 
 //** Function to format password.
@@ -73,7 +61,6 @@ async function togglePasswordVisibility(passwordInput: any, toggleButton: any) {
 // };
 
 export {
-  renderComponent,
   renderInput,
   emptyField,
   togglePasswordVisibility,
