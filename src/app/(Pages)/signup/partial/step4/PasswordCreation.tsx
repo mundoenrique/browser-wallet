@@ -8,11 +8,12 @@ import Ending from '../Ending';
 import { FormPass } from '@/components';
 import { useApi } from '@/hooks/useApi';
 import { encryptForge } from '@/utils/toolHelper';
-import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
+import { useRegisterStore, useUiStore, useCatalogsStore, useUserStore } from '@/store';
 
 export default function PasswordCreation() {
   const customApi = useApi();
   const { dec, setShowHeader, onboardingUuId } = useRegisterStore();
+  const { setUserId } = useUserStore();
   const { setModalError, setLoadingScreen } = useUiStore();
   const { updateCatalog, passwordTermsCatalog } = useCatalogsStore();
 
@@ -62,7 +63,8 @@ export default function PasswordCreation() {
     setLoadingScreen(true);
     customApi
       .post('/onboarding/credentials', requestFormData)
-      .then(() => {
+      .then((response) => {
+        setUserId(response.data.data.user.userId);
         setLoadingModal(true);
       })
       .catch((e) => {
