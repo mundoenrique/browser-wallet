@@ -1,12 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 //Internal app
 import ModalOtp from '@/components/modal/ModalOtp';
 import BackInformation from './partial/BackInformation';
 import FrontInformation from './partial/FrontInformation';
 import { BodyCard, BodyCardAction } from './partial/BodyCards';
+import { useUiStore, useUserStore } from '@/store';
 import { useApi } from '@/hooks/useApi';
+import { encryptForge } from '@/utils/toolHelper';
 
 /**
  * Shows the 3D card with all the cardholder information
@@ -15,50 +17,83 @@ import { useApi } from '@/hooks/useApi';
  */
 export default function CardInformation() {
   const [open, setOpen] = useState<boolean>(false);
+
   const [showDetails, setShowDetails] = useState<boolean>(false);
+
   const customApi = useApi();
+
+  const {
+    getUserCardId,
+    user: { userId },
+  } = useUserStore();
+
+  const { setModalError } = useUiStore();
 
   const [cardData, setCardData] = useState<{ [key: string]: string } | null>(null);
   const [balance, setBalance] = useState<{ [key: string]: string } | null>(null);
+
   const [cardInformationError, setCardInformationError] = useState<boolean>(false);
   const [balanceError, setBalanceError] = useState<boolean>(false);
+
+  const [otpUuid, setOtpUuid] = useState('');
 
   const handleShowDetaild = () => {
     setOpen(true);
   };
 
-  const onSubmitOtp = async (data: any) => {
-    console.log(data);
+  const onSubmitOtp = useCallback(async (data: any) => {
     setOpen(false);
     setShowDetails(true);
-  };
-  const fetchCardInformation = () => {
+
+    const { otp } = data;
+
+    const payload = {
+      otpProcessCode: 'CHANGE_PASSWORD_OTP',
+      otpUuId: otpUuid,
+      otpCode: encryptForge(otp),
+    };
+    customApi
+      .post(`/users/${userId}/validate/tfa`, payload)
+      .then((response) => {
+        const { status } = response;
+        if (status === 200) {
+        }
+      })
+      .catch((e) => {
+        setModalError({ error: e });
+      })
+      .finally(() => {});
+  }, []); //eslint-disable-line
+
+  const getCardInformation = () => {
     setCardInformationError(false);
     customApi
-      .get('/cards/fd7d7993-53e5-45da-a7b5-d26481741466')
+      .get(`/cards/${getUserCardId()}`)
       .then((response) => {
         setCardData(response.data.data);
       })
-      .catch(() => {
+      .catch((e) => {
         setCardInformationError(true);
+        setModalError({ error: e });
       });
   };
 
-  const fetchBalance = () => {
+  const getBalance = useCallback(() => {
     setBalanceError(false);
     customApi
-      .get('/cards/fd7d7993-53e5-45da-a7b5-d26481741466/balance')
+      .get(`/cards/${getUserCardId()}/balance`)
       .then((response) => {
         setBalance(response.data.data);
       })
-      .catch(() => {
+      .catch((e) => {
         setBalanceError(true);
+        setModalError({ error: e });
       });
-  };
+  }, []); //eslint-disable-line
 
   useEffect(() => {
-    fetchCardInformation();
-    fetchBalance();
+    getCardInformation();
+    getBalance();
   }, []); //eslint-disable-line
 
   return (
@@ -71,8 +106,8 @@ export default function CardInformation() {
             balance={balance?.currentBalance}
             cardInformationError={cardInformationError}
             balanceError={balanceError}
-            fetchCardInformation={fetchCardInformation}
-            fetchBalance={fetchBalance}
+            fetchCardInformation={getCardInformation}
+            fetchBalance={getBalance}
           />
           <BackInformation
             hideDetails={() => setShowDetails(false)}
@@ -84,7 +119,9 @@ export default function CardInformation() {
         </BodyCardAction>
       </BodyCard>
 
-      <ModalOtp open={open} handleClose={() => setOpen(false)} onSubmit={onSubmitOtp} />
+      {open && (
+        <ModalOtp open={open} handleClose={() => setOpen(false)} onSubmit={onSubmitOtp} setOtpUuid={setOtpUuid} />
+      )}
     </>
   );
 }

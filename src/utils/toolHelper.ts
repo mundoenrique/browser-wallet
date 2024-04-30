@@ -1,4 +1,5 @@
 import forge from 'node-forge';
+
 import html2canvas from 'html2canvas';
 
 /**
@@ -81,9 +82,13 @@ export const handleShare = async (element: HTMLElement, shareData: any, backgrou
 export const encryptForge = (data: any) => {
   const key: string = process.env.NEXT_PUBLIC_AES_KEY || '';
 
-  const cipher = forge.cipher.createCipher('AES-ECB', key);
+  const iv = new Uint8Array(16);
 
-  cipher.start();
+  var buffer = forge.util.createBuffer(iv, 'raw');
+
+  const cipher = forge.cipher.createCipher('AES-CBC', key);
+
+  cipher.start({ iv: buffer });
 
   cipher.update(forge.util.createBuffer(data, 'utf8'));
 
@@ -97,11 +102,15 @@ export const encryptForge = (data: any) => {
 export const decryptForge = (encryptedData: any) => {
   const key: string = process.env.NEXT_PUBLIC_AES_KEY || '';
 
-  const decipher = forge.cipher.createDecipher('AES-ECB', key);
+  const iv = new Uint8Array(16);
+
+  var buffer = forge.util.createBuffer(iv, 'raw');
+
+  const decipher = forge.cipher.createDecipher('AES-CBC', key);
 
   const rawData = forge.util.decode64(encryptedData);
 
-  decipher.start();
+  decipher.start({ iv: buffer });
 
   decipher.update(forge.util.createBuffer(rawData, 'raw'));
 

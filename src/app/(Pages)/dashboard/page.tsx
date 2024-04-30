@@ -1,53 +1,50 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
 //Internal app
 import { useMenuStore } from '@/store';
 import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
-
-const movementData = [
-  {
-    date: '2023-10-29T05:44:36Z',
-    title: 'Ingaborg Yatman',
-    amount: 984,
-    incoming: false,
-  },
-  {
-    date: '2024-02-07T04:43:42Z',
-    title: 'Clem Longbottom',
-    amount: 889,
-    incoming: true,
-  },
-  {
-    date: '2023-05-23T14:48:24Z',
-    title: 'Nani Fullagar',
-    amount: 355,
-    incoming: false,
-  },
-  {
-    date: '2023-06-21T18:54:46Z',
-    title: 'Pyotr Aizikov',
-    amount: 361,
-    incoming: true,
-  },
-  {
-    date: '2023-08-13T11:19:41Z',
-    title: 'Mab Bing',
-    amount: 402,
-    incoming: false,
-  },
-];
+import { useUserStore } from '@/store';
+import { useApi } from '@/hooks/useApi';
 
 export default function Dashboard() {
   const { push } = useRouter();
+
   const { setCurrentItem } = useMenuStore();
+
+  const { getUserCardId } = useUserStore();
+
+  const customApi = useApi();
+
+  const [movementData, setMovementData] = useState([]);
+
+  const [loadingMovements, setLoadingMovements] = useState<boolean>(false);
+
+  const [error, setError] = useState<boolean>(false);
+
+  const getMovements = useCallback(async () => {
+    setLoadingMovements(true);
+    setError(false);
+    customApi
+      .get(`/cards/${getUserCardId()}/transactions?days=99&limit=5`)
+      .then((response: any) => {
+        response.data?.data && setMovementData(response.data.data);
+      })
+      .catch(() => {
+        setError(true);
+      })
+      .finally(() => {
+        setLoadingMovements(false);
+      });
+  }, []); //eslint-disable-line
 
   useEffect(() => {
     setCurrentItem('home');
-  }, [setCurrentItem]);
+    getMovements();
+  }, []); //eslint-disable-line
 
   return (
     <Box
@@ -93,7 +90,7 @@ export default function Dashboard() {
               <Linking href="/dashboard/movements" color="primary.main" label="Ver todo" mb={0} hidenArrow underline />
             </Box>
             <Box sx={{ width: 320 }}>
-              <LastMovements data={movementData} />
+              <LastMovements data={movementData} loading={loadingMovements} error={error} handleRetry={getMovements} />
             </Box>
           </Box>
         </Box>

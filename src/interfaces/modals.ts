@@ -1,4 +1,5 @@
 import { BoxProps } from '@mui/system';
+import { Dispatch } from 'react';
 
 /**
  * Global modal
@@ -30,6 +31,7 @@ export interface ModalOtpProps {
   closeApp?: boolean;
   title?: string | boolean;
   textButton?: string | boolean;
+  setOtpUuid: Dispatch<string>;
 }
 
 /**

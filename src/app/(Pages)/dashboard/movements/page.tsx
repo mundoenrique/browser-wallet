@@ -1,13 +1,15 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { Box, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useEffect, useRef, useState, useCallback } from 'react';
 //Internal app
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { useMenuStore, useNavTitleStore } from '@/store';
 import { InputSelect, LastMovements, Linking } from '@/components';
+import { useUserStore } from '@/store';
+import { useApi } from '@/hooks/useApi';
 
 /**
  * Generates the months that would be used for filtering
@@ -19,18 +21,21 @@ const dateRank = (): { value: string; text: string }[] => {
   for (i = 0; i < 3; i++) {
     months.push({
       text: dayjs().subtract(i, 'month').locale('es').format('MMMM'),
-      value: `${dayjs().subtract(i, 'month').locale('es').format('M')}`,
+      value: `${dayjs().subtract(i, 'month').locale('es').format('MM/YYYY')}`,
     });
   }
   return months;
 };
 
 export default function Movements() {
+  const customApi = useApi();
+  const { getUserCardId } = useUserStore();
   const [movementData, setMovementData] = useState<any>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>(1);
   const [filterMonth, setFilterMonth] = useState(dateRank()[0].value);
   const [isLoading, setIsloading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const { setCurrentItem } = useMenuStore();
   const { updateTitle } = useNavTitleStore();
@@ -49,7 +54,7 @@ export default function Movements() {
     } else if (containerPWA.current && !isLoading && currentPage <= lastPage - 1) {
       let scroll =
         containerPWA.current?.scrollHeight - containerPWA.current?.scrollTop - containerPWA.current?.clientHeight;
-      console.log(scroll);
+
       if (scroll <= 20) {
         setCurrentPage((prevPage) => prevPage + 1);
       }
@@ -63,17 +68,28 @@ export default function Movements() {
     };
   }, [scrollHandle]);
 
+  const getMovementsData = async () => {
+    setIsloading(true);
+    setIsError(false);
+    customApi
+      .get(`/cards/${getUserCardId()}/transactions?date=${filterMonth}&limit=20&currentPage=${currentPage}`)
+      .then((response) => {
+        if (response.data?.data) {
+          setMovementData((state: any) => [...state, ...response.data.data]);
+          setLastPage(response.data.metadata.LastPage);
+        }
+      })
+      .catch(() => {
+        setIsError(true);
+      })
+      .finally(() => {
+        setIsloading(false);
+      });
+  };
+
   useEffect(() => {
-    (async () => {
-      setIsloading(true);
-      const response = await fetch(`./movements/api?limit=10&currentPage=${currentPage}`);
-      const data: any = await response.json();
-      const newData: never[] | any = [...movementData, ...data.data];
-      setMovementData(newData);
-      setLastPage(data.metadata.LastPage);
-      setIsloading(false);
-    })();
-  }, [currentPage]); //eslint-disable-line react-hooks/exhaustive-deps
+    getMovementsData();
+  }, [currentPage, filterMonth]); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     updateTitle('Movimientos');
@@ -119,6 +135,7 @@ export default function Movements() {
           name="Historial"
           options={dateRank()}
           value={filterMonth}
+          disableClearable
           onChange={(e: any, newValue: any) => {
             setFilterMonth(newValue.value);
           }}
@@ -140,7 +157,7 @@ export default function Movements() {
           py: 2,
         }}
       >
-        <LastMovements data={movementData} loading={isLoading} />
+        <LastMovements data={movementData} loading={isLoading} error={isError} handleRetry={getMovementsData} />
       </Box>
     </Box>
   );

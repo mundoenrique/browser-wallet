@@ -21,4 +21,6 @@ export interface TableDataProps {
     incoming: boolean;
   }[];
   loading?: boolean;
+  error?: boolean;
+  handleRetry?: () => void;
 }
