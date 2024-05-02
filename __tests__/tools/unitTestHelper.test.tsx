@@ -18,7 +18,7 @@ async function redirectLinks(textLink: HTMLElement, routePath: string, router: a
   expect(textLink).toBeInTheDocument();
   expect(textLink).toHaveAttribute('href', routePath)
   fireEvent.click(textLink);
-  // await waitFor(() => { expect(router).toHaveBeenCalledWith(routePath) });
+  await waitFor(() => { expect(router).toHaveBeenCalledWith(routePath) });
 };
 
 /**
