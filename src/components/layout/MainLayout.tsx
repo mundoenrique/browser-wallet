@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 //Internal app
 import { useDrawerStore } from '@/store';
@@ -24,7 +24,7 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
   const { accessSession } = accessSessionStore();
   const { push } = useRouter();
 
-  if (accessSession == false) {
+  if (accessSession === false) {
     push('/signin');
   }
 
@@ -46,28 +46,33 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
       setDrawerStatus(!drawerStatus);
     }
   };
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <Navbar onClick={handleDrawerToggle} />
-      <Sidebar
-        open={drawerStatus}
-        onTransitionEnd={handleDrawerTransitionEnd}
-        onClose={handleDrawerClose}
-        drawerWidth={drawerWidth}
-      />
-      <Box
-        component="main"
-        sx={{
-          display: 'grid',
-          width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
-          mt: { xs: '60px', md: 'auto' },
-          mx: { xs: 'auto', md: 0 },
-        }}
-      >
-        {children}
-      </Box>
 
-      <NavbarLower />
-    </Box>
+  return (
+    <>
+      {accessSession && (
+        <Box sx={{ display: 'flex' }}>
+          <Navbar onClick={handleDrawerToggle} />
+          <Sidebar
+            open={drawerStatus}
+            onTransitionEnd={handleDrawerTransitionEnd}
+            onClose={handleDrawerClose}
+            drawerWidth={drawerWidth}
+          />
+          <Box
+            component="main"
+            sx={{
+              display: 'grid',
+              width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
+              mt: { xs: '60px', md: 'auto' },
+              mx: { xs: 'auto', md: 0 },
+            }}
+          >
+            {children}
+          </Box>
+
+          <NavbarLower />
+        </Box>
+      )}
+    </>
   );
 }
