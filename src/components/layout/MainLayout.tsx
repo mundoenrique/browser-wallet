@@ -23,6 +23,7 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
   //Eliminar esta logica despues de la certificacion de inicio de sesión
   const { accessSession } = accessSessionStore();
   const { push } = useRouter();
+
   if (accessSession == false) {
     push('/signin');
   }
