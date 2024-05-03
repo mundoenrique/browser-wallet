@@ -19,7 +19,7 @@ export default function Dashboard() {
 
   const customApi = useApi();
 
-  const [movementData, setMovementData] = useState([]);
+  const [movementData, setMovementData] = useState<any>([]);
 
   const [loadingMovements, setLoadingMovements] = useState<boolean>(false);
 
@@ -34,7 +34,7 @@ export default function Dashboard() {
     customApi
       .get(`/cards/${getUserCardId()}/transactions?days=99&limit=5`)
       .then((response: any) => {
-        response.data?.data && setMovementData(response.data.data);
+        response.data.data && setMovementData(response.data.data);
       })
       .catch(() => {
         setErrorMovements(true);
@@ -101,14 +101,20 @@ export default function Dashboard() {
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, width: 320 }}>
                 <Typography variant="subtitle1">Últimos movimientos</Typography>
-                <Linking
-                  href="/dashboard/movements"
-                  color="primary.main"
-                  label="Ver todo"
-                  mb={0}
-                  hidenArrow
-                  underline
-                />
+                {movementData.lenght > 0 ? (
+                  <Linking
+                    href="/dashboard/movements"
+                    color="primary.main"
+                    label="Ver todo"
+                    mb={0}
+                    hidenArrow
+                    underline
+                  />
+                ) : (
+                  <Typography variant="subtitle1" color={'grey'} fontWeight={700} fontSize={'12px'}>
+                    Ver todo
+                  </Typography>
+                )}
               </Box>
               <Box sx={{ width: 320, minHeight: '320px', mb: '40px' }}>
                 <LastMovements

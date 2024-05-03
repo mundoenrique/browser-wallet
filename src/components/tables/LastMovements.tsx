@@ -1,7 +1,7 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { Alert, AlertTitle, Avatar, Box, Typography } from '@mui/material';
+import { Avatar, Box, Typography } from '@mui/material';
 import { NorthEast, SouthEast } from '@mui/icons-material';
 //Internal app
 import { SkeletonTable, EmptySlot, ErrorSlot } from '@/components';
@@ -48,7 +48,7 @@ export default function LastMovements({ data, loading, error, emptySlot }: Table
   );
 }
 
-const RowDetail = ({ row }: any) => (
+const RowDetail = ({ row }: { row: TableDataProps['data'][number] }) => (
   <Box
     component="li"
     sx={{
@@ -91,7 +91,7 @@ const RowDetail = ({ row }: any) => (
         <Typography variant="subtitle2" color={row.amount > 0 ? slate[700] : '#EE2737'}>
           S/ {row.amount}
         </Typography>
-        <Avatar sx={{ bgcolor: row.amount ? '#C8EDC5' : '#FFC8C8', height: 16, width: 16 }}>
+        <Avatar sx={{ bgcolor: row.amount > 0 ? '#C8EDC5' : '#FFC8C8', height: 16, width: 16 }}>
           {row.amount > 0 ? (
             <NorthEast sx={{ height: 12, width: 12, color: '#307E0D' }} />
           ) : (
