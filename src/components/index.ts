@@ -39,6 +39,8 @@ export { default as CardInfoOperation } from './cards/cardSuccess/CardInfoOperat
 //tables
 export { default as LastMovements } from './tables/LastMovements';
 export { default as SkeletonTable } from './tables/SkeletonTable';
+export { default as EmptySlot } from './tables/EmptySlot';
+export { default as ErrorSlot } from './tables/ErrorSlot';
 //accordions
 export { default as Accordions } from './Accordions';
 //providers

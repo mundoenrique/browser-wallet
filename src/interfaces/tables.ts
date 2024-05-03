@@ -15,10 +15,12 @@
  */
 export interface TableDataProps {
   data: {
-    title: string;
+    description: string;
     date: string;
     amount: number;
-    incoming: boolean;
+    [key: string]: any;
   }[];
   loading?: boolean;
+  error?: boolean;
+  emptySlot?: JSX.Element;
 }

@@ -100,7 +100,13 @@ export default function InputSelect(props: InputOptionsProps): JSX.Element {
           }}
         />
       ) : (
-        <AutocompleteMUI name={name} onChange={onChange} options={options} {...restProps} />
+        <AutocompleteMUI
+          name={name}
+          onChange={onChange}
+          options={options}
+          {...restProps}
+          disableClearable={disableClearable}
+        />
       )}
     </>
   );

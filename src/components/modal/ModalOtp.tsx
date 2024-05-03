@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -9,7 +9,8 @@ import { getSchema } from '@/config';
 import InputOTP from '../form/InputOTP';
 import { ModalOtpProps } from '@/interfaces';
 import ModalResponsive from './ModalResponsive';
-
+import { useApi } from '@/hooks/useApi';
+import { useUiStore, useOtpStore, useUserStore } from '@/store';
 /**
  * Reusable modal to request verification code
  *
@@ -22,13 +23,70 @@ import ModalResponsive from './ModalResponsive';
  * @returns Json with the verification code
  */
 export default function ModalOtp(props: ModalOtpProps): JSX.Element {
-  const { handleClose, open, onSubmit, closeApp, title, textButton } = props;
+  const { handleClose, open, onSubmit, closeApp, title, textButton, setOtpUuid } = props;
+
   const schemaFormOtp = getSchema(['otp']);
+
+  const { setModalError } = useUiStore();
+
+  const { countdown, counting, setCounting, setTime } = useOtpStore();
+
+  const { user, getUserPhone } = useUserStore();
+
+  const customApi = useApi();
+
+  const timerRef = useRef<any>();
+
+  const initialized = useRef<boolean>(false);
+
+  const runDestroy = useRef<boolean>(false);
 
   const { control, handleSubmit, reset, formState } = useForm({
     defaultValues: { otp: '' },
     resolver: yupResolver(schemaFormOtp),
   });
+
+  if (initialized.current) {
+    runDestroy.current = true;
+  }
+
+  const requestTFACode = useCallback(async () => {
+    customApi
+      .post(`/users/${user.userId}/tfa`, { otpProcessCode: 'CHANGE_PASSWORD_OTP' })
+      .then((response) => {
+        setOtpUuid(response.data.data.otpUuId);
+      })
+      .catch((e) => {
+        setModalError({ error: e });
+      });
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+
+  const timer = async () => {
+    timerRef.current = setInterval(() => countdown(), 1000);
+  }; //eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!initialized.current) {
+      if (!counting) {
+        (async () => {
+          await requestTFACode();
+        })();
+        setTime(60);
+        timer();
+        setCounting(true);
+        initialized.current = true;
+      } else {
+        timer();
+        initialized.current = true;
+      }
+    }
+    return () => {
+      if (!runDestroy.current) {
+        return;
+      }
+      clearInterval(timerRef.current);
+    };
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (formState.isSubmitSuccessful) {
@@ -45,7 +103,8 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
             control={control}
             length={4}
             title={title ? title : '🎰 Verificación en dos pasos'}
-            text="Ingresa el código enviado a tu número celular +51 *** *** 1214"
+            text={`Ingresa el código enviado a tu número celular ${getUserPhone()}`}
+            handleResendOTP={requestTFACode}
           />
         </Box>
         <Button variant="contained" type="submit" sx={{ width: '100%', mx: 'auto' }}>
