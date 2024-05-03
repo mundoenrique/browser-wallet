@@ -8,8 +8,10 @@ import html2canvas from 'html2canvas';
  * @param name - Operation name
  */
 export function stringAvatar(name: string) {
+  const breakName = name.split(' ');
+
   return {
-    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+    children: `${breakName[0][0]}${breakName[1][0] ?? ''}`,
   };
 }
 

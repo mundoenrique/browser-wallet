@@ -7,7 +7,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 //Internal app
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { useMenuStore, useNavTitleStore } from '@/store';
-import { InputSelect, LastMovements, Linking } from '@/components';
+import { InputSelect, LastMovements, Linking, ModalError } from '@/components';
 import { useUserStore } from '@/store';
 import { useApi } from '@/hooks/useApi';
 
@@ -36,6 +36,7 @@ export default function Movements() {
   const [filterMonth, setFilterMonth] = useState(dateRank()[0].value);
   const [isLoading, setIsloading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const [errorModal, setErrorModal] = useState<boolean>(false);
 
   const { setCurrentItem } = useMenuStore();
   const { updateTitle } = useNavTitleStore();
@@ -71,8 +72,9 @@ export default function Movements() {
   const getMovementsData = async () => {
     setIsloading(true);
     setIsError(false);
+    setErrorModal(false);
     customApi
-      .get(`/cards/${getUserCardId()}/transactions?date=${filterMonth}&limit=20&currentPage=${currentPage}`)
+      .get(`/cards/${getUserCardId()}/transactions?date=${filterMonth}&days=99&limit=20&currentPage=${currentPage}`)
       .then((response) => {
         if (response.data?.data) {
           setMovementData((state: any) => [...state, ...response.data.data]);
@@ -81,6 +83,7 @@ export default function Movements() {
       })
       .catch(() => {
         setIsError(true);
+        setErrorModal(true);
       })
       .finally(() => {
         setIsloading(false);
@@ -97,68 +100,91 @@ export default function Movements() {
   }, [updateTitle, setCurrentItem]);
 
   return (
-    <Box
-      sx={{
-        height: { xs: 'calc(100vh - 120px)', md: 'auto' },
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: { xs: 'flex-start', md: 'center' },
-        width: { xs: '100%', md: 360 },
-        overflow: 'auto',
-        [theme.breakpoints.up('md')]: {
-          minHeight: 'calc(100vh + 100px)',
-          width: 360,
-        },
-      }}
-      ref={containerDesktop}
-    >
-      <Box sx={{ px: 3 }}>
-        <Typography
-          variant="h6"
-          align="center"
-          color={fuchsiaBlue[800]}
-          sx={{ mb: 5, display: { xs: 'none', md: 'block' } }}
-        >
-          Movimientos
-        </Typography>
-
-        <Linking
-          href="/dashboard"
-          label="Volver"
-          mb={'20px'}
-          color={fuchsiaBlue[800]}
-          iconSize={{ height: 20, width: 20 }}
-          adormentStart
-        />
-
-        <InputSelect
-          name="Historial"
-          options={dateRank()}
-          value={filterMonth}
-          disableClearable
-          onChange={(e: any, newValue: any) => {
-            setFilterMonth(newValue.value);
-          }}
-        />
-      </Box>
-
+    <>
       <Box
-        onScroll={() => {
-          scrollHandle();
-        }}
-        ref={containerPWA}
         sx={{
-          display: 'block',
-          height: { xs: 'calc(100% + 100px)', md: 'auto' },
-          background: { xs: 'white', md: 'none' },
-          borderRadius: { xs: '14px ', md: '0' },
-          overflow: { xs: 'auto', md: 'hidden' },
-          px: 3,
-          py: 2,
+          height: { xs: 'calc(100vh - 120px)', md: 'auto' },
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: { xs: 'flex-start', md: 'center' },
+          width: { xs: '100%', md: 360 },
+          overflow: 'auto',
+          [theme.breakpoints.up('md')]: {
+            minHeight: 'calc(100vh + 100px)',
+            width: 360,
+          },
         }}
+        ref={containerDesktop}
       >
-        <LastMovements data={movementData} loading={isLoading} error={isError} handleRetry={getMovementsData} />
+        <Box sx={{ px: 3 }}>
+          <Typography
+            variant="h6"
+            align="center"
+            color={fuchsiaBlue[800]}
+            sx={{ my: 5, display: { xs: 'none', md: 'block' } }}
+          >
+            Movimientos
+          </Typography>
+
+          <Linking
+            href="/dashboard"
+            label="Volver"
+            mb={'20px'}
+            color={fuchsiaBlue[800]}
+            iconSize={{ height: 20, width: 20 }}
+            adormentStart
+          />
+
+          <InputSelect
+            name="Historial"
+            options={dateRank()}
+            value={filterMonth}
+            disableClearable
+            onChange={(e: any, newValue: any) => {
+              setFilterMonth(newValue.value);
+            }}
+          />
+        </Box>
+
+        <Box
+          onScroll={() => {
+            scrollHandle();
+          }}
+          ref={containerPWA}
+          sx={{
+            display: 'block',
+            height: { xs: 'calc(100% + 100px)', md: 'auto' },
+            background: { xs: 'white', md: 'none' },
+            borderRadius: { xs: '14px ', md: '0' },
+            overflow: { xs: 'auto', md: 'hidden' },
+            px: 3,
+            py: 2,
+          }}
+        >
+          <LastMovements data={movementData} loading={isLoading} error={isError} />
+        </Box>
       </Box>
-    </Box>
+      <ModalError
+        title="¡Oops!"
+        description={
+          <>
+            <Typography>Error al cargar movimientos.</Typography>
+            <Typography
+              variant="subtitle2"
+              onClick={() => {
+                getMovementsData();
+              }}
+              sx={{ cursor: 'pointer', textDecoration: 'underline' }}
+            >
+              Intenta de nuevo
+            </Typography>
+          </>
+        }
+        open={errorModal}
+        handleClose={() => {
+          setErrorModal(false);
+        }}
+      />
+    </>
   );
 }

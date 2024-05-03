@@ -8,7 +8,7 @@ import FrontInformation from './partial/FrontInformation';
 import { BodyCard, BodyCardAction } from './partial/BodyCards';
 import { useUiStore, useUserStore } from '@/store';
 import { useApi } from '@/hooks/useApi';
-import { encryptForge } from '@/utils/toolHelper';
+import { decryptForge, encryptForge } from '@/utils/toolHelper';
 
 /**
  * Shows the 3D card with all the cardholder information
@@ -30,9 +30,13 @@ export default function CardInformation() {
   const { setModalError } = useUiStore();
 
   const [cardData, setCardData] = useState<{ [key: string]: string } | null>(null);
+
+  const [cardbackData, setCardBackData] = useState<{ [key: string]: string } | null>(null);
+
   const [balance, setBalance] = useState<{ [key: string]: string } | null>(null);
 
   const [cardInformationError, setCardInformationError] = useState<boolean>(false);
+
   const [balanceError, setBalanceError] = useState<boolean>(false);
 
   const [otpUuid, setOtpUuid] = useState('');
@@ -42,9 +46,6 @@ export default function CardInformation() {
   };
 
   const onSubmitOtp = useCallback(async (data: any) => {
-    setOpen(false);
-    setShowDetails(true);
-
     const { otp } = data;
 
     const payload = {
@@ -54,10 +55,21 @@ export default function CardInformation() {
     };
     customApi
       .post(`/users/${userId}/validate/tfa`, payload)
-      .then((response) => {
-        const { status } = response;
-        if (status === 200) {
-        }
+      .then(() => {
+        customApi
+          .get(
+            `/cards/${getUserCardId()}?decryptData=true&${
+              cardData?.cardType === 'VIRTUAL' ? 'dynCvvNumber' : 'cvvNumber'
+            }=true`
+          )
+          .then((response) => {
+            setCardBackData(response.data.data);
+            setShowDetails(true);
+            setOpen(false);
+          })
+          .catch((e) => {
+            setModalError({ error: e });
+          });
       })
       .catch((e) => {
         setModalError({ error: e });
@@ -103,7 +115,8 @@ export default function CardInformation() {
           <FrontInformation
             showDetails={handleShowDetaild}
             cardNumber={cardData?.mask}
-            balance={balance?.currentBalance}
+            cardStatus={cardData?.cardStatus}
+            balance={balance?.availableBalance}
             cardInformationError={cardInformationError}
             balanceError={balanceError}
             fetchCardInformation={getCardInformation}
@@ -111,10 +124,12 @@ export default function CardInformation() {
           />
           <BackInformation
             hideDetails={() => setShowDetails(false)}
-            holder="Andrea Rodriguez"
-            cardNumber="4123 567 098 1234"
-            expDate="02/2025"
-            cvc="123"
+            holder={cardbackData?.holderName ?? ''}
+            cardNumber={showDetails ? (cardbackData?.pan ? decryptForge(cardbackData?.pan) ?? '' : '') : ''}
+            expDate={
+              showDetails ? (cardbackData?.expiredDate ? decryptForge(cardbackData?.expiredDate) ?? '' : '') : ''
+            }
+            cvc={showDetails ? (cardbackData?.cvv ? decryptForge(cardbackData?.cvv) : '') : ''}
           />
         </BodyCardAction>
       </BodyCard>

@@ -22,5 +22,5 @@ export interface TableDataProps {
   }[];
   loading?: boolean;
   error?: boolean;
-  handleRetry?: () => void;
+  emptySlot?: JSX.Element;
 }

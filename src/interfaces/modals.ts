@@ -41,8 +41,8 @@ export interface ModalOtpProps {
  * @typeParam description: The description of the error generated.
  */
 export interface ModalErrorProps {
-  title: string;
-  description: string;
+  title: string | JSX.Element;
+  description: string | JSX.Element;
   open: boolean;
   handleClose: () => void;
 }

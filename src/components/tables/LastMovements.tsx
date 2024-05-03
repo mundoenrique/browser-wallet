@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { Alert, AlertTitle, Avatar, Box, Typography } from '@mui/material';
 import { NorthEast, SouthEast } from '@mui/icons-material';
 //Internal app
-import { SkeletonTable, EmptySlot } from '@/components';
+import { SkeletonTable, EmptySlot, ErrorSlot } from '@/components';
 import { TableDataProps } from '@/interfaces';
 import { stringAvatar } from '@/utils/toolHelper';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
@@ -22,14 +22,14 @@ import { fuchsiaBlue, slate } from '@/theme/theme-default';
  * }]
  */
 
-export default function LastMovements({ data, loading, error, handleRetry }: TableDataProps): JSX.Element {
+export default function LastMovements({ data, loading, error, emptySlot }: TableDataProps): JSX.Element {
   return (
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
         overflow: 'auto',
-        mb: 10,
+
         borderRadius: '14px',
         '& li:first-of-type': {
           borderRadius: '14px 14px 0 0',
@@ -39,33 +39,14 @@ export default function LastMovements({ data, loading, error, handleRetry }: Tab
         },
       }}
     >
-      {error && <ErrorSlot handleRetry={handleRetry} />}
+      {error && <ErrorSlot />}
       {data.length > 0
         ? data.map((row, idx) => <RowDetail key={idx} row={row} />)
-        : !loading && !error && <EmptySlot />}
+        : !loading && !error && (emptySlot ?? <EmptySlot />)}
       {loading && <SkeletonTable />}
     </Box>
   );
 }
-
-const ErrorSlot = ({ handleRetry }: any) => {
-  return (
-    <Alert sx={{ bgcolor: '#FBE5E5', border: `1px solid #ef5350`, minWidth: 250, margin: '4px' }} severity="error">
-      <AlertTitle sx={{ fontWeight: 700 }}>¡Oops!</AlertTitle>
-      Error al cargar movimientos.
-      <Typography
-        variant="subtitle2"
-        color="initial"
-        onClick={() => {
-          handleRetry && handleRetry();
-        }}
-        sx={{ cursor: 'pointer', textDecoration: 'underline' }}
-      >
-        Intenta de nuevo
-      </Typography>
-    </Alert>
-  );
-};
 
 const RowDetail = ({ row }: any) => (
   <Box
@@ -90,7 +71,7 @@ const RowDetail = ({ row }: any) => (
           height: 28,
           width: 28,
         }}
-        {...stringAvatar(row.title)}
+        {...stringAvatar(row.description ?? 'Y')}
       />
     </Box>
     <Box
@@ -102,16 +83,16 @@ const RowDetail = ({ row }: any) => (
     >
       <Box>
         <Typography variant="subtitle2" noWrap sx={{ maxWidth: 140 }}>
-          {row.title}
+          {row.description ?? ''}
         </Typography>
         <Typography sx={{ fontSize: 10, lineHeight: '16px' }}>{dayjs(row.date).format('MMMM D, h:mm a')}</Typography>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 / 2 }}>
-        <Typography variant="subtitle2" color={row.incoming ? slate[700] : '#EE2737'}>
+        <Typography variant="subtitle2" color={row.amount > 0 ? slate[700] : '#EE2737'}>
           S/ {row.amount}
         </Typography>
-        <Avatar sx={{ bgcolor: row.incoming ? '#C8EDC5' : '#FFC8C8', height: 16, width: 16 }}>
-          {row.incoming ? (
+        <Avatar sx={{ bgcolor: row.amount ? '#C8EDC5' : '#FFC8C8', height: 16, width: 16 }}>
+          {row.amount > 0 ? (
             <NorthEast sx={{ height: 12, width: 12, color: '#307E0D' }} />
           ) : (
             <SouthEast sx={{ height: 12, width: 12, color: '#FF230D' }} />
