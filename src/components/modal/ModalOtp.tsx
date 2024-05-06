@@ -1,15 +1,15 @@
 'use client';
 
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 //Internal app
 import { getSchema } from '@/config';
 import InputOTP from '../form/InputOTP';
+import { useApi } from '@/hooks/useApi';
 import { ModalOtpProps } from '@/interfaces';
 import ModalResponsive from './ModalResponsive';
-import { useApi } from '@/hooks/useApi';
 import { useUiStore, useOtpStore, useUserStore } from '@/store';
 /**
  * Reusable modal to request verification code

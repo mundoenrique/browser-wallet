@@ -1,14 +1,12 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
+import { useEffect, useState, useCallback } from 'react';
 //Internal app
-import { useMenuStore } from '@/store';
-import { CardDebt, LastMovements, Linking, ModalError, UserWelcome } from '@/components';
-import CardInformation from '@/components/cards/cardInformation/CardInformation';
-import { useUserStore } from '@/store';
 import { useApi } from '@/hooks/useApi';
+import { useMenuStore, useUserStore } from '@/store';
+import { CardDebt, CardInformation, LastMovements, Linking, ModalError, UserWelcome } from '@/components';
 
 export default function Dashboard() {
   const { push } = useRouter();
@@ -32,7 +30,7 @@ export default function Dashboard() {
     setErrorMovements(false);
     setErrorModal(false);
     customApi
-      .get(`/cards/${getUserCardId()}/transactions?days=99&limit=5`)
+      .get(`/cards/${getUserCardId()}/transactions?days=90&limit=5`)
       .then((response: any) => {
         response.data.data && setMovementData(response.data.data);
       })

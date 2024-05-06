@@ -21,6 +21,6 @@ export const useOtpStore = create<OtpStore>()(
       setTime: () => set({ timeLeft: 60 }),
       setOTPValid: (value) => set({ otpValid: value }),
     }),
-    { name: 'timerStore', storage: createJSONStorage(() => sessionStorage) }
+    { name: 'timer-store', storage: createJSONStorage(() => sessionStorage) }
   )
 );

@@ -2,12 +2,12 @@
 
 import { useCallback, useEffect, useState } from 'react';
 //Internal app
+import { useApi } from '@/hooks/useApi';
+import { useUiStore, useUserStore } from '@/store';
 import ModalOtp from '@/components/modal/ModalOtp';
 import BackInformation from './partial/BackInformation';
 import FrontInformation from './partial/FrontInformation';
 import { BodyCard, BodyCardAction } from './partial/BodyCards';
-import { useUiStore, useUserStore } from '@/store';
-import { useApi } from '@/hooks/useApi';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
 
 /**

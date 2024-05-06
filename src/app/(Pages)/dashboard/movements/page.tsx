@@ -1,15 +1,15 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { Alert, AlertTitle, Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { Box, Typography } from '@mui/material';
 import { useEffect, useRef, useState, useCallback } from 'react';
 //Internal app
+import { useUserStore } from '@/store';
+import { useApi } from '@/hooks/useApi';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { useMenuStore, useNavTitleStore } from '@/store';
 import { InputSelect, LastMovements, Linking, ModalError } from '@/components';
-import { useUserStore } from '@/store';
-import { useApi } from '@/hooks/useApi';
 
 /**
  * Generates the months that would be used for filtering
@@ -74,7 +74,7 @@ export default function Movements() {
     setIsError(false);
     setErrorModal(false);
     customApi
-      .get(`/cards/${getUserCardId()}/transactions?date=${filterMonth}&days=99&limit=20&currentPage=${currentPage}`)
+      .get(`/cards/${getUserCardId()}/transactions?date=${filterMonth}&days=90&limit=20&currentPage=${currentPage}`)
       .then((response) => {
         if (response.data?.data) {
           setMovementData((state: any) => [...state, ...response.data.data]);

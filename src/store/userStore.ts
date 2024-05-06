@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage, devtools } from 'zustand/middleware';
 //Internal app
-import { TUserDetail, UserStore } from '@/interfaces';
 import { decryptForge } from '@/utils/toolHelper';
+import { TUserDetail, UserStore } from '@/interfaces';
 
 export const useUserStore = create<UserStore>()(
   devtools(
@@ -24,7 +24,7 @@ export const useUserStore = create<UserStore>()(
         },
       }),
       {
-        name: 'user-storage',
+        name: 'user-store',
         storage: createJSONStorage(() => sessionStorage),
       }
     )

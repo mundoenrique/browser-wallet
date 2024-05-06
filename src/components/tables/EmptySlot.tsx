@@ -1,5 +1,6 @@
-import Typography from '@mui/material/Typography';
-import { Box } from '@mui/system';
+'use client';
+
+import { Typography, Box } from '@mui/material';
 
 export default function EmptySlot() {
   return (
