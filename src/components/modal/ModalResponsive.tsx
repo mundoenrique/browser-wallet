@@ -32,10 +32,6 @@ const BodyModal = styled(Box, {
       }
     : {
         //desktop
-        //position: 'absolute',
-        //top: '50%',
-        //left: '50%',
-        //transform: 'translate(-50%,-50%) !important',
         padding: '0px 20px 32px 20px',
         borderRadius: '16px',
         width: 400,

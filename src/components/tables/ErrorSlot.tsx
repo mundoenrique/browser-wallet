@@ -1,6 +1,7 @@
 'use client';
 
 import { Box, Typography } from '@mui/material';
+
 /**
  * Slot for show in table when error occurs
  */
