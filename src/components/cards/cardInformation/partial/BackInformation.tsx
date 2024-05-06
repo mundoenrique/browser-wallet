@@ -19,8 +19,6 @@ import { copyToClipboard } from '@/utils/toolHelper';
 export default function BackInformation(props: BackInformationProps): JSX.Element {
   const { hideDetails, holder, cardNumber, expDate, cvc } = props;
 
-  copyToClipboard(cardNumber);
-
   return (
     <Box
       sx={{
@@ -68,7 +66,7 @@ export default function BackInformation(props: BackInformationProps): JSX.Elemen
         <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 3 }}>
           <Box>
             <Typography variant="body2">Fecha vencimiento</Typography>
-            <Typography variant="subtitle2">{expDate}</Typography>
+            <Typography variant="subtitle2">{expDate.substring(0, 2) + '/' + expDate.substring(2)}</Typography>
           </Box>
           <Box pr={3}>
             <Typography variant="body2">CVC</Typography>

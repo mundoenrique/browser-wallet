@@ -71,7 +71,7 @@ const RowDetail = ({ row }: { row: TableDataProps['data'][number] }) => (
           height: 28,
           width: 28,
         }}
-        {...stringAvatar(row.description ?? 'Y')}
+        {...stringAvatar(row.description ? row.description : 'T')}
       />
     </Box>
     <Box
