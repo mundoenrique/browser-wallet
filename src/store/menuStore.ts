@@ -23,6 +23,6 @@ export const useMenuStore = create<MenuStore>()(
        */
       setCurrentItem: (item) => set({ currentItem: item }),
     }),
-    { name: 'Menu', storage: createJSONStorage(() => sessionStorage) }
+    { name: 'menu-store', storage: createJSONStorage(() => sessionStorage) }
   )
 );

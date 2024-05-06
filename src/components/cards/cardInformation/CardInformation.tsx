@@ -2,12 +2,12 @@
 
 import { useCallback, useEffect, useState } from 'react';
 //Internal app
+import { useApi } from '@/hooks/useApi';
+import { useUiStore, useUserStore } from '@/store';
 import ModalOtp from '@/components/modal/ModalOtp';
 import BackInformation from './partial/BackInformation';
 import FrontInformation from './partial/FrontInformation';
 import { BodyCard, BodyCardAction } from './partial/BodyCards';
-import { useUiStore, useUserStore } from '@/store';
-import { useApi } from '@/hooks/useApi';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
 
 /**
@@ -27,7 +27,7 @@ export default function CardInformation() {
     user: { userId },
   } = useUserStore();
 
-  const { setModalError } = useUiStore();
+  const { setModalError, setLoadingScreen } = useUiStore();
 
   const [cardData, setCardData] = useState<{ [key: string]: string } | null>(null);
 
@@ -46,6 +46,7 @@ export default function CardInformation() {
   };
 
   const onSubmitOtp = useCallback(async (data: any) => {
+    setLoadingScreen(true);
     const { otp } = data;
 
     const payload = {
@@ -74,7 +75,9 @@ export default function CardInformation() {
       .catch((e) => {
         setModalError({ error: e });
       })
-      .finally(() => {});
+      .finally(() => {
+        setLoadingScreen(false);
+      });
   }, []); //eslint-disable-line
 
   const getCardInformation = () => {
