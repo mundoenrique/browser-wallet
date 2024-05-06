@@ -5,9 +5,10 @@ import { useForm } from 'react-hook-form';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
 import { Box, Stack, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
+import { HandleCard, InputSwitch, UserWelcome } from '@/components';
 import { useNavTitleStore, useMenuStore, useConfigCardStore } from '@/store';
 import { CardCloseIcon, CardIcons, KeyIcons, PersonWrongIcon } from '%/Icons';
-import { CardInformation, HandleCard, InputSwitch, UserWelcome } from '@/components';
+import CardInformation from '@/components/cards/cardInformation/CardInformation';
 
 export default function CardConfiguration() {
   const { setCurrentItem } = useMenuStore();

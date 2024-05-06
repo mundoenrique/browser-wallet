@@ -6,7 +6,8 @@ import { useEffect, useState, useCallback } from 'react';
 //Internal app
 import { useApi } from '@/hooks/useApi';
 import { useMenuStore, useUserStore } from '@/store';
-import { CardDebt, CardInformation, LastMovements, Linking, ModalError, UserWelcome } from '@/components';
+import CardInformation from '@/components/cards/cardInformation/CardInformation';
+import { CardDebt, LastMovements, Linking, ModalError, UserWelcome } from '@/components';
 
 export default function Dashboard() {
   const { push } = useRouter();
