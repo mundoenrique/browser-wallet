@@ -11,7 +11,7 @@ export function stringAvatar(name: string) {
   const breakName = name.split(' ');
 
   return {
-    children: `${breakName[0][0]}${breakName[1][0] ?? ''}`,
+    children: `${breakName[0][0] ?? ''}${breakName[1][0] ?? ''}`,
   };
 }
 
