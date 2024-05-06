@@ -2,6 +2,7 @@ import axios from 'axios';
 //Internal app
 import { JWS_HEADER } from './constants';
 import { decryptJWE, encryptJWE, signJWE, verifyDetachedJWS } from './jwt';
+import { useKeyStore } from '@/store';
 
 export const api = axios.create({
   baseURL: '/api/v1',
@@ -10,27 +11,11 @@ export const api = axios.create({
   },
 });
 
-let jwePrivateKey = '';
-let jwsPrivateKey = '';
-
-export function setprivateKeys(_jwePrivateKeyy: string, _jwsPrivateKey: string) {
-  jwePrivateKey = _jwePrivateKeyy;
-  jwsPrivateKey = _jwsPrivateKey;
-}
-
 api.interceptors.request.use(
   async (request) => {
-    const jweApiPublicKey: string | undefined = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY;
+    const jweApiPublicKey: string | undefined = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY || '';
     const url = request.url;
     const data = request.data;
-
-    if (!jweApiPublicKey) {
-      return Promise.reject('API publicKey is not defined');
-    }
-
-    if (!jwsPrivateKey) {
-      return Promise.reject('jwsPrivateKey is not defined');
-    }
 
     if (data) {
       const jwe = await encryptJWE(data, jweApiPublicKey);
@@ -38,6 +23,7 @@ api.interceptors.request.use(
       request.data = encryptedData;
 
       if (url !== '/gettoken') {
+        const jwsPrivateKey = useKeyStore.getState().jwsPrivateKey || '';
         const jws = await signJWE(jwsPrivateKey, jwe);
         request.headers[JWS_HEADER] = `JWS ${jws}`;
       }
@@ -54,12 +40,9 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   async (response) => {
     const jwsApiPublicKey = process.env.NEXT_PUBLIC_MIDDLE_JWS_PUBLIC_KEY;
+    const jwePrivateKey = useKeyStore.getState().jwePrivateKey || '';
     const url = response.config.url;
     const data = response.data;
-
-    if (!jwePrivateKey) {
-      return response;
-    }
 
     if (data) {
       const payload = data.data;
@@ -83,6 +66,7 @@ api.interceptors.response.use(
 
     if (data) {
       const payload = data.data;
+      const jwePrivateKey = useKeyStore.getState().jwePrivateKey || '';
       if (jwsApiPublicKey) {
         const jws = error.response.headers[JWS_HEADER];
         if (jws) {
@@ -91,6 +75,7 @@ api.interceptors.response.use(
           return Promise.reject('JWS header not found in the response');
         }
       }
+
       const decryptedData = await decryptJWE(payload, jwePrivateKey);
       error.response.data.data = decryptedData;
     }
