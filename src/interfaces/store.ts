@@ -211,6 +211,7 @@ export interface UserStore {
   setUser: (_data: any) => void;
   setUserId: (_data: any) => void;
   getUserPhone: () => string;
+  getUserCardId: () => string;
 }
 
 export interface OtpStore {

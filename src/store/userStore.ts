@@ -16,6 +16,12 @@ export const useUserStore = create<UserStore>()(
           const { phoneNumber } = get().user;
           return decryptForge(phoneNumber);
         },
+        getUserCardId: () => {
+          const {
+            cardSolutions: { cardId },
+          } = get().user;
+          return decryptForge(cardId);
+        },
       }),
       {
         name: 'user-storage',
