@@ -43,7 +43,7 @@ export default function Ending() {
         })
         .then(() => {
           replace('/signin');
-          sessionStorage.removeItem('appStore');
+          sessionStorage.removeItem('app-store');
         });
     })();
   }, [setShowHeader, replace]);

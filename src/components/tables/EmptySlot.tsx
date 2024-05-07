@@ -1,6 +1,10 @@
-import Typography from '@mui/material/Typography';
-import { Box } from '@mui/system';
+'use client';
 
+import { Typography, Box } from '@mui/material';
+
+/**
+ * Slot for show  in table data is empty
+ */
 export default function EmptySlot() {
   return (
     <Box sx={{ marginX: '8px', textAlign: 'center' }}>
