@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Typography, Box } from '@mui/material';
 import { useEffect, useCallback, useState } from 'react';
 //Internal app
-import { useApi } from '@/hooks/useApi';
+import { api } from '@/utils/api';
 import LogoGreen from '%/images/LogoGreen';
 import { DataUserProps } from '@/interfaces';
 import { useRegisterStore, useUiStore } from '@/store';
@@ -30,7 +30,7 @@ const phaseToStep = (phase: string) => {
 
 export default function DataUser({ user }: DataUserProps) {
   const userObject = JSON.parse(user);
-  const customApi = useApi();
+  // const customApi = useApi();
   const [userValidation, setUserValidation] = useState<any>(null);
   const updateFormState = useRegisterStore((state) => state.updateFormState);
   const updateStep = useRegisterStore((state) => state.updateStep);
@@ -80,7 +80,7 @@ export default function DataUser({ user }: DataUserProps) {
     !userValidation &&
       (async () => {
         const { code, country } = userObject;
-        customApi
+        api
           .get(`/onboarding/validate?consultantCode=${code}&countryCode=${country}`)
           .then((response) => {
             setUserValidation(response.data);
