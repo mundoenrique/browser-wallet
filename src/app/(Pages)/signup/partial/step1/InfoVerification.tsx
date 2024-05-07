@@ -147,19 +147,19 @@ export default function InfoVerification() {
   const handleEditEmail = async (data: any) => {
     setValue('email', data.email);
     setEditEmail(false);
-    trigger();
+    trigger(['email', 'phoneNumber']);
   };
 
   //Method For set PhoneNumber value
   const handlePhoneNumber = async (data: any) => {
     setValue('phoneNumber', data.phoneNumber);
     setEditPhoneNumber(false);
-    trigger();
+    trigger(['email', 'phoneNumber']);
   };
 
   useEffect(() => {
     setShowHeader(true);
-    trigger();
+    trigger(['email', 'phoneNumber']);
   }, [setShowHeader]); //eslint-disable-line
 
   useEffect(() => {
