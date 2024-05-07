@@ -1,15 +1,17 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Button, Card, Chip, Divider, Typography } from '@mui/material';
+import { Box, Button, Card, Chip, Divider, FormHelperText, Typography, useTheme } from '@mui/material';
 //internal app
 import { CardStep } from '..';
 import { getSchema } from '@/config';
 import { useApi } from '@/hooks/useApi';
 import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 import { InputCheck, InputText, ModalResponsive, InputSelect, Terms } from '@/components';
+import Info from '@mui/icons-material/InfoOutlined';
 
 export default function InfoVerification() {
   const customApi = useApi();
@@ -17,7 +19,7 @@ export default function InfoVerification() {
   const [editPhoneNumber, setEditPhoneNumber] = useState<boolean>(false);
   const [openTerms, setOpenTerms] = useState<boolean>(false);
 
-  const schema = getSchema(['email', 'terms', 'countryCode']);
+  const schema = getSchema(['email', 'terms', 'countryCode', 'phoneNumber']);
 
   const schemaEmail = getSchema(['email']);
   const schemaPhoneNumber = getSchema(['phoneNumber']);
@@ -25,6 +27,8 @@ export default function InfoVerification() {
   const { inc, updateFormState, ONB_PHASES_TERMS, setShowHeader } = useRegisterStore();
   const { setLoadingScreen, loadingScreen, setModalError } = useUiStore();
   const { updateCatalog, countriesCatalog, termsCatalog } = useCatalogsStore();
+
+  const theme = useTheme();
 
   const setTermsValue = useCallback(
     (term: any) => {
@@ -45,11 +49,18 @@ export default function InfoVerification() {
   );
 
   useEffect(() => {
-    setValue('terms', setTermsValue('TERMINO 1'));
-    setValue('policy', setTermsValue('TERMINO 2'));
+    setValue('terms', setTermsValue('TERMINO 1') ?? false);
+    setValue('policy', setTermsValue('TERMINO 2') ?? false);
   }, [setTermsValue, termsCatalog, ONB_PHASES_TERMS]); //eslint-disable-line
 
-  const { handleSubmit, control, setValue, getValues } = useForm({
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    getValues,
+    trigger,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       countryCode: ONB_PHASES_TERMS?.consultant?.countryCode ?? '',
       phoneNumber: ONB_PHASES_TERMS?.consultant?.phoneNumber ?? '',
@@ -136,17 +147,20 @@ export default function InfoVerification() {
   const handleEditEmail = async (data: any) => {
     setValue('email', data.email);
     setEditEmail(false);
+    trigger(['email', 'phoneNumber']);
   };
 
   //Method For set PhoneNumber value
   const handlePhoneNumber = async (data: any) => {
     setValue('phoneNumber', data.phoneNumber);
     setEditPhoneNumber(false);
+    trigger(['email', 'phoneNumber']);
   };
 
   useEffect(() => {
     setShowHeader(true);
-  }, [setShowHeader]);
+    trigger(['email', 'phoneNumber']);
+  }, [setShowHeader]); //eslint-disable-line
 
   useEffect(() => {
     const fetchCountryList = async () => {
@@ -249,7 +263,26 @@ export default function InfoVerification() {
             >
               <Box>
                 <Typography variant="body2">Número de celular:</Typography>
-                <Typography variant="body2">{control._formValues.phoneNumber}</Typography>
+
+                <Typography variant="body2">{getValues('phoneNumber')}</Typography>
+
+                <ErrorMessage
+                  errors={errors}
+                  name="phoneNumber"
+                  render={({ message }) => (
+                    <FormHelperText
+                      sx={{
+                        height: 20,
+                        ml: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: theme.palette.error.main,
+                      }}
+                    >
+                      <Info fontSize="small" sx={{ mr: 1 }} /> {message}
+                    </FormHelperText>
+                  )}
+                />
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Chip
@@ -273,7 +306,35 @@ export default function InfoVerification() {
             >
               <Box>
                 <Typography variant="body2">Email:</Typography>
-                <Typography variant="body2">{control._formValues.email} </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    maxWidth: { xs: 230, sm: 'max-content' },
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {getValues('email')}
+                </Typography>
+
+                <ErrorMessage
+                  errors={errors}
+                  name="email"
+                  render={({ message }) => (
+                    <FormHelperText
+                      sx={{
+                        height: 20,
+                        ml: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: theme.palette.error.main,
+                      }}
+                    >
+                      <Info fontSize="small" sx={{ mr: 1 }} /> {message}
+                    </FormHelperText>
+                  )}
+                />
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Chip
