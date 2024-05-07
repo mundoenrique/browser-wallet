@@ -1,16 +1,17 @@
 'use client';
 
-import { useEffect, useState, useCallback, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect, useCallback, useRef } from 'react';
 //Internal app
 import { getSchema } from '@/config';
 import InputOTP from '../form/InputOTP';
+import { useApi } from '@/hooks/useApi';
 import { ModalOtpProps } from '@/interfaces';
 import ModalResponsive from './ModalResponsive';
-import { useApi } from '@/hooks/useApi';
 import { useUiStore, useOtpStore, useUserStore } from '@/store';
+
 /**
  * Reusable modal to request verification code
  *
@@ -103,7 +104,9 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
             control={control}
             length={4}
             title={title ? title : '🎰 Verificación en dos pasos'}
-            text={`Ingresa el código enviado a tu número celular ${getUserPhone()}`}
+            text={`Ingresa el código enviado a tu número celular *****${getUserPhone().substring(
+              getUserPhone().length - 4
+            )}`}
             handleResendOTP={requestTFACode}
           />
         </Box>

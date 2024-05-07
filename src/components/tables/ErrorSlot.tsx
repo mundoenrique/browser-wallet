@@ -1,5 +1,10 @@
+'use client';
+
 import { Box, Typography } from '@mui/material';
 
+/**
+ * Slot for show in table when error occurs
+ */
 export default function ErrorSlot() {
   return (
     <Box sx={{ marginX: '8px', textAlign: 'center' }}>

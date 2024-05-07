@@ -4,10 +4,10 @@ import dayjs from 'dayjs';
 import { Avatar, Box, Typography } from '@mui/material';
 import { NorthEast, SouthEast } from '@mui/icons-material';
 //Internal app
-import { SkeletonTable, EmptySlot, ErrorSlot } from '@/components';
 import { TableDataProps } from '@/interfaces';
 import { stringAvatar } from '@/utils/toolHelper';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
+import { SkeletonTable, EmptySlot, ErrorSlot } from '@/components';
 
 /**
  * Table used to show the last 5 moves
@@ -71,7 +71,7 @@ const RowDetail = ({ row }: { row: TableDataProps['data'][number] }) => (
           height: 28,
           width: 28,
         }}
-        {...stringAvatar(row.description ?? 'Y')}
+        {...stringAvatar(row.description ? row.description : 'T')}
       />
     </Box>
     <Box
