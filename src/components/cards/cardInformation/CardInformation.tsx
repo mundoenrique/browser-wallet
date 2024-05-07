@@ -50,7 +50,7 @@ export default function CardInformation() {
     const { otp } = data;
 
     const payload = {
-      otpProcessCode: 'CHANGE_PASSWORD_OTP',
+      otpProcessCode: 'SEE_CARD_NUMBER',
       otpUuId: otpUuid,
       otpCode: encryptForge(otp),
     };
