@@ -76,7 +76,7 @@ export default function CardInformation() {
         otpUuId: otpUuid,
         otpCode: encryptForge(otp),
       };
-      console.log(payload);
+
       customApi
         .post(`/users/${userId}/validate/tfa`, payload)
         .then(() => {
@@ -85,9 +85,6 @@ export default function CardInformation() {
         })
         .catch((e) => {
           setModalError({ error: e });
-          console.log('optError', e);
-        })
-        .finally(() => {
           setLoadingScreen(false);
         });
     },
@@ -121,7 +118,6 @@ export default function CardInformation() {
   };
 
   const getDecryptData = async () => {
-    setLoadingScreen(true);
     customApi
       .get(`/cards/${getUserCardId()}`, {
         params: {
