@@ -74,7 +74,14 @@ export default function Movements() {
     setIsError(false);
     setErrorModal(false);
     customApi
-      .get(`/cards/${getUserCardId()}/transactions?date=${filterMonth}&days=90&limit=20&currentPage=${currentPage}`)
+      .get(`/cards/${getUserCardId()}/transactions`, {
+        params: {
+          date: filterMonth,
+          days: 90,
+          limit: 20,
+          currentPage: currentPage,
+        },
+      })
       .then((response) => {
         if (response.data?.data) {
           setMovementData((state: any) => [...state, ...response.data.data]);

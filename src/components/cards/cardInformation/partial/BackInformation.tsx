@@ -58,7 +58,13 @@ export default function BackInformation(props: BackInformationProps): JSX.Elemen
           <Typography variant="body2">Número de tarjeta</Typography>
           <Typography variant="subtitle2" color={fuchsiaBlue[700]}>
             {cardNumber}
-            <IconButton aria-label="delete" sx={{ color: fuchsiaBlue[700], py: 0 }} onClick={copyToClipboard}>
+            <IconButton
+              aria-label="delete"
+              sx={{ color: fuchsiaBlue[700], py: 0 }}
+              onClick={() => {
+                copyToClipboard(cardNumber);
+              }}
+            >
               <CopyIcons />
             </IconButton>
           </Typography>

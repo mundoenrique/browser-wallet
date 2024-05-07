@@ -77,7 +77,12 @@ export default function DataUser(user: DataUserProps) {
   useEffect(() => {
     const validateOnboarding = async () => {
       customApi
-        .get(`/onboarding/validate?consultantCode=${userObject.code}&countryCode=${userObject.country}`)
+        .get(`/onboarding/validate`, {
+          params: {
+            consultantCode: userObject.code,
+            countryCode: userObject.country,
+          },
+        })
         .then((response) => {
           setUserValidation(response.data);
         })
