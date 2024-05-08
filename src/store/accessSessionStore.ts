@@ -10,7 +10,7 @@ export const accessSessionStore = create<any>()(
         setAccessSession: (status: any) => set({ accessSession: status }),
       }),
       {
-        name: 'Access',
+        name: 'access-store',
         storage: createJSONStorage(() => sessionStorage),
       }
     )

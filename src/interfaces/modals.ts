@@ -1,4 +1,5 @@
 import { BoxProps } from '@mui/system';
+import { Dispatch } from 'react';
 
 /**
  * Global modal
@@ -30,6 +31,8 @@ export interface ModalOtpProps {
   closeApp?: boolean;
   title?: string | boolean;
   textButton?: string | boolean;
+  setOtpUuid: any;
+  processCode: string;
 }
 
 /**
@@ -39,8 +42,8 @@ export interface ModalOtpProps {
  * @typeParam description: The description of the error generated.
  */
 export interface ModalErrorProps {
-  title: string;
-  description: string;
+  title: string | JSX.Element;
+  description: string | JSX.Element;
   open: boolean;
   handleClose: () => void;
 }

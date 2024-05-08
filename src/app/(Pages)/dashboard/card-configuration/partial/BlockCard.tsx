@@ -7,6 +7,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography, Stack } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
+import { useApi } from '@/hooks/useApi';
+import { useUserStore, useUiStore } from '@/store';
 import { useNavTitleStore, useConfigCardStore } from '@/store';
 import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/components';
 
@@ -16,7 +18,13 @@ export default function BlockCard() {
   const [open, setOpen] = useState<boolean>(false);
   const schema = getSchema(['blockType']);
 
+  const customApi = useApi();
+
   const router = useRouter();
+
+  const { getUserCardId } = useUserStore();
+
+  const { setModalError, setLoadingScreen } = useUiStore();
 
   useEffect(() => {
     updateTitle('Bloquear tarjeta');
@@ -28,8 +36,18 @@ export default function BlockCard() {
   });
 
   const onSubmit = async (data: any) => {
-    console.log('🚀 ~ onSubmit ~ data:', data);
-    setOpen(!open);
+    setLoadingScreen(true);
+    customApi
+      .post(`/cards/${getUserCardId()}/block`, data.blockType)
+      .then(() => {
+        setOpen(!open);
+      })
+      .catch((e) => {
+        setModalError({ error: e });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
   };
 
   const blockCardType = [

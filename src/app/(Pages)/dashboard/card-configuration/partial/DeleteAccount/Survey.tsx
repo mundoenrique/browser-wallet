@@ -101,6 +101,8 @@ export default function Survey() {
         title="🎰 Verifica tu identidad para eliminar cuenta"
         textButton="Eliminar cuenta Yiro"
         closeApp
+        setOtpUuid={() => {}}
+        processCode="CHANGE_PASSWORD_OTP"
       />
 
       <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>

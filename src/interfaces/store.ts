@@ -5,6 +5,7 @@
  * @typeParam jwePrivateKey: string | null
  * @typeParam jwsPublicKey: string | null
  * @typeParam jwsPrivateKey: string | null
+ * @typeParam activeKeys: true | false
  * @typeParam setKeys: (_keys: { jwePublicKey: string; jwePrivateKey: string; jwsPublicKey: string; jwsPrivateKey: string }) => void
  */
 export type KeyStoreProps = {
@@ -12,6 +13,7 @@ export type KeyStoreProps = {
   jwePrivateKey: string | null;
   jwsPublicKey: string | null;
   jwsPrivateKey: string | null;
+  activeKeys: boolean;
   setKeys: (_keys: {
     jwePublicKey: string;
     jwePrivateKey: string;
@@ -215,6 +217,7 @@ export interface UserStore {
   setUser: (_data: any) => void;
   setUserId: (_data: any) => void;
   getUserPhone: () => string;
+  getUserCardId: () => string;
 }
 
 export interface OtpStore {

@@ -66,7 +66,13 @@ export default function ChangePassword() {
         </Box>
       </ContainerLayout>
 
-      <ModalOtp open={openOtp} handleClose={() => setOpenOtp(false)} onSubmit={onSubmitOtp} />
+      <ModalOtp
+        open={openOtp}
+        handleClose={() => setOpenOtp(false)}
+        onSubmit={onSubmitOtp}
+        setOtpUuid={() => {}}
+        processCode="CHANGE_PASSWORD_OTP"
+      />
 
       <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)} data-testid="modal-succes">
         <Typography variant="subtitle2">🥳 Actualización exitosa</Typography>
