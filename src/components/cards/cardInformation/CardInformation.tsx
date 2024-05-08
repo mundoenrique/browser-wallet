@@ -22,7 +22,7 @@ const cardTypeQuery = (cardType: string) => {
       cvvNumber: true,
       dynCvvNumber: false,
     },
-    DEFAULT: {
+    default: {
       decryptData: false,
       cvvNumber: false,
       dynCvvNumber: false,
