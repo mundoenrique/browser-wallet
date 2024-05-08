@@ -83,16 +83,16 @@ const RowDetail = ({ row }: { row: TableDataProps['data'][number] }) => (
     >
       <Box>
         <Typography variant="subtitle2" noWrap sx={{ maxWidth: 140 }}>
-          {row.description ?? ''}
+          {row.description ?? '-'}
         </Typography>
         <Typography sx={{ fontSize: 10, lineHeight: '16px' }}>{dayjs(row.date).format('MMMM D, h:mm a')}</Typography>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 / 2 }}>
-        <Typography variant="subtitle2" color={row.amount > 0 ? slate[700] : '#EE2737'}>
+        <Typography variant="subtitle2" color={row.transactionType === 'C' ? slate[700] : '#EE2737'}>
           S/ {row.amount}
         </Typography>
-        <Avatar sx={{ bgcolor: row.amount > 0 ? '#C8EDC5' : '#FFC8C8', height: 16, width: 16 }}>
-          {row.amount > 0 ? (
+        <Avatar sx={{ bgcolor: row.transactionType === 'C' ? '#C8EDC5' : '#FFC8C8', height: 16, width: 16 }}>
+          {row.transactionType === 'C' ? (
             <NorthEast sx={{ height: 12, width: 12, color: '#307E0D' }} />
           ) : (
             <SouthEast sx={{ height: 12, width: 12, color: '#FF230D' }} />
