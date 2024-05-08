@@ -18,7 +18,7 @@ export default function Dashboard() {
 
   const customApi = useApi();
 
-  const [movementData, setMovementData] = useState<any>([]);
+  const [movementData, setMovementData] = useState<[]>([]);
 
   const [loadingMovements, setLoadingMovements] = useState<boolean>(false);
 
@@ -105,7 +105,7 @@ export default function Dashboard() {
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, width: 320 }}>
                 <Typography variant="subtitle1">Últimos movimientos</Typography>
-                {movementData.lenght > 0 ? (
+                {movementData.length > 0 ? (
                   <Linking
                     href="/dashboard/movements"
                     color="primary.main"

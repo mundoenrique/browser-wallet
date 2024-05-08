@@ -49,6 +49,7 @@ export default function Movements() {
   const scrollHandle = useCallback(async () => {
     if (containerDesktop.current && !isLoading && currentPage <= lastPage - 1) {
       let scroll = containerDesktop.current?.scrollHeight - window.scrollY - window.innerHeight;
+
       if (scroll <= 100) {
         setCurrentPage((prevPage) => prevPage + 1);
       }
@@ -83,9 +84,12 @@ export default function Movements() {
         },
       })
       .then((response) => {
-        if (response.data?.data) {
-          setMovementData((state: any) => [...state, ...response.data.data]);
-          setLastPage(response.data.metadata.LastPage);
+        const {
+          data: { data, metadata },
+        } = response;
+        if (data) {
+          setMovementData((state: any) => [...state, ...data]);
+          setLastPage(metadata.lastPage);
         }
       })
       .catch(() => {
@@ -102,6 +106,11 @@ export default function Movements() {
   }, [currentPage, filterMonth]); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
+    setCurrentPage(1);
+    setMovementData([]);
+  }, [filterMonth]);
+
+  useEffect(() => {
     updateTitle('Movimientos');
     setCurrentItem('home');
   }, [updateTitle, setCurrentItem]);
@@ -110,7 +119,7 @@ export default function Movements() {
     <>
       <Box
         sx={{
-          height: { xs: 'calc(100vh - 120px)', md: 'auto' },
+          minHeight: { xs: 'calc(100vh - 120px)', md: 'auto' },
           display: 'flex',
           flexDirection: 'column',
           justifyContent: { xs: 'flex-start', md: 'center' },
