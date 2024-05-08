@@ -10,6 +10,27 @@ import FrontInformation from './partial/FrontInformation';
 import { BodyCard, BodyCardAction } from './partial/BodyCards';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
 
+const cardTypeQuery = (cardType: string) => {
+  const cardObject: { [key: string]: object } = {
+    VIRTUAL: {
+      decryptData: true,
+      cvvNumber: false,
+      dynCvvNumber: true,
+    },
+    PHYSICAL: {
+      decryptData: true,
+      cvvNumber: true,
+      dynCvvNumber: false,
+    },
+    default: {
+      decryptData: false,
+      cvvNumber: false,
+      dynCvvNumber: false,
+    },
+  };
+  return cardObject[cardType] || cardObject['default'];
+};
+
 /**
  * Shows the 3D card with all the cardholder information
  *
@@ -45,42 +66,32 @@ export default function CardInformation() {
     setOpen(true);
   };
 
-  const onSubmitOtp = useCallback(async (data: any) => {
-    setLoadingScreen(true);
-    const { otp } = data;
+  const onSubmitOtp = useCallback(
+    async (data: any) => {
+      setLoadingScreen(true);
+      const { otp } = data;
 
-    const payload = {
-      otpProcessCode: 'SEE_CARD_NUMBER',
-      otpUuId: otpUuid,
-      otpCode: encryptForge(otp),
-    };
-    customApi
-      .post(`/users/${userId}/validate/tfa`, payload)
-      .then(() => {
-        customApi
-          .get(
-            `/cards/${getUserCardId()}?decryptData=true&${
-              cardData?.cardType === 'VIRTUAL' ? 'dynCvvNumber' : 'cvvNumber'
-            }=true`
-          )
-          .then((response) => {
-            setCardBackData(response.data.data);
-            setShowDetails(true);
-            setOpen(false);
-          })
-          .catch((e) => {
-            setModalError({ error: e });
-          });
-      })
-      .catch((e) => {
-        setModalError({ error: e });
-      })
-      .finally(() => {
-        setLoadingScreen(false);
-      });
-  }, []); //eslint-disable-line
+      const payload = {
+        otpProcessCode: 'SEE_CARD_NUMBER',
+        otpUuId: otpUuid,
+        otpCode: encryptForge(otp),
+      };
 
-  const getCardInformation = () => {
+      customApi
+        .post(`/users/${userId}/validate/tfa`, payload)
+        .then(() => {
+          setOpen(false);
+          getDecryptData();
+        })
+        .catch((e) => {
+          setModalError({ error: e });
+          setLoadingScreen(false);
+        });
+    },
+    [otpUuid] //eslint-disable-line
+  );
+
+  const getCardInformation = async () => {
     setCardInformationError(false);
     customApi
       .get(`/cards/${getUserCardId()}`)
@@ -93,7 +104,7 @@ export default function CardInformation() {
       });
   };
 
-  const getBalance = useCallback(() => {
+  const getBalance = async () => {
     setBalanceError(false);
     customApi
       .get(`/cards/${getUserCardId()}/balance`)
@@ -104,12 +115,39 @@ export default function CardInformation() {
         setBalanceError(true);
         setModalError({ error: e });
       });
-  }, []); //eslint-disable-line
+  };
+
+  const getDecryptData = async () => {
+    customApi
+      .get(`/cards/${getUserCardId()}`, {
+        params: {
+          ...cardTypeQuery(cardData?.cardType ?? ''),
+        },
+      })
+      .then((response) => {
+        setCardBackData(response.data.data);
+        setShowDetails(true);
+      })
+      .catch((e) => {
+        setModalError({ error: e });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
+  };
 
   useEffect(() => {
     getCardInformation();
     getBalance();
   }, []); //eslint-disable-line
+
+  useEffect(() => {
+    if (showDetails) {
+      setTimeout(() => {
+        setShowDetails(false);
+      }, 120000);
+    }
+  }, [showDetails]);
 
   return (
     <>
@@ -138,7 +176,13 @@ export default function CardInformation() {
       </BodyCard>
 
       {open && (
-        <ModalOtp open={open} handleClose={() => setOpen(false)} onSubmit={onSubmitOtp} setOtpUuid={setOtpUuid} />
+        <ModalOtp
+          open={open}
+          handleClose={() => setOpen(false)}
+          onSubmit={onSubmitOtp}
+          setOtpUuid={setOtpUuid}
+          processCode="SEE_CARD_NUMBER"
+        />
       )}
     </>
   );

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Controller } from 'react-hook-form';
 import Info from '@mui/icons-material/InfoOutlined';
 import { MuiOtpInput } from 'mui-one-time-password-input';
-import { Box, Button, FormHelperText, Snackbar, Typography } from '@mui/material';
+import { Box, Button, FormHelperText, Snackbar, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { useOtpStore } from '@/store';
 import { InputOTPProps } from '@/interfaces';
@@ -27,6 +27,10 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
   const { control, name, length, title, text, labelError, handleResendOTP } = props;
   const { timeLeft, setTime } = useOtpStore();
   const [open, setOpen] = useState(false);
+
+  const theme = useTheme();
+
+  const match = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleResend = () => {
     handleResendOTP();
@@ -103,9 +107,8 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
         open={open}
         autoHideDuration={3000}
         onClose={() => setOpen(false)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        anchorOrigin={{ vertical: match ? 'top' : 'bottom', horizontal: 'center' }}
         message="🎰 Nuevo código enviado"
-        key={'bottom' + 'center'}
       />
     </>
   );

@@ -31,7 +31,12 @@ export default function Dashboard() {
     setErrorMovements(false);
     setErrorModal(false);
     customApi
-      .get(`/cards/${getUserCardId()}/transactions?days=90&limit=5`)
+      .get(`/cards/${getUserCardId()}/transactions`, {
+        params: {
+          days: 90,
+          limit: 5,
+        },
+      })
       .then((response: any) => {
         response.data.data && setMovementData(response.data.data);
       })

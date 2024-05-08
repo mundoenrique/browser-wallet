@@ -81,7 +81,12 @@ export default function DataUser({ user }: DataUserProps) {
       (async () => {
         const { code, country } = userObject;
         api
-          .get(`/onboarding/validate?consultantCode=${code}&countryCode=${country}`)
+          .get(`/onboarding/validate`, {
+            params: {
+              consultantCode: code,
+              countryCode: country,
+            },
+          })
           .then((response) => {
             setUserValidation(response.data);
           })

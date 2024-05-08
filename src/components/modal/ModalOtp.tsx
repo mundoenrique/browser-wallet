@@ -24,7 +24,7 @@ import { useUiStore, useOtpStore, useUserStore } from '@/store';
  * @returns Json with the verification code
  */
 export default function ModalOtp(props: ModalOtpProps): JSX.Element {
-  const { handleClose, open, onSubmit, closeApp, title, textButton, setOtpUuid } = props;
+  const { handleClose, open, onSubmit, closeApp, title, textButton, setOtpUuid, processCode } = props;
 
   const schemaFormOtp = getSchema(['otp']);
 
@@ -53,7 +53,7 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
 
   const requestTFACode = useCallback(async () => {
     customApi
-      .post(`/users/${user.userId}/tfa`, { otpProcessCode: 'CHANGE_PASSWORD_OTP' })
+      .post(`/users/${user.userId}/tfa`, { otpProcessCode: processCode ?? '' })
       .then((response) => {
         setOtpUuid(response.data.data.otpUuId);
       })
