@@ -75,7 +75,7 @@ export default function BackInformation(props: BackInformationProps): JSX.Elemen
             <Typography variant="subtitle2">{expDate.substring(0, 2) + '/' + expDate.substring(2)}</Typography>
           </Box>
           <Box pr={3}>
-            <Typography variant="body2">CVC</Typography>
+            <Typography variant="body2">CVV</Typography>
             <Typography variant="subtitle2">{cvc}</Typography>
           </Box>
         </Box>
