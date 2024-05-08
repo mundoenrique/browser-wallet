@@ -12,7 +12,7 @@ export default function UserWelcome(): JSX.Element {
   const { user } = useUserStore();
 
   return (
-    <Box sx={{ display: 'flex', mb: { xs: 2, md: 0 }, mt: { md: 5 }, width: 320, mx: 'auto' }}>
+    <Box sx={{ display: 'flex', width: 320, mx: 'auto', mb: { xs: 3, md: 5 } }}>
       <Avatar
         sx={{
           width: 32,

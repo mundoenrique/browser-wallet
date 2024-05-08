@@ -64,16 +64,25 @@ export default function Dashboard() {
           flexDirection: 'column',
         }}
       >
-        <Box sx={{ width: { xs: '100%', sm: 320 }, mx: { xs: 'auto', md: 3 } }}>
+        <Box
+          sx={{
+            width: { xs: '100%', sm: 320 },
+            mx: { xs: 'auto', md: 3 },
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            height: '100%',
+          }}
+        >
           <UserWelcome />
 
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              minHeight: 'calc(100vh - 92px)',
               alignItems: 'center',
               justifyContent: { xs: 'flex-start', md: 'center' },
+              mb: { xs: '60px', md: 0 },
             }}
           >
             <CardInformation />
@@ -87,7 +96,6 @@ export default function Dashboard() {
                 bgcolor: { xs: 'white', sm: 'initial' },
                 borderRadius: '14px',
                 mt: 2,
-                pb: { xs: 3, sm: 'auto' },
               }}
             >
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, mt: 2, width: 320 }}>
@@ -120,7 +128,7 @@ export default function Dashboard() {
                   </Typography>
                 )}
               </Box>
-              <Box sx={{ width: 320, minHeight: '320px', mb: '40px' }}>
+              <Box sx={{ width: 320, minHeight: '300px' }}>
                 <LastMovements
                   data={movementData}
                   loading={loadingMovements}
