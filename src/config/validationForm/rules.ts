@@ -52,10 +52,10 @@ export const validationRules: ValidationRule = {
     .test('companyPositionValid', 'Solo se aceptan letras', (value) => regularExpressions.namesValid?.test(value)),
   phoneNumber: yup
     .string()
-    .required('Ingresa un numero de celular')
+    .required('Ingresa un número de celular')
     .min(9, 'Número de celular no válido')
     .max(9, 'Número de celular no válido')
-    .test('celularValid', 'Ingresa un numero de celular', (value) => regularExpressions.onlyNumber?.test(value)),
+    .test('celularValid', 'Ingresa un número de celular', (value) => regularExpressions.onlyNumber?.test(value)),
   isPep: yup.string().nonNullable().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
   pepForm: yup.object().shape({
     isRelativeAlive: yup.string().oneOf(['true', 'false'], 'Debes seleccionar una opción'),
