@@ -62,7 +62,7 @@ export default function InputPass(props: TextFieldProps): JSX.Element {
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton aria-label="toggle password visibility" onClick={togglePasswordVisiblity} edge="end">
-                      {passwordShown ? <Visibility /> : <VisibilityOff />}
+                      {passwordShown ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 }
