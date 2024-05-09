@@ -22,11 +22,22 @@ export const useOtpStore = create<OtpStore>()(
        */
       counting: false,
       /**
-       * OTP request value
+       * OTP request uuid value
        */
       otpUuid: '',
       /**
-       *Set the Otp Value
+       * Otp code of client
+       */
+      otpCode: '',
+      /**
+       * Set Otp Code Value
+       */
+      setOtpCode: (value) =>
+        set({
+          otpCode: value,
+        }),
+      /**
+       *Set the Otp uuid Value
        */
       setOtpUuid: (value) => set({ otpUuid: value }),
       /**

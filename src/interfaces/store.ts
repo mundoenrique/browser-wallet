@@ -221,6 +221,8 @@ export interface OtpStore {
   timeLeft: number;
   counting: boolean;
   otpUuid: string;
+  otpCode: string;
+  setOtpCode: (value: string) => void;
   setOtpUuid: (value: string) => void;
   setCounting: (value: boolean) => void;
   countdown: () => void;

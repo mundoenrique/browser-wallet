@@ -176,13 +176,7 @@ export default function CardInformation() {
       </BodyCard>
 
       {open && (
-        <ModalOtp
-          open={open}
-          handleClose={() => setOpen(false)}
-          onSubmit={onSubmitOtp}
-          setOtpUuid={setOtpUuid}
-          processCode="SEE_CARD_NUMBER"
-        />
+        <ModalOtp open={open} handleClose={() => setOpen(false)} onSubmit={onSubmitOtp} processCode="SEE_CARD_NUMBER" />
       )}
     </>
   );
