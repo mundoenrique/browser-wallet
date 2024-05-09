@@ -220,6 +220,10 @@ export interface OtpStore {
   otpValid: 'OTP' | 'PASSWORD' | 'ENDING' | string | undefined;
   timeLeft: number;
   counting: boolean;
+  otpUuid: string;
+  otpCode: string;
+  setOtpCode: (value: string) => void;
+  setOtpUuid: (value: string) => void;
   setCounting: (value: boolean) => void;
   countdown: () => void;
   setTime: (value: number) => void;

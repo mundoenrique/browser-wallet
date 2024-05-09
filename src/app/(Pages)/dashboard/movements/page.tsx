@@ -1,8 +1,7 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { useTheme } from '@mui/material/styles';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
 import { useEffect, useRef, useState, useCallback } from 'react';
 //Internal app
 import { useUserStore } from '@/store';
@@ -16,12 +15,15 @@ import { InputSelect, LastMovements, Linking, ModalError } from '@/components';
  * @returns Array with the last three months
  */
 const dateRank = (): { value: string; text: string }[] => {
-  let i: number;
+  const handleDate = dayjs().locale('es');
+
   let months: { value: string; text: string }[] = [];
-  for (i = 0; i < 3; i++) {
+
+  for (let i = 0; i < 3; i++) {
+    const monthDate = handleDate.subtract(i, 'month');
     months.push({
-      text: dayjs().subtract(i, 'month').locale('es').format('MMMM'),
-      value: `${dayjs().subtract(i, 'month').locale('es').format('MM/YYYY')}`,
+      text: monthDate.format('MMMM'),
+      value: `${monthDate.format('MM/YYYY')}`,
     });
   }
   return months;
@@ -38,6 +40,8 @@ export default function Movements() {
   const [isError, setIsError] = useState<boolean>(false);
   const [errorModal, setErrorModal] = useState<boolean>(false);
 
+  const initialized = useRef<boolean>(false);
+
   const { setCurrentItem } = useMenuStore();
   const { updateTitle } = useNavTitleStore();
 
@@ -46,29 +50,21 @@ export default function Movements() {
 
   const theme = useTheme();
 
+  const match = useMediaQuery(theme.breakpoints.down('md'));
+
   const scrollHandle = useCallback(async () => {
-    if (containerDesktop.current && !isLoading && currentPage <= lastPage - 1) {
-      let scroll = containerDesktop.current?.scrollHeight - window.scrollY - window.innerHeight;
+    const container = containerDesktop.current || containerPWA.current;
+    if (!isLoading && container && currentPage < lastPage) {
+      if (match) {
+        let scroll = container.scrollHeight - container.scrollTop - container.clientHeight;
+        scroll <= 20 && setCurrentPage((prevPage) => prevPage + 1);
+      } else {
+        let scroll = container?.scrollHeight - window.scrollY - window.innerHeight;
 
-      if (scroll <= 100) {
-        setCurrentPage((prevPage) => prevPage + 1);
-      }
-    } else if (containerPWA.current && !isLoading && currentPage <= lastPage - 1) {
-      let scroll =
-        containerPWA.current?.scrollHeight - containerPWA.current?.scrollTop - containerPWA.current?.clientHeight;
-
-      if (scroll <= 20) {
-        setCurrentPage((prevPage) => prevPage + 1);
+        scroll <= 100 && setCurrentPage((prevPage) => prevPage + 1);
       }
     }
   }, [setCurrentPage, isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    window.addEventListener('scroll', scrollHandle);
-    return () => {
-      window.removeEventListener('scroll', scrollHandle);
-    };
-  }, [scrollHandle]);
 
   const getMovementsData = async () => {
     setIsloading(true);
@@ -80,7 +76,7 @@ export default function Movements() {
           date: filterMonth,
           days: 90,
           limit: 20,
-          currentPage: currentPage,
+          page: currentPage,
         },
       })
       .then((response) => {
@@ -102,7 +98,12 @@ export default function Movements() {
   };
 
   useEffect(() => {
-    getMovementsData();
+    if (!initialized.current) {
+      getMovementsData();
+      initialized.current = true;
+    } else {
+      initialized.current = false;
+    }
   }, [currentPage, filterMonth]); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -115,11 +116,17 @@ export default function Movements() {
     setCurrentItem('home');
   }, [updateTitle, setCurrentItem]);
 
+  useEffect(() => {
+    window.addEventListener('scroll', scrollHandle);
+    return () => {
+      window.removeEventListener('scroll', scrollHandle);
+    };
+  }, [scrollHandle]);
+
   return (
     <>
       <Box
         sx={{
-          minHeight: { xs: 'calc(100vh - 120px)', md: 'auto' },
           display: 'flex',
           flexDirection: 'column',
           justifyContent: { xs: 'flex-start', md: 'center' },
@@ -128,6 +135,9 @@ export default function Movements() {
           [theme.breakpoints.up('md')]: {
             minHeight: 'calc(100vh + 100px)',
             width: 360,
+          },
+          [theme.breakpoints.down('md')]: {
+            height: 'calc(100vh - 120px)',
           },
         }}
         ref={containerDesktop}

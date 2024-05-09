@@ -148,7 +148,6 @@ export interface FormPassProps {
  * @typeParam handleResendOTP: () => void;
  */
 export interface AuthOtpFormProps {
-  optUuid: string | null;
   handleResendOTP: () => void;
 }
 

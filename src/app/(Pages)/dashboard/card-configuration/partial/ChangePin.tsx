@@ -75,7 +75,6 @@ export default function ChangePin() {
         open={openOtp}
         handleClose={() => setOpenOtp(false)}
         onSubmit={onSubmitOtp}
-        setOtpUuid={() => {}}
         processCode="CHANGE_PASSWORD_OTP"
       />
 

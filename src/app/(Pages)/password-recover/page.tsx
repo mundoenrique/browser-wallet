@@ -15,11 +15,10 @@ export default function Recover() {
     user: { userId },
   } = useUserStore();
   const { setModalError } = useUiStore();
-  const { countdown, counting, setCounting, setTime, otpValid } = useOtpStore();
+  const { countdown, counting, setCounting, setTime, otpValid, otpUuid, setOtpUuid } = useOtpStore();
 
   const initialized = useRef<boolean>(false);
   const timerRef = useRef<any>();
-  const [optUuid, setOtpUuid] = useState<string>('');
 
   const requestTFACode = useCallback(async () => {
     customApi
@@ -56,7 +55,7 @@ export default function Recover() {
 
   const configRecoverRoutes = (page: any) => {
     const routes: { [key: string]: any } = {
-      OTP: <OTP optUuid={optUuid} handleResendOTP={requestTFACode} />,
+      OTP: <OTP handleResendOTP={requestTFACode} />,
       PASSWORD: <UpdatePass />,
     };
     return routes[page] || routes['OTP'];
