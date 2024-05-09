@@ -30,7 +30,6 @@ const phaseToStep = (phase: string) => {
 
 export default function DataUser({ user }: DataUserProps) {
   const userObject = JSON.parse(user);
-  // const customApi = useApi();
   const [userValidation, setUserValidation] = useState<any>(null);
   const updateFormState = useRegisterStore((state) => state.updateFormState);
   const updateStep = useRegisterStore((state) => state.updateStep);
