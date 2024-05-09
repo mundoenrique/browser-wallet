@@ -175,6 +175,11 @@ const theme = createTheme({
           opacity: 1;
         }
       }
+
+      input::-ms-reveal,
+      input::-ms-clear {
+          display: none;
+      }
 			`,
     },
     MuiContainer: {
