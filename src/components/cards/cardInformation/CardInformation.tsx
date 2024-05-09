@@ -60,7 +60,7 @@ export default function CardInformation() {
 
   const [balanceError, setBalanceError] = useState<boolean>(false);
 
-  const [otpUuid, setOtpUuid] = useState('');
+  const [otpUuid] = useState('');
 
   const handleShowDetaild = () => {
     setOpen(true);
@@ -79,9 +79,11 @@ export default function CardInformation() {
 
       customApi
         .post(`/users/${userId}/validate/tfa`, payload)
-        .then(() => {
-          setOpen(false);
-          getDecryptData();
+        .then((response) => {
+          if (response.data.code === '200.00.000') {
+            setOpen(false);
+            getDecryptData();
+          }
         })
         .catch((e) => {
           setModalError({ error: e });
