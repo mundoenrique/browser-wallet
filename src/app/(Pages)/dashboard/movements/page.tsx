@@ -16,12 +16,15 @@ import { InputSelect, LastMovements, Linking, ModalError } from '@/components';
  * @returns Array with the last three months
  */
 const dateRank = (): { value: string; text: string }[] => {
-  let i: number;
+  const handleDate = dayjs().locale('es');
+
   let months: { value: string; text: string }[] = [];
-  for (i = 0; i < 3; i++) {
+
+  for (let i = 0; i < 3; i++) {
+    const monthDate = handleDate.subtract(i, 'month');
     months.push({
-      text: dayjs().subtract(i, 'month').locale('es').format('MMMM'),
-      value: `${dayjs().subtract(i, 'month').locale('es').format('MM/YYYY')}`,
+      text: monthDate.format('MMMM'),
+      value: `${monthDate.format('MM/YYYY')}`,
     });
   }
   return months;
@@ -79,7 +82,6 @@ export default function Movements() {
         },
       })
       .then((response) => {
-        console.log('movements', response);
         const {
           data: { data, metadata },
         } = response;
