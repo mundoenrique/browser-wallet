@@ -1,8 +1,7 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { useTheme } from '@mui/material/styles';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
 import { useEffect, useRef, useState, useCallback } from 'react';
 //Internal app
 import { useUserStore } from '@/store';
@@ -51,19 +50,18 @@ export default function Movements() {
 
   const theme = useTheme();
 
+  const match = useMediaQuery(theme.breakpoints.down('md'));
+
   const scrollHandle = useCallback(async () => {
-    if (containerDesktop.current && !isLoading && currentPage < lastPage) {
-      let scroll = containerDesktop.current?.scrollHeight - window.scrollY - window.innerHeight;
+    const container = containerDesktop.current || containerPWA.current;
+    if (!isLoading && container && currentPage < lastPage) {
+      if (match) {
+        let scroll = container.scrollHeight - container.scrollTop - container.clientHeight;
+        scroll <= 20 && setCurrentPage((prevPage) => prevPage + 1);
+      } else {
+        let scroll = container?.scrollHeight - window.scrollY - window.innerHeight;
 
-      if (scroll <= 100) {
-        setCurrentPage((prevPage) => prevPage + 1);
-      }
-    } else if (containerPWA.current && !isLoading && currentPage < lastPage) {
-      let scroll =
-        containerPWA.current?.scrollHeight - containerPWA.current?.scrollTop - containerPWA.current?.clientHeight;
-
-      if (scroll <= 20) {
-        setCurrentPage((prevPage) => prevPage + 1);
+        scroll <= 100 && setCurrentPage((prevPage) => prevPage + 1);
       }
     }
   }, [setCurrentPage, isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
@@ -129,7 +127,6 @@ export default function Movements() {
     <>
       <Box
         sx={{
-          minHeight: { xs: 'calc(100vh - 120px)', md: 'auto' },
           display: 'flex',
           flexDirection: 'column',
           justifyContent: { xs: 'flex-start', md: 'center' },
@@ -138,6 +135,9 @@ export default function Movements() {
           [theme.breakpoints.up('md')]: {
             minHeight: 'calc(100vh + 100px)',
             width: 360,
+          },
+          [theme.breakpoints.down('md')]: {
+            height: 'calc(100vh - 120px)',
           },
         }}
         ref={containerDesktop}

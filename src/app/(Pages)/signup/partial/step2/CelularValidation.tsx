@@ -15,10 +15,10 @@ import { useOtpStore, useRegisterStore, useUiStore } from '@/store';
 
 export default function CelularValidation() {
   const schema = getSchema(['otp']);
-  const [optUuid, setOtpUuid] = useState<string>('');
+
   const initialized = useRef<boolean>(false);
   const { inc, dec, onboardingUuId, ONB_PHASES_TERMS } = useRegisterStore();
-  const { timeLeft, countdown, counting, setCounting, setTime } = useOtpStore();
+  const { timeLeft, countdown, counting, setCounting, setTime, otpUuid, setOtpUuid } = useOtpStore();
   const timerRef = useRef<any>();
   const [open, setOpen] = useState(false);
 
@@ -48,7 +48,7 @@ export default function CelularValidation() {
 
     const request = {
       otpProcessCode: 'ONBOARDING_OTP',
-      otpUuId: optUuid,
+      otpUuId: otpUuid,
       otpCode: code,
       currentPhaseCode: 'ONB_PHASES_OPT',
     };
