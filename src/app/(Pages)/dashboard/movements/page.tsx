@@ -38,6 +38,8 @@ export default function Movements() {
   const [isError, setIsError] = useState<boolean>(false);
   const [errorModal, setErrorModal] = useState<boolean>(false);
 
+  const initialized = useRef<boolean>(false);
+
   const { setCurrentItem } = useMenuStore();
   const { updateTitle } = useNavTitleStore();
 
@@ -47,13 +49,13 @@ export default function Movements() {
   const theme = useTheme();
 
   const scrollHandle = useCallback(async () => {
-    if (containerDesktop.current && !isLoading && currentPage <= lastPage - 1) {
+    if (containerDesktop.current && !isLoading && currentPage < lastPage) {
       let scroll = containerDesktop.current?.scrollHeight - window.scrollY - window.innerHeight;
 
       if (scroll <= 100) {
         setCurrentPage((prevPage) => prevPage + 1);
       }
-    } else if (containerPWA.current && !isLoading && currentPage <= lastPage - 1) {
+    } else if (containerPWA.current && !isLoading && currentPage < lastPage) {
       let scroll =
         containerPWA.current?.scrollHeight - containerPWA.current?.scrollTop - containerPWA.current?.clientHeight;
 
@@ -62,13 +64,6 @@ export default function Movements() {
       }
     }
   }, [setCurrentPage, isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    window.addEventListener('scroll', scrollHandle);
-    return () => {
-      window.removeEventListener('scroll', scrollHandle);
-    };
-  }, [scrollHandle]);
 
   const getMovementsData = async () => {
     setIsloading(true);
@@ -80,10 +75,11 @@ export default function Movements() {
           date: filterMonth,
           days: 90,
           limit: 20,
-          currentPage: currentPage,
+          page: currentPage,
         },
       })
       .then((response) => {
+        console.log('movements', response);
         const {
           data: { data, metadata },
         } = response;
@@ -102,7 +98,12 @@ export default function Movements() {
   };
 
   useEffect(() => {
-    getMovementsData();
+    if (!initialized.current) {
+      getMovementsData();
+      initialized.current = true;
+    } else {
+      initialized.current = false;
+    }
   }, [currentPage, filterMonth]); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -114,6 +115,13 @@ export default function Movements() {
     updateTitle('Movimientos');
     setCurrentItem('home');
   }, [updateTitle, setCurrentItem]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', scrollHandle);
+    return () => {
+      window.removeEventListener('scroll', scrollHandle);
+    };
+  }, [scrollHandle]);
 
   return (
     <>
