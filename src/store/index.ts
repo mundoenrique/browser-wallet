@@ -11,5 +11,6 @@ export * from '@/store/clientStore';
 export * from '@/store/sessionStore';
 export * from '@/store/catalogsStore';
 export * from '@/store/registerStore';
+export * from '@/store/backLinkStore';
 export * from '@/store/navTitleStore';
 export * from '@/store/configCardStore';

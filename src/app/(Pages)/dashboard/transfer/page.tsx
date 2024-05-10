@@ -13,11 +13,13 @@ import { useMenuStore, useNavTitleStore } from '@/store';
 import { ContainerLayout, InputText, InputTextPay, ModalResponsive } from '@/components';
 
 export default function Transfer() {
+  const { setCurrentItem } = useMenuStore();
+  const { updateTitle } = useNavTitleStore();
+
+  const [dataForm, setDataForm] = useState<any>();
   const [openRc, setOpenRc] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [dataForm, setDataForm] = useState<any>();
-  const { updateTitle } = useNavTitleStore();
-  const { setCurrentItem } = useMenuStore();
+
   const schema = getSchema(['numberClient', 'amount']);
 
   const { control, handleSubmit, reset } = useForm({

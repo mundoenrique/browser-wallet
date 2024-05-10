@@ -13,8 +13,10 @@ import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/compone
 export default function Survey() {
   const { updateTitle } = useNavTitleStore();
   const { updatePage } = useConfigCardStore();
+
   const [openOtp, setOpenOtp] = useState<boolean>(false);
   const [openRc, setOpenRc] = useState<boolean>(false);
+
   const schema = getSchema(['blockType']);
 
   useEffect(() => {

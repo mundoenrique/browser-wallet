@@ -10,6 +10,7 @@ import { ContainerLayout, HandleCard, Linking } from '@/components';
 export default function DeleteAccount() {
   const { updateTitle } = useNavTitleStore();
   const { updatePage } = useConfigCardStore();
+
   useEffect(() => {
     updateTitle('Eliminar cuenta');
   }, [updateTitle]);

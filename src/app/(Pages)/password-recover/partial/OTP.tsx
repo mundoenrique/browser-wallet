@@ -4,31 +4,31 @@ import { useForm } from 'react-hook-form';
 import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 //Internal app
+import { api } from '@/utils';
 import { getSchema } from '@/config';
-import { useApi } from '@/hooks/useApi';
 import { AuthOtpFormProps } from '@/interfaces';
 import InputOTP from '@/components/form/InputOTP';
 import { encryptForge } from '@/utils/toolHelper';
 import { useOtpStore, useUiStore, useUserStore } from '@/store';
 
 export default function AuthOtp(props: AuthOtpFormProps) {
-  const customApi = useApi();
-  const schema = getSchema(['otp']);
   const { handleResendOTP } = props;
+
+  const {
+    user: { userId },
+  } = useUserStore();
+  const { getUserPhone } = useUserStore();
   const { setOTPValid, otpUuid } = useOtpStore();
+  const { setLoadingScreen, setModalError } = useUiStore();
+
+  const schema = getSchema(['otp']);
+  const phoneNumber: string = getUserPhone();
 
   const handleReset = () => {
     handleResendOTP();
     reset();
   };
 
-  const { setLoadingScreen, setModalError } = useUiStore();
-  const {
-    user: { userId },
-  } = useUserStore();
-  const { getUserPhone } = useUserStore();
-
-  const phoneNumber: string = getUserPhone();
   const { control, handleSubmit, reset } = useForm({
     defaultValues: { otp: '' },
     resolver: yupResolver(schema),
@@ -42,7 +42,8 @@ export default function AuthOtp(props: AuthOtpFormProps) {
       otpUuId: otpUuid,
       otpCode: encryptForge(otp),
     };
-    customApi
+
+    api
       .post(`/users/${userId}/validate/tfa`, payload)
       .then((response) => {
         const { status } = response;

@@ -31,9 +31,11 @@ export default function PurpleLayout({
   width = '100%',
 }: PurpleLayoutProps): JSX.Element {
   const { title } = useNavTitleStore();
-  const [widthCurrent, setWidthCurrent] = useState<number>();
+
   const [height, setHeight] = useState<number>();
+  const [widthCurrent, setWidthCurrent] = useState<number>();
   const [hideLayout, setHideLayout] = useState<boolean>(true);
+
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

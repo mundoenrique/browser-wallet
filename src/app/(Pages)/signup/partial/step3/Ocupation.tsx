@@ -5,18 +5,18 @@ import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Collapse, Typography } from '@mui/material';
 //Internal app
+import { api } from '@/utils';
 import CardStep from '../CardStep';
 import { getSchema } from '@/config';
-import { useApi } from '@/hooks/useApi';
 import { InputSelect, InputText } from '@/components';
 import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 
 export default function Ocupation() {
-  const customApi = useApi();
   const [ocupations, setOcupations] = useState<boolean>(false);
-  const { updateStep, inc, updateFormState, ONB_PHASES_CONSULT_DATA, onboardingUuId } = useRegisterStore();
-  const { setLoadingScreen, loadingScreen, setModalError } = useUiStore();
+
   const { updateCatalog, occupationCatalog } = useCatalogsStore();
+  const { setLoadingScreen, loadingScreen, setModalError } = useUiStore();
+  const { updateStep, inc, updateFormState, ONB_PHASES_CONSULT_DATA, onboardingUuId } = useRegisterStore();
 
   const schema = ocupations
     ? getSchema(['occupationCode', 'companyType', 'companyName', 'companyPosition'])
@@ -66,7 +66,7 @@ export default function Ocupation() {
 
     setLoadingScreen(true);
 
-    customApi
+    api
       .put('/onboarding/consultantdata', requestFormData)
       .then(() => {
         updateFormState('ONB_PHASES_CONSULT_DATA', requestFormData.request);
@@ -82,7 +82,7 @@ export default function Ocupation() {
 
   useEffect(() => {
     const fetchOccupationsCatalg = async () => {
-      customApi
+      api
         .post('/catalogs/search', { catalogCode: 'OCCUPATIONS_CATALOG' })
         .then((response) => {
           updateCatalog(

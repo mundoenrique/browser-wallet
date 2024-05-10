@@ -11,9 +11,11 @@ import { useNavTitleStore, useMenuStore } from '@/store';
 import { ContainerLayout, HandleCard } from '@/components';
 
 export default function Help() {
-  const { push } = useRouter();
-  const { updateTitle } = useNavTitleStore();
   const { setCurrentItem } = useMenuStore();
+  const { updateTitle } = useNavTitleStore();
+
+  const { push } = useRouter();
+
   const handleQuestions = () => {
     push('/dashboard/help/frequent-questions');
   };

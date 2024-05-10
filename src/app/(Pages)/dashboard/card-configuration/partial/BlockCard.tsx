@@ -6,25 +6,23 @@ import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography, Stack } from '@mui/material';
 //Internal app
+import { api } from '@/utils';
 import { getSchema } from '@/config';
-import { useApi } from '@/hooks/useApi';
 import { useUserStore, useUiStore } from '@/store';
 import { useNavTitleStore, useConfigCardStore } from '@/store';
 import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/components';
 
 export default function BlockCard() {
-  const { updateTitle } = useNavTitleStore();
-  const { updatePage } = useConfigCardStore();
-  const [open, setOpen] = useState<boolean>(false);
-  const schema = getSchema(['blockType']);
-
-  const customApi = useApi();
-
   const router = useRouter();
 
   const { getUserCardId } = useUserStore();
-
+  const { updateTitle } = useNavTitleStore();
+  const { updatePage } = useConfigCardStore();
   const { setModalError, setLoadingScreen } = useUiStore();
+
+  const [open, setOpen] = useState<boolean>(false);
+
+  const schema = getSchema(['blockType']);
 
   useEffect(() => {
     updateTitle('Bloquear tarjeta');
@@ -37,7 +35,7 @@ export default function BlockCard() {
 
   const onSubmit = async (data: any) => {
     setLoadingScreen(true);
-    customApi
+    api
       .post(`/cards/${getUserCardId()}/block`, data.blockType)
       .then(() => {
         setOpen(!open);

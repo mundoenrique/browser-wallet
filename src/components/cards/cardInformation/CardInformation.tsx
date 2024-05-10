@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 //Internal app
-import { useApi } from '@/hooks/useApi';
+import { api } from '@/utils';
 import { useUiStore, useUserStore } from '@/store';
 import ModalOtp from '@/components/modal/ModalOtp';
 import BackInformation from './partial/BackInformation';
@@ -37,30 +37,20 @@ const cardTypeQuery = (cardType: string) => {
  * @returns 3D card with all the cardholder information.
  */
 export default function CardInformation() {
-  const [open, setOpen] = useState<boolean>(false);
-
-  const [showDetails, setShowDetails] = useState<boolean>(false);
-
-  const customApi = useApi();
-
   const {
     getUserCardId,
     user: { userId },
   } = useUserStore();
-
   const { setModalError, setLoadingScreen } = useUiStore();
 
-  const [cardData, setCardData] = useState<{ [key: string]: string } | null>(null);
-
-  const [cardbackData, setCardBackData] = useState<{ [key: string]: string } | null>(null);
-
-  const [balance, setBalance] = useState<{ [key: string]: string } | null>(null);
-
-  const [cardInformationError, setCardInformationError] = useState<boolean>(false);
-
-  const [balanceError, setBalanceError] = useState<boolean>(false);
-
   const [otpUuid] = useState('');
+  const [open, setOpen] = useState<boolean>(false);
+  const [showDetails, setShowDetails] = useState<boolean>(false);
+  const [balanceError, setBalanceError] = useState<boolean>(false);
+  const [balance, setBalance] = useState<{ [key: string]: string } | null>(null);
+  const [cardData, setCardData] = useState<{ [key: string]: string } | null>(null);
+  const [cardInformationError, setCardInformationError] = useState<boolean>(false);
+  const [cardbackData, setCardBackData] = useState<{ [key: string]: string } | null>(null);
 
   const handleShowDetaild = () => {
     setOpen(true);
@@ -77,7 +67,7 @@ export default function CardInformation() {
         otpCode: encryptForge(otp),
       };
 
-      customApi
+      api
         .post(`/users/${userId}/validate/tfa`, payload)
         .then((response) => {
           if (response.data.code === '200.00.000') {
@@ -95,7 +85,7 @@ export default function CardInformation() {
 
   const getCardInformation = async () => {
     setCardInformationError(false);
-    customApi
+    api
       .get(`/cards/${getUserCardId()}`)
       .then((response) => {
         setCardData(response.data.data);
@@ -108,7 +98,7 @@ export default function CardInformation() {
 
   const getBalance = async () => {
     setBalanceError(false);
-    customApi
+    api
       .get(`/cards/${getUserCardId()}/balance`)
       .then((response) => {
         setBalance(response.data.data);
@@ -120,7 +110,7 @@ export default function CardInformation() {
   };
 
   const getDecryptData = async () => {
-    customApi
+    api
       .get(`/cards/${getUserCardId()}`, {
         params: {
           ...cardTypeQuery(cardData?.cardType ?? ''),

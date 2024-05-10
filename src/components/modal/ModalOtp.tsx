@@ -5,9 +5,9 @@ import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useCallback, useRef } from 'react';
 //Internal app
+import { api } from '@/utils';
 import { getSchema } from '@/config';
 import InputOTP from '../form/InputOTP';
-import { useApi } from '@/hooks/useApi';
 import { ModalOtpProps } from '@/interfaces';
 import ModalResponsive from './ModalResponsive';
 import { useUiStore, useOtpStore, useUserStore } from '@/store';
@@ -26,21 +26,15 @@ import { useUiStore, useOtpStore, useUserStore } from '@/store';
 export default function ModalOtp(props: ModalOtpProps): JSX.Element {
   const { handleClose, open, onSubmit, closeApp, title, textButton, processCode } = props;
 
-  const schemaFormOtp = getSchema(['otp']);
-
   const { setModalError } = useUiStore();
-
+  const { user, getUserPhone } = useUserStore();
   const { countdown, counting, setCounting, setTime, setOtpUuid } = useOtpStore();
 
-  const { user, getUserPhone } = useUserStore();
-
-  const customApi = useApi();
-
   const timerRef = useRef<any>();
-
+  const runDestroy = useRef<boolean>(false);
   const initialized = useRef<boolean>(false);
 
-  const runDestroy = useRef<boolean>(false);
+  const schemaFormOtp = getSchema(['otp']);
 
   const { control, handleSubmit, reset, formState } = useForm({
     defaultValues: { otp: '' },
@@ -52,7 +46,7 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
   }
 
   const requestTFACode = useCallback(async () => {
-    customApi
+    api
       .post(`/users/${user.userId}/tfa`, { otpProcessCode: processCode ?? '' })
       .then((response) => {
         setOtpUuid(response.data.data.otpUuId);

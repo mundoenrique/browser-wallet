@@ -1,27 +1,25 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { Card } from '@mui/material';
+import { useCallback, useEffect, useRef } from 'react';
 //Internal
+import { api } from '@/utils';
 import OTP from './partial/OTP';
-import { useApi } from '@/hooks/useApi';
 import UpdatePass from './partial/UpdatePass';
 import { useOtpStore, useUiStore, useUserStore } from '@/store';
 
 export default function Recover() {
-  const customApi = useApi();
-
   const {
     user: { userId },
   } = useUserStore();
   const { setModalError } = useUiStore();
-  const { countdown, counting, setCounting, setTime, otpValid, otpUuid, setOtpUuid } = useOtpStore();
+  const { countdown, counting, setCounting, setTime, otpValid, setOtpUuid } = useOtpStore();
 
-  const initialized = useRef<boolean>(false);
   const timerRef = useRef<any>();
+  const initialized = useRef<boolean>(false);
 
   const requestTFACode = useCallback(async () => {
-    customApi
+    api
       .post(`/users/${userId}/tfa`, { otpProcessCode: 'CHANGE_PASSWORD_OTP' })
       .then((response) => {
         const { data, status } = response;

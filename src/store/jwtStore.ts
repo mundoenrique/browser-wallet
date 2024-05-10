@@ -15,13 +15,8 @@ export const useJwtStore = create<JwtStoreProps>()(
   devtools(
     persist(
       (set) => ({
-        /**
-         * Current token
-         */
         token: null,
-        /**
-         * Replaces the current token
-         */
+
         setToken: (token) => set({ token }),
       }),
       {

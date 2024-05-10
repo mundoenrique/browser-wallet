@@ -12,9 +12,11 @@ import { useMenuStore, useNavTitleStore } from '@/store';
 import { ContainerLayout, InputTextPay, Linking } from '@/components';
 
 export default function Debt() {
-  const [openRc, setOpenRc] = useState<boolean>(false);
-  const { updateTitle } = useNavTitleStore();
   const { setCurrentItem } = useMenuStore();
+  const { updateTitle } = useNavTitleStore();
+
+  const [openRc, setOpenRc] = useState<boolean>(false);
+
   const schema = getSchema(['amount']);
 
   const { control, handleSubmit } = useForm({
@@ -22,7 +24,7 @@ export default function Debt() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     setOpenRc(true);
   };
 

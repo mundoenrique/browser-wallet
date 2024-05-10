@@ -3,27 +3,27 @@
 import { useState } from 'react';
 import { Button, Typography } from '@mui/material';
 //Internal app
-import { useApi } from '@/hooks/useApi';
+import { api } from '@/utils';
 import { useRouter } from 'next/navigation';
 import { encryptForge } from '@/utils/toolHelper';
 import { useUiStore, useUserStore } from '@/store';
 import { FormPass, ModalResponsive } from '@/components';
 
 export default function UpdatePass() {
-  const customApi = useApi();
-  const { push } = useRouter();
-
-  const [open, setOpen] = useState<boolean>(false);
-
-  const { setLoadingScreen, setModalError } = useUiStore();
   const {
     user: { userId },
   } = useUserStore();
+  const { setLoadingScreen, setModalError } = useUiStore();
+
+  const [open, setOpen] = useState<boolean>(false);
+
+  const { push } = useRouter();
 
   const onSubmit = async (data: any) => {
     const { newPasswordConfirmation } = data;
     setLoadingScreen(true);
-    customApi
+
+    api
       .put(`/users/${userId}/credentials`, { password: encryptForge(newPasswordConfirmation) })
       .then((response) => {
         const { status } = response;

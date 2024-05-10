@@ -11,10 +11,12 @@ import { useNavTitleStore, useMenuStore } from '@/store';
 import { ContainerLayout, InputPass, ModalResponsive } from '@/components';
 
 export default function ChangePassword() {
-  const { updateTitle } = useNavTitleStore();
   const { setCurrentItem } = useMenuStore();
-  const [openOtp, setOpenOtp] = useState<boolean>(false);
+  const { updateTitle } = useNavTitleStore();
+
   const [openRc, setOpenRc] = useState<boolean>(false);
+  const [openOtp, setOpenOtp] = useState<boolean>(false);
+
   const schemaFormPassword = getSchema(['newPassword', 'newPasswordConfirmation', 'currentPassword']);
 
   const { control, handleSubmit, reset } = useForm({
@@ -22,11 +24,11 @@ export default function ChangePassword() {
     resolver: yupResolver(schemaFormPassword),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     setOpenOtp(true);
   };
 
-  const onSubmitOtp = async (data: any) => {
+  const onSubmitOtp = async () => {
     setOpenOtp(false);
     setOpenRc(true);
     reset();

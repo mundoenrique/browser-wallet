@@ -1,13 +1,14 @@
 import { render, waitFor, screen } from '@testing-library/react';
-import { useApi } from '@/hooks/useApi';
+//Internal app
+import { api } from '@/utils/api';
 import Recover from '@/app/(Pages)/password-recover/page';
 
 jest.mock('jose', () => ({
   compactDecrypt: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
 }));
 
-jest.mock('@/hooks/useApi', () => ({
-  useApi: jest.fn(() => ({
+jest.mock('@/utils/api', () => ({
+  api: jest.fn(() => ({
     post: jest.fn(() => Promise.resolve({ status: 200, data: { data: { otpUuId: 'mockedOtpUuid' } } })),
   })),
 }));
@@ -40,7 +41,7 @@ describe('Recover', () => {
   const mockApi = { post: jest.fn().mockResolvedValue({ status: 200 }) };
 
   beforeEach(() => {
-    (useApi as jest.Mock).mockReturnValue(mockApi);
+    (api as unknown as jest.Mock).mockReturnValue(mockApi);
     jest.clearAllMocks();
   });
 
@@ -101,7 +102,7 @@ describe('Recover', () => {
   //** This test checks if an error message is displayed when the API call fails
   it('displays error message when API call fails', async () => {
     const mockPost = jest.fn(() => Promise.reject(new Error('API error')));
-    jest.spyOn(require('@/hooks/useApi'), 'useApi').mockImplementation(() => ({ post: mockPost }));
+    jest.spyOn(require('@/utils/api'), 'api').mockImplementation(() => ({ post: mockPost }));
     render(<Recover />);
     await expect(mockPost).toHaveBeenCalled();
   });

@@ -3,21 +3,20 @@
 import NodeRSA from 'node-rsa';
 import { useEffect } from 'react';
 // Internal app
-import { api } from '@/utils/api';
-import { useJwtStore } from '@/store';
+import { api } from '@/utils';
 import LogoGreen from '%/images/LogoGreen';
 import { ChildrenProps } from '@/interfaces';
-import { useKeyStore } from '@/store/keyStore';
 import PurpleLayout from '../layout/PurpleLayout';
+import { useJwtStore, useKeyStore } from '@/store';
 import { removePEMHeadersAndFooters } from '@/utils/jwt';
 
 export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
+  const token = useJwtStore((state) => state.token);
+  const setKeys = useKeyStore((state) => state.setKeys);
+  const setToken = useJwtStore((state) => state.setToken);
   const activeKeys = useKeyStore((state) => state.activeKeys);
   const jwePublicKey = useKeyStore((state) => state.jwePublicKey);
   const jwsPublicKey = useKeyStore((state) => state.jwsPublicKey);
-  const setKeys = useKeyStore((state) => state.setKeys);
-  const token = useJwtStore((state) => state.token);
-  const setToken = useJwtStore((state) => state.setToken);
 
   useEffect(() => {
     if (!activeKeys) {

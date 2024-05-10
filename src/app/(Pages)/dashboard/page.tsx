@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
 import { useEffect, useState, useCallback } from 'react';
 //Internal app
-import { useApi } from '@/hooks/useApi';
+import { api } from '@/utils';
 import { useMenuStore, useUserStore } from '@/store';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
 import { CardDebt, LastMovements, Linking, ModalError, UserWelcome } from '@/components';
@@ -12,25 +12,19 @@ import { CardDebt, LastMovements, Linking, ModalError, UserWelcome } from '@/com
 export default function Dashboard() {
   const { push } = useRouter();
 
+  const { getUserCardId } = useUserStore();
   const { setCurrentItem } = useMenuStore();
 
-  const { getUserCardId } = useUserStore();
-
-  const customApi = useApi();
-
   const [movementData, setMovementData] = useState<[]>([]);
-
-  const [loadingMovements, setLoadingMovements] = useState<boolean>(false);
-
-  const [errorMovements, setErrorMovements] = useState<boolean>(false);
-
   const [errorModal, setErrorModal] = useState<boolean>(false);
+  const [errorMovements, setErrorMovements] = useState<boolean>(false);
+  const [loadingMovements, setLoadingMovements] = useState<boolean>(false);
 
   const getMovements = useCallback(async () => {
     setLoadingMovements(true);
     setErrorMovements(false);
     setErrorModal(false);
-    customApi
+    api
       .get(`/cards/${getUserCardId()}/transactions`, {
         params: {
           days: 90,

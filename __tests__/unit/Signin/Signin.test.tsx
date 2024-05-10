@@ -1,9 +1,9 @@
 import { useRouter } from 'next/navigation';
 import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 //Internal app
+import { api } from '@/utils/api';
 import Signin from '@/app/(Pages)/signin/page';
 import { renderInput, redirectLinks } from '../../tools/unitTestHelper.test';
-import { useApi } from '@/hooks/useApi';
 
 jest.mock('@next/third-parties/google', () => {
   return {
@@ -24,8 +24,8 @@ jest.mock('@/utils/toolHelper', () => {
   };
 });
 
-jest.mock('@/hooks/useApi', () => ({
-  useApi: jest.fn(),
+jest.mock('@/utils/api', () => ({
+  api: jest.fn(),
 }));
 
 jest.mock('next/navigation', () => ({
@@ -37,14 +37,14 @@ jest.mock('jose', () => ({
 }));
 
 describe('Signin', () => {
-  let form: HTMLFormElement
-  let passwordInput: HTMLInputElement
-  let toggleButton: HTMLButtonElement
-  let submitButton: HTMLElement
+  let form: HTMLFormElement;
+  let passwordInput: HTMLInputElement;
+  let toggleButton: HTMLButtonElement;
+  let submitButton: HTMLElement;
   const userData = {
     firstName: 'John',
     lastName: 'Doe',
-    userId: '943cc6d1-5f89-498d-933d-badba7a78046'
+    userId: '943cc6d1-5f89-498d-933d-badba7a78046',
   };
   const mockApi = {
     post: jest.fn().mockResolvedValue({ status: 200, data: { userId: userData.userId } }),
@@ -56,7 +56,7 @@ describe('Signin', () => {
 
   beforeEach(async () => {
     (useRouter as jest.Mock).mockReturnValue(mockRouter);
-    (useApi as jest.Mock).mockReturnValue(mockApi);
+    (api as unknown as jest.Mock).mockReturnValue(mockApi);
     await act(async () => {
       render(<Signin />);
     });
@@ -70,7 +70,7 @@ describe('Signin', () => {
     jest.clearAllMocks();
   });
 
- //** GET API getUserDetails and renders a title, subtitles.
+  //** GET API getUserDetails and renders a title, subtitles.
   it('Call API getUserDetails and should render logo, all text, titles, subtitles.', async () => {
     await mockApi.get(`/users/${userData.userId}`);
 
@@ -85,7 +85,7 @@ describe('Signin', () => {
     });
   });
 
-   //** Get user data error
+  //** Get user data error
   it('call API getUserDetails error', async () => {
     await mockApi.get.mockImplementation(() => {
       return Promise.reject(new Error('API error'));
@@ -118,8 +118,8 @@ describe('Signin', () => {
 
     const requestData = {
       userId: userData?.userId || '',
-      password: passwordInput.value
-    }
+      password: passwordInput.value,
+    };
 
     await mockApi.post('/users/credentials', requestData);
 
@@ -141,8 +141,6 @@ describe('Signin', () => {
 
     await waitFor(() => {
       expect(mockApi.post).toHaveBeenCalled();
-      // expect(screen.getByTitle('API error')).toBeInTheDocument();
     });
   });
-
 });

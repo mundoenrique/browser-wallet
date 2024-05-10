@@ -9,12 +9,7 @@ import { ConfigCardStore } from '@/interfaces';
  * @param updatePage - Function that sets the new value
  */
 export const useConfigCardStore = create<ConfigCardStore>()((set) => ({
-  /**
-   * Component name for de page/section rendering
-   */
   page: '',
-  /**
-   * Set value for the page component
-   */
+
   updatePage: (newPage) => set({ page: newPage }),
 }));
