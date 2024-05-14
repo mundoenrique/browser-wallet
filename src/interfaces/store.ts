@@ -217,7 +217,7 @@ export interface UserStore {
 }
 
 export interface OtpStore {
-  otpValid: 'OTP' | 'PASSWORD' | 'ENDING' | string | undefined;
+  otpValid: 'OTP' | 'PASSWORD' | 'ENDING' | undefined;
   timeLeft: number;
   counting: boolean;
   otpUuid: string;
@@ -227,5 +227,5 @@ export interface OtpStore {
   setCounting: (value: boolean) => void;
   countdown: () => void;
   setTime: (value: number) => void;
-  setOTPValid: (value: string) => void;
+  setOTPValid: (value: OtpStore['otpValid']) => void;
 }

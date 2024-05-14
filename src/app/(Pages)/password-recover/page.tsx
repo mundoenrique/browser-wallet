@@ -7,18 +7,24 @@ import OTP from './partial/OTP';
 import { useApi } from '@/hooks/useApi';
 import UpdatePass from './partial/UpdatePass';
 import { useOtpStore, useUiStore, useUserStore } from '@/store';
+import { OtpStore } from '@/interfaces';
 
 export default function Recover() {
   const customApi = useApi();
 
-  const {
-    user: { userId },
-  } = useUserStore();
-  const { setModalError } = useUiStore();
-  const { countdown, counting, setCounting, setTime, otpValid, otpUuid, setOtpUuid } = useOtpStore();
+  const { userId } = useUserStore((state) => state.user);
 
-  const initialized = useRef<boolean>(false);
-  const timerRef = useRef<any>();
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const countdown = useOtpStore((state) => state.countdown);
+  const counting = useOtpStore((state) => state.counting);
+  const setCounting = useOtpStore((state) => state.setCounting);
+  const setTime = useOtpStore((state) => state.setTime);
+  const otpValid = useOtpStore((state) => state.otpValid);
+  const setOtpUuid = useOtpStore((state) => state.setOtpUuid);
+
+  const timerRef = useRef<NodeJS.Timeout>();
+  const initialized = useRef<boolean>();
 
   const requestTFACode = useCallback(async () => {
     customApi
@@ -53,12 +59,13 @@ export default function Recover() {
     }
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
-  const configRecoverRoutes = (page: any) => {
-    const routes: { [key: string]: any } = {
+  const configRecoverRoutes = (page: OtpStore['otpValid']) => {
+    const routes: { [key: string]: JSX.Element } = {
       OTP: <OTP handleResendOTP={requestTFACode} />,
       PASSWORD: <UpdatePass />,
     };
-    return routes[page] || routes['OTP'];
+    const validatePage = page && routes[page];
+    return validatePage || routes['OTP'];
   };
 
   return <Card variant="signup">{configRecoverRoutes(otpValid)}</Card>;
