@@ -25,8 +25,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY public ./public
 COPY src ./src
 COPY .env ./
-ARG APP_ENV
-COPY ./env/.env.${APP_ENV} ./.env.production
+# ARG APP_ENV
+# COPY ./env/.env.${APP_ENV} ./.env.production
 COPY .eslintrc.json ./
 COPY jest.*.ts ./
 COPY next.config.mjs ./
