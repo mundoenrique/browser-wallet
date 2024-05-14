@@ -12,16 +12,11 @@ import { OtpStore } from '@/interfaces';
 export default function Recover() {
   const customApi = useApi();
 
-  const { userId } = useUserStore((state) => state.user);
-
-  const setModalError = useUiStore((state) => state.setModalError);
-
-  const countdown = useOtpStore((state) => state.countdown);
-  const counting = useOtpStore((state) => state.counting);
-  const setCounting = useOtpStore((state) => state.setCounting);
-  const setTime = useOtpStore((state) => state.setTime);
-  const otpValid = useOtpStore((state) => state.otpValid);
-  const setOtpUuid = useOtpStore((state) => state.setOtpUuid);
+  const {
+    user: { userId },
+  } = useUserStore();
+  const { setModalError } = useUiStore();
+  const { countdown, counting, setCounting, setTime, otpValid, setOtpUuid } = useOtpStore();
 
   const timerRef = useRef<NodeJS.Timeout>();
   const initialized = useRef<boolean>();
