@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
 import { useEffect, useState, useCallback } from 'react';
 //Internal app
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import { useMenuStore, useUserStore } from '@/store';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
 import { CardDebt, LastMovements, Linking, ModalError, UserWelcome } from '@/components';

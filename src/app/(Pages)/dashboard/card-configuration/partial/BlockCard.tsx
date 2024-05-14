@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography, Stack } from '@mui/material';
 //Internal app
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import { useUserStore, useUiStore } from '@/store';
 import { useNavTitleStore, useConfigCardStore } from '@/store';

@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import { useUserStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { useMenuStore, useNavTitleStore } from '@/store';

@@ -1,4 +1,3 @@
-export * from './api';
 export * from './jwt';
 export * from './mocks';
 export * from './apiHandle';

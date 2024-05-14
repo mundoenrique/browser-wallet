@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Collapse, Typography } from '@mui/material';
 //Internal app
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import CardStep from '../CardStep';
 import { getSchema } from '@/config';
 import { InputSelect, InputText } from '@/components';

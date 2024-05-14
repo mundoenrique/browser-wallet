@@ -15,14 +15,23 @@ jest.mock('@/utils/redis', () => ({
   createRedisInstance: jest.fn(),
 }));
 
+jest.mock('next/headers', () => ({
+  headers: jest.fn(),
+}));
 
 describe('UserPage', () => {
   let params = { user: '943cc6d1-5f89-498d-933d-badba7a78045' };
   let userData = { code: 'John Doe', country: 'PE' };
+  let headersMock;
+
   let mockRedis = {
     get: jest.fn(),
     del: jest.fn(),
     quit: jest.fn(),
+  };
+
+  headersMock = {
+    get: jest.fn(),
   };
 
   afterEach(() => {
@@ -32,6 +41,7 @@ describe('UserPage', () => {
   it('should return DataUser component with user data', async () => {
     (createRedisInstance as jest.Mock).mockReturnValue(mockRedis);
     mockRedis.get.mockResolvedValueOnce(JSON.stringify(userData));
+    headersMock.get.mockReturnValue('http://example.com');
 
     const result = await UserPage({ params });
 

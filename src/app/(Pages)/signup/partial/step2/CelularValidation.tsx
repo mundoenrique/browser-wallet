@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Button, FormHelperText, Snackbar, Typography } from '@mui/material';
 //internal app
 import { CardStep } from '..';
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import { encryptForge } from '@/utils/toolHelper';
 import { useOtpStore, useRegisterStore, useUiStore } from '@/store';

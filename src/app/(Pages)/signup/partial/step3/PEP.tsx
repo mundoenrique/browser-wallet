@@ -7,7 +7,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { Box, Button, Collapse, Link as LinkMui, Typography } from '@mui/material';
 //Internal app
 import { CardStep } from '..';
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import { slate } from '@/theme/theme-default';
 import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';

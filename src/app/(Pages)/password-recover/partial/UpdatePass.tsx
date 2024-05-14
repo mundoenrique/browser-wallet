@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Button, Typography } from '@mui/material';
 //Internal app
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import { useRouter } from 'next/navigation';
 import { encryptForge } from '@/utils/toolHelper';
 import { useUiStore, useUserStore } from '@/store';

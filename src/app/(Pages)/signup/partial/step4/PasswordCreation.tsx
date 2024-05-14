@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { CardStep } from '..';
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import Ending from '../Ending';
 import { FormPass } from '@/components';
 import { encryptForge } from '@/utils/toolHelper';

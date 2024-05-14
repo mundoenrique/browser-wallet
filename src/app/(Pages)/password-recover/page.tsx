@@ -3,7 +3,7 @@
 import { Card } from '@mui/material';
 import { useCallback, useEffect, useRef } from 'react';
 //Internal
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import OTP from './partial/OTP';
 import UpdatePass from './partial/UpdatePass';
 import { useOtpStore, useUiStore, useUserStore } from '@/store';

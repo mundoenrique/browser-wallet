@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 //Internal app
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import { useUiStore, useUserStore } from '@/store';
 import ModalOtp from '@/components/modal/ModalOtp';
 import BackInformation from './partial/BackInformation';

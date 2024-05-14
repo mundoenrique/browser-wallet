@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 //Internal app
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import { AuthOtpFormProps } from '@/interfaces';
 import InputOTP from '@/components/form/InputOTP';

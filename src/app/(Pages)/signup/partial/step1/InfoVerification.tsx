@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Card, Chip, Divider, FormHelperText, Typography, useTheme } from '@mui/material';
 //internal app
 import { CardStep } from '..';
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 import { InputCheck, InputText, ModalResponsive, InputSelect, Terms } from '@/components';

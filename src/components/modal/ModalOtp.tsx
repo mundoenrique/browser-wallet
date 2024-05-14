@@ -5,7 +5,7 @@ import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useCallback, useRef } from 'react';
 //Internal app
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import InputOTP from '../form/InputOTP';
 import { ModalOtpProps } from '@/interfaces';

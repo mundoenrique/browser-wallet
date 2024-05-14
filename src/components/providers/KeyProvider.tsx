@@ -3,7 +3,7 @@
 import NodeRSA from 'node-rsa';
 import { useEffect } from 'react';
 // Internal app
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import LogoGreen from '%/images/LogoGreen';
 import { ChildrenProps } from '@/interfaces';
 import PurpleLayout from '../layout/PurpleLayout';

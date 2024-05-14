@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Typography, Box } from '@mui/material';
 import { useEffect, useCallback, useState } from 'react';
 //Internal app
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import LogoGreen from '%/images/LogoGreen';
 import { DataUserProps } from '@/interfaces';
 import { PurpleLayout, NotFoundError } from '@/components';

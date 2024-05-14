@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, Button, Link as LinkMui, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
-import { api } from '@/utils';
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import LogoGreen from '%/images/LogoGreen';
 import { encryptForge } from '@/utils/toolHelper';
