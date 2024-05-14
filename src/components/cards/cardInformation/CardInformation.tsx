@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 //Internal app
 import { useApi } from '@/hooks/useApi';
-import { useUiStore, useUserStore } from '@/store';
+import { useUiStore, useUserStore, useOtpStore } from '@/store';
 import ModalOtp from '@/components/modal/ModalOtp';
 import BackInformation from './partial/BackInformation';
 import FrontInformation from './partial/FrontInformation';
@@ -43,12 +43,15 @@ export default function CardInformation() {
 
   const customApi = useApi();
 
-  const {
-    getUserCardId,
-    user: { userId },
-  } = useUserStore();
+  const getUserCardId = useUserStore((state) => state.getUserCardId);
 
-  const { setModalError, setLoadingScreen } = useUiStore();
+  const { userId } = useUserStore((state) => state.user);
+
+  const otpUuid = useOtpStore((state) => state.otpUuid);
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
   const [cardData, setCardData] = useState<{ [key: string]: string } | null>(null);
 
@@ -59,8 +62,6 @@ export default function CardInformation() {
   const [cardInformationError, setCardInformationError] = useState<boolean>(false);
 
   const [balanceError, setBalanceError] = useState<boolean>(false);
-
-  const [otpUuid] = useState('');
 
   const handleShowDetaild = () => {
     setOpen(true);
