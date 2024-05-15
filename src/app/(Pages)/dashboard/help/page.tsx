@@ -11,11 +11,16 @@ import { useNavTitleStore, useMenuStore } from '@/store';
 import { ContainerLayout, HandleCard } from '@/components';
 
 export default function Help() {
-  const { push } = useRouter();
+  // const { push } = useRouter();
   const { updateTitle } = useNavTitleStore();
   const { setCurrentItem } = useMenuStore();
-  const handleQuestions = () => {
-    push('/dashboard/help/frequent-questions');
+
+  // const handleQuestions = () => {
+  //   push('/dashboard/help/frequent-questions');
+  // };
+
+  const handleWhatsapp = () => {
+    window.open('https://api.whatsapp.com/send?phone=51997535474', '_blank');
   };
 
   useEffect(() => {
@@ -37,12 +42,12 @@ export default function Help() {
         ¿Necesitas contactarnos?
       </Typography>
       <Stack spacing={2}>
-        <HandleCard avatar={<Questions color="primary" sx={{ p: '2px' }} />} onClick={handleQuestions}>
+        {/* <HandleCard avatar={<Questions color="primary" sx={{ p: '2px' }} />} onClick={handleQuestions}>
           <Typography variant="subtitle2">Preguntas frecuentes</Typography>
           <Typography variant="body2">Inquietudes y asesorías </Typography>
-        </HandleCard>
+        </HandleCard> */}
 
-        <HandleCard avatar={<WhatsappIcon color="primary" sx={{ p: '3px' }} />}>
+        <HandleCard avatar={<WhatsappIcon color="primary" sx={{ p: '3px' }} />} onClick={handleWhatsapp}>
           <Typography variant="subtitle2">Contáctanos por WhatsApp</Typography>
           <Typography variant="body2">Atención personalizada</Typography>
         </HandleCard>
@@ -54,7 +59,7 @@ export default function Help() {
 
         <HandleCard avatar={<Email color="primary" sx={{ p: '2px' }} />}>
           <Typography variant="subtitle2">Soporte</Typography>
-          <Typography variant="body2">support@belcorp.com</Typography>
+          <Typography variant="body2">servicioalcliente@yiro.pe</Typography>
         </HandleCard>
       </Stack>
     </ContainerLayout>
