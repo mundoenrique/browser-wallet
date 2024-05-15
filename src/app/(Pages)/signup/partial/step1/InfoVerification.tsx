@@ -229,7 +229,7 @@ export default function InfoVerification() {
             <Box sx={{ px: 5 / 2, pb: 3 / 2 }}>
               <Typography variant="subtitle2">
                 {ONB_PHASES_TERMS ? ONB_PHASES_TERMS.consultant?.firstName : ''}{' '}
-                {ONB_PHASES_TERMS ? ONB_PHASES_TERMS.consultant?.lastName : ''}
+                {ONB_PHASES_TERMS ? ONB_PHASES_TERMS.consultant?.firstLastName : ''}
               </Typography>
               <Typography variant="subtitle2">
                 {ONB_PHASES_TERMS ? `${ONB_PHASES_TERMS.consultant?.documentType}:` : ''}{' '}

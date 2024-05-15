@@ -3,12 +3,12 @@
 import { useCallback, useEffect, useState } from 'react';
 //Internal app
 import { api } from '@/utils/api';
-import { useUiStore, useUserStore } from '@/store';
 import ModalOtp from '@/components/modal/ModalOtp';
 import BackInformation from './partial/BackInformation';
 import FrontInformation from './partial/FrontInformation';
 import { BodyCard, BodyCardAction } from './partial/BodyCards';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
+import { useUiStore, useUserStore, useOtpStore } from '@/store';
 
 const cardTypeQuery = (cardType: string) => {
   const cardObject: { [key: string]: object } = {
@@ -37,19 +37,18 @@ const cardTypeQuery = (cardType: string) => {
  * @returns 3D card with all the cardholder information.
  */
 export default function CardInformation() {
-  const {
-    getUserCardId,
-    user: { userId },
-  } = useUserStore();
-  const { setModalError, setLoadingScreen } = useUiStore();
+  const otpUuid = useOtpStore((state) => state.otpUuid);
+  const { userId } = useUserStore((state) => state.user);
+  const setModalError = useUiStore((state) => state.setModalError);
+  const getUserCardId = useUserStore((state) => state.getUserCardId);
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
-  const [otpUuid] = useState('');
   const [open, setOpen] = useState<boolean>(false);
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [balanceError, setBalanceError] = useState<boolean>(false);
   const [balance, setBalance] = useState<{ [key: string]: string } | null>(null);
-  const [cardData, setCardData] = useState<{ [key: string]: string } | null>(null);
   const [cardInformationError, setCardInformationError] = useState<boolean>(false);
+  const [cardData, setCardData] = useState<{ [key: string]: string } | null>(null);
   const [cardbackData, setCardBackData] = useState<{ [key: string]: string } | null>(null);
 
   const handleShowDetaild = () => {

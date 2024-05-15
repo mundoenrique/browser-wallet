@@ -14,12 +14,11 @@ import { useOtpStore, useUiStore, useUserStore } from '@/store';
 export default function AuthOtp(props: AuthOtpFormProps) {
   const { handleResendOTP } = props;
 
-  const {
-    user: { userId },
-  } = useUserStore();
-  const { getUserPhone } = useUserStore();
-  const { setOTPValid, otpUuid } = useOtpStore();
+  const otpUuid = useOtpStore((state) => state.otpUuid);
+  const { userId } = useUserStore((state) => state.user);
   const { setLoadingScreen, setModalError } = useUiStore();
+  const setOTPValid = useOtpStore((state) => state.setOTPValid);
+  const getUserPhone = useUserStore((state) => state.getUserPhone);
 
   const schema = getSchema(['otp']);
   const phoneNumber: string = getUserPhone();
