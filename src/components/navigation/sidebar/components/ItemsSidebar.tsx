@@ -14,7 +14,7 @@ import {
 //Internal app
 import { useMenuStore, useDrawerStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { ArrowsIcons, CardIcons, CashIcons, FileIcons, GainIcons, HomeIcons, KeyIcons } from '%/Icons';
+import { ArrowsIcons, CardIcons, CashIcons, FileIcons, GainIcons, HomeIcons, KeyIcons, ToolIcons } from '%/Icons';
 
 /**
  * Primary items that change with menu resolution.
@@ -63,12 +63,12 @@ export default function ItemsSidebar(): JSX.Element {
           icon: <KeyIcons />,
           id: 'password-change',
         },
-        // {
-        //   item: 'Ayuda',
-        //   url: '/dashboard/help',
-        //   icon: <ToolIcons />,
-        //   id: 'help',
-        // },
+        {
+          item: 'Ayuda',
+          url: '/dashboard/help',
+          icon: <ToolIcons />,
+          id: 'help',
+        },
         {
           item: 'Términos y condiciones',
           url: '/dashboard/legal',
@@ -89,12 +89,12 @@ export default function ItemsSidebar(): JSX.Element {
           icon: <KeyIcons />,
           id: 'password-change',
         },
-        // {
-        //   item: 'Ayuda',
-        //   url: '/dashboard/help',
-        //   icon: <ToolIcons />,
-        //   id: 'help',
-        // },
+        {
+          item: 'Ayuda',
+          url: '/dashboard/help',
+          icon: <ToolIcons />,
+          id: 'help',
+        },
         {
           item: 'Términos y condiciones',
           url: '/dashboard/legal',
