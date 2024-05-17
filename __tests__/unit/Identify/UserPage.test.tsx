@@ -16,7 +16,7 @@ jest.mock('@/utils/redis', () => ({
 }));
 
 jest.mock('next/headers', () => ({
-  headers: jest.fn(),
+  headers: jest.fn().mockReturnValue(new Map([['referer', 'testReferer']])),
 }));
 
 describe('UserPage', () => {
