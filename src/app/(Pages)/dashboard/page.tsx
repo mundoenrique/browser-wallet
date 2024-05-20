@@ -128,7 +128,7 @@ export default function Dashboard() {
                   </Typography>
                 )}
               </Box>
-              <Box sx={{ width: 320, minHeight: '300px' }}>
+              <Box sx={{ width: 320, minHeight: movementData.length > 0 ? '300px' : 'auto' }}>
                 <LastMovements
                   data={movementData}
                   loading={loadingMovements}
