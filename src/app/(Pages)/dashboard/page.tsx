@@ -62,70 +62,73 @@ export default function Dashboard() {
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
+          height: '100%',
         }}
       >
-        <Box
-          sx={{
-            width: { xs: '100%', sm: 320 },
-            mx: { xs: 'auto', md: 3 },
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-            alignItems: 'center',
-            justifyContent: { xs: 'flex-start', md: 'center' },
-          }}
-        >
+        <Box sx={{ width: { xs: '100%', sm: 320 }, mx: { xs: 'auto', md: 3 }, height: '100%' }}>
           <UserWelcome />
-          <CardInformation />
-
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              width: '100%',
-              bgcolor: { xs: 'white', sm: 'initial' },
-              borderRadius: '14px',
-              mt: 2,
+              justifyContent: { xs: 'flex-start', md: 'center' },
+              mb: { xs: '60px', md: 0 },
+              height: 'auto',
+              minHeight: movementData.length > 0 ? 692 : 550,
             }}
           >
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, mt: 2, width: 320 }}>
-              <CardDebt
-                onClick={() => {
-                  push('/dashboard/debt');
-                }}
-              />
-              <CardDebt
-                OweMe
-                onClick={() => {
-                  push('/dashboard/clients');
-                }}
-              />
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, width: 320 }}>
-              <Typography variant="subtitle1">Últimos movimientos</Typography>
-              {movementData.length > 0 ? (
-                <Linking
-                  href="/dashboard/movements"
-                  color="primary.main"
-                  label="Ver todo"
-                  mb={0}
-                  hidenArrow
-                  underline
+            <CardInformation />
+
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                width: '100%',
+                bgcolor: { xs: 'white', sm: 'initial' },
+                borderRadius: '14px',
+                mt: 2,
+              }}
+            >
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, mt: 2, width: 320 }}>
+                <CardDebt
+                  onClick={() => {
+                    push('/dashboard/debt');
+                  }}
                 />
-              ) : (
-                <Typography variant="subtitle1" color={'grey'} fontWeight={700} fontSize={'12px'}>
-                  Ver todo
-                </Typography>
-              )}
-            </Box>
-            <Box sx={{ width: 320, minHeight: '300px' }}>
-              <LastMovements
-                data={movementData}
-                loading={loadingMovements}
-                error={errorMovements}
-                emptySlot={<EmptySlot />}
-              />
+                <CardDebt
+                  OweMe
+                  onClick={() => {
+                    push('/dashboard/clients');
+                  }}
+                />
+              </Box>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, width: 320 }}>
+                <Typography variant="subtitle1">Últimos movimientos</Typography>
+                {movementData.length > 0 ? (
+                  <Linking
+                    href="/dashboard/movements"
+                    color="primary.main"
+                    label="Ver todo"
+                    mb={0}
+                    hidenArrow
+                    underline
+                  />
+                ) : (
+                  <Typography variant="subtitle1" color={'grey'} fontWeight={700} fontSize={'12px'}>
+                    Ver todo
+                  </Typography>
+                )}
+              </Box>
+              <Box sx={{ width: 320, minHeight: movementData.length > 0 ? '300px' : 'auto' }}>
+                <LastMovements
+                  data={movementData}
+                  loading={loadingMovements}
+                  error={errorMovements}
+                  emptySlot={<EmptySlot />}
+                />
+              </Box>
             </Box>
           </Box>
         </Box>
