@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 //Internal app
 import { useApi } from '@/hooks/useApi';
-import { useUiStore, useUserStore, useOtpStore } from '@/store';
+import { useUiStore, useUserStore, useOtpStore, useConfigCardStore } from '@/store';
 import ModalOtp from '@/components/modal/ModalOtp';
 import BackInformation from './partial/BackInformation';
 import FrontInformation from './partial/FrontInformation';

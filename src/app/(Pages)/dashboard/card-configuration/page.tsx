@@ -30,7 +30,7 @@ export default function CardConfiguration() {
       activatePhysicalCard: <ActivatePhysicalCard />,
       blockCard: <BlockCard />,
       changePin: <ChangePin />,
-      requesPhysicalCard: <RequestPhysicalCard />,
+      requestPhysicalCard: <RequestPhysicalCard />,
       deleteAccount: <DeleteAccount />,
       survey: <Survey />,
     };

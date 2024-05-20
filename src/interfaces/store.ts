@@ -111,12 +111,26 @@ export interface NavTitleStore {
 /**
  * Config Card component routing
  *
- * @typeParam title: string
- * @typeParam updateTitle: (newTitle: string) => void
+ * @typeParam page: string
+ * @typeParam cardActivationStatus: string
+ * @typeParam updatePage: (newPage: string) => void
+ * @typeParam setCardActivationStatus: (_status: string) => void;
  */
 export interface ConfigCardStore {
-  page: string;
-  updatePage: (_newPage: string) => void;
+  page:
+    | ''
+    | 'main'
+    | 'activatePhysicalCard'
+    | 'blockCard'
+    | 'changePin'
+    | 'requestPhysicalCard'
+    | 'deleteAccount'
+    | 'survey';
+  updatePage: (_newPage: ConfigCardStore['page']) => void;
+  cardActivationStatus: string;
+  isVirtualCard: boolean;
+  setVirtualCard: (_status: boolean) => void;
+  setCardActivationStatus: (_status: string) => void;
 }
 
 /**

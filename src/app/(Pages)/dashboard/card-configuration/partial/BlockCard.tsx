@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography, Stack } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
-import { useApi } from '@/hooks/useApi';
+import { api } from '@/utils/api';
 import { useUserStore, useUiStore } from '@/store';
 import { useNavTitleStore, useConfigCardStore } from '@/store';
 import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/components';
@@ -17,8 +17,6 @@ export default function BlockCard() {
   const { updatePage } = useConfigCardStore();
   const [open, setOpen] = useState<boolean>(false);
   const schema = getSchema(['blockType']);
-
-  const customApi = useApi();
 
   const router = useRouter();
 
@@ -37,12 +35,12 @@ export default function BlockCard() {
 
   const onSubmit = async (data: any) => {
     setLoadingScreen(true);
-    customApi
+    api
       .post(`/cards/${getUserCardId()}/block`, data.blockType)
       .then(() => {
         setOpen(!open);
       })
-      .catch((e) => {
+      .catch((e: any) => {
         setModalError({ error: e });
       })
       .finally(() => {
@@ -57,11 +55,11 @@ export default function BlockCard() {
     },
     {
       text: 'Por robo (definitivo)',
-      value: '42',
+      value: '43',
     },
     {
       text: 'Deterioro (definitivo)',
-      value: '43',
+      value: '17',
     },
   ];
 
