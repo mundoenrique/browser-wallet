@@ -31,7 +31,7 @@ export interface ModalOtpProps {
   closeApp?: boolean;
   title?: string | boolean;
   textButton?: string | boolean;
-  setOtpUuid: Dispatch<string>;
+  processCode: string;
 }
 
 /**

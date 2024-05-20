@@ -13,9 +13,14 @@ import { useOtpStore, useUiStore, useUserStore } from '@/store';
 
 export default function AuthOtp(props: AuthOtpFormProps) {
   const customApi = useApi();
+
   const schema = getSchema(['otp']);
-  const { optUuid, handleResendOTP } = props;
-  const { setOTPValid } = useOtpStore();
+
+  const { handleResendOTP } = props;
+
+  const setOTPValid = useOtpStore((state) => state.setOTPValid);
+
+  const otpUuid = useOtpStore((state) => state.otpUuid);
 
   const handleReset = () => {
     handleResendOTP();
@@ -23,10 +28,8 @@ export default function AuthOtp(props: AuthOtpFormProps) {
   };
 
   const { setLoadingScreen, setModalError } = useUiStore();
-  const {
-    user: { userId },
-  } = useUserStore();
-  const { getUserPhone } = useUserStore();
+  const { userId } = useUserStore((state) => state.user);
+  const getUserPhone = useUserStore((state) => state.getUserPhone);
 
   const phoneNumber: string = getUserPhone();
   const { control, handleSubmit, reset } = useForm({
@@ -39,7 +42,7 @@ export default function AuthOtp(props: AuthOtpFormProps) {
     setLoadingScreen(true);
     const payload = {
       otpProcessCode: 'CHANGE_PASSWORD_OTP',
-      otpUuId: optUuid,
+      otpUuId: otpUuid,
       otpCode: encryptForge(otp),
     };
     customApi

@@ -2,11 +2,10 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Box, Button, IconButton, Skeleton, Typography } from '@mui/material';
-import Visibility from '@mui/icons-material/RemoveRedEyeOutlined';
 import ReplayIcon from '@mui/icons-material/Replay';
+import { Box, Button, Skeleton, Typography } from '@mui/material';
+import Visibility from '@mui/icons-material/RemoveRedEyeOutlined';
 import VisibilityOff from '@mui/icons-material/VisibilityOffOutlined';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 //Internal app
 import card from '%/images/cardYiro.svg';
 import { FrontInformationProps } from '@/interfaces';
@@ -116,7 +115,7 @@ export default function FrontInformation(props: FrontInformationProps): JSX.Elem
               ) : (
                 <Typography variant="body1" color="white" fontWeight={400} noWrap sx={{ opacity: 0.5 }}>
                   {balance ? (
-                    ` S/ ${showBalance ? balance : '******'}`
+                    `S/ ${showBalance ? balance : '******'}`
                   ) : (
                     <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'white', width: '100px' }} />
                   )}

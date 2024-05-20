@@ -85,7 +85,7 @@ export const useRegisterStore = create<RegisterStore>()(
          */
         updateFormState: (form, data) => set((state) => ({ ...state, [form]: data })),
       }),
-      { name: 'appStore', storage: createJSONStorage(() => sessionStorage) }
+      { name: 'app-store', storage: createJSONStorage(() => sessionStorage) }
     )
   )
 );

@@ -2,8 +2,8 @@
 
 import { Avatar, Box, Typography } from '@mui/material';
 //Internal app
-import { fuchsiaBlue } from '@/theme/theme-default';
 import { useUserStore } from '@/store';
+import { fuchsiaBlue } from '@/theme/theme-default';
 
 /**
  * Module used to welcome the user.
@@ -12,7 +12,7 @@ export default function UserWelcome(): JSX.Element {
   const { user } = useUserStore();
 
   return (
-    <Box sx={{ display: 'flex', mb: { xs: 2, md: 0 }, mt: { md: 5 }, width: 320, mx: 'auto' }}>
+    <Box sx={{ display: 'flex', width: 320, mx: 'auto', mb: { xs: 3, md: 5 } }}>
       <Avatar
         sx={{
           width: 32,

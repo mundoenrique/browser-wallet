@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Typography, Box } from '@mui/material';
 import { useEffect, useCallback, useState } from 'react';
 //Internal app
-import { useApi } from '@/hooks/useApi';
+import { api } from '@/utils/api';
 import LogoGreen from '%/images/LogoGreen';
 import { DataUserProps } from '@/interfaces';
 import { useRegisterStore, useUiStore } from '@/store';
@@ -28,11 +28,12 @@ const phaseToStep = (phase: string) => {
   return phasesSteps[phase] || 0;
 };
 
-export default function DataUser(user: DataUserProps) {
-  const userObject = JSON.parse(user.user);
-  const customApi = useApi();
+export default function DataUser({ user }: DataUserProps) {
+  const userObject = JSON.parse(user);
   const [userValidation, setUserValidation] = useState<any>(null);
-  const { updateFormState, updateStep } = useRegisterStore();
+  const updateFormState = useRegisterStore((state) => state.updateFormState);
+  const updateStep = useRegisterStore((state) => state.updateStep);
+
   const { replace } = useRouter();
   const { setModalError } = useUiStore();
   /**
@@ -41,7 +42,6 @@ export default function DataUser(user: DataUserProps) {
   const userRedirect = useCallback(async (userValidationResponse: any) => {
     const status = userValidationResponse.data?.status.code;
     const registerData = userValidationResponse.data;
-
     const redirectObject: { [key: string]: { path: string; store: Function } } = {
       //User register finished
       PH_REGISTER: {
@@ -65,27 +65,34 @@ export default function DataUser(user: DataUserProps) {
           registerData.onboardingPhases.forEach((phase: any) => {
             updateFormState(phase.onboardingPhaseCode, phase.metadata);
           });
+
           updateStep(phaseToStep(registerData.currentOnboardingPhaseCode));
         },
       },
     };
-    Object.hasOwn(redirectObject, status) && (await redirectObject[status].store());
 
+    Object.hasOwn(redirectObject, status) && (await redirectObject[status].store());
     Object.hasOwn(redirectObject, status) ? replace(redirectObject[status].path) : <NotFoundError code={404} />;
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    const validateOnboarding = async () => {
-      customApi
-        .get(`/onboarding/validate?consultantCode=${userObject.code}&countryCode=${userObject.country}`)
-        .then((response) => {
-          setUserValidation(response.data);
-        })
-        .catch(() => {
-          setModalError();
-        });
-    };
-    validateOnboarding();
+    !userValidation &&
+      (async () => {
+        const { code, country } = userObject;
+        api
+          .get(`/onboarding/validate`, {
+            params: {
+              consultantCode: code,
+              countryCode: country,
+            },
+          })
+          .then((response) => {
+            setUserValidation(response.data);
+          })
+          .catch(() => {
+            setModalError();
+          });
+      })();
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {

@@ -1,14 +1,13 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
+import { useEffect, useState, useCallback } from 'react';
 //Internal app
-import { useMenuStore } from '@/store';
-import { CardDebt, LastMovements, Linking, ModalError, UserWelcome } from '@/components';
-import CardInformation from '@/components/cards/cardInformation/CardInformation';
-import { useUserStore } from '@/store';
 import { useApi } from '@/hooks/useApi';
+import { useMenuStore, useUserStore } from '@/store';
+import CardInformation from '@/components/cards/cardInformation/CardInformation';
+import { CardDebt, LastMovements, Linking, ModalError, UserWelcome } from '@/components';
 
 export default function Dashboard() {
   const { push } = useRouter();
@@ -19,7 +18,7 @@ export default function Dashboard() {
 
   const customApi = useApi();
 
-  const [movementData, setMovementData] = useState<any>([]);
+  const [movementData, setMovementData] = useState<[]>([]);
 
   const [loadingMovements, setLoadingMovements] = useState<boolean>(false);
 
@@ -32,7 +31,12 @@ export default function Dashboard() {
     setErrorMovements(false);
     setErrorModal(false);
     customApi
-      .get(`/cards/${getUserCardId()}/transactions?days=99&limit=5`)
+      .get(`/cards/${getUserCardId()}/transactions`, {
+        params: {
+          days: 90,
+          limit: 5,
+        },
+      })
       .then((response: any) => {
         response.data.data && setMovementData(response.data.data);
       })
@@ -60,16 +64,25 @@ export default function Dashboard() {
           flexDirection: 'column',
         }}
       >
-        <Box sx={{ width: { xs: '100%', sm: 320 }, mx: { xs: 'auto', md: 3 } }}>
+        <Box
+          sx={{
+            width: { xs: '100%', sm: 320 },
+            mx: { xs: 'auto', md: 3 },
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            height: '100%',
+          }}
+        >
           <UserWelcome />
 
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              minHeight: 'calc(100vh - 92px)',
               alignItems: 'center',
               justifyContent: { xs: 'flex-start', md: 'center' },
+              mb: { xs: '60px', md: 0 },
             }}
           >
             <CardInformation />
@@ -83,7 +96,6 @@ export default function Dashboard() {
                 bgcolor: { xs: 'white', sm: 'initial' },
                 borderRadius: '14px',
                 mt: 2,
-                pb: { xs: 3, sm: 'auto' },
               }}
             >
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, mt: 2, width: 320 }}>
@@ -101,7 +113,7 @@ export default function Dashboard() {
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, width: 320 }}>
                 <Typography variant="subtitle1">Últimos movimientos</Typography>
-                {movementData.lenght > 0 ? (
+                {movementData.length > 0 ? (
                   <Linking
                     href="/dashboard/movements"
                     color="primary.main"
@@ -116,7 +128,7 @@ export default function Dashboard() {
                   </Typography>
                 )}
               </Box>
-              <Box sx={{ width: 320, minHeight: '320px', mb: '40px' }}>
+              <Box sx={{ width: 320, minHeight: '300px' }}>
                 <LastMovements
                   data={movementData}
                   loading={loadingMovements}

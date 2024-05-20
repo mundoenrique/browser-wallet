@@ -47,7 +47,7 @@ export const useCatalogsStore = create<CatalogsStore>()(
          */
         updateCatalog: (catalog, data) => set((state) => ({ ...state, [catalog]: data })),
       }),
-      { name: 'catalogStore', storage: createJSONStorage(() => localStorage) }
+      { name: 'catalog-store', storage: createJSONStorage(() => localStorage) }
     )
   )
 );

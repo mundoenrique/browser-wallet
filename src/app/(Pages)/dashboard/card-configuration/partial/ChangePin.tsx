@@ -71,7 +71,12 @@ export default function ChangePin() {
         </Box>
       </ContainerLayout>
 
-      <ModalOtp open={openOtp} handleClose={() => setOpenOtp(false)} onSubmit={onSubmitOtp} setOtpUuid={() => {}} />
+      <ModalOtp
+        open={openOtp}
+        handleClose={() => setOpenOtp(false)}
+        onSubmit={onSubmitOtp}
+        processCode="CHANGE_PASSWORD_OTP"
+      />
 
       <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>
         <Typography variant="h6" mb={3}>

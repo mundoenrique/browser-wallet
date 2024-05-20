@@ -5,6 +5,7 @@
  * @typeParam jwePrivateKey: string | null
  * @typeParam jwsPublicKey: string | null
  * @typeParam jwsPrivateKey: string | null
+ * @typeParam activeKeys: true | false
  * @typeParam setKeys: (_keys: { jwePublicKey: string; jwePrivateKey: string; jwsPublicKey: string; jwsPrivateKey: string }) => void
  */
 export type KeyStoreProps = {
@@ -12,6 +13,7 @@ export type KeyStoreProps = {
   jwePrivateKey: string | null;
   jwsPublicKey: string | null;
   jwsPrivateKey: string | null;
+  activeKeys: boolean;
   setKeys: (_keys: {
     jwePublicKey: string;
     jwePrivateKey: string;
@@ -225,13 +227,17 @@ export interface UserStore {
  * @typeParam setOTPValid: (value: string) => void
  */
 export interface OtpStore {
-  otpValid: 'OTP' | 'PASSWORD' | 'ENDING' | string | undefined;
+  otpValid: 'OTP' | 'PASSWORD' | 'ENDING' | undefined;
   timeLeft: number;
   counting: boolean;
+  otpUuid: string;
+  otpCode: string;
+  setOtpCode: (value: string) => void;
+  setOtpUuid: (value: string) => void;
   setCounting: (value: boolean) => void;
   countdown: () => void;
   setTime: (value: number) => void;
-  setOTPValid: (value: string) => void;
+  setOTPValid: (value: OtpStore['otpValid']) => void;
 }
 
 /**

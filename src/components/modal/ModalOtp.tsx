@@ -1,16 +1,17 @@
 'use client';
 
-import { useEffect, useState, useCallback, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect, useCallback, useRef } from 'react';
 //Internal app
 import { getSchema } from '@/config';
 import InputOTP from '../form/InputOTP';
+import { useApi } from '@/hooks/useApi';
 import { ModalOtpProps } from '@/interfaces';
 import ModalResponsive from './ModalResponsive';
-import { useApi } from '@/hooks/useApi';
 import { useUiStore, useOtpStore, useUserStore } from '@/store';
+
 /**
  * Reusable modal to request verification code
  *
@@ -23,13 +24,13 @@ import { useUiStore, useOtpStore, useUserStore } from '@/store';
  * @returns Json with the verification code
  */
 export default function ModalOtp(props: ModalOtpProps): JSX.Element {
-  const { handleClose, open, onSubmit, closeApp, title, textButton, setOtpUuid } = props;
+  const { handleClose, open, onSubmit, closeApp, title, textButton, processCode } = props;
 
   const schemaFormOtp = getSchema(['otp']);
 
   const { setModalError } = useUiStore();
 
-  const { countdown, counting, setCounting, setTime } = useOtpStore();
+  const { countdown, counting, setCounting, setTime, setOtpUuid } = useOtpStore();
 
   const { user, getUserPhone } = useUserStore();
 
@@ -52,7 +53,7 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
 
   const requestTFACode = useCallback(async () => {
     customApi
-      .post(`/users/${user.userId}/tfa`, { otpProcessCode: 'CHANGE_PASSWORD_OTP' })
+      .post(`/users/${user.userId}/tfa`, { otpProcessCode: processCode ?? '' })
       .then((response) => {
         setOtpUuid(response.data.data.otpUuId);
       })
@@ -103,7 +104,9 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
             control={control}
             length={4}
             title={title ? title : '🎰 Verificación en dos pasos'}
-            text={`Ingresa el código enviado a tu número celular ${getUserPhone()}`}
+            text={`Ingresa el código enviado a tu número celular *****${getUserPhone().substring(
+              getUserPhone().length - 4
+            )}`}
             handleResendOTP={requestTFACode}
           />
         </Box>

@@ -2,13 +2,34 @@
 
 import { useCallback, useEffect, useState } from 'react';
 //Internal app
+import { useApi } from '@/hooks/useApi';
+import { useUiStore, useUserStore, useOtpStore } from '@/store';
 import ModalOtp from '@/components/modal/ModalOtp';
 import BackInformation from './partial/BackInformation';
 import FrontInformation from './partial/FrontInformation';
 import { BodyCard, BodyCardAction } from './partial/BodyCards';
-import { useUiStore, useUserStore } from '@/store';
-import { useApi } from '@/hooks/useApi';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
+
+const cardTypeQuery = (cardType: string) => {
+  const cardObject: { [key: string]: object } = {
+    VIRTUAL: {
+      decryptData: true,
+      cvvNumber: false,
+      dynCvvNumber: true,
+    },
+    PHYSICAL: {
+      decryptData: true,
+      cvvNumber: true,
+      dynCvvNumber: false,
+    },
+    default: {
+      decryptData: false,
+      cvvNumber: false,
+      dynCvvNumber: false,
+    },
+  };
+  return cardObject[cardType] || cardObject['default'];
+};
 
 /**
  * Shows the 3D card with all the cardholder information
@@ -22,12 +43,15 @@ export default function CardInformation() {
 
   const customApi = useApi();
 
-  const {
-    getUserCardId,
-    user: { userId },
-  } = useUserStore();
+  const getUserCardId = useUserStore((state) => state.getUserCardId);
 
-  const { setModalError } = useUiStore();
+  const { userId } = useUserStore((state) => state.user);
+
+  const otpUuid = useOtpStore((state) => state.otpUuid);
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
   const [cardData, setCardData] = useState<{ [key: string]: string } | null>(null);
 
@@ -39,45 +63,38 @@ export default function CardInformation() {
 
   const [balanceError, setBalanceError] = useState<boolean>(false);
 
-  const [otpUuid, setOtpUuid] = useState('');
-
   const handleShowDetaild = () => {
     setOpen(true);
   };
 
-  const onSubmitOtp = useCallback(async (data: any) => {
-    const { otp } = data;
+  const onSubmitOtp = useCallback(
+    async (data: any) => {
+      setLoadingScreen(true);
+      const { otp } = data;
 
-    const payload = {
-      otpProcessCode: 'CHANGE_PASSWORD_OTP',
-      otpUuId: otpUuid,
-      otpCode: encryptForge(otp),
-    };
-    customApi
-      .post(`/users/${userId}/validate/tfa`, payload)
-      .then(() => {
-        customApi
-          .get(
-            `/cards/${getUserCardId()}?decryptData=true&${
-              cardData?.cardType === 'VIRTUAL' ? 'dynCvvNumber' : 'cvvNumber'
-            }=true`
-          )
-          .then((response) => {
-            setCardBackData(response.data.data);
-            setShowDetails(true);
+      const payload = {
+        otpProcessCode: 'SEE_CARD_NUMBER',
+        otpUuId: otpUuid,
+        otpCode: encryptForge(otp),
+      };
+
+      customApi
+        .post(`/users/${userId}/validate/tfa`, payload)
+        .then((response) => {
+          if (response.data.code === '200.00.000') {
             setOpen(false);
-          })
-          .catch((e) => {
-            setModalError({ error: e });
-          });
-      })
-      .catch((e) => {
-        setModalError({ error: e });
-      })
-      .finally(() => {});
-  }, []); //eslint-disable-line
+            getDecryptData();
+          }
+        })
+        .catch((e) => {
+          setModalError({ error: e });
+          setLoadingScreen(false);
+        });
+    },
+    [otpUuid] //eslint-disable-line
+  );
 
-  const getCardInformation = () => {
+  const getCardInformation = async () => {
     setCardInformationError(false);
     customApi
       .get(`/cards/${getUserCardId()}`)
@@ -90,7 +107,7 @@ export default function CardInformation() {
       });
   };
 
-  const getBalance = useCallback(() => {
+  const getBalance = async () => {
     setBalanceError(false);
     customApi
       .get(`/cards/${getUserCardId()}/balance`)
@@ -101,12 +118,39 @@ export default function CardInformation() {
         setBalanceError(true);
         setModalError({ error: e });
       });
-  }, []); //eslint-disable-line
+  };
+
+  const getDecryptData = async () => {
+    customApi
+      .get(`/cards/${getUserCardId()}`, {
+        params: {
+          ...cardTypeQuery(cardData?.cardType ?? ''),
+        },
+      })
+      .then((response) => {
+        setCardBackData(response.data.data);
+        setShowDetails(true);
+      })
+      .catch((e) => {
+        setModalError({ error: e });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
+  };
 
   useEffect(() => {
     getCardInformation();
     getBalance();
   }, []); //eslint-disable-line
+
+  useEffect(() => {
+    if (showDetails) {
+      setTimeout(() => {
+        setShowDetails(false);
+      }, 120000);
+    }
+  }, [showDetails]);
 
   return (
     <>
@@ -135,7 +179,7 @@ export default function CardInformation() {
       </BodyCard>
 
       {open && (
-        <ModalOtp open={open} handleClose={() => setOpen(false)} onSubmit={onSubmitOtp} setOtpUuid={setOtpUuid} />
+        <ModalOtp open={open} handleClose={() => setOpen(false)} onSubmit={onSubmitOtp} processCode="SEE_CARD_NUMBER" />
       )}
     </>
   );
