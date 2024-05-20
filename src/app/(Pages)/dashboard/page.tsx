@@ -62,20 +62,11 @@ export default function Dashboard() {
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
+          height: '100%',
         }}
       >
-        <Box
-          sx={{
-            width: { xs: '100%', sm: 320 },
-            mx: { xs: 'auto', md: 3 },
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            height: '100%',
-          }}
-        >
+        <Box sx={{ width: { xs: '100%', sm: 320 }, mx: { xs: 'auto', md: 3 }, height: '100%' }}>
           <UserWelcome />
-
           <Box
             sx={{
               display: 'flex',
@@ -83,6 +74,8 @@ export default function Dashboard() {
               alignItems: 'center',
               justifyContent: { xs: 'flex-start', md: 'center' },
               mb: { xs: '60px', md: 0 },
+              height: 'auto',
+              minHeight: movementData.length > 0 ? 692 : 550,
             }}
           >
             <CardInformation />
@@ -140,6 +133,7 @@ export default function Dashboard() {
           </Box>
         </Box>
       </Box>
+
       <ModalError
         title="¡Oops!"
         description={
