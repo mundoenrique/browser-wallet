@@ -126,9 +126,12 @@ export interface ConfigCardStore {
     | 'requestPhysicalCard'
     | 'deleteAccount'
     | 'survey';
-  updatePage: (_newPage: ConfigCardStore['page']) => void;
+
   cardActivationStatus: string;
   isVirtualCard: boolean;
+  isCardBlocked: boolean;
+  updatePage: (_newPage: ConfigCardStore['page']) => void;
+  setBlockStatus: (_status: boolean) => void;
   setVirtualCard: (_status: boolean) => void;
   setCardActivationStatus: (_status: string) => void;
 }

@@ -5,15 +5,20 @@ import { useForm } from 'react-hook-form';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
 import { Box, Stack, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
+import { api } from '@/utils/api';
 import { HandleCard, InputSwitch, UserWelcome } from '@/components';
 import { useNavTitleStore, useMenuStore, useConfigCardStore } from '@/store';
 import { CardCloseIcon, CardIcons, KeyIcons, PersonWrongIcon } from '%/Icons';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
 
 export default function CardConfiguration() {
-  const { setCurrentItem } = useMenuStore();
-  const { updateTitle } = useNavTitleStore();
-  const { updatePage } = useConfigCardStore();
+  const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
+
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
+
+  const updatePage = useConfigCardStore((state) => state.updatePage);
+
+  const isCardBlocked = useConfigCardStore((state) => state.isCardBlocked);
 
   const theme = useTheme();
   const match = useMediaQuery(theme.breakpoints.up('sm'));
@@ -28,20 +33,23 @@ export default function CardConfiguration() {
   });
 
   const onSubmit = async (data: any) => {
-    console.log('🚀 ~ onSubmit ~ data:', data);
+    const payload = {
+      blockType: true ? '' : '',
+    };
+    api.post('');
   };
 
   return (
     <Box sx={{ width: 320, mx: { xs: 'auto', md: 3 } }}>
-      {match && <UserWelcome />}
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          minHeight: 'calc(100vh - 92px)',
+          minHeight: '100vh ',
           justifyContent: { xs: 'flex-start', md: 'center' },
         }}
       >
+        {match && <UserWelcome />}
         <Typography
           variant="h6"
           color="primary"

@@ -35,11 +35,15 @@ export const useConfigCardStore = create<ConfigCardStore>()((set, get) => ({
    * set  value for status of card activation
    */
   setCardActivationStatus: (status) => set({ cardActivationStatus: status }),
-  /*
+  /**
    * set value for isVirtualCard var
    */
   setVirtualCard: (status) => set({ isVirtualCard: status }),
-  /*
+  /**
+   * set block status
+   */
+  setBlockStatus: (status) => set({ isCardBlocked: status }),
+  /**
    * return card activation status
    */
   getCardActivation: () => {
