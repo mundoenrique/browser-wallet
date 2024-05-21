@@ -26,11 +26,11 @@ export const useConfigCardStore = create<ConfigCardStore>()((set, get) => ({
   /**
    * Value for card block
    */
-  isCardBlocked: false,
+  isCardBlocked: undefined,
   /**
    * set card type attibute, if virtual then value is true, otherwise is false
    */
-  isVirtualCard: false,
+  isVirtualCard: undefined,
   /**
    * set  value for status of card activation
    */

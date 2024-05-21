@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
 import { Box, Stack, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
 import { HandleCard, InputSwitch, UserWelcome } from '@/components';
-import { useNavTitleStore, useMenuStore, useConfigCardStore } from '@/store';
+import { useNavTitleStore, useMenuStore, useConfigCardStore, useUserStore } from '@/store';
 import { CardCloseIcon, CardIcons, KeyIcons, PersonWrongIcon } from '%/Icons';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
 
@@ -20,7 +20,12 @@ export default function CardConfiguration() {
 
   const isCardBlocked = useConfigCardStore((state) => state.isCardBlocked);
 
+  const setBlockStatus = useConfigCardStore((state) => state.setBlockStatus);
+
+  const getUserCardId = useUserStore((state) => state.getUserCardId);
+
   const theme = useTheme();
+
   const match = useMediaQuery(theme.breakpoints.up('sm'));
 
   useEffect(() => {
@@ -29,15 +34,20 @@ export default function CardConfiguration() {
   }, [updateTitle, setCurrentItem]);
 
   const { control, handleSubmit } = useForm({
-    defaultValues: { temporaryBlock: false },
+    defaultValues: { temporaryBlock: isCardBlocked },
   });
 
-  const onSubmit = async (data: any) => {
-    const payload = {
-      blockType: true ? '' : '',
-    };
-    api.post('');
-  };
+  const onSubmit = useCallback(
+    async (data: any) => {
+      const payload = isCardBlocked
+        ? { blockType: '00', observations: 'Card found' }
+        : { blockType: 'PB', observations: '' };
+      setBlockStatus(!isCardBlocked);
+      console.log(data);
+      api.post(`/cards/${getUserCardId()}/block`, payload).then(() => {});
+    },
+    [isCardBlocked, setBlockStatus]
+  );
 
   return (
     <Box sx={{ width: 320, mx: { xs: 'auto', md: 3 } }}>

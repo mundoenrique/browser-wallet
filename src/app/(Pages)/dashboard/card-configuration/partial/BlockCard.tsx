@@ -20,10 +20,10 @@ export default function BlockCard() {
 
   const router = useRouter();
 
-  const { getUserCardId } = useUserStore();
+  const getUserCardId = useUserStore((state) => state.getUserCardId);
 
-  const { setModalError, setLoadingScreen } = useUiStore();
-
+  const setModalError = useUiStore((state) => state.setModalError);
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
   useEffect(() => {
     updateTitle('Bloquear tarjeta');
   }, [updateTitle]);
@@ -36,7 +36,7 @@ export default function BlockCard() {
   const onSubmit = async (data: any) => {
     setLoadingScreen(true);
     api
-      .post(`/cards/${getUserCardId()}/block`, data.blockType)
+      .post(`/cards/${getUserCardId()}/block`, { blockType: data.blockType })
       .then(() => {
         setOpen(!open);
       })

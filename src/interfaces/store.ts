@@ -128,8 +128,8 @@ export interface ConfigCardStore {
     | 'survey';
 
   cardActivationStatus: string;
-  isVirtualCard: boolean;
-  isCardBlocked: boolean;
+  isVirtualCard: boolean | undefined;
+  isCardBlocked: boolean | undefined;
   updatePage: (_newPage: ConfigCardStore['page']) => void;
   setBlockStatus: (_status: boolean) => void;
   setVirtualCard: (_status: boolean) => void;
