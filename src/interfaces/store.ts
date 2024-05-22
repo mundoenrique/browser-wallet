@@ -53,7 +53,6 @@ export interface UiStore {
   loadingScreen: boolean;
   setLoadingScreen: (status: boolean) => void;
   showModalError: boolean;
-
   setModalError: (value?: ErrorMessage | ErrorContext | null) => void;
   modalErrorObject: ErrorMessage | ErrorContext | null;
   closeModalError: () => void;
@@ -128,11 +127,13 @@ export interface ConfigCardStore {
     | 'survey';
 
   cardActivationStatus: string;
-  isVirtualCard: boolean | undefined;
-  isCardBlocked: boolean | undefined;
+  isCardVirtual: () => void;
+  isCardBlocked: () => void;
+  cardType: string;
+  blockType: object;
+  cardStatus: string;
   updatePage: (_newPage: ConfigCardStore['page']) => void;
-  setBlockStatus: (_status: boolean) => void;
-  setVirtualCard: (_status: boolean) => void;
+  setCardProperties: (_key: 'blockType' | 'cardType' | 'cardStatus', _value: any) => void;
   setCardActivationStatus: (_status: string) => void;
 }
 

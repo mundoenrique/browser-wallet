@@ -1,7 +1,8 @@
-import { SxProps } from '@mui/material';
+import { SwitchProps, SxProps } from '@mui/material';
 import { DateView, DesktopDatePickerProps } from '@mui/x-date-pickers';
 //Internal app
 import { IClientProps } from './store';
+import { MuiOtpInputProps } from 'mui-one-time-password-input';
 
 /**
  * Form global variables
@@ -124,6 +125,7 @@ export interface SwitchListProps extends FormMUIProps {
   setValue?: any;
   disabled?: boolean;
   fullWidth?: boolean;
+  switchProps?: SwitchProps;
 }
 
 /**

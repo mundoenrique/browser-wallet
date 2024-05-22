@@ -22,6 +22,7 @@ export { default as NavExternal } from './navigation/navbar/NavExternal';
 //modal
 export { default as ModalError } from './modal/ModalError';
 export { default as ModalResponsive } from './modal/ModalResponsive';
+export { default as ModalOtp } from './modal/ModalOtp';
 //layout
 export { default as Pelca } from './Pelca';
 export { default as MainLayout } from './layout/MainLayout';

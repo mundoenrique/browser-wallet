@@ -1,15 +1,16 @@
 'use client';
 
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
 import { Box, Stack, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
-import { HandleCard, InputSwitch, UserWelcome } from '@/components';
-import { useNavTitleStore, useMenuStore, useConfigCardStore, useUserStore } from '@/store';
+import { HandleCard, InputSwitch, UserWelcome, ModalOtp } from '@/components';
+import { useNavTitleStore, useMenuStore, useConfigCardStore, useUserStore, useUiStore, useOtpStore } from '@/store';
 import { CardCloseIcon, CardIcons, KeyIcons, PersonWrongIcon } from '%/Icons';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
+import { encryptForge } from '@/utils/toolHelper';
 
 export default function CardConfiguration() {
   const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
@@ -20,9 +21,17 @@ export default function CardConfiguration() {
 
   const isCardBlocked = useConfigCardStore((state) => state.isCardBlocked);
 
-  const setBlockStatus = useConfigCardStore((state) => state.setBlockStatus);
-
   const getUserCardId = useUserStore((state) => state.getUserCardId);
+
+  const { userId } = useUserStore((state) => state.user);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const otpUuid = useOtpStore((state) => state.otpUuid);
+
+  const [openOtp, setOpenOtp] = useState<boolean>(false);
 
   const theme = useTheme();
 
@@ -33,21 +42,57 @@ export default function CardConfiguration() {
     setCurrentItem('card-settings');
   }, [updateTitle, setCurrentItem]);
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, getValues } = useForm({
     defaultValues: { temporaryBlock: isCardBlocked },
   });
 
-  const onSubmit = useCallback(
+  const onSubmitOtp = useCallback(
     async (data: any) => {
-      const payload = isCardBlocked
-        ? { blockType: '00', observations: 'Card found' }
-        : { blockType: 'PB', observations: '' };
-      setBlockStatus(!isCardBlocked);
-      console.log(data);
-      api.post(`/cards/${getUserCardId()}/block`, payload).then(() => {});
+      setLoadingScreen(true);
+      const { otp } = data;
+
+      const payload = {
+        otpProcessCode: 'SEE_CARD_NUMBER',
+        otpUuId: otpUuid,
+        otpCode: encryptForge(otp),
+      };
+
+      api
+        .post(`/users/${userId}/validate/tfa`, payload)
+        .then((response) => {
+          // if (response.data.code === '200.00.000') {
+          setOpenOtp(false);
+          requestBlock();
+          // }
+        })
+        .catch((e) => {
+          setModalError({ error: e });
+          setLoadingScreen(false);
+        });
     },
-    [isCardBlocked, setBlockStatus]
+    [otpUuid] //eslint-disable-line
   );
+
+  const onSubmit = (data: object, e: any) => {
+    e.preventDefault();
+    setOpenOtp(true);
+  };
+
+  const requestBlock = () => {
+    const payload = getValues('temporaryBlock')
+      ? { blockType: '00', observations: 'Card found' }
+      : { blockType: 'PB', observations: '' };
+
+    api
+      .post(`/cards/${getUserCardId()}/block`, payload)
+      .then(() => {})
+      .catch((e) => {
+        setModalError({ error: e });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
+  };
 
   return (
     <Box sx={{ width: 320, mx: { xs: 'auto', md: 3 } }}>
@@ -83,7 +128,15 @@ export default function CardConfiguration() {
 
           <HandleCard
             avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />}
-            icon={<InputSwitch onChange={() => handleSubmit(onSubmit)()} name="temporaryBlock" control={control} />}
+            icon={
+              <InputSwitch
+                name="temporaryBlock"
+                control={control}
+                switchProps={{
+                  onClick: (e) => handleSubmit(onSubmit)(e),
+                }}
+              />
+            }
           >
             <Typography variant="subtitle2">Bloqueo temporal</Typography>
             <Typography fontSize={10}>Estatus: Tarjeta bloqueada</Typography>
@@ -120,6 +173,14 @@ export default function CardConfiguration() {
           </HandleCard>
         </Stack>
       </Box>
+      {openOtp && (
+        <ModalOtp
+          open={openOtp}
+          handleClose={() => setOpenOtp(false)}
+          onSubmit={onSubmitOtp}
+          processCode="SEE_CARD_NUMBER"
+        />
+      )}
     </Box>
   );
 }
