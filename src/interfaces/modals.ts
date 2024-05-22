@@ -45,4 +45,5 @@ export interface ModalErrorProps {
   description: string | JSX.Element;
   open: boolean;
   handleClose: () => void;
+  handleReload?: any;
 }

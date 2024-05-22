@@ -53,10 +53,11 @@ export interface UiStore {
   loadingScreen: boolean;
   setLoadingScreen: (status: boolean) => void;
   showModalError: boolean;
-
   setModalError: (value?: ErrorMessage | ErrorContext | null) => void;
   modalErrorObject: ErrorMessage | ErrorContext | null;
   closeModalError: () => void;
+  reloadFunction: (() => void) | null;
+  setReloadFunction: (func: () => void) => void;
 }
 interface ErrorMessage {
   title: string;
@@ -216,6 +217,16 @@ export interface UserStore {
   getUserCardId: () => string;
 }
 
+/**
+ * OTP store
+ * @typeParam otpValid - Initial state {@defaultValue `undefined`}
+ * @typeParam timeLeft - Initial state {@defaultValue `0`}
+ * @typeParam counting - Initial state {@defaultValue `false`}
+ * @typeParam setCounting: (value: boolean) => void
+ * @typeParam countdown: () => void
+ * @typeParam setTime: (value: number) => void
+ * @typeParam setOTPValid: (value: string) => void
+ */
 export interface OtpStore {
   otpValid: 'OTP' | 'PASSWORD' | 'ENDING' | undefined;
   timeLeft: number;
@@ -228,4 +239,18 @@ export interface OtpStore {
   countdown: () => void;
   setTime: (value: number) => void;
   setOTPValid: (value: OtpStore['otpValid']) => void;
+}
+
+/**
+ * Debt store
+ * @typeParam debt - Initial state {@defaultValue `null`}
+ * @typeParam view - Initial state {@defaultValue `DEBT`}
+ * @typeParam setDebt: (_data: any) => void
+ * @typeParam setView: (_data: any) => void
+ */
+export interface DebtStore {
+  debt: any | null;
+  view: 'DEBT' | 'SUCCESS' | 'ERROR' | string | undefined;
+  setDebt: (_data: any) => void;
+  setView: (_data: string) => void;
 }

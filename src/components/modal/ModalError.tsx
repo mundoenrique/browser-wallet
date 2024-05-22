@@ -1,11 +1,11 @@
 'use client';
 
-import { Alert, AlertTitle, Snackbar } from '@mui/material';
+import { Alert, AlertTitle, Snackbar, Typography } from '@mui/material';
 //Internal app
 import { ModalErrorProps } from '@/interfaces';
 
 export default function ModalError(props: ModalErrorProps) {
-  const { title, description, open, handleClose } = props;
+  const { title, description, open, handleClose, handleReload } = props;
 
   return (
     <Snackbar
@@ -22,6 +22,17 @@ export default function ModalError(props: ModalErrorProps) {
       >
         <AlertTitle sx={{ fontWeight: 700 }}>{title}</AlertTitle>
         {description}
+        {handleReload && (
+          <Typography
+            variant="subtitle2"
+            onClick={() => {
+              handleReload();
+            }}
+            sx={{ cursor: 'pointer', textDecoration: 'underline' }}
+          >
+            Intenta de nuevo
+          </Typography>
+        )}
       </Alert>
     </Snackbar>
   );
