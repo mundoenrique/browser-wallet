@@ -1,3 +1,4 @@
+import { ICardDebt } from './api';
 import { ChildrenProps } from './constans';
 
 /**
@@ -61,6 +62,7 @@ export interface FrontInformationProps {
  * @typeParam onClick (Optional): () => void
  */
 export interface CardDebtProps {
+  data: ICardDebt;
   OweMe?: boolean;
   onClick?: () => void | boolean;
 }

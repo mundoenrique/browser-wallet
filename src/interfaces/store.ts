@@ -53,10 +53,11 @@ export interface UiStore {
   loadingScreen: boolean;
   setLoadingScreen: (status: boolean) => void;
   showModalError: boolean;
-
   setModalError: (value?: ErrorMessage | ErrorContext | null) => void;
   modalErrorObject: ErrorMessage | ErrorContext | null;
   closeModalError: () => void;
+  reloadFunction: (() => void) | null;
+  setReloadFunction: (func: () => void) => void;
 }
 interface ErrorMessage {
   title: string;

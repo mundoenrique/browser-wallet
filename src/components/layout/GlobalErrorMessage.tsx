@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 
 export default function GlobalErrorMessage() {
   const { modalErrorObject, showModalError, closeModalError } = useUiStore();
-
+  const reloadFunction = useUiStore((state) => state.reloadFunction);
   const modalMessage = useMemo(() => {
     let title = '';
     let description = '';
@@ -44,6 +44,7 @@ export default function GlobalErrorMessage() {
       description={modalMessage.description}
       open={showModalError}
       handleClose={closeModalError}
+      handleReload={reloadFunction}
     />
   );
 }
