@@ -18,6 +18,7 @@ export default function Dashboard() {
   const { getUserCardId } = useUserStore();
 
   const setModalError = useUiStore((state) => state.setModalError);
+
   const setReloadFunction = useUiStore((state) => state.setReloadFunction);
 
   const { userId } = useUserStore((state) => state.user);
@@ -40,13 +41,12 @@ export default function Dashboard() {
     amount: null,
     expirationDate: null,
     currencyCode: '',
-    clients: 0,
+    clients: null,
   });
 
   const getMovements = useCallback(async () => {
     setLoadingMovements(true);
     setErrorMovements(false);
-
     customApi
       .get(`/cards/${getUserCardId()}/transactions`, {
         params: {
@@ -73,6 +73,7 @@ export default function Dashboard() {
         setCardMyDebt(response.data.data);
       })
       .catch(() => {
+        setReloadFunction(() => getDebtBalance());
         setCardMyDebt({
           amount: null,
           expirationDate: null,
@@ -92,6 +93,12 @@ export default function Dashboard() {
         setCardClients(response.data.data);
       })
       .catch(() => {
+        setReloadFunction(() => getCharge());
+        setCardClients({
+          amount: null,
+          currencyCode: '',
+          clients: null,
+        });
         setModalError({
           title: 'Algo salió mal',
           description:

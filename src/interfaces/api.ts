@@ -102,5 +102,5 @@ export interface ICardDebt {
   amount: number | null;
   currencyCode: string;
   expirationDate?: string | null;
-  clients?: number;
+  clients?: number | null;
 }

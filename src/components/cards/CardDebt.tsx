@@ -51,6 +51,7 @@ function Avatars({ MaxOweMe }: { MaxOweMe: number }) {
               <Avatar key={i} sx={{ width: 14, height: 14, bgcolor: fuchsiaBlue[400] }} />
             ))}
           </AvatarGroup>
+          {!MaxOweMe && <Typography fontSize={8}>Datos no disponibles</Typography>}
         </Box>
         <ArrowCircle sx={{ fontSize: 12, color: 'primary.main' }} />
       </>
