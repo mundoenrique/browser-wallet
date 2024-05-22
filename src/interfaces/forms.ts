@@ -22,7 +22,7 @@ import { MuiOtpInputProps } from 'mui-one-time-password-input';
 export interface FormMUIProps {
   name: string;
   label?: string;
-  labelError?: string;
+  labelError?: string | React.ReactNode;
   error?: any;
   value?: any;
   onChange?: (..._e: any[]) => void;
