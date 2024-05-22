@@ -90,3 +90,17 @@ export type TUserDetailParams = {
     userId: string;
   };
 };
+
+/**
+ * ICardDebt Response
+ * @typeParam amount: number
+ * @typeParam currencyCode: string
+ * @typeParam expirationDate (Optional): string
+ * @typeParam clients (Optional): number
+ */
+export interface ICardDebt {
+  amount: number | null;
+  currencyCode: string;
+  expirationDate?: string | null;
+  clients?: number | null;
+}
