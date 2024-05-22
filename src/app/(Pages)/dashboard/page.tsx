@@ -5,10 +5,10 @@ import { Box, Typography } from '@mui/material';
 import { useEffect, useState, useCallback } from 'react';
 //Internal app
 import { useApi } from '@/hooks/useApi';
-import { useMenuStore, useUiStore, useUserStore } from '@/store';
-import CardInformation from '@/components/cards/cardInformation/CardInformation';
-import { CardDebt, LastMovements, Linking, ModalError, UserWelcome } from '@/components';
 import { ICardDebt } from '@/interfaces';
+import { useMenuStore, useUiStore, useUserStore } from '@/store';
+import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
+import CardInformation from '@/components/cards/cardInformation/CardInformation';
 
 export default function Dashboard() {
   const { push } = useRouter();
@@ -30,8 +30,6 @@ export default function Dashboard() {
 
   const [errorMovements, setErrorMovements] = useState<boolean>(false);
 
-  // const [errorModal, setErrorModal] = useState<boolean>(false);
-
   const [cardMyDebt, setCardMyDebt] = useState<ICardDebt>({
     amount: null,
     expirationDate: null,
@@ -48,7 +46,7 @@ export default function Dashboard() {
   const getMovements = useCallback(async () => {
     setLoadingMovements(true);
     setErrorMovements(false);
-    // setErrorModal(false);
+
     customApi
       .get(`/cards/${getUserCardId()}/transactions`, {
         params: {
@@ -201,7 +199,7 @@ export default function Dashboard() {
 
 const EmptySlot = () => {
   return (
-    <Box sx={{ marginX: '8px', textAlign: 'center' }}>
+    <Box sx={{ mx: '8px', textAlign: 'center' }}>
       <Typography variant="subtitle2" color="initial">
         ¡Estamos encantados de tenerte con nosotros!
       </Typography>

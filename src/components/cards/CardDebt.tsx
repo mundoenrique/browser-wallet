@@ -3,7 +3,6 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import updateLocale from 'dayjs/plugin/updateLocale';
-
 import Clock from '@mui/icons-material/QueryBuilder';
 import ArrowCircle from '@mui/icons-material/ArrowCircleRightOutlined';
 import { Avatar, AvatarGroup, Box, Card, Typography } from '@mui/material';
