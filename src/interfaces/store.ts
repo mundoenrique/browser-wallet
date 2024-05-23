@@ -58,6 +58,7 @@ export interface UiStore {
   closeModalError: () => void;
   reloadFunction: (() => void) | null;
   setReloadFunction: (func: () => void) => void;
+  clearReloadFunction: () => void;
 }
 interface ErrorMessage {
   title: string;

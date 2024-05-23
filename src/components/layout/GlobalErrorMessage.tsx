@@ -10,6 +10,12 @@ export default function GlobalErrorMessage() {
   const reloadFunction = useUiStore((state) => state.reloadFunction);
   const closeModalError = useUiStore((state) => state.closeModalError);
   const modalErrorObject = useUiStore((state) => state.modalErrorObject);
+  const clearReloadFunction = useUiStore((state) => state.clearReloadFunction);
+
+  const resetError = () => {
+    closeModalError();
+    clearReloadFunction();
+  };
 
   const modalMessage = useMemo(() => {
     let title = '';
@@ -47,7 +53,7 @@ export default function GlobalErrorMessage() {
       title={modalMessage.title}
       description={modalMessage.description}
       open={showModalError}
-      handleClose={closeModalError}
+      handleClose={resetError}
       handleReload={reloadFunction}
     />
   );
