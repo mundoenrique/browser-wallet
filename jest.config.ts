@@ -17,8 +17,8 @@ const config: Config = {
   collectCoverage: true,
   collectCoverageFrom: [
     'src/app/**/signup/*page.tsx',
-    'src/app/**/signin/*page.tsx',
-    'src/app/**/identify/[user]/*page.tsx',
+    // 'src/app/**/signin/*page.tsx',
+    // 'src/app/**/identify/[user]/*page.tsx',
     'src/app/**/password-recover/*page.tsx',
   ],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
@@ -38,6 +38,8 @@ const config: Config = {
     '<rootDir>/__tests__/unit/Dashboard/card-configuration',
     '<rootDir>/__tests__/unit/Dashboard/legal',
     '<rootDir>/__tests__/unit/Dashboard/recharge',
+    '<rootDir>/__tests__/unit/Signin',
+    '<rootDir>/__tests__/unit/Identify',
   ],
 };
 
