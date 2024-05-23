@@ -1,16 +1,17 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect, useState, useCallback } from 'react';
 import { Box, Button, Typography, Stack } from '@mui/material';
 //Internal app
-import { getSchema } from '@/config';
 import { api } from '@/utils/api';
-import { useUserStore, useUiStore, useOtpStore, useNavTitleStore, useConfigCardStore } from '@/store';
-import { ContainerLayout, InputRadio, Linking, ModalResponsive, ModalOtp } from '@/components';
+import { getSchema } from '@/config';
 import { encryptForge } from '@/utils/toolHelper';
+import ModalOtp from '@/components/modal/ModalOtp';
+import { useUserStore, useUiStore, useOtpStore, useNavTitleStore, useConfigCardStore } from '@/store';
+import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/components';
 
 export default function BlockCard() {
   const { updateTitle } = useNavTitleStore();

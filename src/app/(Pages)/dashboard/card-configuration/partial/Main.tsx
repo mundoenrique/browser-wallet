@@ -1,16 +1,17 @@
 'use client';
 
-import { useEffect, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
+import { useEffect, useCallback, useState } from 'react';
 import { Box, Stack, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
-import { HandleCard, InputSwitch, UserWelcome, ModalOtp } from '@/components';
-import { useNavTitleStore, useMenuStore, useConfigCardStore, useUserStore, useUiStore, useOtpStore } from '@/store';
+import { encryptForge } from '@/utils/toolHelper';
+import ModalOtp from '@/components/modal/ModalOtp';
+import { HandleCard, InputSwitch, UserWelcome } from '@/components';
 import { CardCloseIcon, CardIcons, KeyIcons, PersonWrongIcon } from '%/Icons';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
-import { encryptForge } from '@/utils/toolHelper';
+import { useNavTitleStore, useMenuStore, useConfigCardStore, useUserStore, useUiStore, useOtpStore } from '@/store';
 
 export default function CardConfiguration() {
   const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
