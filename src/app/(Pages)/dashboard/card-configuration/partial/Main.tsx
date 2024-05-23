@@ -21,6 +21,8 @@ export default function CardConfiguration() {
 
   const isCardBlocked = useConfigCardStore((state) => state.isCardBlocked);
 
+  const isCardVirtual = useConfigCardStore((state) => state.isCardVirtual);
+
   const getUserCardId = useUserStore((state) => state.getUserCardId);
 
   const { userId } = useUserStore((state) => state.user);
@@ -52,7 +54,7 @@ export default function CardConfiguration() {
       const { otp } = data;
 
       const payload = {
-        otpProcessCode: 'SEE_CARD_NUMBER',
+        otpProcessCode: 'LOCK_AND_UNLOCK_CARD_OTP',
         otpUuId: otpUuid,
         otpCode: encryptForge(otp),
       };
@@ -142,15 +144,17 @@ export default function CardConfiguration() {
             <Typography fontSize={10}>Estatus: Tarjeta bloqueada</Typography>
           </HandleCard>
 
-          <HandleCard
-            onClick={() => {
-              updatePage('blockCard');
-            }}
-            avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />}
-            icon={<Arrow />}
-          >
-            <Typography variant="subtitle2">Bloquear por perdida o robo</Typography>
-          </HandleCard>
+          {!isCardVirtual && (
+            <HandleCard
+              onClick={() => {
+                updatePage('blockCard');
+              }}
+              avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />}
+              icon={<Arrow />}
+            >
+              <Typography variant="subtitle2">Bloquear por perdida o robo</Typography>
+            </HandleCard>
+          )}
 
           <HandleCard
             onClick={() => {
@@ -178,7 +182,7 @@ export default function CardConfiguration() {
           open={openOtp}
           handleClose={() => setOpenOtp(false)}
           onSubmit={onSubmitOtp}
-          processCode="SEE_CARD_NUMBER"
+          processCode="LOCK_AND_UNLOCK_CARD_OTP"
         />
       )}
     </Box>

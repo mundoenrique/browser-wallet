@@ -1,16 +1,16 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography, Stack } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
 import { api } from '@/utils/api';
-import { useUserStore, useUiStore } from '@/store';
-import { useNavTitleStore, useConfigCardStore } from '@/store';
-import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/components';
+import { useUserStore, useUiStore, useOtpStore, useNavTitleStore, useConfigCardStore } from '@/store';
+import { ContainerLayout, InputRadio, Linking, ModalResponsive, ModalOtp } from '@/components';
+import { encryptForge } from '@/utils/toolHelper';
 
 export default function BlockCard() {
   const { updateTitle } = useNavTitleStore();
@@ -23,20 +23,55 @@ export default function BlockCard() {
   const getUserCardId = useUserStore((state) => state.getUserCardId);
 
   const setModalError = useUiStore((state) => state.setModalError);
+
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
+  const { userId } = useUserStore((state) => state.user);
+
+  const otpUuid = useOtpStore((state) => state.otpUuid);
+
+  const [openOtp, setOpenOtp] = useState<boolean>(false);
+
   useEffect(() => {
     updateTitle('Bloquear tarjeta');
   }, [updateTitle]);
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, getValues } = useForm({
     defaultValues: { blockType: '' },
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmitOtp = useCallback(
+    async (data: any) => {
+      setLoadingScreen(true);
+      const { otp } = data;
+
+      const payload = {
+        otpProcessCode: 'LOCK_AND_UNLOCK_CARD_OTP',
+        otpUuId: otpUuid,
+        otpCode: encryptForge(otp),
+      };
+
+      api
+        .post(`/users/${userId}/validate/tfa`, payload)
+        .then((response) => {
+          if (response.data.code === '200.00.000') {
+            setOpenOtp(false);
+            onSubmit();
+          }
+        })
+        .catch((e) => {
+          setModalError({ error: e });
+          setLoadingScreen(false);
+        });
+    },
+    [otpUuid] //eslint-disable-line
+  );
+
+  const onSubmit = async () => {
     setLoadingScreen(true);
     api
-      .post(`/cards/${getUserCardId()}/block`, { blockType: data.blockType })
+      .post(`/cards/${getUserCardId()}/block`, { blockType: getValues('blockType') })
       .then(() => {
         setOpen(!open);
       })
@@ -119,6 +154,14 @@ export default function BlockCard() {
           Crear nueva cuenta
         </Button>
       </ModalResponsive>
+      {openOtp && (
+        <ModalOtp
+          open={openOtp}
+          handleClose={() => setOpenOtp(false)}
+          onSubmit={onSubmitOtp}
+          processCode="SEE_CARD_NUMBER"
+        />
+      )}
     </>
   );
 }
