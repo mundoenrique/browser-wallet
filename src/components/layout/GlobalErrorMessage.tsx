@@ -1,8 +1,9 @@
 'use client';
 
+import { useMemo } from 'react';
+// Internal app
 import { useUiStore } from '@/store';
 import ModalError from '../modal/ModalError';
-import { useMemo } from 'react';
 
 export default function GlobalErrorMessage() {
   const { modalErrorObject, showModalError, closeModalError } = useUiStore();
