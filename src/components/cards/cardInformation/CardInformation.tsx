@@ -106,6 +106,7 @@ export default function CardInformation() {
         setCardProperties('cardStatus', cardStatus);
         setCardProperties('cardType', cardType);
         setCardProperties('blockType', blockType);
+        setCardProperties('cardInfo', true);
       })
       .catch((e) => {
         setCardInformationError(true);

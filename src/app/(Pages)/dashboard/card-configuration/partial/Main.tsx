@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
 import { useEffect, useCallback, useState } from 'react';
-import { Box, Stack, Typography, useTheme, useMediaQuery } from '@mui/material';
+import { Box, Stack, Typography, useTheme, useMediaQuery, Button } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
 import { encryptForge } from '@/utils/toolHelper';
@@ -23,6 +23,8 @@ export default function CardConfiguration() {
   const isCardBlocked = useConfigCardStore((state) => state.isCardBlocked);
 
   const isCardVirtual = useConfigCardStore((state) => state.isCardVirtual);
+
+  const cardInfo = useConfigCardStore((state) => state.cardInfo);
 
   const getUserCardId = useUserStore((state) => state.getUserCardId);
 
@@ -45,8 +47,8 @@ export default function CardConfiguration() {
     setCurrentItem('card-settings');
   }, [updateTitle, setCurrentItem]);
 
-  const { control, handleSubmit, getValues } = useForm({
-    defaultValues: { temporaryBlock: isCardBlocked },
+  const { control, handleSubmit, setValue } = useForm({
+    defaultValues: { temporaryBlock: isCardBlocked() },
   });
 
   const onSubmitOtp = useCallback(
@@ -55,7 +57,7 @@ export default function CardConfiguration() {
       const { otp } = data;
 
       const payload = {
-        otpProcessCode: 'LOCK_AND_UNLOCK_CARD_OTP',
+        otpProcessCode: 'SEE_CARD_NUMBER',
         otpUuId: otpUuid,
         otpCode: encryptForge(otp),
       };
@@ -63,10 +65,10 @@ export default function CardConfiguration() {
       api
         .post(`/users/${userId}/validate/tfa`, payload)
         .then((response) => {
-          // if (response.data.code === '200.00.000') {
-          setOpenOtp(false);
-          requestBlock();
-          // }
+          if (response.data.code === '200.00.000') {
+            setOpenOtp(false);
+            handleSubmit(onSubmit)();
+          }
         })
         .catch((e) => {
           setModalError({ error: e });
@@ -76,19 +78,16 @@ export default function CardConfiguration() {
     [otpUuid] //eslint-disable-line
   );
 
-  const onSubmit = (data: object, e: any) => {
-    e.preventDefault();
-    setOpenOtp(true);
-  };
-
-  const requestBlock = () => {
-    const payload = getValues('temporaryBlock')
-      ? { blockType: '00', observations: 'Card found' }
-      : { blockType: 'PB', observations: '' };
+  const onSubmit = (data: any) => {
+    const payload = !data.temporaryBlock
+      ? { blockType: '00', observations: 'Unblock card' }
+      : { blockType: 'PB', observations: 'Preventive block' };
 
     api
       .post(`/cards/${getUserCardId()}/block`, payload)
-      .then(() => {})
+      .then(() => {
+        setValue('temporaryBlock', !data.temporaryBlock);
+      })
       .catch((e) => {
         setModalError({ error: e });
       })
@@ -136,10 +135,17 @@ export default function CardConfiguration() {
                 name="temporaryBlock"
                 control={control}
                 switchProps={{
-                  onClick: (e) => handleSubmit(onSubmit)(e),
+                  onClick: (e) => {
+                    if (cardInfo) {
+                      e.preventDefault();
+                      setOpenOtp(true);
+                    }
+                  },
+                  disabled: !cardInfo,
                 }}
               />
             }
+            disabled={!cardInfo}
           >
             <Typography variant="subtitle2">Bloqueo temporal</Typography>
             <Typography fontSize={10}>Estatus: Tarjeta bloqueada</Typography>
