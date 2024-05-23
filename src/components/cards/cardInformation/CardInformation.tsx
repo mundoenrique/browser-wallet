@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react';
 //Internal app
-import { useApi } from '@/hooks/useApi';
-import { useUiStore, useUserStore, useOtpStore } from '@/store';
+import { api } from '@/utils/api';
+import { useUiStore, useUserStore, useOtpStore, useConfigCardStore } from '@/store';
 import ModalOtp from '@/components/modal/ModalOtp';
 import BackInformation from './partial/BackInformation';
 import FrontInformation from './partial/FrontInformation';
@@ -41,8 +41,6 @@ export default function CardInformation() {
 
   const [showDetails, setShowDetails] = useState<boolean>(false);
 
-  const customApi = useApi();
-
   const getUserCardId = useUserStore((state) => state.getUserCardId);
 
   const { userId } = useUserStore((state) => state.user);
@@ -53,7 +51,11 @@ export default function CardInformation() {
 
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
-  const [cardData, setCardData] = useState<{ [key: string]: string } | null>(null);
+  const isCardBlocked = useConfigCardStore((state) => state.isCardBlocked);
+
+  const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
+
+  const [cardData, setCardData] = useState<{ [key: string]: any } | null>(null);
 
   const [cardbackData, setCardBackData] = useState<{ [key: string]: string } | null>(null);
 
@@ -78,7 +80,7 @@ export default function CardInformation() {
         otpCode: encryptForge(otp),
       };
 
-      customApi
+      api
         .post(`/users/${userId}/validate/tfa`, payload)
         .then((response) => {
           if (response.data.code === '200.00.000') {
@@ -96,10 +98,14 @@ export default function CardInformation() {
 
   const getCardInformation = async () => {
     setCardInformationError(false);
-    customApi
+    api
       .get(`/cards/${getUserCardId()}`)
       .then((response) => {
+        const { cardStatus, cardType, blockType } = response.data.data;
         setCardData(response.data.data);
+        setCardProperties('cardStatus', cardStatus);
+        setCardProperties('cardType', cardType);
+        setCardProperties('blockType', blockType);
       })
       .catch((e) => {
         setCardInformationError(true);
@@ -109,7 +115,7 @@ export default function CardInformation() {
 
   const getBalance = async () => {
     setBalanceError(false);
-    customApi
+    api
       .get(`/cards/${getUserCardId()}/balance`)
       .then((response) => {
         setBalance(response.data.data);
@@ -121,7 +127,7 @@ export default function CardInformation() {
   };
 
   const getDecryptData = async () => {
-    customApi
+    api
       .get(`/cards/${getUserCardId()}`, {
         params: {
           ...cardTypeQuery(cardData?.cardType ?? ''),
@@ -142,7 +148,7 @@ export default function CardInformation() {
   useEffect(() => {
     getCardInformation();
     getBalance();
-  }, []); //eslint-disable-line
+  }, [isCardBlocked]); //eslint-disable-line
 
   useEffect(() => {
     if (showDetails) {
@@ -159,7 +165,7 @@ export default function CardInformation() {
           <FrontInformation
             showDetails={handleShowDetaild}
             cardNumber={cardData?.mask}
-            cardStatus={cardData?.cardStatus}
+            cardStatus={cardData?.blockType}
             balance={balance?.availableBalance}
             cardInformationError={cardInformationError}
             balanceError={balanceError}

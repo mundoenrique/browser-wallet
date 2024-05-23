@@ -50,7 +50,7 @@ export interface FrontInformationProps {
   balance: string | undefined;
   balanceError: boolean;
   cardInformationError: boolean;
-  cardStatus: string | undefined;
+  cardStatus: object | undefined;
   fetchBalance: () => void;
   fetchCardInformation: () => void;
 }

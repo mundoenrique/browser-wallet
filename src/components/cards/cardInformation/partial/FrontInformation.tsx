@@ -31,7 +31,7 @@ export default function FrontInformation(props: FrontInformationProps): JSX.Elem
   const [showBalance, setShowBalance] = useState<boolean>(false);
 
   const renderStatus = () => {
-    if (cardStatus === 'ACTIVE' || cardStatus === undefined) {
+    if ((cardStatus && !Object.hasOwn(cardStatus, 'code')) || cardStatus === undefined) {
       return true;
     } else {
       return false;

@@ -58,6 +58,7 @@ const CloseButtonContainer = styled(Box, {
  * @param open - State of the modal to show it or not.
  * @param children - Children elements.
  */
+
 const ModalResponsive = forwardRef(function MyModalResponsive(props: MuiModalProps, ref: any) {
   const { open, handleClose, children, ...others } = props;
   const theme = useTheme();

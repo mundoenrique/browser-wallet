@@ -1,21 +1,43 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
+import { useEffect, useCallback, useState } from 'react';
 import { Box, Stack, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
+import { api } from '@/utils/api';
+import { encryptForge } from '@/utils/toolHelper';
+import ModalOtp from '@/components/modal/ModalOtp';
 import { HandleCard, InputSwitch, UserWelcome } from '@/components';
-import { useNavTitleStore, useMenuStore, useConfigCardStore } from '@/store';
 import { CardCloseIcon, CardIcons, KeyIcons, PersonWrongIcon } from '%/Icons';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
+import { useNavTitleStore, useMenuStore, useConfigCardStore, useUserStore, useUiStore, useOtpStore } from '@/store';
 
 export default function CardConfiguration() {
-  const { setCurrentItem } = useMenuStore();
-  const { updateTitle } = useNavTitleStore();
-  const { updatePage } = useConfigCardStore();
+  const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
+
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
+
+  const updatePage = useConfigCardStore((state) => state.updatePage);
+
+  const isCardBlocked = useConfigCardStore((state) => state.isCardBlocked);
+
+  const isCardVirtual = useConfigCardStore((state) => state.isCardVirtual);
+
+  const getUserCardId = useUserStore((state) => state.getUserCardId);
+
+  const { userId } = useUserStore((state) => state.user);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const otpUuid = useOtpStore((state) => state.otpUuid);
+
+  const [openOtp, setOpenOtp] = useState<boolean>(false);
 
   const theme = useTheme();
+
   const match = useMediaQuery(theme.breakpoints.up('sm'));
 
   useEffect(() => {
@@ -23,25 +45,69 @@ export default function CardConfiguration() {
     setCurrentItem('card-settings');
   }, [updateTitle, setCurrentItem]);
 
-  const { control, handleSubmit } = useForm({
-    defaultValues: { temporaryBlock: false },
+  const { control, handleSubmit, getValues } = useForm({
+    defaultValues: { temporaryBlock: isCardBlocked },
   });
 
-  const onSubmit = async (data: any) => {
-    console.log('🚀 ~ onSubmit ~ data:', data);
+  const onSubmitOtp = useCallback(
+    async (data: any) => {
+      setLoadingScreen(true);
+      const { otp } = data;
+
+      const payload = {
+        otpProcessCode: 'LOCK_AND_UNLOCK_CARD_OTP',
+        otpUuId: otpUuid,
+        otpCode: encryptForge(otp),
+      };
+
+      api
+        .post(`/users/${userId}/validate/tfa`, payload)
+        .then((response) => {
+          // if (response.data.code === '200.00.000') {
+          setOpenOtp(false);
+          requestBlock();
+          // }
+        })
+        .catch((e) => {
+          setModalError({ error: e });
+          setLoadingScreen(false);
+        });
+    },
+    [otpUuid] //eslint-disable-line
+  );
+
+  const onSubmit = (data: object, e: any) => {
+    e.preventDefault();
+    setOpenOtp(true);
+  };
+
+  const requestBlock = () => {
+    const payload = getValues('temporaryBlock')
+      ? { blockType: '00', observations: 'Card found' }
+      : { blockType: 'PB', observations: '' };
+
+    api
+      .post(`/cards/${getUserCardId()}/block`, payload)
+      .then(() => {})
+      .catch((e) => {
+        setModalError({ error: e });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
   };
 
   return (
     <Box sx={{ width: 320, mx: { xs: 'auto', md: 3 } }}>
-      {match && <UserWelcome />}
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          minHeight: 'calc(100vh - 92px)',
+          minHeight: '100vh ',
           justifyContent: { xs: 'flex-start', md: 'center' },
         }}
       >
+        {match && <UserWelcome />}
         <Typography
           variant="h6"
           color="primary"
@@ -65,21 +131,31 @@ export default function CardConfiguration() {
 
           <HandleCard
             avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />}
-            icon={<InputSwitch onChange={() => handleSubmit(onSubmit)()} name="temporaryBlock" control={control} />}
+            icon={
+              <InputSwitch
+                name="temporaryBlock"
+                control={control}
+                switchProps={{
+                  onClick: (e) => handleSubmit(onSubmit)(e),
+                }}
+              />
+            }
           >
             <Typography variant="subtitle2">Bloqueo temporal</Typography>
             <Typography fontSize={10}>Estatus: Tarjeta bloqueada</Typography>
           </HandleCard>
 
-          <HandleCard
-            onClick={() => {
-              updatePage('blockCard');
-            }}
-            avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />}
-            icon={<Arrow />}
-          >
-            <Typography variant="subtitle2">Bloquear por perdida o robo</Typography>
-          </HandleCard>
+          {!isCardVirtual && (
+            <HandleCard
+              onClick={() => {
+                updatePage('blockCard');
+              }}
+              avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />}
+              icon={<Arrow />}
+            >
+              <Typography variant="subtitle2">Bloquear por perdida o robo</Typography>
+            </HandleCard>
+          )}
 
           <HandleCard
             onClick={() => {
@@ -102,6 +178,14 @@ export default function CardConfiguration() {
           </HandleCard>
         </Stack>
       </Box>
+      {openOtp && (
+        <ModalOtp
+          open={openOtp}
+          handleClose={() => setOpenOtp(false)}
+          onSubmit={onSubmitOtp}
+          processCode="LOCK_AND_UNLOCK_CARD_OTP"
+        />
+      )}
     </Box>
   );
 }
