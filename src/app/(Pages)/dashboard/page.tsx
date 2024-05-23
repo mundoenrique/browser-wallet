@@ -81,7 +81,7 @@ export default function Dashboard() {
         });
         setModalError({
           title: 'Algo salió mal',
-          description: 'No pudimos cargar la información de tu deuda. Por favor intentalo más tarde.',
+          description: 'No pudimos cargar la información de tu deuda.',
         });
       });
   }, []); //eslint-disable-line
@@ -101,8 +101,7 @@ export default function Dashboard() {
         });
         setModalError({
           title: 'Algo salió mal',
-          description:
-            'No pudimos cargar la información de lo que te deben tus clientes. Por favor intentalo más tarde.',
+          description: 'No pudimos cargar la información de lo que te deben tus clientes.',
         });
       });
   }, []); //eslint-disable-line

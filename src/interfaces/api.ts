@@ -99,7 +99,7 @@ export type TUserDetailParams = {
  * @typeParam clients (Optional): number
  */
 export interface ICardDebt {
-  amount: number | null;
+  amount: number | null | string;
   currencyCode: string;
   expirationDate?: string | null;
   clients?: number | null;

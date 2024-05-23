@@ -25,43 +25,11 @@ dayjs.updateLocale('es', {
   monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
 });
 
-function Avatars({ MaxOweMe }: { MaxOweMe: number }) {
-  const clientOweMe = ['', '', '', '', '', '', ''];
-  if (MaxOweMe > 5) {
-    return (
-      <>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 / 2 }}>
-          <AvatarGroup max={MaxOweMe > 5 ? 5 : MaxOweMe}>
-            {clientOweMe.slice(0, 5).map((client, i) => (
-              <Avatar key={i} sx={{ width: 14, height: 14, bgcolor: fuchsiaBlue[400] }} />
-            ))}
-          </AvatarGroup>
-
-          <Typography fontSize={8}>{MaxOweMe - 5}+ Clientes</Typography>
-        </Box>
-        <ArrowCircle sx={{ fontSize: 12, color: 'primary.main' }} />
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 / 2 }}>
-          <AvatarGroup max={MaxOweMe}>
-            {clientOweMe.slice(0, MaxOweMe).map((client, i) => (
-              <Avatar key={i} sx={{ width: 14, height: 14, bgcolor: fuchsiaBlue[400] }} />
-            ))}
-          </AvatarGroup>
-          {!MaxOweMe && <Typography fontSize={8}>Datos no disponibles</Typography>}
-        </Box>
-        <ArrowCircle sx={{ fontSize: 12, color: 'primary.main' }} />
-      </>
-    );
-  }
-}
-
 export default function CardDebt(props: CardDebtProps): JSX.Element {
   const { OweMe, onClick, data } = props;
-  const MaxOweMe = data?.clients || 0;
+  const maxOweMe = data?.clients || 0;
+  const clientOweMe = ['', '', '', '', '', '', ''];
+
   return (
     <Card
       sx={{
@@ -122,12 +90,27 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
         }}
       >
         {OweMe ? (
-          <Avatars MaxOweMe={MaxOweMe} />
+          <>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 / 2 }}>
+              {maxOweMe > 0 && (
+                <AvatarGroup max={maxOweMe > 5 ? 5 : maxOweMe}>
+                  {clientOweMe.slice(0, maxOweMe > 5 ? 5 : maxOweMe).map((client, i) => (
+                    <Avatar key={i} sx={{ width: 14, height: 14, bgcolor: fuchsiaBlue[400] }} />
+                  ))}
+                </AvatarGroup>
+              )}
+
+              <Typography fontSize={8}>
+                {!maxOweMe ? 'Datos no disponibles' : data.amount != '0.00' ? `${maxOweMe}+ Clientes` : '0 Clientes'}
+              </Typography>
+            </Box>
+            <ArrowCircle sx={{ fontSize: 12, color: 'primary.main' }} />
+          </>
         ) : (
           <>
             <Clock sx={{ fontSize: 12, color: 'primary.main' }} />
             <Typography fontSize={8}>
-              {data.expirationDate
+              {data.expirationDate && data.amount != '0.00'
                 ? dayjs(data?.expirationDate, 'DD/MM/YYYY').format('[Vence el] D [de] MMM YYYY')
                 : 'Datos no disponibles'}
             </Typography>
