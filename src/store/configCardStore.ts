@@ -57,8 +57,13 @@ export const useConfigCardStore = create<ConfigCardStore>()(
      */
     cardStatus: '',
     /**
+     * set if card info is loaded
+     */
+    cardInfo: false,
+    /**
      * set  values for  card object: cardType, cardBlockStatus, cardStatus
      */
+
     setCardProperties: (key, value) =>
       set((state) => {
         return { ...state, [key]: value };
