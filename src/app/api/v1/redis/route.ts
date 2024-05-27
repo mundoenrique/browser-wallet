@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const reqData = searchParams.get('reqData') || '';
-    const resData:string = await getRedis(`session:${reqData}`) || ''
+    const resData:string = await getRedis(reqData) || ''
 
     return new NextResponse(JSON.stringify(resData), { status: 200 });
 
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
   try {
 
     const dataBody = await request.json();
-    postRedis(dataBody.uuid,dataBody.dataRedis)
+    await postRedis(dataBody.uuid,dataBody.dataRedis)
 
     return new NextResponse(JSON.stringify({ code: '200.00.000', message: 'ok' }), { status: 200 });
 
