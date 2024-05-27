@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { headers } from 'next/headers'
 import uuid4 from 'uuid4';
 //Internal app
-import { decryptJWE, getEnvVariable, handleResponse, signJWT } from '@/utils';
-import { postRedis } from '@/utils/redis';
+import { decryptJWE, getEnvVariable, handleResponse, signJWT, postRedis } from '@/utils';
 
 export async function POST(request: NextRequest) {
   try {
 
     const uuid = uuid4();
-    await postRedis(uuid, { uuid })
+    await postRedis(`session:${uuid}`, { uuid })
 
     const encryptedBody = await request.json();
     const { data } = encryptedBody;
@@ -19,8 +19,7 @@ export async function POST(request: NextRequest) {
 
     const { jwePublicKey, jwsPublicKey } = decryptedPayload as { jwePublicKey: string; jwsPublicKey: string };
 
-    const token = await signJWT(jwsPrivateKey, { jwePublicKey, jwsPublicKey });
-    // const token = await signJWT(jwsPrivateKey, { jwePublicKey, jwsPublicKey });
+    const token = await signJWT(jwsPrivateKey, { jwePublicKey, jwsPublicKey, uuid });
 
     const responsePayload = { code: '200.00.000', message: 'Process Ok', data: { jwt: token, sessionId: uuid } };
 
