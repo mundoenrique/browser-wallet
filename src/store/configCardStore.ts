@@ -61,9 +61,16 @@ export const useConfigCardStore = create<ConfigCardStore>()(
      */
     cardInfo: false,
     /**
+     * Var to dispatch an update
+     */
+    updateCardInfo: false,
+    /**
+     * Dispatch an update
+     */
+    toggleUpdate: () => set((state) => ({ updateCardInfo: !state.updateCardInfo })),
+    /**
      * set  values for  card object: cardType, cardBlockStatus, cardStatus
      */
-
     setCardProperties: (key, value) =>
       set((state) => {
         return { ...state, [key]: value };

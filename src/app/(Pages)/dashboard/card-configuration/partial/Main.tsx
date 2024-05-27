@@ -22,7 +22,13 @@ export default function CardConfiguration() {
 
   const isCardBlocked = useConfigCardStore((state) => state.isCardBlocked);
 
+  const blockType = useConfigCardStore((state) => state.blockType);
+
+  const toggleUpdate = useConfigCardStore((state) => state.toggleUpdate);
+
   const isCardVirtual = useConfigCardStore((state) => state.isCardVirtual);
+
+  const updateCardInfo = useConfigCardStore((state) => state.updateCardInfo);
 
   const cardInfo = useConfigCardStore((state) => state.cardInfo);
 
@@ -57,7 +63,7 @@ export default function CardConfiguration() {
       const { otp } = data;
 
       const payload = {
-        otpProcessCode: 'SEE_CARD_NUMBER',
+        otpProcessCode: 'LOCK_AND_UNLOCK_CARD_OTP',
         otpUuId: otpUuid,
         otpCode: encryptForge(otp),
       };
@@ -78,15 +84,19 @@ export default function CardConfiguration() {
     [otpUuid] //eslint-disable-line
   );
 
-  const onSubmit = (data: any) => {
-    const payload = !data.temporaryBlock
+  useEffect(() => {
+    setValue('temporaryBlock', Object.hasOwn(blockType, 'code'));
+  }, [blockType, setValue]);
+
+  const onSubmit = async (data: any) => {
+    const payload = data.temporaryBlock
       ? { blockType: '00', observations: 'Unblock card' }
       : { blockType: 'PB', observations: 'Preventive block' };
 
     api
       .post(`/cards/${getUserCardId()}/block`, payload)
       .then(() => {
-        setValue('temporaryBlock', !data.temporaryBlock);
+        toggleUpdate();
       })
       .catch((e) => {
         setModalError({ error: e });
@@ -95,6 +105,8 @@ export default function CardConfiguration() {
         setLoadingScreen(false);
       });
   };
+
+  const virtualCard = isCardVirtual();
 
   return (
     <Box sx={{ width: 320, mx: { xs: 'auto', md: 3 } }}>
@@ -148,10 +160,12 @@ export default function CardConfiguration() {
             disabled={!cardInfo}
           >
             <Typography variant="subtitle2">Bloqueo temporal</Typography>
-            <Typography fontSize={10}>Estatus: Tarjeta bloqueada</Typography>
+            <Typography fontSize={10}>
+              Estatus: Tarjeta {Object.hasOwn(blockType, 'code') ? 'bloqueada' : 'desbloqueada'}
+            </Typography>
           </HandleCard>
 
-          {!isCardVirtual && (
+          {virtualCard && (
             <HandleCard
               onClick={() => {
                 updatePage('blockCard');

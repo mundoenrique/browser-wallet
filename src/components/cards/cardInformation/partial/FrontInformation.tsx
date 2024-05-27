@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import ReplayIcon from '@mui/icons-material/Replay';
 import { Box, Button, Skeleton, Typography } from '@mui/material';
 import Visibility from '@mui/icons-material/RemoveRedEyeOutlined';
 import VisibilityOff from '@mui/icons-material/VisibilityOffOutlined';
@@ -18,25 +17,8 @@ import { FrontInformationProps } from '@/interfaces';
  * @param balance - The available account balance.
  */
 export default function FrontInformation(props: FrontInformationProps): JSX.Element {
-  const {
-    showDetails,
-    cardNumber,
-    balance,
-    cardInformationError,
-    balanceError,
-    cardStatus,
-    fetchBalance,
-    fetchCardInformation,
-  } = props;
+  const { showDetails, cardNumber, balance, cardInformationError, balanceError, cardStatus } = props;
   const [showBalance, setShowBalance] = useState<boolean>(false);
-
-  const renderStatus = () => {
-    if ((cardStatus && !Object.hasOwn(cardStatus, 'code')) || cardStatus === undefined) {
-      return true;
-    } else {
-      return false;
-    }
-  };
 
   return (
     <Box
@@ -54,71 +36,71 @@ export default function FrontInformation(props: FrontInformationProps): JSX.Elem
       </Box>
       <Box sx={{ display: 'grid', position: 'relative', gap: 1, p: 2, height: 180, alignItems: 'end' }}>
         <Box>
-          {renderStatus() && (
-            <Box mb={1}>
-              <Button
-                sx={{ height: 0, minWidth: 0, p: 0 }}
-                onClick={() => {
-                  showDetails();
-                }}
-                disabled={!cardNumber || cardInformationError}
-              >
-                <Visibility sx={{ pr: 1, color: 'white' }} />
-                <Typography variant="caption" sx={{ textDecoration: 'underline', color: 'white' }}>
-                  Ver número
-                </Typography>
-              </Button>
-              {cardInformationError ? (
-                <ReplayIcon
-                  color="secondary"
-                  sx={{ fontSize: '24px', display: 'block', cursor: 'pointer' }}
-                  onClick={() => {
-                    fetchCardInformation();
-                  }}
-                />
+          <Box mb={1}>
+            {!cardInformationError &&
+              ((cardStatus && !Object.hasOwn(cardStatus, 'code')) || cardStatus === undefined) &&
+              (cardNumber ? (
+                <>
+                  <Button
+                    sx={{ height: 0, minWidth: 0, p: 0 }}
+                    onClick={() => {
+                      showDetails();
+                    }}
+                  >
+                    <Visibility sx={{ pr: 1, color: 'white' }} />
+                    <Typography variant="caption" sx={{ textDecoration: 'underline', color: 'white' }}>
+                      Ver número
+                    </Typography>
+                  </Button>
+                  <Typography variant="body1" color="white" fontWeight={400} sx={{ opacity: 0.5 }}>
+                    {cardNumber}
+                  </Typography>
+                </>
               ) : (
-                <Typography variant="body1" color="white" fontWeight={400} sx={{ opacity: 0.5 }}>
-                  {cardNumber ?? (
+                <>
+                  <Typography sx={{ opacity: 0.5 }}>
+                    <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'white', width: '100px' }} />
+                  </Typography>
+                  <Typography variant="body1" color="white" fontWeight={400} sx={{ opacity: 0.5 }}>
                     <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'white', width: '180px' }} />
-                  )}
-                </Typography>
-              )}
-            </Box>
-          )}
+                  </Typography>
+                </>
+              ))}
+          </Box>
+
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Box width={130}>
-              <Button
-                sx={{ height: 0, minWidth: 0, p: 0 }}
-                onClick={() => {
-                  setShowBalance(!showBalance);
-                }}
-                disabled={!balance || balanceError}
-              >
-                {showBalance ? (
-                  <VisibilityOff sx={{ pr: 1, color: 'white' }} />
-                ) : (
-                  <Visibility sx={{ pr: 1, color: 'white' }} />
-                )}
-                <Typography variant="caption" sx={{ textDecoration: 'underline', color: 'white' }}>
-                  {showBalance ? 'Ocultar saldo' : 'Mostrar saldo'}
-                </Typography>
-              </Button>
-
               {balanceError ? (
-                <ReplayIcon
-                  color="secondary"
-                  sx={{ fontSize: '24px', display: 'block', cursor: 'pointer' }}
-                  onClick={() => {
-                    fetchBalance();
-                  }}
-                />
+                <>
+                  <Typography variant="body1" color="white" fontWeight={400} noWrap sx={{ opacity: 0.5 }}>
+                    Sin datos
+                  </Typography>
+                </>
+              ) : balance ? (
+                <>
+                  <Button
+                    sx={{ height: 0, minWidth: 0, p: 0 }}
+                    onClick={() => {
+                      setShowBalance(!showBalance);
+                    }}
+                  >
+                    {showBalance ? (
+                      <VisibilityOff sx={{ pr: 1, color: 'white' }} />
+                    ) : (
+                      <Visibility sx={{ pr: 1, color: 'white' }} />
+                    )}
+                    <Typography variant="caption" sx={{ textDecoration: 'underline', color: 'white' }}>
+                      {showBalance ? 'Ocultar saldo' : 'Mostrar saldo'}
+                    </Typography>
+                  </Button>
+                  <Typography variant="body1" color="white" fontWeight={400} noWrap sx={{ opacity: 0.5 }}>
+                    S/ ${showBalance ? balance : '******'}
+                  </Typography>
+                </>
               ) : (
-                <Typography variant="body1" color="white" fontWeight={400} noWrap sx={{ opacity: 0.5 }}>
-                  {balance ? (
-                    `S/ ${showBalance ? balance : '******'}`
-                  ) : (
-                    <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'white', width: '100px' }} />
-                  )}
+                <Typography sx={{ opacity: 0.5 }}>
+                  <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'white', width: '100px' }} />
+                  <Skeleton variant="text" sx={{ fontSize: '1rem', backgroundColor: 'white', width: '100px' }} />
                 </Typography>
               )}
             </Box>
