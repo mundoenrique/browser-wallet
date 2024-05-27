@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
 import { useEffect, useCallback, useState } from 'react';
-import { Box, Stack, Typography, useTheme, useMediaQuery, Button } from '@mui/material';
+import { Box, Stack, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
 import { encryptForge } from '@/utils/toolHelper';
