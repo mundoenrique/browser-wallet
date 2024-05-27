@@ -7,8 +7,9 @@ import { useEffect, useCallback, useState } from 'react';
 import { api } from '@/utils/api';
 import LogoGreen from '%/images/LogoGreen';
 import { DataUserProps } from '@/interfaces';
-import { useRegisterStore, useUiStore } from '@/store';
+import { useJwtStore, useRegisterStore, useUiStore } from '@/store';
 import { PurpleLayout, NotFoundError } from '@/components';
+import { setDataRedis } from '@/utils/toolHelper';
 
 /**
  * Convert phasename
@@ -34,6 +35,7 @@ export default function DataUser({ user }: DataUserProps) {
   const [userValidation, setUserValidation] = useState<any>(null);
   const updateFormState = useRegisterStore((state) => state.updateFormState);
   const updateStep = useRegisterStore((state) => state.updateStep);
+  const sessionId = useJwtStore((state) => state.sessionId);
 
   const { replace } = useRouter();
   const { setModalError } = useUiStore();
@@ -87,8 +89,9 @@ export default function DataUser({ user }: DataUserProps) {
               countryCode: country,
             },
           })
-          .then((response) => {
+          .then(async (response) => {
             setUserValidation(response.data);
+            await setDataRedis({uuid:`session:${sessionId}`, dataRedis:{ accesApp:'true' }})
           })
           .catch(() => {
             setModalError();
