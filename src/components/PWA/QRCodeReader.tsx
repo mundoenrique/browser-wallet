@@ -37,7 +37,7 @@ export default function QRCodeReader({ readCode }: IQRCodeReader) {
   let canvasContext: CanvasRenderingContext2D | null;
 
   function runTime() {
-    if (videoElement?.readyState === videoElement?.HAVE_ENOUGH_DATA) {
+    if (videoElement?.readyState === videoElement?.HAVE_ENOUGH_DATA && canvasElement) {
       canvasElement.height = videoElement?.videoHeight;
       canvasElement.width = videoElement?.videoWidth;
       canvasContext?.drawImage(videoElement, 0, 0, canvasElement?.width, canvasElement?.height);

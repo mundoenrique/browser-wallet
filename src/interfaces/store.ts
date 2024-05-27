@@ -96,7 +96,9 @@ export interface MenuStore {
  */
 export type QrPropsStore = {
   user: any | null;
+  cardIdActivate: string | null;
   setUser: (_data: any) => void;
+  setCardIdActivate: (_data: string) => void;
 };
 
 /**

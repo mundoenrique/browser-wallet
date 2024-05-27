@@ -17,6 +17,7 @@ export default function CardConfiguration() {
   const { setCurrentItem } = useMenuStore();
   const { updateTitle } = useNavTitleStore();
   const { page, updatePage } = useConfigCardStore();
+  console.log('🚀 ~ CardConfiguration ~ page:', page);
 
   useEffect(() => {
     updateTitle('Configuración de mi tarjeta');

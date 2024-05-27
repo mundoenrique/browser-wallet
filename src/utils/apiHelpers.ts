@@ -12,7 +12,8 @@ type EnvVariableKey =
   | 'MIDDLE_JWS_PRIVATE_KEY'
   | 'MIDDLE_JWS_PUBLIC_KEY'
   | 'TENANT_ID'
-  | 'BACK_JWE_PRIVATE_KEY';
+  | 'BACK_JWE_PRIVATE_KEY'
+  | 'WEB_URL';
 
 /**
  * Function to handle errors in API requests.

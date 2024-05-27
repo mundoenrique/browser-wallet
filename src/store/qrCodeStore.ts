@@ -16,5 +16,10 @@ export const useQrStore = create<QrPropsStore>((set) => ({
   /**
    * Set the new data user
    */
+  cardIdActivate: null,
+  /**
+   * Set the new cardId activate
+   */
   setUser: (data: any) => set(() => ({ user: data })),
+  setCardIdActivate: (data: string) => set(() => ({ cardIdActivate: data })),
 }));
