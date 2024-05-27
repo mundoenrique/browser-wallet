@@ -22,6 +22,25 @@ export const useOtpStore = create<OtpStore>()(
        */
       counting: false,
       /**
+       * OTP request uuid value
+       */
+      otpUuid: '',
+      /**
+       * Otp code of client
+       */
+      otpCode: '',
+      /**
+       * Set Otp Code Value
+       */
+      setOtpCode: (value) =>
+        set({
+          otpCode: value,
+        }),
+      /**
+       *Set the Otp uuid Value
+       */
+      setOtpUuid: (value) => set({ otpUuid: value }),
+      /**
        * function to set counting value
        */
       setCounting: (value) => set({ counting: value }),

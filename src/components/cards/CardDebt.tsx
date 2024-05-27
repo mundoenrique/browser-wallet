@@ -1,5 +1,8 @@
 'use client';
 
+import dayjs from 'dayjs';
+import 'dayjs/locale/es';
+import updateLocale from 'dayjs/plugin/updateLocale';
 import Clock from '@mui/icons-material/QueryBuilder';
 import ArrowCircle from '@mui/icons-material/ArrowCircleRightOutlined';
 import { Avatar, AvatarGroup, Box, Card, Typography } from '@mui/material';
@@ -15,10 +18,17 @@ import { BgButtonPayLarge, BgButtonPaySmall, Esika } from '%/Icons';
  * @param onClick - Confirm and manage the card.
  * @returns Debt balances.
  */
+
+dayjs.locale('es');
+dayjs.extend(updateLocale);
+dayjs.updateLocale('es', {
+  monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+});
+
 export default function CardDebt(props: CardDebtProps): JSX.Element {
-  const { OweMe, onClick } = props;
+  const { OweMe, onClick, data } = props;
+  const maxOweMe = data?.clients || 0;
   const clientOweMe = ['', '', '', '', '', '', ''];
-  const MaxOweMe = clientOweMe.length;
 
   return (
     <Card
@@ -65,7 +75,7 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
           {OweMe ? 'Mis clientes me deben' : 'Mi deuda con ésika'}
         </Typography>
         <Typography variant="h6" noWrap>
-          S/ {OweMe ? '720.00' : '350.00'}
+          {data.amount ? `S/ ${data?.amount}` : 'Sin datos'}
         </Typography>
       </Box>
       <Box
@@ -82,20 +92,28 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
         {OweMe ? (
           <>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 / 2 }}>
-              <AvatarGroup max={MaxOweMe > 5 ? 5 : MaxOweMe}>
-                {clientOweMe.slice(0, 5).map((client, i) => (
-                  <Avatar key={i} sx={{ width: 14, height: 14, bgcolor: fuchsiaBlue[400] }} />
-                ))}
-              </AvatarGroup>
+              {maxOweMe > 0 && (
+                <AvatarGroup max={maxOweMe > 5 ? 5 : maxOweMe}>
+                  {clientOweMe.slice(0, maxOweMe > 5 ? 5 : maxOweMe).map((client, i) => (
+                    <Avatar key={i} sx={{ width: 14, height: 14, bgcolor: fuchsiaBlue[400] }} />
+                  ))}
+                </AvatarGroup>
+              )}
 
-              <Typography fontSize={8}>{MaxOweMe - 5}+ Clientes</Typography>
+              <Typography fontSize={8}>
+                {!maxOweMe ? 'Datos no disponibles' : data.amount != '0.00' ? `${maxOweMe}+ Clientes` : '0 Clientes'}
+              </Typography>
             </Box>
             <ArrowCircle sx={{ fontSize: 12, color: 'primary.main' }} />
           </>
         ) : (
           <>
             <Clock sx={{ fontSize: 12, color: 'primary.main' }} />
-            <Typography fontSize={8}>Vence el 31 de Dic 2023</Typography>
+            <Typography fontSize={8}>
+              {data.expirationDate && data.amount != '0.00'
+                ? dayjs(data?.expirationDate, 'DD/MM/YYYY').format('[Vence el] D [de] MMM YYYY')
+                : 'Datos no disponibles'}
+            </Typography>
             <ArrowCircle sx={{ fontSize: 12, color: 'primary.main' }} />
           </>
         )}

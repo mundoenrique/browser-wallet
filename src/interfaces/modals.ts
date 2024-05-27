@@ -31,7 +31,6 @@ export interface ModalOtpProps {
   closeApp?: boolean;
   title?: string | boolean;
   textButton?: string | boolean;
-  setOtpUuid: any;
   processCode: string;
 }
 
@@ -46,4 +45,5 @@ export interface ModalErrorProps {
   description: string | JSX.Element;
   open: boolean;
   handleClose: () => void;
+  handleReload?: any;
 }

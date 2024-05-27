@@ -2,6 +2,7 @@
 
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
+import Info from '@mui/icons-material/InfoOutlined';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { Box, Button, Collapse, Link as LinkMui, Typography } from '@mui/material';
@@ -367,11 +368,19 @@ export default function PEP() {
             <InputDatePicker
               name="pepForm.endDate"
               label="Fecha de salida"
+              labelError={
+                <Typography
+                  component="span"
+                  sx={{ color: slate[700], fontSize: 12, ml: 0, display: 'flex', alignItems: 'center' }}
+                >
+                  <Info fontSize="small" sx={{ mr: 1 }} /> Si trabajas aquí actualmente, añade la fecha de hoy
+                </Typography>
+              }
               control={control}
               datePickerProps={{ disableFuture: true, minDate: minDate, maxDate: maxDate, yearsPerRow: 3 }}
             />
 
-            <Typography variant="body2" align="left" sx={{ mb: 3 }}>
+            <Typography variant="body2" align="left" sx={{ my: 3 }}>
               ¿Posees participación, aporte o capital social igual o mayor al 25% en alguna (s) empresa (s)?
             </Typography>
             <Box

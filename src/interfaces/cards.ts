@@ -1,3 +1,4 @@
+import { ICardDebt } from './api';
 import { ChildrenProps } from './constans';
 
 /**
@@ -49,9 +50,7 @@ export interface FrontInformationProps {
   balance: string | undefined;
   balanceError: boolean;
   cardInformationError: boolean;
-  cardStatus: string | undefined;
-  fetchBalance: () => void;
-  fetchCardInformation: () => void;
+  cardStatus: object | undefined;
 }
 
 /**
@@ -61,6 +60,7 @@ export interface FrontInformationProps {
  * @typeParam onClick (Optional): () => void
  */
 export interface CardDebtProps {
+  data: ICardDebt;
   OweMe?: boolean;
   onClick?: () => void | boolean;
 }

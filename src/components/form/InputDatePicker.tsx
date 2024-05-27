@@ -11,8 +11,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 //Internal App
 import { CalendarIcons } from '%/Icons';
 import { InputDatePickerProps } from '@/interfaces';
-import { text } from 'node:stream/consumers';
-import { FilterList } from '@mui/icons-material';
 
 function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
   const {

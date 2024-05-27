@@ -1,7 +1,8 @@
-import { SxProps } from '@mui/material';
+import { SwitchProps, SxProps } from '@mui/material';
 import { DateView, DesktopDatePickerProps } from '@mui/x-date-pickers';
 //Internal app
 import { IClientProps } from './store';
+import { MuiOtpInputProps } from 'mui-one-time-password-input';
 
 /**
  * Form global variables
@@ -21,7 +22,7 @@ import { IClientProps } from './store';
 export interface FormMUIProps {
   name: string;
   label?: string;
-  labelError?: string;
+  labelError?: string | React.ReactNode;
   error?: any;
   value?: any;
   onChange?: (..._e: any[]) => void;
@@ -124,6 +125,7 @@ export interface SwitchListProps extends FormMUIProps {
   setValue?: any;
   disabled?: boolean;
   fullWidth?: boolean;
+  switchProps?: SwitchProps;
 }
 
 /**
@@ -148,7 +150,6 @@ export interface FormPassProps {
  * @typeParam handleResendOTP: () => void;
  */
 export interface AuthOtpFormProps {
-  optUuid: string | null;
   handleResendOTP: () => void;
 }
 

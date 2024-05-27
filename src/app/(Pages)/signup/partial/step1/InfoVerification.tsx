@@ -1,17 +1,17 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { ErrorMessage } from '@hookform/error-message';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { ErrorMessage } from '@hookform/error-message';
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Card, Chip, Divider, FormHelperText, Typography, useTheme } from '@mui/material';
 //internal app
 import { CardStep } from '..';
 import { getSchema } from '@/config';
 import { useApi } from '@/hooks/useApi';
+import Info from '@mui/icons-material/InfoOutlined';
 import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 import { InputCheck, InputText, ModalResponsive, InputSelect, Terms } from '@/components';
-import Info from '@mui/icons-material/InfoOutlined';
 
 export default function InfoVerification() {
   const customApi = useApi();
@@ -230,7 +230,7 @@ export default function InfoVerification() {
             <Box sx={{ px: 5 / 2, pb: 3 / 2 }}>
               <Typography variant="subtitle2">
                 {ONB_PHASES_TERMS ? ONB_PHASES_TERMS.consultant?.firstName : ''}{' '}
-                {ONB_PHASES_TERMS ? ONB_PHASES_TERMS.consultant?.lastName : ''}
+                {ONB_PHASES_TERMS ? ONB_PHASES_TERMS.consultant?.firstLastName : ''}
               </Typography>
               <Typography variant="subtitle2">
                 {ONB_PHASES_TERMS ? `${ONB_PHASES_TERMS.consultant?.documentType}:` : ''}{' '}

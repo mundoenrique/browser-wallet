@@ -24,13 +24,13 @@ import { useUiStore, useOtpStore, useUserStore } from '@/store';
  * @returns Json with the verification code
  */
 export default function ModalOtp(props: ModalOtpProps): JSX.Element {
-  const { handleClose, open, onSubmit, closeApp, title, textButton, setOtpUuid, processCode } = props;
+  const { handleClose, open, onSubmit, closeApp, title, textButton, processCode } = props;
 
   const schemaFormOtp = getSchema(['otp']);
 
   const { setModalError } = useUiStore();
 
-  const { countdown, counting, setCounting, setTime } = useOtpStore();
+  const { countdown, counting, setCounting, setTime, setOtpUuid } = useOtpStore();
 
   const { user, getUserPhone } = useUserStore();
 
