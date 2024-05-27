@@ -122,3 +122,19 @@ export const decryptForge = (encryptedData: any) => {
 
   return decryptedData;
 };
+
+export const setDataRedis = async (data = {}) => {
+  const response = await fetch(process.env.NEXT_PUBLIC_WEB_URL + '/api/v1/redis', {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(data)
+  });
+  return response.json();
+};
