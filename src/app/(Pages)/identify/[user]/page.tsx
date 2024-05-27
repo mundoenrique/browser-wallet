@@ -6,8 +6,8 @@ import { delRedis, getRedis } from '@/utils/redis';
 export default async function UserPage({ params }: any) {
   const { user } = params;
 
-  const userData = await getRedis(user)
-  await delRedis(user)
+  const userData = await getRedis(`identify:${user}`)
+  await delRedis(`identify:${user}`)
 
   if (!userData) return <NotFoundError code={404} />;
 

@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   const user = uuid4();
 
   const data = { code: consultantCode, country: countryCode }
-  await postRedis(user,data)
+  await postRedis(`identify:${user}`,data)
 
   const response = {
     data: `/identify/${user}`,
