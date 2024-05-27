@@ -8,7 +8,7 @@ import BackInformation from './partial/BackInformation';
 import FrontInformation from './partial/FrontInformation';
 import { BodyCard, BodyCardAction } from './partial/BodyCards';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
-import { useUiStore, useUserStore, useOtpStore } from '@/store';
+import { useUiStore, useUserStore, useOtpStore, useConfigCardStore } from '@/store';
 
 const cardTypeQuery = (cardType: string) => {
   const cardObject: { [key: string]: object } = {
@@ -37,19 +37,35 @@ const cardTypeQuery = (cardType: string) => {
  * @returns 3D card with all the cardholder information.
  */
 export default function CardInformation() {
-  const otpUuid = useOtpStore((state) => state.otpUuid);
-  const { userId } = useUserStore((state) => state.user);
-  const setModalError = useUiStore((state) => state.setModalError);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const [showDetails, setShowDetails] = useState<boolean>(false);
+
   const getUserCardId = useUserStore((state) => state.getUserCardId);
+
+  const { userId } = useUserStore((state) => state.user);
+
+  const otpUuid = useOtpStore((state) => state.otpUuid);
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const setReloadFunction = useUiStore((state) => state.setReloadFunction);
+
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
-  const [open, setOpen] = useState<boolean>(false);
-  const [showDetails, setShowDetails] = useState<boolean>(false);
-  const [balanceError, setBalanceError] = useState<boolean>(false);
-  const [balance, setBalance] = useState<{ [key: string]: string } | null>(null);
-  const [cardInformationError, setCardInformationError] = useState<boolean>(false);
-  const [cardData, setCardData] = useState<{ [key: string]: string } | null>(null);
+  const updateCardInfo = useConfigCardStore((state) => state.updateCardInfo);
+
+  const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
+
+  const [cardData, setCardData] = useState<{ [key: string]: any } | null>(null);
+
   const [cardbackData, setCardBackData] = useState<{ [key: string]: string } | null>(null);
+
+  const [balance, setBalance] = useState<{ [key: string]: string } | null>(null);
+
+  const [cardInformationError, setCardInformationError] = useState<boolean>(false);
+
+  const [balanceError, setBalanceError] = useState<boolean>(false);
 
   const handleShowDetaild = () => {
     setOpen(true);
@@ -83,19 +99,27 @@ export default function CardInformation() {
   );
 
   const getCardInformation = async () => {
+    setCardData(null);
     setCardInformationError(false);
     api
       .get(`/cards/${getUserCardId()}`)
       .then((response) => {
+        const { cardStatus, cardType, blockType } = response.data.data;
         setCardData(response.data.data);
+        setCardProperties('cardStatus', cardStatus);
+        setCardProperties('cardType', cardType);
+        setCardProperties('blockType', blockType);
+        setCardProperties('cardInfo', true);
       })
       .catch((e) => {
         setCardInformationError(true);
-        setModalError({ error: e });
+        setReloadFunction(() => getCardInformation());
+        setModalError({ title: 'Algo salió mal', description: 'No pudimos cargar la información de la tarjeta' });
       });
   };
 
   const getBalance = async () => {
+    setBalance(null);
     setBalanceError(false);
     api
       .get(`/cards/${getUserCardId()}/balance`)
@@ -130,7 +154,7 @@ export default function CardInformation() {
   useEffect(() => {
     getCardInformation();
     getBalance();
-  }, []); //eslint-disable-line
+  }, [updateCardInfo]); //eslint-disable-line
 
   useEffect(() => {
     if (showDetails) {
@@ -147,12 +171,10 @@ export default function CardInformation() {
           <FrontInformation
             showDetails={handleShowDetaild}
             cardNumber={cardData?.mask}
-            cardStatus={cardData?.cardStatus}
+            cardStatus={cardData?.blockType}
             balance={balance?.availableBalance}
             cardInformationError={cardInformationError}
             balanceError={balanceError}
-            fetchCardInformation={getCardInformation}
-            fetchBalance={getBalance}
           />
           <BackInformation
             hideDetails={() => setShowDetails(false)}

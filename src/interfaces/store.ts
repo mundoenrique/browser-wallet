@@ -53,10 +53,12 @@ export interface UiStore {
   loadingScreen: boolean;
   setLoadingScreen: (status: boolean) => void;
   showModalError: boolean;
-
   setModalError: (value?: ErrorMessage | ErrorContext | null) => void;
   modalErrorObject: ErrorMessage | ErrorContext | null;
   closeModalError: () => void;
+  reloadFunction: (() => void) | null;
+  setReloadFunction: (func: () => void) => void;
+  clearReloadFunction: () => void;
 }
 interface ErrorMessage {
   title: string;
@@ -111,12 +113,33 @@ export interface NavTitleStore {
 /**
  * Config Card component routing
  *
- * @typeParam title: string
- * @typeParam updateTitle: (newTitle: string) => void
+ * @typeParam page: string
+ * @typeParam cardActivationStatus: string
+ * @typeParam updatePage: (newPage: string) => void
+ * @typeParam setCardActivationStatus: (_status: string) => void;
  */
 export interface ConfigCardStore {
-  page: string;
-  updatePage: (_newPage: string) => void;
+  page:
+    | ''
+    | 'main'
+    | 'activatePhysicalCard'
+    | 'blockCard'
+    | 'changePin'
+    | 'requestPhysicalCard'
+    | 'deleteAccount'
+    | 'survey';
+  cardActivationStatus: string;
+  isCardVirtual: () => boolean;
+  isCardBlocked: () => boolean;
+  cardType: string;
+  blockType: object;
+  cardStatus: string;
+  cardInfo: boolean;
+  updateCardInfo: boolean;
+  toggleUpdate: () => void;
+  updatePage: (_newPage: ConfigCardStore['page']) => void;
+  setCardProperties: (_key: 'blockType' | 'cardType' | 'cardStatus' | 'cardInfo', _value: any) => void;
+  setCardActivationStatus: (_status: string) => void;
 }
 
 /**
@@ -216,6 +239,16 @@ export interface UserStore {
   getUserCardId: () => string;
 }
 
+/**
+ * OTP store
+ * @typeParam otpValid - Initial state {@defaultValue `undefined`}
+ * @typeParam timeLeft - Initial state {@defaultValue `0`}
+ * @typeParam counting - Initial state {@defaultValue `false`}
+ * @typeParam setCounting: (value: boolean) => void
+ * @typeParam countdown: () => void
+ * @typeParam setTime: (value: number) => void
+ * @typeParam setOTPValid: (value: string) => void
+ */
 export interface OtpStore {
   otpValid: 'OTP' | 'PASSWORD' | 'ENDING' | undefined;
   timeLeft: number;
@@ -228,4 +261,18 @@ export interface OtpStore {
   countdown: () => void;
   setTime: (value: number) => void;
   setOTPValid: (value: OtpStore['otpValid']) => void;
+}
+
+/**
+ * Debt store
+ * @typeParam debt - Initial state {@defaultValue `null`}
+ * @typeParam view - Initial state {@defaultValue `DEBT`}
+ * @typeParam setDebt: (_data: any) => void
+ * @typeParam setView: (_data: any) => void
+ */
+export interface DebtStore {
+  debt: any | null;
+  view: 'DEBT' | 'SUCCESS' | 'ERROR' | string | undefined;
+  setDebt: (_data: any) => void;
+  setView: (_data: string) => void;
 }

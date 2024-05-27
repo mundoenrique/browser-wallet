@@ -5,20 +5,42 @@ import { Box, Typography } from '@mui/material';
 import { useEffect, useState, useCallback } from 'react';
 //Internal app
 import { api } from '@/utils/api';
-import { useMenuStore, useUserStore } from '@/store';
+import { ICardDebt } from '@/interfaces';
+import { useMenuStore, useUiStore, useUserStore } from '@/store';
+import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
-import { CardDebt, LastMovements, Linking, ModalError, UserWelcome } from '@/components';
 
 export default function Dashboard() {
   const { push } = useRouter();
 
-  const { getUserCardId } = useUserStore();
   const { setCurrentItem } = useMenuStore();
 
+  const { getUserCardId } = useUserStore();
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const setReloadFunction = useUiStore((state) => state.setReloadFunction);
+
+  const { userId } = useUserStore((state) => state.user);
+
   const [movementData, setMovementData] = useState<[]>([]);
-  const [errorModal, setErrorModal] = useState<boolean>(false);
-  const [errorMovements, setErrorMovements] = useState<boolean>(false);
+
   const [loadingMovements, setLoadingMovements] = useState<boolean>(false);
+
+  const [errorMovements, setErrorMovements] = useState<boolean>(false);
+
+  const [cardMyDebt, setCardMyDebt] = useState<ICardDebt>({
+    amount: null,
+    expirationDate: null,
+    currencyCode: '',
+  });
+
+  const [cardClients, setCardClients] = useState<ICardDebt>({
+    amount: null,
+    expirationDate: null,
+    currencyCode: '',
+    clients: null,
+  });
 
   const getMovements = useCallback(async () => {
     setLoadingMovements(true);
@@ -35,133 +57,154 @@ export default function Dashboard() {
         response.data.data && setMovementData(response.data.data);
       })
       .catch(() => {
-        setErrorMovements(true);
-        setErrorModal(true);
+        setReloadFunction(() => getMovements());
+        setModalError({ title: '¡Oops!', description: 'Error al cargar movimientos.' });
       })
       .finally(() => {
         setLoadingMovements(false);
       });
   }, []); //eslint-disable-line
 
+  const getDebtBalance = useCallback(async () => {
+    api
+      .get(`/payments/${userId}/debtbalance`)
+      .then((response: any) => {
+        setCardMyDebt(response.data.data);
+      })
+      .catch(() => {
+        setReloadFunction(() => getDebtBalance());
+        setCardMyDebt({
+          amount: null,
+          expirationDate: null,
+          currencyCode: '',
+        });
+        setModalError({
+          title: 'Algo salió mal',
+          description: 'No pudimos cargar la información de tu deuda.',
+        });
+      });
+  }, []); //eslint-disable-line
+
+  const getCharge = useCallback(async () => {
+    api
+      .get(`/payments/${userId}/charge`)
+      .then((response: any) => {
+        setCardClients(response.data.data);
+      })
+      .catch(() => {
+        setReloadFunction(() => getCharge());
+        setCardClients({
+          amount: null,
+          currencyCode: '',
+          clients: null,
+        });
+        setModalError({
+          title: 'Algo salió mal',
+          description: 'No pudimos cargar la información de lo que te deben tus clientes.',
+        });
+      });
+  }, []); //eslint-disable-line
+
   useEffect(() => {
     setCurrentItem('home');
     getMovements();
+    getDebtBalance();
+    getCharge();
   }, []); //eslint-disable-line
 
   return (
-    <>
+    <Box
+      sx={{
+        background: { md: 'linear-gradient(35deg, rgba(146,218,142,0) 45%, rgba(172,255,167,0.6) 100%)' },
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <Box
         sx={{
-          background: { md: 'linear-gradient(35deg, rgba(146,218,142,0) 45%, rgba(172,255,167,0.6) 100%)' },
-          minHeight: '100vh',
+          width: { xs: '100%', sm: 320 },
+          mx: { xs: 'auto', md: 3 },
           display: 'flex',
           flexDirection: 'column',
+          justifyContent: 'center',
+          height: '100%',
         }}
       >
+        <UserWelcome />
+
         <Box
           sx={{
-            width: { xs: '100%', sm: 320 },
-            mx: { xs: 'auto', md: 3 },
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
-            height: '100%',
+            alignItems: 'center',
+            justifyContent: { xs: 'flex-start', md: 'center' },
+            mb: { xs: '60px', md: 0 },
           }}
         >
-          <UserWelcome />
+          <CardInformation />
 
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: { xs: 'flex-start', md: 'center' },
-              mb: { xs: '60px', md: 0 },
+              width: '100%',
+              bgcolor: { xs: 'white', sm: 'initial' },
+              borderRadius: '14px',
+              mt: 2,
             }}
           >
-            <CardInformation />
-
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                width: '100%',
-                bgcolor: { xs: 'white', sm: 'initial' },
-                borderRadius: '14px',
-                mt: 2,
-              }}
-            >
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, mt: 2, width: 320 }}>
-                <CardDebt
-                  onClick={() => {
-                    push('/dashboard/debt');
-                  }}
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, mt: 2, width: 320 }}>
+              <CardDebt
+                data={cardMyDebt}
+                onClick={() => {
+                  push('/dashboard/debt');
+                }}
+              />
+              <CardDebt
+                data={cardClients}
+                OweMe
+                onClick={() => {
+                  push('/dashboard/clients');
+                }}
+              />
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, width: 320 }}>
+              <Typography variant="subtitle1">Últimos movimientos</Typography>
+              {movementData.length > 0 ? (
+                <Linking
+                  href="/dashboard/movements"
+                  color="primary.main"
+                  label="Ver todo"
+                  mb={0}
+                  hidenArrow
+                  underline
                 />
-                <CardDebt
-                  OweMe
-                  onClick={() => {
-                    push('/dashboard/clients');
-                  }}
-                />
-              </Box>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, width: 320 }}>
-                <Typography variant="subtitle1">Últimos movimientos</Typography>
-                {movementData.length > 0 ? (
-                  <Linking
-                    href="/dashboard/movements"
-                    color="primary.main"
-                    label="Ver todo"
-                    mb={0}
-                    hidenArrow
-                    underline
-                  />
-                ) : (
-                  <Typography variant="subtitle1" color={'grey'} fontWeight={700} fontSize={'12px'}>
-                    Ver todo
-                  </Typography>
-                )}
-              </Box>
-              <Box sx={{ width: 320, minHeight: '300px' }}>
-                <LastMovements
-                  data={movementData}
-                  loading={loadingMovements}
-                  error={errorMovements}
-                  emptySlot={<EmptySlot />}
-                />
-              </Box>
+              ) : (
+                <Typography variant="subtitle1" color={'grey'} fontWeight={700} fontSize={'12px'}>
+                  Ver todo
+                </Typography>
+              )}
+            </Box>
+            <Box sx={{ width: 320, minHeight: '300px' }}>
+              <LastMovements
+                data={movementData}
+                loading={loadingMovements}
+                error={errorMovements}
+                emptySlot={<EmptySlot />}
+              />
             </Box>
           </Box>
         </Box>
       </Box>
-      <ModalError
-        title="¡Oops!"
-        description={
-          <>
-            <Typography>Error al cargar movimientos.</Typography>
-            <Typography
-              variant="subtitle2"
-              onClick={() => {
-                getMovements();
-              }}
-              sx={{ cursor: 'pointer', textDecoration: 'underline' }}
-            >
-              Intenta de nuevo
-            </Typography>
-          </>
-        }
-        open={errorModal}
-        handleClose={() => {
-          setErrorModal(false);
-        }}
-      />
-    </>
+    </Box>
   );
 }
 
 const EmptySlot = () => {
   return (
-    <Box sx={{ marginX: '8px', textAlign: 'center' }}>
+    <Box sx={{ mx: '8px', textAlign: 'center' }}>
       <Typography variant="subtitle2" color="initial">
         ¡Estamos encantados de tenerte con nosotros!
       </Typography>
@@ -172,3 +215,6 @@ const EmptySlot = () => {
     </Box>
   );
 };
+function setErrorModal(arg0: boolean) {
+  throw new Error('Function not implemented.');
+}

@@ -20,8 +20,16 @@ export const useUiStore = create<UiStore>()((set) => ({
   showModalError: false,
 
   modalErrorObject: null,
-
+  /**
+   * Reload function
+   */
+  reloadFunction: null,
+  /**
+   * Change state Modal Error
+   */
   setModalError: (value: any) => set({ showModalError: true, modalErrorObject: value }),
 
   closeModalError: () => set({ showModalError: false }),
+  setReloadFunction: (func: any) => set({ reloadFunction: func }),
+  clearReloadFunction: () => set({ reloadFunction: null }),
 }));
