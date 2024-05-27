@@ -150,8 +150,7 @@ export default function CardConfiguration() {
                   onClick: (e) => {
                     if (cardInfo) {
                       e.preventDefault();
-                      // setOpenOtp(true);
-                      toggleUpdate();
+                      setOpenOtp(true);
                     }
                   },
                   disabled: !cardInfo,
