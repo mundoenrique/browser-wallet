@@ -9,9 +9,7 @@ import { isBrowser, isMobile, isTablet } from 'react-device-detect';
 import { useApi } from '@/hooks/useApi';
 import { CardIcons } from '%/Icons';
 import { useNavTitleStore, useConfigCardStore, useUiStore, useUserStore, useOtpStore } from '@/store';
-import { ContainerLayout, HandleCard, Linking, ModalResponsive } from '@/components';
-import { getEnvVariable } from '@/utils';
-import { useRouter } from 'next/navigation';
+import { ContainerLayout, HandleCard, Linking, ModalResponsive, QRCodeReader } from '@/components';
 
 interface UseSocketProps {
   onInfoUser: (data: any) => void;
@@ -73,13 +71,13 @@ export default function ActivatePhysicalCard() {
 
   const { userId } = useUserStore((state) => state.user);
 
-  const cardIdActivatePWA = useConfigCardStore((state) => state.cardIdActivatePWA);
-
   const { SVG } = useQRCode();
 
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const [cardId, setCardId] = useState<string | null>(null);
+
+  const [showQR, setShowQR] = useState<boolean>(false);
 
   const timerRef = useRef<any>();
 
@@ -89,12 +87,9 @@ export default function ActivatePhysicalCard() {
 
   const customApi = useApi();
 
-  const router = useRouter();
-
   const getCardInformation = useCallback(async () => {
-    const cardIdActivate = isBrowser ? cardId : cardIdActivatePWA;
     customApi
-      .get(`/cards/${cardIdActivate}`, { params: { decryptData: false } })
+      .get(`/cards/${cardId}`, { params: { decryptData: false } })
       .then((response: any) => {
         const { status, data } = response;
         if (status === 200) {
@@ -104,12 +99,11 @@ export default function ActivatePhysicalCard() {
       .catch(() => {
         setModalError({ title: 'Algo salió mal', description: 'No descargar la información de tu tarjeta.' });
       });
-  }, [cardId, cardIdActivatePWA]); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [cardId]); //eslint-disable-line react-hooks/exhaustive-deps
 
   const cardholderAssociation = useCallback(async () => {
-    const cardIdActivate = isBrowser ? cardId : cardIdActivatePWA;
     const data = {
-      cardId: cardIdActivate,
+      cardId,
       userId,
     };
 
@@ -133,19 +127,20 @@ export default function ActivatePhysicalCard() {
         }
         setModalError({ title: 'Algo salió mal', description: 'No pudimos activar tu tarjeta.' });
       });
-  }, [cardId, cardIdActivatePWA]); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [cardId]); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     updateTitle('Activación de tarjeta física');
   }, [updateTitle]);
 
   const openModal = () => {
+    setCardId(null);
     if (isBrowser) {
       setShowModal(true);
       setTime(60);
       timer();
     } else {
-      router.push('/qr');
+      setShowQR(true);
     }
   };
 
@@ -182,92 +177,104 @@ export default function ActivatePhysicalCard() {
     }
   }, [showModal]); //eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    if (cardIdActivatePWA) {
-      cardholderAssociation();
-    }
-  }, [cardIdActivatePWA]); //eslint-disable-line react-hooks/exhaustive-deps
+  const readCodeFunction = (data: any): Promise<any> => {
+    return new Promise((resolve) => {
+      if (data) {
+        setCardId(JSON.parse(data));
+        setShowQR(false);
+        cardholderAssociation();
+      }
+      resolve(data);
+    });
+  };
+
   return (
-    <ContainerLayout>
-      <Typography
-        variant="h6"
-        color="primary"
-        sx={{ color: 'primary.main', mb: 6, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
-      >
-        Activación de tarjeta física
-      </Typography>
-
-      <Linking
-        href="#"
-        onClick={() => {
-          updatePage('main');
-        }}
-        label="Volver"
-        adormentStart
-      />
-
-      <Typography variant="body2" mb={3}>
-        Para activar tu tarjeta {isBrowser && 'En browser'}
-      </Typography>
-
-      <Stack spacing={3}>
-        <HandleCard avatar={<CardIcons color="primary" sx={{ p: 1 / 2 }} />}>
-          <Typography variant="subtitle2">Escanea el código</Typography>
-          <Typography variant="caption">Escanea el código QR presente en el sobre para activarla.</Typography>
-        </HandleCard>
-
-        <Button variant="contained" onClick={openModal}>
-          Escanear Código QR
-        </Button>
-      </Stack>
-      <ModalResponsive open={showModal} handleClose={() => setShowModal(false)}>
-        <Grid container>
-          <Grid
-            item
-            xs={12}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+    <>
+      {showQR ? (
+        <QRCodeReader readCode={readCodeFunction} />
+      ) : (
+        <ContainerLayout>
+          <Typography
+            variant="h6"
+            color="primary"
+            sx={{ color: 'primary.main', mb: 6, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
           >
-            <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%' }}>
-              <Typography variant="subtitle1" mb="12px">
-                Activación de tarjeta física
-              </Typography>
-              <Typography variant="body2" mb={2} color="initial">
-                Recuerda que para la activación de tu tarjeta debes tener a la mano el sobre donde está te llego.
-              </Typography>
-              <Typography variant="body2" mb={2} color="initial">
-                Escanea el siguiente código QR con tu teléfono para crear una conexión y detectar cuando escanees el
-                código del sobre de tu tarjeta física.
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+            Activación de tarjeta física
+          </Typography>
+
+          <Linking
+            href="#"
+            onClick={() => {
+              updatePage('main');
             }}
-          >
-            <SVG
-              text={url}
-              options={{
-                margin: 2,
-                width: 200,
-              }}
-            />
-          </Grid>
-          <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%' }}>
-            <Typography variant="body2" mb={2} color="primary.main">
-              Tiempo restante - 0:{timeLeft}
-            </Typography>
-          </Box>
-        </Grid>
-      </ModalResponsive>
-    </ContainerLayout>
+            label="Volver"
+            adormentStart
+          />
+
+          <Typography variant="body2" mb={3}>
+            Para activar tu tarjeta {isBrowser && 'En browser'}
+          </Typography>
+
+          <Stack spacing={3}>
+            <HandleCard avatar={<CardIcons color="primary" sx={{ p: 1 / 2 }} />}>
+              <Typography variant="subtitle2">Escanea el código</Typography>
+              <Typography variant="caption">Escanea el código QR presente en el sobre para activarla.</Typography>
+            </HandleCard>
+
+            <Button variant="contained" onClick={openModal}>
+              Escanear Código QR
+            </Button>
+          </Stack>
+          <ModalResponsive open={showModal} handleClose={() => setShowModal(false)}>
+            <Grid container>
+              <Grid
+                item
+                xs={12}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%' }}>
+                  <Typography variant="subtitle1" mb="12px">
+                    Activación de tarjeta física
+                  </Typography>
+                  <Typography variant="body2" mb={2} color="initial">
+                    Recuerda que para la activación de tu tarjeta debes tener a la mano el sobre donde está te llego.
+                  </Typography>
+                  <Typography variant="body2" mb={2} color="initial">
+                    Escanea el siguiente código QR con tu teléfono para crear una conexión y detectar cuando escanees el
+                    código del sobre de tu tarjeta física.
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <SVG
+                  text={url}
+                  options={{
+                    margin: 2,
+                    width: 200,
+                  }}
+                />
+              </Grid>
+              <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%' }}>
+                <Typography variant="body2" mb={2} color="primary.main">
+                  Tiempo restante - 0:{timeLeft}
+                </Typography>
+              </Box>
+            </Grid>
+          </ModalResponsive>
+        </ContainerLayout>
+      )}
+    </>
   );
 }
