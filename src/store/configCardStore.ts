@@ -61,9 +61,16 @@ export const useConfigCardStore = create<ConfigCardStore>()(
      */
     cardInfo: false,
     /**
+     * card id activate PWA
+     */
+    cardIdActivatePWA: '',
+    /**
+     * set card id activate PWA
+     */
+    setCardIdActivatePWA: (cardId: string) => set({ cardIdActivatePWA: cardId }),
+    /**
      * set  values for  card object: cardType, cardBlockStatus, cardStatus
      */
-
     setCardProperties: (key, value) =>
       set((state) => {
         return { ...state, [key]: value };

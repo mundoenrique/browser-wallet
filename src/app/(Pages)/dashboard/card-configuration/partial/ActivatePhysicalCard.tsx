@@ -4,12 +4,14 @@ import { io, Socket } from 'socket.io-client';
 import { useQRCode } from 'next-qrcode';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Grid, Stack, Typography, Box } from '@mui/material';
+import { isBrowser, isMobile, isTablet } from 'react-device-detect';
 //Internal app
 import { useApi } from '@/hooks/useApi';
 import { CardIcons } from '%/Icons';
 import { useNavTitleStore, useConfigCardStore, useUiStore, useUserStore, useOtpStore } from '@/store';
 import { ContainerLayout, HandleCard, Linking, ModalResponsive } from '@/components';
 import { getEnvVariable } from '@/utils';
+import { useRouter } from 'next/navigation';
 
 interface UseSocketProps {
   onInfoUser: (data: any) => void;
@@ -71,6 +73,8 @@ export default function ActivatePhysicalCard() {
 
   const { userId } = useUserStore((state) => state.user);
 
+  const cardIdActivatePWA = useConfigCardStore((state) => state.cardIdActivatePWA);
+
   const { SVG } = useQRCode();
 
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -79,60 +83,70 @@ export default function ActivatePhysicalCard() {
 
   const timerRef = useRef<any>();
 
-  // const baseURL = process.env.NEXT_PUBLIC_WEB_URL;
-  const baseURL = 'https://2fht93dt-3000.use2.devtunnels.ms';
+  const baseURL = process.env.NEXT_PUBLIC_WEB_URL;
+  // const baseURL = 'https://2fht93dt-3000.use2.devtunnels.ms';
   const url = `${baseURL}/qr`;
 
   const customApi = useApi();
 
+  const router = useRouter();
+
   const getCardInformation = useCallback(async () => {
+    const cardIdActivate = isBrowser ? cardId : cardIdActivatePWA;
     customApi
-      .get(`/cards/${cardId}`, { params: { decryptData: false } })
+      .get(`/cards/${cardIdActivate}`, { params: { decryptData: false } })
       .then((response: any) => {
         const { status, data } = response;
         if (status === 200) {
-          console.log('🚀 ~ .getCardInformation ~ data:', data);
           setCardInformation(data.data);
         }
       })
       .catch(() => {
         setModalError({ title: 'Algo salió mal', description: 'No descargar la información de tu tarjeta.' });
       });
-  }, [cardId]); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [cardId, cardIdActivatePWA]); //eslint-disable-line react-hooks/exhaustive-deps
 
   const cardholderAssociation = useCallback(async () => {
+    const cardIdActivate = isBrowser ? cardId : cardIdActivatePWA;
     const data = {
-      cardId,
+      cardId: cardIdActivate,
       userId,
     };
 
     customApi
       .post('/cards/cardholders', data)
       .then((response: any) => {
-        console.log('🚀 ~ cardholderAssociation ~ response:', response);
         const { status } = response;
         if (status === 200) {
-          disconnectSocket();
-          setShowModal(false);
+          if (isBrowser) {
+            disconnectSocket();
+            setShowModal(false);
+          }
           getCardInformation();
           updatePage('success');
         }
       })
       .catch(() => {
+        if (isBrowser) {
+          disconnectSocket();
+          setShowModal(false);
+        }
         setModalError({ title: 'Algo salió mal', description: 'No pudimos activar tu tarjeta.' });
-        disconnectSocket();
-        setShowModal(false);
       });
-  }, [cardId]); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [cardId, cardIdActivatePWA]); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     updateTitle('Activación de tarjeta física');
   }, [updateTitle]);
 
   const openModal = () => {
-    setShowModal(true);
-    setTime(60);
-    timer();
+    if (isBrowser) {
+      setShowModal(true);
+      setTime(60);
+      timer();
+    } else {
+      router.push('/qr');
+    }
   };
 
   const handleInfoUser = useCallback(
@@ -168,6 +182,11 @@ export default function ActivatePhysicalCard() {
     }
   }, [showModal]); //eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    if (cardIdActivatePWA) {
+      cardholderAssociation();
+    }
+  }, [cardIdActivatePWA]); //eslint-disable-line react-hooks/exhaustive-deps
   return (
     <ContainerLayout>
       <Typography
@@ -188,7 +207,7 @@ export default function ActivatePhysicalCard() {
       />
 
       <Typography variant="body2" mb={3}>
-        Para activar tu tarjeta
+        Para activar tu tarjeta {isBrowser && 'En browser'}
       </Typography>
 
       <Stack spacing={3}>
@@ -214,10 +233,14 @@ export default function ActivatePhysicalCard() {
           >
             <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%' }}>
               <Typography variant="subtitle1" mb="12px">
-                Escanear el QR, desde tu dispositivo móvil.
+                Activación de tarjeta física
               </Typography>
-              <Typography variant="body2" mb={5} color="primary.main">
-                Tiempo restante - 0:{timeLeft}
+              <Typography variant="body2" mb={2} color="initial">
+                Recuerda que para la activación de tu tarjeta debes tener a la mano el sobre donde está te llego.
+              </Typography>
+              <Typography variant="body2" mb={2} color="initial">
+                Escanea el siguiente código QR con tu teléfono para crear una conexión y detectar cuando escanees el
+                código del sobre de tu tarjeta física.
               </Typography>
             </Box>
           </Grid>
@@ -238,6 +261,11 @@ export default function ActivatePhysicalCard() {
               }}
             />
           </Grid>
+          <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%' }}>
+            <Typography variant="body2" mb={2} color="primary.main">
+              Tiempo restante - 0:{timeLeft}
+            </Typography>
+          </Box>
         </Grid>
       </ModalResponsive>
     </ContainerLayout>

@@ -141,6 +141,8 @@ export interface ConfigCardStore {
   updatePage: (_newPage: ConfigCardStore['page']) => void;
   setCardProperties: (_key: 'blockType' | 'cardType' | 'cardStatus' | 'cardInfo', _value: any) => void;
   setCardActivationStatus: (_status: string) => void;
+  cardIdActivatePWA: string | null;
+  setCardIdActivatePWA: (cardId: string) => void;
 }
 
 /**
