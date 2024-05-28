@@ -10,6 +10,7 @@ import {
   DeleteAccount,
   Main,
   RequestPhysicalCard,
+  Success,
   Survey,
 } from './partial';
 
@@ -17,7 +18,6 @@ export default function CardConfiguration() {
   const { setCurrentItem } = useMenuStore();
   const { updateTitle } = useNavTitleStore();
   const { page, updatePage } = useConfigCardStore();
-  console.log('🚀 ~ CardConfiguration ~ page:', page);
 
   useEffect(() => {
     updateTitle('Configuración de mi tarjeta');
@@ -34,6 +34,7 @@ export default function CardConfiguration() {
       requestPhysicalCard: <RequestPhysicalCard />,
       deleteAccount: <DeleteAccount />,
       survey: <Survey />,
+      success: <Success />,
     };
     return routes[page] || routes['main'];
   };

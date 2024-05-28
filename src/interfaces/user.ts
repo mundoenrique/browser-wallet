@@ -62,3 +62,19 @@ export type TCredentials = {
   userId: string;
   password: string;
 };
+
+export type TCardInformation = {
+  cardToken: string;
+  userToken: string;
+  accountNumber: string;
+  mask: string;
+  holderName: string;
+  cvvNumber: string;
+  dynCvvNumber: string;
+  cardStatus: 'ACTIVE' | 'INACTIVE';
+  cardType: 'VIRTUAL' | 'PHYSICAL';
+  blockType: {
+    code: '41' | '17' | '43' | 'PB';
+    msg: string;
+  };
+};
