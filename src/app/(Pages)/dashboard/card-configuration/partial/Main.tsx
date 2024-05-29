@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
-import { useEffect, useCallback, useState, use } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { Box, Stack, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';

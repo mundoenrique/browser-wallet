@@ -11,6 +11,6 @@ export const useDebStore = create<DebtStore>()(
       setDebt: (data) => set({ debt: data }),
       setView: (value) => set({ view: value }),
     }),
-    { name: 'debtStore', storage: createJSONStorage(() => sessionStorage) }
+    { name: 'debt-store', storage: createJSONStorage(() => sessionStorage) }
   )
 );

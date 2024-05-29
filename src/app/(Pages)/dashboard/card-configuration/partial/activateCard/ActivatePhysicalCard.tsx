@@ -1,15 +1,15 @@
 'use client';
 
-import { io, Socket } from 'socket.io-client';
 import { useQRCode } from 'next-qrcode';
+import { io, Socket } from 'socket.io-client';
+import { isBrowser } from 'react-device-detect';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Grid, Stack, Typography, Box } from '@mui/material';
-import { isBrowser, isMobile, isTablet } from 'react-device-detect';
 //Internal app
-import { useApi } from '@/hooks/useApi';
 import { CardIcons } from '%/Icons';
-import { useNavTitleStore, useConfigCardStore, useUiStore, useUserStore, useOtpStore } from '@/store';
+import { useApi } from '@/hooks/useApi';
 import { ContainerLayout, HandleCard, Linking, ModalResponsive, QRCodeReader } from '@/components';
+import { useNavTitleStore, useConfigCardStore, useUiStore, useUserStore, useOtpStore } from '@/store';
 
 interface UseSocketProps {
   onInfoUser: (data: any) => void;
