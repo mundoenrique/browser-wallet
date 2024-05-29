@@ -21,7 +21,6 @@ import { accessSessionStore } from '@/store/accessSessionStore';
  */
 export default function ListSidebar(): JSX.Element {
   const { updatePage } = useConfigCardStore();
-
   //Eliminar este store despues de la certificacion de inicio de sesión
   const { setAccessSession } = accessSessionStore();
 

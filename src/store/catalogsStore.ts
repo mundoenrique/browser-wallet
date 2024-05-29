@@ -5,46 +5,37 @@ import { CatalogsStore } from '@/interfaces';
 
 /**
  * Stores catalogs data for de inputs
+ *
+ * @param departamentsCatalog - Storage of the level one geo-location
+ * @param provincesCatalog - Storage of the ocupation form data
+ * @param districtsCatalog - Storage of the level two geo-location
+ * @param documentTypesCatalog - Storage of the documentType
+ * @param occupationCatalog - Storage of the level three geo-location
+ * @param countriesCatalog - Storage of countries info
+ * @param termsCatalog - Storage of terms
+ * @param passwordTermsCatalog - Storage of terms for password
+ * @param updateCatalog - Function to set the data of catalogs
  */
 export const useCatalogsStore = create<CatalogsStore>()(
   devtools(
     persist(
       (set) => ({
-        /**
-         * Storage of the level one geo-location
-         */
         departamentsCatalog: [],
-        /**
-         * Storage of the ocupation form data
-         */
+
         provincesCatalog: [],
-        /**
-         *  Storage of the level two geo-location
-         */
+
         districtsCatalog: [],
-        /**
-         *  Storage of the documentType
-         */
+
         documentTypesCatalog: [],
-        /**
-         *  Storage of the level three geo-location
-         */
+
         occupationCatalog: [],
-        /**
-         * Storage of countries info
-         */
+
         countriesCatalog: [],
-        /**
-         * Storage of terms
-         */
+
         termsCatalog: [],
-        /**
-         * Storage of terms for password
-         */
+
         passwordTermsCatalog: [],
-        /**
-         * Function to set the data of catalogs
-         */
+
         updateCatalog: (catalog, data) => set((state) => ({ ...state, [catalog]: data })),
       }),
       { name: 'catalog-store', storage: createJSONStorage(() => localStorage) }

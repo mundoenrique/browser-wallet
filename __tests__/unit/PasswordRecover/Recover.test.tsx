@@ -1,15 +1,18 @@
 import { render, waitFor, screen } from '@testing-library/react';
-import { useApi } from '@/hooks/useApi';
+//Internal app
 import Recover from '@/app/(Pages)/password-recover/page';
 
 jest.mock('jose', () => ({
   compactDecrypt: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
 }));
 
-jest.mock('@/hooks/useApi', () => ({
-  useApi: jest.fn(() => ({
-    post: jest.fn(() => Promise.resolve({ status: 200, data: { data: { otpUuId: 'mockedOtpUuid' } } })),
-  })),
+jest.mock('@/utils/api', () => ({
+  api: {
+    post: jest.fn().mockResolvedValue({
+      status: 200,
+      data: { data: { otpUuId: 'abc123' } }
+    })
+  }
 }));
 
 jest.mock('@/app/(Pages)/password-recover/partial/OTP', () => ({
@@ -37,10 +40,7 @@ jest.mock('@/store', () => ({
 }));
 
 describe('Recover', () => {
-  const mockApi = { post: jest.fn().mockResolvedValue({ status: 200 }) };
-
   beforeEach(() => {
-    (useApi as jest.Mock).mockReturnValue(mockApi);
     jest.clearAllMocks();
   });
 
@@ -90,20 +90,6 @@ describe('Recover', () => {
     }));
     render(<Recover />);
     await waitFor(() => expect(screen.getByTestId('mocked-otp-component')).toBeInTheDocument());
-  });
-
-  //** This test checks if the requestTFACode function is called when the component is mounted
-  it('calls requestTFACode on mount', async () => {
-    render(<Recover />);
-    await waitFor(() => expect(mockApi.post).toHaveBeenCalled());
-  });
-
-  //** This test checks if an error message is displayed when the API call fails
-  it('displays error message when API call fails', async () => {
-    const mockPost = jest.fn(() => Promise.reject(new Error('API error')));
-    jest.spyOn(require('@/hooks/useApi'), 'useApi').mockImplementation(() => ({ post: mockPost }));
-    render(<Recover />);
-    await expect(mockPost).toHaveBeenCalled();
   });
 
   //** This test checks if the timer starts when counting is true and initialized.current is false

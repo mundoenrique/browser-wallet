@@ -16,8 +16,6 @@ import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/compone
 export default function BlockCard() {
   const { updateTitle } = useNavTitleStore();
   const { updatePage } = useConfigCardStore();
-  const [open, setOpen] = useState<boolean>(false);
-  const schema = getSchema(['blockType']);
 
   const router = useRouter();
 
@@ -32,6 +30,10 @@ export default function BlockCard() {
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
   const [openOtp, setOpenOtp] = useState<boolean>(false);
+
+  const [open, setOpen] = useState<boolean>(false);
+
+  const schema = getSchema(['blockType']);
 
   useEffect(() => {
     updateTitle('Bloquear tarjeta');

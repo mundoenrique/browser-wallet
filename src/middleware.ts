@@ -5,9 +5,10 @@ import { URL_BASE } from '@/utils/constants';
 export async function middleware(request: NextRequest) {
   const { url, method, nextUrl } = request;
   const pathname = nextUrl.pathname;
+
+  const SetCode = '/api/v1/setcode';
   const apiConnectUrl = '/api/v1/connect';
   const apiGetTokenAuthUrl = '/api/v1/gettoken';
-  const SetCode = '/api/v1/setcode';
 
   console.log('middleware-pathname: ', pathname);
 

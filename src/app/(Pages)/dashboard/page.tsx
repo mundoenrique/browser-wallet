@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
 import { useEffect, useState, useCallback } from 'react';
 //Internal app
-import { useApi } from '@/hooks/useApi';
+import { api } from '@/utils/api';
 import { ICardDebt } from '@/interfaces';
 import { useMenuStore, useUiStore, useUserStore } from '@/store';
 import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
@@ -22,8 +22,6 @@ export default function Dashboard() {
   const setReloadFunction = useUiStore((state) => state.setReloadFunction);
 
   const { userId } = useUserStore((state) => state.user);
-
-  const customApi = useApi();
 
   const [movementData, setMovementData] = useState<[]>([]);
 
@@ -47,7 +45,7 @@ export default function Dashboard() {
   const getMovements = useCallback(async () => {
     setLoadingMovements(true);
     setErrorMovements(false);
-    customApi
+    api
       .get(`/cards/${getUserCardId()}/transactions`, {
         params: {
           days: 90,
@@ -67,7 +65,7 @@ export default function Dashboard() {
   }, []); //eslint-disable-line
 
   const getDebtBalance = useCallback(async () => {
-    customApi
+    api
       .get(`/payments/${userId}/debtbalance`)
       .then((response: any) => {
         setCardMyDebt(response.data.data);
@@ -87,7 +85,7 @@ export default function Dashboard() {
   }, []); //eslint-disable-line
 
   const getCharge = useCallback(async () => {
-    customApi
+    api
       .get(`/payments/${userId}/charge`)
       .then((response: any) => {
         setCardClients(response.data.data);
@@ -216,3 +214,4 @@ const EmptySlot = () => {
     </Box>
   );
 };
+

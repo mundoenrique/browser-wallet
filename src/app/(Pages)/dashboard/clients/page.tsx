@@ -4,11 +4,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Avatar, Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { FilterIcons } from '%/Icons';
-import { ClientList, Filters } from './partial';
+import Filters from './partial/filters';
+import ClientList from './partial/listClients';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { ContainerLayout, Linking, ModalResponsive } from '@/components';
 import { useMenuStore, useNavTitleStore } from '@/store';
 import { InputCheckGroupOptionProps } from '@/interfaces';
+import { ContainerLayout, Linking, ModalResponsive } from '@/components';
 
 const checkboxOptions = [
   { text: 'Todos mis cobros', value: '' },
@@ -40,21 +41,25 @@ export default function Clients() {
   };
 
   const theme = useTheme();
-  const { updateTitle } = useNavTitleStore();
-  const { setCurrentItem } = useMenuStore();
-  const [open, setOpen] = useState<boolean>(false);
   const match = useMediaQuery(theme.breakpoints.up('md'));
+
+  const { setCurrentItem } = useMenuStore();
+  const { updateTitle } = useNavTitleStore();
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [isLoading, setIsloading] = useState<boolean>(false);
   const [currentView, setCurrentView] = useState<string>(ENUM_VIEW.MAIN);
-  const [paymentStatusCode, setPaymentStatusCode] = useState<string>(checkboxOptions[0].value);
   const [paymentStatus, setPaymentStatus] = useState<string>('Todos mis cobros');
   const [month, setMonth] = useState<InputCheckGroupOptionProps>({ text: '', value: '1' });
-  const [isLoading, setIsloading] = useState<boolean>(false);
-  //Scroll
+  const [paymentStatusCode, setPaymentStatusCode] = useState<string>(checkboxOptions[0].value);
+
+  const [lastPage, setLastPage] = useState<number>(1);
   const [clientsData, setClientsData] = useState<any>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [lastPage, setLastPage] = useState<number>(1);
-  const containerDesktop = useRef<HTMLDivElement | null>(null);
+
   const containerPWA = useRef<HTMLDivElement | null>(null);
+  const containerDesktop = useRef<HTMLDivElement | null>(null);
+
   const filterActive = currentView === ENUM_VIEW.FILTERS;
   const disabledBtnDelete = '3';
 
@@ -80,7 +85,6 @@ export default function Clients() {
     await getClientAPI();
   };
 
-  //TODO: Direccion del scroll
   const scrollHandle = useCallback(async () => {
     if (containerDesktop.current && !isLoading && currentPage <= lastPage - 1) {
       let scroll = containerDesktop.current?.scrollHeight - window.scrollY - window.innerHeight;

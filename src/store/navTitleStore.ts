@@ -9,12 +9,7 @@ import { NavTitleStore } from '@/interfaces';
  * @param updateTitle - Function that sets the new value
  */
 export const useNavTitleStore = create<NavTitleStore>()((set) => ({
-  /**
-   * Title for de page/section
-   */
   title: '',
-  /**
-   * Set value for the title
-   */
+
   updateTitle: (newTitle) => set({ title: newTitle }),
 }));

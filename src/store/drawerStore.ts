@@ -9,12 +9,7 @@ import { DrawerStatus } from '@/interfaces';
  * @param updateDrawerStatus - Function that sets the status
  */
 export const useDrawerStore = create<DrawerStatus>()((set) => ({
-  /**
-   * Status for show/hide Drawer
-   */
   drawerStatus: false,
-  /**
-   * Set value for the status of drawer
-   */
+
   setDrawerStatus: (status) => set({ drawerStatus: status }),
 }));

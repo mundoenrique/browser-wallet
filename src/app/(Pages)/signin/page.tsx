@@ -8,8 +8,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, Button, Link as LinkMui, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
-import { useApi } from '@/hooks/useApi';
 import LogoGreen from '%/images/LogoGreen';
 import { encryptForge } from '@/utils/toolHelper';
 import { TCredentials, TUserDetail } from '@/interfaces';
@@ -18,22 +18,22 @@ import { useOtpStore, useRegisterStore, useUiStore, useUserStore } from '@/store
 //Eliminar este store despues de la certificacion de inicio de sesión
 import { accessSessionStore } from '@/store/accessSessionStore';
 
-export default function Signin(params: any) {
+export default function Signin() {
   const theme = useTheme();
   const router = useRouter();
-  const customApi = useApi();
-  const schema = getSchema(['password']);
-  const [errorMessage] = useState<string>('');
-  const [open, setOpen] = useState<boolean>(false);
-  const [userData, setUserData] = useState<TUserDetail | null>(null);
 
-  const { setLoadingScreen, loadingScreen } = useUiStore();
   const { user } = useRegisterStore();
   const { setOTPValid } = useOtpStore();
   const { setModalError } = useUiStore();
   const { setUser, userId } = useUserStore();
-
   const { setAccessSession } = accessSessionStore();
+  const { setLoadingScreen, loadingScreen } = useUiStore();
+
+  const [errorMessage] = useState<string>('');
+  const [open, setOpen] = useState<boolean>(false);
+  const [userData, setUserData] = useState<TUserDetail | null>(null);
+
+  const schema = getSchema(['password']);
 
   const { control, handleSubmit } = useForm({
     defaultValues: { password: '' },
@@ -47,7 +47,8 @@ export default function Signin(params: any) {
       password: encryptForge(password),
     };
     setLoadingScreen(true);
-    await customApi
+
+    await api
       .post('/users/credentials', requestData)
       .then((response) => {
         const { status } = response;
@@ -65,7 +66,7 @@ export default function Signin(params: any) {
   };
 
   const getUserDetails = async (id: string) => {
-    await customApi
+    await api
       .get(`/users/${id}`)
       .then((response) => {
         setUser(response.data.data);

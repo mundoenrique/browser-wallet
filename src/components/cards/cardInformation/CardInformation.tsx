@@ -3,12 +3,12 @@
 import { useCallback, useEffect, useState } from 'react';
 //Internal app
 import { api } from '@/utils/api';
-import { useUiStore, useUserStore, useOtpStore, useConfigCardStore } from '@/store';
 import ModalOtp from '@/components/modal/ModalOtp';
 import BackInformation from './partial/BackInformation';
 import FrontInformation from './partial/FrontInformation';
 import { BodyCard, BodyCardAction } from './partial/BodyCards';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
+import { useUiStore, useUserStore, useOtpStore, useConfigCardStore } from '@/store';
 
 const cardTypeQuery = (cardType: string) => {
   const cardObject: { [key: string]: object } = {
