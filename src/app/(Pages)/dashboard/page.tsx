@@ -45,7 +45,6 @@ export default function Dashboard() {
   const getMovements = useCallback(async () => {
     setLoadingMovements(true);
     setErrorMovements(false);
-    setErrorModal(false);
     api
       .get(`/cards/${getUserCardId()}/transactions`, {
         params: {
@@ -215,6 +214,4 @@ const EmptySlot = () => {
     </Box>
   );
 };
-function setErrorModal(arg0: boolean) {
-  throw new Error('Function not implemented.');
-}
+

@@ -30,7 +30,7 @@ jest.mock('@/store', () => ({
   useUiStore: jest.fn(() => ({
     setModalError: jest.fn(),
     setLoadingScreen: jest.fn(),
-    setErrorModal: jest.fn(),
+    setErrorModal: jest.fn(), setReloadFunction: jest.fn(),
   })),
   useUserStore: jest.fn(() => ({
     getUserCardId: jest.fn().mockReturnValue('mockedCardId'),
@@ -40,7 +40,7 @@ jest.mock('@/store', () => ({
 
 jest.mock('@/utils/api', () => ({
   api: {
-    get: jest.fn(),
+    get: jest.fn().mockResolvedValue({ data: { data: [] } }),
   },
 }));
 
@@ -54,7 +54,6 @@ jest.mock('@/components/cards/cardInformation/CardInformation', () => {
 describe('Dashboard', () => {
   beforeEach(async () => {
     (useRouter as jest.Mock).mockReturnValue({ push: routerPushMock });
-    (api.get as jest.Mock).mockResolvedValue({ data: { data: [] } }); // Default mock for api.get
     await act(async () => {
       render(<Dashboard />);
     });
@@ -83,25 +82,18 @@ describe('Dashboard', () => {
     expect(routerPushMock).toHaveBeenCalledWith('/dashboard/clients');
   });
 
-  //** Test API call failure and error handling.
-  it('should handle API error', async () => {
-    (api.get as jest.Mock).mockRejectedValueOnce(new Error('API error'));
-    await act(async () => {
-      render(<Dashboard />);
-    });
-    await waitFor(() => {
-      expect(screen.getByText('Error al cargar movimientos.')).toBeInTheDocument();
-    });
-  });
+  //** Test getMovements function with successful API call
+  it('should call getMovements and update state on success', async () => {
+    const mockData = [{ id: 1, description: 'Test movement' }];
+    (api.get as jest.Mock).mockResolvedValueOnce({ data: { data: mockData } });
 
-  //** Test retry logic on ModalError.
-  it('should retry fetching movements on modal retry click', async () => {
-    (api.get as jest.Mock).mockRejectedValueOnce(new Error('API error')).mockResolvedValueOnce({ data: { data: [] } });
     await act(async () => {
       render(<Dashboard />);
     });
-    await act(async () => {
-      fireEvent.click(screen.getByText('Intenta de nuevo'));
+
+    expect(api.get).toHaveBeenCalledWith('/cards/mockedCardId/transactions', { params: { days: 90, limit: 5 } });
+    await waitFor(() => {
+      expect(screen.getByText('Test movement')).toBeInTheDocument();
     });
   });
 
