@@ -16,8 +16,6 @@ import { useUserStore, useUiStore, useOtpStore, useNavTitleStore, useConfigCardS
 export default function BlockCard() {
   const { updateTitle } = useNavTitleStore();
   const { updatePage } = useConfigCardStore();
-  const [open, setOpen] = useState<boolean>(false);
-  const schema = getSchema(['blockType']);
 
   const router = useRouter();
 
@@ -32,6 +30,10 @@ export default function BlockCard() {
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
   const [openOtp, setOpenOtp] = useState<boolean>(false);
+
+  const [open, setOpen] = useState<boolean>(false);
+
+  const schema = getSchema(['blockType']);
 
   useEffect(() => {
     updateTitle('Bloquear tarjeta');
@@ -71,8 +73,20 @@ export default function BlockCard() {
 
   const onSubmit = async () => {
     setLoadingScreen(true);
+    const payload = {
+      blockType: getValues('blockType'),
+      observations: (() => {
+        const observation: any = {
+          '41': 'Perdida',
+          '43': 'Robo',
+          '17': 'Deterioro',
+        };
+        return observation[getValues('blockType')];
+      })(),
+    };
+
     api
-      .post(`/cards/${getUserCardId()}/block`, { blockType: getValues('blockType') })
+      .post(`/cards/${getUserCardId()}/block`, payload)
       .then(() => {
         setOpen(!open);
       })
@@ -123,7 +137,12 @@ export default function BlockCard() {
           Selecciona una de las siguientes opciones para bloquear la tarjeta, dependiendo tu preferencia.
         </Typography>
 
-        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(() => {
+            setOpenOtp(true);
+          })}
+        >
           <InputRadio options={blockCardType} name="blockType" control={control} />
           <Button variant="contained" type="submit" fullWidth>
             Bloquear
@@ -160,7 +179,7 @@ export default function BlockCard() {
           open={openOtp}
           handleClose={() => setOpenOtp(false)}
           onSubmit={onSubmitOtp}
-          processCode="SEE_CARD_NUMBER"
+          processCode="LOCK_AND_UNLOCK_CARD_OTP"
         />
       )}
     </>

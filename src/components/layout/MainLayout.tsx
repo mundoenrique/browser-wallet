@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Box } from '@mui/material';
 //Internal app
 import { useDrawerStore } from '@/store';
@@ -22,15 +22,15 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
 
   //Eliminar esta logica despues de la certificacion de inicio de sesión
   const { accessSession } = accessSessionStore();
+  const { drawerStatus, setDrawerStatus } = useDrawerStore();
+
+  const [isClosing, setIsClosing] = useState<boolean>(false);
+
   const { push } = useRouter();
 
   if (accessSession === false) {
     push('/signin');
   }
-
-  const [isClosing, setIsClosing] = useState<boolean>(false);
-
-  const { drawerStatus, setDrawerStatus } = useDrawerStore();
 
   const handleDrawerClose = () => {
     setIsClosing(true);

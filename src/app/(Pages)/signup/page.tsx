@@ -11,7 +11,6 @@ import {
   CelularValidation,
   PasswordCreation,
 } from './partial';
-import { useEffect } from 'react';
 
 export default function Signup() {
   const { step } = useRegisterStore();

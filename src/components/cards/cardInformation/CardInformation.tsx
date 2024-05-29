@@ -3,12 +3,12 @@
 import { useCallback, useEffect, useState } from 'react';
 //Internal app
 import { api } from '@/utils/api';
-import { useUiStore, useUserStore, useOtpStore, useConfigCardStore } from '@/store';
 import ModalOtp from '@/components/modal/ModalOtp';
 import BackInformation from './partial/BackInformation';
 import FrontInformation from './partial/FrontInformation';
 import { BodyCard, BodyCardAction } from './partial/BodyCards';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
+import { useUiStore, useUserStore, useOtpStore, useConfigCardStore } from '@/store';
 
 const cardTypeQuery = (cardType: string) => {
   const cardObject: { [key: string]: object } = {
@@ -49,9 +49,11 @@ export default function CardInformation() {
 
   const setModalError = useUiStore((state) => state.setModalError);
 
+  const setReloadFunction = useUiStore((state) => state.setReloadFunction);
+
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
-  const isCardBlocked = useConfigCardStore((state) => state.isCardBlocked);
+  const updateCardInfo = useConfigCardStore((state) => state.updateCardInfo);
 
   const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
 
@@ -97,6 +99,7 @@ export default function CardInformation() {
   );
 
   const getCardInformation = async () => {
+    setCardData(null);
     setCardInformationError(false);
     api
       .get(`/cards/${getUserCardId()}`)
@@ -110,11 +113,13 @@ export default function CardInformation() {
       })
       .catch((e) => {
         setCardInformationError(true);
-        setModalError({ error: e });
+        setReloadFunction(() => getCardInformation());
+        setModalError({ title: 'Algo salió mal', description: 'No pudimos cargar la información de la tarjeta' });
       });
   };
 
   const getBalance = async () => {
+    setBalance(null);
     setBalanceError(false);
     api
       .get(`/cards/${getUserCardId()}/balance`)
@@ -149,7 +154,7 @@ export default function CardInformation() {
   useEffect(() => {
     getCardInformation();
     getBalance();
-  }, [isCardBlocked]); //eslint-disable-line
+  }, [updateCardInfo]); //eslint-disable-line
 
   useEffect(() => {
     if (showDetails) {
@@ -170,8 +175,6 @@ export default function CardInformation() {
             balance={balance?.availableBalance}
             cardInformationError={cardInformationError}
             balanceError={balanceError}
-            fetchCardInformation={getCardInformation}
-            fetchBalance={getBalance}
           />
           <BackInformation
             hideDetails={() => setShowDetails(false)}

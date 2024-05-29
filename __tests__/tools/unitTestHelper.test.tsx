@@ -14,12 +14,14 @@ async function renderInput(inputName: HTMLElement) {
  * @param routePath - redirect link
  * @param router - router mock
  */
-async function redirectLinks(textLink: HTMLElement, routePath: string, router: any) {
+async function redirectLinks(textLink: HTMLElement, routePath: string, router: Function) {
   expect(textLink).toBeInTheDocument();
-  expect(textLink).toHaveAttribute('href', routePath)
+  expect(textLink).toHaveAttribute('href', routePath);
   fireEvent.click(textLink);
-  await waitFor(() => { expect(router).toHaveBeenCalledWith(routePath) });
-};
+  await waitFor(() => {
+    expect(router).toHaveBeenCalledWith(routePath);
+  });
+}
 
 /**
  * Funciton to show error message when the user submits the form with an empty password field.
@@ -28,8 +30,10 @@ async function redirectLinks(textLink: HTMLElement, routePath: string, router: a
  */
 function emptyField(submitButton: HTMLElement, erroMsg: string) {
   fireEvent.click(submitButton);
-  waitFor(() => { expect(screen.queryByText(erroMsg)).toBeInTheDocument() });
-};
+  waitFor(() => {
+    expect(screen.queryByText(erroMsg)).toBeInTheDocument();
+  });
+}
 
 /**
  * Function to display a toggle button to show/hide the password.
@@ -42,7 +46,7 @@ function togglePasswordVisibility(passwordInput: HTMLInputElement, toggleButton:
   waitFor(() => expect(passwordInput).toHaveAttribute('type', 'text'));
   fireEvent.click(toggleButton);
   waitFor(() => expect(passwordInput).toHaveAttribute('type', 'password'));
-};
+}
 
 //** Function to format password.
 // async function passwordFormat(input: any) {
@@ -60,9 +64,4 @@ function togglePasswordVisibility(passwordInput: HTMLInputElement, toggleButton:
 //   }
 // };
 
-export {
-  renderInput,
-  emptyField,
-  togglePasswordVisibility,
-  redirectLinks
-};
+export { renderInput, emptyField, togglePasswordVisibility, redirectLinks };

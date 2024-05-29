@@ -1,17 +1,15 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { Card } from '@mui/material';
+import { useCallback, useEffect, useRef } from 'react';
 //Internal
 import OTP from './partial/OTP';
-import { useApi } from '@/hooks/useApi';
+import { api } from '@/utils/api';
+import { OtpStore } from '@/interfaces';
 import UpdatePass from './partial/UpdatePass';
 import { useOtpStore, useUiStore, useUserStore } from '@/store';
-import { OtpStore } from '@/interfaces';
 
 export default function Recover() {
-  const customApi = useApi();
-
   const {
     user: { userId },
   } = useUserStore();
@@ -22,7 +20,7 @@ export default function Recover() {
   const initialized = useRef<boolean>();
 
   const requestTFACode = useCallback(async () => {
-    customApi
+    api
       .post(`/users/${userId}/tfa`, { otpProcessCode: 'CHANGE_PASSWORD_OTP' })
       .then((response) => {
         const { data, status } = response;

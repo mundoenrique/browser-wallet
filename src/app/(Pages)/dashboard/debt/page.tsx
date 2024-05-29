@@ -1,8 +1,8 @@
 'use client';
 
 //Internal app
-import { Success, Error, Debt } from './partial';
 import { useDebStore } from '@/store';
+import { Success, Error, Debt } from './partial';
 
 export default function MyDebt() {
   const { view } = useDebStore();

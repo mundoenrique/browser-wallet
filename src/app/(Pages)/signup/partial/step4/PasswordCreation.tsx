@@ -4,24 +4,23 @@ import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { CardStep } from '..';
+import { api } from '@/utils/api';
 import Ending from '../Ending';
 import { FormPass } from '@/components';
-import { useApi } from '@/hooks/useApi';
 import { encryptForge } from '@/utils/toolHelper';
 import { useRegisterStore, useUiStore, useCatalogsStore, useUserStore } from '@/store';
 
 export default function PasswordCreation() {
-  const customApi = useApi();
-  const { dec, setShowHeader, onboardingUuId } = useRegisterStore();
   const { setUserId } = useUserStore();
   const { setModalError, setLoadingScreen } = useUiStore();
+  const { dec, setShowHeader, onboardingUuId } = useRegisterStore();
   const { updateCatalog, passwordTermsCatalog } = useCatalogsStore();
 
   const [loadingModal, setLoadingModal] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchTermPasswordCatalog = async () => {
-      customApi
+      api
         .post('/catalogs/search', {
           catalogCode: 'TERMS_AND_CONDITIONS_CATALOG',
           parameters: [
@@ -61,7 +60,8 @@ export default function PasswordCreation() {
       },
     };
     setLoadingScreen(true);
-    customApi
+
+    api
       .post('/onboarding/credentials', requestFormData)
       .then((response) => {
         setUserId(response.data.data.user.userId);

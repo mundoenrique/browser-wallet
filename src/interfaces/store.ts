@@ -132,17 +132,17 @@ export interface ConfigCardStore {
     | 'survey'
     | 'success';
   cardActivationStatus: string;
-  isCardVirtual: () => void;
+  isCardVirtual: () => boolean;
   isCardBlocked: () => boolean;
   cardType: string;
   blockType: object;
   cardStatus: string;
   cardInfo: boolean;
+  updateCardInfo: boolean;
+  toggleUpdate: () => void;
   updatePage: (_newPage: ConfigCardStore['page']) => void;
   setCardProperties: (_key: 'blockType' | 'cardType' | 'cardStatus' | 'cardInfo', _value: any) => void;
   setCardActivationStatus: (_status: string) => void;
-  cardIdActivatePWA: string | null;
-  setCardIdActivatePWA: (cardId: string) => void;
 }
 
 /**

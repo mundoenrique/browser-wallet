@@ -5,62 +5,52 @@ import { RegisterStore } from '@/interfaces';
 
 /**
  * Stores and modifies the status of onboarding process screens and forms
+ *
+ * @param step - A variable representing the screen on which the onboarding process is currently in progress {@defaultValue `0`}
+ * @param showHeader - Sets the value of the variable that hides/shows the header.
+ * @param setShowHeader - Increases the step by 1 which leads to navigate to the following screen
+ * @param inc - Decreases the step by 1 which leads to navigate to the back screen
+ * @param dec - Goes to the step specified in the parameter
+ * @param updateStep - Updates the storage of the given form
+ * @param ONB_PHASES_TERMS - Storage of the verification form data
+ * @param ONB_PHASES_CONSULT_DATA - Storage of the ocupation form data
+ * @param ONB_PHASES_PEP - Storage of the pep form data
+ * @param biometricFormState - Storage of the biometric form data
+ * @param user - Storaage user info
+ * @param termsDefinition - Storage of terms info
+ * @param onboardingUuId - Storage of onboarding uuid
+ * @param updateFormState - Function to set the data of completed forms
  */
 export const useRegisterStore = create<RegisterStore>()(
   devtools(
     persist(
       (set) => ({
-        /**
-         * A variable representing the screen on which the onboarding process is currently in progress
-         */
         step: 0,
-        /**
-         * Sets the value of the variable that hides/shows the header.
-         */
+
         showHeader: true,
-        /**
-         * Increases the step by 1 which leads to navigate to the following screen
-         */
+
         setShowHeader: (value) => set({ showHeader: value }),
-        /**
-         * Decreases the step by 1 which leads to navigate to the back screen
-         */
+
         inc: () => set((state) => ({ step: state.step + 1 })),
-        /**
-         * Goes to the step specified in the parameter
-         */
+
         dec: () => set((state) => ({ step: state.step - 1 })),
-        /**
-         * Updates the storage of the given form
-         */
+
         updateStep: (newAmount) => set({ step: newAmount }),
-        /**
-         * Storage of the verification form data
-         */
+
         ONB_PHASES_TERMS: null,
-        /**
-         * Storage of the ocupation form data
-         */
+
         ONB_PHASES_CONSULT_DATA: null,
-        /**
-         * Storage of the pep form data
-         */
+
         ONB_PHASES_PEP: null,
-        /**
-         * Storage of the biometric form data
-         */
+
         biometricFormState: null,
-        /**
-         * Storaage user info
-         */
+
         user: {
           firstName: null,
           lastName: null,
           userId: null,
         },
-        /**
-         * Storage of terms info
-         */
+
         termsDefinition: [
           {
             name: 'TERMINO 1',
@@ -76,13 +66,9 @@ export const useRegisterStore = create<RegisterStore>()(
             code: 'TERM3',
           },
         ],
-        /**
-         * Storage of terms info
-         */
+
         onboardingUuId: null,
-        /**
-         * Function to set the data of completed forms
-         */
+
         updateFormState: (form, data) => set((state) => ({ ...state, [form]: data })),
       }),
       { name: 'app-store', storage: createJSONStorage(() => sessionStorage) }

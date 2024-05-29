@@ -6,8 +6,8 @@ import { isBrowser } from 'react-device-detect';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Grid, Stack, Typography, Box } from '@mui/material';
 //Internal app
+import { api } from '@/utils/api';
 import { CardIcons } from '%/Icons';
-import { useApi } from '@/hooks/useApi';
 import { ContainerLayout, HandleCard, Linking, ModalResponsive, QRCodeReader } from '@/components';
 import { useNavTitleStore, useConfigCardStore, useUiStore, useUserStore, useOtpStore } from '@/store';
 
@@ -85,10 +85,8 @@ export default function ActivatePhysicalCard() {
   // const baseURL = 'https://2fht93dt-3000.use2.devtunnels.ms';
   const url = `${baseURL}/qr`;
 
-  const customApi = useApi();
-
   const getCardInformation = useCallback(async () => {
-    customApi
+    api
       .get(`/cards/${cardId}`, { params: { decryptData: false } })
       .then((response: any) => {
         const { status, data } = response;
@@ -107,7 +105,7 @@ export default function ActivatePhysicalCard() {
       userId,
     };
 
-    customApi
+    api
       .post('/cards/cardholders', data)
       .then((response: any) => {
         const { status } = response;

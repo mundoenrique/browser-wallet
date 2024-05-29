@@ -9,8 +9,9 @@ import { copyToClipboard } from '@/utils/toolHelper';
 import { CardInfoOperation, CardReport, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
 export default function SuccessCards() {
-  const [showModal, setShowModal] = useState<boolean>(false);
   const textRef = useRef<null>(null);
+
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   copyToClipboard('https://link.io/1234');
 

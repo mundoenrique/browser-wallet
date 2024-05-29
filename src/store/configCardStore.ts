@@ -61,13 +61,13 @@ export const useConfigCardStore = create<ConfigCardStore>()(
      */
     cardInfo: false,
     /**
-     * card id activate PWA
+     * Var to dispatch an update
      */
-    cardIdActivatePWA: '',
+    updateCardInfo: false,
     /**
-     * set card id activate PWA
+     * Dispatch an update
      */
-    setCardIdActivatePWA: (cardId: string) => set({ cardIdActivatePWA: cardId }),
+    toggleUpdate: () => set((state) => ({ updateCardInfo: !state.updateCardInfo })),
     /**
      * set  values for  card object: cardType, cardBlockStatus, cardStatus
      */

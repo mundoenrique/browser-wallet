@@ -7,23 +7,18 @@ import { UiStore } from '@/interfaces';
  *
  * @param LoadingScreen - Initial state {@defaultValue `false`}
  * @param setLoadingScreen - Function that sets the status
+ * @param showModalError - State of modal Error
+ * @param modalErrorObject - Modal title value
+ * @param setModalError - Change state Modal Error
+ * @param closeModalError - Close modal Error
  */
 export const useUiStore = create<UiStore>()((set) => ({
-  /**
-   * Status for show/hide Drawer
-   */
   loadingScreen: false,
-  /**
-   * Set value for the status of drawer
-   */
+
   setLoadingScreen: (status: any) => set({ loadingScreen: status }),
-  /**
-   * State of modal Error
-   */
+
   showModalError: false,
-  /**
-   * Modal title value
-   */
+
   modalErrorObject: null,
   /**
    * Reload function
@@ -33,9 +28,7 @@ export const useUiStore = create<UiStore>()((set) => ({
    * Change state Modal Error
    */
   setModalError: (value: any) => set({ showModalError: true, modalErrorObject: value }),
-  /**
-   * Close modal Error
-   */
+
   closeModalError: () => set({ showModalError: false }),
   setReloadFunction: (func: any) => set({ reloadFunction: func }),
   clearReloadFunction: () => set({ reloadFunction: null }),

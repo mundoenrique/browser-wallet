@@ -1,9 +1,7 @@
 import { render, screen } from '@testing-library/react';
 //Internal app
 import Signup from '@/app/(Pages)/signup/page';
-import {
-  renderInput
-} from '../../tools/unitTestHelper.test';
+import { renderInput } from '../../tools/unitTestHelper.test';
 
 jest.mock('jose', () => {
   return {
@@ -22,7 +20,7 @@ jest.mock('mui-one-time-password-input', () => {
 });
 
 describe('Signup', () => {
-  let submitButton: Node | Window;
+  let submitButton: HTMLElement;
 
   beforeEach(() => {
     render(<Signup />);

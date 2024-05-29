@@ -4,8 +4,8 @@ import dayjs from 'dayjs';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
+import { api } from '@/utils/api';
 import { useUserStore } from '@/store';
-import { useApi } from '@/hooks/useApi';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { useMenuStore, useNavTitleStore } from '@/store';
 import { InputSelect, LastMovements, Linking, ModalError } from '@/components';
@@ -30,27 +30,24 @@ const dateRank = (): { value: string; text: string }[] => {
 };
 
 export default function Movements() {
-  const customApi = useApi();
+  const theme = useTheme();
+  const match = useMediaQuery(theme.breakpoints.down('md'));
+
   const { getUserCardId } = useUserStore();
-  const [movementData, setMovementData] = useState<any>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [lastPage, setLastPage] = useState<number>(1);
-  const [filterMonth, setFilterMonth] = useState(dateRank()[0].value);
-  const [isLoading, setIsloading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [errorModal, setErrorModal] = useState<boolean>(false);
-
-  const initialized = useRef<boolean>(false);
-
   const { setCurrentItem } = useMenuStore();
   const { updateTitle } = useNavTitleStore();
 
-  const containerDesktop = useRef<HTMLDivElement | null>(null);
+  const [lastPage, setLastPage] = useState<number>(1);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [movementData, setMovementData] = useState<any>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isLoading, setIsloading] = useState<boolean>(false);
+  const [errorModal, setErrorModal] = useState<boolean>(false);
+  const [filterMonth, setFilterMonth] = useState(dateRank()[0].value);
+
+  const initialized = useRef<boolean>(false);
   const containerPWA = useRef<HTMLDivElement | null>(null);
-
-  const theme = useTheme();
-
-  const match = useMediaQuery(theme.breakpoints.down('md'));
+  const containerDesktop = useRef<HTMLDivElement | null>(null);
 
   const scrollHandle = useCallback(async () => {
     const container = containerDesktop.current || containerPWA.current;
@@ -70,7 +67,7 @@ export default function Movements() {
     setIsloading(true);
     setIsError(false);
     setErrorModal(false);
-    customApi
+    api
       .get(`/cards/${getUserCardId()}/transactions`, {
         params: {
           date: filterMonth,

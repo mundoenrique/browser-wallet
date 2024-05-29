@@ -15,6 +15,7 @@ import { AccordionsProps } from '@/interfaces';
  */
 export default function Accordions(props: AccordionsProps): JSX.Element {
   const { collapsed, title, content } = props;
+
   const [isCollapsed, setIsCollapsed] = useState<boolean | undefined>(collapsed);
 
   return (

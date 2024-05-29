@@ -3,6 +3,7 @@
 import { Box } from '@mui/material';
 //Internal app
 import Linking from '../Linking';
+import { backLinkStore } from '@/store';
 import LogoPurple from '%/images/LogoPurple';
 import { MuiNavExternalProps } from '@/interfaces';
 
@@ -14,6 +15,8 @@ import { MuiNavExternalProps } from '@/interfaces';
  * @param closeApp - Confirm if the link to exit the application is displayed.
  */
 export default function NavExternal({ image, color, closeApp }: MuiNavExternalProps): JSX.Element {
+  const { backLink } = backLinkStore();
+
   return (
     <Box
       sx={{
@@ -43,7 +46,7 @@ export default function NavExternal({ image, color, closeApp }: MuiNavExternalPr
         {!closeApp ? (
           <Linking href="/signin" label="Volver" mb={0} adormentStart />
         ) : (
-          <Linking href="#" label="Volver a ésika Conmigo" mb={0} color={color} adormentStart />
+          <Linking href={backLink} label="Volver a ésika Conmigo" mb={0} color={color} adormentStart />
         )}
       </Box>
     </Box>

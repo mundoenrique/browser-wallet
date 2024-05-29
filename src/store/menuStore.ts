@@ -14,13 +14,8 @@ import { MenuStore } from '@/interfaces';
 export const useMenuStore = create<MenuStore>()(
   persist(
     (set) => ({
-      /**
-       * Current menu item
-       */
       currentItem: 'home',
-      /**
-       * Replaces the current menu item
-       */
+
       setCurrentItem: (item) => set({ currentItem: item }),
     }),
     { name: 'menu-store', storage: createJSONStorage(() => sessionStorage) }

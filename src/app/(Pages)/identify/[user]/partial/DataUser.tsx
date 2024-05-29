@@ -7,8 +7,8 @@ import { useEffect, useCallback, useState } from 'react';
 import { api } from '@/utils/api';
 import LogoGreen from '%/images/LogoGreen';
 import { DataUserProps } from '@/interfaces';
-import { useRegisterStore, useUiStore } from '@/store';
 import { PurpleLayout, NotFoundError } from '@/components';
+import { backLinkStore, useRegisterStore, useUiStore } from '@/store';
 
 /**
  * Convert phasename
@@ -28,14 +28,21 @@ const phaseToStep = (phase: string) => {
   return phasesSteps[phase] || 0;
 };
 
-export default function DataUser({ user }: DataUserProps) {
+export default function DataUser({ user, referer }: DataUserProps) {
   const userObject = JSON.parse(user);
-  const [userValidation, setUserValidation] = useState<any>(null);
-  const updateFormState = useRegisterStore((state) => state.updateFormState);
+
+  const { setModalError } = useUiStore();
   const updateStep = useRegisterStore((state) => state.updateStep);
+  const updateReferer = backLinkStore((state) => state.setBackLink);
+  const updateFormState = useRegisterStore((state) => state.updateFormState);
+
+  const [userValidation, setUserValidation] = useState<any>(null);
 
   const { replace } = useRouter();
-  const { setModalError } = useUiStore();
+
+  if (referer !== '') {
+    updateReferer(referer);
+  }
   /**
    * Verify the user and redirect
    */
