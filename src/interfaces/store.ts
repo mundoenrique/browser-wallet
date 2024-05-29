@@ -96,7 +96,9 @@ export interface MenuStore {
  */
 export type QrPropsStore = {
   user: any | null;
+  cardIdActivate: string | null;
   setUser: (_data: any) => void;
+  setCardIdActivate: (_data: string) => void;
 };
 
 /**
@@ -127,7 +129,8 @@ export interface ConfigCardStore {
     | 'changePin'
     | 'requestPhysicalCard'
     | 'deleteAccount'
-    | 'survey';
+    | 'survey'
+    | 'success';
   cardActivationStatus: string;
   isCardVirtual: () => boolean;
   isCardBlocked: () => boolean;
@@ -233,10 +236,13 @@ export interface CatalogsStore {
 export interface UserStore {
   user: any | null;
   userId: any | null;
+  cardInformation: any | null;
+  setCardInformation: (_data: any) => void;
   setUser: (_data: any) => void;
   setUserId: (_data: any) => void;
   getUserPhone: () => string;
   getUserCardId: () => string;
+  isUserCardVirtual: () => boolean;
 }
 
 /**

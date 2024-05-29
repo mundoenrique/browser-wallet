@@ -49,7 +49,6 @@ export default function QRCodeReader({ readCode }: IQRCodeReader) {
             drawLine(code.location.topRightCorner, code.location.bottomRightCorner, '#FF3B58', canvasContext);
             drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, '#FF3B58', canvasContext);
             drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, '#FF3B58', canvasContext);
-            console.log('decoder:', code);
             const data = JSON.stringify(code.data);
             readCode(data);
           }
@@ -62,7 +61,6 @@ export default function QRCodeReader({ readCode }: IQRCodeReader) {
   function init() {
     navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }).then((stream) => {
       videoElement.srcObject = stream;
-
       videoElement.play().then(() => {
         canvasContext = canvasElement.getContext('2d', { willReadFrequently: true });
         requestAnimationFrame(runTime);

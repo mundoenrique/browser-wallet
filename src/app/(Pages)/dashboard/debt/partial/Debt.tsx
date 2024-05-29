@@ -21,7 +21,7 @@ export default function Debt() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     setOpenRc(true);
   };
 

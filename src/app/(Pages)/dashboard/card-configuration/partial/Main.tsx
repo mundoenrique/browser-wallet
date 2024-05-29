@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
 import { useEffect, useCallback, useState } from 'react';
-import { Box, Stack, Typography, useTheme, useMediaQuery, Button } from '@mui/material';
+import { Box, Stack, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
 import { encryptForge } from '@/utils/toolHelper';
@@ -33,6 +33,8 @@ export default function CardConfiguration() {
   const cardInfo = useConfigCardStore((state) => state.cardInfo);
 
   const getUserCardId = useUserStore((state) => state.getUserCardId);
+
+  const isUserCardVirtual = useUserStore((state) => state.isUserCardVirtual);
 
   const { userId } = useUserStore((state) => state.user);
 
@@ -130,16 +132,17 @@ export default function CardConfiguration() {
         <CardInformation />
 
         <Stack spacing={3 / 2} mt={3}>
-          <HandleCard
-            onClick={() => {
-              updatePage('activatePhysicalCard');
-            }}
-            avatar={<CardIcons color="primary" sx={{ p: '2px' }} />}
-            icon={<Arrow />}
-          >
-            <Typography variant="subtitle2">Activa tu tarjeta física</Typography>
-          </HandleCard>
-
+          {isUserCardVirtual() && (
+            <HandleCard
+              onClick={() => {
+                updatePage('activatePhysicalCard');
+              }}
+              avatar={<CardIcons color="primary" sx={{ p: '2px' }} />}
+              icon={<Arrow />}
+            >
+              <Typography variant="subtitle2">Activa tu tarjeta física</Typography>
+            </HandleCard>
+          )}
           <HandleCard
             avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />}
             icon={

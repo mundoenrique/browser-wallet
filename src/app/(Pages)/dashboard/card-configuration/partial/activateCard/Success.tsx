@@ -1,34 +1,31 @@
 'use client';
 
 import Image from 'next/image';
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 //Internal app
-import { PurpleLayout } from '@/components';
-import { ErrorDebitProps } from '@/interfaces';
+import Pet from '%/images/arts/pet-dance.png';
 import { fuchsiaBlue } from '@/theme/theme-default';
+import { Linking, PurpleLayout } from '@/components';
 
-export default function Error(props: ErrorDebitProps) {
-  const { title, description, onClick, iconName = 'duplicate' } = props;
-
+export default function Success() {
   return (
     <PurpleLayout hidePelca>
       <Box sx={{ width: { xs: 'auto', sm: 542 }, display: 'grid', justifyItems: 'center', textAlign: 'center', mx: 3 }}>
         <Box mb={11 / 2}>
-          <Image src={`/images/arts/pet-${iconName}.png`} height={179} width={172} alt="Error" priority />
+          <Image src={Pet} height={223} width={165} alt="Error" priority />
         </Box>
         <Stack spacing={3 / 2} mb={4} textAlign="center">
           <Typography variant="subtitle1" color={fuchsiaBlue[50]}>
-            {title}
+            Ya tienes tu tarjeta activada
           </Typography>
 
           <Typography variant="body2" color={fuchsiaBlue[50]}>
-            {description}
+            Esta tarjeta remplaza la virtual por lo tanto si tenías pagos recurrentes asociados, tienes que volver a
+            asociarlos
           </Typography>
         </Stack>
 
-        <Button variant="text" onClick={onClick} sx={{ textDecoration: 'underline', fontWeight: '700' }}>
-          Volver
-        </Button>
+        <Linking href="/dashboard" label="Volver al inicio" />
       </Box>
     </PurpleLayout>
   );
