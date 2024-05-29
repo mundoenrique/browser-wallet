@@ -30,6 +30,16 @@ export default function RootLayout({ children }: ChildrenProps) {
     <html lang="es">
       <GoogleTagManager gtmId="GTM-M8QMC8" />
       <body>
+        {/* <!-- Google Tag Manager (noscript) --> */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-M8QMC8"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          ></iframe>
+        </noscript>
+        {/* <!-- End Google Tag Manager (noscript) --> */}
         <AppRouterCacheProvider>
           <MuiProvider>
             <HydrationProvider>
