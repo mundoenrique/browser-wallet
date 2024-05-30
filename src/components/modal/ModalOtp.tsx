@@ -10,6 +10,7 @@ import { getSchema } from '@/config';
 import InputOTP from '../form/InputOTP';
 import { ModalOtpProps } from '@/interfaces';
 import ModalResponsive from './ModalResponsive';
+import { handleMaskOtp } from '@/utils/toolHelper';
 import { useUiStore, useOtpStore, useUserStore } from '@/store';
 
 /**
@@ -99,9 +100,7 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
             control={control}
             length={4}
             title={title ? title : '🎰 Verificación en dos pasos'}
-            text={`Ingresa el código enviado a tu número celular +51 *** ***${getUserPhone().substring(
-              getUserPhone().length - 4
-            )}`}
+            text={`Ingresa el código enviado a tu número celular +51 *** *** ${handleMaskOtp(getUserPhone())} `}
             handleResendOTP={requestTFACode}
           />
         </Box>

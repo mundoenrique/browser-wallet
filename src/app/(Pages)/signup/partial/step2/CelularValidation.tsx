@@ -10,7 +10,7 @@ import { Box, Button, FormHelperText, Snackbar, Typography } from '@mui/material
 import { CardStep } from '..';
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
-import { encryptForge } from '@/utils/toolHelper';
+import { encryptForge, handleMaskOtp } from '@/utils/toolHelper';
 import { useOtpStore, useRegisterStore, useUiStore } from '@/store';
 
 export default function CelularValidation() {
@@ -108,9 +108,7 @@ export default function CelularValidation() {
             </Typography>
             <Typography variant="body2" mb="12px">
               Ingresa el código de 4 dígitos que te enviamos por SMS al{' '}
-              {`+51 *** *** ${ONB_PHASES_TERMS?.consultant.phoneNumber.substring(
-                ONB_PHASES_TERMS?.consultant.phoneNumber.length - 4
-              )}` ?? ''}
+              {`+51 *** *** ${handleMaskOtp(ONB_PHASES_TERMS?.consultant.phoneNumber)}` ?? ''}
             </Typography>
             <Controller
               name={'otp'}
