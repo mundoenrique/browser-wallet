@@ -35,7 +35,7 @@ function InputCheckMUI(props: InputCheckProps): JSX.Element {
           }
           label={
             labelHandle ? (
-              <Typography onClick={onClick} variant="body2" sx={{ textDecoration: 'underline' }}>
+              <Typography onClick={onClick} variant="body2">
                 {labelHandle}
               </Typography>
             ) : (

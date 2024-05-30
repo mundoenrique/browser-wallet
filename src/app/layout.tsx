@@ -1,7 +1,9 @@
 import { Metadata } from 'next';
+import { Typography } from '@mui/material';
 import { GoogleTagManager } from '@next/third-parties/google';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 //Internal app
+import packageJson from '../../package.json';
 import { ChildrenProps } from '@/interfaces';
 import GlobalErrorMessage from '@/components/layout/GlobalErrorMessage';
 import { HydrationProvider, KeyProvider, LoadingScreen, MuiProvider } from '@/components';
@@ -26,6 +28,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function RootLayout({ children }: ChildrenProps) {
+  const { version } = packageJson;
+
   return (
     <html lang="es">
       <GoogleTagManager gtmId="GTM-M8QMC8" />
@@ -46,6 +50,12 @@ export default function RootLayout({ children }: ChildrenProps) {
               <LoadingScreen />
               <GlobalErrorMessage />
               <KeyProvider>{children}</KeyProvider>
+              <Typography
+                variant="caption"
+                sx={{ opacity: '0.5', position: 'absolute', bottom: 10, right: 10, color: 'white' }}
+              >
+                {version}
+              </Typography>
             </HydrationProvider>
           </MuiProvider>
         </AppRouterCacheProvider>

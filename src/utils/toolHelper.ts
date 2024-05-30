@@ -121,3 +121,13 @@ export const decryptForge = (encryptedData: any) => {
 
   return decryptedData;
 };
+
+/**
+ * Manages the masking of the phone number for sending the otp
+ *
+ * @param phone - Phone to mask
+ */
+export const handleMaskOtp = (phone: string) => {
+  const maskPhone = phone.substring(phone.length - 4);
+  return maskPhone;
+};

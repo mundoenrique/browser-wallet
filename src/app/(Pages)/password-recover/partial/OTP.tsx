@@ -8,8 +8,8 @@ import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import { AuthOtpFormProps } from '@/interfaces';
 import InputOTP from '@/components/form/InputOTP';
-import { encryptForge } from '@/utils/toolHelper';
 import { useOtpStore, useUiStore, useUserStore } from '@/store';
+import { encryptForge, handleMaskOtp } from '@/utils/toolHelper';
 
 export default function AuthOtp(props: AuthOtpFormProps) {
   const { handleResendOTP } = props;
@@ -76,7 +76,9 @@ export default function AuthOtp(props: AuthOtpFormProps) {
           control={control}
           length={4}
           title="Recupera tu contraseña"
-          text={`Hemos enviado por tu seguridad un código SMS a tu celular ${phoneNumber}. Ingrésalo aquí.`}
+          text={`Hemos enviado por tu seguridad un código SMS a tu celular +51 *** *** ${handleMaskOtp(
+            phoneNumber
+          )}. Ingrésalo aquí.`}
           handleResendOTP={handleReset}
         />
       </Box>

@@ -10,6 +10,7 @@ import { getSchema } from '@/config';
 import InputOTP from '../form/InputOTP';
 import { ModalOtpProps } from '@/interfaces';
 import ModalResponsive from './ModalResponsive';
+import { handleMaskOtp } from '@/utils/toolHelper';
 import { useUiStore, useOtpStore, useUserStore } from '@/store';
 
 /**
@@ -21,6 +22,7 @@ import { useUiStore, useOtpStore, useUserStore } from '@/store';
  * @param closeModal - Function used to close the modal with a button in the account deletion flow.
  * @param title - Title of the form.
  * @param textButon - Text for the main button.
+ * @param processCode - Identify value of OTP.
  * @returns Json with the verification code
  */
 export default function ModalOtp(props: ModalOtpProps): JSX.Element {
@@ -98,9 +100,7 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
             control={control}
             length={4}
             title={title ? title : '🎰 Verificación en dos pasos'}
-            text={`Ingresa el código enviado a tu número celular *****${getUserPhone().substring(
-              getUserPhone().length - 4
-            )}`}
+            text={`Ingresa el código enviado a tu número celular +51 *** *** ${handleMaskOtp(getUserPhone())} `}
             handleResendOTP={requestTFACode}
           />
         </Box>

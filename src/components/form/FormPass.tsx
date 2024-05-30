@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { Box, Typography } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 //Internal app
 import { getSchema } from '@/config';
@@ -53,7 +53,19 @@ export default function FormPass(porps: FormPassProps): JSX.Element {
           {register && (
             <InputCheck
               name="policy"
-              labelHandle="Acepto y declaro bajo juramento que la información proporcionada es veraz, completa y actualizada, de conformidad con la Ley 29985 y condiciones de Contrato de la cuenta de dinero electrónico."
+              labelHandle={
+                <>
+                  Acepto y declaro bajo juramento que la información proporcionada es veraz, completa y actualizada, de
+                  conformidad con la{' '}
+                  <Typography component="span" variant="body2" sx={{ textDecoration: 'underline' }}>
+                    Ley 29985
+                  </Typography>{' '}
+                  y{' '}
+                  <Typography component="span" variant="body2" sx={{ textDecoration: 'underline' }}>
+                    condiciones de Contrato de la cuenta de dinero electrónico.
+                  </Typography>
+                </>
+              }
               control={control}
               onClick={() => setShowModal(true)}
             />
