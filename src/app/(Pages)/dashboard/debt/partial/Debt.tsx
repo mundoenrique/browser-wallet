@@ -7,7 +7,7 @@ import { Box, Button, Card, Stack, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { useMenuStore, useNavTitleStore } from '@/store';
+import { useDebStore, useMenuStore, useNavTitleStore } from '@/store';
 import { ContainerLayout, InputTextPay, Linking } from '@/components';
 
 export default function Debt() {
@@ -15,6 +15,7 @@ export default function Debt() {
   const { updateTitle } = useNavTitleStore();
   const { setCurrentItem } = useMenuStore();
   const schema = getSchema(['amount']);
+  const { setView } = useDebStore();
 
   const { control, handleSubmit } = useForm({
     defaultValues: { amount: '' },
@@ -57,7 +58,7 @@ export default function Debt() {
 
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           <InputTextPay name="amount" control={control} label="¿Cuánto deseas pagar?" />
-          <Button variant="contained" type="submit" fullWidth>
+          <Button variant="contained" type="submit" fullWidth onClick={() => setView('SUCCESS')}>
             Pagar
           </Button>
         </Box>

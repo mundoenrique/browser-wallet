@@ -348,7 +348,18 @@ export default function InfoVerification() {
           </Card>
           <InputCheck
             name="terms"
-            labelHandle="Acepto Términos y Condiciones y Política de Privacidad de Datos"
+            labelHandle={
+              <>
+                Acepto{' '}
+                <Typography component="span" variant="body2" sx={{ textDecoration: 'underline' }}>
+                  Términos y Condiciones
+                </Typography>{' '}
+                y{' '}
+                <Typography component="span" variant="body2" sx={{ textDecoration: 'underline' }}>
+                  Política de Privacidad de Datos
+                </Typography>
+              </>
+            }
             control={control}
             onClick={handleModalTerm}
           />

@@ -21,6 +21,7 @@ import { useUiStore, useOtpStore, useUserStore } from '@/store';
  * @param closeModal - Function used to close the modal with a button in the account deletion flow.
  * @param title - Title of the form.
  * @param textButon - Text for the main button.
+ * @param processCode - Identify value of OTP.
  * @returns Json with the verification code
  */
 export default function ModalOtp(props: ModalOtpProps): JSX.Element {
