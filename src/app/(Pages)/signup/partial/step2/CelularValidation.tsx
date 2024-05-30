@@ -107,7 +107,10 @@ export default function CelularValidation() {
               Por tu seguridad validaremos tu celular
             </Typography>
             <Typography variant="body2" mb="12px">
-              Ingresa el código de 4 dígitos que te enviamos por SMS al {ONB_PHASES_TERMS?.consultant.phoneNumber ?? ''}
+              Ingresa el código de 4 dígitos que te enviamos por SMS al{' '}
+              {`+51 *** *** ${ONB_PHASES_TERMS?.consultant.phoneNumber.substring(
+                ONB_PHASES_TERMS?.consultant.phoneNumber.length - 4
+              )}` ?? ''}
             </Typography>
             <Controller
               name={'otp'}

@@ -99,7 +99,7 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
             control={control}
             length={4}
             title={title ? title : '🎰 Verificación en dos pasos'}
-            text={`Ingresa el código enviado a tu número celular *****${getUserPhone().substring(
+            text={`Ingresa el código enviado a tu número celular +51 *** ***${getUserPhone().substring(
               getUserPhone().length - 4
             )}`}
             handleResendOTP={requestTFACode}

@@ -76,7 +76,9 @@ export default function AuthOtp(props: AuthOtpFormProps) {
           control={control}
           length={4}
           title="Recupera tu contraseña"
-          text={`Hemos enviado por tu seguridad un código SMS a tu celular ${phoneNumber}. Ingrésalo aquí.`}
+          text={`Hemos enviado por tu seguridad un código SMS a tu celular +51 *** *** ${phoneNumber.substring(
+            phoneNumber.length - 4
+          )}. Ingrésalo aquí.`}
           handleResendOTP={handleReset}
         />
       </Box>
