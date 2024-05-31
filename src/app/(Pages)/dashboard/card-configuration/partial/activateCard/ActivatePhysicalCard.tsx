@@ -3,8 +3,8 @@
 import { useQRCode } from 'next-qrcode';
 import { io, Socket } from 'socket.io-client';
 import { isBrowser } from 'react-device-detect';
+import { Button, Stack, Typography, Box } from '@mui/material';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, Grid, Stack, Typography, Box } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
 import { CardIcons } from '%/Icons';
@@ -216,12 +216,20 @@ export default function ActivatePhysicalCard() {
           <Stack spacing={3}>
             <HandleCard avatar={<CardIcons color="primary" sx={{ p: 1 / 2 }} />}>
               <Typography variant="subtitle2">Escanea el código</Typography>
-              <Typography variant="caption" mb={2}>
-                <b>Paso 1:</b> Escanea con tu teléfono el código QR que aparece en tu pantalla.
-              </Typography>
-              <Typography variant="caption">
-                <b>Paso 2:</b> Escanea el código del sobre que recibiste con tu tarjeta física.
-              </Typography>
+              {showQR ? (
+                <Typography variant="caption" mb={2}>
+                  Escanea el código QR presente en el sobre para activarla.
+                </Typography>
+              ) : (
+                <>
+                  <Typography variant="caption" mb={2}>
+                    <b>Paso 1:</b> Escanea con tu teléfono el código QR que aparece en tu pantalla.
+                  </Typography>
+                  <Typography variant="caption">
+                    <b>Paso 2:</b> Escanea el código del sobre que recibiste con tu tarjeta física.
+                  </Typography>
+                </>
+              )}
             </HandleCard>
 
             <Button variant="contained" onClick={openModal}>
