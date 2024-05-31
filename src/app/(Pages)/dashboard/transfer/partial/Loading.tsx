@@ -7,7 +7,7 @@ import { PurpleLayout } from '@/components';
 
 export default function Loading() {
   return (
-    <PurpleLayout>
+    <PurpleLayout bigModal>
       <Box sx={{ zIndex: 1, display: 'grid', justifyItems: 'center' }}>
         <LogoGreen />
         <Typography variant="h6" color="white" align="center" width={222}>

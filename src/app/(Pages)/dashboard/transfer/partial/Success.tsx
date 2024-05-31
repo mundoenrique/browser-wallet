@@ -8,22 +8,22 @@ import { CardTicketProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardTicket, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
-export default function Success({ onClick }: CardTicketProps) {
+export default function Success({ onClick, transferDetail }: CardTicketProps) {
   const description = [
     {
       icon: 'SM',
       label: 'Nombre de quien recibe:',
-      description: 'Sandra Mejía',
+      description: transferDetail?.receiver,
     },
     {
       icon: <Dollar sx={{ color: 'primary.main' }} />,
       label: 'Monto de la transacción',
-      description: 'S/ 200.00',
+      description: `S/ ${transferDetail?.amount}`,
     },
     {
       icon: <Clock sx={{ color: 'primary.main' }} />,
       label: 'Fecha y hora',
-      description: 'Martes 05 Dic - 1:45 pm',
+      description: transferDetail?.date,
     },
   ];
 
@@ -46,7 +46,7 @@ export default function Success({ onClick }: CardTicketProps) {
               Número de la transacción:
             </Typography>
             <Typography variant="body1" color="primary" textAlign="center" mb={3} fontWeight={700}>
-              123456789
+              {transferDetail?.code}
             </Typography>
             <Card sx={{ boxShadow: 'none', p: 1 }}>
               <Stack direction="column" divider={<Divider orientation="horizontal" />} spacing={1}>

@@ -3,26 +3,40 @@
 import { useForm } from 'react-hook-form';
 import { Suspense, useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
+import dayjs from 'dayjs';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { GroupIcon } from '%/Icons';
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import Loading from './partial/Loading';
 import Success from './partial/Success';
-import { useMenuStore, useNavTitleStore } from '@/store';
+import { useMenuStore, useNavTitleStore, useUiStore, useUserStore } from '@/store';
 import { ContainerLayout, InputText, InputTextPay, ModalResponsive } from '@/components';
+import { TransferDetail } from '@/interfaces';
 
 export default function Transfer() {
-  const { setCurrentItem } = useMenuStore();
-  const { updateTitle } = useNavTitleStore();
+  const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
 
-  const [dataForm, setDataForm] = useState<any>();
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
+
   const [openRc, setOpenRc] = useState<boolean>(false);
+
   const [openModal, setOpenModal] = useState<boolean>(false);
+
+  const senderCardId = useUserStore((state) => state.getUserCardId);
+
+  const [transferInfo, setTransferInfo] = useState<TransferDetail>({ receiver: '', amount: '', date: '', code: '' });
+
+  const [receiverCardId, setReceiverCardId] = useState<string>('');
 
   const schema = getSchema(['numberClient', 'amount']);
 
-  const { control, handleSubmit, reset } = useForm({
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
+  const { control, handleSubmit, reset, getValues, setError } = useForm({
     defaultValues: { numberClient: '', amount: '' },
     resolver: yupResolver(schema),
   });
@@ -32,16 +46,81 @@ export default function Transfer() {
     setCurrentItem('transfer');
   }, [updateTitle, setCurrentItem]);
 
-  const onSubmit = (data: any) => {
-    setDataForm(data);
-    setOpenModal(true);
+  const onSubmit = async (data: any) => {
+    setLoadingScreen(true);
+
+    const validateReceiver = api.get('/users/search', { params: { phoneNumber: data.numberClient } });
+
+    const validateBalance = api.get(`/cards/${senderCardId}/balance`);
+
+    Promise.all([validateReceiver, validateBalance])
+      .then((response: any) => {
+        if (data.amount < response[1].data.data.balance) {
+          setError('amount', { type: 'customError', message: 'Saldo insuficiente' });
+          return;
+        } else {
+          const {
+            firstName,
+            firstLastName,
+            cardSolutions: { cardId },
+          } = response[0].data.data;
+          setTransferInfo((prevState) => ({
+            ...prevState,
+            receiver: `${firstName} ${firstLastName}`,
+            amount: data.amount,
+          }));
+          setReceiverCardId(cardId);
+          setOpenModal(true);
+        }
+      })
+      .catch((e) => {
+        if (e.response?.data?.data?.code === '400.00.033') {
+          setError('numberClient', { type: 'customError', message: 'Este número no tiene Yiro' });
+        } else {
+          setModalError({ error: e });
+        }
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
   };
 
   const handleConfirmationModal = async () => {
-    console.log('🚀 ~ onSubmit ~ data:', dataForm);
-    setOpenModal(false);
-    setOpenRc(true);
-    reset();
+    setLoadingScreen(true);
+    const dataForm = getValues();
+
+    const payload = {
+      sender: {
+        cardId: senderCardId(),
+      },
+      receiver: {
+        cardId: receiverCardId,
+      },
+      amount: dataForm.amount,
+    };
+
+    api
+      .post(`/cards/${senderCardId()}/sendmoney`, payload)
+      .then((response) => {
+        const {
+          data: { transactionIdentifier },
+          dateTime,
+        } = response.data;
+        setOpenModal(false);
+        setOpenRc(true);
+        setTransferInfo((prevState) => ({
+          ...prevState,
+          transactionId: transactionIdentifier,
+          date: dayjs(dateTime).locale('es').format('dddd DD MMM - h:m a'),
+        }));
+      })
+      .catch((e) => {
+        setModalError({ error: e });
+      })
+      .finally(() => {
+        reset();
+        setLoadingScreen(false);
+      });
   };
 
   return (
@@ -55,7 +134,7 @@ export default function Transfer() {
           Transferir dinero
         </Typography>
 
-        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
           <InputText
             name="numberClient"
             control={control}
@@ -77,14 +156,20 @@ export default function Transfer() {
         <Typography variant="body1" mb={3}>
           El monto total se transferirá en este momento
         </Typography>
-        <Button variant="contained" onClick={handleConfirmationModal} fullWidth>
+        <Button
+          variant="contained"
+          onClick={() => {
+            handleConfirmationModal();
+          }}
+          fullWidth
+        >
           Aceptar
         </Button>
       </ModalResponsive>
 
       {openRc && (
         <Suspense fallback={<Loading />}>
-          <Success onClick={() => setOpenRc(false)} />
+          <Success onClick={() => setOpenRc(false)} transferDetail={transferInfo} />
         </Suspense>
       )}
     </>

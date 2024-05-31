@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { ICardDebt } from './api';
 import { ChildrenProps } from './constans';
 
@@ -81,7 +82,15 @@ export interface CardTicketProps extends ChildrenProps {
   textBotton?: string;
   download?: boolean;
   shared?: boolean;
+  transferDetail?: TransferDetail;
   onClick?: () => void | boolean;
+}
+
+export interface TransferDetail {
+  amount: string;
+  receiver: string;
+  date: string;
+  code: string;
 }
 
 /**
