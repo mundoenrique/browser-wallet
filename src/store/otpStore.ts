@@ -50,7 +50,7 @@ export const useOtpStore = create<OtpStore>()(
         }
       },
 
-      setTime: () => set({ timeLeft: 60 }),
+      setTime: (value: number) => set({ timeLeft: value }),
 
       reset: () => set((state) => ({ ...state, timeLeft: 60, counting: false })),
 

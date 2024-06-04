@@ -50,7 +50,7 @@ export default function Ending() {
   }, [setShowHeader, replace]);
 
   return (
-    <PurpleLayout bigModal>
+    <PurpleLayout bigModal width="100%">
       {currentImageIndex < 2 && (
         <Box sx={{ zIndex: 1, display: 'grid', justifyContent: 'center' }}>
           {currentImageIndex === 0 && (

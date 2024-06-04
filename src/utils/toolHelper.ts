@@ -131,3 +131,14 @@ export const handleMaskOtp = (phone: string) => {
   const maskPhone = phone.substring(phone.length - 4);
   return maskPhone;
 };
+
+/**
+ * Format time second
+ * @param seconds
+ * @returns
+ */
+export const formatTime = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}`;
+};

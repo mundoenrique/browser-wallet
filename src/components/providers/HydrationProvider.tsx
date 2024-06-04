@@ -21,7 +21,7 @@ export default function HydrationProvider({ children }: ChildrenProps): JSX.Elem
 
   if (isHydrated)
     return (
-      <PurpleLayout>
+      <PurpleLayout width="100%">
         <LogoGreen />
       </PurpleLayout>
     );
