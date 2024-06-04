@@ -47,6 +47,8 @@ export default function CardInformation() {
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
+  const resetOtp = useOtpStore((state) => state.reset);
+
   const setModalError = useUiStore((state) => state.setModalError);
 
   const setReloadFunction = useUiStore((state) => state.setReloadFunction);
@@ -88,6 +90,7 @@ export default function CardInformation() {
           if (response.data.code === '200.00.000') {
             setOpen(false);
             getDecryptData();
+            resetOtp();
           }
         })
         .catch((e) => {
