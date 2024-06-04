@@ -25,7 +25,7 @@ export default function Success() {
           </Typography>
         </Stack>
 
-        <Linking href="/dashboard" label="Volver al inicio" />
+        <Linking href="/dashboard" label="Volver al inicio" color="white" />
       </Box>
     </PurpleLayout>
   );

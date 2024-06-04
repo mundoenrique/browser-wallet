@@ -19,7 +19,7 @@ export default function StatusReport(props: StatusReportProps) {
   const { title, description, onClick } = props;
 
   return (
-    <PurpleLayout hidePelca bigModal>
+    <PurpleLayout hidePelca bigModal width="100%">
       <Box sx={{ width: { xs: 'auto', sm: 542 }, display: 'grid', justifyItems: 'center', textAlign: 'center', mx: 3 }}>
         <Box mb={11 / 2}>
           <Image src={Pet} height={179} width={172} alt="Error" priority />
