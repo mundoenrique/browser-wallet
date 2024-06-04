@@ -47,17 +47,16 @@ export default function Transfer() {
   }, [updateTitle, setCurrentItem]);
 
   const onSubmit = async (data: any) => {
-    setLoadingScreen(true);
+    setLoadingScreen(true, { message: 'Validando Transaccion' });
 
     const validateReceiver = api.get('/users/search', { params: { phoneNumber: data.numberClient } });
 
     const validateBalance = api.get(`/cards/${senderCardId}/balance`);
 
-    Promise.all([validateReceiver, validateBalance])
+    Promise.allSettled([validateReceiver, validateBalance])
       .then((response: any) => {
         if (data.amount < response[1].data.data.balance) {
           setError('amount', { type: 'customError', message: 'Saldo insuficiente' });
-          return;
         } else {
           const {
             firstName,
@@ -72,16 +71,15 @@ export default function Transfer() {
           setReceiverCardId(cardId);
           setOpenModal(true);
         }
-      })
-      .catch((e) => {
-        if (e.response?.data?.data?.code === '400.00.033') {
+
+        if (response[0]?.data?.data?.code === '400.00.033') {
           setError('numberClient', { type: 'customError', message: 'Este número no tiene Yiro' });
         } else {
-          setModalError({ error: e });
+          //setModalError({ error: e });
         }
       })
       .finally(() => {
-        setLoadingScreen(false);
+        // setLoadingScreen(false);
       });
   };
 
@@ -167,11 +165,7 @@ export default function Transfer() {
         </Button>
       </ModalResponsive>
 
-      {openRc && (
-        <Suspense fallback={<Loading />}>
-          <Success onClick={() => setOpenRc(false)} transferDetail={transferInfo} />
-        </Suspense>
-      )}
+      {openRc && <Success onClick={() => setOpenRc(false)} transferDetail={transferInfo} />}
     </>
   );
 }
