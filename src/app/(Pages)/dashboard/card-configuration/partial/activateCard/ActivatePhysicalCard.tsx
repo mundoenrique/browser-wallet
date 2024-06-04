@@ -3,8 +3,8 @@
 import { useQRCode } from 'next-qrcode';
 import { io, Socket } from 'socket.io-client';
 import { isBrowser } from 'react-device-detect';
+import { Button, Stack, Typography, Box } from '@mui/material';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Button, Grid, Stack, Typography, Box } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
 import { CardIcons } from '%/Icons';
@@ -210,66 +210,58 @@ export default function ActivatePhysicalCard() {
           />
 
           <Typography variant="body2" mb={3}>
-            Para activar tu tarjeta {isBrowser && 'En browser'}
+            Para activar tu tarjeta
           </Typography>
 
           <Stack spacing={3}>
             <HandleCard avatar={<CardIcons color="primary" sx={{ p: 1 / 2 }} />}>
               <Typography variant="subtitle2">Escanea el código</Typography>
-              <Typography variant="caption">Escanea el código QR presente en el sobre para activarla.</Typography>
+              {showQR ? (
+                <Typography variant="caption" mb={2}>
+                  Escanea el código QR presente en el sobre para activarla.
+                </Typography>
+              ) : (
+                <>
+                  <Typography variant="caption" mb={2}>
+                    <b>Paso 1:</b> Escanea con tu teléfono el código QR que aparece en tu pantalla.
+                  </Typography>
+                  <Typography variant="caption">
+                    <b>Paso 2:</b> Escanea el código del sobre que recibiste con tu tarjeta física.
+                  </Typography>
+                </>
+              )}
             </HandleCard>
 
             <Button variant="contained" onClick={openModal}>
               Escanear Código QR
             </Button>
           </Stack>
+
           <ModalResponsive open={showModal} handleClose={() => setShowModal(false)}>
-            <Grid container>
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+            <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+              <Typography variant="subtitle1" mb={3}>
+                Activación de tarjeta física
+              </Typography>
+
+              <Typography variant="body2" mb={2} textAlign="start">
+                <b>Paso 1:</b> Escanea con tu teléfono el código QR que aparece en tu pantalla.
+              </Typography>
+              <SVG
+                text={url}
+                options={{
+                  margin: 2,
+                  width: 200,
                 }}
-              >
-                <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%' }}>
-                  <Typography variant="subtitle1" mb="12px">
-                    Activación de tarjeta física
-                  </Typography>
-                  <Typography variant="body2" mb={2} color="initial">
-                    Recuerda que para la activación de tu tarjeta debes tener a la mano el sobre donde está te llego.
-                  </Typography>
-                  <Typography variant="body2" mb={2} color="initial">
-                    Escanea el siguiente código QR con tu teléfono para crear una conexión y detectar cuando escanees el
-                    código del sobre de tu tarjeta física.
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <SVG
-                  text={url}
-                  options={{
-                    margin: 2,
-                    width: 200,
-                  }}
-                />
-              </Grid>
-              <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%' }}>
-                <Typography variant="body2" mb={2} color="primary.main">
-                  Tiempo restante - 0:{timeLeft}
-                </Typography>
-              </Box>
-            </Grid>
+              />
+              <Typography variant="body2" mb={2} textAlign="start">
+                <b>Paso 2:</b> Escanea el código del sobre que recibiste con tu tarjeta física.
+              </Typography>
+            </Box>
+            <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%' }}>
+              <Typography variant="body2" mb={2}>
+                Tiempo restante - 0:{timeLeft}
+              </Typography>
+            </Box>
           </ModalResponsive>
         </ContainerLayout>
       )}
