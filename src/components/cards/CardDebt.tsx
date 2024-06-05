@@ -1,13 +1,13 @@
 'use client';
 
-import dayjs from 'dayjs';
 import 'dayjs/locale/es';
-import updateLocale from 'dayjs/plugin/updateLocale';
+import { useState, useEffect } from 'react';
 import Clock from '@mui/icons-material/QueryBuilder';
 import ArrowCircle from '@mui/icons-material/ArrowCircleRightOutlined';
-import { Avatar, AvatarGroup, Box, Card, Typography } from '@mui/material';
+import { Avatar, AvatarGroup, Box, Card, Skeleton, Typography } from '@mui/material';
 //Internal app
 import { CardDebtProps } from '@/interfaces';
+import { expiredFormatDate } from '@/utils/dates';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
 import { BgButtonPayLarge, BgButtonPaySmall, Esika } from '%/Icons';
 
@@ -18,17 +18,19 @@ import { BgButtonPayLarge, BgButtonPaySmall, Esika } from '%/Icons';
  * @param onClick - Confirm and manage the card.
  * @returns Debt balances.
  */
-
-dayjs.locale('es');
-dayjs.extend(updateLocale);
-dayjs.updateLocale('es', {
-  monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-});
-
 export default function CardDebt(props: CardDebtProps): JSX.Element {
   const { OweMe, onClick, data } = props;
   const maxOweMe = data?.clients || 0;
   const clientOweMe = ['', '', '', '', '', '', ''];
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <Card
@@ -75,7 +77,17 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
           {OweMe ? 'Mis clientes me deben' : 'Mi deuda con ésika'}
         </Typography>
         <Typography variant="h6" noWrap>
-          {data.amount ? `S/ ${data?.amount}` : 'Sin datos'}
+          {data.amount === null ? (
+            loading ? (
+              <Skeleton variant="text" />
+            ) : (
+              'Sin datos'
+            )
+          ) : data.amount === 0 ? (
+            'S/ 0.00'
+          ) : (
+            `S/ ${data?.amount}`
+          )}
         </Typography>
       </Box>
       <Box
@@ -110,9 +122,7 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
           <>
             <Clock sx={{ fontSize: 12, color: 'primary.main' }} />
             <Typography fontSize={8}>
-              {data.expirationDate && data.amount != '0.00'
-                ? dayjs(data?.expirationDate, 'DD/MM/YYYY').format('[Vence el] D [de] MMM YYYY')
-                : 'Datos no disponibles'}
+              {data.expirationDate ? expiredFormatDate(data?.expirationDate) : 'Datos no disponibles'}
             </Typography>
             <ArrowCircle sx={{ fontSize: 12, color: 'primary.main' }} />
           </>
