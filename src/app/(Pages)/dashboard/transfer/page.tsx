@@ -1,7 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { Suspense, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 import { Box, Button, Typography } from '@mui/material';
@@ -9,10 +9,10 @@ import { Box, Button, Typography } from '@mui/material';
 import { GroupIcon } from '%/Icons';
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
-import Loading from './partial/Loading';
+import { encryptForge } from '@/utils/toolHelper';
 import Success from './partial/Success';
-import { useMenuStore, useNavTitleStore, useUiStore, useUserStore } from '@/store';
-import { ContainerLayout, InputText, InputTextPay, ModalResponsive } from '@/components';
+import { useMenuStore, useNavTitleStore, useUiStore, useUserStore, useOtpStore } from '@/store';
+import { ContainerLayout, InputText, InputTextPay, ModalResponsive, ModalOtp } from '@/components';
 import { TransferDetail } from '@/interfaces';
 
 export default function Transfer() {
@@ -22,9 +22,11 @@ export default function Transfer() {
 
   const [openRc, setOpenRc] = useState<boolean>(false);
 
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openModalOtp, setOpenModalOtp] = useState<boolean>(false);
 
   const senderCardId = useUserStore((state) => state.getUserCardId);
+
+  const { userId } = useUserStore((state) => state.user);
 
   const [transferInfo, setTransferInfo] = useState<TransferDetail>({ receiver: '', amount: '', date: '', code: '' });
 
@@ -35,6 +37,10 @@ export default function Transfer() {
   const setModalError = useUiStore((state) => state.setModalError);
 
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
+  const otpUuid = useOtpStore((state) => state.otpUuid);
+
+  const resetOtp = useOtpStore((state) => state.reset);
 
   const { control, handleSubmit, reset, getValues, setError } = useForm({
     defaultValues: { numberClient: '', amount: '' },
@@ -47,43 +53,67 @@ export default function Transfer() {
   }, [updateTitle, setCurrentItem]);
 
   const onSubmit = async (data: any) => {
-    setLoadingScreen(true, { message: 'Validando Transaccion' });
+    setLoadingScreen(true);
 
     const validateReceiver = api.get('/users/search', { params: { phoneNumber: data.numberClient } });
 
-    const validateBalance = api.get(`/cards/${senderCardId}/balance`);
+    const validateBalance = api.get(`/cards/${senderCardId()}/balance`);
 
     Promise.allSettled([validateReceiver, validateBalance])
-      .then((response: any) => {
-        if (data.amount < response[1].data.data.balance) {
-          setError('amount', { type: 'customError', message: 'Saldo insuficiente' });
-        } else {
-          const {
-            firstName,
-            firstLastName,
-            cardSolutions: { cardId },
-          } = response[0].data.data;
-          setTransferInfo((prevState) => ({
-            ...prevState,
-            receiver: `${firstName} ${firstLastName}`,
-            amount: data.amount,
-          }));
-          setReceiverCardId(cardId);
-          setOpenModal(true);
-        }
+      .then((responses: any) => {
+        const [responseReceiver, responseBalance] = responses;
 
-        if (response[0]?.data?.data?.code === '400.00.033') {
-          setError('numberClient', { type: 'customError', message: 'Este número no tiene Yiro' });
-        } else {
-          //setModalError({ error: e });
+        const balance = responseBalance?.value.data?.data?.balance || 0;
+
+        const amountCheck = data.amount < balance;
+
+        if (responseReceiver.status === 'fulfilled' && responseBalance.status === 'fulfilled') {
+          if (!amountCheck) {
+            setError('amount', { type: 'customError', message: 'Saldo insuficiente' });
+          } else {
+            const {
+              firstName,
+              firstLastName,
+              cardSolutions: { cardId },
+            } = responseReceiver.value.data.data;
+
+            setTransferInfo((prevState) => ({
+              ...prevState,
+              receiver: `${firstName} ${firstLastName}`,
+              amount: data.amount,
+            }));
+
+            setReceiverCardId(cardId);
+
+            setOpenModalOtp(true);
+          }
+        } else if (responseReceiver.status === 'rejected' && responseBalance.status === 'fulfilled') {
+          if (responseReceiver.reason.response.data?.data?.code === '400.00.033') {
+            setError('numberClient', { type: 'customError', message: 'Este número no tiene Yiro' });
+          } else {
+            setModalError({ error: responseReceiver });
+          }
+
+          if (!amountCheck) {
+            setError('amount', { type: 'customError', message: 'Saldo insuficiente' });
+          }
+        } else if (responseReceiver.status === 'fulfilled' && responseBalance.status === 'rejected') {
+          setModalError({ error: responseBalance });
+        } else if (responseReceiver.status === 'rejected' && responseBalance.status === 'rejected') {
+          if (responseReceiver.reason.response.data?.data?.code === '400.00.033') {
+            setError('numberClient', { type: 'customError', message: 'Este número no tiene Yiro' });
+          } else {
+            setModalError({ error: responseReceiver.reason.response.data?.data?.code });
+          }
+          setModalError({ error: responseBalance.reason.response.data?.data?.code });
         }
       })
       .finally(() => {
-        // setLoadingScreen(false);
+        setLoadingScreen(false);
       });
   };
 
-  const handleConfirmationModal = async () => {
+  const handleConfirmation = async () => {
     setLoadingScreen(true);
     const dataForm = getValues();
 
@@ -104,7 +134,6 @@ export default function Transfer() {
           data: { transactionIdentifier },
           dateTime,
         } = response.data;
-        setOpenModal(false);
         setOpenRc(true);
         setTransferInfo((prevState) => ({
           ...prevState,
@@ -120,6 +149,37 @@ export default function Transfer() {
         setLoadingScreen(false);
       });
   };
+
+  const onSubmitOtp = useCallback(
+    async (data: any) => {
+      setLoadingScreen(true);
+      const { otp } = data;
+
+      const payload = {
+        otpProcessCode: 'SEE_CARD_NUMBER',
+        otpUuId: otpUuid,
+        otpCode: encryptForge(otp),
+      };
+
+      api
+        .post(`/users/${userId}/validate/tfa`, payload)
+        .then((response) => {
+          if (response.data.code === '200.00.000') {
+            setOpenModalOtp(false);
+            resetOtp();
+            handleConfirmation();
+          }
+        })
+        .catch((e) => {
+          setModalError({ error: e });
+          setLoadingScreen(false);
+        })
+        .finally(() => {
+          setLoadingScreen(false);
+        });
+    },
+    [otpUuid] //eslint-disable-line
+  );
 
   return (
     <>
@@ -147,25 +207,18 @@ export default function Transfer() {
         </Box>
       </ContainerLayout>
 
-      <ModalResponsive data-testid="modalResponsive" open={openModal} handleClose={() => setOpenModal(false)}>
-        <Typography variant="subtitle1" mb={3}>
-          ✋¿Deseas transferir el dinero?
-        </Typography>
-        <Typography variant="body1" mb={3}>
-          El monto total se transferirá en este momento
-        </Typography>
-        <Button
-          variant="contained"
-          onClick={() => {
-            handleConfirmationModal();
-          }}
-          fullWidth
-        >
-          Aceptar
-        </Button>
-      </ModalResponsive>
-
       {openRc && <Success onClick={() => setOpenRc(false)} transferDetail={transferInfo} />}
+
+      {
+        <ModalOtp
+          open={openModalOtp}
+          handleClose={() => {
+            setOpenModalOtp(false);
+          }}
+          onSubmit={onSubmitOtp}
+          processCode="SEE_CARD_NUMBER"
+        />
+      }
     </>
   );
 }
