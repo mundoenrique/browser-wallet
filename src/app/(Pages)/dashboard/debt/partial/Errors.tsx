@@ -9,7 +9,7 @@ import { PurpleLayout } from '@/components';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function Error() {
-  const { setView } = useDebStore();
+  const setView = useDebStore((state) => state.setView);
 
   const error = useDebStore((state) => state.error);
 
@@ -40,10 +40,10 @@ export default function Error() {
   const iconName = setErrorsParams().iconName || 'sorry';
 
   return (
-    <PurpleLayout hidePelca>
+    <PurpleLayout hidePelca bigModal width="calc(100% - 315px)">
       <Box sx={{ width: { xs: 'auto', sm: 542 }, display: 'grid', justifyItems: 'center', textAlign: 'center', mx: 3 }}>
         <Box mb={11 / 2}>
-          <Image src={`/images/arts/pet-${iconName}.png`} height={179} width={172} alt="Error" priority />
+          <Image src={`/images/arts/pet-${iconName}.png`} height={170} width={195} alt="Error" priority />
         </Box>
         <Stack spacing={3 / 2} mb={4} textAlign="center">
           <Typography variant="subtitle1" color={fuchsiaBlue[50]}>

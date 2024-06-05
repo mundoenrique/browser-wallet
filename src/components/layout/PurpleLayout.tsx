@@ -59,7 +59,7 @@ export default function PurpleLayout({
         position: bigModal ? 'absolute' : 'initial',
         background: `linear-gradient(180deg, ${fuchsiaBlue[500]} 0%, ${fuchsiaBlue[800]} 100%)`,
         zIndex: bigModal ? 1200 : 'initial',
-        width: width ? width : '100%',
+        width: width ? { xs: '100%', md: width } : '100%',
         top: bigModal ? 0 : 'auto',
         '& > canvas': {
           zIndex: '0 !important',
