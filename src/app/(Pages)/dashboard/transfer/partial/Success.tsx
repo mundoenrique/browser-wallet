@@ -28,7 +28,7 @@ export default function Success({ onClick, transferDetail }: CardTicketProps) {
   ];
 
   return (
-    <PurpleLayout hidePelca bigModal left confetti>
+    <PurpleLayout hidePelca bigModal left confetti width="calc(100% - 315px)">
       <ContainerLayout>
         <Typography
           variant="h6"

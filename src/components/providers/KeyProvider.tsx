@@ -48,7 +48,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
 
   if (!token) {
     return (
-      <PurpleLayout width="100%">
+      <PurpleLayout>
         <LogoGreen />
       </PurpleLayout>
     );
