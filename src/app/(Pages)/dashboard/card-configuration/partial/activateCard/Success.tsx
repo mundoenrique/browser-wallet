@@ -12,7 +12,7 @@ export default function Success() {
     <PurpleLayout hidePelca>
       <Box sx={{ width: { xs: 'auto', sm: 542 }, display: 'grid', justifyItems: 'center', textAlign: 'center', mx: 3 }}>
         <Box mb={11 / 2}>
-          <Image src={Pet} height={223} width={165} alt="Error" priority />
+          <Image src={Pet} height={170} width={195} alt="Error" priority />
         </Box>
         <Stack spacing={3 / 2} mb={4} textAlign="center">
           <Typography variant="subtitle1" color={fuchsiaBlue[50]}>

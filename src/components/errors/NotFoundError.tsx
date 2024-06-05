@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Box, Typography, Stack } from '@mui/material';
 //Internal app
-import Pet from '%/images/arts/pet.png';
+import Pet from '%/images/arts/pet-sorry.png';
 import Linking from '../navigation/Linking';
 import PurpleLayout from '../layout/PurpleLayout';
 import { NotFoundErrorProps } from '@/interfaces';
@@ -22,7 +22,7 @@ export default function NotFoundError({ code }: NotFoundErrorProps) {
     <PurpleLayout hidePelca>
       <Box sx={{ width: { xs: 'auto', sm: 542 }, display: 'grid', justifyItems: 'center', textAlign: 'center', mx: 3 }}>
         <Box mb={11 / 2}>
-          <Image src={Pet} height={229} width={336} alt="Error" priority />
+          <Image src={Pet} height={170} width={195} alt="Error" priority />
         </Box>
         <Stack spacing={3 / 2} mb={4}>
           <Box>
