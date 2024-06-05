@@ -2,10 +2,11 @@
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
+import { useState, useEffect } from 'react';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import Clock from '@mui/icons-material/QueryBuilder';
 import ArrowCircle from '@mui/icons-material/ArrowCircleRightOutlined';
-import { Avatar, AvatarGroup, Box, Card, Typography } from '@mui/material';
+import { Avatar, AvatarGroup, Box, Card, Skeleton, Typography } from '@mui/material';
 //Internal app
 import { CardDebtProps } from '@/interfaces';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
@@ -29,6 +30,15 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
   const { OweMe, onClick, data } = props;
   const maxOweMe = data?.clients || 0;
   const clientOweMe = ['', '', '', '', '', '', ''];
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <Card
@@ -75,7 +85,17 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
           {OweMe ? 'Mis clientes me deben' : 'Mi deuda con ésika'}
         </Typography>
         <Typography variant="h6" noWrap>
-          {data.amount ? `S/ ${data?.amount}` : 'Sin datos'}
+          {data.amount === null ? (
+            loading ? (
+              <Skeleton variant="text" />
+            ) : (
+              'Sin datos'
+            )
+          ) : data.amount === 0 ? (
+            'S/ 0.00'
+          ) : (
+            `S/ ${data?.amount}`
+          )}
         </Typography>
       </Box>
       <Box

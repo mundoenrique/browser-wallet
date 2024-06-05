@@ -50,18 +50,3 @@ export interface StatusReportProps {
 export interface NotFoundErrorProps {
   code: 404 | 500;
 }
-
-/**
- * Error debit
- *
- * @typeParam title: string
- * @typeParam description: string
- * @typeParam onClick: () => void
- * @typeParam iconName: string
- **/
-export interface ErrorDebitProps {
-  title: string;
-  description: string;
-  onClick: () => void;
-  iconName?: string;
-}

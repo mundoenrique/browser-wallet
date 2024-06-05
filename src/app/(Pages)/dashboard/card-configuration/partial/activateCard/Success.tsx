@@ -9,7 +9,7 @@ import { Linking, PurpleLayout } from '@/components';
 
 export default function Success() {
   return (
-    <PurpleLayout hidePelca>
+    <PurpleLayout hidePelca width="100%">
       <Box sx={{ width: { xs: 'auto', sm: 542 }, display: 'grid', justifyItems: 'center', textAlign: 'center', mx: 3 }}>
         <Box mb={11 / 2}>
           <Image src={Pet} height={223} width={165} alt="Error" priority />

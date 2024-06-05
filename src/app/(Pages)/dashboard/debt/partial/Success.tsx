@@ -1,14 +1,32 @@
 'use client';
 
+import 'dayjs/locale/es';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import updateLocale from 'dayjs/plugin/updateLocale';
 import Dollar from '@mui/icons-material/AttachMoney';
 import Clock from '@mui/icons-material/QueryBuilder';
 import { Avatar, Box, Card, Divider, Stack, Typography } from '@mui/material';
 //Internal app
+import { useDebStore } from '@/store';
 import { EsikaIsotipo } from '%/Icons';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardTicket, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
+dayjs.extend(utc);
+dayjs.locale('es');
+dayjs.extend(updateLocale);
+dayjs.updateLocale('es', {
+  monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+});
+
+const formatDate = (dateString: string) => {
+  return dayjs.utc(dateString).local().format('dddd DD MMM - h:mm a');
+};
+
 export default function Success() {
+  const payOffDebt = useDebStore((state) => state.payOffDebt);
+
   const description = [
     {
       icon: <EsikaIsotipo sx={{ color: 'primary.main' }} />,
@@ -17,13 +35,13 @@ export default function Success() {
     },
     {
       icon: <Dollar sx={{ color: 'primary.main' }} />,
-      label: 'Por valor #12312412043',
-      description: 'S/ 200.00',
+      label: 'Por valor',
+      description: `S/ ${payOffDebt?.amount}`,
     },
     {
       icon: <Clock sx={{ color: 'primary.main' }} />,
       label: 'Fecha y hora',
-      description: 'Martes 05 Dic - 1:45 pm',
+      description: payOffDebt?.transactionDate ? formatDate(payOffDebt?.transactionDate) : '-',
     },
   ];
 
@@ -49,7 +67,7 @@ export default function Success() {
               Los datos de la transacción son:
             </Typography>
             <Typography variant="body1" color="primary" textAlign="center" mb={3} fontWeight={700}>
-              123456789
+              {payOffDebt?.transactionIdentifier}
             </Typography>
             <Card sx={{ boxShadow: 'none', p: 1 }}>
               <Stack direction="column" divider={<Divider orientation="horizontal" />} spacing={1}>

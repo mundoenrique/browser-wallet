@@ -1,3 +1,5 @@
+import { IPayOffDebt, IPayOffDebtError } from './api';
+
 /**
  * Public and private key
  *
@@ -280,6 +282,10 @@ export interface OtpStore {
 export interface DebtStore {
   debt: any | null;
   view: 'DEBT' | 'SUCCESS' | 'ERROR' | string | undefined;
+  payOffDebt: IPayOffDebt | null;
+  error: IPayOffDebtError | null;
   setDebt: (_data: any) => void;
   setView: (_data: string) => void;
+  setPayOffDebt: (_data: IPayOffDebt) => void;
+  setError: (_data: IPayOffDebtError) => void;
 }
