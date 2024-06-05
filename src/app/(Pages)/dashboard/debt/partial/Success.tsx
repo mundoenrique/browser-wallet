@@ -1,28 +1,14 @@
 'use client';
 
-import 'dayjs/locale/es';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import updateLocale from 'dayjs/plugin/updateLocale';
 import Dollar from '@mui/icons-material/AttachMoney';
 import Clock from '@mui/icons-material/QueryBuilder';
 import { Avatar, Box, Card, Divider, Stack, Typography } from '@mui/material';
 //Internal app
 import { useDebStore } from '@/store';
 import { EsikaIsotipo } from '%/Icons';
+import { formatDate } from '@/utils/dates';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardTicket, ContainerLayout, Linking, PurpleLayout } from '@/components';
-
-dayjs.extend(utc);
-dayjs.locale('es');
-dayjs.extend(updateLocale);
-dayjs.updateLocale('es', {
-  monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-});
-
-const formatDate = (dateString: string) => {
-  return dayjs.utc(dateString).local().format('dddd DD MMM - h:mm a');
-};
 
 export default function Success() {
   const payOffDebt = useDebStore((state) => state.payOffDebt);
