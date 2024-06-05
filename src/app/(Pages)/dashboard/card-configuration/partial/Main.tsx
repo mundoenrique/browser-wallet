@@ -28,8 +28,6 @@ export default function CardConfiguration() {
 
   const isCardVirtual = useConfigCardStore((state) => state.isCardVirtual);
 
-  const updateCardInfo = useConfigCardStore((state) => state.updateCardInfo);
-
   const cardInfo = useConfigCardStore((state) => state.cardInfo);
 
   const getUserCardId = useUserStore((state) => state.getUserCardId);
@@ -43,6 +41,8 @@ export default function CardConfiguration() {
   const setModalError = useUiStore((state) => state.setModalError);
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
+
+  const reset = useOtpStore((state) => state.reset);
 
   const [openOtp, setOpenOtp] = useState<boolean>(false);
 
@@ -76,6 +76,7 @@ export default function CardConfiguration() {
           if (response.data.code === '200.00.000') {
             setOpenOtp(false);
             handleSubmit(onSubmit)();
+            reset();
           }
         })
         .catch((e) => {
@@ -168,7 +169,7 @@ export default function CardConfiguration() {
             </Typography>
           </HandleCard>
 
-          {virtualCard && (
+          {!virtualCard && (
             <HandleCard
               onClick={() => {
                 updatePage('blockCard');

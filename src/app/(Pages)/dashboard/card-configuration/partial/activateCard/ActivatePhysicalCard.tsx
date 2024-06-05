@@ -8,6 +8,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 //Internal app
 import { api } from '@/utils/api';
 import { CardIcons } from '%/Icons';
+import { formatTime } from '@/utils/toolHelper';
 import { ContainerLayout, HandleCard, Linking, ModalResponsive, QRCodeReader } from '@/components';
 import { useNavTitleStore, useConfigCardStore, useUiStore, useUserStore, useOtpStore } from '@/store';
 
@@ -135,7 +136,7 @@ export default function ActivatePhysicalCard() {
     setCardId(null);
     if (isBrowser) {
       setShowModal(true);
-      setTime(60);
+      setTime(120);
       timer();
     } else {
       setShowQR(true);
@@ -257,11 +258,13 @@ export default function ActivatePhysicalCard() {
                 <b>Paso 2:</b> Escanea el código del sobre que recibiste con tu tarjeta física.
               </Typography>
             </Box>
-            <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%' }}>
-              <Typography variant="body2" mb={2}>
-                Tiempo restante - 0:{timeLeft}
-              </Typography>
-            </Box>
+            {timeLeft > 0 && (
+              <Box sx={{ alignItems: 'center', display: 'flex', flexDirection: 'column', width: '100%' }}>
+                <Typography variant="body2" mb={2}>
+                  Tiempo restante - {formatTime(timeLeft)}
+                </Typography>
+              </Box>
+            )}
           </ModalResponsive>
         </ContainerLayout>
       )}

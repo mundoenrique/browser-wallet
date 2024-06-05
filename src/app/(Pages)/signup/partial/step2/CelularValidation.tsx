@@ -19,7 +19,7 @@ export default function CelularValidation() {
   const { setModalError, setLoadingScreen } = useUiStore();
   const { inc, dec, onboardingUuId, ONB_PHASES_TERMS } = useRegisterStore();
   const { timeLeft, countdown, counting, setCounting, setTime, otpUuid, setOtpUuid } = useOtpStore();
-
+  const resetOtp = useOtpStore((state) => state.reset);
   const [open, setOpen] = useState(false);
 
   const timerRef = useRef<any>();
@@ -57,6 +57,7 @@ export default function CelularValidation() {
       .then((response) => {
         if (response.data.code === '200.00.000') {
           inc();
+          resetOtp();
         }
       })
       .catch((e) => {
