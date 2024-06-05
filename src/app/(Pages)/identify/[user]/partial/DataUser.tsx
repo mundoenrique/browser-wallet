@@ -107,7 +107,7 @@ export default function DataUser({ user, referer }: DataUserProps) {
   }, [userValidation, userRedirect]);
 
   return (
-    <PurpleLayout width="100%">
+    <PurpleLayout>
       <Box sx={{ zIndex: 1, display: 'grid', justifyItems: 'center', gap: 3 }}>
         <LogoGreen />
         <Typography variant="h6" color="white" align="center" sx={{ width: 222 }}>

@@ -16,7 +16,7 @@ import { fuchsiaBlue } from '@/theme/theme-default';
  */
 export default function NotFoundError({ code }: NotFoundErrorProps) {
   return (
-    <PurpleLayout hidePelca width="100%">
+    <PurpleLayout hidePelca>
       <Box sx={{ width: { xs: 'auto', sm: 542 }, display: 'grid', justifyItems: 'center', textAlign: 'center', mx: 3 }}>
         <Box mb={11 / 2}>
           <Image src={Pet} height={229} width={336} alt="Error" priority />

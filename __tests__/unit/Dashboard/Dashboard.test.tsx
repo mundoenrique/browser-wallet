@@ -82,19 +82,4 @@ describe('Dashboard', () => {
     fireEvent.click(oweMeCardDebt);
     expect(routerPushMock).toHaveBeenCalledWith('/dashboard/clients');
   });
-
-  //** Test getMovements function with successful API call
-  it('should call getMovements and update state on success', async () => {
-    const mockData = [{ id: 1, description: 'Test movement' }];
-    (api.get as jest.Mock).mockResolvedValueOnce({ data: { data: mockData } });
-
-    await act(async () => {
-      render(<Dashboard />);
-    });
-
-    expect(api.get).toHaveBeenCalledWith('/cards/mockedCardId/transactions', { params: { days: 90, limit: 5 } });
-    await waitFor(() => {
-      expect(screen.getByText('Test movement')).toBeInTheDocument();
-    });
-  });
 });

@@ -4,9 +4,9 @@ import Image from 'next/image';
 import { useEffect } from 'react';
 import { Box, Button, Stack, Typography } from '@mui/material';
 //Internal app
+import { useDebStore } from '@/store';
 import { PurpleLayout } from '@/components';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { useDebStore } from '@/store';
 
 export default function Error() {
   const { setView } = useDebStore();
