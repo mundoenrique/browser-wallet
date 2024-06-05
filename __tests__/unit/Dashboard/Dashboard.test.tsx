@@ -30,7 +30,8 @@ jest.mock('@/store', () => ({
   useUiStore: jest.fn(() => ({
     setModalError: jest.fn(),
     setLoadingScreen: jest.fn(),
-    setErrorModal: jest.fn(), setReloadFunction: jest.fn(),
+    setErrorModal: jest.fn(),
+    setReloadFunction: jest.fn(),
   })),
   useUserStore: jest.fn(() => ({
     getUserCardId: jest.fn().mockReturnValue('mockedCardId'),
@@ -96,5 +97,4 @@ describe('Dashboard', () => {
       expect(screen.getByText('Test movement')).toBeInTheDocument();
     });
   });
-
 });

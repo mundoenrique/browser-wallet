@@ -49,7 +49,7 @@ export default function Dashboard() {
     setLoadingMovements(true);
     setErrorMovements(false);
     api
-      .get(`/cards/${getUserCardId()}/transactions`, {
+      .get(`/cards/${getUserCardId}/transactions`, {
         params: {
           days: 90,
           limit: 5,
