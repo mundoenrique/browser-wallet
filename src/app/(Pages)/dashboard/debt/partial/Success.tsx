@@ -4,11 +4,16 @@ import Dollar from '@mui/icons-material/AttachMoney';
 import Clock from '@mui/icons-material/QueryBuilder';
 import { Avatar, Box, Card, Divider, Stack, Typography } from '@mui/material';
 //Internal app
+import { useDebStore } from '@/store';
 import { EsikaIsotipo } from '%/Icons';
+import { formatDate } from '@/utils/dates';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardTicket, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
 export default function Success() {
+  const setView = useDebStore((state) => state.setView);
+  const payOffDebt = useDebStore((state) => state.payOffDebt);
+
   const description = [
     {
       icon: <EsikaIsotipo sx={{ color: 'primary.main' }} />,
@@ -17,18 +22,18 @@ export default function Success() {
     },
     {
       icon: <Dollar sx={{ color: 'primary.main' }} />,
-      label: 'Por valor #12312412043',
-      description: 'S/ 200.00',
+      label: 'Por valor',
+      description: `S/ ${payOffDebt?.amount}`,
     },
     {
       icon: <Clock sx={{ color: 'primary.main' }} />,
       label: 'Fecha y hora',
-      description: 'Martes 05 Dic - 1:45 pm',
+      description: payOffDebt?.transactionDate ? formatDate(payOffDebt?.transactionDate) : '-',
     },
   ];
 
   return (
-    <PurpleLayout hidePelca bigModal left confetti>
+    <PurpleLayout hidePelca bigModal left confetti width="calc(100% - 315px)">
       <ContainerLayout>
         <Typography
           variant="h6"
@@ -49,7 +54,7 @@ export default function Success() {
               Los datos de la transacción son:
             </Typography>
             <Typography variant="body1" color="primary" textAlign="center" mb={3} fontWeight={700}>
-              123456789
+              {payOffDebt?.transactionIdentifier}
             </Typography>
             <Card sx={{ boxShadow: 'none', p: 1 }}>
               <Stack direction="column" divider={<Divider orientation="horizontal" />} spacing={1}>
@@ -69,7 +74,7 @@ export default function Success() {
           </Box>
         </CardTicket>
 
-        <Box sx={{ width: '100%', display: { xs: 'flex', md: 'none' }, justifyContent: 'center' }}>
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }} onClick={() => setView('DEBT')}>
           <Linking href="/dashboard" label="Volver al inicio" hidenArrow color="white" underline fontSize={16} />
         </Box>
       </ContainerLayout>

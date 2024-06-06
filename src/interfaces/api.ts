@@ -104,3 +104,32 @@ export interface ICardDebt {
   expirationDate?: string | null;
   clients?: number | null;
 }
+
+/**
+ * IPayOffDebt Response
+ * @typeParam currencyCode: string
+ * @typeParam amount: number
+ * @typeParam description: string
+ * @typeParam transactionDate: string
+ * @typeParam transactionIdentifier: number
+ */
+export interface IPayOffDebt {
+  currencyCode: string;
+  amount: number;
+  description: string;
+  transactionDate: string;
+  transactionIdentifier: number;
+}
+
+/**
+ * IPayOffDebtError Response
+ * @typeParam code: string
+ * @typeParam message: string
+ * @typeParam datetime: string
+ */
+export interface IPayOffDebtError {
+  code: string;
+  message: string;
+  datetime: string;
+  data?: object | null;
+}

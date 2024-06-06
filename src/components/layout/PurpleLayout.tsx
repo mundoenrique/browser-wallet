@@ -28,7 +28,7 @@ export default function PurpleLayout({
   left,
   navbar,
   confetti,
-  width = '100%',
+  width,
 }: PurpleLayoutProps): JSX.Element {
   const { title } = useNavTitleStore();
 
@@ -59,7 +59,7 @@ export default function PurpleLayout({
         position: bigModal ? 'absolute' : 'initial',
         background: `linear-gradient(180deg, ${fuchsiaBlue[500]} 0%, ${fuchsiaBlue[800]} 100%)`,
         zIndex: bigModal ? 1200 : 'initial',
-        width: width,
+        width: width ? { xs: '100%', md: width } : '100%',
         top: bigModal ? 0 : 'auto',
         '& > canvas': {
           zIndex: '0 !important',

@@ -1,8 +1,7 @@
 'use client';
-import { isBrowser } from 'react-device-detect';
+
 import io from 'socket.io-client';
 //Internal app
-
 import { QRCodeReader } from '@/components';
 import { useCallback, useEffect, useState } from 'react';
 

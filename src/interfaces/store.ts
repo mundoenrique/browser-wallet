@@ -1,3 +1,5 @@
+import { IPayOffDebt, IPayOffDebtError } from './api';
+
 /**
  * Public and private key
  *
@@ -142,7 +144,6 @@ export interface ConfigCardStore {
   toggleUpdate: () => void;
   updatePage: (_newPage: ConfigCardStore['page']) => void;
   setCardProperties: (_key: 'blockType' | 'cardType' | 'cardStatus' | 'cardInfo', _value: any) => void;
-  setCardActivationStatus: (_status: string) => void;
 }
 
 /**
@@ -254,6 +255,7 @@ export interface UserStore {
  * @typeParam countdown: () => void
  * @typeParam setTime: (value: number) => void
  * @typeParam setOTPValid: (value: string) => void
+ * @typeParam reset: ()=>void
  */
 export interface OtpStore {
   otpValid: 'OTP' | 'PASSWORD' | 'ENDING' | undefined;
@@ -267,6 +269,7 @@ export interface OtpStore {
   countdown: () => void;
   setTime: (value: number) => void;
   setOTPValid: (value: OtpStore['otpValid']) => void;
+  reset: () => void;
 }
 
 /**
@@ -279,6 +282,10 @@ export interface OtpStore {
 export interface DebtStore {
   debt: any | null;
   view: 'DEBT' | 'SUCCESS' | 'ERROR' | string | undefined;
+  payOffDebt: IPayOffDebt | null;
+  error: IPayOffDebtError | null;
   setDebt: (_data: any) => void;
   setView: (_data: string) => void;
+  setPayOffDebt: (_data: IPayOffDebt) => void;
+  setError: (_data: IPayOffDebtError) => void;
 }

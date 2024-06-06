@@ -17,6 +17,7 @@ import { OtpStore } from '@/interfaces';
  * @param countdown - Functions that run countdown
  * @param setTime - Funtion that establish init time
  * @param setOTPValid - Funtion that establish if otp is valid
+ * @param reset - Funtion that establishet countown to initial values
  */
 export const useOtpStore = create<OtpStore>()(
   persist(
@@ -49,7 +50,9 @@ export const useOtpStore = create<OtpStore>()(
         }
       },
 
-      setTime: () => set({ timeLeft: 60 }),
+      setTime: (value: number) => set({ timeLeft: value }),
+
+      reset: () => set((state) => ({ ...state, timeLeft: 60, counting: false })),
 
       setOTPValid: (value) => set({ otpValid: value }),
     }),
