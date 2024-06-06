@@ -11,6 +11,7 @@ import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardTicket, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
 export default function Success() {
+  const setView = useDebStore((state) => state.setView);
   const payOffDebt = useDebStore((state) => state.payOffDebt);
 
   const description = [
@@ -73,7 +74,7 @@ export default function Success() {
           </Box>
         </CardTicket>
 
-        <Box sx={{ width: '100%', display: { xs: 'flex', md: 'none' }, justifyContent: 'center' }}>
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }} onClick={() => setView('DEBT')}>
           <Linking href="/dashboard" label="Volver al inicio" hidenArrow color="white" underline fontSize={16} />
         </Box>
       </ContainerLayout>

@@ -5,7 +5,7 @@ import { Box, Card, Divider, List, Typography } from '@mui/material';
 //Internal app
 import card from '%/images/cardYiro.svg';
 import ItemsSidebar from './ItemsSidebar';
-import { useConfigCardStore, useUserStore } from '@/store';
+import { useConfigCardStore } from '@/store';
 import LogoPurple from '%/images/LogoPurple';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { LogoutAppIcons, LogoutIcons } from '%/Icons';
@@ -20,9 +20,7 @@ import { accessSessionStore } from '@/store/accessSessionStore';
  * In the sybar structure we find: The logo, primary menu elements (ItemsSidebar.tsx) and secondary menu elements (ItemSecondarySidebar.tsx)
  */
 export default function ListSidebar(): JSX.Element {
-  const { updatePage } = useConfigCardStore();
-
-  const isUserCardVirtual = useUserStore((state) => state.isUserCardVirtual);
+  const updatePage = useConfigCardStore((state) => state.updatePage);
 
   //Eliminar este store despues de la certificacion de inicio de sesión
   const { setAccessSession } = accessSessionStore();
@@ -42,22 +40,20 @@ export default function ListSidebar(): JSX.Element {
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', cursor: 'pointer' }}>
-        {isUserCardVirtual() && (
-          <Card
-            variant="detailCard"
-            sx={{ mt: { xs: 10, md: 'auto' }, mb: { xs: 0, md: 'auto' } }}
-            onClick={() => {
-              updatePage('requestPhysicalCard');
-            }}
-          >
-            <Box sx={{ mr: 3, display: 'flex', alignItems: 'center' }}>
-              <Image src={card} width={70} height={44} alt="Tarjeta Yiro" priority />
-            </Box>
-            <Typography fontSize="14px" fontWeight={700} mr={4}>
-              ¿Ya solicitaste tu tarjeta?
-            </Typography>
-          </Card>
-        )}
+        <Card
+          variant="detailCard"
+          sx={{ mt: { xs: 10, md: 'auto' }, mb: { xs: 0, md: 'auto' } }}
+          onClick={() => {
+            updatePage('requestPhysicalCard');
+          }}
+        >
+          <Box sx={{ mr: 3, display: 'flex', alignItems: 'center' }}>
+            <Image src={card} width={70} height={44} alt="Tarjeta Yiro" priority />
+          </Box>
+          <Typography fontSize="14px" fontWeight={700} mr={4}>
+            ¿Ya solicitaste tu tarjeta?
+          </Typography>
+        </Card>
         <ItemsSidebar />
       </Box>
 
@@ -69,7 +65,10 @@ export default function ListSidebar(): JSX.Element {
           text="Cerrar sesión"
           icon={<LogoutIcons />}
           color
-          onClick={() => setAccessSession(false)}
+          onClick={() => {
+            setAccessSession(false);
+            sessionStorage.clear();
+          }}
         />
       </List>
     </>

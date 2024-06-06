@@ -12,8 +12,8 @@ import {
   useTheme,
 } from '@mui/material';
 //Internal app
-import { useMenuStore, useDrawerStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
+import { useMenuStore, useDrawerStore, useDebStore } from '@/store';
 import { ArrowsIcons, CardIcons, CashIcons, FileIcons, GainIcons, HomeIcons, KeyIcons, ToolIcons } from '%/Icons';
 
 /**
@@ -23,8 +23,17 @@ export default function ItemsSidebar(): JSX.Element {
   const theme = useTheme();
   const match = useMediaQuery(theme.breakpoints.up('md'));
 
-  const { setDrawerStatus } = useDrawerStore();
-  const { currentItem, setCurrentItem } = useMenuStore();
+  const setView = useDebStore((state) => state.setView);
+
+  const currentItem = useMenuStore((state) => state.currentItem);
+
+  const setDrawerStatus = useDrawerStore((state) => state.setDrawerStatus);
+
+  const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
+
+  const handleResetStates = () => {
+    setView('DEBT');
+  };
 
   const itemMenu = match
     ? [
@@ -143,6 +152,7 @@ export default function ItemsSidebar(): JSX.Element {
                 href={menu.url}
                 selected={currentItemMenu}
                 sx={{ textDecoration: 'none', pl: 0 }}
+                onClick={handleResetStates}
               >
                 <ListItemIcon
                   sx={{ minWidth: 'auto', mr: 3 / 2, color: currentItemMenu ? fuchsiaBlue[600] : 'initial' }}
