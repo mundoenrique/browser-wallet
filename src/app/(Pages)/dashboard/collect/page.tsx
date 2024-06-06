@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { set, useForm } from 'react-hook-form';
+import { useCallback, useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
@@ -13,7 +13,9 @@ import wallets from '%/images/suppliers/wallets.png';
 import SuccessWallets from './partial/SuccessWallets';
 import franchises from '%/images/suppliers/franchises.png';
 import { ContainerLayout, InputText, InputTextPay } from '@/components';
-import { useMenuStore, useNavTitleStore, useClientStore } from '@/store';
+import { useMenuStore, useNavTitleStore, useClientStore, useUserStore, useCollectStore } from '@/store';
+import { api } from '@/utils/api';
+import { getRandomValues } from 'crypto';
 
 export default function Collect() {
   const [showActionBtn, setShowActionBtn] = useState<string>('');
@@ -22,8 +24,16 @@ export default function Collect() {
   const { client } = useClientStore();
   const schema = getSchema(['nameClient', 'numberClient', 'amount']);
 
+  const userId = useUserStore((state) => state.user);
+  const user = useUserStore((state) => state.user);
+  const getUserPhone = useUserStore((state) => state.getUserPhone);
+
+  const setLoad = useCollectStore((state) => state.setLoad);
+  const setLinkData = useCollectStore((state) => state.setLinkData);
+
   const {
     control,
+    getValues,
     handleSubmit,
     reset,
     setValue: setValueClient,
@@ -49,6 +59,28 @@ export default function Collect() {
     cards: <SuccessCards />,
   };
 
+  const generateLink = useCallback(() => {
+    setLoad({ name: getValues('nameClient'), phoneNumber: getValues('numberClient') });
+    const payload = {
+      firstName: user.firstName,
+      lastName: user.firstLastName,
+      phoneNumber: getUserPhone(),
+      operationCode: 'LOAD',
+      providerCode: showActionBtn === 'wallets' ? 'PAGO_EFECTIVO' : 'CYBERSOURCE',
+      currencyCode: 'PEN',
+      amount: getValues('amount'),
+    };
+    api
+      .post(`/payments/${userId}/link`, payload)
+      .then((response) => {
+        console.log('🚀 ~ generateLink ~ response:', response);
+        setLinkData(response.data.data);
+      })
+      .catch((error) => {
+        console.log('🚀 ~ generateLink ~ error:', error);
+      });
+  }, [setLoad, getValues, user.firstName, user.firstLastName, getUserPhone, showActionBtn, userId, setLinkData]);
+
   const onSubmit = async (data: any, e: any) => {
     e.preventDefault();
 
@@ -59,7 +91,7 @@ export default function Collect() {
     if (e.nativeEvent.submitter.id === 'cards') {
       setShowActionBtn('cards');
     }
-
+    generateLink();
     reset();
   };
 

@@ -289,3 +289,24 @@ export interface DebtStore {
   setPayOffDebt: (_data: IPayOffDebt) => void;
   setError: (_data: IPayOffDebtError) => void;
 }
+
+export interface ILoad {
+  name: string | null;
+  phoneNumber: string | null;
+}
+
+export interface ILinkData {
+  uuid: string | null;
+  providerPaymentCode: string | null;
+  amount: number | null;
+  expirationDate: string | null;
+  currencyCode: string | null;
+  url: string | null;
+}
+
+export interface ICollectStore {
+  load: ILoad | null;
+  linkData: ILinkData | null;
+  setLoad: (_data: ILoad) => void;
+  setLinkData: (_data: ILinkData) => void;
+}
