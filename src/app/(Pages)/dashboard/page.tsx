@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   const setModalError = useUiStore((state) => state.setModalError);
 
-  const getUserCardId = useUserStore((state) => state.getUserCardId);
+  const { getUserCardId } = useUserStore();
 
   const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
 
@@ -49,7 +49,7 @@ export default function Dashboard() {
     setLoadingMovements(true);
     setErrorMovements(false);
     api
-      .get(`/cards/${getUserCardId}/transactions`, {
+      .get(`/cards/${getUserCardId()}/transactions`, {
         params: {
           days: 90,
           limit: 5,
