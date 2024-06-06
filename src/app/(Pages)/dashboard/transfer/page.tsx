@@ -63,7 +63,7 @@ export default function Transfer() {
       .then((responses: any) => {
         const [responseReceiver, responseBalance] = responses;
 
-        const balance = responseBalance?.value.data?.data?.balance || 0;
+        const balance = responseBalance?.value?.data?.data?.availableBalance || 0;
 
         const amountCheck = data.amount < balance;
 
