@@ -128,7 +128,7 @@ export default function Transfer() {
     };
 
     api
-      .post(`/cards/${senderCardId()}/sendmoney`, payload)
+      .post(`/cards/sendmoney`, payload)
       .then((response) => {
         const {
           data: { transactionIdentifier },
