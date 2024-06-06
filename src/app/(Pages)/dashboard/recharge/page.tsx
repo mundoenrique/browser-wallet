@@ -43,7 +43,12 @@ export default function Recharge() {
           Generar recarga
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-          <InputTextPay name="amount" control={control} label="¿Cuánto deseas recargar?" />
+          <InputTextPay
+            name="amount"
+            control={control}
+            label="¿Cuánto deseas recargar?"
+            onChange={(e) => console.log('onChange', e)}
+          />
           <Button variant="contained" type="submit" fullWidth>
             Recargar
           </Button>

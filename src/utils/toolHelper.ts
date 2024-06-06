@@ -142,3 +142,12 @@ export const formatTime = (seconds: number) => {
   const remainingSeconds = seconds % 60;
   return `${minutes}:${remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}`;
 };
+
+/**
+ * Format amount
+ * @param amount
+ * @returns
+ */
+export const formatAmount = (amount: string) => {
+  return parseFloat(amount).toFixed(2);
+};

@@ -7,7 +7,7 @@ import { Box, Button, Card, Stack, Typography } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
-import { encryptForge } from '@/utils/toolHelper';
+import { encryptForge, formatAmount } from '@/utils/toolHelper';
 import ModalOtp from '@/components/modal/ModalOtp';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { ContainerLayout, InputTextPay, Linking } from '@/components';
@@ -48,7 +48,7 @@ export default function Debt() {
       setLoadingScreen(true);
       const payload = {
         currencyCode: debt.currencyCode,
-        amount: getValues('amount'),
+        amount: formatAmount(getValues('amount')),
         debt: debt.amount,
       };
       api
@@ -58,6 +58,7 @@ export default function Debt() {
           setView('SUCCESS');
         })
         .catch((e) => {
+          console.log('🚀 ~ e:', e);
           setError(e.response.data.data);
           setView('ERROR');
         })

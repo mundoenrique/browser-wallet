@@ -46,8 +46,8 @@ function InputTextPay(props: TextFieldProps): JSX.Element {
       } else {
         const formattedValue = formatToDecimals(value);
         setInternalValue(formattedValue);
-        onChange && onChange({ target: { value: formattedValue } });
       }
+      onChange && onChange(value);
     }, 500),
     [onChange]
   );
@@ -117,7 +117,6 @@ function InputTextPay(props: TextFieldProps): JSX.Element {
  */
 export default function InputText(props: TextFieldProps) {
   const { name, control, onChange, ...restProps } = props;
-
   return (
     <>
       {control ? (
