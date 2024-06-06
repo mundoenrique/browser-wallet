@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   const setModalError = useUiStore((state) => state.setModalError);
 
-  const getUserCardId = useUserStore((state) => state.getUserCardId);
+  const { getUserCardId } = useUserStore();
 
   const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
 
