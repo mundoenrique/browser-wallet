@@ -54,9 +54,8 @@ export default function Debt() {
       api
         .post(`/payments/${userId}/payoff`, payload)
         .then((response) => {
-          if (response.data.code === '200.00.000') {
-            setPayOffDebt(response.data.data);
-          }
+          setPayOffDebt(response.data.data);
+          setView('SUCCESS');
         })
         .catch((e) => {
           setError(e.response.data.data);
