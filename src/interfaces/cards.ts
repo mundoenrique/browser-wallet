@@ -90,7 +90,7 @@ export interface TransferDetail {
   amount: string;
   receiver: string;
   date: string;
-  code: string;
+  transactionCode: string;
 }
 
 /**

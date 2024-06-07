@@ -9,10 +9,10 @@ import { Box, Button, Typography } from '@mui/material';
 import { GroupIcon } from '%/Icons';
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
-import { encryptForge } from '@/utils/toolHelper';
+import { encryptForge, decryptForge } from '@/utils/toolHelper';
 import Success from './partial/Success';
 import { useMenuStore, useNavTitleStore, useUiStore, useUserStore, useOtpStore } from '@/store';
-import { ContainerLayout, InputText, InputTextPay, ModalResponsive, ModalOtp } from '@/components';
+import { ContainerLayout, InputText, InputTextPay, ModalOtp } from '@/components';
 import { TransferDetail } from '@/interfaces';
 
 export default function Transfer() {
@@ -28,7 +28,12 @@ export default function Transfer() {
 
   const { userId } = useUserStore((state) => state.user);
 
-  const [transferInfo, setTransferInfo] = useState<TransferDetail>({ receiver: '', amount: '', date: '', code: '' });
+  const [transferInfo, setTransferInfo] = useState<TransferDetail>({
+    receiver: '',
+    amount: '',
+    date: '',
+    transactionCode: '',
+  });
 
   const [receiverCardId, setReceiverCardId] = useState<string>('');
 
@@ -42,7 +47,13 @@ export default function Transfer() {
 
   const resetOtp = useOtpStore((state) => state.reset);
 
-  const { control, handleSubmit, reset, getValues, setError } = useForm({
+  const {
+    control,
+    handleSubmit,
+    reset: resetForm,
+    getValues,
+    setError,
+  } = useForm({
     defaultValues: { numberClient: '', amount: '' },
     resolver: yupResolver(schema),
   });
@@ -60,6 +71,7 @@ export default function Transfer() {
     const validateBalance = api.get(`/cards/${senderCardId()}/balance`);
 
     Promise.allSettled([validateReceiver, validateBalance])
+
       .then((responses: any) => {
         const [responseReceiver, responseBalance] = responses;
 
@@ -80,10 +92,10 @@ export default function Transfer() {
             setTransferInfo((prevState) => ({
               ...prevState,
               receiver: `${firstName} ${firstLastName}`,
-              amount: data.amount,
+              amount: parseFloat(data.amount).toFixed(2),
             }));
 
-            setReceiverCardId(cardId);
+            setReceiverCardId(decryptForge(cardId));
 
             setOpenModalOtp(true);
           }
@@ -114,8 +126,8 @@ export default function Transfer() {
   };
 
   const handleConfirmation = async () => {
-    setLoadingScreen(true);
-    const dataForm = getValues();
+    setLoadingScreen(true, { message: 'Comprobando transferencia' });
+    const { amount }: { amount: string } = getValues();
 
     const payload = {
       sender: {
@@ -124,28 +136,35 @@ export default function Transfer() {
       receiver: {
         cardId: receiverCardId,
       },
-      amount: dataForm.amount,
+      amount: parseFloat(amount).toFixed(2),
+      source: 'Web transfer',
+      externalId: '0-web-transfer',
     };
 
+    console.log(payload);
     api
       .post(`/cards/sendmoney`, payload)
       .then((response) => {
         const {
-          data: { transactionIdentifier },
-          dateTime,
-        } = response.data;
+          data: {
+            data: {
+              data: { authCode },
+            },
+            dateTime,
+          },
+        } = response;
         setOpenRc(true);
+
         setTransferInfo((prevState) => ({
           ...prevState,
-          transactionId: transactionIdentifier,
-          date: dayjs(dateTime).locale('es').format('dddd DD MMM - h:m a'),
+          transactionCode: authCode,
+          date: dayjs(dateTime).locale('es').format('dddd DD MMM - h:mm a'),
         }));
       })
       .catch((e) => {
         setModalError({ error: e });
       })
       .finally(() => {
-        reset();
         setLoadingScreen(false);
       });
   };
@@ -156,7 +175,7 @@ export default function Transfer() {
       const { otp } = data;
 
       const payload = {
-        otpProcessCode: 'SEE_CARD_NUMBER',
+        otpProcessCode: 'TRANSFER_P2P_OTP',
         otpUuId: otpUuid,
         otpCode: encryptForge(otp),
       };
@@ -173,12 +192,9 @@ export default function Transfer() {
         .catch((e) => {
           setModalError({ error: e });
           setLoadingScreen(false);
-        })
-        .finally(() => {
-          setLoadingScreen(false);
         });
     },
-    [otpUuid] //eslint-disable-line
+    [otpUuid, receiverCardId] //eslint-disable-line react-hooks/exhaustive-deps
   );
 
   return (
@@ -207,7 +223,15 @@ export default function Transfer() {
         </Box>
       </ContainerLayout>
 
-      {openRc && <Success onClick={() => setOpenRc(false)} transferDetail={transferInfo} />}
+      {openRc && (
+        <Success
+          onClick={() => {
+            setOpenRc(false);
+            resetForm();
+          }}
+          transferDetail={transferInfo}
+        />
+      )}
 
       {
         <ModalOtp
@@ -216,7 +240,7 @@ export default function Transfer() {
             setOpenModalOtp(false);
           }}
           onSubmit={onSubmitOtp}
-          processCode="SEE_CARD_NUMBER"
+          processCode="TRANSFER_P2P_OTP"
         />
       }
     </>

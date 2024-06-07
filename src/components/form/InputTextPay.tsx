@@ -2,7 +2,7 @@
 
 import { debounce } from 'lodash';
 import { Controller } from 'react-hook-form';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Info from '@mui/icons-material/InfoOutlined';
 import {
   Avatar,
@@ -51,6 +51,10 @@ function InputTextPay(props: TextFieldProps): JSX.Element {
     }, 500),
     [onChange]
   );
+
+  useEffect(() => {
+    !value && setInternalValue('');
+  }, [value]);
 
   return (
     <>

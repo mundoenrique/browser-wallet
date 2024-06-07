@@ -62,6 +62,7 @@ export const handleShare = async (element: HTMLElement, shareData: any, backgrou
       removeContainer: false,
       allowTaint: true,
       backgroundColor: backgroundColor,
+      scale: 1.5,
     });
     if (webShareSupported) {
       const blob: Blob = await new Promise((resolve: any) => canvas.toBlob(resolve, 'image/png'));

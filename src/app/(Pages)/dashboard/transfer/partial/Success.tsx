@@ -7,11 +7,12 @@ import { Avatar, Box, Card, Divider, Stack, Typography } from '@mui/material';
 import { CardTicketProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardTicket, ContainerLayout, Linking, PurpleLayout } from '@/components';
+import { stringAvatar } from '@/utils/toolHelper';
 
 export default function Success({ onClick, transferDetail }: CardTicketProps) {
   const description = [
     {
-      icon: 'SM',
+      icon: stringAvatar(transferDetail?.receiver ?? '').children,
       label: 'Nombre de quien recibe:',
       description: transferDetail?.receiver,
     },
@@ -46,7 +47,7 @@ export default function Success({ onClick, transferDetail }: CardTicketProps) {
               Número de la transacción:
             </Typography>
             <Typography variant="body1" color="primary" textAlign="center" mb={3} fontWeight={700}>
-              {transferDetail?.code}
+              {transferDetail?.transactionCode}
             </Typography>
             <Card sx={{ boxShadow: 'none', p: 1 }}>
               <Stack direction="column" divider={<Divider orientation="horizontal" />} spacing={1}>
