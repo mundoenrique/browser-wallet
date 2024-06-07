@@ -10,6 +10,7 @@ export default async function UserPage({ params }: any) {
   const { user } = params;
 
   const referer = headersList.get('referer');
+  const host = headersList.get('host');
 
   const userData = await redis.get(`${user}`);
   redis.del(`${user}`);
@@ -17,5 +18,5 @@ export default async function UserPage({ params }: any) {
 
   if (!userData) return <NotFoundError code={404} />;
 
-  return <DataUser user={userData} referer={referer} />;
+  return <DataUser user={userData} referer={referer} host={host} />;
 }

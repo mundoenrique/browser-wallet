@@ -18,4 +18,5 @@ export interface StepperProps {
 export type DataUserProps = {
   user: string;
   referer: string | null;
+  host: string | null;
 };

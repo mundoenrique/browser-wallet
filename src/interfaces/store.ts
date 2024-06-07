@@ -289,3 +289,10 @@ export interface DebtStore {
   setPayOffDebt: (_data: IPayOffDebt) => void;
   setError: (_data: IPayOffDebtError) => void;
 }
+
+export interface HeadersStore {
+  backLink: string;
+  setBackLink: (_data: any) => void;
+  host: string | null;
+  setHost: (_data: any) => void;
+}

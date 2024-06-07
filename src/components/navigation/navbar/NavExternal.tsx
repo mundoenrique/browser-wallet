@@ -3,7 +3,7 @@
 import { Box } from '@mui/material';
 //Internal app
 import Linking from '../Linking';
-import { backLinkStore } from '@/store';
+import { useHeadersStore } from '@/store';
 import LogoPurple from '%/images/LogoPurple';
 import { MuiNavExternalProps } from '@/interfaces';
 
@@ -15,7 +15,7 @@ import { MuiNavExternalProps } from '@/interfaces';
  * @param closeApp - Confirm if the link to exit the application is displayed.
  */
 export default function NavExternal({ image, color, closeApp }: MuiNavExternalProps): JSX.Element {
-  const { backLink } = backLinkStore();
+  const { backLink } = useHeadersStore();
 
   return (
     <Box
