@@ -5,9 +5,9 @@ import Clock from '@mui/icons-material/QueryBuilder';
 import { Avatar, Box, Card, Divider, Stack, Typography } from '@mui/material';
 //Internal app
 import { CardTicketProps } from '@/interfaces';
+import { stringAvatar } from '@/utils/toolHelper';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardTicket, ContainerLayout, Linking, PurpleLayout } from '@/components';
-import { stringAvatar } from '@/utils/toolHelper';
 
 export default function Success({ onClick, transferDetail }: CardTicketProps) {
   const description = [

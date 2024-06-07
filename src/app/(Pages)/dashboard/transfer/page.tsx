@@ -1,32 +1,43 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { useCallback, useEffect, useState } from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
 //Internal app
-import { GroupIcon } from '%/Icons';
 import { api } from '@/utils/api';
+import { GroupIcon } from '%/Icons';
 import { getSchema } from '@/config';
-import { encryptForge, decryptForge } from '@/utils/toolHelper';
 import Success from './partial/Success';
-import { useMenuStore, useNavTitleStore, useUiStore, useUserStore, useOtpStore } from '@/store';
-import { ContainerLayout, InputText, InputTextPay, ModalOtp } from '@/components';
 import { TransferDetail } from '@/interfaces';
+import ModalOtp from '@/components/modal/ModalOtp';
+import { encryptForge, decryptForge } from '@/utils/toolHelper';
+import { ContainerLayout, InputText, InputTextPay } from '@/components';
+import { useMenuStore, useNavTitleStore, useUiStore, useUserStore, useOtpStore } from '@/store';
 
 export default function Transfer() {
-  const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
+  const resetOtp = useOtpStore((state) => state.reset);
 
-  const updateTitle = useNavTitleStore((state) => state.updateTitle);
+  const otpUuid = useOtpStore((state) => state.otpUuid);
 
-  const [openRc, setOpenRc] = useState<boolean>(false);
+  const { userId } = useUserStore((state) => state.user);
 
-  const [openModalOtp, setOpenModalOtp] = useState<boolean>(false);
+  const setModalError = useUiStore((state) => state.setModalError);
 
   const senderCardId = useUserStore((state) => state.getUserCardId);
 
-  const { userId } = useUserStore((state) => state.user);
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
+
+  const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
+  const [openRc, setOpenRc] = useState<boolean>(false);
+
+  const [receiverCardId, setReceiverCardId] = useState<string>('');
+
+  const [openModalOtp, setOpenModalOtp] = useState<boolean>(false);
 
   const [transferInfo, setTransferInfo] = useState<TransferDetail>({
     receiver: '',
@@ -35,17 +46,7 @@ export default function Transfer() {
     transactionCode: '',
   });
 
-  const [receiverCardId, setReceiverCardId] = useState<string>('');
-
   const schema = getSchema(['numberClient', 'amount']);
-
-  const setModalError = useUiStore((state) => state.setModalError);
-
-  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
-
-  const otpUuid = useOtpStore((state) => state.otpUuid);
-
-  const resetOtp = useOtpStore((state) => state.reset);
 
   const {
     control,
