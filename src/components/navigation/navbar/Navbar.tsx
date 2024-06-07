@@ -7,7 +7,7 @@ import { AppBar, IconButton, Toolbar, Typography, Box } from '@mui/material';
 import Linking from '../Linking';
 import { NavbarProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { backLinkStore, useNavTitleStore } from '@/store';
+import { useHeadersStore, useNavTitleStore } from '@/store';
 
 /**
  * Top bar used in responsive to show menu and titles.
@@ -21,7 +21,7 @@ export default function Navbar(props: NavbarProps): JSX.Element {
   const { onClick } = props;
 
   const { title } = useNavTitleStore();
-  const { backLink } = backLinkStore();
+  const { backLink } = useHeadersStore();
 
   const pathname = usePathname();
   const dashboardNav = pathname === '/dashboard';
