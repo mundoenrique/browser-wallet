@@ -53,7 +53,8 @@ export type SessionStoreProps = {
  */
 export interface UiStore {
   loadingScreen: boolean;
-  setLoadingScreen: (status: boolean) => void;
+  setLoadingScreen: (status: boolean, value?: object) => void;
+  loadingScreenOptions: { [key: string]: any };
   showModalError: boolean;
   setModalError: (value?: ErrorMessage | ErrorContext | null) => void;
   modalErrorObject: ErrorMessage | ErrorContext | null;
