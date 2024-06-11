@@ -104,21 +104,21 @@ export default function Transfer() {
           if (responseReceiver.reason.response.data?.data?.code === '400.00.033') {
             setError('numberClient', { type: 'customError', message: 'Este número no tiene Yiro' });
           } else {
-            setModalError({ error: responseReceiver });
+            setModalError({ error: responseReceiver.reason });
           }
 
           if (!amountCheck) {
             setError('amount', { type: 'customError', message: 'Saldo insuficiente' });
           }
         } else if (responseReceiver.status === 'fulfilled' && responseBalance.status === 'rejected') {
-          setModalError({ error: responseBalance });
+          setModalError({ error: responseBalance.reason });
         } else if (responseReceiver.status === 'rejected' && responseBalance.status === 'rejected') {
           if (responseReceiver.reason.response.data?.data?.code === '400.00.033') {
             setError('numberClient', { type: 'customError', message: 'Este número no tiene Yiro' });
           } else {
-            setModalError({ error: responseReceiver.reason.response.data?.data?.code });
+            setModalError({ error: responseReceiver.reason });
           }
-          setModalError({ error: responseBalance.reason.response.data?.data?.code });
+          setModalError({ error: responseBalance.reason });
         }
       })
       .finally(() => {
@@ -142,7 +142,6 @@ export default function Transfer() {
       externalId: '0-web-transfer',
     };
 
-    console.log(payload);
     api
       .post(`/cards/sendmoney`, payload)
       .then((response) => {
@@ -234,7 +233,7 @@ export default function Transfer() {
         />
       )}
 
-      {
+      {openModalOtp && (
         <ModalOtp
           open={openModalOtp}
           handleClose={() => {
@@ -243,7 +242,7 @@ export default function Transfer() {
           onSubmit={onSubmitOtp}
           processCode="TRANSFER_P2P_OTP"
         />
-      }
+      )}
     </>
   );
 }
