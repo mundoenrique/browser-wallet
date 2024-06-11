@@ -30,7 +30,7 @@ export default function HydrationProvider({ children }: ChildrenProps): JSX.Elem
     <Container>
       {children}
       <Typography variant="caption" sx={{ opacity: '0.5', position: 'fixed', bottom: 10, right: 10, color: 'white' }}>
-        V0.10.3
+        V0.11.3
       </Typography>
     </Container>
   );
