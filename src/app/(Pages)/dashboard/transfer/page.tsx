@@ -78,7 +78,7 @@ export default function Transfer() {
 
         const balance = responseBalance?.value?.data?.data?.availableBalance || 0;
 
-        const amountCheck = data.amount < balance;
+        const amountCheck = parseFloat(data.amount) < parseFloat(balance);
 
         if (responseReceiver.status === 'fulfilled' && responseBalance.status === 'fulfilled') {
           if (!amountCheck) {
@@ -93,7 +93,7 @@ export default function Transfer() {
             setTransferInfo((prevState) => ({
               ...prevState,
               receiver: `${firstName} ${firstLastName}`,
-              amount: parseFloat(data.amount).toFixed(2),
+              amount: data.amount,
             }));
 
             setReceiverCardId(decryptForge(cardId));
@@ -137,7 +137,7 @@ export default function Transfer() {
       receiver: {
         cardId: receiverCardId,
       },
-      amount: parseFloat(amount).toFixed(2),
+      amount: amount,
       source: 'Web transfer',
       externalId: '0-web-transfer',
     };
