@@ -7,7 +7,7 @@ import { useEffect, useCallback, useState } from 'react';
 import { api } from '@/utils/api';
 import LogoGreen from '%/images/LogoGreen';
 import { DataUserProps } from '@/interfaces';
-import { useJwtStore, useRegisterStore, useUiStore } from '@/store';
+import { useRegisterStore, useJwtStore,  useUiStore } from '@/store';
 import { PurpleLayout, NotFoundError } from '@/components';
 import { setDataRedis } from '@/utils/toolHelper';
 
@@ -31,10 +31,11 @@ const phaseToStep = (phase: string) => {
 
 export default function DataUser({ user }: DataUserProps) {
   const userObject = JSON.parse(user);
+  // const customApi = useApi();
   const [userValidation, setUserValidation] = useState<any>(null);
   const updateFormState = useRegisterStore((state) => state.updateFormState);
   const updateStep = useRegisterStore((state) => state.updateStep);
-  const sessionId = useJwtStore((state) => state.sessionId);
+  const sessionId = useJwtStore((state) => state.token);
 
   const { replace } = useRouter();
   const { setModalError } = useUiStore();
@@ -90,7 +91,7 @@ export default function DataUser({ user }: DataUserProps) {
           })
           .then(async (response) => {
             setUserValidation(response.data);
-            await setDataRedis({uuid:`session:${sessionId}`, dataRedis:{ accesApp:'true' }})
+            await setDataRedis('PUT', {uuid:null, dataRedis:{ accesApp:'true' }})
           })
           .catch(() => {
             setModalError();
