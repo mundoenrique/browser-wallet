@@ -1,35 +1,27 @@
-import { create } from 'zustand';
-import { createJSONStorage, devtools, persist } from 'zustand/middleware';
-//Internal app
+import { type StateCreator, create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
+import { useWeddingBoundStore } from './wedding';
+import { redisStorage } from '@/store/storages/redis.store';
 import { JwtStoreProps } from '@/interfaces/store';
 
-/**
- * Store for JWT
- *
- * @param token - Initial state {@defaultValue `null`}
- * @param setToken - Function that sets the new value
- *
- * @remarks This state persists in sessionStorage
- */
+
+const storeAPi: StateCreator<JwtStoreProps, [['zustand/devtools', never]]> = (set) => ({
+  token: null,
+
+  setToken: (token) => set({ token })
+});
+
 export const useJwtStore = create<JwtStoreProps>()(
   devtools(
-    persist(
-      (set) => ({
-        /**
-         * Current token
-         */
-        token: null,
-        sessionId: null,
-        /**
-         * Replaces the current token
-         */
-        setToken: (token) => set({ token }),
-        setSessionId: (sessionId) => set({ sessionId }),
-      }),
-      {
-        name: 'jwt-store',
-        storage: createJSONStorage(() => sessionStorage),
-      }
-    )
+    persist(storeAPi, {
+      name: 'jwt-storage',
+      storage: redisStorage,
+    })
   )
 );
+
+useJwtStore.subscribe((nextState /*prevState*/) => {
+  const { token } = nextState;
+
+  useWeddingBoundStore.getState().setToken(token);
+});

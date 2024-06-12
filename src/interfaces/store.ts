@@ -32,9 +32,7 @@ export type KeyStoreProps = {
  */
 export type JwtStoreProps = {
   token: string | null;
-  sessionId: string | null;
-  setToken: (_token: string) => void;
-  setSessionId: (_sessionId: string) => void;
+  setToken: (_token: string | null) => void;
 };
 
 /**
