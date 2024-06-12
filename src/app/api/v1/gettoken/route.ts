@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   try {
 
     const uuid = uuid4();
-    await postRedis(`session:${uuid}`, { uuid })
+    await postRedis(`session:${uuid}`, { login: 'false' })
 
     const encryptedBody = await request.json();
     const { data } = encryptedBody;
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
 
     const decryptedPayload = await decryptJWE(data, jwePrivateKey);
 
-    const { jwePublicKey, jwsPublicKey } = decryptedPayload as { jwePublicKey: string; jwsPublicKey: string };
+    const { jwePublicKey, jwsPublicKey, isBrowser } = decryptedPayload as { jwePublicKey: string; jwsPublicKey: string, isBrowser: boolean; };
 
     const token = await signJWT(jwsPrivateKey, { jwePublicKey, jwsPublicKey, uuid });
 
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
 
     let response: NextResponse;
 
-    response = await handleResponse(responsePayload, jwePublicKey, jwsPrivateKey);
+    response = await handleResponse(responsePayload, jwePublicKey, jwsPrivateKey, 200, isBrowser);
 
     return response;
   } catch (error) {
