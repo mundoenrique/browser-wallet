@@ -5,6 +5,8 @@ import { Avatar, Box, Button, Typography, useTheme, useMediaQuery } from '@mui/m
 //Internal app
 import { FilterIcons } from '%/Icons';
 import Filters from './partial/filters';
+import { api } from '@/utils/api';
+import { useUserStore } from '@/store';
 import ClientList from './partial/listClients';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { useMenuStore, useNavTitleStore } from '@/store';
@@ -43,6 +45,8 @@ export default function Clients() {
   const theme = useTheme();
   const match = useMediaQuery(theme.breakpoints.up('md'));
 
+  const user = useUserStore((state) => state.user);
+
   const { setCurrentItem } = useMenuStore();
   const { updateTitle } = useNavTitleStore();
 
@@ -62,6 +66,8 @@ export default function Clients() {
 
   const filterActive = currentView === ENUM_VIEW.FILTERS;
   const disabledBtnDelete = '3';
+
+  const initialized = useRef<boolean>(false);
 
   const reset = () => {
     setCurrentPage(1);
@@ -101,13 +107,29 @@ export default function Clients() {
   }, [setCurrentPage, isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
 
   const getClientAPI = async () => {
-    const response = await fetch(
-      `./clients/api?limit=10&currentPage=${currentPage}&month=${month.value}&status=${paymentStatusCode}`
-    );
-    const data: any = await response.json();
-    const newData: never[] | any = data.data;
-    setClientsData(newData);
-    setLastPage(data.metadata.LastPage);
+    api
+      .get(`/payments/${user.userId}/chargelist`, {
+        params: { days: 90, limit: 20, page: currentPage },
+      })
+      .then((response) => {
+        const {
+          data: { data, metadata },
+        } = response;
+        if (data) {
+          setClientsData((state: any) => [...state, ...data]);
+          setLastPage(metadata.lastPage);
+        }
+      })
+      .catch(() => {
+        /*
+
+      setIsError(true);
+      setErrorModal(true);
+      */
+      })
+      .finally(() => {
+        setIsloading(false);
+      });
   };
 
   useEffect(() => {
@@ -118,17 +140,12 @@ export default function Clients() {
   }, [scrollHandle]);
 
   useEffect(() => {
-    (async () => {
-      setIsloading(true);
-      const response = await fetch(
-        `./clients/api?limit=10&currentPage=${currentPage}&month=${month.value}&status=${paymentStatusCode}`
-      );
-      const data: any = await response.json();
-      const newData: never[] | any = [...clientsData, ...data.data];
-      setClientsData(newData);
-      setLastPage(data.metadata.LastPage);
-      setIsloading(false);
-    })();
+    if (!initialized.current) {
+      getClientAPI();
+      initialized.current = true;
+    } else {
+      initialized.current = false;
+    }
   }, [currentPage]); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {

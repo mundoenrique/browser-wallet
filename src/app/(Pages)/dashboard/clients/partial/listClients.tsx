@@ -98,7 +98,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
                 height: 28,
                 width: 28,
               }}
-              {...stringAvatar(client.name)}
+              {...stringAvatar(client.fullname)}
             />
           </Box>
           <Box
@@ -116,17 +116,17 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
                 variant="subtitle2"
                 sx={{ maxWidth: 140, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
               >
-                {client.name}
+                {client.fullname}
               </Typography>
               <Typography fontSize={10} lineHeight="16px">
                 {dayjs(client.date).format('MMMM D, h:mm a')}
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-              <Typography variant="subtitle2" color={client.status === 'Vencido' ? '#EE2737' : slate[700]}>
+              <Typography variant="subtitle2" color={client.status === 'PENDING' ? '#EE2737' : slate[700]}>
                 S/ {client.amount}
               </Typography>
-              <Typography fontSize={10} lineHeight="16px" color={client.status === 'Vencido' ? '#EE2737' : slate[700]}>
+              <Typography fontSize={10} lineHeight="16px" color={client.status === 'PENDING' ? '#EE2737' : slate[700]}>
                 {client.status}
               </Typography>
             </Box>
