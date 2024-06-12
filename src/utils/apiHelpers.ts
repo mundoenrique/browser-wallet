@@ -124,14 +124,25 @@ export async function handleResponse(
   responseObj: any,
   jweAppPublicKey: string,
   jwsApiPrivateKey: string,
-  status: number = 200
+  status: number = 200,
+  isBrowser: boolean = false,
 ): Promise<NextResponse> {
   try {
+    let cookieSet:any = ''
     const jwe: string = await encryptJWE(responseObj, jweAppPublicKey);
     const encryptedResponse = { data: jwe };
     const jws: string = await signJWE(jwsApiPrivateKey, jwe);
 
-    const response = NextResponse.json(encryptedResponse, { status });
+    if (isBrowser) {
+      cookieSet = `sessionId=${responseObj.data.sessionId}; HttpOnly=true; Path=/; Secure=true; SameSite=true`
+    }
+
+    const response = NextResponse.json(encryptedResponse, {
+      status,
+      headers: {
+      'Set-Cookie': cookieSet,
+      },
+    });
     response.headers.set(JWS_HEADER, `JWS ${jws}`);
     response.headers.set(SESSION_ID, `${responseObj.data.sessionId}`);
 
