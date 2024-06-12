@@ -6,6 +6,7 @@ import { StepperProps } from '@/interfaces';
 
 export default function CardStep(props: StepperProps) {
   const { children, stepNumber } = props;
+
   const theme = useTheme();
 
   return (

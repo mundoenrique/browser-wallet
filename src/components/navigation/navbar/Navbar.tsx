@@ -6,8 +6,8 @@ import { AppBar, IconButton, Toolbar, Typography, Box } from '@mui/material';
 //Internal app
 import Linking from '../Linking';
 import { NavbarProps } from '@/interfaces';
-import { useNavTitleStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
+import { useHeadersStore, useNavTitleStore } from '@/store';
 
 /**
  * Top bar used in responsive to show menu and titles.
@@ -19,9 +19,12 @@ import { fuchsiaBlue } from '@/theme/theme-default';
  */
 export default function Navbar(props: NavbarProps): JSX.Element {
   const { onClick } = props;
+
+  const { title } = useNavTitleStore();
+  const { backLink } = useHeadersStore();
+
   const pathname = usePathname();
   const dashboardNav = pathname === '/dashboard';
-  const { title } = useNavTitleStore();
 
   return (
     <AppBar
@@ -45,7 +48,7 @@ export default function Navbar(props: NavbarProps): JSX.Element {
         </IconButton>
 
         {dashboardNav ? (
-          <Linking href="#" label="Volver a ésika Conmigo" mb={0} adormentEnd />
+          <Linking href={backLink} label="Volver a ésika Conmigo" mb={0} adormentEnd />
         ) : (
           <>
             <Typography variant="subtitle1" color="primary.main">

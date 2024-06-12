@@ -4,34 +4,30 @@ import { useForm } from 'react-hook-form';
 import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 //Internal app
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
-import { useApi } from '@/hooks/useApi';
 import { AuthOtpFormProps } from '@/interfaces';
 import InputOTP from '@/components/form/InputOTP';
-import { encryptForge } from '@/utils/toolHelper';
 import { useOtpStore, useUiStore, useUserStore } from '@/store';
+import { encryptForge, handleMaskOtp } from '@/utils/toolHelper';
 
 export default function AuthOtp(props: AuthOtpFormProps) {
-  const customApi = useApi();
-
-  const schema = getSchema(['otp']);
-
   const { handleResendOTP } = props;
 
-  const setOTPValid = useOtpStore((state) => state.setOTPValid);
-
   const otpUuid = useOtpStore((state) => state.otpUuid);
+  const { userId } = useUserStore((state) => state.user);
+  const { setLoadingScreen, setModalError } = useUiStore();
+  const setOTPValid = useOtpStore((state) => state.setOTPValid);
+  const getUserPhone = useUserStore((state) => state.getUserPhone);
+
+  const schema = getSchema(['otp']);
+  const phoneNumber: string = getUserPhone();
 
   const handleReset = () => {
     handleResendOTP();
     reset();
   };
 
-  const { setLoadingScreen, setModalError } = useUiStore();
-  const { userId } = useUserStore((state) => state.user);
-  const getUserPhone = useUserStore((state) => state.getUserPhone);
-
-  const phoneNumber: string = getUserPhone();
   const { control, handleSubmit, reset } = useForm({
     defaultValues: { otp: '' },
     resolver: yupResolver(schema),
@@ -45,7 +41,8 @@ export default function AuthOtp(props: AuthOtpFormProps) {
       otpUuId: otpUuid,
       otpCode: encryptForge(otp),
     };
-    customApi
+
+    api
       .post(`/users/${userId}/validate/tfa`, payload)
       .then((response) => {
         const { status } = response;
@@ -79,7 +76,9 @@ export default function AuthOtp(props: AuthOtpFormProps) {
           control={control}
           length={4}
           title="Recupera tu contraseña"
-          text={`Hemos enviado por tu seguridad un código SMS a tu celular ${phoneNumber}. Ingrésalo aquí.`}
+          text={`Hemos enviado por tu seguridad un código SMS a tu celular +51 *** *** ${handleMaskOtp(
+            phoneNumber
+          )}. Ingrésalo aquí.`}
           handleResendOTP={handleReset}
         />
       </Box>

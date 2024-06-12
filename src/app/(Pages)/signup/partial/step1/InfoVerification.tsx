@@ -1,34 +1,33 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import Info from '@mui/icons-material/InfoOutlined';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ErrorMessage } from '@hookform/error-message';
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Card, Chip, Divider, FormHelperText, Typography, useTheme } from '@mui/material';
 //internal app
 import { CardStep } from '..';
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
-import { useApi } from '@/hooks/useApi';
-import Info from '@mui/icons-material/InfoOutlined';
+import { handleMaskOtp } from '@/utils/toolHelper';
 import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 import { InputCheck, InputText, ModalResponsive, InputSelect, Terms } from '@/components';
 
 export default function InfoVerification() {
-  const customApi = useApi();
-  const [editEmail, setEditEmail] = useState<boolean>(false);
-  const [editPhoneNumber, setEditPhoneNumber] = useState<boolean>(false);
-  const [openTerms, setOpenTerms] = useState<boolean>(false);
+  const theme = useTheme();
 
-  const schema = getSchema(['email', 'terms', 'countryCode', 'phoneNumber']);
+  const { setLoadingScreen, loadingScreen, setModalError } = useUiStore();
+  const { updateCatalog, countriesCatalog, termsCatalog } = useCatalogsStore();
+  const { inc, updateFormState, ONB_PHASES_TERMS, setShowHeader } = useRegisterStore();
+
+  const [editEmail, setEditEmail] = useState<boolean>(false);
+  const [openTerms, setOpenTerms] = useState<boolean>(false);
+  const [editPhoneNumber, setEditPhoneNumber] = useState<boolean>(false);
 
   const schemaEmail = getSchema(['email']);
   const schemaPhoneNumber = getSchema(['phoneNumber']);
-
-  const { inc, updateFormState, ONB_PHASES_TERMS, setShowHeader } = useRegisterStore();
-  const { setLoadingScreen, loadingScreen, setModalError } = useUiStore();
-  const { updateCatalog, countriesCatalog, termsCatalog } = useCatalogsStore();
-
-  const theme = useTheme();
+  const schema = getSchema(['email', 'terms', 'countryCode', 'phoneNumber']);
 
   const setTermsValue = useCallback(
     (term: any) => {
@@ -123,7 +122,8 @@ export default function InfoVerification() {
     };
 
     setLoadingScreen(true);
-    customApi
+
+    api
       .post('/onboarding/termsandconditions', requestFormData)
       .then((response) => {
         updateFormState('ONB_PHASES_TERMS', requestFormData.request);
@@ -164,7 +164,7 @@ export default function InfoVerification() {
 
   useEffect(() => {
     const fetchCountryList = async () => {
-      customApi
+      api
         .post(`/catalogs/search`, {
           catalogCode: 'NATIONALITIES_CATALOG',
         })
@@ -188,7 +188,7 @@ export default function InfoVerification() {
 
   useEffect(() => {
     const fetchTermsList = async () => {
-      customApi
+      api
         .post(`/catalogs/search`, {
           catalogCode: 'TERMS_AND_CONDITIONS_CATALOG',
           parameters: [
@@ -264,7 +264,7 @@ export default function InfoVerification() {
               <Box>
                 <Typography variant="body2">Número de celular:</Typography>
 
-                <Typography variant="body2">{getValues('phoneNumber')}</Typography>
+                <Typography variant="body2">*** *** {handleMaskOtp(getValues('phoneNumber'))}</Typography>
 
                 <ErrorMessage
                   errors={errors}
@@ -349,7 +349,18 @@ export default function InfoVerification() {
           </Card>
           <InputCheck
             name="terms"
-            labelHandle="Acepto Términos y Condiciones y Política de Privacidad de Datos"
+            labelHandle={
+              <>
+                Acepto{' '}
+                <Typography component="span" variant="body2" sx={{ textDecoration: 'underline' }}>
+                  Términos y Condiciones
+                </Typography>{' '}
+                y{' '}
+                <Typography component="span" variant="body2" sx={{ textDecoration: 'underline' }}>
+                  Política de Privacidad de Datos
+                </Typography>
+              </>
+            }
             control={control}
             onClick={handleModalTerm}
           />

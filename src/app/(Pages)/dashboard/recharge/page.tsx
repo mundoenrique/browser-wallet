@@ -11,10 +11,12 @@ import { useNavTitleStore, useMenuStore } from '@/store';
 import { ContainerLayout, InputTextPay } from '@/components';
 
 export default function Recharge() {
-  const [openRc, setOpenRc] = useState<boolean>(false);
-  const schema = getSchema(['amount']);
-  const { updateTitle } = useNavTitleStore();
   const { setCurrentItem } = useMenuStore();
+  const { updateTitle } = useNavTitleStore();
+
+  const [openRc, setOpenRc] = useState<boolean>(false);
+
+  const schema = getSchema(['amount']);
 
   useEffect(() => {
     updateTitle('Generar recarga');
@@ -26,7 +28,7 @@ export default function Recharge() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     setOpenRc(true);
   };
 
@@ -41,7 +43,12 @@ export default function Recharge() {
           Generar recarga
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-          <InputTextPay name="amount" control={control} label="¿Cuánto deseas recargar?" />
+          <InputTextPay
+            name="amount"
+            control={control}
+            label="¿Cuánto deseas recargar?"
+            onChange={(e) => console.log('onChange', e)}
+          />
           <Button variant="contained" type="submit" fullWidth>
             Recargar
           </Button>

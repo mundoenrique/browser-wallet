@@ -8,36 +8,31 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { Box, Button, Collapse, Link as LinkMui, Typography } from '@mui/material';
 //Internal app
 import { CardStep } from '..';
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
-import { useApi } from '@/hooks/useApi';
 import { slate } from '@/theme/theme-default';
 import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
 import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResponsive } from '@/components';
 
-//Optios to map to <inputCheck >. Don't delete
 const options: any = [
   { text: 'Sí', value: 'true' },
   { text: 'No', value: 'false' },
 ];
 
 export default function PEP() {
-  const [isPep, setIsPep] = useState<boolean>(false);
-  const [hasParents, setHasParents] = useState<boolean>(false);
-  const [showParentModal, setShowParentModal] = useState<boolean>(false);
-  const [showPepInfo, setShowPepInfo] = useState<boolean>(false);
-  const [parentIndex, setParentIndex] = useState<number>(-1);
-
   const maxDate = dayjs();
   const minDate = maxDate.subtract(10, 'years');
 
-  const customApi = useApi();
-
   const { setLoadingScreen, setModalError } = useUiStore();
-
+  const { dec, inc, updateFormState, ONB_PHASES_PEP, setShowHeader, onboardingUuId } = useRegisterStore();
   const { updateCatalog, departamentsCatalog, provincesCatalog, districtsCatalog, documentTypesCatalog } =
     useCatalogsStore();
 
-  const { dec, inc, updateFormState, ONB_PHASES_PEP, setShowHeader, onboardingUuId } = useRegisterStore();
+  const [isPep, setIsPep] = useState<boolean>(false);
+  const [parentIndex, setParentIndex] = useState<number>(-1);
+  const [hasParents, setHasParents] = useState<boolean>(false);
+  const [showPepInfo, setShowPepInfo] = useState<boolean>(false);
+  const [showParentModal, setShowParentModal] = useState<boolean>(false);
 
   const schema = isPep ? getSchema(['isPep', 'pepForm', 'relatives']) : getSchema(['isPep']);
 
@@ -65,17 +60,11 @@ export default function PEP() {
     name: 'relatives',
   });
 
-  const watchDepartment = watch('pepForm.departmentCode');
-
-  const watchProvince = watch('pepForm.provinceCode');
-
   const watchIsPep = watch('isPep');
-
+  const watchProvince = watch('pepForm.provinceCode');
+  const watchDepartment = watch('pepForm.departmentCode');
   const WatchIsRelativeAlive = watch('pepForm.isRelativeAlive');
 
-  /**
-   * Submit form
-   */
   const onSubmit = async (data: any) => {
     const requestFormData = {
       currentPhaseCode: 'ONB_PHASES_PEP',
@@ -93,7 +82,7 @@ export default function PEP() {
     };
 
     setLoadingScreen(true);
-    customApi
+    api
       .post('/onboarding/pep', requestFormData)
       .then(() => {
         updateFormState('ONB_PHASES_PEP', requestFormData.request);
@@ -141,12 +130,9 @@ export default function PEP() {
     setShowHeader(true);
   }, [setShowHeader]);
 
-  /**
-   * Fecth departments catalog
-   */
   useEffect(() => {
     const fetchDepartmentsCatalog = async () => {
-      customApi
+      api
         .post('/catalogs/search', {
           catalogCode: 'GEO_LOCATION_LEVEL_ONE_CATALOG',
           parameters: [
@@ -178,12 +164,9 @@ export default function PEP() {
     }
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
-  /**
-   * Fecth provinces catalog
-   */
   useEffect(() => {
     const fetchProvincesCatalog = async () => {
-      customApi
+      api
         .post('/catalogs/search', {
           catalogCode: 'GEO_LOCATION_LEVEL_TWO_CATALOG',
           parameters: [
@@ -220,12 +203,9 @@ export default function PEP() {
     }
   }, [watchDepartment]); //eslint-disable-line react-hooks/exhaustive-deps
 
-  /**
-   * Fecth districts catalog
-   */
   useEffect(() => {
     const fetchDistrictsCatalog = async () => {
-      customApi
+      api
         .post('/catalogs/search', {
           catalogCode: 'GEO_LOCATION_LEVEL_THREE_CATALOG',
           parameters: [
@@ -262,12 +242,9 @@ export default function PEP() {
     }
   }, [watchProvince]); //eslint-disable-line react-hooks/exhaustive-deps
 
-  /**
-   * Fecth DocumentTypes catalog
-   */
   useEffect(() => {
     const fetchDocumentsCatalog = async () => {
-      customApi
+      api
         .post('/catalogs/search', {
           catalogCode: 'DOCUMENTS_TYPE_CATALOG',
         })

@@ -13,7 +13,10 @@ export interface StepperProps {
  * Consultant data - Identify
  *
  * @typeParam  user: string;
+ * @typeParam  referer: string | null;
  */
 export type DataUserProps = {
   user: string;
+  referer: string | null;
+  host: string | null;
 };

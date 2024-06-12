@@ -5,30 +5,31 @@ import Clock from '@mui/icons-material/QueryBuilder';
 import { Avatar, Box, Card, Divider, Stack, Typography } from '@mui/material';
 //Internal app
 import { CardTicketProps } from '@/interfaces';
+import { stringAvatar } from '@/utils/toolHelper';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardTicket, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
-export default function Success({ onClick }: CardTicketProps) {
+export default function Success({ onClick, transferDetail }: CardTicketProps) {
   const description = [
     {
-      icon: 'SM',
+      icon: stringAvatar(transferDetail?.receiver ?? '').children,
       label: 'Nombre de quien recibe:',
-      description: 'Sandra Mejía',
+      description: transferDetail?.receiver,
     },
     {
       icon: <Dollar sx={{ color: 'primary.main' }} />,
       label: 'Monto de la transacción',
-      description: 'S/ 200.00',
+      description: `S/ ${transferDetail?.amount}`,
     },
     {
       icon: <Clock sx={{ color: 'primary.main' }} />,
       label: 'Fecha y hora',
-      description: 'Martes 05 Dic - 1:45 pm',
+      description: transferDetail?.date,
     },
   ];
 
   return (
-    <PurpleLayout hidePelca bigModal left confetti>
+    <PurpleLayout hidePelca bigModal left confetti width="calc(100% - 315px)">
       <ContainerLayout>
         <Typography
           variant="h6"
@@ -46,7 +47,7 @@ export default function Success({ onClick }: CardTicketProps) {
               Número de la transacción:
             </Typography>
             <Typography variant="body1" color="primary" textAlign="center" mb={3} fontWeight={700}>
-              123456789
+              {transferDetail?.transactionCode}
             </Typography>
             <Card sx={{ boxShadow: 'none', p: 1 }}>
               <Stack direction="column" divider={<Divider orientation="horizontal" />} spacing={1}>

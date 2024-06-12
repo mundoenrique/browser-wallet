@@ -40,6 +40,7 @@ const animationState = [
 
 export default function Landing() {
   const { inc, setShowHeader } = useRegisterStore();
+
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
   useEffect(() => {

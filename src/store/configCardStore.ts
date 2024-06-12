@@ -75,12 +75,5 @@ export const useConfigCardStore = create<ConfigCardStore>()(
       set((state) => {
         return { ...state, [key]: value };
       }),
-    /**
-     * return set card activation status
-     */
-    setCardActivationStatus: () => {
-      const cardActivationStatus = get().cardActivationStatus;
-      const statusObject = {};
-    },
   }))
 );

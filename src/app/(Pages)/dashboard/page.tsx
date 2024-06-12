@@ -4,26 +4,27 @@ import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
 import { useEffect, useState, useCallback } from 'react';
 //Internal app
-import { useApi } from '@/hooks/useApi';
+import { api } from '@/utils/api';
 import { ICardDebt } from '@/interfaces';
-import { useMenuStore, useUiStore, useUserStore } from '@/store';
+import { expiredFormatDate } from '@/utils/dates';
 import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
+import { useDebStore, useMenuStore, useUiStore, useUserStore } from '@/store';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
 
 export default function Dashboard() {
   const { push } = useRouter();
 
-  const { setCurrentItem } = useMenuStore();
-
-  const { getUserCardId } = useUserStore();
-
-  const setModalError = useUiStore((state) => state.setModalError);
-
-  const setReloadFunction = useUiStore((state) => state.setReloadFunction);
+  const setDebt = useDebStore((state) => state.setDebt);
 
   const { userId } = useUserStore((state) => state.user);
 
-  const customApi = useApi();
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const { getUserCardId } = useUserStore();
+
+  const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
+
+  const setReloadFunction = useUiStore((state) => state.setReloadFunction);
 
   const [movementData, setMovementData] = useState<[]>([]);
 
@@ -47,7 +48,7 @@ export default function Dashboard() {
   const getMovements = useCallback(async () => {
     setLoadingMovements(true);
     setErrorMovements(false);
-    customApi
+    api
       .get(`/cards/${getUserCardId()}/transactions`, {
         params: {
           days: 90,
@@ -67,10 +68,18 @@ export default function Dashboard() {
   }, []); //eslint-disable-line
 
   const getDebtBalance = useCallback(async () => {
-    customApi
+    api
       .get(`/payments/${userId}/debtbalance`)
       .then((response: any) => {
-        setCardMyDebt(response.data.data);
+        if (response.status === 200) {
+          const { data } = response.data;
+          setCardMyDebt(data);
+          setDebt({
+            amount: data.amount,
+            currencyCode: data.currencyCode,
+            expirationDate: data.expirationDate ? expiredFormatDate(data.expirationDate) : 'Datos no disponibles',
+          });
+        }
       })
       .catch(() => {
         setReloadFunction(() => getDebtBalance());
@@ -87,7 +96,7 @@ export default function Dashboard() {
   }, []); //eslint-disable-line
 
   const getCharge = useCallback(async () => {
-    customApi
+    api
       .get(`/payments/${userId}/charge`)
       .then((response: any) => {
         setCardClients(response.data.data);

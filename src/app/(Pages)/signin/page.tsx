@@ -8,32 +8,32 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, Button, Link as LinkMui, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
-import { useApi } from '@/hooks/useApi';
 import LogoGreen from '%/images/LogoGreen';
 import { encryptForge } from '@/utils/toolHelper';
 import { TCredentials, TUserDetail } from '@/interfaces';
 import { InputPass, ModalResponsive } from '@/components';
-import { useOtpStore, useRegisterStore, useUiStore, useUserStore } from '@/store';
+import { useHeadersStore, useOtpStore, useRegisterStore, useUiStore, useUserStore } from '@/store';
 //Eliminar este store despues de la certificacion de inicio de sesión
 import { accessSessionStore } from '@/store/accessSessionStore';
 
-export default function Signin(params: any) {
+export default function Signin() {
   const theme = useTheme();
   const router = useRouter();
-  const customApi = useApi();
-  const schema = getSchema(['password']);
-  const [errorMessage] = useState<string>('');
-  const [open, setOpen] = useState<boolean>(false);
-  const [userData, setUserData] = useState<TUserDetail | null>(null);
-
-  const { setLoadingScreen, loadingScreen } = useUiStore();
+  const { host } = useHeadersStore();
   const { user } = useRegisterStore();
   const { setOTPValid } = useOtpStore();
   const { setModalError } = useUiStore();
   const { setUser, userId } = useUserStore();
-
   const { setAccessSession } = accessSessionStore();
+  const { setLoadingScreen, loadingScreen } = useUiStore();
+
+  const [errorMessage] = useState<string>('');
+  const [open, setOpen] = useState<boolean>(false);
+  const [userData, setUserData] = useState<TUserDetail | null>(null);
+
+  const schema = getSchema(['password']);
 
   const { control, handleSubmit } = useForm({
     defaultValues: { password: '' },
@@ -47,7 +47,8 @@ export default function Signin(params: any) {
       password: encryptForge(password),
     };
     setLoadingScreen(true);
-    await customApi
+
+    await api
       .post('/users/credentials', requestData)
       .then((response) => {
         const { status } = response;
@@ -65,7 +66,7 @@ export default function Signin(params: any) {
   };
 
   const getUserDetails = async (id: string) => {
-    await customApi
+    await api
       .get(`/users/${id}`)
       .then((response) => {
         setUser(response.data.data);
@@ -91,14 +92,14 @@ export default function Signin(params: any) {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: '/signin/interno',
+        page_location: `${host}/signin/interno`,
         page_title: 'Yiro :: login :: interno',
-        page_referrer: '/identify',
+        page_referrer: `${host}/identify`,
         section: 'Yiro :: login :: interno',
         previous_section: 'somosbelcorp',
       },
     });
-  }, []);
+  }, [host]);
 
   return (
     <>
@@ -152,7 +153,7 @@ export default function Signin(params: any) {
                       section: 'Yiro :: login :: interno',
                       previous_section: 'somosbelcorp',
                       selected_content: 'Olvide mi contraseña',
-                      destination_page: '/password-recover',
+                      destination_page: `${host}/password-recover`,
                     },
                   })
                 }

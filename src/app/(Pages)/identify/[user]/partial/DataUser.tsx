@@ -7,8 +7,8 @@ import { useEffect, useCallback, useState } from 'react';
 import { api } from '@/utils/api';
 import LogoGreen from '%/images/LogoGreen';
 import { DataUserProps } from '@/interfaces';
-import { useRegisterStore, useJwtStore,  useUiStore } from '@/store';
 import { PurpleLayout, NotFoundError } from '@/components';
+import { useHeadersStore, useRegisterStore, useJwtStore, useUiStore } from '@/store';
 import { setDataRedis } from '@/utils/toolHelper';
 
 /**
@@ -29,16 +29,26 @@ const phaseToStep = (phase: string) => {
   return phasesSteps[phase] || 0;
 };
 
-export default function DataUser({ user }: DataUserProps) {
-  const userObject = JSON.parse(user);
-  // const customApi = useApi();
-  const [userValidation, setUserValidation] = useState<any>(null);
-  const updateFormState = useRegisterStore((state) => state.updateFormState);
-  const updateStep = useRegisterStore((state) => state.updateStep);
-  const sessionId = useJwtStore((state) => state.token);
-
+export default function DataUser({ user, referer, host }: DataUserProps) {
   const { replace } = useRouter();
+
+  const userObject = JSON.parse(user);
+
   const { setModalError } = useUiStore();
+
+  const setHost = useHeadersStore((state) => state.setHost);
+
+  const updateStep = useRegisterStore((state) => state.updateStep);
+
+  const updateReferer = useHeadersStore((state) => state.setBackLink);
+
+  const updateFormState = useRegisterStore((state) => state.updateFormState);
+
+  const [userValidation, setUserValidation] = useState<any>(null);
+
+  if (host !== '') setHost(host);
+  if (referer !== '') updateReferer(referer);
+
   /**
    * Verify the user and redirect
    */

@@ -8,23 +8,22 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Button, FormHelperText, Snackbar, Typography } from '@mui/material';
 //internal app
 import { CardStep } from '..';
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
-import { useApi } from '@/hooks/useApi';
-import { encryptForge } from '@/utils/toolHelper';
+import { encryptForge, handleMaskOtp } from '@/utils/toolHelper';
 import { useOtpStore, useRegisterStore, useUiStore } from '@/store';
 
 export default function CelularValidation() {
   const schema = getSchema(['otp']);
 
-  const initialized = useRef<boolean>(false);
+  const { setModalError, setLoadingScreen } = useUiStore();
   const { inc, dec, onboardingUuId, ONB_PHASES_TERMS } = useRegisterStore();
   const { timeLeft, countdown, counting, setCounting, setTime, otpUuid, setOtpUuid } = useOtpStore();
-  const timerRef = useRef<any>();
+  const resetOtp = useOtpStore((state) => state.reset);
   const [open, setOpen] = useState(false);
 
-  const { setModalError, setLoadingScreen } = useUiStore();
-
-  const customApi = useApi();
+  const timerRef = useRef<any>();
+  const initialized = useRef<boolean>(false);
 
   const { handleSubmit, control, reset } = useForm({
     defaultValues: { otp: '' },
@@ -32,7 +31,7 @@ export default function CelularValidation() {
   });
 
   const requestTFACode = useCallback(async () => {
-    customApi
+    api
       .post(`/onboarding/${onboardingUuId}/tfa`, { otpProcessCode: 'ONBOARDING_OTP' })
       .then((response) => {
         setOtpUuid(response.data.data.otpUuId);
@@ -53,11 +52,12 @@ export default function CelularValidation() {
       currentPhaseCode: 'ONB_PHASES_OPT',
     };
     setLoadingScreen(true);
-    customApi
+    api
       .post(`/onboarding/${onboardingUuId}/validate/tfa`, request)
       .then((response) => {
         if (response.data.code === '200.00.000') {
           inc();
+          resetOtp();
         }
       })
       .catch((e) => {
@@ -108,7 +108,8 @@ export default function CelularValidation() {
               Por tu seguridad validaremos tu celular
             </Typography>
             <Typography variant="body2" mb="12px">
-              Ingresa el código de 4 dígitos que te enviamos por SMS al {ONB_PHASES_TERMS?.consultant.phoneNumber ?? ''}
+              Ingresa el código de 4 dígitos que te enviamos por SMS al{' '}
+              {`+51 *** *** ${handleMaskOtp(ONB_PHASES_TERMS?.consultant.phoneNumber)}` ?? ''}
             </Typography>
             <Controller
               name={'otp'}

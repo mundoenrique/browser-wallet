@@ -1,8 +1,8 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
-import ChangePassword from '@/app/(Pages)/dashboard/change-password/page';
 import ModalOtp from '@/components/modal/ModalOtp';
-import { togglePasswordVisibility, emptyField, renderInput } from '../../../tools/unitTestHelper.test';
+import ChangePassword from '@/app/(Pages)/dashboard/change-password/page';
+import { emptyField, renderInput } from '../../../tools/unitTestHelper.test';
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),

@@ -1,6 +1,8 @@
 'use client';
 
+import { debounce } from 'lodash';
 import { Controller } from 'react-hook-form';
+import { useState, useCallback, useEffect } from 'react';
 import Info from '@mui/icons-material/InfoOutlined';
 import {
   Avatar,
@@ -16,10 +18,43 @@ import { GainIcons } from '%/Icons';
 import { TextFieldProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
+function formatToDecimals(value: string | number, decimals: number = 2): string {
+  const numberValue = parseFloat(value as string);
+  if (isNaN(numberValue)) return '';
+  return numberValue.toFixed(decimals);
+}
+
 function InputTextPay(props: TextFieldProps): JSX.Element {
   const { name, label, labelError, type, error, value, onChange, disabled, readOnly } = props;
 
+  const [internalValue, setInternalValue] = useState(value);
+
   const textLabel = label ?? name;
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = event.target.value;
+    setInternalValue(rawValue);
+    debouncedFormatValue(rawValue);
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedFormatValue = useCallback(
+    debounce((value) => {
+      const parts = value.split('.');
+      if (parts.length === 2 && parts[1].length <= 2) {
+        setInternalValue(value);
+      } else {
+        const formattedValue = formatToDecimals(value);
+        setInternalValue(formattedValue);
+      }
+      onChange && onChange(value);
+    }, 500),
+    [onChange]
+  );
+
+  useEffect(() => {
+    !value && setInternalValue('');
+  }, [value]);
 
   return (
     <>
@@ -33,8 +68,8 @@ function InputTextPay(props: TextFieldProps): JSX.Element {
           label={textLabel}
           aria-describedby={`${name}-helperText`}
           error={!!error}
-          value={value}
-          onChange={onChange}
+          value={internalValue}
+          onChange={handleChange}
           disabled={disabled}
           readOnly={readOnly}
           sx={{ fontSize: 20, fontWeight: 700, '&>input': { pl: '0 !important' } }}
@@ -70,7 +105,7 @@ function InputTextPay(props: TextFieldProps): JSX.Element {
 }
 
 /**
- * custom field used to deliver numerical data
+ * Custom field used to deliver numerical data
  *
  * @param name - Name of the field - React Hook Form.
  * @param control - Object provided by the useForm method - React Hook Form.
@@ -86,7 +121,6 @@ function InputTextPay(props: TextFieldProps): JSX.Element {
  */
 export default function InputText(props: TextFieldProps) {
   const { name, control, onChange, ...restProps } = props;
-
   return (
     <>
       {control ? (
@@ -107,7 +141,7 @@ export default function InputText(props: TextFieldProps) {
           )}
         />
       ) : (
-        <InputTextPay name={name} onChange={onChange} />
+        <InputTextPay name={name} onChange={onChange} {...restProps} />
       )}
     </>
   );

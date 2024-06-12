@@ -10,6 +10,7 @@ import {
   DeleteAccount,
   Main,
   RequestPhysicalCard,
+  Success,
   Survey,
 } from './partial';
 
@@ -33,6 +34,7 @@ export default function CardConfiguration() {
       requestPhysicalCard: <RequestPhysicalCard />,
       deleteAccount: <DeleteAccount />,
       survey: <Survey />,
+      success: <Success />,
     };
     return routes[page] || routes['main'];
   };

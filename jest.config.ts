@@ -20,6 +20,7 @@ const config: Config = {
     'src/app/**/signin/*page.tsx',
     'src/app/**/identify/[user]/*page.tsx',
     'src/app/**/password-recover/*page.tsx',
+    'src/app/**/dashboard/*page.tsx',
   ],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   coverageProvider: 'v8',
@@ -27,7 +28,6 @@ const config: Config = {
   reporters: ['default', ['jest-junit', { outputDirectory: 'coverage/junit' }]],
   testPathIgnorePatterns: [
     '<rootDir>/__tests__/tools/',
-    '<rootDir>/__tests__/unit/Dashboard',
     '<rootDir>/__tests__/unit/Dashboard/change-password',
     '<rootDir>/__tests__/unit/Dashboard/clients',
     '<rootDir>/__tests__/unit/Dashboard/collect',

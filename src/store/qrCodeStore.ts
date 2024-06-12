@@ -9,12 +9,15 @@ import { QrPropsStore } from '@/interfaces';
  * @param setUser - Function that sets the new value
  */
 export const useQrStore = create<QrPropsStore>((set) => ({
-  /**
-   * Data user
-   */
   user: null,
   /**
    * Set the new data user
    */
+  cardIdActivate: null,
+  /**
+   * Set the new cardId activate
+   */
+
   setUser: (data: any) => set(() => ({ user: data })),
+  setCardIdActivate: (data: string) => set(() => ({ cardIdActivate: data })),
 }));

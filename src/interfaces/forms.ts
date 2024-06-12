@@ -2,7 +2,7 @@ import { SwitchProps, SxProps } from '@mui/material';
 import { DateView, DesktopDatePickerProps } from '@mui/x-date-pickers';
 //Internal app
 import { IClientProps } from './store';
-import { MuiOtpInputProps } from 'mui-one-time-password-input';
+import React from 'react';
 
 /**
  * Form global variables
@@ -107,7 +107,7 @@ export interface InputCheckProps extends FormMUIProps {
   onClick?: (..._e: any[]) => void;
   checked?: boolean;
   disabled?: boolean;
-  labelHandle?: boolean | string;
+  labelHandle?: React.ReactNode | string;
   sx?: SxProps;
   mtError?: number;
 }

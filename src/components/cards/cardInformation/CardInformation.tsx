@@ -3,12 +3,12 @@
 import { useCallback, useEffect, useState } from 'react';
 //Internal app
 import { api } from '@/utils/api';
-import { useUiStore, useUserStore, useOtpStore, useConfigCardStore } from '@/store';
 import ModalOtp from '@/components/modal/ModalOtp';
 import BackInformation from './partial/BackInformation';
 import FrontInformation from './partial/FrontInformation';
 import { BodyCard, BodyCardAction } from './partial/BodyCards';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
+import { useUiStore, useUserStore, useOtpStore, useConfigCardStore } from '@/store';
 
 const cardTypeQuery = (cardType: string) => {
   const cardObject: { [key: string]: object } = {
@@ -46,6 +46,8 @@ export default function CardInformation() {
   const { userId } = useUserStore((state) => state.user);
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
+
+  const resetOtp = useOtpStore((state) => state.reset);
 
   const setModalError = useUiStore((state) => state.setModalError);
 
@@ -88,6 +90,7 @@ export default function CardInformation() {
           if (response.data.code === '200.00.000') {
             setOpen(false);
             getDecryptData();
+            resetOtp();
           }
         })
         .catch((e) => {

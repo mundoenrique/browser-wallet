@@ -10,14 +10,12 @@ import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import { encryptForge } from '@/utils/toolHelper';
 import ModalOtp from '@/components/modal/ModalOtp';
-import { useUserStore, useUiStore, useOtpStore, useNavTitleStore, useConfigCardStore } from '@/store';
 import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/components';
+import { useUserStore, useUiStore, useOtpStore, useNavTitleStore, useConfigCardStore } from '@/store';
 
 export default function BlockCard() {
   const { updateTitle } = useNavTitleStore();
   const { updatePage } = useConfigCardStore();
-  const [open, setOpen] = useState<boolean>(false);
-  const schema = getSchema(['blockType']);
 
   const router = useRouter();
 
@@ -32,6 +30,10 @@ export default function BlockCard() {
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
   const [openOtp, setOpenOtp] = useState<boolean>(false);
+
+  const [open, setOpen] = useState<boolean>(false);
+
+  const schema = getSchema(['blockType']);
 
   useEffect(() => {
     updateTitle('Bloquear tarjeta');

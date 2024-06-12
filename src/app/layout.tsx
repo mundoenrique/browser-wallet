@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { GoogleTagManager } from '@next/third-parties/google';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 //Internal app
+
 import { ChildrenProps } from '@/interfaces';
 import GlobalErrorMessage from '@/components/layout/GlobalErrorMessage';
 import { HydrationProvider, KeyProvider, LoadingScreen, MuiProvider } from '@/components';

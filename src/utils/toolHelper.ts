@@ -1,5 +1,4 @@
 import forge from 'node-forge';
-
 import html2canvas from 'html2canvas';
 
 /**
@@ -63,6 +62,7 @@ export const handleShare = async (element: HTMLElement, shareData: any, backgrou
       removeContainer: false,
       allowTaint: true,
       backgroundColor: backgroundColor,
+      scale: 1.5,
     });
     if (webShareSupported) {
       const blob: Blob = await new Promise((resolve: any) => canvas.toBlob(resolve, 'image/png'));
@@ -123,7 +123,7 @@ export const decryptForge = (encryptedData: any) => {
   return decryptedData;
 };
 
-export const setDataRedis = async (method:string, data = {}) => {
+export const setDataRedis = async (method: string, data = {}) => {
   const response = await fetch(process.env.NEXT_PUBLIC_WEB_URL + '/api/v1/redis', {
     method: method,
     mode: 'cors',
@@ -137,4 +137,34 @@ export const setDataRedis = async (method:string, data = {}) => {
     body: JSON.stringify(data)
   });
   return response.json();
+}
+
+/**
+ * Manages the masking of the phone number for sending the otp
+ *
+ * @param phone - Phone to mask
+ */
+export const handleMaskOtp = (phone: string) => {
+  const maskPhone = phone.substring(phone.length - 4);
+  return maskPhone;
+};
+
+/**
+ * Format time second
+ * @param seconds
+ * @returns
+ */
+export const formatTime = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds}`;
+};
+
+/**
+ * Format amount
+ * @param amount
+ * @returns
+ */
+export const formatAmount = (amount: string) => {
+  return parseFloat(amount).toFixed(2);
 };

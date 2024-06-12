@@ -20,7 +20,7 @@ import { accessSessionStore } from '@/store/accessSessionStore';
  * In the sybar structure we find: The logo, primary menu elements (ItemsSidebar.tsx) and secondary menu elements (ItemSecondarySidebar.tsx)
  */
 export default function ListSidebar(): JSX.Element {
-  const { updatePage } = useConfigCardStore();
+  const updatePage = useConfigCardStore((state) => state.updatePage);
 
   //Eliminar este store despues de la certificacion de inicio de sesión
   const { setAccessSession } = accessSessionStore();
@@ -54,7 +54,6 @@ export default function ListSidebar(): JSX.Element {
             ¿Ya solicitaste tu tarjeta?
           </Typography>
         </Card>
-
         <ItemsSidebar />
       </Box>
 
@@ -66,7 +65,10 @@ export default function ListSidebar(): JSX.Element {
           text="Cerrar sesión"
           icon={<LogoutIcons />}
           color
-          onClick={() => setAccessSession(false)}
+          onClick={() => {
+            setAccessSession(false);
+            sessionStorage.clear();
+          }}
         />
       </List>
     </>

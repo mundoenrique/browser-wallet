@@ -1,3 +1,5 @@
+import { IPayOffDebt, IPayOffDebtError } from './api';
+
 /**
  * Public and private key
  *
@@ -53,7 +55,8 @@ export type SessionStoreProps = {
  */
 export interface UiStore {
   loadingScreen: boolean;
-  setLoadingScreen: (status: boolean) => void;
+  setLoadingScreen: (status: boolean, value?: object) => void;
+  loadingScreenOptions: { [key: string]: any };
   showModalError: boolean;
   setModalError: (value?: ErrorMessage | ErrorContext | null) => void;
   modalErrorObject: ErrorMessage | ErrorContext | null;
@@ -98,7 +101,9 @@ export interface MenuStore {
  */
 export type QrPropsStore = {
   user: any | null;
+  cardIdActivate: string | null;
   setUser: (_data: any) => void;
+  setCardIdActivate: (_data: string) => void;
 };
 
 /**
@@ -129,7 +134,8 @@ export interface ConfigCardStore {
     | 'changePin'
     | 'requestPhysicalCard'
     | 'deleteAccount'
-    | 'survey';
+    | 'survey'
+    | 'success';
   cardActivationStatus: string;
   isCardVirtual: () => boolean;
   isCardBlocked: () => boolean;
@@ -141,7 +147,6 @@ export interface ConfigCardStore {
   toggleUpdate: () => void;
   updatePage: (_newPage: ConfigCardStore['page']) => void;
   setCardProperties: (_key: 'blockType' | 'cardType' | 'cardStatus' | 'cardInfo', _value: any) => void;
-  setCardActivationStatus: (_status: string) => void;
 }
 
 /**
@@ -235,10 +240,13 @@ export interface CatalogsStore {
 export interface UserStore {
   user: any | null;
   userId: any | null;
+  cardInformation: any | null;
+  setCardInformation: (_data: any) => void;
   setUser: (_data: any) => void;
   setUserId: (_data: any) => void;
   getUserPhone: () => string;
   getUserCardId: () => string;
+  isUserCardVirtual: () => boolean;
 }
 
 /**
@@ -250,6 +258,7 @@ export interface UserStore {
  * @typeParam countdown: () => void
  * @typeParam setTime: (value: number) => void
  * @typeParam setOTPValid: (value: string) => void
+ * @typeParam reset: ()=>void
  */
 export interface OtpStore {
   otpValid: 'OTP' | 'PASSWORD' | 'ENDING' | undefined;
@@ -263,6 +272,7 @@ export interface OtpStore {
   countdown: () => void;
   setTime: (value: number) => void;
   setOTPValid: (value: OtpStore['otpValid']) => void;
+  reset: () => void;
 }
 
 /**
@@ -275,6 +285,17 @@ export interface OtpStore {
 export interface DebtStore {
   debt: any | null;
   view: 'DEBT' | 'SUCCESS' | 'ERROR' | string | undefined;
+  payOffDebt: IPayOffDebt | null;
+  error: IPayOffDebtError | null;
   setDebt: (_data: any) => void;
   setView: (_data: string) => void;
+  setPayOffDebt: (_data: IPayOffDebt) => void;
+  setError: (_data: IPayOffDebtError) => void;
+}
+
+export interface HeadersStore {
+  backLink: string;
+  setBackLink: (_data: any) => void;
+  host: string | null;
+  setHost: (_data: any) => void;
 }
