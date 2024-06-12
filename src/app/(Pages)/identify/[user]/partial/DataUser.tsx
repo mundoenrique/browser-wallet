@@ -8,7 +8,7 @@ import { api } from '@/utils/api';
 import LogoGreen from '%/images/LogoGreen';
 import { DataUserProps } from '@/interfaces';
 import { PurpleLayout, NotFoundError } from '@/components';
-import { backLinkStore, useRegisterStore, useUiStore } from '@/store';
+import { useHeadersStore, useRegisterStore, useUiStore } from '@/store';
 
 /**
  * Convert phasename
@@ -28,21 +28,26 @@ const phaseToStep = (phase: string) => {
   return phasesSteps[phase] || 0;
 };
 
-export default function DataUser({ user, referer }: DataUserProps) {
+export default function DataUser({ user, referer, host }: DataUserProps) {
+  const { replace } = useRouter();
+
   const userObject = JSON.parse(user);
 
   const { setModalError } = useUiStore();
+
+  const setHost = useHeadersStore((state) => state.setHost);
+
   const updateStep = useRegisterStore((state) => state.updateStep);
-  const updateReferer = backLinkStore((state) => state.setBackLink);
+
+  const updateReferer = useHeadersStore((state) => state.setBackLink);
+
   const updateFormState = useRegisterStore((state) => state.updateFormState);
 
   const [userValidation, setUserValidation] = useState<any>(null);
 
-  const { replace } = useRouter();
+  if (host !== '') setHost(host);
+  if (referer !== '') updateReferer(referer);
 
-  if (referer !== '') {
-    updateReferer(referer);
-  }
   /**
    * Verify the user and redirect
    */

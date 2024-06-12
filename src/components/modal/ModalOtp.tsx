@@ -60,7 +60,7 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
 
   const timer = async () => {
     timerRef.current = setInterval(() => countdown(), 1000);
-  }; //eslint-disable-line react-hooks/exhaustive-deps
+  };
 
   useEffect(() => {
     if (!initialized.current) {

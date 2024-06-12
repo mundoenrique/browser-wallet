@@ -14,14 +14,14 @@ import LogoGreen from '%/images/LogoGreen';
 import { encryptForge } from '@/utils/toolHelper';
 import { TCredentials, TUserDetail } from '@/interfaces';
 import { InputPass, ModalResponsive } from '@/components';
-import { useOtpStore, useRegisterStore, useUiStore, useUserStore } from '@/store';
+import { useHeadersStore, useOtpStore, useRegisterStore, useUiStore, useUserStore } from '@/store';
 //Eliminar este store despues de la certificacion de inicio de sesión
 import { accessSessionStore } from '@/store/accessSessionStore';
 
 export default function Signin() {
   const theme = useTheme();
   const router = useRouter();
-
+  const { host } = useHeadersStore();
   const { user } = useRegisterStore();
   const { setOTPValid } = useOtpStore();
   const { setModalError } = useUiStore();
@@ -92,14 +92,14 @@ export default function Signin() {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: '/signin/interno',
+        page_location: `${host}/signin/interno`,
         page_title: 'Yiro :: login :: interno',
-        page_referrer: '/identify',
+        page_referrer: `${host}/identify`,
         section: 'Yiro :: login :: interno',
         previous_section: 'somosbelcorp',
       },
     });
-  }, []);
+  }, [host]);
 
   return (
     <>
@@ -153,7 +153,7 @@ export default function Signin() {
                       section: 'Yiro :: login :: interno',
                       previous_section: 'somosbelcorp',
                       selected_content: 'Olvide mi contraseña',
-                      destination_page: '/password-recover',
+                      destination_page: `${host}/password-recover`,
                     },
                   })
                 }

@@ -53,7 +53,8 @@ export type SessionStoreProps = {
  */
 export interface UiStore {
   loadingScreen: boolean;
-  setLoadingScreen: (status: boolean) => void;
+  setLoadingScreen: (status: boolean, value?: object) => void;
+  loadingScreenOptions: { [key: string]: any };
   showModalError: boolean;
   setModalError: (value?: ErrorMessage | ErrorContext | null) => void;
   modalErrorObject: ErrorMessage | ErrorContext | null;
@@ -288,4 +289,11 @@ export interface DebtStore {
   setView: (_data: string) => void;
   setPayOffDebt: (_data: IPayOffDebt) => void;
   setError: (_data: IPayOffDebtError) => void;
+}
+
+export interface HeadersStore {
+  backLink: string;
+  setBackLink: (_data: any) => void;
+  host: string | null;
+  setHost: (_data: any) => void;
 }
