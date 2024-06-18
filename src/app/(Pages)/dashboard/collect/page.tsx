@@ -15,7 +15,6 @@ import franchises from '%/images/suppliers/franchises.png';
 import { ContainerLayout, InputText, InputTextPay } from '@/components';
 import { useMenuStore, useNavTitleStore, useClientStore, useUserStore, useCollectStore } from '@/store';
 import { api } from '@/utils/api';
-import { getRandomValues } from 'crypto';
 
 export default function Collect() {
   const [showActionBtn, setShowActionBtn] = useState<string>('');
@@ -25,9 +24,6 @@ export default function Collect() {
   const schema = getSchema(['nameClient', 'numberClient', 'amount']);
 
   const userId = useUserStore((state) => state.user);
-  const user = useUserStore((state) => state.user);
-  const getUserPhone = useUserStore((state) => state.getUserPhone);
-
   const setLoad = useCollectStore((state) => state.setLoad);
   const setLinkData = useCollectStore((state) => state.setLinkData);
 
@@ -59,30 +55,31 @@ export default function Collect() {
     cards: <SuccessCards />,
   };
 
-  const generateLink = useCallback(() => {
-    setLoad({ name: getValues('nameClient'), phoneNumber: getValues('numberClient') });
+  const generateCharge = useCallback(async () => {
     const payload = {
-      firstName: user.firstName,
-      lastName: user.firstLastName,
-      phoneNumber: getUserPhone(),
-      operationCode: 'LOAD',
+      fullName: getValues('nameClient'),
+      phoneNumber: getValues('numberClient'),
+      operationCode: 'DESTINATION_CHARGE',
       providerCode: showActionBtn === 'wallets' ? 'PAGO_EFECTIVO' : 'CYBERSOURCE',
       currencyCode: 'PEN',
       amount: getValues('amount'),
     };
-    api
-      .post(`/payments/${userId}/link`, payload)
+    console.log('🚀 ~ generateCharge ~ payload:', payload);
+    await api
+      .post(`/payments/${userId}/charge`, payload)
       .then((response) => {
-        console.log('🚀 ~ generateLink ~ response:', response);
+        console.log('🚀 ~ generateCharge ~ response:', response);
         setLinkData(response.data.data);
       })
       .catch((error) => {
-        console.log('🚀 ~ generateLink ~ error:', error);
+        console.log('🚀 ~ generateCharge ~ error:', error);
       });
-  }, [setLoad, getValues, user.firstName, user.firstLastName, getUserPhone, showActionBtn, userId, setLinkData]);
+  }, [getValues, showActionBtn, userId, setLinkData]);
 
   const onSubmit = async (data: any, e: any) => {
     e.preventDefault();
+
+    setLoad({ name: data.nameClient, phoneNumber: data.numberClient });
 
     if (e.nativeEvent.submitter.id === 'wallets') {
       setShowActionBtn('wallets');
@@ -91,9 +88,14 @@ export default function Collect() {
     if (e.nativeEvent.submitter.id === 'cards') {
       setShowActionBtn('cards');
     }
-    generateLink();
-    reset();
   };
+
+  useEffect(() => {
+    if (showActionBtn) {
+      generateCharge();
+      reset();
+    }
+  }, [generateCharge, reset, showActionBtn]);
 
   return (
     <>
