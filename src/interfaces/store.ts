@@ -53,7 +53,8 @@ export type SessionStoreProps = {
  */
 export interface UiStore {
   loadingScreen: boolean;
-  setLoadingScreen: (status: boolean) => void;
+  setLoadingScreen: (status: boolean, value?: object) => void;
+  loadingScreenOptions: { [key: string]: any };
   showModalError: boolean;
   setModalError: (value?: ErrorMessage | ErrorContext | null) => void;
   modalErrorObject: ErrorMessage | ErrorContext | null;
@@ -309,4 +310,11 @@ export interface ICollectStore {
   linkData: ILinkData | null;
   setLoad: (_data: ILoad) => void;
   setLinkData: (_data: ILinkData) => void;
+}
+
+export interface HeadersStore {
+  backLink: string;
+  setBackLink: (_data: any) => void;
+  host: string | null;
+  setHost: (_data: any) => void;
 }

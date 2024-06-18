@@ -2,7 +2,7 @@
 
 import { debounce } from 'lodash';
 import { Controller } from 'react-hook-form';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Info from '@mui/icons-material/InfoOutlined';
 import {
   Avatar,
@@ -46,11 +46,15 @@ function InputTextPay(props: TextFieldProps): JSX.Element {
       } else {
         const formattedValue = formatToDecimals(value);
         setInternalValue(formattedValue);
-        onChange && onChange({ target: { value: formattedValue } });
       }
+      onChange && onChange(value);
     }, 500),
     [onChange]
   );
+
+  useEffect(() => {
+    !value && setInternalValue('');
+  }, [value]);
 
   return (
     <>
@@ -117,7 +121,6 @@ function InputTextPay(props: TextFieldProps): JSX.Element {
  */
 export default function InputText(props: TextFieldProps) {
   const { name, control, onChange, ...restProps } = props;
-
   return (
     <>
       {control ? (
