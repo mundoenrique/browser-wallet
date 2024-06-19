@@ -4,16 +4,19 @@ import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { CardStep } from '..';
-import { api } from '@/utils/api';
 import Ending from '../Ending';
+import { api } from '@/utils/api';
 import { FormPass } from '@/components';
 import { encryptForge } from '@/utils/toolHelper';
 import { useRegisterStore, useUiStore, useCatalogsStore, useUserStore } from '@/store';
 
 export default function PasswordCreation() {
   const { setUserId } = useUserStore();
+
   const { setModalError, setLoadingScreen } = useUiStore();
+
   const { dec, setShowHeader, onboardingUuId } = useRegisterStore();
+
   const { updateCatalog, passwordTermsCatalog } = useCatalogsStore();
 
   const [loadingModal, setLoadingModal] = useState<boolean>(false);

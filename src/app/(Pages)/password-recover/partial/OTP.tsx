@@ -15,9 +15,13 @@ export default function AuthOtp(props: AuthOtpFormProps) {
   const { handleResendOTP } = props;
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
+
   const { userId } = useUserStore((state) => state.user);
+
   const { setLoadingScreen, setModalError } = useUiStore();
+
   const setOTPValid = useOtpStore((state) => state.setOTPValid);
+
   const getUserPhone = useUserStore((state) => state.getUserPhone);
 
   const schema = getSchema(['otp']);
