@@ -21,15 +21,16 @@ import { ArrowsIcons, CardIcons, CashIcons, FileIcons, GainIcons, HomeIcons, Key
  */
 export default function ItemsSidebar(): JSX.Element {
   const theme = useTheme();
+
   const match = useMediaQuery(theme.breakpoints.up('md'));
 
   const setView = useDebStore((state) => state.setView);
 
   const currentItem = useMenuStore((state) => state.currentItem);
 
-  const setDrawerStatus = useDrawerStore((state) => state.setDrawerStatus);
-
   const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
+
+  const setDrawerStatus = useDrawerStore((state) => state.setDrawerStatus);
 
   const handleResetStates = () => {
     setView('DEBT');

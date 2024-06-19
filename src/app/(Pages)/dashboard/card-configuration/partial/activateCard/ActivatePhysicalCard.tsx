@@ -64,26 +64,25 @@ export default function ActivatePhysicalCard() {
 
   const { updatePage } = useConfigCardStore();
 
-  const setModalError = useUiStore((state) => state.setModalError);
-
-  const setCardInformation = useUserStore((state) => state.setCardInformation);
-
   const { timeLeft, countdown, setTime } = useOtpStore();
 
   const { userId } = useUserStore((state) => state.user);
 
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const setCardInformation = useUserStore((state) => state.setCardInformation);
+
   const { SVG } = useQRCode();
 
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showQR, setShowQR] = useState<boolean>(false);
 
   const [cardId, setCardId] = useState<string | null>(null);
 
-  const [showQR, setShowQR] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const timerRef = useRef<any>();
 
   const baseURL = process.env.NEXT_PUBLIC_WEB_URL;
-  // const baseURL = 'https://2fht93dt-3000.use2.devtunnels.ms';
   const url = `${baseURL}/qr`;
 
   const getCardInformation = useCallback(async () => {

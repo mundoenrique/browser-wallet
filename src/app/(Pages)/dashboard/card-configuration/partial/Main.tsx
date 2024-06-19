@@ -14,41 +14,41 @@ import CardInformation from '@/components/cards/cardInformation/CardInformation'
 import { useNavTitleStore, useMenuStore, useConfigCardStore, useUserStore, useUiStore, useOtpStore } from '@/store';
 
 export default function CardConfiguration() {
-  const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
-
-  const updateTitle = useNavTitleStore((state) => state.updateTitle);
-
-  const updatePage = useConfigCardStore((state) => state.updatePage);
-
-  const isCardBlocked = useConfigCardStore((state) => state.isCardBlocked);
-
-  const blockType = useConfigCardStore((state) => state.blockType);
-
-  const toggleUpdate = useConfigCardStore((state) => state.toggleUpdate);
-
-  const isCardVirtual = useConfigCardStore((state) => state.isCardVirtual);
-
-  const cardInfo = useConfigCardStore((state) => state.cardInfo);
-
-  const getUserCardId = useUserStore((state) => state.getUserCardId);
-
-  const isUserCardVirtual = useUserStore((state) => state.isUserCardVirtual);
-
-  const { userId } = useUserStore((state) => state.user);
-
-  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
-
-  const setModalError = useUiStore((state) => state.setModalError);
-
-  const otpUuid = useOtpStore((state) => state.otpUuid);
-
-  const reset = useOtpStore((state) => state.reset);
-
-  const [openOtp, setOpenOtp] = useState<boolean>(false);
-
   const theme = useTheme();
 
   const match = useMediaQuery(theme.breakpoints.up('sm'));
+
+  const reset = useOtpStore((state) => state.reset);
+
+  const otpUuid = useOtpStore((state) => state.otpUuid);
+
+  const { userId } = useUserStore((state) => state.user);
+
+  const cardInfo = useConfigCardStore((state) => state.cardInfo);
+
+  const blockType = useConfigCardStore((state) => state.blockType);
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
+
+  const getUserCardId = useUserStore((state) => state.getUserCardId);
+
+  const updatePage = useConfigCardStore((state) => state.updatePage);
+
+  const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
+
+  const toggleUpdate = useConfigCardStore((state) => state.toggleUpdate);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
+  const isCardBlocked = useConfigCardStore((state) => state.isCardBlocked);
+
+  const isCardVirtual = useConfigCardStore((state) => state.isCardVirtual);
+
+  const isUserCardVirtual = useUserStore((state) => state.isUserCardVirtual);
+
+  const [openOtp, setOpenOtp] = useState<boolean>(false);
 
   useEffect(() => {
     updateTitle('Cambiar contraseña');

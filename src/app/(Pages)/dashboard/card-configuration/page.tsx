@@ -16,7 +16,9 @@ import {
 
 export default function CardConfiguration() {
   const { setCurrentItem } = useMenuStore();
+
   const { updateTitle } = useNavTitleStore();
+
   const { page, updatePage } = useConfigCardStore();
 
   useEffect(() => {
