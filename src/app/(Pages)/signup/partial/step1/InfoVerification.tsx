@@ -309,7 +309,7 @@ export default function InfoVerification() {
                 <Typography
                   variant="body2"
                   sx={{
-                    maxWidth: { xs: 230, sm: 'max-content' },
+                    maxWidth: { xs: 180, sm: 'max-content' },
                     overflow: 'hidden',
                     whiteSpace: 'nowrap',
                     textOverflow: 'ellipsis',

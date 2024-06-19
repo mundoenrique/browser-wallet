@@ -1,6 +1,6 @@
 'use client';
 
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useCallback, useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
@@ -48,7 +48,6 @@ export default function Recharge() {
       currencyCode: 'PEN',
       amount: getValues('amount'),
     };
-    console.log('🚀 ~ generateCharge ~ payload:', payload);
     await api
       .post(`/payments/${userId}/charge`, payload)
       .then((response) => {
@@ -57,6 +56,7 @@ export default function Recharge() {
       })
       .catch((e) => {
         setModalError({ error: e });
+        setLoadingScreen(false);
       })
       .finally(() => {
         setLoadingScreen(false);
@@ -78,12 +78,7 @@ export default function Recharge() {
           Generar recarga
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-          <InputTextPay
-            name="amount"
-            control={control}
-            label="¿Cuánto deseas recargar?"
-            onChange={(e) => console.log('onChange', e)}
-          />
+          <InputTextPay name="amount" control={control} label="¿Cuánto deseas recargar?" />
           <Button variant="contained" type="submit" fullWidth>
             Recargar
           </Button>

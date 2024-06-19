@@ -82,7 +82,7 @@ export const handleShare = async (element: HTMLElement, shareData: any, backgrou
 };
 
 export const encryptForge = (data: any) => {
-  const key: string = process.env.NEXT_PUBLIC_AES_KEY || '';
+  const key: string = process.env.NEXT_PUBLIC_AES_KEY ?? '';
 
   const iv = new Uint8Array(16);
 
@@ -102,7 +102,7 @@ export const encryptForge = (data: any) => {
 };
 
 export const decryptForge = (encryptedData: any) => {
-  const key: string = process.env.NEXT_PUBLIC_AES_KEY || '';
+  const key: string = process.env.NEXT_PUBLIC_AES_KEY ?? '';
 
   const iv = new Uint8Array(16);
 

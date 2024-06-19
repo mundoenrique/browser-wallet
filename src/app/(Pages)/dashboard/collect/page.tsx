@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useCallback, useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
@@ -13,7 +13,7 @@ import wallets from '%/images/suppliers/wallets.png';
 import SuccessWallets from './partial/SuccessWallets';
 import franchises from '%/images/suppliers/franchises.png';
 import { ContainerLayout, InputText, InputTextPay } from '@/components';
-import { useMenuStore, useNavTitleStore, useClientStore, useUserStore, useCollectStore } from '@/store';
+import { useMenuStore, useNavTitleStore, useClientStore, useUserStore, useCollectStore, useUiStore } from '@/store';
 import { api } from '@/utils/api';
 
 export default function Collect() {
@@ -23,9 +23,13 @@ export default function Collect() {
   const { client } = useClientStore();
   const schema = getSchema(['nameClient', 'numberClient', 'amount']);
 
-  const userId = useUserStore((state) => state.user);
+  const userId = useUserStore((state) => state.user.userId);
   const setLoad = useCollectStore((state) => state.setLoad);
   const setLinkData = useCollectStore((state) => state.setLinkData);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+  const loadingScreen = useUiStore((state) => state.loadingScreen);
+  const setModalError = useUiStore((state) => state.setModalError);
 
   const {
     control,
@@ -56,6 +60,7 @@ export default function Collect() {
   };
 
   const generateCharge = useCallback(async () => {
+    setLoadingScreen(true);
     const payload = {
       fullName: getValues('nameClient'),
       phoneNumber: getValues('numberClient'),
@@ -64,17 +69,19 @@ export default function Collect() {
       currencyCode: 'PEN',
       amount: getValues('amount'),
     };
-    console.log('🚀 ~ generateCharge ~ payload:', payload);
     await api
       .post(`/payments/${userId}/charge`, payload)
       .then((response) => {
-        console.log('🚀 ~ generateCharge ~ response:', response);
         setLinkData(response.data.data);
       })
-      .catch((error) => {
-        console.log('🚀 ~ generateCharge ~ error:', error);
+      .catch((e) => {
+        setModalError({ error: e });
+        setLoadingScreen(false);
+      })
+      .finally(() => {
+        setLoadingScreen(false);
       });
-  }, [getValues, showActionBtn, userId, setLinkData]);
+  }, [setLoadingScreen, getValues, showActionBtn, userId, setLinkData, setModalError]);
 
   const onSubmit = async (data: any, e: any) => {
     e.preventDefault();
@@ -133,7 +140,7 @@ export default function Collect() {
         </Box>
       </ContainerLayout>
 
-      {rcViews[showActionBtn]}
+      {!loadingScreen && rcViews[showActionBtn]}
     </>
   );
 }

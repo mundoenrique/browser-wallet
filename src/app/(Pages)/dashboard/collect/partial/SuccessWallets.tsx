@@ -1,13 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { ModalCollect } from './ModalCollect';
 import { CardInfoOperation, CardPagoEfectivo, ContainerLayout, Linking, PurpleLayout } from '@/components';
+import { useCollectStore } from '@/store';
+import { formattedSortDate } from '@/utils/dates';
 
 export default function SuccessWallets() {
   const [showModal, setShowModal] = useState<boolean>(false);
+
+  const linkData = useCollectStore((state) => state.linkData);
+  const load = useCollectStore((state) => state.load);
+
+  const [providerPaymentCode, setProviderPaymentCode] = useState<string>(linkData?.providerPaymentCode ?? '');
+  const [url, setUrl] = useState<string>(linkData?.url ?? '');
+  const [expirationDate, setExpirationDate] = useState<string>(linkData?.expirationDate ?? '');
+  const [amount, setAmount] = useState<number>(linkData?.amount ?? 0);
+  const [name, setName] = useState<string>(load?.name ?? '');
+
+  useEffect(() => {
+    setProviderPaymentCode(linkData?.providerPaymentCode ?? '');
+    setExpirationDate(linkData?.expirationDate ?? '');
+    setUrl(linkData?.url ?? '');
+    setAmount(linkData?.amount ?? 0);
+    setName(load?.name ?? '');
+  }, [linkData, load]);
 
   return (
     <>
@@ -22,8 +41,8 @@ export default function SuccessWallets() {
           <Typography color="white" fontSize={14}>
             Comparte esta información para que te paguen a través de Pago Efectivo:
           </Typography>
-          <CardPagoEfectivo cip="112399768" label="Compartir" share>
-            <CardInfoOperation date="25 Enero" amount="100.00" name="Sandra Mejía" />
+          <CardPagoEfectivo cip={providerPaymentCode} label="Compartir" share>
+            <CardInfoOperation date={formattedSortDate(expirationDate)} amount={amount} name={name} />
             <Button variant="underline" sx={{ mb: 2 }} onClick={() => setShowModal(true)}>
               ¿Cómo me realizarán el pago?
             </Button>

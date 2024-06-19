@@ -58,7 +58,6 @@ export default function Debt() {
           setView('SUCCESS');
         })
         .catch((e) => {
-          console.log('🚀 ~ e:', e);
           setError(e.response.data.data);
           setView('ERROR');
         })
