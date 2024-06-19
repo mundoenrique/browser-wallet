@@ -61,13 +61,11 @@ export default function SuccessCards() {
           <CardReport avatarText="TC">
             <Typography
               variant="h6"
+              noWrap
+              width={260}
               sx={{
                 display: 'flex',
                 color: 'primary.main',
-                maxWidth: { xs: 200 },
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-                textOverflow: 'ellipsis',
               }}
             >
               {url}
