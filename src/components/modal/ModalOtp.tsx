@@ -71,11 +71,10 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
         setTime(60);
         timer();
         setCounting(true);
-        initialized.current = true;
       } else {
         timer();
-        initialized.current = true;
       }
+      initialized.current = true;
     }
     return () => {
       if (!runDestroy.current) {

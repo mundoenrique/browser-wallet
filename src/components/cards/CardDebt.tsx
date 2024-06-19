@@ -83,10 +83,8 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
             ) : (
               'Sin datos'
             )
-          ) : data.amount === 0 ? (
-            'S/ 0.00'
           ) : (
-            `S/ ${data?.amount}`
+            Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(data.amount as number)
           )}
         </Typography>
       </Box>

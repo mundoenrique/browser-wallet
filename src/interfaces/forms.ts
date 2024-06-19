@@ -201,4 +201,5 @@ export interface IListClientsProps {
   data: IClientProps[];
   loading: boolean;
   disabledBtnDelete: string;
+  error: boolean;
 }

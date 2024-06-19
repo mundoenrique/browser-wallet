@@ -8,7 +8,7 @@ import { api } from '@/utils/api';
 import { ICardDebt } from '@/interfaces';
 import { expiredFormatDate } from '@/utils/dates';
 import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
-import { useDebStore, useMenuStore, useUiStore, useUserStore } from '@/store';
+import { useChargeStore, useDebStore, useMenuStore, useUiStore, useUserStore } from '@/store';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
 
 export default function Dashboard() {
@@ -25,6 +25,8 @@ export default function Dashboard() {
   const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
 
   const setReloadFunction = useUiStore((state) => state.setReloadFunction);
+
+  const setCharge = useChargeStore((state) => state.setCharge);
 
   const [movementData, setMovementData] = useState<[]>([]);
 
@@ -100,9 +102,11 @@ export default function Dashboard() {
       .get(`/payments/${userId}/charge`)
       .then((response: any) => {
         setCardClients(response.data.data);
+        setCharge(response.data.data.amount);
       })
       .catch(() => {
         setReloadFunction(() => getCharge());
+
         setCardClients({
           amount: null,
           currencyCode: '',

@@ -202,7 +202,7 @@ export type IUserRegisterProps = {
 export interface IClientProps {
   id: number;
   date: Date;
-  name: string;
+  fullname: string;
   amount: number;
   status: string;
   status_type: string;
@@ -296,4 +296,14 @@ export interface HeadersStore {
   setBackLink: (_data: any) => void;
   host: string | null;
   setHost: (_data: any) => void;
+}
+
+/**
+ * Charge store
+ * @typeParam debt - Initial state {@defaultValue `null`}
+ * @typeParam setView: (_data: any) => void
+ */
+export interface ChargeStore {
+  chargeAmount: number;
+  setCharge: (data: number) => void;
 }

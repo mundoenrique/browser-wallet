@@ -6,7 +6,7 @@ import { Avatar, Box, Button, Typography, useTheme, useMediaQuery } from '@mui/m
 import { FilterIcons } from '%/Icons';
 import Filters from './partial/filters';
 import { api } from '@/utils/api';
-import { useUserStore } from '@/store';
+import { useUserStore, useUiStore, useChargeStore } from '@/store';
 import ClientList from './partial/listClients';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { useMenuStore, useNavTitleStore } from '@/store';
@@ -47,11 +47,15 @@ export default function Clients() {
 
   const user = useUserStore((state) => state.user);
 
-  const { setCurrentItem } = useMenuStore();
-  const { updateTitle } = useNavTitleStore();
+  const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
+
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
+
+  const chargeAmount = useChargeStore((state) => state.chargeAmount);
 
   const [open, setOpen] = useState<boolean>(false);
   const [isLoading, setIsloading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const [currentView, setCurrentView] = useState<string>(ENUM_VIEW.MAIN);
   const [paymentStatus, setPaymentStatus] = useState<string>('Todos mis cobros');
   const [month, setMonth] = useState<InputCheckGroupOptionProps>({ text: '', value: '1' });
@@ -68,6 +72,8 @@ export default function Clients() {
   const disabledBtnDelete = '3';
 
   const initialized = useRef<boolean>(false);
+
+  const setModalError = useUiStore((state) => state.setModalError);
 
   const reset = () => {
     setCurrentPage(1);
@@ -107,6 +113,8 @@ export default function Clients() {
   }, [setCurrentPage, isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
 
   const getClientAPI = async () => {
+    setIsloading(true);
+    setError(false);
     api
       .get(`/payments/${user.userId}/chargelist`, {
         params: { days: 90, limit: 20, page: currentPage },
@@ -120,12 +128,9 @@ export default function Clients() {
           setLastPage(metadata.lastPage);
         }
       })
-      .catch(() => {
-        /*
-
-      setIsError(true);
-      setErrorModal(true);
-      */
+      .catch((e) => {
+        setError(true);
+        setModalError({ error: e });
       })
       .finally(() => {
         setIsloading(false);
@@ -172,7 +177,7 @@ export default function Clients() {
               variant="h6"
               align="center"
               color={fuchsiaBlue[800]}
-              sx={{ mb: 5, display: { xs: 'none', md: 'block' } }}
+              sx={{ my: 5, display: { xs: 'none', md: 'block' } }}
             >
               Mis clientes
             </Typography>
@@ -182,7 +187,7 @@ export default function Clients() {
             </Typography>
 
             <Typography variant="h6" align="center" color={fuchsiaBlue[800]} sx={{ mb: 2 }}>
-              S/ 720.00
+              {Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(chargeAmount)}
             </Typography>
 
             <Linking
@@ -237,7 +242,7 @@ export default function Clients() {
                 {month.text && !paymentStatus && `${month.text}`}
                 {!month.text && paymentStatus && `${paymentStatus}`}
               </Button>
-              <ClientList data={clientsData} loading={isLoading} disabledBtnDelete={disabledBtnDelete} />
+              <ClientList data={clientsData} loading={isLoading} disabledBtnDelete={disabledBtnDelete} error={error} />
             </Box>
           )}
         </Box>

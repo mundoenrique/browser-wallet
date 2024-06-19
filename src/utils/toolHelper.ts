@@ -8,9 +8,9 @@ import html2canvas from 'html2canvas';
  */
 export function stringAvatar(name: string) {
   const breakName = name.split(' ');
-  const initials = breakName.map((part) => part[0]);
+  const initials = breakName.map((part) => part[0]).splice(0, 2);
   return {
-    children: initials.join(),
+    children: initials.join(''),
   };
 }
 
