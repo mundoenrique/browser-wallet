@@ -3,16 +3,18 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
+import { useCollectStore } from '@/store';
 import { ModalRecharge } from './ModalRecharge';
 import { CardPagoEfectivo, ContainerLayout, Linking, PurpleLayout } from '@/components';
-import { useCollectStore } from '@/store';
 
 export default function Success() {
   const [showModal, setShowModal] = useState<boolean>(false);
+
   const linkData = useCollectStore((state) => state.linkData);
 
-  const [providerPaymentCode, setProviderPaymentCode] = useState<string>(linkData?.providerPaymentCode ?? '');
   const [url, setUrl] = useState<string>(linkData?.url ?? '');
+
+  const [providerPaymentCode, setProviderPaymentCode] = useState<string>(linkData?.providerPaymentCode ?? '');
 
   useEffect(() => {
     setProviderPaymentCode(linkData?.providerPaymentCode ?? '');

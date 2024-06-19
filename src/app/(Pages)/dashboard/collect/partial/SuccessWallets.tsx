@@ -3,22 +3,27 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
-import { ModalCollect } from './ModalCollect';
-import { CardInfoOperation, CardPagoEfectivo, ContainerLayout, Linking, PurpleLayout } from '@/components';
 import { useCollectStore } from '@/store';
+import { ModalCollect } from './ModalCollect';
 import { formattedSortDate } from '@/utils/dates';
+import { CardInfoOperation, CardPagoEfectivo, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
 export default function SuccessWallets() {
-  const [showModal, setShowModal] = useState<boolean>(false);
-
-  const linkData = useCollectStore((state) => state.linkData);
   const load = useCollectStore((state) => state.load);
 
-  const [providerPaymentCode, setProviderPaymentCode] = useState<string>(linkData?.providerPaymentCode ?? '');
-  const [url, setUrl] = useState<string>(linkData?.url ?? '');
-  const [expirationDate, setExpirationDate] = useState<string>(linkData?.expirationDate ?? '');
-  const [amount, setAmount] = useState<number>(linkData?.amount ?? 0);
+  const linkData = useCollectStore((state) => state.linkData);
+
+  const [showModal, setShowModal] = useState<boolean>(false);
+
   const [name, setName] = useState<string>(load?.name ?? '');
+
+  const [url, setUrl] = useState<string>(linkData?.url ?? '');
+
+  const [amount, setAmount] = useState<number>(linkData?.amount ?? 0);
+
+  const [expirationDate, setExpirationDate] = useState<string>(linkData?.expirationDate ?? '');
+
+  const [providerPaymentCode, setProviderPaymentCode] = useState<string>(linkData?.providerPaymentCode ?? '');
 
   useEffect(() => {
     setProviderPaymentCode(linkData?.providerPaymentCode ?? '');

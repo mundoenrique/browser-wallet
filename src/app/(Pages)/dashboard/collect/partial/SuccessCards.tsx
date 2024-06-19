@@ -1,27 +1,31 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Box, Button, IconButton, Typography } from '@mui/material';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { Box, Button, IconButton, Typography } from '@mui/material';
 //Internal app
 import { CopyIcons } from '%/Icons';
-import { ModalCollect } from './ModalCollect';
-import { CardInfoOperation, CardReport, ContainerLayout, Linking, PurpleLayout } from '@/components';
 import { useCollectStore } from '@/store';
+import { ModalCollect } from './ModalCollect';
 import { formattedSortDate } from '@/utils/dates';
+import { CardInfoOperation, CardReport, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
 export default function SuccessCards() {
   const textRef = useRef<null>(null);
 
-  const [showModal, setShowModal] = useState<boolean>(false);
-
-  const linkData = useCollectStore((state) => state.linkData);
   const load = useCollectStore((state) => state.load);
 
-  const [amount, setAmount] = useState<number>(linkData?.amount ?? 0);
-  const [expirationDate, setExpirationDate] = useState<string>(linkData?.expirationDate ?? '');
-  const [url, setUrl] = useState<string>(linkData?.url ?? '');
+  const linkData = useCollectStore((state) => state.linkData);
+
+  const [showModal, setShowModal] = useState<boolean>(false);
+
   const [name, setName] = useState<string>(load?.name ?? '');
+
+  const [url, setUrl] = useState<string>(linkData?.url ?? '');
+
+  const [amount, setAmount] = useState<number>(linkData?.amount ?? 0);
+
+  const [expirationDate, setExpirationDate] = useState<string>(linkData?.expirationDate ?? '');
 
   const handleShareText = async () => {
     try {

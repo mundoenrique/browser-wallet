@@ -1,32 +1,38 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useCallback, useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
 //Internal app
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import Success from './partial/Success';
-import { useNavTitleStore, useMenuStore, useUserStore, useCollectStore, useUiStore } from '@/store';
 import { ContainerLayout, InputTextPay } from '@/components';
-import { api } from '@/utils/api';
+import { useNavTitleStore, useMenuStore, useUserStore, useCollectStore, useUiStore } from '@/store';
 
 export default function Recharge() {
-  const { setCurrentItem } = useMenuStore();
-  const { updateTitle } = useNavTitleStore();
-
-  const [openRc, setOpenRc] = useState<boolean>(false);
-
   const schema = getSchema(['amount']);
 
-  const getUserPhone = useUserStore((state) => state.getUserPhone);
-  const firstName = useUserStore((state) => state.user.firstName);
-  const firstLastName = useUserStore((state) => state.user.firstLastName);
+  const { setCurrentItem } = useMenuStore();
+
+  const { updateTitle } = useNavTitleStore();
+
   const userId = useUserStore((state) => state.user.userId);
+
+  const firstName = useUserStore((state) => state.user.firstName);
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const getUserPhone = useUserStore((state) => state.getUserPhone);
+
   const setLinkData = useCollectStore((state) => state.setLinkData);
 
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
-  const setModalError = useUiStore((state) => state.setModalError);
+
+  const firstLastName = useUserStore((state) => state.user.firstLastName);
+
+  const [openRc, setOpenRc] = useState<boolean>(false);
 
   useEffect(() => {
     updateTitle('Generar recarga');
