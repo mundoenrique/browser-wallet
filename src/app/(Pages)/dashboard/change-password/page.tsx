@@ -12,9 +12,11 @@ import { ContainerLayout, InputPass, ModalResponsive } from '@/components';
 
 export default function ChangePassword() {
   const { setCurrentItem } = useMenuStore();
+
   const { updateTitle } = useNavTitleStore();
 
   const [openRc, setOpenRc] = useState<boolean>(false);
+
   const [openOtp, setOpenOtp] = useState<boolean>(false);
 
   const schemaFormPassword = getSchema(['newPassword', 'newPasswordConfirmation', 'currentPassword']);
