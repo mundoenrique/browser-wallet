@@ -90,7 +90,7 @@ export default function Collect() {
         setLoadingScreen(false);
         reset();
       });
-  }, [setLoadingScreen, getValues, showActionBtn, userId, setLinkData, setModalError]);
+  }, [setLoadingScreen, getValues, showActionBtn, userId, setLinkData, setModalError, reset]);
 
   const onSubmit = async (data: any, e: any) => {
     e.preventDefault();
