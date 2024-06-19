@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 //Internal app
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { useMenuStore, useDrawerStore, useDebStore } from '@/store';
+import { useMenuStore, useDrawerStore, useDebStore, useCollectStore } from '@/store';
 import { ArrowsIcons, CardIcons, CashIcons, FileIcons, GainIcons, HomeIcons, KeyIcons, ToolIcons } from '%/Icons';
 
 /**
@@ -32,8 +32,11 @@ export default function ItemsSidebar(): JSX.Element {
 
   const setDrawerStatus = useDrawerStore((state) => state.setDrawerStatus);
 
+  const resetLinkData = useCollectStore((state) => state.reset);
+
   const handleResetStates = () => {
     setView('DEBT');
+    resetLinkData();
   };
 
   const itemMenu = match

@@ -85,6 +85,7 @@ export default function Collect() {
       .catch((e) => {
         setModalError({ error: e });
         setLoadingScreen(false);
+        setShowActionBtn('');
       })
       .finally(() => {
         setLoadingScreen(false);

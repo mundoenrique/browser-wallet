@@ -310,6 +310,7 @@ export interface ICollectStore {
   linkData: ILinkData | null;
   setLoad: (_data: ILoad) => void;
   setLinkData: (_data: ILinkData) => void;
+  reset: () => void;
 }
 
 export interface HeadersStore {
