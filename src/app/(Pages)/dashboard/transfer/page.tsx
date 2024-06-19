@@ -135,11 +135,15 @@ export default function Transfer() {
         cardId: senderCardId(),
       },
       receiver: {
-        cardId: receiverCardId,
+        // cardId: receiverCardId,
+        cardId: '43635101-e367-4d8e-8e84-3c2df2c9a953',
       },
       amount: amount,
+      fee: '1.00',
+      tax: '1.00',
+      description: 'Web transfer',
       source: 'Web transfer',
-      externalId: '0-web-transfer',
+      externalId: '-',
     };
 
     api
@@ -153,6 +157,7 @@ export default function Transfer() {
             dateTime,
           },
         } = response;
+
         setOpenRc(true);
 
         setTransferInfo((prevState) => ({
@@ -165,6 +170,7 @@ export default function Transfer() {
         setModalError({ error: e });
       })
       .finally(() => {
+        resetForm();
         setLoadingScreen(false);
       });
   };
@@ -227,7 +233,6 @@ export default function Transfer() {
         <Success
           onClick={() => {
             setOpenRc(false);
-            resetForm();
           }}
           transferDetail={transferInfo}
         />
