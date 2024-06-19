@@ -88,6 +88,7 @@ export default function Collect() {
       })
       .finally(() => {
         setLoadingScreen(false);
+        reset();
       });
   }, [setLoadingScreen, getValues, showActionBtn, userId, setLinkData, setModalError]);
 
@@ -108,7 +109,6 @@ export default function Collect() {
   useEffect(() => {
     if (showActionBtn) {
       generateCharge();
-      reset();
     }
   }, [generateCharge, reset, showActionBtn]);
 
