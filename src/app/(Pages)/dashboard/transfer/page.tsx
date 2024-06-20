@@ -27,6 +27,8 @@ export default function Transfer() {
 
   const senderCardId = useUserStore((state) => state.getUserCardId);
 
+  const getUserPhone = useUserStore((state) => state.getUserPhone);
+
   const updateTitle = useNavTitleStore((state) => state.updateTitle);
 
   const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
@@ -41,7 +43,7 @@ export default function Transfer() {
 
   const [transferInfo, setTransferInfo] = useState<TransferDetail>({
     receiver: '',
-    amount: '',
+    amount: null,
     date: '',
     transactionCode: '',
   });
@@ -65,6 +67,9 @@ export default function Transfer() {
   }, [updateTitle, setCurrentItem]);
 
   const onSubmit = async (data: any) => {
+    if (data.numberClient === getUserPhone()) {
+      setError('amount', { type: 'customError', message: 'Número no válido' });
+    }
     setLoadingScreen(true);
 
     const validateReceiver = api.get('/users/search', { params: { phoneNumber: data.numberClient } });
@@ -93,7 +98,7 @@ export default function Transfer() {
             setTransferInfo((prevState) => ({
               ...prevState,
               receiver: `${firstName} ${firstLastName}`,
-              amount: data.amount,
+              amount: parseFloat(data.amount),
             }));
 
             setReceiverCardId(decryptForge(cardId));
@@ -135,8 +140,7 @@ export default function Transfer() {
         cardId: senderCardId(),
       },
       receiver: {
-        // cardId: receiverCardId,
-        cardId: '43635101-e367-4d8e-8e84-3c2df2c9a953',
+        cardId: receiverCardId,
       },
       amount: amount,
       fee: '1.00',
@@ -151,9 +155,7 @@ export default function Transfer() {
       .then((response) => {
         const {
           data: {
-            data: {
-              data: { authCode },
-            },
+            data: { authCode },
             dateTime,
           },
         } = response;
@@ -189,11 +191,11 @@ export default function Transfer() {
       api
         .post(`/users/${userId}/validate/tfa`, payload)
         .then((response) => {
-          if (response.data.code === '200.00.000') {
-            setOpenModalOtp(false);
-            resetOtp();
-            handleConfirmation();
-          }
+          //if (response.data.code === '200.00.000') {
+          setOpenModalOtp(false);
+          resetOtp();
+          handleConfirmation();
+          //}
         })
         .catch((e) => {
           setModalError({ error: e });
