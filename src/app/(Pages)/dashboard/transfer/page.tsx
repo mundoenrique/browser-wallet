@@ -67,10 +67,20 @@ export default function Transfer() {
   }, [updateTitle, setCurrentItem]);
 
   const onSubmit = async (data: any) => {
-    if (data.numberClient === getUserPhone()) {
-      setError('amount', { type: 'customError', message: 'Número no válido' });
+    const validate = {
+      min: parseFloat(data.amount) < 1,
+      max: parseFloat(data.amount) > 4950,
+      differentAccount: data.numberClient !== getUserPhone(),
+    };
+
+    if (!validate.differentAccount || validate.min || validate.max) {
+      !validate.differentAccount &&
+        setError('numberClient', { type: 'customError', message: 'No se puede transferir a la misma cuenta' });
+
+      (validate.min || validate.max) && setError('amount', { type: 'customError', message: 'Monto no permitido' });
       return;
     }
+
     setLoadingScreen(true);
 
     const validateReceiver = api.get('/users/search', { params: { phoneNumber: data.numberClient } });
