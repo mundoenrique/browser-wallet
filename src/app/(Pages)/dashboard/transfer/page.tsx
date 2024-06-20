@@ -27,6 +27,8 @@ export default function Transfer() {
 
   const senderCardId = useUserStore((state) => state.getUserCardId);
 
+  const getUserPhone = useUserStore((state) => state.getUserPhone);
+
   const updateTitle = useNavTitleStore((state) => state.updateTitle);
 
   const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
@@ -41,7 +43,7 @@ export default function Transfer() {
 
   const [transferInfo, setTransferInfo] = useState<TransferDetail>({
     receiver: '',
-    amount: '',
+    amount: null,
     date: '',
     transactionCode: '',
   });
@@ -65,6 +67,10 @@ export default function Transfer() {
   }, [updateTitle, setCurrentItem]);
 
   const onSubmit = async (data: any) => {
+    if (data.numberClient === getUserPhone()) {
+      setError('amount', { type: 'customError', message: 'Número no válido' });
+      return;
+    }
     setLoadingScreen(true);
 
     const validateReceiver = api.get('/users/search', { params: { phoneNumber: data.numberClient } });
@@ -82,7 +88,7 @@ export default function Transfer() {
 
         if (responseReceiver.status === 'fulfilled' && responseBalance.status === 'fulfilled') {
           if (!amountCheck) {
-            setError('amount', { type: 'customError', message: 'Saldo insuficiente' });
+            setError('numberClient', { type: 'customError', message: 'Saldo insuficiente' });
           } else {
             const {
               firstName,
@@ -93,7 +99,7 @@ export default function Transfer() {
             setTransferInfo((prevState) => ({
               ...prevState,
               receiver: `${firstName} ${firstLastName}`,
-              amount: data.amount,
+              amount: parseFloat(data.amount),
             }));
 
             setReceiverCardId(decryptForge(cardId));
@@ -138,8 +144,11 @@ export default function Transfer() {
         cardId: receiverCardId,
       },
       amount: amount,
+      fee: '1.00',
+      tax: '1.00',
+      description: 'Web transfer',
       source: 'Web transfer',
-      externalId: '0-web-transfer',
+      externalId: '-',
     };
 
     api
@@ -147,12 +156,11 @@ export default function Transfer() {
       .then((response) => {
         const {
           data: {
-            data: {
-              data: { authCode },
-            },
+            data: { authCode },
             dateTime,
           },
         } = response;
+
         setOpenRc(true);
 
         setTransferInfo((prevState) => ({
@@ -165,6 +173,7 @@ export default function Transfer() {
         setModalError({ error: e });
       })
       .finally(() => {
+        resetForm();
         setLoadingScreen(false);
       });
   };
@@ -227,7 +236,6 @@ export default function Transfer() {
         <Success
           onClick={() => {
             setOpenRc(false);
-            resetForm();
           }}
           transferDetail={transferInfo}
         />
