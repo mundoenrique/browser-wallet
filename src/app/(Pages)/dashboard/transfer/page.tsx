@@ -69,6 +69,7 @@ export default function Transfer() {
   const onSubmit = async (data: any) => {
     if (data.numberClient === getUserPhone()) {
       setError('amount', { type: 'customError', message: 'Número no válido' });
+      return;
     }
     setLoadingScreen(true);
 
@@ -191,11 +192,11 @@ export default function Transfer() {
       api
         .post(`/users/${userId}/validate/tfa`, payload)
         .then((response) => {
-          //if (response.data.code === '200.00.000') {
-          setOpenModalOtp(false);
-          resetOtp();
-          handleConfirmation();
-          //}
+          if (response.data.code === '200.00.000') {
+            setOpenModalOtp(false);
+            resetOtp();
+            handleConfirmation();
+          }
         })
         .catch((e) => {
           setModalError({ error: e });
