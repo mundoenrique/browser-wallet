@@ -88,7 +88,7 @@ export default function Transfer() {
 
         if (responseReceiver.status === 'fulfilled' && responseBalance.status === 'fulfilled') {
           if (!amountCheck) {
-            setError('amount', { type: 'customError', message: 'Saldo insuficiente' });
+            setError('numberClient', { type: 'customError', message: 'Saldo insuficiente' });
           } else {
             const {
               firstName,
