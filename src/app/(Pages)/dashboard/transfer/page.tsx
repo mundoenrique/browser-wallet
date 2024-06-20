@@ -77,7 +77,10 @@ export default function Transfer() {
       !validate.differentAccount &&
         setError('numberClient', { type: 'customError', message: 'No se puede transferir a la misma cuenta' });
 
-      (validate.min || validate.max) && setError('amount', { type: 'customError', message: 'Monto no permitido' });
+      validate.min && setError('amount', { type: 'customError', message: 'El monto debe ser mayor a 1.00' });
+
+      validate.max && setError('amount', { type: 'customError', message: 'El monto debe ser menor a 4950' });
+
       return;
     }
 
