@@ -17,17 +17,23 @@ import { InputCheck, InputText, ModalResponsive, InputSelect, Terms } from '@/co
 export default function InfoVerification() {
   const theme = useTheme();
 
+  const schemaEmail = getSchema(['email']);
+
+  const schemaPhoneNumber = getSchema(['phoneNumber']);
+
+  const schema = getSchema(['email', 'terms', 'countryCode', 'phoneNumber']);
+
   const { setLoadingScreen, loadingScreen, setModalError } = useUiStore();
+
   const { updateCatalog, countriesCatalog, termsCatalog } = useCatalogsStore();
+
   const { inc, updateFormState, ONB_PHASES_TERMS, setShowHeader } = useRegisterStore();
 
   const [editEmail, setEditEmail] = useState<boolean>(false);
-  const [openTerms, setOpenTerms] = useState<boolean>(false);
-  const [editPhoneNumber, setEditPhoneNumber] = useState<boolean>(false);
 
-  const schemaEmail = getSchema(['email']);
-  const schemaPhoneNumber = getSchema(['phoneNumber']);
-  const schema = getSchema(['email', 'terms', 'countryCode', 'phoneNumber']);
+  const [openTerms, setOpenTerms] = useState<boolean>(false);
+
+  const [editPhoneNumber, setEditPhoneNumber] = useState<boolean>(false);
 
   const setTermsValue = useCallback(
     (term: any) => {
@@ -309,7 +315,7 @@ export default function InfoVerification() {
                 <Typography
                   variant="body2"
                   sx={{
-                    maxWidth: { xs: 230, sm: 'max-content' },
+                    maxWidth: { xs: 180, sm: 'max-content' },
                     overflow: 'hidden',
                     whiteSpace: 'nowrap',
                     textOverflow: 'ellipsis',

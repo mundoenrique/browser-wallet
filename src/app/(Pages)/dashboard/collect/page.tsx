@@ -2,28 +2,46 @@
 
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
 //Internal app
+import { api } from '@/utils/api';
 import { GroupIcon } from '%/Icons';
 import { getSchema } from '@/config';
 import SuccessCards from './partial/SuccessCards';
-import wallets from '%/images/suppliers/wallets.png';
+import Wallets from '%/images/suppliers/wallets.png';
 import SuccessWallets from './partial/SuccessWallets';
-import franchises from '%/images/suppliers/franchises.png';
+import Franchises from '%/images/suppliers/franchises.png';
 import { ContainerLayout, InputText, InputTextPay } from '@/components';
-import { useMenuStore, useNavTitleStore, useClientStore } from '@/store';
+import { useMenuStore, useNavTitleStore, useClientStore, useUserStore, useCollectStore, useUiStore } from '@/store';
 
 export default function Collect() {
-  const [showActionBtn, setShowActionBtn] = useState<string>('');
-  const { updateTitle } = useNavTitleStore();
-  const { setCurrentItem } = useMenuStore();
-  const { client } = useClientStore();
   const schema = getSchema(['nameClient', 'numberClient', 'amount']);
+
+  const { client } = useClientStore();
+
+  const { setCurrentItem } = useMenuStore();
+
+  const { updateTitle } = useNavTitleStore();
+
+  const userId = useUserStore((state) => state.user.userId);
+
+  const setLoad = useCollectStore((state) => state.setLoad);
+
+  const loadingScreen = useUiStore((state) => state.loadingScreen);
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const setLinkData = useCollectStore((state) => state.setLinkData);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
+  const [showActionBtn, setShowActionBtn] = useState<string>('');
 
   const {
     control,
+    getValues,
     handleSubmit,
     reset,
     setValue: setValueClient,
@@ -49,8 +67,36 @@ export default function Collect() {
     cards: <SuccessCards />,
   };
 
+  const generateCharge = useCallback(async () => {
+    setLoadingScreen(true);
+    const payload = {
+      fullName: getValues('nameClient'),
+      phoneNumber: getValues('numberClient'),
+      operationCode: 'DESTINATION_CHARGE',
+      providerCode: showActionBtn === 'wallets' ? 'PAGO_EFECTIVO' : 'CYBERSOURCE',
+      currencyCode: 'PEN',
+      amount: getValues('amount'),
+    };
+    await api
+      .post(`/payments/${userId}/charge`, payload)
+      .then((response) => {
+        setLinkData(response.data.data);
+      })
+      .catch((e) => {
+        setModalError({ error: e });
+        setLoadingScreen(false);
+        setShowActionBtn('');
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+        reset();
+      });
+  }, [setLoadingScreen, getValues, showActionBtn, userId, setLinkData, setModalError, reset]);
+
   const onSubmit = async (data: any, e: any) => {
     e.preventDefault();
+
+    setLoad({ name: data.nameClient, phoneNumber: data.numberClient });
 
     if (e.nativeEvent.submitter.id === 'wallets') {
       setShowActionBtn('wallets');
@@ -59,9 +105,13 @@ export default function Collect() {
     if (e.nativeEvent.submitter.id === 'cards') {
       setShowActionBtn('cards');
     }
-
-    reset();
   };
+
+  useEffect(() => {
+    if (showActionBtn) {
+      generateCharge();
+    }
+  }, [generateCharge, reset, showActionBtn]);
 
   return (
     <>
@@ -89,17 +139,17 @@ export default function Collect() {
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button variant="payment" type="submit" sx={{ width: 144, p: 2 }} id="wallets">
               Billetera digital, Banco o agencia
-              <Image src={wallets} alt="Billetas y bancos" priority />
+              <Image src={Wallets} alt="Billetas y bancos" priority />
             </Button>
             <Button variant="payment" type="submit" sx={{ width: 144, p: 2 }} id="cards">
               Tarjeta de crédito o débito
-              <Image src={franchises} alt="Billetas y bancos" priority />
+              <Image src={Franchises} alt="Billetas y bancos" priority />
             </Button>
           </Box>
         </Box>
       </ContainerLayout>
 
-      {rcViews[showActionBtn]}
+      {!loadingScreen && rcViews[showActionBtn]}
     </>
   );
 }

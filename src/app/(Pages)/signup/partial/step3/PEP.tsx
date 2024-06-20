@@ -21,17 +21,24 @@ const options: any = [
 
 export default function PEP() {
   const maxDate = dayjs();
+
   const minDate = maxDate.subtract(10, 'years');
 
   const { setLoadingScreen, setModalError } = useUiStore();
+
   const { dec, inc, updateFormState, ONB_PHASES_PEP, setShowHeader, onboardingUuId } = useRegisterStore();
+
   const { updateCatalog, departamentsCatalog, provincesCatalog, districtsCatalog, documentTypesCatalog } =
     useCatalogsStore();
 
   const [isPep, setIsPep] = useState<boolean>(false);
+
   const [parentIndex, setParentIndex] = useState<number>(-1);
+
   const [hasParents, setHasParents] = useState<boolean>(false);
+
   const [showPepInfo, setShowPepInfo] = useState<boolean>(false);
+
   const [showParentModal, setShowParentModal] = useState<boolean>(false);
 
   const schema = isPep ? getSchema(['isPep', 'pepForm', 'relatives']) : getSchema(['isPep']);

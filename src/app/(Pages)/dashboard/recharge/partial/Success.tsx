@@ -1,13 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
+import { useCollectStore } from '@/store';
 import { ModalRecharge } from './ModalRecharge';
 import { CardPagoEfectivo, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
 export default function Success() {
   const [showModal, setShowModal] = useState<boolean>(false);
+
+  const linkData = useCollectStore((state) => state.linkData);
+
+  const [url, setUrl] = useState<string>(linkData?.url ?? '');
+
+  const [providerPaymentCode, setProviderPaymentCode] = useState<string>(linkData?.providerPaymentCode ?? '');
+
+  useEffect(() => {
+    setProviderPaymentCode(linkData?.providerPaymentCode ?? '');
+    setUrl(linkData?.url ?? '');
+  }, [linkData]);
 
   return (
     <>
@@ -22,7 +34,7 @@ export default function Success() {
           <Typography color="white" fontSize={14}>
             Recarga a través de Pago Efectivo por una de estas 2 opciones:
           </Typography>
-          <CardPagoEfectivo cip="112399768" label="Guardar código QR" download>
+          <CardPagoEfectivo cip={providerPaymentCode} label="Guardar código QR" download>
             <Button variant="underline" sx={{ mb: 2, fontSize: 16 }} onClick={() => setShowModal(true)}>
               ¿Cómo realizar la recarga?
             </Button>

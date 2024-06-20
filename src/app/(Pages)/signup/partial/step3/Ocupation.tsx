@@ -15,7 +15,9 @@ export default function Ocupation() {
   const [ocupations, setOcupations] = useState<boolean>(false);
 
   const { updateCatalog, occupationCatalog } = useCatalogsStore();
+
   const { setLoadingScreen, loadingScreen, setModalError } = useUiStore();
+
   const { updateStep, inc, updateFormState, ONB_PHASES_CONSULT_DATA, onboardingUuId } = useRegisterStore();
 
   const schema = ocupations

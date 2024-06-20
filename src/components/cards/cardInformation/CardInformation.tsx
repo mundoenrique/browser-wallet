@@ -39,35 +39,35 @@ const cardTypeQuery = (cardType: string) => {
 export default function CardInformation() {
   const [open, setOpen] = useState<boolean>(false);
 
-  const [showDetails, setShowDetails] = useState<boolean>(false);
-
-  const getUserCardId = useUserStore((state) => state.getUserCardId);
-
-  const { userId } = useUserStore((state) => state.user);
+  const resetOtp = useOtpStore((state) => state.reset);
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
-  const resetOtp = useOtpStore((state) => state.reset);
+  const { userId } = useUserStore((state) => state.user);
 
   const setModalError = useUiStore((state) => state.setModalError);
 
-  const setReloadFunction = useUiStore((state) => state.setReloadFunction);
+  const getUserCardId = useUserStore((state) => state.getUserCardId);
 
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
+  const setReloadFunction = useUiStore((state) => state.setReloadFunction);
 
   const updateCardInfo = useConfigCardStore((state) => state.updateCardInfo);
 
   const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
 
-  const [cardData, setCardData] = useState<{ [key: string]: any } | null>(null);
+  const [showDetails, setShowDetails] = useState<boolean>(false);
 
-  const [cardbackData, setCardBackData] = useState<{ [key: string]: string } | null>(null);
+  const [balanceError, setBalanceError] = useState<boolean>(false);
+
+  const [cardData, setCardData] = useState<{ [key: string]: any } | null>(null);
 
   const [balance, setBalance] = useState<{ [key: string]: string } | null>(null);
 
   const [cardInformationError, setCardInformationError] = useState<boolean>(false);
 
-  const [balanceError, setBalanceError] = useState<boolean>(false);
+  const [cardbackData, setCardBackData] = useState<{ [key: string]: string } | null>(null);
 
   const handleShowDetaild = () => {
     setOpen(true);
