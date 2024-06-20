@@ -191,11 +191,11 @@ export default function Transfer() {
       api
         .post(`/users/${userId}/validate/tfa`, payload)
         .then((response) => {
-          //if (response.data.code === '200.00.000') {
-          setOpenModalOtp(false);
-          resetOtp();
-          handleConfirmation();
-          //}
+          if (response.data.code === '200.00.000') {
+            setOpenModalOtp(false);
+            resetOtp();
+            handleConfirmation();
+          }
         })
         .catch((e) => {
           setModalError({ error: e });
