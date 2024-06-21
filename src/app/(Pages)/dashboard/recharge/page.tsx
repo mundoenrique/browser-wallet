@@ -10,6 +10,7 @@ import { getSchema } from '@/config';
 import Success from './partial/Success';
 import { ContainerLayout, InputTextPay } from '@/components';
 import { useNavTitleStore, useMenuStore, useUserStore, useCollectStore, useUiStore } from '@/store';
+import { formatAmount } from '@/utils/toolHelper';
 
 export default function Recharge() {
   const schema = getSchema(['amount']);
@@ -52,7 +53,7 @@ export default function Recharge() {
       operationCode: 'DIRECT_CHARGE',
       providerCode: 'PAGO_EFECTIVO',
       currencyCode: 'PEN',
-      amount: getValues('amount'),
+      amount: formatAmount(getValues('amount')),
     };
     await api
       .post(`/payments/${userId}/charge`, payload)
