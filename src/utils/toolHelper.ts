@@ -15,19 +15,6 @@ export function stringAvatar(name: string) {
 }
 
 /**
- * Copies the specified text to the clipboard using the `navigator.clipboard.writeText` method.
- *
- * @param text - The text to be copied to the clipboard.
- */
-export const copyToClipboard = async (text: any) => {
-  try {
-    await navigator.clipboard.writeText(text);
-  } catch (error) {
-    // console.error('Error copying text:', error);
-  }
-};
-
-/**
  * Handles the download of an image based on the specified parameters.
  *
  * @param element - The HTML element to be captured as an image.
@@ -82,7 +69,7 @@ export const handleShare = async (element: HTMLElement, shareData: any, backgrou
 };
 
 export const encryptForge = (data: any) => {
-  const key: string = process.env.NEXT_PUBLIC_AES_KEY || '';
+  const key: string = process.env.NEXT_PUBLIC_AES_KEY ?? '';
 
   const iv = new Uint8Array(16);
 
@@ -102,7 +89,7 @@ export const encryptForge = (data: any) => {
 };
 
 export const decryptForge = (encryptedData: any) => {
-  const key: string = process.env.NEXT_PUBLIC_AES_KEY || '';
+  const key: string = process.env.NEXT_PUBLIC_AES_KEY ?? '';
 
   const iv = new Uint8Array(16);
 

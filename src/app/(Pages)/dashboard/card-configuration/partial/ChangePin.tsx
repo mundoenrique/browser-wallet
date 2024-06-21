@@ -12,10 +12,13 @@ import { ContainerLayout, InputPass, Linking, ModalResponsive } from '@/componen
 
 export default function ChangePin() {
   const { updateTitle } = useNavTitleStore();
+
   const { updatePage } = useConfigCardStore();
 
   const [openRc, setOpenRc] = useState<boolean>(false);
+
   const [openOtp, setOpenOtp] = useState<boolean>(false);
+
   const schemaFormPassword = getSchema(['newPin', 'confirmPin']);
 
   const { control, handleSubmit, reset } = useForm({

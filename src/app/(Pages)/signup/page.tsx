@@ -10,6 +10,7 @@ import {
   InfoVerification,
   CelularValidation,
   PasswordCreation,
+  ErrorPage,
 } from './partial';
 
 export default function Signup() {

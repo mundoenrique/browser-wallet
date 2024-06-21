@@ -9,9 +9,9 @@ import { PurpleLayout } from '@/components';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function Error() {
-  const setView = useDebStore((state) => state.setView);
-
   const error = useDebStore((state) => state.error);
+
+  const setView = useDebStore((state) => state.setView);
 
   const setErrorsParams = () => {
     if (error?.code === '400.00.395') {

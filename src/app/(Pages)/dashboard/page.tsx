@@ -14,13 +14,13 @@ import CardInformation from '@/components/cards/cardInformation/CardInformation'
 export default function Dashboard() {
   const { push } = useRouter();
 
+  const { getUserCardId } = useUserStore();
+
   const setDebt = useDebStore((state) => state.setDebt);
 
   const { userId } = useUserStore((state) => state.user);
 
   const setModalError = useUiStore((state) => state.setModalError);
-
-  const { getUserCardId } = useUserStore();
 
   const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
 
