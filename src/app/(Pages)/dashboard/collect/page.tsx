@@ -46,6 +46,7 @@ export default function Collect() {
     handleSubmit,
     reset,
     setValue: setValueClient,
+    setError,
   } = useForm({
     defaultValues: { nameClient: '', numberClient: '', amount: '' },
     resolver: yupResolver(schema),
@@ -96,6 +97,19 @@ export default function Collect() {
 
   const onSubmit = async (data: any, e: any) => {
     e.preventDefault();
+
+    const validate = {
+      min: parseFloat(data.amount) < 1,
+      max: parseFloat(data.amount) > 4950,
+    };
+
+    if (validate.min || validate.max) {
+      validate.min && setError('amount', { type: 'customError', message: 'El monto debe ser mayor a 1.00' });
+
+      validate.max && setError('amount', { type: 'customError', message: 'El monto debe ser menor a 4950' });
+
+      return;
+    }
 
     setLoad({ name: data.nameClient, phoneNumber: data.numberClient });
 

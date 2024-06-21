@@ -40,7 +40,7 @@ export default function Recharge() {
     setCurrentItem('recharge');
   }, [updateTitle, setCurrentItem]);
 
-  const { control, handleSubmit, getValues } = useForm({
+  const { control, handleSubmit, getValues, setError } = useForm({
     defaultValues: { amount: '' },
     resolver: yupResolver(schema),
   });
@@ -70,7 +70,19 @@ export default function Recharge() {
       });
   }, [setLoadingScreen, firstName, firstLastName, getUserPhone, getValues, userId, setLinkData, setModalError]);
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: any) => {
+    const validate = {
+      min: parseFloat(data.amount) < 1,
+      max: parseFloat(data.amount) > 4950,
+    };
+
+    if (validate.min || validate.max) {
+      validate.min && setError('amount', { type: 'customError', message: 'El monto debe ser mayor a 1.00' });
+
+      validate.max && setError('amount', { type: 'customError', message: 'El monto debe ser menor a 4950' });
+
+      return;
+    }
     await generateCharge();
   };
 
