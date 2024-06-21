@@ -101,9 +101,9 @@ export const validationRules: ValidationRule = {
   nameClient: yup
     .string()
     .required('Campo obligatorio')
-    .test('nameClientValid', 'Ingrese un nombre valido', (value) => regularExpressions.alphaName?.test(value)),
+    .test('nameClientValid', 'Ingrese un nombre válido', (value) => regularExpressions.alphaName?.test(value)),
   numberClient: yup
     .string()
     .required('Campo obligatorio')
-    .test('numberClientValid', 'Ingrese un teléfono valido', (value) => regularExpressions.phone?.test(value)),
+    .test('numberClientValid', 'Ingrese un teléfono válido', (value) => regularExpressions.phone?.test(value)),
 };

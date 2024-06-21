@@ -31,7 +31,6 @@ export default function Survey() {
   });
 
   const onSubmit = async (data: any) => {
-    console.log('🚀 ~ onSubmit ~ data:', data);
     setOpenOtp(true);
   };
 
