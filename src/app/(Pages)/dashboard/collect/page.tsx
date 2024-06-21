@@ -15,6 +15,7 @@ import SuccessWallets from './partial/SuccessWallets';
 import Franchises from '%/images/suppliers/franchises.png';
 import { ContainerLayout, InputText, InputTextPay } from '@/components';
 import { useMenuStore, useNavTitleStore, useClientStore, useUserStore, useCollectStore, useUiStore } from '@/store';
+import { formatAmount } from '@/utils/toolHelper';
 
 export default function Collect() {
   const schema = getSchema(['nameClient', 'numberClient', 'amount']);
@@ -75,7 +76,7 @@ export default function Collect() {
       operationCode: 'DESTINATION_CHARGE',
       providerCode: showActionBtn === 'wallets' ? 'PAGO_EFECTIVO' : 'CYBERSOURCE',
       currencyCode: 'PEN',
-      amount: getValues('amount'),
+      amount: formatAmount(getValues('amount')),
     };
     await api
       .post(`/payments/${userId}/charge`, payload)
