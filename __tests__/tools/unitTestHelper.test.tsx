@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
 /**
@@ -48,20 +49,11 @@ function togglePasswordVisibility(passwordInput: HTMLInputElement, toggleButton:
   waitFor(() => expect(passwordInput).toHaveAttribute('type', 'password'));
 }
 
-//** Function to format password.
-// async function passwordFormat(input: any) {
-//   const passwordInput = screen.getByLabelText(input);
-//   fireEvent.change(passwordInput, { target: { value: '123' } });
-//   await waitFor(() => expect(screen.getByText(/la contraseña debe tener 6 caracteres/i)).toBeInTheDocument());
+/**
+ * Function to mock next-navigation
+ */
+function mockRouterPush(routerPushMock: any) {
+  (useRouter as jest.Mock).mockReturnValue({ push: routerPushMock });
+}
 
-//   fireEvent.change(passwordInput, { target: { value: '123' } });
-//   await waitFor(() => expect(screen.getByText(/contraseña invalida/i)).toBeInTheDocument());
-
-//   const isValid = regularExpressions.password?.test('123456');
-//   // Check if validation error is displayed
-//   if (!isValid) {
-//     expect(screen.getByText(/contraseña invalida/i)).toBeInTheDocument();
-//   }
-// };
-
-export { renderInput, emptyField, togglePasswordVisibility, redirectLinks };
+export { renderInput, emptyField, togglePasswordVisibility, redirectLinks, mockRouterPush };
