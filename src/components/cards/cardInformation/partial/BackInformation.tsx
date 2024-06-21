@@ -1,11 +1,11 @@
 'use client';
 
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { Box, Chip, Divider, IconButton, Stack, Typography } from '@mui/material';
 //Internal app
 import { CopyIcons } from '%/Icons';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { BackInformationProps } from '@/interfaces';
-import { copyToClipboard } from '@/utils/toolHelper';
 
 /**
  * Shows information on the back of the 3D card
@@ -58,15 +58,11 @@ export default function BackInformation(props: BackInformationProps): JSX.Elemen
           <Typography variant="body2">Número de tarjeta</Typography>
           <Typography variant="subtitle2" color={fuchsiaBlue[700]}>
             {cardNumber}
-            <IconButton
-              aria-label="delete"
-              sx={{ color: fuchsiaBlue[700], py: 0 }}
-              onClick={() => {
-                copyToClipboard(cardNumber);
-              }}
-            >
-              <CopyIcons />
-            </IconButton>
+            <CopyToClipboard text={cardNumber}>
+              <IconButton aria-label="delete" size="small" sx={{ p: 0, ml: 1 }}>
+                <CopyIcons sx={{ color: 'primary.main' }} />
+              </IconButton>
+            </CopyToClipboard>
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 3 }}>

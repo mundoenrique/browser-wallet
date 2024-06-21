@@ -13,10 +13,11 @@ import animation2 from '%/images/animation2.svg';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
 export default function Ending() {
-  const { setShowHeader } = useRegisterStore();
-  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-
   const { replace } = useRouter();
+
+  const { setShowHeader } = useRegisterStore();
+
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
   useEffect(() => {
     let timer = setInterval(() => {});
