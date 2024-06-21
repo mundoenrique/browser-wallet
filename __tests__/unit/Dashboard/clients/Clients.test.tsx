@@ -1,28 +1,18 @@
-import { useRouter } from 'next/navigation';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
 import Clients from '@/app/(Pages)/dashboard/clients/page';
 import { createMockRouter } from '@/utils/mocks';
-
-const routerPushMock = jest.fn();
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-}));
-
-jest.mock('jose', () => {
-  return {
-    compactDecrypt: jest.fn(() => {
-      return { plaintext: 'mocked plaintext' };
-    }),
-  };
-});
+import { mockRouterPush } from '../../../tools/unitTestHelper.test';
 
 describe('Clients', () => {
   let router = createMockRouter({});
+  const routerPushMock = jest.fn();
 
-  beforeEach(() => {
-    (useRouter as jest.Mock).mockReturnValue({ push: routerPushMock });
-    render(<Clients />);
+  beforeEach(async () => {
+    mockRouterPush(routerPushMock)
+    await act(async () => {
+      render(<Clients />);
+    });
     expect(render).toBeTruthy();
   });
 
