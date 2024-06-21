@@ -7,7 +7,10 @@ const createJestConfig = nextJest({
 
 const config: Config = {
   testEnvironment: 'jest-environment-jsdom',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  setupFilesAfterEnv: [
+    '<rootDir>/jest.setup.ts',
+    '<rootDir>/__tests__/mocks/mocks.ts'
+  ],
   clearMocks: true,
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
@@ -27,6 +30,7 @@ const config: Config = {
   coveragePathIgnorePatterns: ['<rootDir>/public/', '<rootDir>/node_modules/'],
   reporters: ['default', ['jest-junit', { outputDirectory: 'coverage/junit' }]],
   testPathIgnorePatterns: [
+    '<rootDir>/__tests__/mocks/',
     '<rootDir>/__tests__/tools/',
     '<rootDir>/__tests__/unit/Dashboard/change-password',
     '<rootDir>/__tests__/unit/Dashboard/clients',
