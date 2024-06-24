@@ -5,11 +5,12 @@ import { mockRouterPush } from '../../../tools/unitTestHelper.test';
 
 describe('Help', () => {
   const routerPushMock = jest.fn();
+  const handleWhatsappMock = jest.fn();
 
   beforeEach(async () => {
     mockRouterPush(routerPushMock)
     await act(async () => {
-      render(<Help />);
+      render(<Help handleWhatsapp={handleWhatsappMock}/>);
     });
     expect(render).toBeTruthy();
   });
@@ -23,5 +24,13 @@ describe('Help', () => {
     expect(screen.getByText(/centro de ayuda/i)).toBeInTheDocument();
     expect(screen.getByText('Lima o extranjero (511) 707 6080 y Provincia 0800 80700')).toBeInTheDocument();
     expect(screen.getByText(/soporte/i)).toBeInTheDocument();
+  });
+
+  it('calls handleWhatsapp function when WhatsApp HandleCard is clicked', () => {
+    window.open = jest.fn();
+    const whatsappHandleCard = screen.getByText('Contáctanos por WhatsApp');
+    expect(screen.getByText(/contáctanos por WhatsApp/i)).toBeInTheDocument();
+    fireEvent.click(whatsappHandleCard);
+    expect(window.open).toHaveBeenCalledWith('https://api.whatsapp.com/send?phone=51997535474', '_blank');
   });
 });
