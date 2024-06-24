@@ -4,14 +4,18 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Stack, Typography } from '@mui/material';
 import Email from '@mui/icons-material/EmailOutlined';
+import { sendGTMEvent } from '@next/third-parties/google';
 import Questions from '@mui/icons-material/HelpOutlineOutlined';
 //Internal app
 import { CallIcon, WhatsappIcon } from '%/Icons';
-import { useNavTitleStore, useMenuStore } from '@/store';
 import { ContainerLayout, HandleCard } from '@/components';
+import { useNavTitleStore, useMenuStore, useHeadersStore } from '@/store';
 
 export default function Help() {
-  // const { push } = useRouter();
+  // const { push } = useRouter()
+
+  const { host } = useHeadersStore();
+
   const { setCurrentItem } = useMenuStore();
 
   const { updateTitle } = useNavTitleStore();
@@ -22,12 +26,37 @@ export default function Help() {
 
   const handleWhatsapp = () => {
     window.open('https://api.whatsapp.com/send?phone=51997535474', '_blank');
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'Yiro :: ayuda',
+        previous_section: 'dashboard',
+        selected_content: 'Contáctanos por WhatsApp',
+        destination_page: `https://api.whatsapp.com/send?phone=51997535474`,
+      },
+    });
   };
 
   useEffect(() => {
     updateTitle('Ayuda');
     setCurrentItem('help');
   }, [updateTitle, setCurrentItem]);
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/help`,
+        page_title: 'Yiro :: ayuda',
+        page_referrer: `${host}/dashboard`,
+        section: 'Yiro :: ayuda',
+        previous_section: 'dashboard',
+      },
+    });
+  }, [host]);
 
   return (
     <ContainerLayout>

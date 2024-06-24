@@ -3,16 +3,19 @@
 import { useRouter } from 'next/navigation';
 import { Box, Typography } from '@mui/material';
 import { useEffect, useState, useCallback } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { api } from '@/utils/api';
 import { ICardDebt } from '@/interfaces';
 import { expiredFormatDate } from '@/utils/dates';
 import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
-import { useDebStore, useMenuStore, useUiStore, useUserStore } from '@/store';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
+import { useDebStore, useHeadersStore, useMenuStore, useUiStore, useUserStore } from '@/store';
 
 export default function Dashboard() {
   const { push } = useRouter();
+
+  const { host } = useHeadersStore();
 
   const { getUserCardId } = useUserStore();
 
@@ -122,6 +125,20 @@ export default function Dashboard() {
     getCharge();
   }, []); //eslint-disable-line
 
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard`,
+        page_title: 'dashboard',
+        page_referrer: `${host}/signin`,
+        section: 'dashboard',
+        previous_section: 'Yiro :: login :: interno',
+      },
+    });
+  }, [host]);
+
   return (
     <Box
       sx={{
@@ -170,6 +187,17 @@ export default function Dashboard() {
                 data={cardMyDebt}
                 onClick={() => {
                   push('/dashboard/debt');
+                  sendGTMEvent({
+                    event: 'ga4.trackEvent',
+                    eventName: 'select_content',
+                    eventParams: {
+                      content_type: 'boton',
+                      section: 'Yiro :: dashboard',
+                      previous_section: 'Yiro :: login :: interno',
+                      selected_content: 'Me deben',
+                      destination_page: `${host}/dashboard/debt`,
+                    },
+                  });
                 }}
               />
               <CardDebt
@@ -177,6 +205,17 @@ export default function Dashboard() {
                 OweMe
                 onClick={() => {
                   push('/dashboard/clients');
+                  sendGTMEvent({
+                    event: 'ga4.trackEvent',
+                    eventName: 'select_content',
+                    eventParams: {
+                      content_type: 'boton',
+                      section: 'Yiro :: dashboard',
+                      previous_section: 'Yiro :: login :: interno',
+                      selected_content: 'Mi deuda con ésika',
+                      destination_page: `${host}/dashboard/clients`,
+                    },
+                  });
                 }}
               />
             </Box>
@@ -190,6 +229,19 @@ export default function Dashboard() {
                   mb={0}
                   hidenArrow
                   underline
+                  onClick={() => {
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'select_content',
+                      eventParams: {
+                        content_type: 'boton',
+                        section: 'Yiro :: dashboard',
+                        previous_section: 'Yiro :: login :: interno',
+                        selected_content: 'Ver todo',
+                        destination_page: `${host}/dashboard/movements`,
+                      },
+                    });
+                  }}
                 />
               ) : (
                 <Typography variant="subtitle1" color={'grey'} fontWeight={700} fontSize={'12px'}>

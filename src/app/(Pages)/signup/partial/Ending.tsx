@@ -4,20 +4,37 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Zoom } from '@mui/material';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import LogoGreen from '%/images/LogoGreen';
-import { useRegisterStore } from '@/store';
 import { PurpleLayout } from '@/components';
 import animation1 from '%/images/animation1.svg';
 import animation2 from '%/images/animation2.svg';
 import { fuchsiaBlue } from '@/theme/theme-default';
+import { useHeadersStore, useRegisterStore } from '@/store';
 
 export default function Ending() {
   const { replace } = useRouter();
 
+  const { host } = useHeadersStore();
+
   const { setShowHeader } = useRegisterStore();
 
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/signup`,
+        page_title: 'Yiro :: onboarding :: finalStep',
+        page_referrer: `${host}/identify`,
+        section: 'Yiro :: onboarding :: finalStep',
+        previous_section: 'Yiro :: onboarding :: step4 :: createPassword',
+      },
+    });
+  }, [host]);
 
   useEffect(() => {
     let timer = setInterval(() => {});

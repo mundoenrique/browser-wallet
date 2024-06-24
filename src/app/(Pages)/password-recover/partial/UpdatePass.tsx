@@ -1,15 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Typography } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
 import { useRouter } from 'next/navigation';
 import { encryptForge } from '@/utils/toolHelper';
-import { useUiStore, useUserStore } from '@/store';
 import { FormPass, ModalResponsive } from '@/components';
+import { sendGTMEvent } from '@next/third-parties/google';
+import { useHeadersStore, useUiStore, useUserStore } from '@/store';
 
 export default function UpdatePass() {
+  const { host } = useHeadersStore();
+
   const {
     user: { userId },
   } = useUserStore();
@@ -18,6 +21,20 @@ export default function UpdatePass() {
   const [open, setOpen] = useState<boolean>(false);
 
   const { push } = useRouter();
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/password-recover`,
+        page_title: 'Yiro :: recuperarContraseña :: crearContraseña',
+        page_referrer: `${host}/signin`,
+        section: 'Yiro :: recuperarContraseña :: crearContraseña',
+        previous_section: 'Yiro :: recuperarContraseña :: código',
+      },
+    });
+  }, [host]);
 
   const onSubmit = async (data: any) => {
     const { newPasswordConfirmation } = data;
@@ -43,6 +60,17 @@ export default function UpdatePass() {
     setOpen(false);
     setLoadingScreen(false);
     push('/signin');
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'message',
+        section: 'Yiro :: recuperarContraseña :: codigo',
+        previous_section: 'Yiro :: login :: interno',
+        selected_content: '!Nueva contraseña!',
+        destination_page: `${host}/signin`,
+      },
+    });
   };
 
   return (
@@ -64,7 +92,24 @@ export default function UpdatePass() {
           </>
         }
         buttons={
-          <Button variant="primary" type="submit" sx={{ maxWidth: 284, width: '100%' }}>
+          <Button
+            variant="primary"
+            type="submit"
+            sx={{ maxWidth: 284, width: '100%' }}
+            onClick={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: 'Yiro :: recuperarContraseña :: crearContraseña',
+                  previous_section: 'Yiro :: recuperarContraseña :: codigo',
+                  selected_content: 'Guardar',
+                  destination_page: `${host}/password-recover`,
+                },
+              });
+            }}
+          >
             Guardar
           </Button>
         }

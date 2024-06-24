@@ -5,13 +5,14 @@ import { useEffect, useState } from 'react';
 import Info from '@mui/icons-material/InfoOutlined';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, useFieldArray } from 'react-hook-form';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, Button, Collapse, Link as LinkMui, Typography } from '@mui/material';
 //Internal app
 import { CardStep } from '..';
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import { slate } from '@/theme/theme-default';
-import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
+import { useRegisterStore, useUiStore, useCatalogsStore, useHeadersStore } from '@/store';
 import { InputCheckCondition, InputDatePicker, InputSelect, InputText, ModalResponsive } from '@/components';
 
 const options: any = [
@@ -23,6 +24,8 @@ export default function PEP() {
   const maxDate = dayjs();
 
   const minDate = maxDate.subtract(10, 'years');
+
+  const { host } = useHeadersStore();
 
   const { setLoadingScreen, setModalError } = useUiStore();
 
@@ -42,6 +45,20 @@ export default function PEP() {
   const [showParentModal, setShowParentModal] = useState<boolean>(false);
 
   const schema = isPep ? getSchema(['isPep', 'pepForm', 'relatives']) : getSchema(['isPep']);
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/signup`,
+        page_title: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+        page_referrer: `${host}/identify`,
+        section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+        previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
+      },
+    });
+  }, [host]);
 
   const { control, watch, handleSubmit, setValue, reset } = useForm({
     defaultValues: {
@@ -71,6 +88,20 @@ export default function PEP() {
   const watchProvince = watch('pepForm.provinceCode');
   const watchDepartment = watch('pepForm.departmentCode');
   const WatchIsRelativeAlive = watch('pepForm.isRelativeAlive');
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/signup`,
+        page_title: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+        page_referrer: `${host}/identify`,
+        section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+        previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
+      },
+    });
+  }, [host]);
 
   const onSubmit = async (data: any) => {
     const requestFormData = {
@@ -130,8 +161,20 @@ export default function PEP() {
 
   useEffect(() => {
     watchIsPep && setIsPep(watchIsPep.toLowerCase() === 'true');
+    isPep &&
+      sendGTMEvent({
+        event: 'ga4.trackEvent',
+        eventName: 'select_content',
+        eventParams: {
+          page_location: `${host}/signup`,
+          page_title: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
+          page_referrer: `${host}/identify`,
+          section: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
+          previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+        },
+      });
     WatchIsRelativeAlive && setHasParents(WatchIsRelativeAlive.toLowerCase() === 'true');
-  }, [watchIsPep, WatchIsRelativeAlive]);
+  }, [watchIsPep, WatchIsRelativeAlive, isPep, host]);
 
   useEffect(() => {
     setShowHeader(true);
@@ -374,7 +417,24 @@ export default function PEP() {
                 },
               }}
             >
-              <InputCheckCondition name="pepForm.holdShare" options={options} control={control} />
+              <InputCheckCondition
+                name="pepForm.holdShare"
+                options={options}
+                control={control}
+                onClick={() => {
+                  sendGTMEvent({
+                    event: 'ga4.trackEvent',
+                    eventName: 'page_view_ga4',
+                    eventParams: {
+                      content_type: 'checkbox',
+                      section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                      previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
+                      selected_content: isPep ? 'Si' : 'No',
+                      destination_page: `${host}/signup`,
+                    },
+                  });
+                }}
+              />
             </Box>
 
             <Typography variant="body2" align="left" sx={{ mb: 3 }}>
@@ -395,8 +455,30 @@ export default function PEP() {
                 onClick={(e) => {
                   if (e.target.value === 'true') {
                     append({ documentNumber: '', documentType: null, fullName: '' });
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'page_view_ga4',
+                      eventParams: {
+                        content_type: 'checkbox',
+                        section: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
+                        previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                        selected_content: 'Si',
+                        destination_page: `${host}/signup`,
+                      },
+                    });
                   } else {
                     remove();
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'page_view_ga4',
+                      eventParams: {
+                        content_type: 'checkbox',
+                        section: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
+                        previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                        selected_content: 'No',
+                        destination_page: `${host}/signup`,
+                      },
+                    });
                   }
                 }}
               />
@@ -459,6 +541,17 @@ export default function PEP() {
                   }}
                   onClick={() => {
                     append({ documentType: null, documentNumber: '', fullName: '' });
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'select_content',
+                      eventParams: {
+                        content_type: 'boton',
+                        section: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
+                        previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                        selected_content: 'Agregar parientes',
+                        destination_page: `${host}/signup`,
+                      },
+                    });
                   }}
                 >
                   Agregar parientes
@@ -472,19 +565,62 @@ export default function PEP() {
             variant="outlined"
             onClick={() => {
               dec();
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: isPep
+                    ? 'Yiro :: onboarding :: step3 :: 3.4datosPEP'
+                    : 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                  previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
+                  selected_content: 'Anterior',
+                  destination_page: `${host}/signup`,
+                },
+              });
             }}
           >
             Anterior
           </Button>
-          <Button variant="contained" type="submit">
+          <Button
+            variant="contained"
+            type="submit"
+            onClick={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: isPep
+                    ? 'Yiro :: onboarding :: step3 :: 3.4datosPEP'
+                    : 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                  previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
+                  selected_content: 'Siguiente',
+                  destination_page: `${host}/signup`,
+                },
+              });
+            }}
+          >
             Siguiente
           </Button>
         </Box>
       </Box>
+
       <ModalResponsive
         open={showPepInfo}
         handleClose={() => {
           setShowPepInfo(false);
+          sendGTMEvent({
+            event: 'ga4.trackEvent',
+            eventName: 'message',
+            eventParams: {
+              content_type: 'boton',
+              section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+              previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
+              selected_content: '¿Qué es una Persona Expuesta Políticamente(PEP)?',
+              destination_page: `${host}/signup`,
+            },
+          });
         }}
       >
         <Typography variant="subtitle1" sx={{ mb: 2 }}>
@@ -496,6 +632,7 @@ export default function PEP() {
           financieras pueden ser objeto de interés público.
         </Typography>
       </ModalResponsive>
+
       <ModalResponsive
         open={showParentModal}
         handleClose={() => {

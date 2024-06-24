@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { getSchema } from '@/config';
+import { useHeadersStore } from '@/store';
 import { FormPassProps } from '@/interfaces';
 import { Conditions, InputCheck, InputPass, ModalResponsive } from '@/components';
 
@@ -21,7 +23,10 @@ import { Conditions, InputCheck, InputPass, ModalResponsive } from '@/components
  */
 export default function FormPass(porps: FormPassProps): JSX.Element {
   const { onSubmit, description, buttons, register } = porps;
+  const { host } = useHeadersStore();
+
   const [showModal, setShowModal] = useState<boolean>(false);
+
   const schema = register
     ? getSchema(['newPassword', 'newPasswordConfirmation', 'policy'])
     : getSchema(['newPassword', 'newPasswordConfirmation']);
@@ -67,7 +72,21 @@ export default function FormPass(porps: FormPassProps): JSX.Element {
                 </>
               }
               control={control}
-              onClick={() => setShowModal(true)}
+              onClick={() => {
+                setShowModal(true);
+                sendGTMEvent({
+                  event: 'ga4.trackEvent',
+                  eventName: 'select_content',
+                  eventParams: {
+                    content_type: 'checkbox',
+                    section: 'Yiro :: onboarding :: step4 :: createPassword',
+                    previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                    selected_content:
+                      'Acepto y declaro bajo juramento que la información proporcionada es veraz, completa y actualizada, de conformidad con la Ley 29985 y condiciones de Contrato de la cuenta de dinero electrónico.',
+                    destination_page: `${host}/signup`,
+                  },
+                });
+              }}
             />
           )}
         </Box>

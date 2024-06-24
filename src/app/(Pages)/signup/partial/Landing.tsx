@@ -2,14 +2,15 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { Button, Box, Typography, Zoom } from '@mui/material';
 //Internal app
-import { useRegisterStore } from '@/store';
 import LogoPurple from '%/images/LogoPurple';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import animation1 from '%/images/pwa/animation1.png';
 import animation2 from '%/images/pwa/animation2.png';
 import animation3 from '%/images/pwa/animation3.png';
+import { useHeadersStore, useRegisterStore } from '@/store';
 
 const animationState = [
   {
@@ -39,6 +40,8 @@ const animationState = [
 ];
 
 export default function Landing() {
+  const { host } = useHeadersStore();
+
   const { inc, setShowHeader } = useRegisterStore();
 
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
@@ -55,6 +58,20 @@ export default function Landing() {
       clearInterval(timer);
     };
   });
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/signup`,
+        page_title: 'Yiro :: onboarding :: step0',
+        page_referrer: `${host}/identify`,
+        section: 'Yiro :: onboarding :: step0',
+        previous_section: 'identify',
+      },
+    });
+  }, [host]);
 
   useEffect(() => {
     setShowHeader(true);
@@ -99,6 +116,17 @@ export default function Landing() {
           sx={{ width: 320 }}
           onClick={() => {
             inc();
+            sendGTMEvent({
+              event: 'ga4.trackEvent',
+              eventName: 'select_content',
+              eventParams: {
+                content_type: 'boton',
+                section: 'Yiro :: onboarding :: step0',
+                previous_section: 'identify',
+                selected_content: '¡Inicia YA!',
+                destination_page: `${host}/signup`,
+              },
+            });
           }}
         >
           ¡Inicia YA!

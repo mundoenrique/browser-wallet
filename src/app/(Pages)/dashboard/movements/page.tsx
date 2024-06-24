@@ -1,14 +1,14 @@
 'use client';
 
 import dayjs from 'dayjs';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
-import { useUserStore } from '@/store';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { useMenuStore, useNavTitleStore } from '@/store';
 import { InputSelect, LastMovements, Linking, ModalError } from '@/components';
+import { useMenuStore, useNavTitleStore, useHeadersStore, useUserStore } from '@/store';
 
 /**
  * Generates the months that would be used for filtering
@@ -33,6 +33,8 @@ export default function Movements() {
   const theme = useTheme();
 
   const match = useMediaQuery(theme.breakpoints.down('md'));
+
+  const { host } = useHeadersStore();
 
   const { getUserCardId } = useUserStore();
 
@@ -131,6 +133,20 @@ export default function Movements() {
     };
   }, [scrollHandle]);
 
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/movements`,
+        page_title: 'Yiro :: movimientos',
+        page_referrer: `${host}/dashboard`,
+        section: 'Yiro :: movimientos',
+        previous_section: 'dashboard',
+      },
+    });
+  }, [host]);
+
   return (
     <>
       <Box
@@ -177,6 +193,19 @@ export default function Movements() {
             onChange={(e: any, newValue: any) => {
               setFilterMonth(newValue.value);
             }}
+            onClick={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'page_view_ga4',
+                eventParams: {
+                  content_type: 'boton',
+                  section: 'Yiro :: movimientos',
+                  previous_section: 'dashboard',
+                  selected_content: `filtrar_historial :: ${filterMonth}`,
+                  destination_page: `${host}/dashboard/movements`,
+                },
+              });
+            }}
           />
         </Box>
 
@@ -198,6 +227,7 @@ export default function Movements() {
           <LastMovements data={movementData} loading={isLoading} error={isError} />
         </Box>
       </Box>
+
       <ModalError
         title="¡Oops!"
         description={

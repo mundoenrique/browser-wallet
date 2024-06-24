@@ -5,17 +5,20 @@ import Info from '@mui/icons-material/InfoOutlined';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ErrorMessage } from '@hookform/error-message';
 import { useCallback, useEffect, useState } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, Button, Card, Chip, Divider, FormHelperText, Typography, useTheme } from '@mui/material';
 //internal app
 import { CardStep } from '..';
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import { handleMaskOtp } from '@/utils/toolHelper';
-import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
+import { useRegisterStore, useUiStore, useCatalogsStore, useHeadersStore } from '@/store';
 import { InputCheck, InputText, ModalResponsive, InputSelect, Terms } from '@/components';
 
 export default function InfoVerification() {
   const theme = useTheme();
+
+  const { host } = useHeadersStore();
 
   const schemaEmail = getSchema(['email']);
 
@@ -34,6 +37,20 @@ export default function InfoVerification() {
   const [openTerms, setOpenTerms] = useState<boolean>(false);
 
   const [editPhoneNumber, setEditPhoneNumber] = useState<boolean>(false);
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/signup`,
+        page_title: 'Yiro :: onboarding :: step1',
+        page_referrer: `${host}/identify`,
+        section: 'Yiro :: onboarding :: step1',
+        previous_section: 'Yiro :: onboarding :: step0',
+      },
+    });
+  }, [host]);
 
   const setTermsValue = useCallback(
     (term: any) => {
@@ -147,6 +164,17 @@ export default function InfoVerification() {
   const handleModalTerm = (e: any) => {
     e.preventDefault();
     setOpenTerms(true);
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'checkbox',
+        section: 'Yiro :: onboarding :: step1',
+        previous_section: 'Yiro :: onboarding :: step0',
+        selected_content: 'Acepto Términos y Condiciones y Política de Privacidad de Datos',
+        destination_page: `${host}/signup`,
+      },
+    });
   };
 
   //Method for set email value
@@ -296,6 +324,17 @@ export default function InfoVerification() {
                   label="Editar"
                   onClick={() => {
                     setEditPhoneNumber(true);
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'select_content',
+                      eventParams: {
+                        content_type: 'boton',
+                        section: 'Yiro :: onboarding :: step1',
+                        previous_section: 'Yiro :: onboarding :: step0',
+                        selected_content: 'editar_celular',
+                        destination_page: `${host}/signup`,
+                      },
+                    });
                   }}
                 />
               </Box>
@@ -348,6 +387,17 @@ export default function InfoVerification() {
                   label="Editar"
                   onClick={() => {
                     setEditEmail(true);
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'select_content',
+                      eventParams: {
+                        content_type: 'boton',
+                        section: 'Yiro :: onboarding :: step1',
+                        previous_section: 'Yiro :: onboarding :: step0',
+                        selected_content: 'editar_email',
+                        destination_page: `${host}/signup`,
+                      },
+                    });
                   }}
                 />
               </Box>
@@ -370,7 +420,24 @@ export default function InfoVerification() {
             control={control}
             onClick={handleModalTerm}
           />
-          <InputCheck name="policy" label="Autorizo el envío de publicidad" control={control} />
+          <InputCheck
+            name="policy"
+            label="Autorizo el envío de publicidad"
+            control={control}
+            onClick={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'checkbox',
+                  section: 'Yiro :: onboarding :: step1',
+                  previous_section: 'Yiro :: onboarding :: step0',
+                  selected_content: 'Autorizo el envío de publicidad',
+                  destination_page: `${host}/signup`,
+                },
+              });
+            }}
+          />
         </Box>
         <Button
           variant="contained"
@@ -378,6 +445,19 @@ export default function InfoVerification() {
           sx={{ width: { xs: 'auto', sm: 320 }, mb: { xs: 3, sm: 0 }, mx: { sm: 'auto' } }}
           fullWidth
           disabled={loadingScreen}
+          onClick={() => {
+            sendGTMEvent({
+              event: 'ga4.trackEvent',
+              eventName: 'select_content',
+              eventParams: {
+                content_type: 'boton',
+                section: 'Yiro :: onboarding :: step1',
+                previous_section: 'Yiro :: onboarding :: step0',
+                selected_content: 'Continuar',
+                destination_page: `${host}/signup`,
+              },
+            });
+          }}
         >
           Continuar
         </Button>
@@ -396,7 +476,25 @@ export default function InfoVerification() {
             📱 Editar número de celular
           </Typography>
           <InputText name="phoneNumber" label="Ingresa tu nuevo número de celular" control={controlPhoneNumber} />
-          <Button variant="contained" type="submit">
+          <Button
+            variant="contained"
+            type="submit"
+            onClick={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton_modal',
+                  section: 'Yiro :: onboarding :: step1',
+                  previous_section: 'Yiro :: onboarding :: step0',
+                  selected_content: 'Guardar',
+                  destination_page: `${host}/signup`,
+                  pop_up_type: 'flujo',
+                  pop_up_title: 'Editar número de celular',
+                },
+              });
+            }}
+          >
             Guardar
           </Button>
         </Box>
@@ -415,7 +513,25 @@ export default function InfoVerification() {
             ✉️ Editar email
           </Typography>
           <InputText name="email" label="Ingresa tu nuevo email" control={controlEmail} />
-          <Button variant="contained" type="submit">
+          <Button
+            variant="contained"
+            type="submit"
+            onClick={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton_modal',
+                  section: 'Yiro :: onboarding :: step1',
+                  previous_section: 'Yiro :: onboarding :: step0',
+                  selected_content: 'Guardar',
+                  destination_page: `${host}/signup`,
+                  pop_up_type: 'flujo',
+                  pop_up_title: 'Editar email',
+                },
+              });
+            }}
+          >
             Guardar
           </Button>
         </Box>
@@ -425,6 +541,19 @@ export default function InfoVerification() {
         open={openTerms}
         handleClose={() => {
           setOpenTerms(false);
+          sendGTMEvent({
+            event: 'ga4.trackEvent',
+            eventName: 'select_content',
+            eventParams: {
+              content_type: 'boton_modal',
+              section: 'Yiro :: onboarding :: step1 :: terminosYCondiciones',
+              previous_section: 'Yiro :: onboarding :: step1',
+              selected_content: 'Cerrar',
+              destination_page: `${host}/signup`,
+              pop_up_type: 'flujo',
+              pop_up_title: 'Terminos y condiciones',
+            },
+          });
         }}
         sx={{
           width: { sm: '90vw', xs: '100%' },

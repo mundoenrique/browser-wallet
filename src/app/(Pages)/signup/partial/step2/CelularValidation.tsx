@@ -3,6 +3,7 @@
 import Info from '@mui/icons-material/InfoOutlined';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Button, FormHelperText, Snackbar, Typography } from '@mui/material';
@@ -11,10 +12,12 @@ import { CardStep } from '..';
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import { encryptForge, handleMaskOtp } from '@/utils/toolHelper';
-import { useOtpStore, useRegisterStore, useUiStore } from '@/store';
+import { useHeadersStore, useOtpStore, useRegisterStore, useUiStore } from '@/store';
 
 export default function CelularValidation() {
   const schema = getSchema(['otp']);
+
+  const { host } = useHeadersStore();
 
   const resetOtp = useOtpStore((state) => state.reset);
 
@@ -34,6 +37,20 @@ export default function CelularValidation() {
     defaultValues: { otp: '' },
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/signup`,
+        page_title: 'Yiro :: onboarding :: step2',
+        page_referrer: `${host}/identify`,
+        section: 'Yiro :: onboarding :: step2',
+        previous_section: 'Yiro :: onboarding :: step1',
+      },
+    });
+  }, [host]);
 
   const requestTFACode = useCallback(async () => {
     api
@@ -171,6 +188,17 @@ export default function CelularValidation() {
                 setCounting(true);
                 reset();
                 setOpen(!open);
+                sendGTMEvent({
+                  event: 'ga4.trackEvent',
+                  eventName: 'select_content',
+                  eventParams: {
+                    content_type: 'boton',
+                    section: 'Yiro :: onboarding :: step2',
+                    previous_section: 'Yiro :: onboarding :: step1',
+                    selected_content: 'Reenviar código',
+                    destination_page: `${host}/signup`,
+                  },
+                });
               }}
               sx={{ color: 'primary.main', height: 20 }}
               disabled={timeLeft === 0 ? false : true}
@@ -194,11 +222,38 @@ export default function CelularValidation() {
               variant="outlined"
               onClick={() => {
                 dec();
+                sendGTMEvent({
+                  event: 'ga4.trackEvent',
+                  eventName: 'select_content',
+                  eventParams: {
+                    content_type: 'boton',
+                    section: 'Yiro :: onboarding :: step2',
+                    previous_section: 'Yiro :: onboarding :: step1',
+                    selected_content: 'Anterior',
+                    destination_page: `${host}/signup`,
+                  },
+                });
               }}
             >
               Anterior
             </Button>
-            <Button variant="primary" type="submit">
+            <Button
+              variant="primary"
+              type="submit"
+              onClick={() => {
+                sendGTMEvent({
+                  event: 'ga4.trackEvent',
+                  eventName: 'select_content',
+                  eventParams: {
+                    content_type: 'boton',
+                    section: 'Yiro :: onboarding :: step2',
+                    previous_section: 'Yiro :: onboarding :: step1',
+                    selected_content: 'Siguiente',
+                    destination_page: `${host}/signup`,
+                  },
+                });
+              }}
+            >
               Siguiente
             </Button>
           </Box>
