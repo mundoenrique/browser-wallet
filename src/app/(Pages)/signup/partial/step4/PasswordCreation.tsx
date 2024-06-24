@@ -15,7 +15,7 @@ export default function PasswordCreation() {
 
   const { setModalError, setLoadingScreen } = useUiStore();
 
-  const { dec, setShowHeader, onboardingUuId } = useRegisterStore();
+  const { updateStep, setShowHeader, onboardingUuId } = useRegisterStore();
 
   const { updateCatalog, passwordTermsCatalog } = useCatalogsStore();
 
@@ -85,7 +85,7 @@ export default function PasswordCreation() {
   return (
     <>
       {!loadingModal && (
-        <CardStep stepNumber="4">
+        <CardStep stepNumber="5">
           <FormPass
             register
             onSubmit={onSubmit}
@@ -108,7 +108,7 @@ export default function PasswordCreation() {
                 <Button
                   variant="outlined"
                   onClick={() => {
-                    dec();
+                    updateStep(4);
                   }}
                 >
                   Anterior
