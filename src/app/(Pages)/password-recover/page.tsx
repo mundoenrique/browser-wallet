@@ -14,6 +14,7 @@ export default function Recover() {
     user: { userId },
   } = useUserStore();
   const { setModalError } = useUiStore();
+
   const { countdown, counting, setCounting, setTime, otpValid, setOtpUuid } = useOtpStore();
 
   const timerRef = useRef<NodeJS.Timeout>();

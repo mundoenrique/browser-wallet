@@ -7,8 +7,9 @@ import { ContainerLayout, Linking, Questions } from '@/components';
 import { useNavTitleStore, useMenuStore } from '@/store';
 
 export default function Question() {
-  const { updateTitle } = useNavTitleStore();
   const { setCurrentItem } = useMenuStore();
+
+  const { updateTitle } = useNavTitleStore();
 
   useEffect(() => {
     updateTitle('Preguntas frecuentes');

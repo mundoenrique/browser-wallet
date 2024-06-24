@@ -87,7 +87,7 @@ export interface CardTicketProps extends ChildrenProps {
 }
 
 export interface TransferDetail {
-  amount: string;
+  amount: number | null;
   receiver: string;
   date: string;
   transactionCode: string;

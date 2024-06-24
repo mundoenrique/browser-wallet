@@ -12,6 +12,7 @@ import { CardTicket, ContainerLayout, Linking, PurpleLayout } from '@/components
 
 export default function Success() {
   const setView = useDebStore((state) => state.setView);
+
   const payOffDebt = useDebStore((state) => state.payOffDebt);
 
   const description = [

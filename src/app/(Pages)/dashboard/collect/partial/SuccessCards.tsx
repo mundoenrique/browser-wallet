@@ -1,30 +1,49 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Box, Button, IconButton, Typography } from '@mui/material';
 //Internal app
 import { CopyIcons } from '%/Icons';
+import { useCollectStore } from '@/store';
 import { ModalCollect } from './ModalCollect';
-import { copyToClipboard } from '@/utils/toolHelper';
+import { formattedSortDate } from '@/utils/dates';
 import { CardInfoOperation, CardReport, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
 export default function SuccessCards() {
   const textRef = useRef<null>(null);
 
+  const load = useCollectStore((state) => state.load);
+
+  const linkData = useCollectStore((state) => state.linkData);
+
   const [showModal, setShowModal] = useState<boolean>(false);
 
-  copyToClipboard('https://link.io/1234');
+  const [name, setName] = useState<string>(load?.name ?? '');
+
+  const [url, setUrl] = useState<string>(linkData?.url ?? '');
+
+  const [amount, setAmount] = useState<number>(linkData?.amount ?? 0);
+
+  const [expirationDate, setExpirationDate] = useState<string>(linkData?.expirationDate ?? '');
 
   const handleShareText = async () => {
     try {
       await navigator.share({
         title: 'Enlace de cobro',
-        text: 'https://link.io/1234',
+        text: url,
       });
     } catch (error) {
       console.error('Error sharing text:', error);
     }
   };
+
+  useEffect(() => {
+    setAmount(linkData?.amount ?? 0);
+    setName(load?.name ?? '');
+    setExpirationDate(linkData?.expirationDate ?? '');
+    setUrl(linkData?.url ?? '');
+  }, [linkData, load]);
 
   return (
     <>
@@ -40,15 +59,17 @@ export default function SuccessCards() {
             Comparte esta información para que te paguen con tarjeta de crédito o débito
           </Typography>
           <CardReport avatarText="TC">
-            <Typography variant="h6" sx={{ display: 'flex', color: 'primary.main', alignItems: 'center', pb: 1 }}>
-              https://link.io/1234
-              <IconButton aria-label="delete" size="small" sx={{ p: 0, ml: 1 }} onClick={copyToClipboard}>
+            <Typography variant="h6" noWrap width={260} sx={{ display: 'flex', color: 'primary.main' }}>
+              {url}
+            </Typography>
+            <CopyToClipboard text={url}>
+              <IconButton aria-label="delete" size="small" sx={{ p: 0, ml: 1 }}>
                 <CopyIcons sx={{ color: 'primary.main' }} />
               </IconButton>
-            </Typography>
+            </CopyToClipboard>
           </CardReport>
 
-          <CardInfoOperation date="25 Enero" amount="100.00" name="Sandra Mejía" />
+          <CardInfoOperation date={formattedSortDate(expirationDate)} amount={amount} name={name} />
 
           <Button variant="underline" sx={{ mb: 2 }} onClick={() => setShowModal(true)}>
             ¿Cómo me realizarán el pago?

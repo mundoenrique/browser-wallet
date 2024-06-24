@@ -14,20 +14,21 @@ import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/compone
 import { useUserStore, useUiStore, useOtpStore, useNavTitleStore, useConfigCardStore } from '@/store';
 
 export default function BlockCard() {
-  const { updateTitle } = useNavTitleStore();
-  const { updatePage } = useConfigCardStore();
-
   const router = useRouter();
 
-  const getUserCardId = useUserStore((state) => state.getUserCardId);
+  const { updateTitle } = useNavTitleStore();
 
-  const setModalError = useUiStore((state) => state.setModalError);
+  const { updatePage } = useConfigCardStore();
 
-  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+  const otpUuid = useOtpStore((state) => state.otpUuid);
 
   const { userId } = useUserStore((state) => state.user);
 
-  const otpUuid = useOtpStore((state) => state.otpUuid);
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const getUserCardId = useUserStore((state) => state.getUserCardId);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
   const [openOtp, setOpenOtp] = useState<boolean>(false);
 
