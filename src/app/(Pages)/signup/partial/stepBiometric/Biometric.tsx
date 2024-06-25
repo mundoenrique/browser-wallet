@@ -1,14 +1,17 @@
 'use client';
 
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 //Internal app
 import { useRegisterStore, useUiStore } from '@/store';
 import { api } from '@/utils/api';
 import { encryptForge } from '@/utils/toolHelper';
+import { Box } from '@mui/material';
 
 export default function Biometric() {
   const { setModalError, setLoadingScreen } = useUiStore();
   const { inc } = useRegisterStore();
+
+  const [url, setUrl] = useState<string>('');
 
   const captureBiometrics = useCallback(() => {
     const requestFormData = {
@@ -19,7 +22,9 @@ export default function Biometric() {
     api
       .post('/onboarding/capturephotobiometrics ', requestFormData)
       .then((response) => {
-        console.log('🚀 ~ .then ~ response:', response);
+        console.log('🚀 ~ .then ~ response:', response.data.data);
+        const { web } = response.data.data;
+        setUrl(web.href);
         // inc();
       })
       .catch((e) => {
@@ -36,8 +41,16 @@ export default function Biometric() {
   }, []);
 
   return (
-    <>
-      <h1>Biometric</h1>
-    </>
+    <Box sx={{ width: '100%', height: '84vh' }}>
+      {url && (
+        <iframe
+          src={url}
+          title="Biometric"
+          width="100%"
+          height="100%"
+          allow="camera;autoplay;fullscreen;clipboard-read;clipboard-write;accelerometer;gyroscope;magnetometer"
+        ></iframe>
+      )}
+    </Box>
   );
 }
