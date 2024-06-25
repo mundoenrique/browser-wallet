@@ -23,7 +23,8 @@ import { Conditions, InputCheck, InputPass, ModalResponsive } from '@/components
  */
 export default function FormPass(porps: FormPassProps): JSX.Element {
   const { onSubmit, description, buttons, register } = porps;
-  const { host } = useHeadersStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   const [showModal, setShowModal] = useState<boolean>(false);
 

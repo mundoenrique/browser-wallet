@@ -34,13 +34,13 @@ export default function Movements() {
 
   const match = useMediaQuery(theme.breakpoints.down('md'));
 
-  const { host } = useHeadersStore();
-
   const { getUserCardId } = useUserStore();
 
   const { setCurrentItem } = useMenuStore();
 
   const { updateTitle } = useNavTitleStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   const [lastPage, setLastPage] = useState<number>(1);
 

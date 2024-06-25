@@ -25,9 +25,9 @@ import {
 export default function Debt() {
   const schema = getSchema(['amount']);
 
-  const { host } = useHeadersStore();
-
   const debt = useDebStore((state) => state.debt);
+
+  const host = useHeadersStore((state) => state.host);
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
 

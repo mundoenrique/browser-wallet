@@ -7,11 +7,11 @@ import { ContainerLayout, Terms } from '@/components';
 import { useNavTitleStore, useMenuStore, useHeadersStore } from '@/store';
 
 export default function Legal() {
-  const { host } = useHeadersStore();
-
   const { setCurrentItem } = useMenuStore();
 
   const { updateTitle } = useNavTitleStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   useEffect(() => {
     updateTitle('Términos y condiciones');

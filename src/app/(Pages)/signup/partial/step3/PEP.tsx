@@ -25,7 +25,7 @@ export default function PEP() {
 
   const minDate = maxDate.subtract(10, 'years');
 
-  const { host } = useHeadersStore();
+  const host = useHeadersStore((state) => state.host);
 
   const { setLoadingScreen, setModalError } = useUiStore();
 

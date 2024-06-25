@@ -16,7 +16,7 @@ import { useHeadersStore, useOtpStore, useUiStore, useUserStore } from '@/store'
 export default function AuthOtp(props: AuthOtpFormProps) {
   const { handleResendOTP } = props;
 
-  const { host } = useHeadersStore();
+  const host = useHeadersStore((state) => state.host);
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
 

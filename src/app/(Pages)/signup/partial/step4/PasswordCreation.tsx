@@ -12,9 +12,9 @@ import { encryptForge } from '@/utils/toolHelper';
 import { useRegisterStore, useUiStore, useCatalogsStore, useUserStore, useHeadersStore } from '@/store';
 
 export default function PasswordCreation() {
-  const { host } = useHeadersStore();
-
   const { setUserId } = useUserStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   const { setModalError, setLoadingScreen } = useUiStore();
 

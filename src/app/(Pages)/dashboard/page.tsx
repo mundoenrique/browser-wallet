@@ -14,9 +14,9 @@ import { useDebStore, useHeadersStore, useMenuStore, useUiStore, useUserStore } 
 export default function Dashboard() {
   const { push } = useRouter();
 
-  const { host } = useHeadersStore();
-
   const { getUserCardId } = useUserStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   const setDebt = useDebStore((state) => state.setDebt);
 

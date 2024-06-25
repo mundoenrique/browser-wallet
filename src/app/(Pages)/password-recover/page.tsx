@@ -16,9 +16,9 @@ export default function Recover() {
     user: { userId },
   } = useUserStore();
 
-  const { host } = useHeadersStore();
-
   const { setModalError } = useUiStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   const { countdown, counting, setCounting, setTime, otpValid, setOtpUuid } = useOtpStore();
 

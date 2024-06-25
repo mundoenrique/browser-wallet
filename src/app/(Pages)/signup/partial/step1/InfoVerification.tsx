@@ -18,13 +18,13 @@ import { InputCheck, InputText, ModalResponsive, InputSelect, Terms } from '@/co
 export default function InfoVerification() {
   const theme = useTheme();
 
-  const { host } = useHeadersStore();
-
   const schemaEmail = getSchema(['email']);
 
   const schemaPhoneNumber = getSchema(['phoneNumber']);
 
   const schema = getSchema(['email', 'terms', 'countryCode', 'phoneNumber']);
+
+  const host = useHeadersStore((state) => state.host);
 
   const { setLoadingScreen, loadingScreen, setModalError } = useUiStore();
 

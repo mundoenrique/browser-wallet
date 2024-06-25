@@ -15,7 +15,7 @@ import { useRegisterStore, useUiStore, useCatalogsStore, useHeadersStore } from 
 export default function Ocupation() {
   const [ocupations, setOcupations] = useState<boolean>(false);
 
-  const { host } = useHeadersStore();
+  const host = useHeadersStore((state) => state.host);
 
   const { updateCatalog, occupationCatalog } = useCatalogsStore();
 

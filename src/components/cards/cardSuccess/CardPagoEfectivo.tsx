@@ -20,9 +20,19 @@ import { handleDownload, handleShare } from '@/utils/toolHelper';
  * @param children - Add elements from the parent
  * @param label - Label of buttons
  * @param download - handling for file download
+ * @param downloadGA - handle Google Analytics
  * @param share - handling for image shared
+ * @param shareGA - handle Google Analytics
  */
-export default function CardPagoEfectivo({ cip, children, label, download, share }: CardPagoEfectivoProps) {
+export default function CardPagoEfectivo({
+  cip,
+  children,
+  label,
+  download,
+  downloadGA,
+  share,
+  shareGA,
+}: CardPagoEfectivoProps) {
   const codeQrRef = useRef<any>(null);
   const ticketRef = useRef<any>(null);
 
@@ -36,6 +46,7 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
   };
 
   const handleShareClick = () => {
+    downloadGA;
     if (isBrowser) {
       handleShare(ticketRef.current, shareData, fuchsiaBlue[800]);
     }
@@ -46,6 +57,7 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
   };
 
   const handleDownloadClick = () => {
+    shareGA;
     handleDownload(codeQrRef.current, 'recarga.png', fuchsiaBlue[800]);
   };
 

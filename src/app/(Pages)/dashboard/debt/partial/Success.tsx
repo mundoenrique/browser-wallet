@@ -13,7 +13,7 @@ import { useDebStore, useHeadersStore } from '@/store';
 import { CardTicket, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
 export default function Success() {
-  const { host } = useHeadersStore();
+  const host = useHeadersStore((state) => state.host);
 
   const setView = useDebStore((state) => state.setView);
 

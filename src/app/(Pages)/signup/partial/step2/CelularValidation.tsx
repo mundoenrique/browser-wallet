@@ -17,7 +17,7 @@ import { useHeadersStore, useOtpStore, useRegisterStore, useUiStore } from '@/st
 export default function CelularValidation() {
   const schema = getSchema(['otp']);
 
-  const { host } = useHeadersStore();
+  const host = useHeadersStore((state) => state.host);
 
   const resetOtp = useOtpStore((state) => state.reset);
 

@@ -16,9 +16,9 @@ import { useHeadersStore, useRegisterStore } from '@/store';
 export default function Ending() {
   const { replace } = useRouter();
 
-  const { host } = useHeadersStore();
-
   const { setShowHeader } = useRegisterStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 

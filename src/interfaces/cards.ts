@@ -115,12 +115,16 @@ export interface CardInfoOperationProps {
  * @typeParam children: React.ReactNode
  * @typeParam label: string
  * @typeParam download (Optional): boolean
+ * @typeParam downloadGA (Optional): () => void;
  * @typeParam share (Optional): boolean
+ * @typeParam shareGA (Optional): () => void;
  */
 export interface CardPagoEfectivoProps {
   cip: string;
   children: React.ReactNode;
   label: string;
   download?: boolean;
+  downloadGA?: () => void;
   share?: boolean;
+  shareGA?: () => void;
 }

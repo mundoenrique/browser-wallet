@@ -25,8 +25,6 @@ export default function Signin() {
 
   const router = useRouter();
 
-  const { host } = useHeadersStore();
-
   const { user } = useRegisterStore();
 
   const { setOTPValid } = useOtpStore();
@@ -38,6 +36,8 @@ export default function Signin() {
   const { setUser, userId } = useUserStore();
 
   const { setAccessSession } = accessSessionStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   const { setLoadingScreen, loadingScreen } = useUiStore();
 

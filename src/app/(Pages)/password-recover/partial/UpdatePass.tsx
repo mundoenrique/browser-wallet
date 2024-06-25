@@ -11,7 +11,7 @@ import { sendGTMEvent } from '@next/third-parties/google';
 import { useHeadersStore, useUiStore, useUserStore } from '@/store';
 
 export default function UpdatePass() {
-  const { host } = useHeadersStore();
+  const host = useHeadersStore((state) => state.host);
 
   const {
     user: { userId },

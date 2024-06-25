@@ -14,11 +14,11 @@ import { useNavTitleStore, useMenuStore, useHeadersStore } from '@/store';
 export default function Help() {
   // const { push } = useRouter()
 
-  const { host } = useHeadersStore();
-
   const { setCurrentItem } = useMenuStore();
 
   const { updateTitle } = useNavTitleStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   // const handleQuestions = () => {
   //   push('/dashboard/help/frequent-questions');

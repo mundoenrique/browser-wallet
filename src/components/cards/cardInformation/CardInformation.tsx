@@ -40,7 +40,7 @@ const cardTypeQuery = (cardType: string) => {
 export default function CardInformation() {
   const [open, setOpen] = useState<boolean>(false);
 
-  const { host } = useHeadersStore();
+  const host = useHeadersStore((state) => state.host);
 
   const resetOtp = useOtpStore((state) => state.reset);
 

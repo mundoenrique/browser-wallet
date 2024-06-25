@@ -40,9 +40,9 @@ const animationState = [
 ];
 
 export default function Landing() {
-  const { host } = useHeadersStore();
-
   const { inc, setShowHeader } = useRegisterStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
