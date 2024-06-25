@@ -10,7 +10,14 @@ export const JWT_HEADER = 'x-jwt-auth';
 export const AUDIENCE = 'Audiencia';
 export const ISSUER = 'Emisor';
 
-export const APIGEE_HEADERS_NAME = ['Authorization', 'X-Tenant-Id', 'X-Token', 'X-Request-Id', 'Content-Type'];
+export const APIGEE_HEADERS_NAME = [
+  'Authorization',
+  'X-Tenant-Id',
+  'X-Token',
+  'X-Request-Id',
+  'Content-Type',
+  'identifier',
+];
 
 export const URL_BASE: IUrlBase = {
   onboarding: 'api/v0/onboarding',

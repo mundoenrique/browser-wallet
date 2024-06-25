@@ -69,6 +69,7 @@ export async function configureDefaultHeaders(headers: Headers, oauth: string, j
     'X-Tenant-Id': tenantId,
     'X-Token': `JWS ${jws}`,
     'X-Request-Id': headers.get('X-Request-Id'),
+    identifier: 'e30b625a-e085-42a5-aac2-3d52f73ad8fe',
   };
 }
 
