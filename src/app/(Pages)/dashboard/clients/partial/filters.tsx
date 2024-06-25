@@ -15,12 +15,16 @@ export default function Filters(props: IFiltersProps): JSX.Element {
     monthDefault,
     handleFilters,
   } = props;
+
   return (
     <Box sx={{ px: 3 }} component="form" onSubmit={handleFilters}>
       <InputSelect
         name="Por el mes:"
         options={months}
-        onChange={(e: any, newValue: any) => onChangeMonth(newValue)}
+        disableClearable
+        onChange={(e: any, newValue: any) => {
+          onChangeMonth(newValue);
+        }}
         value={monthDefault.value}
       />
       <InputCheckGroup

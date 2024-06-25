@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import dayjs from 'dayjs';
 import { Avatar, Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { FilterIcons } from '%/Icons';
@@ -15,26 +16,30 @@ import { ContainerLayout, Linking, ModalResponsive } from '@/components';
 
 const checkboxOptions = [
   { text: 'Todos mis cobros', value: '' },
-  { text: 'Cobrado', value: '2' },
-  { text: 'Cobros pendientes', value: '3' },
-  { text: 'Cobros vencidos', value: '4' },
-  { text: 'Cancelado', value: '5' },
+  { text: 'Cobrado', value: 'CHARGED' },
+  { text: 'Cobros pendientes', value: 'PENDING' },
+  { text: 'Cobros vencidos', value: 'EXPIRED' },
+  { text: 'Cancelado', value: 'CANCELLED' },
 ];
 
-const months = [
-  { text: 'Enero', value: '1' },
-  { text: 'Febrero', value: '2' },
-  { text: 'Marzo', value: '3' },
-  { text: 'Abril', value: '4' },
-  { text: 'Mayo', value: '5' },
-  { text: 'Junio', value: '6' },
-  { text: 'Julio', value: '7' },
-  { text: 'Agosto', value: '8' },
-  { text: 'Septiembre', value: '9' },
-  { text: 'Octubre', value: '10' },
-  { text: 'Noviembre', value: '11' },
-  { text: 'Diciembre', value: '12' },
-];
+/**
+ * Generates the months that would be used for filtering
+ * @returns Array with the last three months
+ */
+const dateRank = (): { text: string; value: string }[] => {
+  const handleDate = dayjs().locale('es');
+
+  let months: { value: string; text: string }[] = [];
+
+  for (let i = 0; i < 3; i++) {
+    const monthDate = handleDate.subtract(i, 'month');
+    months.push({
+      text: monthDate.format('MMMM'),
+      value: `${monthDate.format('MM/YYYY')}`,
+    });
+  }
+  return months;
+};
 
 export default function Clients() {
   const ENUM_VIEW = {
@@ -58,12 +63,16 @@ export default function Clients() {
   const [error, setError] = useState<boolean>(false);
   const [currentView, setCurrentView] = useState<string>(ENUM_VIEW.MAIN);
   const [paymentStatus, setPaymentStatus] = useState<string>('Todos mis cobros');
-  const [month, setMonth] = useState<InputCheckGroupOptionProps>({ text: '', value: '1' });
+
   const [paymentStatusCode, setPaymentStatusCode] = useState<string>(checkboxOptions[0].value);
 
-  const [lastPage, setLastPage] = useState<number>(1);
   const [clientsData, setClientsData] = useState<any>([]);
+  const [filteredClientData, setFilteredClientData] = useState<any>([]);
+  const [paginatedClientData, setPaginatedClientData] = useState<any>([]);
+  const [paginationData, setPaginationData] = useState<any>({});
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [lastPage, setLastPage] = useState<number>(1);
+  const [filterMonth, setFilterMonth] = useState(dateRank()[0]);
 
   const containerPWA = useRef<HTMLDivElement | null>(null);
   const containerDesktop = useRef<HTMLDivElement | null>(null);
@@ -75,30 +84,18 @@ export default function Clients() {
 
   const setModalError = useUiStore((state) => state.setModalError);
 
-  const reset = () => {
-    setCurrentPage(1);
-    setClientsData([]);
-    setLastPage(1);
-  };
-
   const onChangeCheckbox = (item: InputCheckGroupOptionProps) => {
     setPaymentStatusCode(item.value);
     setPaymentStatus(item.text);
   };
 
-  const onChangeMonth = (item: InputCheckGroupOptionProps) => {
-    if (item.text) setMonth(item);
-    else setMonth({ text: '', value: '' });
-  };
-
-  const handleFilters = async () => {
+  const handleFilters = async (e: Event) => {
+    e.preventDefault();
     setCurrentView(ENUM_VIEW.MAIN);
-    reset();
-    await getClientAPI();
   };
 
   const scrollHandle = useCallback(async () => {
-    if (containerDesktop.current && !isLoading && currentPage <= lastPage - 1) {
+    if (containerDesktop.current && !isLoading) {
       let scroll = containerDesktop.current?.scrollHeight - window.scrollY - window.innerHeight;
       if (scroll <= 100) {
         setCurrentPage((prevPage) => prevPage + 1);
@@ -117,15 +114,14 @@ export default function Clients() {
     setError(false);
     api
       .get(`/payments/${user.userId}/chargelist`, {
-        params: { days: 90, limit: 20, page: currentPage },
+        params: { days: 30, limit: 100, page: 1, date: filterMonth },
       })
       .then((response) => {
         const {
           data: { data, metadata },
         } = response;
         if (data) {
-          setClientsData((state: any) => [...state, ...data]);
-          setLastPage(metadata.lastPage);
+          setClientsData(data);
         }
       })
       .catch((e) => {
@@ -135,6 +131,13 @@ export default function Clients() {
       .finally(() => {
         setIsloading(false);
       });
+  };
+
+  const createPagination = (data: [], page: number) => {
+    const itemsPage = 1;
+    const startIndex = (page - 1) * itemsPage;
+    const endIndex = startIndex + itemsPage;
+    return data.slice(startIndex, endIndex);
   };
 
   useEffect(() => {
@@ -151,12 +154,29 @@ export default function Clients() {
     } else {
       initialized.current = false;
     }
-  }, [currentPage]); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [filterMonth]); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     updateTitle('Mis clientes');
     setCurrentItem('Inicio');
   }, [updateTitle, setCurrentItem]);
+
+  useEffect(() => {
+    setPaginatedClientData([]);
+    setCurrentPage(1);
+    if (!(paymentStatusCode === '')) {
+      setFilteredClientData(clientsData.filter((el: any) => el.status == paymentStatusCode));
+      return;
+    }
+    setFilteredClientData(clientsData);
+  }, [paymentStatusCode, clientsData]);
+
+  useEffect(() => {
+    setPaginatedClientData((currentState: any) => [
+      ...currentState,
+      ...createPagination(filteredClientData, currentPage),
+    ]);
+  }, [filteredClientData, currentPage]);
 
   return (
     <>
@@ -203,12 +223,12 @@ export default function Clients() {
 
           {filterActive ? (
             <Filters
-              months={months}
-              monthDefault={month}
+              months={dateRank()}
+              monthDefault={filterMonth}
               checkboxOptions={checkboxOptions}
-              handleFilters={() => handleFilters()}
+              handleFilters={(e) => handleFilters(e)}
               checkboxOptionDefault={paymentStatusCode}
-              onChangeMonth={(item: InputCheckGroupOptionProps) => onChangeMonth(item)}
+              onChangeMonth={setFilterMonth}
               onChangeCheckbox={(item: InputCheckGroupOptionProps) => onChangeCheckbox(item)}
             />
           ) : (
@@ -238,11 +258,14 @@ export default function Clients() {
                 sx={{ justifyContent: 'flex-start' }}
                 onClick={() => (match ? setCurrentView(ENUM_VIEW.FILTERS) : setOpen(true))}
               >
-                {month.text && paymentStatus && `${month.text} - ${paymentStatus}  `}
-                {month.text && !paymentStatus && `${month.text}`}
-                {!month.text && paymentStatus && `${paymentStatus}`}
+                {`${filterMonth.text ?? ''} ${filterMonth.text && paymentStatus && '-'} ${paymentStatus ?? ''}`}
               </Button>
-              <ClientList data={clientsData} loading={isLoading} disabledBtnDelete={disabledBtnDelete} error={error} />
+              <ClientList
+                data={paginatedClientData}
+                loading={isLoading}
+                disabledBtnDelete={disabledBtnDelete}
+                error={error}
+              />
             </Box>
           )}
         </Box>
@@ -250,12 +273,14 @@ export default function Clients() {
       <ModalResponsive open={open} handleClose={() => setOpen(false)}>
         <Box sx={{ textAlign: 'start' }}>
           <Filters
-            months={months}
-            monthDefault={month}
+            months={dateRank()}
+            monthDefault={filterMonth}
             checkboxOptions={checkboxOptions}
-            handleFilters={() => handleFilters()}
+            handleFilters={(e) => {
+              handleFilters(e);
+            }}
             checkboxOptionDefault={paymentStatusCode}
-            onChangeMonth={(item: InputCheckGroupOptionProps) => onChangeMonth(item)}
+            onChangeMonth={setFilterMonth}
             onChangeCheckbox={(item: InputCheckGroupOptionProps) => onChangeCheckbox(item)}
           />
         </Box>

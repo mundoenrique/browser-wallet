@@ -24,6 +24,22 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
   const [showOptions, setShowOptions] = useState(null);
   const [clientsData, setClientsData] = useState<IClientProps[]>(data);
 
+  const statusObject: { [key: string]: { text: string; color: string } } = {
+    PENDING: {
+      text: 'Pendiente',
+      color: '',
+    },
+    CANCELLED: {
+      text: 'Cancelado',
+      color: '#EE2737',
+    },
+    CHARGED: {
+      text: 'Cobrado',
+      color: '',
+    },
+    EXPIRED: { text: 'Vencido', color: '#EE2737' },
+  };
+
   useEffect(() => {
     setClientsData(data);
   }, [data]);
@@ -122,15 +138,11 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                <Typography variant="subtitle2" color={client.status === 'PENDING' ? '#EE2737' : slate[700]}>
+                <Typography variant="subtitle2" color={statusObject[client.status].color}>
                   {Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(client.amount)}
                 </Typography>
-                <Typography
-                  fontSize={10}
-                  lineHeight="16px"
-                  color={client.status === 'PENDING' ? '#EE2737' : slate[700]}
-                >
-                  {client.status}
+                <Typography fontSize={10} lineHeight="16px" color={statusObject[client.status].color}>
+                  {statusObject[client.status].text}
                 </Typography>
               </Box>
             </Box>
