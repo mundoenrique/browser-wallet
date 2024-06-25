@@ -69,7 +69,6 @@ export default function Clients() {
   const [clientsData, setClientsData] = useState<any>([]);
   const [filteredClientData, setFilteredClientData] = useState<any>([]);
   const [paginatedClientData, setPaginatedClientData] = useState<any>([]);
-  const [paginationData, setPaginationData] = useState<any>({});
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>(1);
   const [filterMonth, setFilterMonth] = useState(dateRank()[0]);
@@ -95,10 +94,11 @@ export default function Clients() {
   };
 
   const scrollHandle = useCallback(async () => {
-    if (containerDesktop.current && !isLoading) {
-      let scroll = containerDesktop.current?.scrollHeight - window.scrollY - window.innerHeight;
-      if (scroll <= 100) {
-        setCurrentPage((prevPage) => prevPage + 1);
+    const container = containerDesktop.current || containerPWA.current;
+    if (container && !isLoading && currentPage <= lastPage - 1) {
+      if (match) {
+        let scroll = container?.scrollHeight - window.scrollY - window.innerHeight;
+        scroll <= 100 && setCurrentPage((prevPage) => prevPage + 1);
       }
     } else if (containerPWA.current && !isLoading && currentPage <= lastPage - 1) {
       let scroll =
@@ -118,7 +118,7 @@ export default function Clients() {
       })
       .then((response) => {
         const {
-          data: { data, metadata },
+          data: { data },
         } = response;
         if (data) {
           setClientsData(data);
@@ -134,7 +134,7 @@ export default function Clients() {
   };
 
   const createPagination = (data: [], page: number) => {
-    const itemsPage = 1;
+    const itemsPage = 20;
     const startIndex = (page - 1) * itemsPage;
     const endIndex = startIndex + itemsPage;
     return data.slice(startIndex, endIndex);
