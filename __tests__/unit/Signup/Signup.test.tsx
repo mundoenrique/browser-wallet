@@ -3,22 +3,6 @@ import { render, screen } from '@testing-library/react';
 import Signup from '@/app/(Pages)/signup/page';
 import { renderInput } from '../../tools/unitTestHelper.test';
 
-jest.mock('jose', () => {
-  return {
-    compactDecrypt: jest.fn(() => {
-      return { plaintext: 'mocked plaintext' };
-    }),
-  };
-});
-
-jest.mock('mui-one-time-password-input', () => {
-  return {
-    compactDecrypt: jest.fn(() => {
-      return { plaintext: 'mocked plaintext' };
-    }),
-  };
-});
-
 describe('Signup', () => {
   let submitButton: HTMLElement;
 

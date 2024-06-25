@@ -2,10 +2,6 @@ import { render, waitFor, screen } from '@testing-library/react';
 //Internal app
 import Recover from '@/app/(Pages)/password-recover/page';
 
-jest.mock('jose', () => ({
-  compactDecrypt: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
-}));
-
 jest.mock('@/utils/api', () => ({
   api: {
     post: jest.fn().mockResolvedValue({
