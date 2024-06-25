@@ -10,14 +10,6 @@ jest.mock('@/app/(Pages)/dashboard/debt/partial', () => ({
   Debt: jest.fn(() => <div>Debt Component</div>),
 }));
 
-jest.mock('jose', () => {
-  return {
-    compactDecrypt: jest.fn(() => {
-      return { plaintext: 'mocked plaintext' };
-    }),
-  };
-});
-
 describe('MyDebt Component', () => {
 
   afterEach(() => {
