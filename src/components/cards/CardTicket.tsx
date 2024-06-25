@@ -15,20 +15,25 @@ import { handleDownload, handleShare } from '@/utils/toolHelper';
  * @param children - Child elements.
  * @param textBotton - Button text when in ticket form.
  * @param download - Handle image download.
+ * @param downloadGA - Handle Google Analytics.
  * @param shared - Handles the action of sharing an image.
+ * @param sharedGA - Handle Google Analytics.
  * @param onClick - Action handling for a button.
+ * @param onClick - Handle Google Analytics.
  */
 export default function CardTicket(props: CardTicketProps) {
-  const { children, textBotton, download, shared, onClick } = props;
+  const { children, textBotton, download, downloadGA, shared, sharedGA, onClick, onClickGA } = props;
   const componentRef = useRef<any>(null);
   const shareData: any = { files: [] };
 
   const handleShareClick = () => {
     handleShare(componentRef.current, shareData, fuchsiaBlue[800]);
+    downloadGA;
   };
 
   const handleDownloadClick = () => {
     handleDownload(componentRef.current, 'comprobante.png', fuchsiaBlue[800]);
+    sharedGA;
   };
 
   return (
@@ -87,7 +92,14 @@ export default function CardTicket(props: CardTicketProps) {
         )}
 
         {onClick && (
-          <Button variant="contained" fullWidth onClick={onClick}>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={() => {
+              onClick;
+              onClickGA;
+            }}
+          >
             {textBotton}
           </Button>
         )}

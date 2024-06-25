@@ -81,9 +81,12 @@ export interface CardTicketProps extends ChildrenProps {
   avatarText?: string | React.ReactNode;
   textBotton?: string;
   download?: boolean;
+  downloadGA?: () => void;
   shared?: boolean;
+  sharedGA?: () => void;
   transferDetail?: TransferDetail;
   onClick?: () => void | boolean;
+  onClickGA?: () => void;
 }
 
 export interface TransferDetail {
