@@ -48,7 +48,7 @@ function InputTextPay(props: TextFieldProps): JSX.Element {
         setInternalValue(formattedValue);
       }
       onChange && onChange(value);
-    }, 500),
+    }, 1000),
     [onChange]
   );
 
