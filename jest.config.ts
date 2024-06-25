@@ -9,7 +9,7 @@ const config: Config = {
   testEnvironment: 'jest-environment-jsdom',
   setupFilesAfterEnv: [
     '<rootDir>/jest.setup.ts',
-    '<rootDir>/__tests__/mocks/mocks.ts'
+    '<rootDir>/__tests__/mocks/mocks.test.tsx'
   ],
   clearMocks: true,
   moduleNameMapper: {

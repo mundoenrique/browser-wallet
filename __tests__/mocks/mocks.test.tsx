@@ -1,5 +1,3 @@
-import { useRouter } from 'next/navigation';
-
 jest.mock('@next/third-parties/google', () => ({
   GoogleTagManager: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
   sendGTMEvent: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
