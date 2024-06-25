@@ -74,7 +74,7 @@ const setError = (eCode?: string, context?: string) => {
     '014': { description: 'Código de bloqueo no válido' },
     '015': { description: 'La cuenta ya está registrada' },
     '033': { description: 'El usuario no se encuentra en el sistema' },
-    '044': { descripption: 'Fondos insuficientes' },
+    '044': { description: 'Fondos insuficientes' },
     '051': { description: 'Número máximo de transacciones alcanzado' },
     '057': { title: 'Usuario bloqueado', description: 'Tu cuenta de acceso ha sido bloqueada por 24h' },
     '058': {
