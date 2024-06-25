@@ -20,7 +20,7 @@ import { BgButtonPayLarge, BgButtonPaySmall, Esika } from '%/Icons';
  */
 export default function CardDebt(props: CardDebtProps): JSX.Element {
   const { OweMe, onClick, data } = props;
-  const maxOweMe = data?.clients || 0;
+  const maxOweMe = data?.data?.clients || 0;
   const clientOweMe = ['', '', '', '', '', '', ''];
   const [loading, setLoading] = useState(true);
 
@@ -77,16 +77,18 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
           {OweMe ? 'Mis clientes me deben' : 'Mi deuda con ésika'}
         </Typography>
         <Typography variant="h6" noWrap>
-          {data.amount === null ? (
+          {data?.code === '200.00.000' ? (
             loading ? (
               <Skeleton variant="text" />
+            ) : data.data?.amount ? (
+              `S/ ${data.data?.amount}`
             ) : (
-              'Sin datos'
+              'S/ 0.00'
             )
-          ) : data.amount === 0 ? (
-            'S/ 0.00'
+          ) : loading ? (
+            <Skeleton variant="text" />
           ) : (
-            `S/ ${data?.amount}`
+            'Sin datos'
           )}
         </Typography>
       </Box>
@@ -113,7 +115,11 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
               )}
 
               <Typography fontSize={8}>
-                {!maxOweMe ? 'Datos no disponibles' : data.amount != '0.00' ? `${maxOweMe}+ Clientes` : '0 Clientes'}
+                {!maxOweMe
+                  ? 'Datos no disponibles'
+                  : data.data?.amount != '0.00'
+                  ? `${maxOweMe}+ Clientes`
+                  : '0 Clientes'}
               </Typography>
             </Box>
             <ArrowCircle sx={{ fontSize: 12, color: 'primary.main' }} />
@@ -122,7 +128,7 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
           <>
             <Clock sx={{ fontSize: 12, color: 'primary.main' }} />
             <Typography fontSize={8}>
-              {data.expirationDate ? expiredFormatDate(data?.expirationDate) : 'Datos no disponibles'}
+              {data.data?.expirationDate ? expiredFormatDate(data.data?.expirationDate) : 'Datos no disponibles'}
             </Typography>
             <ArrowCircle sx={{ fontSize: 12, color: 'primary.main' }} />
           </>

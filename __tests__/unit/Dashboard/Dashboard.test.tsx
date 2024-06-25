@@ -1,29 +1,7 @@
-import { useRouter } from 'next/navigation';
-import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 // Internal app
 import Dashboard from '@/app/(Pages)/dashboard/page';
-import { api } from '@/utils/api';
-
-const routerPushMock = jest.fn();
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-}));
-
-jest.mock('jose', () => {
-  return {
-    compactDecrypt: jest.fn(() => {
-      return { plaintext: 'mocked plaintext' };
-    }),
-  };
-});
-
-jest.mock('mui-one-time-password-input', () => {
-  return {
-    compactDecrypt: jest.fn(() => {
-      return { plaintext: 'mocked plaintext' };
-    }),
-  };
-});
+import { mockRouterPush } from '../../tools/unitTestHelper.test';
 
 jest.mock('@/store', () => ({
   ...jest.requireActual('@/store'),
@@ -53,8 +31,10 @@ jest.mock('@/components/cards/cardInformation/CardInformation', () => {
 });
 
 describe('Dashboard', () => {
+  const routerPushMock = jest.fn();
+
   beforeEach(async () => {
-    (useRouter as jest.Mock).mockReturnValue({ push: routerPushMock });
+    mockRouterPush(routerPushMock)
     await act(async () => {
       render(<Dashboard />);
     });

@@ -1,47 +1,27 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
 import ModalOtp from '@/components/modal/ModalOtp';
 import ChangePassword from '@/app/(Pages)/dashboard/change-password/page';
 import { emptyField, renderInput } from '../../../tools/unitTestHelper.test';
-
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-}));
-
-jest.mock('jose', () => {
-  return {
-    compactDecrypt: jest.fn(() => {
-      return { plaintext: 'mocked plaintext' };
-    }),
-  };
-});
-
-jest.mock('mui-one-time-password-input', () => {
-  return {
-    compactDecrypt: jest.fn(() => {
-      return { plaintext: 'mocked plaintext' };
-    }),
-  };
-});
 
 describe('ChangePassword', () => {
   const openOtp = true;
   const setOpenOtp = jest.fn();
   const onSubmitOtp = jest.fn();
 
-  let currentPassword: Node | Window;
-  let newPassword: Node | Window;
-  let confirmPassword: Node | Window;
-  // let toggleButton: HTMLElement;
-  let submitButton: Node | Window;
+  let currentPassword: HTMLInputElement;
+  let newPassword: HTMLInputElement;
+  let confirmPassword: HTMLInputElement;
+  let submitButton: HTMLElement;
 
-  beforeEach(() => {
-    render(<ChangePassword />);
+  beforeEach(async () => {
+    await act(async () => {
+      render(<ChangePassword />);
+    });
     expect(render).toBeTruthy();
     currentPassword = screen.getByLabelText(/ingresar tu contraseña actual/i);
     newPassword = screen.getByLabelText(/ingresa una nueva contraseña/i);
     confirmPassword = screen.getByLabelText(/confirma tu nueva contraseña/i);
-    // toggleButton = screen.getByLabelText(/toggle password visibility/i);
     submitButton = screen.getByRole('button', { name: /guardar/i });
   });
 
@@ -64,13 +44,6 @@ describe('ChangePassword', () => {
   it('should display an error message for empty password field', async () => {
     emptyField(submitButton, 'Ingrese una contraseña');
   });
-
-  //** Displays a toggle button to show/hide the password.
-  // it('should render a toggle button to show/hide the password', () => {
-  //   togglePasswordVisibility(currentPassword, toggleButton);
-  //   togglePasswordVisibility(newPassword, toggleButton);
-  //   togglePasswordVisibility(confirmPassword, toggleButton);
-  // });
 
   //** Displays a submit form.
   it('should display save password', async () => {
