@@ -6,7 +6,6 @@ import { useEffect, useState, useCallback } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { api } from '@/utils/api';
-import { ICardDebt } from '@/interfaces';
 import { expiredFormatDate } from '@/utils/dates';
 import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
@@ -35,17 +34,23 @@ export default function Dashboard() {
 
   const [errorMovements, setErrorMovements] = useState<boolean>(false);
 
-  const [cardMyDebt, setCardMyDebt] = useState<ICardDebt>({
-    amount: null,
-    expirationDate: null,
-    currencyCode: '',
+  const [cardMyDebt, setCardMyDebt] = useState({
+    code: '',
+    data: {
+      amount: null,
+      expirationDate: null,
+      currencyCode: '',
+    },
   });
 
-  const [cardClients, setCardClients] = useState<ICardDebt>({
-    amount: null,
-    expirationDate: null,
-    currencyCode: '',
-    clients: null,
+  const [cardClients, setCardClients] = useState({
+    code: '',
+    data: {
+      amount: null,
+      expirationDate: null,
+      currencyCode: '',
+      clients: null,
+    },
   });
 
   const getMovements = useCallback(async () => {
@@ -76,7 +81,7 @@ export default function Dashboard() {
       .then((response: any) => {
         if (response.status === 200) {
           const { data } = response.data;
-          setCardMyDebt(data);
+          setCardMyDebt(response.data);
           setDebt({
             amount: data.amount,
             currencyCode: data.currencyCode,
@@ -87,9 +92,12 @@ export default function Dashboard() {
       .catch(() => {
         setReloadFunction(() => getDebtBalance());
         setCardMyDebt({
-          amount: null,
-          expirationDate: null,
-          currencyCode: '',
+          code: '',
+          data: {
+            amount: null,
+            expirationDate: null,
+            currencyCode: '',
+          },
         });
         setModalError({
           title: 'Algo salió mal',
@@ -102,14 +110,18 @@ export default function Dashboard() {
     api
       .get(`/payments/${userId}/charge`)
       .then((response: any) => {
-        setCardClients(response.data.data);
+        setCardClients(response.data);
       })
       .catch(() => {
         setReloadFunction(() => getCharge());
         setCardClients({
-          amount: null,
-          currencyCode: '',
-          clients: null,
+          code: '',
+          data: {
+            amount: null,
+            currencyCode: '',
+            clients: null,
+            expirationDate: null,
+          },
         });
         setModalError({
           title: 'Algo salió mal',

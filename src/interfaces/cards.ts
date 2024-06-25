@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { ICardDebt } from './api';
 import { ChildrenProps } from './constans';
 

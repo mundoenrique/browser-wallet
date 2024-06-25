@@ -95,7 +95,7 @@ export default function Transfer() {
       .then((responses: any) => {
         const [responseReceiver, responseBalance] = responses;
 
-        const balance = responseBalance?.value?.data?.data?.availableBalance || 0;
+        const balance = responseBalance.value?.data?.data?.availableBalance || 0;
 
         const amountCheck = parseFloat(data.amount) < parseFloat(balance);
 
@@ -107,7 +107,7 @@ export default function Transfer() {
               firstName,
               firstLastName,
               cardSolutions: { cardId },
-            } = responseReceiver.value.data.data;
+            } = responseReceiver.value?.data?.data;
 
             setTransferInfo((prevState) => ({
               ...prevState,
@@ -120,7 +120,7 @@ export default function Transfer() {
             setOpenModalOtp(true);
           }
         } else if (responseReceiver.status === 'rejected' && responseBalance.status === 'fulfilled') {
-          if (responseReceiver.reason.response.data?.data?.code === '400.00.033') {
+          if (responseReceiver.reason?.response?.data?.data?.code === '400.00.033') {
             setError('numberClient', { type: 'customError', message: 'Este número no tiene Yiro' });
           } else {
             setModalError({ error: responseReceiver.reason });
@@ -132,13 +132,16 @@ export default function Transfer() {
         } else if (responseReceiver.status === 'fulfilled' && responseBalance.status === 'rejected') {
           setModalError({ error: responseBalance.reason });
         } else if (responseReceiver.status === 'rejected' && responseBalance.status === 'rejected') {
-          if (responseReceiver.reason.response.data?.data?.code === '400.00.033') {
+          if (responseReceiver.reason?.response?.data?.data?.code === '400.00.033') {
             setError('numberClient', { type: 'customError', message: 'Este número no tiene Yiro' });
           } else {
             setModalError({ error: responseReceiver.reason });
           }
           setModalError({ error: responseBalance.reason });
         }
+      })
+      .catch(() => {
+        setModalError();
       })
       .finally(() => {
         setLoadingScreen(false);

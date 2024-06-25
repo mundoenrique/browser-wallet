@@ -1,34 +1,18 @@
-import { useRouter } from 'next/navigation';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
 import Recharge from '@/app/(Pages)/dashboard/recharge/page';
-import {
-  emptyField,
-  renderInput
-} from '../../../tools/unitTestHelper.test';
-import { createMockRouter } from '@/utils/mocks';
-
-const routerPushMock = jest.fn();
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-}));
-
-jest.mock('jose', () => {
-  return {
-    compactDecrypt: jest.fn(() => {
-      return { plaintext: 'mocked plaintext' };
-    }),
-  };
-});
+import { emptyField, renderInput, mockRouterPush } from '../../../tools/unitTestHelper.test';
 
 describe('Recharge', () => {
-  let amountInput: Node | Window;
-  let submitButton: Node | Window;
-  let router = createMockRouter({});
+  let amountInput: HTMLInputElement;
+  let submitButton: HTMLElement;
+  const routerPushMock = jest.fn();
 
-  beforeEach(() => {
-    (useRouter as jest.Mock).mockReturnValue({ push: routerPushMock });
-    render(<Recharge />);
+  beforeEach(async () => {
+    mockRouterPush(routerPushMock)
+    await act(async () => {
+      render(<Recharge />);
+    });
     expect(render).toBeTruthy();
     amountInput = screen.getByLabelText(/¿cuánto deseas recargar?/i);
     submitButton = screen.getByRole('button', { name: /recargar/i });
@@ -53,7 +37,7 @@ describe('Recharge', () => {
   it('should render the form and submit the recharge amount', async () => {
     fireEvent.change(amountInput, { target: { value: '100' } });
     fireEvent.click(submitButton);
-    await waitFor(() => {
+    waitFor(() => {
       expect(screen.getByText('Recarga a través de Pago Efectivo por una de estas 2 opciones:')).toBeInTheDocument();
     });
   });
