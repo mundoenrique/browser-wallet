@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { CardStep } from '..';
@@ -15,7 +15,7 @@ export default function PasswordCreation() {
 
   const { setModalError, setLoadingScreen } = useUiStore();
 
-  const { updateStep, setShowHeader, onboardingUuId } = useRegisterStore();
+  const { updateStep, setShowHeader, onboardingUuId, ONB_PHASES_TERMS } = useRegisterStore();
 
   const { updateCatalog, passwordTermsCatalog } = useCatalogsStore();
 
@@ -82,10 +82,68 @@ export default function PasswordCreation() {
     setShowHeader(true);
   }, [setShowHeader]);
 
+  const validateBiometric = useCallback(async () => {
+    const requestData = {
+      payload: {
+        contacts: [
+          {
+            person: {
+              names: [
+                {
+                  firstName: encryptForge(ONB_PHASES_TERMS?.consultant?.firstName),
+                  secondName: encryptForge(ONB_PHASES_TERMS?.consultant?.firstLastName),
+                  surName: 'DaD/9QLkb+WyQn9FRk40vg==',
+                  surName2: 'DaD/9QLkb+WyQn9FRk40vg==',
+                },
+              ],
+            },
+            identityDocuments: [
+              {
+                documentType: encryptForge(ONB_PHASES_TERMS?.consultant?.documentType),
+                documentNumber: encryptForge(ONB_PHASES_TERMS?.consultant?.documentNumber),
+                hashedDocumentNumber: encryptForge(ONB_PHASES_TERMS?.consultant?.documentNumber),
+              },
+            ],
+            telephones: [
+              {
+                number: encryptForge(ONB_PHASES_TERMS?.consultant?.phoneNumber),
+                phoneIdentifier: encryptForge('PHONE'),
+              },
+            ],
+            emails: [
+              {
+                type: encryptForge('HOME'),
+                email: encryptForge(ONB_PHASES_TERMS?.consultant?.email),
+              },
+            ],
+          },
+        ],
+        control: [
+          {
+            option: 'ACCOUNTID_JM',
+            value: '5ce53517-b2c9-4a90-8e3a-04b368ae0ce8',
+          },
+          {
+            option: 'WORKFLOWID_JM',
+            value: 'e0f052b2-c9d1-4add-8433-edf36b01240d',
+          },
+        ],
+      },
+    };
+    api
+      .post('/onboarding/validatebiometric', requestData)
+      .then((response) => {
+        console.log('🚀 ~ validateBiometric ~ response.data:', response.data.data);
+      })
+      .catch((e) => {
+        console.log('🚀 ~ validateBiometric ~ e:', e);
+      });
+  }, []);
+
   return (
     <>
       {!loadingModal && (
-        <CardStep stepNumber="5">
+        <CardStep stepNumber="4">
           <FormPass
             register
             onSubmit={onSubmit}
@@ -108,7 +166,7 @@ export default function PasswordCreation() {
                 <Button
                   variant="outlined"
                   onClick={() => {
-                    updateStep(4);
+                    updateStep(3);
                   }}
                 >
                   Anterior
