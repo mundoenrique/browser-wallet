@@ -1,37 +1,21 @@
-import { useRouter } from 'next/navigation';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 //Internal app
 import Collect from '@/app/(Pages)/dashboard/collect/page';
-import {
-  emptyField,
-  renderInput
-} from '../../../tools/unitTestHelper.test';
-import { createMockRouter } from '@/utils/mocks';
-
-const routerPushMock = jest.fn();
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-}));
-
-jest.mock('jose', () => {
-  return {
-    compactDecrypt: jest.fn(() => {
-      return { plaintext: 'mocked plaintext' };
-    }),
-  };
-});
+import { emptyField, renderInput, mockRouterPush } from '../../../tools/unitTestHelper.test';
 
 describe('Collect', () => {
-  let numberClient: Node | Window;
-  let nameClient: Node | Window;
-  let amount: Node | Window;
-  let buttonWallets: Node | Window;
-  let buttonCard: Node | Window;
-  let router = createMockRouter({});
+  let numberClient: HTMLInputElement;
+  let nameClient: HTMLInputElement;
+  let amount: HTMLInputElement;
+  let buttonWallets: HTMLElement;
+  let buttonCard: HTMLElement;
+  const routerPushMock = jest.fn();
 
-  beforeEach(() => {
-    (useRouter as jest.Mock).mockReturnValue({ push: routerPushMock });
-    render(<Collect />);
+  beforeEach(async () => {
+    mockRouterPush(routerPushMock)
+    await act(async () => {
+      render(<Collect />);
+    });
     expect(render).toBeTruthy();
     numberClient = screen.getByLabelText(/¿a quién le quieres cobrar?/i);
     nameClient = screen.getByLabelText(/nombre de la persona/i);

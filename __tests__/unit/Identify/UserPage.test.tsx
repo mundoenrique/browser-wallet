@@ -3,22 +3,6 @@ import UserPage from '@/app/(Pages)/identify/[user]/page';
 import NotFoundError from '@/components/errors/NotFoundError';
 import DataUser from '@/app/(Pages)/identify/[user]/partial/DataUser';
 
-jest.mock('jose', () => {
-  return {
-    compactDecrypt: jest.fn(() => {
-      return { plaintext: 'mocked plaintext' };
-    }),
-  };
-});
-
-jest.mock('@/utils/redis', () => ({
-  createRedisInstance: jest.fn(),
-}));
-
-jest.mock('next/headers', () => ({
-  headers: jest.fn().mockReturnValue(new Map([['referer', 'testReferer']])),
-}));
-
 describe('UserPage', () => {
   let params = { user: '943cc6d1-5f89-498d-933d-badba7a78045' };
   let userData = { code: 'John Doe', country: 'PE' };
