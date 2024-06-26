@@ -4,12 +4,15 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Button, Box, Typography, Zoom } from '@mui/material';
 //Internal app
+import { api } from '@/utils/api';
 import { useRegisterStore } from '@/store';
+import { encryptForge } from '@/utils/toolHelper';
 import LogoPurple from '%/images/LogoPurple';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import animation1 from '%/images/pwa/animation1.png';
 import animation2 from '%/images/pwa/animation2.png';
 import animation3 from '%/images/pwa/animation3.png';
+import ErrorPage from './ErrorPage';
 
 const animationState = [
   {
@@ -39,9 +42,12 @@ const animationState = [
 ];
 
 export default function Landing() {
-  const { inc, setShowHeader } = useRegisterStore();
-
+  const inc = useRegisterStore((state) => state.inc);
+  const setShowHeader = useRegisterStore((state) => state.setShowHeader);
+  const phaseInfo = useRegisterStore((state) => state.ONB_PHASES_TERMS);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     let timer = setInterval(() => {});
@@ -56,9 +62,58 @@ export default function Landing() {
     };
   });
 
+  const verifyUser = async () => {
+    const { consultant } = phaseInfo as any;
+
+    const documentPayload = {
+      documentType: encryptForge(consultant.documentType),
+      documentNumber: encryptForge(consultant.documentNumber),
+    };
+
+    const blacklistPayload = {
+      names: encryptForge(`${consultant.firstName} ${consultant.middleName}`),
+      lastNames: encryptForge(`${consultant.firstLastName} ${consultant.secondLastName}`),
+      ...documentPayload,
+    };
+
+    const blacklist = new Promise((resolve) => {
+      return resolve({ data: { code: '200.00.00', data: [] } });
+    });
+
+    /* const blacklist = api.post('/onboarding/blacklist', blacklistPayload,{ headers: {
+      identifier: '123e4567-e89b-42d3-a456-556642440000',
+    },});*/
+
+    const documentValidation = api.post('/onboarding/documents/validate', documentPayload, {
+      headers: {
+        identifier: '123e4567-e89b-42d3-a456-556642440000',
+      },
+    });
+
+    Promise.all([blacklist, documentValidation])
+      .then((responses: any) => {
+        const sucessCode = '200.00.000';
+
+        const isSuccessCode = (response: any) => response?.data?.code === sucessCode;
+
+        const [blackListResponse, docVerificationResponse] = responses;
+
+        if (isSuccessCode(blackListResponse) && isSuccessCode(docVerificationResponse)) {
+          inc();
+        }
+      })
+      .catch(() => {
+        setError(true);
+      });
+  };
+
   useEffect(() => {
     setShowHeader(true);
   }, [setShowHeader]);
+
+  if (error) {
+    return <ErrorPage />;
+  }
 
   return (
     <Box
@@ -98,7 +153,7 @@ export default function Landing() {
           variant="contained"
           sx={{ width: 320 }}
           onClick={() => {
-            inc();
+            verifyUser();
           }}
         >
           ¡Inicia YA!
