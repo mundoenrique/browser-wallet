@@ -166,7 +166,6 @@ export default function Transfer() {
       source: 'Web transfer',
       externalId: '-',
     };
-
     api
       .post(`/cards/sendmoney`, payload)
       .then((response) => {

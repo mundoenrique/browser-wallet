@@ -1,8 +1,7 @@
 'use client';
 
-import { debounce } from 'lodash';
 import { Controller } from 'react-hook-form';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 import Info from '@mui/icons-material/InfoOutlined';
 import {
   Avatar,
@@ -13,9 +12,10 @@ import {
   OutlinedInput,
   Typography,
 } from '@mui/material';
+import { NumericFormat, NumericFormatProps } from 'react-number-format';
 //Internal app
 import { GainIcons } from '%/Icons';
-import { TextFieldProps } from '@/interfaces';
+import { TextFieldProps, NumericFormatCustomInput } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
 function formatToDecimals(value: string | number, decimals: number = 2): string {
@@ -30,27 +30,6 @@ function InputTextPay(props: TextFieldProps): JSX.Element {
   const [internalValue, setInternalValue] = useState(value);
 
   const textLabel = label ?? name;
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue = event.target.value;
-    setInternalValue(rawValue);
-    debouncedFormatValue(rawValue);
-  };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedFormatValue = useCallback(
-    debounce((value) => {
-      const parts = value.split('.');
-      if (parts.length === 2 && parts[1].length <= 2) {
-        setInternalValue(value);
-      } else {
-        const formattedValue = formatToDecimals(value);
-        setInternalValue(formattedValue);
-      }
-      onChange && onChange(value);
-    }, 1000),
-    [onChange]
-  );
 
   useEffect(() => {
     !value && setInternalValue('');
@@ -69,9 +48,10 @@ function InputTextPay(props: TextFieldProps): JSX.Element {
           aria-describedby={`${name}-helperText`}
           error={!!error}
           value={internalValue}
-          onChange={handleChange}
+          onChange={onChange}
           disabled={disabled}
           readOnly={readOnly}
+          inputComponent={NumericFormatCustom as any}
           sx={{ fontSize: 20, fontWeight: 700, '&>input': { pl: '0 !important' } }}
           startAdornment={
             <InputAdornment position="start">
@@ -146,3 +126,29 @@ export default function InputText(props: TextFieldProps) {
     </>
   );
 }
+
+const NumericFormatCustom = forwardRef<NumericFormatProps, NumericFormatCustomInput>(function NumericFormatCustom(
+  props,
+  ref
+) {
+  const { onChange, ...other } = props;
+
+  return (
+    <NumericFormat
+      {...other}
+      getInputRef={ref}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator
+      valueIsNumericString
+      decimalScale={2}
+      fixedDecimalScale
+    />
+  );
+});
