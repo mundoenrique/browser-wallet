@@ -38,7 +38,6 @@ export default function FrontInformation(props: FrontInformationProps): JSX.Elem
         <Box>
           <Box mb={1}>
             {!cardInformationError &&
-              ((cardStatus && !Object.hasOwn(cardStatus, 'code')) || cardStatus === undefined) &&
               (cardNumber ? (
                 <>
                   <Button
