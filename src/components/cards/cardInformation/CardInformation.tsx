@@ -101,7 +101,7 @@ export default function CardInformation() {
           previous_section: 'Yiro :: login :: interno',
           selected_content: 'Verificar',
           destination_page: `${host}/dashboard`,
-          pop_up_type: 'flujo',
+          pop_up_type: 'login',
           pop_up_title: 'Verificación en dos pasos',
         },
       });
@@ -222,7 +222,7 @@ export default function CardInformation() {
                   previous_section: 'Yiro :: login :: interno',
                   selected_content: 'Cerrar',
                   destination_page: `${host}/dashboard`,
-                  pop_up_type: 'flujo',
+                  pop_up_type: 'login',
                   pop_up_title: 'Información de la tarjeta',
                 },
               });
@@ -248,7 +248,7 @@ export default function CardInformation() {
               eventParams: {
                 section: 'dashboard',
                 previous_section: 'Yiro :: login :: interno',
-                pop_up_type: 'flujo',
+                pop_up_type: 'login',
                 pop_up_title: 'Verificación en dos pasos',
                 content_type: 'modal',
               },

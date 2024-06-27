@@ -489,7 +489,7 @@ export default function InfoVerification() {
                   previous_section: 'Yiro :: onboarding :: step0',
                   selected_content: 'Guardar',
                   destination_page: `${host}/signup`,
-                  pop_up_type: 'flujo',
+                  pop_up_type: 'onboarding',
                   pop_up_title: 'Editar número de celular',
                 },
               });
@@ -526,7 +526,7 @@ export default function InfoVerification() {
                   previous_section: 'Yiro :: onboarding :: step0',
                   selected_content: 'Guardar',
                   destination_page: `${host}/signup`,
-                  pop_up_type: 'flujo',
+                  pop_up_type: 'onboarding',
                   pop_up_title: 'Editar email',
                 },
               });
@@ -550,7 +550,7 @@ export default function InfoVerification() {
               previous_section: 'Yiro :: onboarding :: step1',
               selected_content: 'Cerrar',
               destination_page: `${host}/signup`,
-              pop_up_type: 'flujo',
+              pop_up_type: 'onboarding',
               pop_up_title: 'Terminos y condiciones',
             },
           });
