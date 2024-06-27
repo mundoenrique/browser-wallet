@@ -108,7 +108,7 @@ export default function Landing() {
         }
       })
       .catch(() => {
-        //  setError(true);
+        setError(true);
       })
       .finally(() => {
         setLoadingScreen(false);
