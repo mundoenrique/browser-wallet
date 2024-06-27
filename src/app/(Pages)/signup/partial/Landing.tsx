@@ -74,15 +74,14 @@ export default function Landing() {
       names: encryptForge(`${consultant.firstName} ${consultant.middleName}`),
       lastNames: encryptForge(`${consultant.firstLastName} ${consultant.secondLastName}`),
       ...documentPayload,
+      identifier: '123e4567-e89b-42d3-a456-556642440000', //TODO: TEMPORAL MIENTRAS HACEN EL CAMBIO A HEADERS
     };
 
-    const blacklist = new Promise((resolve) => {
-      return resolve({ data: { code: '200.00.00', data: [] } });
+    const blacklist = api.post('/onboarding/blacklist', blacklistPayload, {
+      headers: {
+        identifier: '123e4567-e89b-42d3-a456-556642440000',
+      },
     });
-
-    /* const blacklist = api.post('/onboarding/blacklist', blacklistPayload,{ headers: {
-      identifier: '123e4567-e89b-42d3-a456-556642440000',
-    },});*/
 
     const documentValidation = api.post('/onboarding/documents/validate', documentPayload, {
       headers: {
@@ -92,11 +91,9 @@ export default function Landing() {
 
     Promise.all([blacklist, documentValidation])
       .then((responses: any) => {
-        const sucessCode = '200.00.000';
-
-        const isSuccessCode = (response: any) => response?.data?.code === sucessCode;
-
         const [blackListResponse, docVerificationResponse] = responses;
+
+        const isSuccessCode = (response: any) => response?.data?.code === '200.00.000';
 
         if (isSuccessCode(blackListResponse) && isSuccessCode(docVerificationResponse)) {
           inc();
