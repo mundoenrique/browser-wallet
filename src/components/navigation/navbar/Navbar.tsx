@@ -21,7 +21,7 @@ export default function Navbar(props: NavbarProps): JSX.Element {
   const { onClick } = props;
 
   const { title } = useNavTitleStore();
-  const { backLink } = useHeadersStore();
+  const backLink = useHeadersStore((state) => state.backLink);
 
   const pathname = usePathname();
   const dashboardNav = pathname === '/dashboard';
