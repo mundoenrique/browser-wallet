@@ -8,7 +8,8 @@ export async function POST(request: NextRequest) {
   try {
 
     const uuid = uuid4();
-    await postRedis(`session:${uuid}`, { login: 'false' })
+    const stateObject = { state: { login: 'false' }, version: 0 };
+    await postRedis(`session:${uuid}`, stateObject )
 
     const encryptedBody = await request.json();
     const { data } = encryptedBody;
