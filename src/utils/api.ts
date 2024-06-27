@@ -1,7 +1,8 @@
 import uuid4 from 'uuid4';
 import axios from 'axios';
+
 //Internal app
-import { useJwtStore, useKeyStore } from '@/store';
+import { useJwtStore, useKeyStore, useActiveAppStore } from '@/store';
 import { JWS_HEADER, JWT_HEADER } from './constants';
 import { decryptJWE, encryptJWE, signJWE, verifyDetachedJWS, verifyJWT } from './jwt';
 
@@ -47,7 +48,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   async (response) => {
     const jwsApiPublicKey = process.env.NEXT_PUBLIC_MIDDLE_JWS_PUBLIC_KEY || '';
-    const jwePrivateKey = useKeyStore.getState().jwePrivateKey || '';
+    const jwePrivateKey = useKeyStore.getState().jwePrivateKey || useActiveAppStore.getState().createAccess || '';
     const jwtHeader = response.headers[JWT_HEADER];
     const data = response.data;
 
