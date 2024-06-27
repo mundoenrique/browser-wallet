@@ -8,20 +8,23 @@ import { isBrowser } from 'react-device-detect';
 import { api } from '@/utils/api';
 import LogoGreen from '%/images/LogoGreen';
 import { ChildrenProps } from '@/interfaces';
-import { useKeyStore, useJwtStore } from '@/store';
-import { useKeyRedisStore } from '@/store/keyRedisStore';
+import { useJwtStore, useKeyStore, useActiveAppStore } from '@/store';
 import PurpleLayout from '../layout/PurpleLayout';
 import { removePEMHeadersAndFooters } from '@/utils/jwt';
 
 export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
-	const [keys, setKeysStore] = useState<any>(null);
-  const setKeys = useKeyStore((state) => state.setKeys);
+  const [keys, setKeysStore] = useState<any>('');
   const token = useJwtStore((state) => state.token);
   const setToken = useJwtStore((state) => state.setToken);
-  const setRedisKeys = useKeyRedisStore((state) => state.setKeys);
+  const setKeys = useKeyStore((state) => state.setKeys);
+  const activeApp = useActiveAppStore((state) => state.activeApp);
+  const initAccess = useActiveAppStore((state) => state.initAccess);
+  const setActiveApp = useActiveAppStore((state) => state.setActiveApp);
+  const setinitAccess = useActiveAppStore((state) => state.setinitAccess);
+  const setCreateAccess = useActiveAppStore((state) => state.setCreateAccess);
 
   useEffect(() => {
-    if (keys === null) {
+    if (!activeApp) {
       const jweKeypair = new NodeRSA({ b: 2048 });
       const jwePrivateKey = removePEMHeadersAndFooters(jweKeypair.exportKey('pkcs8-private-pem'));
       const jwePublicKey = removePEMHeadersAndFooters(jweKeypair.exportKey('pkcs8-public-pem'));
@@ -29,27 +32,30 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
       const jwsPrivateKey = removePEMHeadersAndFooters(jwsKeypair.exportKey('pkcs8-private-pem'));
       const jwsPublicKey = removePEMHeadersAndFooters(jwsKeypair.exportKey('pkcs8-public-pem'));
       setKeysStore({ jwePublicKey, jwePrivateKey, jwsPublicKey, jwsPrivateKey })
-      setKeys({ jwePublicKey, jwePrivateKey, jwsPublicKey, jwsPrivateKey });
+      setCreateAccess(jwePrivateKey)
+      setActiveApp(true)
     }
-  }, [keys, setKeys]);
+  }, [activeApp, setActiveApp, setCreateAccess]);
 
   useEffect(() => {
-    if (!token && keys != null) {
+    if (!initAccess && activeApp) {
       (async () => {
         try {
           const { jwePublicKey, jwsPublicKey } = keys as {jwePublicKey:string, jwsPublicKey:string}
           const response = await api.post('/gettoken', { jwePublicKey, jwsPublicKey, isBrowser });
           const token = (await response.data.data.jwt) as string;
-          await setToken(token);
-          await setRedisKeys(keys)
+          setKeys(keys);
+          setToken(token);
+          setCreateAccess('');
+          setinitAccess(true);
         } catch (error) {
           console.error('Error generating JWT token:', error);
         }
       })();
     }
-  }, [setToken, setRedisKeys, keys, token]);
+  }, [initAccess, activeApp, keys, setToken, setKeys, setinitAccess, setCreateAccess ]);
 
-  if (!token) {
+  if (!initAccess) {
     return (
       <PurpleLayout>
         <LogoGreen />
