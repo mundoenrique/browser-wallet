@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers'
 
 //Internal app
-import { getRedis, postRedis, putRedis } from '@/utils/redis';
+import { createRedisInstance, getRedis, postRedis} from '@/utils/redis';
 
 export async function GET(request: NextRequest) {
 
@@ -43,7 +43,25 @@ export async function PUT(request: NextRequest) {
     const dataBody = await request.json();
     const uuid = (uuidCookie) ? 'session:' + uuidCookie : dataBody.uuid
 
-    await putRedis(uuid, dataBody.dataRedis)
+    try {
+      const redis = createRedisInstance();
+      const data = JSON.parse(dataBody.data)
+      const dataRedis: string | null = await redis.get(`${uuid}`);
+      let stateObject: any;
+
+      if (dataRedis) {
+        stateObject = JSON.parse(dataRedis);
+        stateObject.state = Object.assign({}, stateObject.state, data.state);
+        await redis.set(`${uuid}`, JSON.stringify(stateObject));
+      }
+
+      await redis.expire(`${uuid}`, 3000);
+
+      redis.quit();
+
+    } catch (error) {
+      throw new Error('Error put data Redis: ');
+    }
 
     return new NextResponse(JSON.stringify({ code: '200.00.000', message: 'ok' }), { status: 200 });
 
