@@ -8,7 +8,7 @@ import { api } from '@/utils/api';
 import LogoGreen from '%/images/LogoGreen';
 import { DataUserProps } from '@/interfaces';
 import { PurpleLayout, NotFoundError } from '@/components';
-import { useHeadersStore, useRegisterStore, useJwtStore, useUiStore } from '@/store';
+import { useHeadersStore, useRegisterStore, useUiStore } from '@/store';
 import { setDataRedis } from '@/utils/toolHelper';
 
 /**
@@ -101,7 +101,8 @@ export default function DataUser({ user, referer, host }: DataUserProps) {
           })
           .then(async (response) => {
             setUserValidation(response.data);
-            await setDataRedis('PUT', {uuid:null, dataRedis:{ accesApp:'true' }})
+            const stateObject = { state: { accesApp:'true' }, version: 0 };
+            await setDataRedis('PUT', {uuid:null, data: JSON.stringify(stateObject) })
           })
           .catch(() => {
             setModalError();
