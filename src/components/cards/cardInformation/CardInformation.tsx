@@ -9,7 +9,7 @@ import BackInformation from './partial/BackInformation';
 import FrontInformation from './partial/FrontInformation';
 import { BodyCard, BodyCardAction } from './partial/BodyCards';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
-import { useUiStore, useUserStore, useOtpStore, useConfigCardStore, useHeadersStore } from '@/store';
+import { useUiStore, useUserStore, useOtpStore, useConfigCardStore, useDebStore, useHeadersStore } from '@/store';
 
 const cardTypeQuery = (cardType: string) => {
   const cardObject: { [key: string]: object } = {
@@ -59,6 +59,8 @@ export default function CardInformation() {
   const updateCardInfo = useConfigCardStore((state) => state.updateCardInfo);
 
   const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
+
+  const setBalanceStoreDebt = useDebStore((state) => state.setBalance);
 
   const [showDetails, setShowDetails] = useState<boolean>(false);
 
@@ -156,6 +158,7 @@ export default function CardInformation() {
       .get(`/cards/${getUserCardId()}/balance`)
       .then((response) => {
         setBalance(response.data.data);
+        setBalanceStoreDebt(response.data.data);
       })
       .catch((e) => {
         setBalanceError(true);
