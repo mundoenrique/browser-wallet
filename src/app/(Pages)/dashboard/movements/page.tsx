@@ -31,22 +31,33 @@ const dateRank = (): { value: string; text: string }[] => {
 
 export default function Movements() {
   const theme = useTheme();
+
   const match = useMediaQuery(theme.breakpoints.down('md'));
 
   const { getUserCardId } = useUserStore();
+
   const { setCurrentItem } = useMenuStore();
+
   const { updateTitle } = useNavTitleStore();
 
   const [lastPage, setLastPage] = useState<number>(1);
+
   const [isError, setIsError] = useState<boolean>(false);
+
   const [movementData, setMovementData] = useState<any>([]);
+
   const [currentPage, setCurrentPage] = useState<number>(1);
+
   const [isLoading, setIsloading] = useState<boolean>(false);
+
   const [errorModal, setErrorModal] = useState<boolean>(false);
+
   const [filterMonth, setFilterMonth] = useState(dateRank()[0].value);
 
   const initialized = useRef<boolean>(false);
+
   const containerPWA = useRef<HTMLDivElement | null>(null);
+
   const containerDesktop = useRef<HTMLDivElement | null>(null);
 
   const scrollHandle = useCallback(async () => {

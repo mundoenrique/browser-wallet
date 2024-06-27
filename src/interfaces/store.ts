@@ -278,18 +278,52 @@ export interface OtpStore {
  * Debt store
  * @typeParam debt - Initial state {@defaultValue `null`}
  * @typeParam view - Initial state {@defaultValue `DEBT`}
+ * @typeParam payOffDebt - Initial state {@defaultValue `null`}
+ * @typeParam error - Initial state {@defaultValue `null`}
+ * @typeParam balance - Initial state {@defaultValue `null`}
  * @typeParam setDebt: (_data: any) => void
  * @typeParam setView: (_data: any) => void
+ * @typeParam setPayOffDebt: (_data: IPayOffDebt) => void
+ * @typeParam setError: (_data: IPayOffDebtError) => void
+ * @typeParam setBalance: (_data: IBalance) => void
  */
 export interface DebtStore {
   debt: any | null;
   view: 'DEBT' | 'SUCCESS' | 'ERROR' | string | undefined;
   payOffDebt: IPayOffDebt | null;
   error: IPayOffDebtError | null;
+  balance: any | null;
   setDebt: (_data: any) => void;
   setView: (_data: string) => void;
   setPayOffDebt: (_data: IPayOffDebt) => void;
   setError: (_data: IPayOffDebtError) => void;
+  setBalance: (_data: IBalance) => void;
+}
+export interface IBalance {
+  availableBalance: string;
+  balanceBlocked: string;
+  currentBalance: string;
+}
+export interface ILoad {
+  name: string | null;
+  phoneNumber: string | null;
+}
+
+export interface ILinkData {
+  uuid: string | null;
+  providerPaymentCode: string | null;
+  amount: number | null;
+  expirationDate: string | null;
+  currencyCode: string | null;
+  url: string | null;
+}
+
+export interface ICollectStore {
+  load: ILoad | null;
+  linkData: ILinkData | null;
+  setLoad: (_data: ILoad) => void;
+  setLinkData: (_data: ILinkData) => void;
+  reset: () => void;
 }
 
 export interface HeadersStore {

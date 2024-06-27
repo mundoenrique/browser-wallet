@@ -1,29 +1,11 @@
-import { useRouter } from 'next/navigation';
 import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 //Internal app
 import { api } from '@/utils/api';
 import Signin from '@/app/(Pages)/signin/page';
-import { renderInput, redirectLinks } from '../../tools/unitTestHelper.test';
-
-jest.mock('@next/third-parties/google', () => ({
-  GoogleTagManager: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
-  sendGTMEvent: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
-}));
-
-jest.mock('@/utils/toolHelper', () => ({
-  encryptForge: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
-}));
+import { renderInput, redirectLinks, mockRouterPush } from '../../tools/unitTestHelper.test';
 
 jest.mock('@/utils/api');
 const mockApi = api as jest.Mocked<typeof api>;
-
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-}));
-
-jest.mock('jose', () => ({
-  compactDecrypt: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
-}));
 
 describe('Signin', () => {
   let form: HTMLFormElement;
@@ -38,12 +20,10 @@ describe('Signin', () => {
 
   mockApi.get.mockResolvedValue({ status: 200, data: { data: userData } });
   mockApi.post.mockResolvedValue({ status: 200, data: { userId: userData.userId } });
-  const mockRouter = {
-    push: jest.fn(),
-  };
+  const routerPushMock = jest.fn();
 
   beforeEach(async () => {
-    (useRouter as jest.Mock).mockReturnValue(mockRouter);
+    mockRouterPush(routerPushMock)
     await act(async () => {
       render(<Signin />);
     });
@@ -55,8 +35,6 @@ describe('Signin', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
-    mockApi.get.mockClear();
-    mockApi.post.mockClear();
   });
 
   describe('API calls', () => {
@@ -94,7 +72,7 @@ describe('Signin', () => {
     it('should render password recovery link and navigate to password recovery page when link is clicked', async () => {
       const textLink = screen.getByText(/olvide mi contraseña/i);
       const routePath = '/password-recover';
-      redirectLinks(textLink, routePath, mockRouter.push);
+      redirectLinks(textLink, routePath, routerPushMock);
     });
 
     it('should call the API LOGIN with the correct credentials and navigate to dashboard', async () => {
@@ -111,7 +89,7 @@ describe('Signin', () => {
       await waitFor(() => {
         expect(mockApi.post).toHaveBeenCalled();
         expect(mockApi.post).toHaveBeenCalledWith('/users/credentials', requestData);
-        expect(mockRouter.push).toHaveBeenCalledWith('/dashboard');
+        expect(routerPushMock).toHaveBeenCalledWith('/dashboard');
       });
     });
 

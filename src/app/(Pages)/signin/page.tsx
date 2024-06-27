@@ -20,20 +20,27 @@ import { accessSessionStore } from '@/store/accessSessionStore';
 
 export default function Signin() {
   const theme = useTheme();
+
+  const schema = getSchema(['password']);
+
   const router = useRouter();
   const user = useRegisterStore((state) => state.user);
   const host = useHeadersStore((state) => state.host);
   const { setOTPValid } = useOtpStore();
+
   const { setModalError } = useUiStore();
+
   const { setUser, userId } = useUserStore();
+
   const { setAccessSession } = accessSessionStore();
+
   const { setLoadingScreen, loadingScreen } = useUiStore();
 
   const [errorMessage] = useState<string>('');
-  const [open, setOpen] = useState<boolean>(false);
-  const [userData, setUserData] = useState<TUserDetail | null>(null);
 
-  const schema = getSchema(['password']);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const [userData, setUserData] = useState<TUserDetail | null>(null);
 
   const { control, handleSubmit } = useForm({
     defaultValues: { password: '' },

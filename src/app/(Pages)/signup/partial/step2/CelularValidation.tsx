@@ -16,13 +16,18 @@ import { useOtpStore, useRegisterStore, useUiStore } from '@/store';
 export default function CelularValidation() {
   const schema = getSchema(['otp']);
 
-  const { setModalError, setLoadingScreen } = useUiStore();
-  const { inc, dec, onboardingUuId, ONB_PHASES_TERMS } = useRegisterStore();
-  const { timeLeft, countdown, counting, setCounting, setTime, otpUuid, setOtpUuid } = useOtpStore();
   const resetOtp = useOtpStore((state) => state.reset);
+
+  const { setModalError, setLoadingScreen } = useUiStore();
+
+  const { inc, dec, onboardingUuId, ONB_PHASES_TERMS } = useRegisterStore();
+
+  const { timeLeft, countdown, counting, setCounting, setTime, otpUuid, setOtpUuid } = useOtpStore();
+
   const [open, setOpen] = useState(false);
 
   const timerRef = useRef<any>();
+
   const initialized = useRef<boolean>(false);
 
   const { handleSubmit, control, reset } = useForm({

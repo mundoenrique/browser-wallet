@@ -100,10 +100,13 @@ export type TUserDetailParams = {
  * @typeParam clients (Optional): number
  */
 export interface ICardDebt {
-  amount: number | null | string;
-  currencyCode: string;
-  expirationDate?: string | null;
-  clients?: number | null;
+  code: string;
+  data: {
+    amount: number | string | null;
+    currencyCode: string;
+    expirationDate?: string | null;
+    clients?: number | null;
+  };
 }
 
 /**
@@ -115,11 +118,14 @@ export interface ICardDebt {
  * @typeParam transactionIdentifier: number
  */
 export interface IPayOffDebt {
-  currencyCode: string;
-  amount: number;
-  description: string;
-  transactionDate: string;
-  transactionIdentifier: number;
+  code: string;
+  data: {
+    currencyCode: string;
+    amount: number | string | null;
+    description: string;
+    transactionDate: string;
+    transactionIdentifier: number;
+  };
 }
 
 /**

@@ -38,7 +38,6 @@ export default function FrontInformation(props: FrontInformationProps): JSX.Elem
         <Box>
           <Box mb={1}>
             {!cardInformationError &&
-              ((cardStatus && !Object.hasOwn(cardStatus, 'code')) || cardStatus === undefined) &&
               (cardNumber ? (
                 <>
                   <Button
@@ -72,6 +71,7 @@ export default function FrontInformation(props: FrontInformationProps): JSX.Elem
             <Box width={130}>
               {balanceError ? (
                 <>
+                  <Box sx={{ height: 24 }}></Box>
                   <Typography variant="body1" color="white" fontWeight={400} noWrap sx={{ opacity: 0.5 }}>
                     Sin datos
                   </Typography>

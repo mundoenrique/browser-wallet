@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { ICardDebt } from './api';
 import { ChildrenProps } from './constans';
 
@@ -87,7 +86,7 @@ export interface CardTicketProps extends ChildrenProps {
 }
 
 export interface TransferDetail {
-  amount: string;
+  amount: number | null;
   receiver: string;
   date: string;
   transactionCode: string;

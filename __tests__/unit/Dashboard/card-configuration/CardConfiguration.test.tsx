@@ -1,34 +1,16 @@
-import { useRouter } from 'next/navigation';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 //Internal app
 import CardConfiguration from '@/app/(Pages)/dashboard/card-configuration/page';
-
-const routerPushMock = jest.fn();
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-}));
-
-jest.mock('jose', () => {
-  return {
-    compactDecrypt: jest.fn(() => {
-      return { plaintext: 'mocked plaintext' };
-    }),
-  };
-});
-
-jest.mock('mui-one-time-password-input', () => {
-  return {
-    compactDecrypt: jest.fn(() => {
-      return { plaintext: 'mocked plaintext' };
-    }),
-  };
-});
+import { mockRouterPush } from '../../../tools/unitTestHelper.test';
 
 describe('CardConfiguration', () => {
+  const routerPushMock = jest.fn();
 
-  beforeEach(() => {
-    (useRouter as jest.Mock).mockReturnValue({ push: routerPushMock });
-    render(<CardConfiguration />);
+  beforeEach(async () => {
+    mockRouterPush(routerPushMock)
+    await act(async () => {
+      render(<CardConfiguration />);
+    });
     expect(render).toBeTruthy();
   });
 

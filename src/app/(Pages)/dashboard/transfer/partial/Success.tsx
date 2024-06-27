@@ -19,7 +19,9 @@ export default function Success({ onClick, transferDetail }: CardTicketProps) {
     {
       icon: <Dollar sx={{ color: 'primary.main' }} />,
       label: 'Monto de la transacción',
-      description: `S/ ${transferDetail?.amount}`,
+      description: Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(
+        transferDetail?.amount as number
+      ),
     },
     {
       icon: <Clock sx={{ color: 'primary.main' }} />,

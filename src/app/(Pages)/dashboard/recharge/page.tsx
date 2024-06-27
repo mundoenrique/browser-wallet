@@ -1,35 +1,89 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
 //Internal app
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import Success from './partial/Success';
-import { useNavTitleStore, useMenuStore } from '@/store';
 import { ContainerLayout, InputTextPay } from '@/components';
+import { useNavTitleStore, useMenuStore, useUserStore, useCollectStore, useUiStore } from '@/store';
+import { formatAmount } from '@/utils/toolHelper';
 
 export default function Recharge() {
+  const schema = getSchema(['amount']);
+
   const { setCurrentItem } = useMenuStore();
+
   const { updateTitle } = useNavTitleStore();
 
-  const [openRc, setOpenRc] = useState<boolean>(false);
+  const userId = useUserStore((state) => state.user.userId);
 
-  const schema = getSchema(['amount']);
+  const firstName = useUserStore((state) => state.user.firstName);
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const getUserPhone = useUserStore((state) => state.getUserPhone);
+
+  const setLinkData = useCollectStore((state) => state.setLinkData);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
+  const firstLastName = useUserStore((state) => state.user.firstLastName);
+
+  const [openRc, setOpenRc] = useState<boolean>(false);
 
   useEffect(() => {
     updateTitle('Generar recarga');
     setCurrentItem('recharge');
   }, [updateTitle, setCurrentItem]);
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, getValues, setError } = useForm({
     defaultValues: { amount: '' },
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async () => {
-    setOpenRc(true);
+  const generateCharge = useCallback(async () => {
+    setLoadingScreen(true);
+    const payload = {
+      fullName: `${firstName} ${firstLastName}`,
+      phoneNumber: getUserPhone(),
+      operationCode: 'DIRECT_CHARGE',
+      providerCode: 'PAGO_EFECTIVO',
+      currencyCode: 'PEN',
+      amount: formatAmount(getValues('amount')),
+    };
+    await api
+      .post(`/payments/${userId}/charge`, payload)
+      .then((response) => {
+        setLinkData(response.data.data);
+        setOpenRc(true);
+      })
+      .catch((e) => {
+        setModalError({ error: e });
+        setLoadingScreen(false);
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
+  }, [setLoadingScreen, firstName, firstLastName, getUserPhone, getValues, userId, setLinkData, setModalError]);
+
+  const onSubmit = async (data: any) => {
+    const validate = {
+      min: parseFloat(data.amount) < 1,
+      max: parseFloat(data.amount) > 4950,
+    };
+
+    if (validate.min || validate.max) {
+      validate.min && setError('amount', { type: 'customError', message: 'El monto debe ser mayor a 1.00' });
+
+      validate.max && setError('amount', { type: 'customError', message: 'El monto debe ser menor a 4950' });
+
+      return;
+    }
+    await generateCharge();
   };
 
   return (
@@ -43,12 +97,7 @@ export default function Recharge() {
           Generar recarga
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-          <InputTextPay
-            name="amount"
-            control={control}
-            label="¿Cuánto deseas recargar?"
-            onChange={(e) => console.log('onChange', e)}
-          />
+          <InputTextPay name="amount" control={control} label="¿Cuánto deseas recargar?" />
           <Button variant="contained" type="submit" fullWidth>
             Recargar
           </Button>

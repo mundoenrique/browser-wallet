@@ -7,9 +7,9 @@ import { Box, Button, Card, Stack, Typography } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
-import { encryptForge, formatAmount } from '@/utils/toolHelper';
 import ModalOtp from '@/components/modal/ModalOtp';
 import { fuchsiaBlue } from '@/theme/theme-default';
+import { encryptForge, formatAmount } from '@/utils/toolHelper';
 import { ContainerLayout, InputTextPay, Linking } from '@/components';
 import { useDebStore, useMenuStore, useNavTitleStore, useOtpStore, useUiStore, useUserStore } from '@/store';
 
@@ -18,13 +18,15 @@ export default function Debt() {
 
   const debt = useDebStore((state) => state.debt);
 
+  const balance = useDebStore((state) => state.balance);
+
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
   const setView = useDebStore((state) => state.setView);
 
   const { userId } = useUserStore((state) => state.user);
 
-  const setError = useDebStore((state) => state.setError);
+  const setErrorStore = useDebStore((state) => state.setError);
 
   const setModalError = useUiStore((state) => state.setModalError);
 
@@ -38,7 +40,7 @@ export default function Debt() {
 
   const [openOtp, setOpenOtp] = useState<boolean>(false);
 
-  const { control, handleSubmit, getValues } = useForm({
+  const { control, handleSubmit, getValues, setError } = useForm({
     defaultValues: { amount: '' },
     resolver: yupResolver(schema),
   });
@@ -58,8 +60,7 @@ export default function Debt() {
           setView('SUCCESS');
         })
         .catch((e) => {
-          console.log('🚀 ~ e:', e);
-          setError(e.response.data.data);
+          setErrorStore(e.response.data.data);
           setView('ERROR');
         })
         .finally(() => {
@@ -94,9 +95,17 @@ export default function Debt() {
     [otpUuid] //eslint-disable-line
   );
 
-  const openModalOtp = () => {
-    const amount = getValues('amount');
-    if (amount > 0) setOpenOtp(true);
+  const onSubmit = (data: any) => {
+    const balanceAmount = parseFloat(balance.availableBalance);
+    const amount = parseFloat(data.amount);
+    if (amount > balanceAmount) {
+      setError('amount', {
+        type: 'customError',
+        message: 'No cuenta con saldo disponible.',
+      });
+      return;
+    }
+    setOpenOtp(true);
   };
 
   useEffect(() => {
@@ -129,9 +138,9 @@ export default function Debt() {
           </Stack>
         </Card>
 
-        <Box component="form" onSubmit={handleSubmit(openModalOtp)}>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           <InputTextPay name="amount" control={control} label="¿Cuánto deseas pagar?" />
-          <Button variant="contained" type="submit" fullWidth onClick={openModalOtp}>
+          <Button variant="contained" type="submit" fullWidth>
             Pagar
           </Button>
         </Box>

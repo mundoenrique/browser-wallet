@@ -17,3 +17,9 @@ export const expiredFormatDate = (date: string) => {
 export const formatDate = (dateString: string) => {
   return dayjs.utc(dateString).local().format('dddd DD MMM - h:mm a');
 };
+
+export const formattedSortDate = (dateString: string) => {
+  if (!dateString) return 'Dato no disponible';
+  const day = dayjs(dateString);
+  return day.format('D [de] MMMM');
+};
