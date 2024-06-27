@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Button, Box, Typography, Zoom } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
-import { useRegisterStore } from '@/store';
+import { useRegisterStore, useUiStore } from '@/store';
 import { encryptForge } from '@/utils/toolHelper';
 import LogoPurple from '%/images/LogoPurple';
 import { fuchsiaBlue } from '@/theme/theme-default';
@@ -49,6 +49,8 @@ export default function Landing() {
 
   const [error, setError] = useState<boolean>(false);
 
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
   useEffect(() => {
     let timer = setInterval(() => {});
     if (currentImageIndex < 2) {
@@ -63,19 +65,25 @@ export default function Landing() {
   });
 
   const verifyUser = async () => {
+    setLoadingScreen(true);
     const { consultant } = phaseInfo as any;
+
+    const shortDoc = consultant.documentNumber.substring(2, consultant.documentNumber - 1);
 
     const documentPayload = {
       documentType: encryptForge(consultant.documentType),
-      documentNumber: encryptForge(consultant.documentNumber),
+      documentNumber: encryptForge(shortDoc),
     };
 
     const blacklistPayload = {
       names: encryptForge(`${consultant.firstName} ${consultant.middleName}`),
       lastNames: encryptForge(`${consultant.firstLastName} ${consultant.secondLastName}`),
-      ...documentPayload,
+      documentNumber: encryptForge(consultant.documentNumber),
+      documentType: encryptForge(consultant.documentType),
       identifier: '123e4567-e89b-42d3-a456-556642440000', //TODO: TEMPORAL MIENTRAS HACEN EL CAMBIO A HEADERS
     };
+
+    console.log(documentPayload, blacklistPayload);
 
     const blacklist = api.post('/onboarding/blacklist', blacklistPayload, {
       headers: {
@@ -100,7 +108,10 @@ export default function Landing() {
         }
       })
       .catch(() => {
-        setError(true);
+        //  setError(true);
+      })
+      .finally(() => {
+        setLoadingScreen(false);
       });
   };
 
