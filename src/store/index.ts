@@ -18,3 +18,4 @@ export * from '@/store/sessionStore';
 export * from '@/store/userStore';
 export * from '@/store/otpStore';
 export * from '@/store/debtStore';
+export * from '@/store/activeStore';

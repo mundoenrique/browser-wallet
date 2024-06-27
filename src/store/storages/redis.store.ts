@@ -7,10 +7,10 @@ const storageApi: StateStorage = {
   getItem: async function (name: string): Promise<string | null> {
     try {
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/v1/redis`);
-      const dataRedis = await response.json();
+      const data = await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/v1/redis`)
+        .then((res) => res.json());
 
-      return JSON.stringify(dataRedis);
+      return data;
 
     } catch (error) {
       console.error(error);
@@ -20,9 +20,7 @@ const storageApi: StateStorage = {
 
   setItem: async function (name: string, value: any): Promise<void> {
 
-    const data = JSON.parse(value)
-
-    await setDataRedis('PUT', {uuid:null, dataRedis: data.state })
+    await setDataRedis('PUT', {uuid:null, data: value })
 
     return;
   },

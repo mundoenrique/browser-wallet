@@ -8,7 +8,7 @@ import { JwtStoreProps } from '@/interfaces/store';
 const storeAPi: StateCreator<JwtStoreProps, [['zustand/devtools', never]]> = (set) => ({
   token: null,
 
-  setToken: (token) => set({ token })
+  setToken: (value:string | null) => set({ token:value }, false, 'setToken')
 });
 
 export const useJwtStore = create<JwtStoreProps>()(
@@ -19,9 +19,3 @@ export const useJwtStore = create<JwtStoreProps>()(
     })
   )
 );
-
-useJwtStore.subscribe((nextState /*prevState*/) => {
-  const { token } = nextState;
-
-  useWeddingBoundStore.getState().setToken(token);
-});

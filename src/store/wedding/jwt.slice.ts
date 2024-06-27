@@ -6,5 +6,5 @@ import { JwtStoreProps } from '@/interfaces/store';
 export const createJwtSlice: StateCreator<JwtStoreProps> = (set) => ({
   token: null,
 
-  setToken: (token) => set({ token })
+  setToken: (token:string | null) => set({ token })
 });

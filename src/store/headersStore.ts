@@ -1,6 +1,8 @@
-import { create } from 'zustand';
+import { type StateCreator, create } from 'zustand';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 //Internal app
+import { useWeddingBoundStore } from './wedding';
+import { redisStorage } from '@/store/storages/redis.store';
 import { HeadersStore } from '@/interfaces';
 
 /**
@@ -12,19 +14,18 @@ import { HeadersStore } from '@/interfaces';
  * @param setHost - Function to change host
  *
  */
+const storeAPi: StateCreator<HeadersStore, [['zustand/devtools', never]]> = (set) => ({
+  backLink: '',
+  host: '',
+  setBackLink: (value: any) => set({ backLink: value }, false, 'setBackLink'),
+  setHost: (value: any) => set({ host:value }, false, 'setHost')
+});
+
 export const useHeadersStore = create<HeadersStore>()(
   devtools(
-    persist(
-      (set) => ({
-        backLink: '',
-        setBackLink: (status: any) => set({ backLink: status }),
-        host: '',
-        setHost: (status: any) => set({ host: status }),
-      }),
-      {
-        name: 'back-store',
-        storage: createJSONStorage(() => sessionStorage),
-      }
-    )
+    persist(storeAPi, {
+      name: 'back-storage',
+      storage: redisStorage,
+    })
   )
 );

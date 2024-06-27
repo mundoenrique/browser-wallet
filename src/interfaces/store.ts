@@ -15,7 +15,6 @@ export type KeyStoreProps = {
   jwePrivateKey: string | null;
   jwsPublicKey: string | null;
   jwsPrivateKey: string | null;
-  activeKeys: boolean;
   setKeys: (_keys: {
     jwePublicKey: string;
     jwePrivateKey: string;
@@ -298,4 +297,21 @@ export interface HeadersStore {
   setBackLink: (_data: any) => void;
   host: string | null;
   setHost: (_data: any) => void;
+}
+
+/**
+ * Active Keys
+ *
+ * @typeParam activeApp: boolean
+ * @typeParam createAccess: string
+ * @typeParam setActiveApp: (activeApp: boolean) => void
+ * @typeParam setCreateAccess: (createAccess: string) => void
+ */
+export interface ActiveAppStore {
+  activeApp: boolean | null;
+  initAccess: boolean | null;
+  createAccess: string | null;
+  setActiveApp: (_activeApp: boolean | null) => void;
+  setCreateAccess: (_createAccess: string | null) => void;
+  setinitAccess: (_initAccess: boolean | null) => void;
 }
