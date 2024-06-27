@@ -21,8 +21,8 @@ import { accessSessionStore } from '@/store/accessSessionStore';
 export default function Signin() {
   const theme = useTheme();
   const router = useRouter();
-  const { host } = useHeadersStore();
-  const { user } = useRegisterStore();
+  const user = useRegisterStore((state) => state.user);
+  const host = useHeadersStore((state) => state.host);
   const { setOTPValid } = useOtpStore();
   const { setModalError } = useUiStore();
   const { setUser, userId } = useUserStore();
