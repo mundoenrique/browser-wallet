@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { URL_BASE } from '@/utils/constants';
 
 export async function middleware(request: NextRequest) {
-  const { url, method, nextUrl } = request;
+  const { url, nextUrl } = request;
   const pathname = nextUrl.pathname;
 
   const SetCode = '/api/v1/setcode';
