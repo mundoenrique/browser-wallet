@@ -8,12 +8,32 @@ import { Box, Button } from '@mui/material';
 
 export default function Biometric() {
   const { loadingScreen, setModalError, setLoadingScreen } = useUiStore();
-  const { updateStep } = useRegisterStore();
+  const { updateStep, updateControl } = useRegisterStore();
 
   const [url, setUrl] = useState<string>('');
   const [btnBack, setBtnBack] = useState<boolean>(false);
 
+  const receiveMessage = useCallback(
+    (event: any) => {
+      let data = window.JSON.parse(event.data);
+      console.log('ID Verification Web was loaded in an iframe.');
+      console.log('auth-token:', data.authorizationToken);
+      console.log('event-type:', data.eventType);
+      console.log('date-time:', data.dateTime);
+      console.log('workflow-execution-id:', data.workflowExecutionId);
+      console.log('account-id:', data.accountId);
+      console.log('customer-internal-reference:', data.customerInternalReference);
+      console.log('value:', data.payload.value);
+      console.log('metainfo:', data.payload.metainfo);
+      //Estamos verificando tu información
+      if (data.payload.value === 'success') setLoadingScreen(true, { message: 'Estamos verificando tu información' });
+      if (data.payload.value === 'error') setBtnBack(true);
+    },
+    [setLoadingScreen, setBtnBack]
+  );
+
   const captureBiometrics = useCallback(() => {
+    setUrl('');
     const requestFormData = {
       deviceDetect: 'web',
       identifier: 'a89ae7e8-bdc0-4aee-b4ec-23ca70d0d020',
@@ -22,47 +42,29 @@ export default function Biometric() {
     api
       .post('/onboarding/capturephotobiometrics ', requestFormData)
       .then((response) => {
-        console.log('🚀 ~ capturephotobiometrics .then ~ response.data.data:', response.data.data);
-        const { web } = response.data.data;
+        const { web, account, workflowExecution } = response.data.data;
         setUrl(web.href);
+        updateControl({ accountId: account.id, workflowId: workflowExecution.id });
         window.addEventListener('message', receiveMessage, false);
       })
       .catch((e) => {
-        console.log('🚀 ~ captureBiometrics ~ e:', e);
         setModalError({ error: e });
       })
       .finally(() => {
         setLoadingScreen(false);
       });
-  }, []);
-
-  const receiveMessage = (event: any) => {
-    let data = window.JSON.parse(event.data);
-    console.log('🚀 ~ receiveMessage ~ data:', data);
-    console.log('ID Verification Web was loaded in an iframe.');
-    console.log('auth-token:', data.authorizationToken);
-    console.log('event-type:', data.eventType);
-    console.log('date-time:', data.dateTime);
-    console.log('workflow-execution-id:', data.workflowExecutionId);
-    console.log('account-id:', data.accountId);
-    console.log('customer-internal-reference:', data.customerInternalReference);
-    console.log('value:', data.payload.value);
-    console.log('metainfo:', data.payload.metainfo);
-    //Estamos verificando tu información
-    if (data.payload.value === 'success') setLoadingScreen(true, { message: 'Estamos verificando tu información' });
-    if (data.payload.value === 'error') setBtnBack(true);
-  };
+  }, [receiveMessage, setLoadingScreen, setModalError, updateControl]);
 
   useEffect(() => {
     captureBiometrics();
-  }, []);
+  }, [captureBiometrics]);
 
   useEffect(() => {
     if (loadingScreen) {
       const firstTimer = setTimeout(() => {
         setLoadingScreen(true, { message: 'Verificación correcta' });
         const secondTimer = setTimeout(() => {
-          updateStep(4);
+          updateStep(6);
         }, 4000);
         return () => {
           setLoadingScreen(false);
@@ -86,6 +88,7 @@ export default function Biometric() {
         justifyContent: { xs: 'flex-start', md: 'center' },
         gap: 2,
         height: '80vh',
+        borderRadius: '10px',
       }}
     >
       {url && (
@@ -95,6 +98,7 @@ export default function Biometric() {
           width="90%"
           height="90%"
           allow="camera;autoplay;fullscreen;clipboard-read;clipboard-write;accelerometer;gyroscope;magnetometer"
+          style={{ borderRadius: '10px', borderWidth: '0px' }}
         ></iframe>
       )}
       {btnBack && (
@@ -102,6 +106,7 @@ export default function Biometric() {
           variant="primary"
           onClick={() => {
             captureBiometrics();
+            setBtnBack(false);
           }}
         >
           Volver a validar identidad
