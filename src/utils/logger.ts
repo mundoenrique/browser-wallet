@@ -1,95 +1,79 @@
-const winston = require('winston');
-const { printf } = winston.format;
-const DailyRotateFile = require('winston-daily-rotate-file');
+import 'winston-daily-rotate-file';
+import { createLogger, format, transports } from 'winston';
 //Internal app
-import { LogData } from '@/interfaces';
 
-export {};
+const { colorize, combine, json, label, printf, simple, splat, timestamp, uncolorize } = format;
+const levels = { error: 0, warn: 1, debug: 2, info: 3 };
+const timeZone = process.env.TIMEZONE ?? 'America/Lima';
+const logFile = process.env.LOG_FILE ?? 'OFF';
+const maxFiles = process.env.MAX_FIES ?? '60d';
 
-/**
- * Set the geographic time
- */
-const timezoned = () => {
-  let d = new Date(),
-    year = d.getFullYear(),
-    month = d.toLocaleString('es-Es', {
-      month: '2-digit',
-      timeZone: process.env.TIMEZONE,
-    }),
-    day = d.toLocaleString('es-Es', {
-      day: '2-digit',
-      timeZone: process.env.TIMEZONE,
-    }),
-    time = d.toLocaleString('es-Es', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZone: process.env.TIMEZONE,
+function writeLog() {
+  const appUser = null;
+  const dateFormat = () => {
+    const now = new Date(),
+      year = now.getFullYear(),
+      month = now.toLocaleString('es-Es', {
+        month: '2-digit',
+        timeZone,
+      }),
+      day = now.toLocaleString('es-Es', {
+        day: '2-digit',
+        timeZone,
+      }),
+      time = now.toLocaleString('es-Es', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        timeZone,
+      });
+
+    return `${[year, month, day].join('-')} ${time}`;
+  };
+
+  const consoleTransport = new transports.Console();
+
+  const printFormat = printf(({ level, label, timestamp, message }) => {
+    const output = {
+      message: `${label}:${level} - ${timestamp} --> ${message}`,
+    };
+
+    if (appUser) output.message = `${label}:${level} - ${timestamp} --> [${appUser}] ${message}`;
+
+    return output.message;
+  });
+
+  const logger = createLogger({
+    levels,
+    level: 'info',
+    format: combine(
+      json(),
+      colorize({ all: true }),
+      label({ label: process.env.WEB_ENV }),
+      splat(),
+      simple(),
+      timestamp({
+        format: dateFormat,
+      }),
+      printFormat
+    ),
+    defaultMeta: { service: 'user-service' },
+    transports: [consoleTransport],
+  });
+
+  if (logFile === 'ON') {
+    const fileTransport = new transports.DailyRotateFile({
+      filename: `logs/log-%DATE%.log`,
+      datePattern: 'YYYY-MM-DD',
+      zippedArchive: true,
+      maxFiles,
+      format: uncolorize(),
     });
 
-  return `${[year, month, day].join('-')} ${time}`;
-};
-
-/**
- * Config structure log output
- */
-const myFormat = printf(({ level, message, user, ip, timestamp }: LogData) => {
-  if (user) {
-    return `${level} - ${timestamp} --> [${user}] IP: ${ip}, ${message}`;
-  } else {
-    return `${level} - ${timestamp} --> ${message}`;
+    logger.add(fileTransport);
   }
-});
 
-/**
- * Config bot log in single files date
- */
-const opts = {
-  filename: `${process.env.LOG_PATH}log-%DATE%.log`,
-  datePattern: 'YYYY-MM-DD',
-  zippedArchive: true,
-  myFormat,
-  format: winston.format.combine(
-    winston.format.colorize(),
-    winston.format.simple(),
-    winston.format.timestamp({ format: timezoned }),
-    myFormat
-  ),
-};
+  return logger;
+}
 
-/**
- * Create new instance of winston logger
- */
-const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL,
-  defaultMeta: {
-    service: 'user-service',
-  },
-  transports: [new DailyRotateFile(opts)],
-});
-
-/**
- * Create default console log when node_env is not production
- */
-logger.enviromentLogs = function () {
-  if (process.env.NODE_ENV !== 'production') {
-    logger.add(
-      new winston.transports.Console({
-        level: 'silly',
-        format: winston.format.combine(
-          winston.format.colorize(),
-          winston.format.simple(),
-          winston.format.timestamp({ format: timezoned }),
-          myFormat
-        ),
-      })
-    );
-    return true;
-  } else {
-    return false;
-  }
-};
-
-logger.enviromentLogs();
-
-module.exports = logger;
+export default writeLog();
