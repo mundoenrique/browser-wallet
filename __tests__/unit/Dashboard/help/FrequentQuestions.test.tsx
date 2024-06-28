@@ -1,28 +1,13 @@
-import { useRouter } from 'next/navigation';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 //Internal app
 import FrequenQuetions from '@/app/(Pages)/dashboard/help/frequent-questions/page';
-import { createMockRouter } from '@/utils/mocks';
-
-const routerPushMock = jest.fn();
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-}));
-
-jest.mock('jose', () => {
-  return {
-    compactDecrypt: jest.fn(() => {
-      return { plaintext: 'mocked plaintext' };
-    }),
-  };
-});
 
 describe('FrequenQuetions', () => {
-  let router = createMockRouter({});
 
-  beforeEach(() => {
-    (useRouter as jest.Mock).mockReturnValue({ push: routerPushMock });
-    render(<FrequenQuetions />);
+  beforeEach(async () => {
+    await act(async () => {
+      render(<FrequenQuetions />);
+    });
     expect(render).toBeTruthy();
   });
 

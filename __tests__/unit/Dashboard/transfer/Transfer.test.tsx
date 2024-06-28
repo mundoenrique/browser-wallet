@@ -1,32 +1,18 @@
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 //Internal app
 import Transfer from '@/app/(Pages)/dashboard/transfer/page';
-import {
-  emptyField,
-  renderInput
-} from '../../../tools/unitTestHelper.test';
-
-
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-}));
-
-jest.mock('jose', () => {
-  return {
-    compactDecrypt: jest.fn(() => {
-      return { plaintext: 'mocked plaintext' };
-    }),
-  };
-});
+import { emptyField, renderInput } from '../../../tools/unitTestHelper.test';
 
 describe('Transfer', () => {
-  let numberClient: Node | Window;
-  let amount: Node | Window;
-  let submitButton: Node | Window;
+  let numberClient: HTMLInputElement;
+  let amount: HTMLInputElement;
+  let submitButton:  HTMLElement;
 
-  beforeEach(() => {
-    render(<Transfer />);
+  beforeEach(async () => {
+    await act(async () => {
+      render(<Transfer />);
+    });
     expect(render).toBeTruthy();
     numberClient = screen.getByLabelText(/¿a quién quieres transferir dinero?/i);
     amount = screen.getByLabelText(/¿cuánto dinero quieres transferir?/i);

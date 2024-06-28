@@ -203,3 +203,8 @@ export interface IListClientsProps {
   disabledBtnDelete: string;
   error: boolean;
 }
+
+export interface NumericFormatCustomInput {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
