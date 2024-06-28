@@ -315,6 +315,7 @@ export interface ILinkData {
   expirationDate: string | null;
   currencyCode: string | null;
   url: string | null;
+  qr: string;
 }
 
 export interface ICollectStore {
