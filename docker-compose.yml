@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   web:
     image: yiro:0.0.1
@@ -12,6 +10,8 @@ services:
     restart: always
     ports:
       - ${APP_EXP_PORT}:3000
+    volumes:
+      - ./logs:/app/logs
     networks:
       - yiro_network
 
