@@ -1,9 +1,10 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { isBrowser, isMobile, isTablet } from 'react-device-detect';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
+import Image from 'next/image';
 //Internal app
 import { CopyIcons } from '%/Icons';
 import CardReport from './CardReport';
@@ -25,7 +26,6 @@ import { handleDownload, handleShare } from '@/utils/toolHelper';
  */
 export default function CardPagoEfectivo({ cip, children, label, download, share, codeQr }: CardPagoEfectivoProps) {
   const codeQrRef = useRef<any>(null);
-  console.log('🚀 ~ CardPagoEfectivo ~ codeQrRef:', codeQrRef.current);
   const ticketRef = useRef<any>(null);
 
   const ImagePagoEfectivo = {
@@ -48,7 +48,7 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
   };
 
   const handleDownloadClick = () => {
-    handleDownload(codeQrRef.current, 'recarga.png', fuchsiaBlue[800]);
+    handleDownload(codeQrRef.current, 'recarga.png', 'transparent');
   };
 
   return (
@@ -96,9 +96,7 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
               Yape, Plin u otras billeteras:
             </Typography>
             <Box ref={codeQrRef}>
-              <picture>
-                <img src={codeQr ? codeQr : Qr} alt="Qr Code" style={{ width: 106, height: 100 }} />
-              </picture>
+              <Image src={codeQr ? codeQr : Qr} alt="Qr Code" width={106} height={106} />
             </Box>
           </Box>
         </CardReport>
