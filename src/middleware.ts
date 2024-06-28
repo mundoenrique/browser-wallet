@@ -10,8 +10,6 @@ export async function middleware(request: NextRequest) {
   const apiConnectUrl = '/api/v1/connect';
   const apiGetTokenAuthUrl = '/api/v1/gettoken';
 
-  console.log('middleware-pathname: ', pathname);
-
   if (pathname === apiConnectUrl || pathname === apiGetTokenAuthUrl || pathname === SetCode) {
     return NextResponse.next();
   }
@@ -23,8 +21,6 @@ export async function middleware(request: NextRequest) {
   const apiUrl: string = URL_BASE[url_api_name] + resUrlBase + nextUrl.search;
 
   response.headers.set('x-url', apiUrl);
-
-  console.log(`backURL ${apiUrl}, method ${method}`);
 
   return response;
 }
