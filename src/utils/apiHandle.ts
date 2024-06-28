@@ -1,21 +1,19 @@
 import type { NextRequest } from 'next/server';
 //Internal app
-import { getEnvVariable, handleJWE, handleJWT, handleResponse } from './';
+import { JWS_HEADER, getEnvVariable, handleJWE, handleJWT, handleResponse } from './';
 
 export async function handleApiRequest(request: NextRequest) {
-  const { method } = request;
   const jwsApiPublicKey = getEnvVariable('MIDDLE_JWS_PUBLIC_KEY');
   const jweApiPrivateKey = getEnvVariable('MIDDLE_JWE_PRIVATE_KEY');
-  let data = {};
+  let data = undefined;
 
   const jwtPayload = await handleJWT(request, jwsApiPublicKey);
 
   const jweAppPublicKey = jwtPayload.jwePublicKey;
   const jwsAppPublicKey = jwtPayload.jwsPublicKey;
 
-  if (method.toLowerCase() !== 'get') {
+  if (request.headers.get(JWS_HEADER)) {
     data = await handleJWE(request, jwsAppPublicKey, jweApiPrivateKey);
-    console.log('Decrypted data: ', JSON.stringify(data, null, 2));
   }
 
   return {

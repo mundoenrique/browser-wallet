@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import axios, { AxiosRequestHeaders } from 'axios';
 //Internal app
+import logger from './logger';
 import { createRedisInstance } from './redis';
 import { handleApiRequest } from './apiHandle';
 import { APIGEE_HEADERS_NAME } from './constants';
@@ -8,25 +9,30 @@ import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './api
 
 const baseURL = getEnvVariable('BACK_URL');
 
-export const apiGee = axios.create({
+const apiGee = axios.create({
   baseURL,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
   validateStatus: function (status) {
-    return status >= 200 && status < 500;
+    return status >= 200 && status <= 500;
   },
 });
 
 apiGee.interceptors.request.use(
   (request) => {
-    const url = request.url;
-    const body = request.data;
+    const { method, baseURL, url, data } = request;
     const headers = filterHeaders(request.headers);
+    const reqUrl = `${baseURL}/${url}`;
+    let body = data;
 
-    console.log('--------------- apiGeeServer Request ---------------');
-    console.log({ url, body, headers });
+    if (url !== 'oauth2/v1/token' && data) {
+      body = data.dataReq;
+      delete request.data.dataReq;
+    }
+
+    logger.debug('Request services %s', JSON.stringify({ method, reqUrl, headers, body }));
 
     return request;
   },
@@ -37,9 +43,16 @@ apiGee.interceptors.request.use(
 
 apiGee.interceptors.response.use(
   (response) => {
-    const body = response.data;
-    console.log('--------------- apiGeeServer Response ---------------');
-    console.log({ body });
+    const {
+      status,
+      data,
+      config: { url },
+    } = response;
+
+    if (url === 'oauth2/v1/token' && data) {
+      logger.debug('Response services %s', JSON.stringify({ status, data }));
+    }
+
     return response;
   },
   (error) => {
@@ -88,7 +101,7 @@ export async function getOauthBearer() {
     delete apiGee.defaults.headers.common['X-Request-Id'];
 
     const response = await apiGee.post(
-      `/oauth2/v1/token`,
+      `oauth2/v1/token`,
       { grant_type, client_id, client_secret },
       {
         headers: {
@@ -116,7 +129,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
 
   const { data, jweAppPublicKey } = await handleApiRequest(request);
 
-  if (method.toLowerCase() !== 'get') {
+  if (data) {
     const { jwe, jws } = await handleApiGeeRequest(data);
     jweString = jwe;
     jwsString = jws;
@@ -131,16 +144,16 @@ export async function HandleCustomerRequest(request: NextRequest) {
       responseBack = await apiGee.get(url);
       break;
     case 'post':
-      responseBack = await apiGee.post(url, { data: jweString });
+      responseBack = await apiGee.post(url, { data: jweString, dataReq: data });
       break;
     case 'put':
-      responseBack = await apiGee.put(url, { data: jweString });
+      responseBack = await apiGee.put(url, { data: jweString, dataReq: data });
       break;
     case 'patch':
-      responseBack = await apiGee.patch(url, { data: jweString });
+      responseBack = await apiGee.patch(url, { data: jweString, dataReq: data });
       break;
     case 'delete':
-      responseBack = await apiGee.delete(url, { data: jweString });
+      responseBack = await apiGee.delete(url);
       break;
     default:
       responseBack = { data: Error(`Invalid method: ${method}`) };
