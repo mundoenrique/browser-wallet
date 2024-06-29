@@ -1,5 +1,5 @@
 import { StateStorage, createJSONStorage } from 'zustand/middleware';
-import { setDataRedis } from '@/utils/toolHelper';
+import { decryptForge, setDataRedis } from '@/utils/toolHelper';
 
 
 const storageApi: StateStorage = {
@@ -10,7 +10,9 @@ const storageApi: StateStorage = {
       const data = await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/v1/redis`)
         .then((res) => res.json());
 
-      return data;
+      const derypt = decryptForge(data.data)
+
+      return derypt;
 
     } catch (error) {
       console.error(error);

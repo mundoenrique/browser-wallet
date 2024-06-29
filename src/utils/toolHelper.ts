@@ -111,6 +111,8 @@ export const decryptForge = (encryptedData: any) => {
 };
 
 export const setDataRedis = async (method: string, data = {}) => {
+
+  const encryptData = encryptForge(JSON.stringify(data))
   const response = await fetch(process.env.NEXT_PUBLIC_WEB_URL + '/api/v1/redis', {
     method: method,
     mode: 'cors',
@@ -121,7 +123,7 @@ export const setDataRedis = async (method: string, data = {}) => {
     },
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
-    body: JSON.stringify(data)
+    body: JSON.stringify({data:encryptData})
   });
   return response.json();
 }
