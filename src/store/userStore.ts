@@ -42,12 +42,3 @@ export const useUserStore = create<UserStore>()(
     })
   )
 );
-
-useUserStore.subscribe((nextState /*prevState*/) => {
-  const { user, userId, cardInformation } = nextState;
-
-  useWeddingBoundStore.getState().setUser(user);
-  useWeddingBoundStore.getState().setUserId(userId);
-  useWeddingBoundStore.getState().setCardInformation(cardInformation);
-});
-

@@ -145,7 +145,6 @@ export async function handleResponse(
       },
     });
     response.headers.set(JWS_HEADER, `JWS ${jws}`);
-    response.headers.set(SESSION_ID, `${responseObj.data.sessionId}`);
 
     return response;
   } catch (error) {
