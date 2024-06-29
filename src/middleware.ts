@@ -1,6 +1,8 @@
 import { NextResponse, type NextRequest } from 'next/server';
 //Internal app
 import { URL_BASE } from '@/utils/constants';
+import { createRedisInstance } from './utils';
+import { setDataRedis } from './utils/toolHelper';
 
 export async function middleware(request: NextRequest) {
 
@@ -8,22 +10,19 @@ export async function middleware(request: NextRequest) {
   const pathname = nextUrl.pathname;
   const partsUrl = pathname.split('/');
   const protectedApiV1 = ['/api/v1/connect','/api/v1/gettoken','/api/v1/setcode','/api/v1/redis']
-  const protectedRoutes = ['signin','session']
+  const protectedRoutes = ['signin', 'session']
 
-  const isProtectedRoute = protectedRoutes.includes(partsUrl[1])
-  /* if (isProtectedRoute) {
-    const sessionId = request.headers.get('X-Session') || '';
-    console.log('RUTA BUSCA REDIS ************ ', nextUrl.origin + `/api/v1/redis/?reqData=${sessionId}`)
-    const resRedis = await fetch(nextUrl.origin + `/api/v1/redis/?reqData=${sessionId}`);
-    const data = await resRedis.json();
-    const redisData = JSON.parse(data)
-    console.log('HE AQUI EL DATA DEL REDIS ', redisData)
-    if (!redisData) {
+  const isProtectedRoute = protectedRoutes.includes(partsUrl[1]);
+  if (isProtectedRoute) {
+    let uuid = request.cookies.get('sessionId')?.value
+    const dataRedis = await setDataRedis('POST', { uuid: `session:${uuid}`, dataRedis: 'get' });
+
+    if (!dataRedis) {
       return NextResponse.redirect(nextUrl.origin + '/not-found');
     } else {
       return NextResponse.next();
     }
-  } */
+  }
 
   console.log('middleware-pathname: ', pathname);
 
@@ -46,5 +45,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/v1/:path*'],
+  matcher: ['/api/v1/:path*','/signin'],
 };
