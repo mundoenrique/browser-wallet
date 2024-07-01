@@ -1,4 +1,4 @@
-import { SwitchProps, SxProps } from '@mui/material';
+import { InputProps, OutlinedInputProps, SwitchProps, SxProps } from '@mui/material';
 import { DateView, DesktopDatePickerProps } from '@mui/x-date-pickers';
 //Internal app
 import { IClientProps } from './store';
@@ -46,6 +46,7 @@ export interface TextFieldProps extends FormMUIProps {
   additionalInfo?: boolean;
   colorText?: string;
   endAdornment?: React.ReactNode;
+  inputProperties?: OutlinedInputProps;
 }
 
 /**

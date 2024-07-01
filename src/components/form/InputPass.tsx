@@ -26,7 +26,7 @@ import { TextFieldProps } from '@/interfaces';
  * @label Material UI - {@link https://mui.com/material-ui/api/outlined-input/}
  */
 export default function InputPass(props: TextFieldProps): JSX.Element {
-  const { name, control, label, labelError, onChange, colorText, disabled, readOnly } = props;
+  const { name, control, label, labelError, onChange, colorText, disabled, readOnly, inputProperties } = props;
 
   const [passwordShown, setPasswordShown] = useState(false);
   const inputLabel = label ?? name;
@@ -66,6 +66,7 @@ export default function InputPass(props: TextFieldProps): JSX.Element {
                     </IconButton>
                   </InputAdornment>
                 }
+                {...inputProperties}
               />
               <FormHelperText
                 sx={{
