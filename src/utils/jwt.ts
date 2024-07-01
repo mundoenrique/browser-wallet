@@ -139,7 +139,6 @@ export async function signJWE(privateKey: string, jwe: string): Promise<string> 
 
     return modifiedJws;
   } catch (error) {
-    console.log('Error signing JWE:', error);
     throw new Error('There was an error when signing the JWE.');
   }
 }
