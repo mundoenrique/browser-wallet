@@ -73,7 +73,7 @@ export const encryptForge = (data: any) => {
 
   const iv = new Uint8Array(16);
 
-  var buffer = forge.util.createBuffer(iv, 'raw');
+  let buffer = forge.util.createBuffer(iv, 'raw');
 
   const cipher = forge.cipher.createCipher('AES-CBC', key);
 
@@ -93,7 +93,7 @@ export const decryptForge = (encryptedData: any) => {
 
   const iv = new Uint8Array(16);
 
-  var buffer = forge.util.createBuffer(iv, 'raw');
+  let buffer = forge.util.createBuffer(iv, 'raw');
 
   const decipher = forge.cipher.createDecipher('AES-CBC', key);
 

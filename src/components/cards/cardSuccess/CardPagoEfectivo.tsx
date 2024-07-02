@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { isBrowser, isMobile, isTablet } from 'react-device-detect';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
@@ -103,13 +103,13 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
       </Box>
       {children}
 
-      {download && (
+      {download && codeQr && (
         <Button variant="secondary" onClick={handleDownloadClick} sx={{ mb: 4 }}>
           {label}
         </Button>
       )}
 
-      {share && (
+      {share && codeQr && (
         <Button variant="secondary" onClick={handleShareClick} sx={{ mb: 4 }}>
           {label}
         </Button>
