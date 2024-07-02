@@ -24,7 +24,7 @@ export function stringAvatar(name: string) {
 export const handleDownload = async (element: HTMLElement, fileName: string, backgroundColor: string) => {
   const canvas = await html2canvas(element, {
     removeContainer: false,
-    allowTaint: true,
+    allowTaint: false,
     backgroundColor: backgroundColor,
     scale: 1.5,
   });
@@ -48,7 +48,7 @@ export const handleShare = async (element: HTMLElement, shareData: any, backgrou
   try {
     const canvas = await html2canvas(element, {
       removeContainer: false,
-      allowTaint: true,
+      allowTaint: false,
       backgroundColor: backgroundColor,
       scale: 1.5,
     });
