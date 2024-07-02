@@ -11,18 +11,18 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { useMenuStore, useDrawerStore, useDebStore, useCollectStore } from '@/store';
+import { useMenuStore, useDrawerStore, useDebStore, useCollectStore, useHeadersStore } from '@/store';
 import { ArrowsIcons, CardIcons, CashIcons, FileIcons, GainIcons, HomeIcons, KeyIcons, ToolIcons } from '%/Icons';
 
-/**
- * Primary items that change with menu resolution.
- */
 export default function ItemsSidebar(): JSX.Element {
   const theme = useTheme();
 
   const match = useMediaQuery(theme.breakpoints.up('md'));
+
+  const host = useHeadersStore((state) => state.host);
 
   const setView = useDebStore((state) => state.setView);
 
@@ -33,11 +33,6 @@ export default function ItemsSidebar(): JSX.Element {
   const setDrawerStatus = useDrawerStore((state) => state.setDrawerStatus);
 
   const resetLinkData = useCollectStore((state) => state.reset);
-
-  const handleResetStates = () => {
-    setView('DEBT');
-    resetLinkData();
-  };
 
   const itemMenu = match
     ? [
@@ -156,7 +151,21 @@ export default function ItemsSidebar(): JSX.Element {
                 href={menu.url}
                 selected={currentItemMenu}
                 sx={{ textDecoration: 'none', pl: 0 }}
-                onClick={handleResetStates}
+                onClick={() => {
+                  setView('DEBT');
+                  resetLinkData();
+                  sendGTMEvent({
+                    event: 'ga4.trackEvent',
+                    eventName: 'select_content',
+                    eventParams: {
+                      content_type: 'boton',
+                      section: `Yiro :: ${menu.item} :: menu_1`,
+                      previous_section: 'dashboard',
+                      selected_content: `menu_1 :: ${menu.item}`,
+                      destination_page: `${host}${menu.url}`,
+                    },
+                  });
+                }}
               >
                 <ListItemIcon
                   sx={{ minWidth: 'auto', mr: 3 / 2, color: currentItemMenu ? fuchsiaBlue[600] : 'initial' }}

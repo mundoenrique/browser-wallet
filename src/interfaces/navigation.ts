@@ -18,6 +18,7 @@ export interface MuiNavExternalProps {
   image?: boolean;
   color?: string;
   closeApp?: boolean;
+  onClick?: () => void;
 }
 
 /**

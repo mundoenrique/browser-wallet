@@ -2,24 +2,41 @@
 
 import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { CardStep } from '..';
 import Ending from '../Ending';
 import { api } from '@/utils/api';
 import { FormPass } from '@/components';
 import { encryptForge } from '@/utils/toolHelper';
-import { useRegisterStore, useUiStore, useCatalogsStore, useUserStore } from '@/store';
+import { useRegisterStore, useUiStore, useCatalogsStore, useUserStore, useHeadersStore } from '@/store';
 
 export default function PasswordCreation() {
   const { setUserId } = useUserStore();
 
+  const host = useHeadersStore((state) => state.host);
+
   const { setModalError, setLoadingScreen } = useUiStore();
 
-  const { dec, setShowHeader, onboardingUuId } = useRegisterStore();
+  const { updateStep, setShowHeader, onboardingUuId, ONB_PHASES_TERMS, control } = useRegisterStore();
 
   const { updateCatalog, passwordTermsCatalog } = useCatalogsStore();
 
   const [loadingModal, setLoadingModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/signup`,
+        page_title: 'Yiro :: onboarding :: step4 :: createPassword',
+        page_referrer: `${host}/identify`,
+        section: 'Yiro :: onboarding :: step4 :: createPassword',
+        previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+      },
+    });
+  }, [host]);
 
   useEffect(() => {
     const fetchTermPasswordCatalog = async () => {
@@ -82,13 +99,78 @@ export default function PasswordCreation() {
     setShowHeader(true);
   }, [setShowHeader]);
 
+  const validateBiometric = async (data: any) => {
+    setLoadingScreen(true);
+    const requestData = {
+      payload: {
+        contacts: [
+          {
+            person: {
+              names: [
+                {
+                  firstName: encryptForge(
+                    `${ONB_PHASES_TERMS?.consultant?.firstName} ${ONB_PHASES_TERMS?.consultant?.middleName}`
+                  ),
+                  surName: encryptForge(ONB_PHASES_TERMS?.consultant?.firstLastName),
+                },
+              ],
+            },
+            identityDocuments: [
+              {
+                documentType: encryptForge(ONB_PHASES_TERMS?.consultant?.documentType),
+                documentNumber: encryptForge(ONB_PHASES_TERMS?.consultant?.documentNumber),
+                hashedDocumentNumber: encryptForge(ONB_PHASES_TERMS?.consultant?.documentNumber),
+              },
+            ],
+            telephones: [
+              {
+                number: encryptForge(ONB_PHASES_TERMS?.consultant?.phoneNumber),
+                phoneIdentifier: encryptForge('MOBILE'),
+              },
+            ],
+            emails: [
+              {
+                type: encryptForge('HOME'),
+                email: encryptForge(ONB_PHASES_TERMS?.consultant?.email),
+              },
+            ],
+          },
+        ],
+        control: [
+          {
+            option: 'ACCOUNTID_JM',
+            value: control.accountId,
+          },
+          {
+            option: 'WORKFLOWID_JM',
+            value: control.workflowId,
+          },
+        ],
+      },
+    };
+    api
+      .post('/onboarding/validatebiometric', requestData)
+      .then((response) => {
+        const { decision } = response.data.data;
+        if (decision === 'ACCEPT') {
+          onSubmit(data);
+        }
+      })
+      .catch((e) => {
+        setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
+  };
+
   return (
     <>
       {!loadingModal && (
         <CardStep stepNumber="4">
           <FormPass
             register
-            onSubmit={onSubmit}
+            onSubmit={validateBiometric}
             description={
               <>
                 <Typography variant="subtitle1" sx={{ mb: 3, mx: 'auto' }}>
@@ -108,12 +190,39 @@ export default function PasswordCreation() {
                 <Button
                   variant="outlined"
                   onClick={() => {
-                    dec();
+                    updateStep(4);
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'select_content',
+                      eventParams: {
+                        content_type: 'boton',
+                        section: 'Yiro :: onboarding :: step4 :: createPassword',
+                        previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                        selected_content: 'Anterior',
+                        destination_page: `${host}/signup`,
+                      },
+                    });
                   }}
                 >
                   Anterior
                 </Button>
-                <Button variant="contained" type="submit">
+                <Button
+                  variant="contained"
+                  type="submit"
+                  onClick={() => {
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'select_content',
+                      eventParams: {
+                        content_type: 'boton',
+                        section: 'Yiro :: onboarding :: step4 :: createPassword',
+                        previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                        selected_content: 'Siguiente',
+                        destination_page: `${host}/signup`,
+                      },
+                    });
+                  }}
+                >
                   Siguiente
                 </Button>
               </>

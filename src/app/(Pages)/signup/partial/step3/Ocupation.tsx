@@ -3,16 +3,19 @@
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, Button, Collapse, Typography } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
 import CardStep from '../CardStep';
 import { getSchema } from '@/config';
 import { InputSelect, InputText } from '@/components';
-import { useRegisterStore, useUiStore, useCatalogsStore } from '@/store';
+import { useRegisterStore, useUiStore, useCatalogsStore, useHeadersStore } from '@/store';
 
 export default function Ocupation() {
   const [ocupations, setOcupations] = useState<boolean>(false);
+
+  const host = useHeadersStore((state) => state.host);
 
   const { updateCatalog, occupationCatalog } = useCatalogsStore();
 
@@ -37,6 +40,20 @@ export default function Ocupation() {
   const personOcupation = watch('occupationCode');
 
   useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/signup`,
+        page_title: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
+        page_referrer: `${host}/identify`,
+        section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
+        previous_section: 'Yiro :: onboarding :: step2',
+      },
+    });
+  }, [host]);
+
+  useEffect(() => {
     if (['SELF_EMPLOYED'].includes(personOcupation)) {
       setOcupations(false);
       reset({
@@ -45,10 +62,33 @@ export default function Ocupation() {
         companyName: '',
         companyPosition: '',
       });
+
+      sendGTMEvent({
+        event: 'ga4.trackEvent',
+        eventName: 'page_view_ga4',
+        eventParams: {
+          page_location: `${host}/signup`,
+          page_title: 'Yiro :: onboarding :: step3 :: 3.2consultora',
+          page_referrer: `${host}/identify`,
+          section: 'Yiro :: onboarding :: step3 :: 3.2consultora',
+          previous_section: 'Yiro :: onboarding :: step2',
+        },
+      });
     } else {
       setOcupations(true);
+      sendGTMEvent({
+        event: 'ga4.trackEvent',
+        eventName: 'page_view_ga4',
+        eventParams: {
+          page_location: `${host}/signup`,
+          page_title: 'Yiro :: onboarding :: step3 :: 3.2noConsultora',
+          page_referrer: `${host}/identify`,
+          section: 'Yiro :: onboarding :: step3 :: 3.2noConsultora',
+          previous_section: 'Yiro :: onboarding :: step2',
+        },
+      });
     }
-  }, [getValues, personOcupation, reset]);
+  }, [getValues, host, personOcupation, reset]);
 
   const onSubmit = async (data: any) => {
     const requestFormData = {
@@ -150,11 +190,43 @@ export default function Ocupation() {
             variant="outlined"
             onClick={() => {
               updateStep(1);
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: ocupations
+                    ? 'Yiro :: onboarding :: step3 :: 3.2noConsultora'
+                    : 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
+                  previous_section: 'Yiro :: onboarding :: step2',
+                  selected_content: 'Anterior',
+                  destination_page: `${host}/signup`,
+                },
+              });
             }}
           >
             Anterior
           </Button>
-          <Button variant="contained" type="submit" disabled={loadingScreen}>
+          <Button
+            variant="contained"
+            type="submit"
+            disabled={loadingScreen}
+            onClick={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: ocupations
+                    ? 'Yiro :: onboarding :: step3 :: 3.2noConsultora'
+                    : 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
+                  previous_section: 'Yiro :: onboarding :: step2',
+                  selected_content: 'Siguiente',
+                  destination_page: `${host}/signup`,
+                },
+              });
+            }}
+          >
             Siguiente
           </Button>
         </Box>

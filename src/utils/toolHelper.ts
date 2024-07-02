@@ -24,8 +24,9 @@ export function stringAvatar(name: string) {
 export const handleDownload = async (element: HTMLElement, fileName: string, backgroundColor: string) => {
   const canvas = await html2canvas(element, {
     removeContainer: false,
-    allowTaint: true,
+    allowTaint: false,
     backgroundColor: backgroundColor,
+    scale: 1.5,
   });
   const image = canvas.toDataURL('image/png');
   const link = document.createElement('a');
@@ -47,7 +48,7 @@ export const handleShare = async (element: HTMLElement, shareData: any, backgrou
   try {
     const canvas = await html2canvas(element, {
       removeContainer: false,
-      allowTaint: true,
+      allowTaint: false,
       backgroundColor: backgroundColor,
       scale: 1.5,
     });
@@ -73,7 +74,7 @@ export const encryptForge = (data: any) => {
 
   const iv = new Uint8Array(16);
 
-  var buffer = forge.util.createBuffer(iv, 'raw');
+  let buffer = forge.util.createBuffer(iv, 'raw');
 
   const cipher = forge.cipher.createCipher('AES-CBC', key);
 
@@ -93,7 +94,7 @@ export const decryptForge = (encryptedData: any) => {
 
   const iv = new Uint8Array(16);
 
-  var buffer = forge.util.createBuffer(iv, 'raw');
+  let buffer = forge.util.createBuffer(iv, 'raw');
 
   const decipher = forge.cipher.createDecipher('AES-CBC', key);
 

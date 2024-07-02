@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 
 //Internal app
-import { NavExternal } from '@/components';
 import { ChildrenProps } from '@/interfaces';
 
 export const metadata: Metadata = {
@@ -10,10 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function RecoverLayout({ children }: ChildrenProps) {
-  return (
-    <>
-      <NavExternal image />
-      {children}
-    </>
-  );
+  return { children };
 }

@@ -21,6 +21,7 @@ export default function Navbar(props: NavbarProps): JSX.Element {
   const { onClick } = props;
 
   const { title } = useNavTitleStore();
+
   const { backLink } = useHeadersStore();
 
   const pathname = usePathname();
