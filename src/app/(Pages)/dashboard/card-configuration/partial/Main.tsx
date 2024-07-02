@@ -181,15 +181,17 @@ export default function CardConfiguration() {
             </HandleCard>
           )}
 
-          <HandleCard
-            onClick={() => {
-              updatePage('changePin');
-            }}
-            avatar={<KeyIcons color="primary" sx={{ p: '2px' }} />}
-            icon={<Arrow />}
-          >
-            <Typography variant="subtitle2">Cambiar PIN</Typography>
-          </HandleCard>
+          {!virtualCard && (
+            <HandleCard
+              onClick={() => {
+                updatePage('changePin');
+              }}
+              avatar={<KeyIcons color="primary" sx={{ p: '2px' }} />}
+              icon={<Arrow />}
+            >
+              <Typography variant="subtitle2">Cambiar PIN</Typography>
+            </HandleCard>
+          )}
 
           <HandleCard
             onClick={() => {

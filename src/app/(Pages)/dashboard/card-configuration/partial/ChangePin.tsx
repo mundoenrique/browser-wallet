@@ -48,8 +48,9 @@ export default function ChangePin() {
     const payload = {
       pin: encryptForge(getValues('confirmPin')),
     };
+
     api
-      .put(`/cards/${cardId}/pin`, payload)
+      .put(`/cards/${cardId()}/pin`, payload)
       .then(() => {
         setOpenRc(true);
         reset();
@@ -58,7 +59,7 @@ export default function ChangePin() {
         setModalError({ error: e });
       })
       .finally(() => {
-        setLoadingScreen(true);
+        setLoadingScreen(false);
       });
   };
 
@@ -66,9 +67,8 @@ export default function ChangePin() {
     async (data: any) => {
       setLoadingScreen(true);
       const { otp } = data;
-
       const payload = {
-        otpProcessCode: 'LOCK_AND_UNLOCK_CARD_OTP',
+        otpProcessCode: 'CHANGE_PIN_CARD_OTP',
         otpUuId: otpUuid,
         otpCode: encryptForge(otp),
       };
@@ -141,7 +141,7 @@ export default function ChangePin() {
         open={openOtp}
         handleClose={() => setOpenOtp(false)}
         onSubmit={onSubmitOtp}
-        processCode="LOCK_AND_UNLOCK_CARD_OTP"
+        processCode="CHANGE_PIN_CARD_OTP"
       />
 
       <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>
