@@ -1,10 +1,10 @@
 'use client';
 
 import { useRef } from 'react';
+import Image from 'next/image';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { isBrowser, isMobile, isTablet } from 'react-device-detect';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
-import Image from 'next/image';
 //Internal app
 import { CopyIcons } from '%/Icons';
 import CardReport from './CardReport';
