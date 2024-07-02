@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { URL_BASE } from '@/utils/constants';
 import { createRedisInstance } from './utils';
 import { setDataRedis } from './utils/toolHelper';
+import { verifyAccess } from './utils/verifyAccess';
 
 export async function middleware(request: NextRequest) {
 
@@ -10,15 +11,20 @@ export async function middleware(request: NextRequest) {
   const pathname = nextUrl.pathname;
   const partsUrl = pathname.split('/');
   const protectedApiV1 = ['/api/v1/connect','/api/v1/gettoken','/api/v1/setcode','/api/v1/redis']
-  const protectedRoutes = ['signin', 'session']
+  const protectedRoutes = ['signin', 'dashboard']
+
+  console.log('PATHNAME MIDDLEWARE ', partsUrl[1])
 
   const isProtectedRoute = protectedRoutes.includes(partsUrl[1]);
   if (isProtectedRoute) {
     let uuid = request.cookies.get('sessionId')?.value
-    const dataRedis = await setDataRedis('POST', { uuid: `session:${uuid}`, dataRedis: 'get' });
+    const res = await setDataRedis('POST', { uuid: `session:${uuid}`, dataRedis: 'get' });
 
-    if (!dataRedis) {
-      return NextResponse.redirect(nextUrl.origin + '/not-found');
+    if (!res) {
+      const response = NextResponse.redirect(nextUrl.origin + '/signout');
+      response.cookies.set('sessionId', '');
+
+      return response
     } else {
       return NextResponse.next();
     }
@@ -45,5 +51,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/v1/:path*','/signin'],
+  matcher: ['/api/v1/:path*','/signin','/dashboard'],
 };
