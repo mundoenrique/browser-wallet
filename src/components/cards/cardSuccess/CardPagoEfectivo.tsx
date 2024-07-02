@@ -110,13 +110,9 @@ export default function CardPagoEfectivo({
             </Typography>
             <Box>
               {codeQr ? (
-                <picture>
-                  <img src={codeQr} alt="Qr Code" width={106} height={106} />
-                </picture>
+                <Image src={codeQr} alt="Código Qr" width={106} height={106} priority />
               ) : (
-                <picture>
-                  <img src={Qr} alt="Qr Code" width={106} height={106} />
-                </picture>
+                <Image src={Qr} alt="Código Qr" width={106} height={106} priority />
               )}
             </Box>
           </Box>
