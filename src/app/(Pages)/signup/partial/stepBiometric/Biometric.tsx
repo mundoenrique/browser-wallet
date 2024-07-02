@@ -1,10 +1,10 @@
 'use client';
 
+import { Box, Button } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 //Internal app
-import { useRegisterStore, useUiStore } from '@/store';
 import { api } from '@/utils/api';
-import { Box, Button } from '@mui/material';
+import { useRegisterStore, useUiStore } from '@/store';
 
 export default function Biometric() {
   const { loadingScreen, setModalError, setLoadingScreen } = useUiStore();

@@ -10,7 +10,6 @@ import {
   InfoVerification,
   CelularValidation,
   PasswordCreation,
-  ErrorPage,
   Biometric,
 } from './partial';
 

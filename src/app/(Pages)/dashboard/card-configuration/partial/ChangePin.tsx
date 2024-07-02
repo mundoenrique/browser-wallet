@@ -1,16 +1,16 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useEffect, useState, useCallback } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
+import { useEffect, useState, useCallback } from 'react';
 //Internal app
-import { getSchema } from '@/config';
-import ModalOtp from '@/components/modal/ModalOtp';
 import { api } from '@/utils/api';
-import { useNavTitleStore, useConfigCardStore, useUiStore, useOtpStore, useUserStore } from '@/store';
-import { ContainerLayout, InputPass, Linking, ModalResponsive } from '@/components';
+import { getSchema } from '@/config';
 import { encryptForge } from '@/utils/toolHelper';
+import ModalOtp from '@/components/modal/ModalOtp';
+import { ContainerLayout, InputPass, Linking, ModalResponsive } from '@/components';
+import { useNavTitleStore, useConfigCardStore, useUiStore, useOtpStore, useUserStore } from '@/store';
 
 export default function ChangePin() {
   const updateTitle = useNavTitleStore((state) => state.updateTitle);
