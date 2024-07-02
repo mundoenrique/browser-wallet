@@ -1,13 +1,14 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { isBrowser, isMobile, isTablet } from 'react-device-detect';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import Image from 'next/image';
 //Internal app
 import { CopyIcons } from '%/Icons';
-import Qr from '%/images/arts/QR.png';
 import CardReport from './CardReport';
+import Qr from '%/images/arts/default-qr.svg';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardPagoEfectivoProps } from '@/interfaces';
 import PagoEfectivo from '%/images/suppliers/pagoEfectivo.png';
@@ -21,8 +22,9 @@ import { handleDownload, handleShare } from '@/utils/toolHelper';
  * @param label - Label of buttons
  * @param download - handling for file download
  * @param share - handling for image shared
+ * @param codeQr - Qr Code Pago Efectivo
  */
-export default function CardPagoEfectivo({ cip, children, label, download, share }: CardPagoEfectivoProps) {
+export default function CardPagoEfectivo({ cip, children, label, download, share, codeQr }: CardPagoEfectivoProps) {
   const codeQrRef = useRef<any>(null);
   const ticketRef = useRef<any>(null);
 
@@ -46,7 +48,7 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
   };
 
   const handleDownloadClick = () => {
-    handleDownload(codeQrRef.current, 'recarga.png', fuchsiaBlue[800]);
+    handleDownload(codeQrRef.current, 'recarga.png', 'transparent');
   };
 
   return (
@@ -93,9 +95,9 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
             <Typography fontWeight={700} mb={3}>
               Yape, Plin u otras billeteras:
             </Typography>
-            <picture ref={codeQrRef}>
-              <img src={Qr.src} alt="Qr Code" />
-            </picture>
+            <Box ref={codeQrRef}>
+              <Image src={codeQr ? codeQr : Qr} alt="Qr Code" width={106} height={106} />
+            </Box>
           </Box>
         </CardReport>
       </Box>

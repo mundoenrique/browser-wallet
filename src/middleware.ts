@@ -6,8 +6,7 @@ import { setDataRedis } from './utils/toolHelper';
 import { verifyAccess } from './utils/verifyAccess';
 
 export async function middleware(request: NextRequest) {
-
-  const { url, method, nextUrl } = request;
+  const { url, nextUrl } = request;
   const pathname = nextUrl.pathname;
   const partsUrl = pathname.split('/');
   const protectedApiV1 = ['/api/v1/connect','/api/v1/gettoken','/api/v1/setcode','/api/v1/redis']
@@ -44,8 +43,6 @@ export async function middleware(request: NextRequest) {
   const apiUrl: string = URL_BASE[url_api_name] + resUrlBase + nextUrl.search;
 
   response.headers.set('x-url', apiUrl);
-
-  console.log(`backURL ${apiUrl}, method ${method}`);
 
   return response;
 }

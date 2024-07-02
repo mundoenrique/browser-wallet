@@ -120,4 +120,5 @@ export interface CardPagoEfectivoProps {
   label: string;
   download?: boolean;
   share?: boolean;
+  codeQr?: string;
 }

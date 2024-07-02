@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { headers } from 'next/headers'
 import uuid4 from 'uuid4';
 //Internal app
+import logger from '@/utils/logger';
 import { decryptJWE, getEnvVariable, handleResponse, signJWT, postRedis } from '@/utils';
 
 export async function POST(request: NextRequest) {
+  const { url, method } = request;
+
   try {
 
     const uuid = uuid4();
@@ -18,11 +20,15 @@ export async function POST(request: NextRequest) {
 
     const decryptedPayload = await decryptJWE(data, jwePrivateKey);
 
+    logger.debug('Request middleware Web %s', JSON.stringify({ method, reqUrl: url, body: decryptedPayload }));
+
     const { jwePublicKey, jwsPublicKey, isBrowser } = decryptedPayload as { jwePublicKey: string; jwsPublicKey: string, isBrowser: boolean; };
 
     const token = await signJWT(jwsPrivateKey, { jwePublicKey, jwsPublicKey, uuid });
 
     const responsePayload = { code: '200.00.000', message: 'Process Ok', data: { jwt: token, sessionId: uuid } };
+
+    logger.debug('Response middleware Web %s', JSON.stringify({ status: 200, data: responsePayload }));
 
     let response: NextResponse;
 
@@ -30,6 +36,10 @@ export async function POST(request: NextRequest) {
 
     return response;
   } catch (error) {
-    return NextResponse.json({ code: '500.00.000', message: 'Fail' }, { status: 500 });
+    const data = { code: '500.00.000', message: 'Fail' };
+
+    logger.error('Response middleware Web %s', JSON.stringify({ status: 500, data }));
+
+    return NextResponse.json(data, { status: 500 });
   }
 }

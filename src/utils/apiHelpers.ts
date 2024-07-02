@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 //Internal app
+import logger from './logger';
 import { handleApiResponse } from '.';
 import { JWT_HEADER, JWS_HEADER, SESSION_ID } from './constants';
 import { IApiGeeResponse, IEncryptedBody, IJWTPayload } from '@/interfaces';
@@ -176,6 +177,9 @@ export async function handleApiGeeResponse(
   if (responseObj.data) {
     const decryptData = await decryptJWE(responseObj.data, jweApiGeePrivateKey);
     responseObj.data = decryptData;
+    const { data } = responseObj;
+
+    logger.debug('Response services %s', JSON.stringify({ status, data }));
   }
 
   const response = await handleApiResponse(responseObj, status, jweAppPublicKey);

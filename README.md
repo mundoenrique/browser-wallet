@@ -17,6 +17,8 @@
 
 [Variables de entorno](#variables-de-entorno)
 
+[Archivos de logs](#archivos-de-logs)
+
 [Ejemplo de despliegue](#ejemplo-de-despliegue)
 
 [Consideraciones generales](#consideraciones-generales)
@@ -100,6 +102,14 @@ REDIS_PASSWORD={{REDIS_PASSWORD}} \* Escribir '' en caso de no configurar
 
 WEB_URL={{WEB_HOST_NAME}} \* URL de acceso a la aplicación
 
+BACK_URL={{BACK_HOST_NAME}} \* URL de acceso a los servicios Novopayment
+
+LOG_FILE={{ ON | OFF}} \* habilitar o deshabilitar la escritura de logs en archivos
+
+MAX_FIES={{MAX_DAYS_LOG_FILE}} \* Tiempo de expiración de para archivos de logs, por defecto 60 días (60d)
+
+TIMEZONE={{TIMEZONE}} \* Zona horaria para fecha de logs, por defecto Lima (America/Lima)
+
 TENANT_ID={{TENANT_ID}} \* Tenant Id Generado en la ceremonia
 
 CREDENTIALS_KEY={{CREDENTIALS_KEY}} \* Id Oauth Generado en la ceremonia
@@ -120,6 +130,23 @@ BACK_JWE_PUBLIC_KEY="{{BACK_JWE_PUBLIC_KEY}}" \* Generada en la ceremonia
 
 BACK_JWS_PRIVATE_KEY="{{BACK_JWS_PRIVATE_KEY}}" \* pkcs8 generada en el paso anterior
 
+## Archivos de logs
+
+En caso de activar la escritura de logs en archivos es posible crear un volumen al servidor anfitron para mantener un historial de logs.
+
+En el orquestador de su preferencia mapear un volumen desde el contenemor (/app/logs) a la ruta del servidor anfitrión
+
+```
+  ...
+  spec
+    containers
+      volumeMounts:
+        - mountPath: {{path}}
+          name: volumeName
+    ...
+
+```
+
 ## Ejemplo de despliegue
 
 Para ejemplificar el despliegue se usa docker compose (**No recomendado para producción**)
@@ -128,7 +155,7 @@ Para ejemplificar el despliegue se usa docker compose (**No recomendado para pro
 
 2. Editar el archivo .env
 
-- APP_ENV={{uat | prod}}
+- WEB_ENV={{uat | prod}}
 
 3. Editar el archivo (./env/.env.{{uat | prod}})
 
