@@ -27,13 +27,7 @@ function formatToDecimals(value: string | number, decimals: number = 2): string 
 function InputTextPay(props: TextFieldProps): JSX.Element {
   const { name, label, labelError, type, error, value, onChange, disabled, readOnly } = props;
 
-  const [internalValue, setInternalValue] = useState(value);
-
   const textLabel = label ?? name;
-
-  useEffect(() => {
-    !value && setInternalValue('');
-  }, [value]);
 
   return (
     <>
@@ -47,7 +41,7 @@ function InputTextPay(props: TextFieldProps): JSX.Element {
           label={textLabel}
           aria-describedby={`${name}-helperText`}
           error={!!error}
-          value={internalValue}
+          value={value}
           onChange={onChange}
           disabled={disabled}
           readOnly={readOnly}
