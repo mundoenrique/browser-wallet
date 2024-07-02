@@ -1,8 +1,9 @@
 'use client';
 
+import { forwardRef } from 'react';
 import { Controller } from 'react-hook-form';
-import { useState, useEffect, forwardRef } from 'react';
 import Info from '@mui/icons-material/InfoOutlined';
+import { NumericFormat, NumericFormatProps } from 'react-number-format';
 import {
   Avatar,
   FormControl,
@@ -12,17 +13,10 @@ import {
   OutlinedInput,
   Typography,
 } from '@mui/material';
-import { NumericFormat, NumericFormatProps } from 'react-number-format';
 //Internal app
 import { GainIcons } from '%/Icons';
-import { TextFieldProps, NumericFormatCustomInput } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
-
-function formatToDecimals(value: string | number, decimals: number = 2): string {
-  const numberValue = parseFloat(value as string);
-  if (isNaN(numberValue)) return '';
-  return numberValue.toFixed(decimals);
-}
+import { TextFieldProps, NumericFormatCustomInput } from '@/interfaces';
 
 function InputTextPay(props: TextFieldProps): JSX.Element {
   const { name, label, labelError, type, error, value, onChange, disabled, readOnly } = props;
