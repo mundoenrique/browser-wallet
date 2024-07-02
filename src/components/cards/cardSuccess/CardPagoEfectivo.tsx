@@ -1,10 +1,10 @@
 'use client';
 
 import { useRef } from 'react';
+import Image from 'next/image';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { isBrowser, isMobile, isTablet } from 'react-device-detect';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
-import Image from 'next/image';
 //Internal app
 import { CopyIcons } from '%/Icons';
 import CardReport from './CardReport';
@@ -61,7 +61,7 @@ export default function CardPagoEfectivo({
 
   const handleDownloadClick = () => {
     shareGA;
-    handleDownload(ticketRef.current, 'recarga.png', 'transparent');
+    handleDownload(ticketRef.current, 'recarga.png', fuchsiaBlue[800]);
   };
 
   return (
@@ -110,9 +110,9 @@ export default function CardPagoEfectivo({
             </Typography>
             <Box>
               {codeQr ? (
-                <Image src={codeQr} alt="Qr Code" width={106} height={106} priority />
+                <Image src={codeQr} alt="Código Qr" width={106} height={106} priority />
               ) : (
-                <Image src={Qr} alt="Qr Code" width={106} height={106} priority />
+                <Image src={Qr} alt="Código Qr" width={106} height={106} priority />
               )}
             </Box>
           </Box>

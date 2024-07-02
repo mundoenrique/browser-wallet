@@ -43,7 +43,7 @@ function InputMUI(props: TextFieldProps): JSX.Element {
           disabled={disabled}
           readOnly={readOnly}
           endAdornment={endAdornment}
-          inputProps={{ inputProps }}
+          inputProps={inputProps}
         />
         <FormHelperText
           sx={{
