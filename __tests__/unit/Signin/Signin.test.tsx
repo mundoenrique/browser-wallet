@@ -21,6 +21,7 @@ describe('Signin', () => {
   mockApi.get.mockResolvedValue({ status: 200, data: { data: userData } });
   mockApi.post.mockResolvedValue({ status: 200, data: { userId: userData.userId } });
   const routerPushMock = jest.fn();
+  const sendGTMEvent = jest.fn();
 
   beforeEach(async () => {
     mockRouterPush(routerPushMock)
@@ -101,6 +102,25 @@ describe('Signin', () => {
 
       await waitFor(() => {
         expect(mockApi.post).toHaveBeenCalled();
+      });
+    });
+
+    it('should send GTM event when clicked', () => {
+      const navExternal = screen.getByText('Volver a ésika Conmigo');
+      fireEvent.click(navExternal);
+      waitFor(() => {
+        expect(sendGTMEvent).toHaveBeenCalled();
+        expect(sendGTMEvent).toHaveBeenCalledWith({
+          event: 'ga4.trackEvent',
+          eventName: 'select_content',
+          eventParams: {
+            content_type: 'boton',
+            section: 'Yiro :: login :: interno',
+            previous_section: 'identify',
+            selected_content: 'Volver a ésika Conmigo',
+            destination_page: `https://example.com`,
+          },
+        });
       });
     });
   });
