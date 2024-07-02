@@ -9,7 +9,7 @@ export default async function UserPage({ params }: any) {
   const redis = createRedisInstance();
   const { user } = params;
 
-  const referer = headersList.get('referer');
+  const referer = headersList.get('referer') || '';
   const host = headersList.get('host');
 
   const userData = await redis.get(`${user}`);
