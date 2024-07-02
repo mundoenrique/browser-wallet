@@ -108,17 +108,17 @@ export default function CardPagoEfectivo({
             <Typography fontWeight={700} mb={3}>
               Yape, Plin u otras billeteras:
             </Typography>
-            <Box>
+            <picture>
               {codeQr ? (
-                <picture>
+                <>
                   <img src={codeQr} alt="Qr Code" width={106} height={106} />
-                </picture>
+                </>
               ) : (
-                <picture>
+                <>
                   <img src={Qr} alt="Qr Code" width={106} height={106} />
-                </picture>
+                </>
               )}
-            </Box>
+            </picture>
           </Box>
         </CardReport>
       </Box>
