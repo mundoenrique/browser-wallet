@@ -76,7 +76,7 @@ export default function SuccessCards() {
 
   return (
     <>
-      <PurpleLayout hidePelca bigModal left navbar>
+      <PurpleLayout hidePelca bigModal left navbar width="calc(100% - 315px)">
         <ContainerLayout>
           <Typography
             variant="h6"

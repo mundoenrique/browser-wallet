@@ -5,12 +5,15 @@ import { useEffect, useState } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
 import { Button, Box, Typography, Zoom } from '@mui/material';
 //Internal app
+import { api } from '@/utils/api';
+import ErrorPage from './ErrorPage';
 import LogoPurple from '%/images/LogoPurple';
+import { encryptForge } from '@/utils/toolHelper';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import animation1 from '%/images/pwa/animation1.png';
 import animation2 from '%/images/pwa/animation2.png';
 import animation3 from '%/images/pwa/animation3.png';
-import { useHeadersStore, useRegisterStore } from '@/store';
+import { useHeadersStore, useRegisterStore, useUiStore } from '@/store';
 
 const animationState = [
   {
@@ -40,11 +43,19 @@ const animationState = [
 ];
 
 export default function Landing() {
-  const { inc, setShowHeader } = useRegisterStore();
+  const inc = useRegisterStore((state) => state.inc);
 
   const host = useHeadersStore((state) => state.host);
 
+  const phaseInfo = useRegisterStore((state) => state.ONB_PHASES_TERMS);
+
+  const setShowHeader = useRegisterStore((state) => state.setShowHeader);
+
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+
+  const [error, setError] = useState<boolean>(false);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
   useEffect(() => {
     let timer = setInterval(() => {});
@@ -58,6 +69,55 @@ export default function Landing() {
       clearInterval(timer);
     };
   });
+
+  const verifyUser = async () => {
+    setLoadingScreen(true);
+    const { consultant } = phaseInfo as any;
+
+    const shortDoc = consultant.documentNumber.substring(2, consultant.documentNumber - 1);
+
+    const documentPayload = {
+      documentType: encryptForge(consultant.documentType),
+      documentNumber: encryptForge(shortDoc),
+    };
+
+    const blacklistPayload = {
+      names: encryptForge(`${consultant.firstName} ${consultant.middleName}`),
+      lastNames: encryptForge(`${consultant.firstLastName} ${consultant.secondLastName}`),
+      documentNumber: encryptForge(consultant.documentNumber),
+      documentType: encryptForge(consultant.documentType),
+      identifier: '123e4567-e89b-42d3-a456-556642440000', //TODO: TEMPORAL MIENTRAS HACEN EL CAMBIO A HEADERS
+    };
+
+    const blacklist = api.post('/onboarding/blacklist', blacklistPayload, {
+      headers: {
+        identifier: '123e4567-e89b-42d3-a456-556642440000',
+      },
+    });
+
+    const documentValidation = api.post('/onboarding/documents/validate', documentPayload, {
+      headers: {
+        identifier: '123e4567-e89b-42d3-a456-556642440000',
+      },
+    });
+
+    Promise.all([blacklist, documentValidation])
+      .then((responses: any) => {
+        const [blackListResponse, docVerificationResponse] = responses;
+
+        const isSuccessCode = (response: any) => response?.data?.code === '200.00.000';
+
+        if (isSuccessCode(blackListResponse) && isSuccessCode(docVerificationResponse)) {
+          inc();
+        }
+      })
+      .catch(() => {
+        setError(true);
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
+  };
 
   useEffect(() => {
     sendGTMEvent({
@@ -76,6 +136,10 @@ export default function Landing() {
   useEffect(() => {
     setShowHeader(true);
   }, [setShowHeader]);
+
+  if (error) {
+    return <ErrorPage />;
+  }
 
   return (
     <Box
@@ -115,7 +179,7 @@ export default function Landing() {
           variant="contained"
           sx={{ width: 320 }}
           onClick={() => {
-            inc();
+            verifyUser();
             sendGTMEvent({
               event: 'ga4.trackEvent',
               eventName: 'select_content',

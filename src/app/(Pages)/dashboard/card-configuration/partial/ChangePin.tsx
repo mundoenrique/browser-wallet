@@ -1,19 +1,33 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
 import ModalOtp from '@/components/modal/ModalOtp';
-import { useNavTitleStore, useConfigCardStore } from '@/store';
+import { api } from '@/utils/api';
+import { useNavTitleStore, useConfigCardStore, useUiStore, useOtpStore, useUserStore } from '@/store';
 import { ContainerLayout, InputPass, Linking, ModalResponsive } from '@/components';
+import { encryptForge } from '@/utils/toolHelper';
 
 export default function ChangePin() {
-  const { updateTitle } = useNavTitleStore();
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
 
-  const { updatePage } = useConfigCardStore();
+  const updatePage = useConfigCardStore((state) => state.updatePage);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const otpUuid = useOtpStore((state) => state.otpUuid);
+
+  const resetOtp = useOtpStore((state) => state.reset);
+
+  const userId = useUserStore((state) => state.userId);
+
+  const cardId = useUserStore((state) => state.getUserCardId);
 
   const [openRc, setOpenRc] = useState<boolean>(false);
 
@@ -21,22 +35,60 @@ export default function ChangePin() {
 
   const schemaFormPassword = getSchema(['newPin', 'confirmPin']);
 
-  const { control, handleSubmit, reset } = useForm({
+  const { control, handleSubmit, reset, getValues } = useForm({
     defaultValues: { newPin: '', confirmPin: '' },
     resolver: yupResolver(schemaFormPassword),
   });
 
   const onSubmit = async (data: any) => {
-    console.log(data);
     setOpenOtp(true);
   };
 
-  const onSubmitOtp = async (data: any) => {
-    console.log(data);
-    setOpenOtp(false);
-    setOpenRc(true);
-    reset();
+  const changePin = () => {
+    const payload = {
+      pin: encryptForge(getValues('confirmPin')),
+    };
+
+    api
+      .put(`/cards/${cardId()}/pin`, payload)
+      .then(() => {
+        setOpenRc(true);
+        reset();
+      })
+      .catch((e) => {
+        setModalError({ error: e });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
   };
+
+  const onSubmitOtp = useCallback(
+    async (data: any) => {
+      setLoadingScreen(true);
+      const { otp } = data;
+      const payload = {
+        otpProcessCode: 'CHANGE_PIN_CARD_OTP',
+        otpUuId: otpUuid,
+        otpCode: encryptForge(otp),
+      };
+
+      api
+        .post(`/users/${userId}/validate/tfa`, payload)
+        .then((response) => {
+          if (response.data.code === '200.00.000') {
+            setOpenOtp(false);
+            changePin();
+            resetOtp();
+          }
+        })
+        .catch((e) => {
+          setModalError({ error: e });
+          setLoadingScreen(false);
+        });
+    },
+    [otpUuid] //eslint-disable-line
+  );
 
   useEffect(() => {
     updateTitle('Cambiar PIN');
@@ -67,8 +119,18 @@ export default function ChangePin() {
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-          <InputPass name="newPin" control={control} label="Nuevo Pin" />
-          <InputPass name="confirmPin" control={control} label="Confirmar tu nuevo Pin" />
+          <InputPass
+            name="newPin"
+            control={control}
+            label="Nuevo Pin"
+            inputProperties={{ inputProps: { maxLength: 4 } }}
+          />
+          <InputPass
+            name="confirmPin"
+            control={control}
+            label="Confirmar tu nuevo Pin"
+            inputProperties={{ inputProps: { maxLength: 4 } }}
+          />
           <Button variant="contained" type="submit" fullWidth>
             Cambiar PIN
           </Button>
@@ -79,7 +141,7 @@ export default function ChangePin() {
         open={openOtp}
         handleClose={() => setOpenOtp(false)}
         onSubmit={onSubmitOtp}
-        processCode="CHANGE_PASSWORD_OTP"
+        processCode="CHANGE_PIN_CARD_OTP"
       />
 
       <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>

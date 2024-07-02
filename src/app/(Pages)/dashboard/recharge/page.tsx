@@ -57,7 +57,7 @@ export default function Recharge() {
     setCurrentItem('recharge');
   }, [updateTitle, setCurrentItem]);
 
-  const { control, handleSubmit, getValues, setError } = useForm({
+  const { control, handleSubmit, getValues, setError, reset } = useForm({
     defaultValues: { amount: '' },
     resolver: yupResolver(schema),
   });
@@ -84,13 +84,14 @@ export default function Recharge() {
       })
       .finally(() => {
         setLoadingScreen(false);
+        reset();
       });
-  }, [setLoadingScreen, firstName, firstLastName, getUserPhone, getValues, userId, setLinkData, setModalError]);
+  }, [setLoadingScreen, firstName, firstLastName, getUserPhone, getValues, userId, setLinkData, setModalError, reset]);
 
   const onSubmit = async (data: any) => {
     const validate = {
-      min: parseFloat(data.amount) < 1,
-      max: parseFloat(data.amount) > 4950,
+      min: parseFloat(data.amount) <= 1,
+      max: parseFloat(data.amount) >= 4950,
     };
 
     if (validate.min || validate.max) {

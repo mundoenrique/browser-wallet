@@ -68,8 +68,10 @@ export const useRegisterStore = create<RegisterStore>()(
         ],
 
         onboardingUuId: null,
+        control: null,
 
         updateFormState: (form, data) => set((state) => ({ ...state, [form]: data })),
+        updateControl: (data: any) => set({ control: data }),
       }),
       { name: 'app-store', storage: createJSONStorage(() => sessionStorage) }
     )

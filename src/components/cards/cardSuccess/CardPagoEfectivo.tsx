@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { isBrowser, isMobile, isTablet } from 'react-device-detect';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
@@ -36,11 +36,11 @@ export default function CardPagoEfectivo({
   shareGA,
   codeQr,
 }: CardPagoEfectivoProps) {
-  const codeQrRef = useRef<any>(null);
   const ticketRef = useRef<any>(null);
 
   const ImagePagoEfectivo = {
     src: PagoEfectivo,
+    width: 480,
     alt: 'Logo Pago Efectivo',
   };
   const shareData: any = {
@@ -55,13 +55,13 @@ export default function CardPagoEfectivo({
     }
 
     if (isMobile || isTablet) {
-      handleShare(codeQrRef.current, shareData, 'white');
+      handleShare(ticketRef.current, shareData, 'white');
     }
   };
 
   const handleDownloadClick = () => {
     shareGA;
-    handleDownload(codeQrRef.current, 'recarga.png', 'transparent');
+    handleDownload(ticketRef.current, 'recarga.png', 'transparent');
   };
 
   return (
@@ -108,21 +108,25 @@ export default function CardPagoEfectivo({
             <Typography fontWeight={700} mb={3}>
               Yape, Plin u otras billeteras:
             </Typography>
-            <Box ref={codeQrRef}>
-              <Image src={codeQr ? codeQr : Qr} alt="Qr Code" width={106} height={106} />
+            <Box>
+              {codeQr ? (
+                <Image src={codeQr} alt="Qr Code" width={106} height={106} priority />
+              ) : (
+                <Image src={Qr} alt="Qr Code" width={106} height={106} priority />
+              )}
             </Box>
           </Box>
         </CardReport>
       </Box>
       {children}
 
-      {download && (
+      {download && codeQr && (
         <Button variant="secondary" onClick={handleDownloadClick} sx={{ mb: 4 }}>
           {label}
         </Button>
       )}
 
-      {share && (
+      {share && codeQr && (
         <Button variant="secondary" onClick={handleShareClick} sx={{ mb: 4 }}>
           {label}
         </Button>
