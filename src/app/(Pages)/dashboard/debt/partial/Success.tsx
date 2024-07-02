@@ -42,7 +42,7 @@ export default function Success() {
     {
       icon: <Dollar sx={{ color: 'primary.main' }} />,
       label: 'Por valor',
-      description: `S/ ${payOffDebt?.data.amount}`,
+      description: `S/ ${payOffDebt?.data?.amount}`,
     },
     {
       icon: <Clock sx={{ color: 'primary.main' }} />,
