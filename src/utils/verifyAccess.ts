@@ -4,18 +4,22 @@ interface pageAccess {
 }
 
 // Objeto con los nombres de las páginas y sus permisos respectivos
-const access: { [key: string]: pageAccess } = {
+const access: { [key: string]: any } = {
   "identify": {
-    access: true
+    access: true,
+    login: false
   },
   "signin": {
-    access: true
+    access: true,
+    login: false
   },
   "dashboard": {
-    access: true
+    access: true,
+    login: true
   },
   "dashboard/movements": {
     access: true,
+    login: false,
     dependence: {
       card: "selected"
     }
@@ -23,7 +27,7 @@ const access: { [key: string]: pageAccess } = {
 };
 
 // Función para validar el acceso a una página basado en una dependencia
-export function verifyAccess(namePage: string, dependence?: { [key: string]: string }): boolean {
+export function verifyAccess(namePage: string, dependence?: { [key: string]: string }): any {
   // Verificar si la página existe en los permisos
   if (access.hasOwnProperty(namePage)) {
     // Verificar si la página tiene definida una dependencia
@@ -39,7 +43,7 @@ export function verifyAccess(namePage: string, dependence?: { [key: string]: str
       }
     } else {
       console.log(`Acceso permitido a ${namePage}`);
-      return true;
+      return access[namePage];
     }
   } else {
     console.log(`La página ${namePage} no existe en los permisos`);
