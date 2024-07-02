@@ -61,7 +61,7 @@ export default function CardPagoEfectivo({
 
   const handleDownloadClick = () => {
     shareGA;
-    handleDownload(ticketRef.current, 'recarga.png', 'transparent');
+    handleDownload(ticketRef.current, 'recarga.png', fuchsiaBlue[800]);
   };
 
   return (
@@ -110,9 +110,13 @@ export default function CardPagoEfectivo({
             </Typography>
             <Box>
               {codeQr ? (
-                <Image src={codeQr} alt="Qr Code" width={106} height={106} priority />
+                <picture>
+                  <img src={codeQr} alt="Qr Code" width={106} height={106} />
+                </picture>
               ) : (
-                <Image src={Qr} alt="Qr Code" width={106} height={106} priority />
+                <picture>
+                  <img src={Qr} alt="Qr Code" width={106} height={106} />
+                </picture>
               )}
             </Box>
           </Box>

@@ -1,8 +1,8 @@
-import { InputProps, OutlinedInputProps, SwitchProps, SxProps } from '@mui/material';
+import React from 'react';
 import { DateView, DesktopDatePickerProps } from '@mui/x-date-pickers';
+import { OutlinedInputProps, SwitchProps, SxProps } from '@mui/material';
 //Internal app
 import { IClientProps } from './store';
-import React from 'react';
 
 /**
  * Form global variables
