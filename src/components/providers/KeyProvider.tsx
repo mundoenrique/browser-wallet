@@ -3,6 +3,7 @@
 import NodeRSA from 'node-rsa';
 import { useEffect, useState } from 'react';
 import { isBrowser } from 'react-device-detect';
+import { usePathname } from 'next/navigation'
 
 // Internal app
 import { api } from '@/utils/api';
@@ -13,8 +14,8 @@ import PurpleLayout from '../layout/PurpleLayout';
 import { removePEMHeadersAndFooters } from '@/utils/jwt';
 
 export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
+  const pathname = usePathname()
   const [keys, setKeysStore] = useState<any>('');
-  const token = useJwtStore((state) => state.token);
   const setToken = useJwtStore((state) => state.setToken);
   const setKeys = useKeyStore((state) => state.setKeys);
   const activeApp = useActiveAppStore((state) => state.activeApp);
@@ -23,8 +24,10 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   const setinitAccess = useActiveAppStore((state) => state.setinitAccess);
   const setCreateAccess = useActiveAppStore((state) => state.setCreateAccess);
 
+  console.log('EL PATHNAME ', pathname)
+
   useEffect(() => {
-    if (!activeApp) {
+    if (!activeApp && pathname != '/signout') {
       const jweKeypair = new NodeRSA({ b: 2048 });
       const jwePrivateKey = removePEMHeadersAndFooters(jweKeypair.exportKey('pkcs8-private-pem'));
       const jwePublicKey = removePEMHeadersAndFooters(jweKeypair.exportKey('pkcs8-public-pem'));
@@ -55,7 +58,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
     }
   }, [initAccess, activeApp, keys, setToken, setKeys, setinitAccess, setCreateAccess ]);
 
-  if (!initAccess) {
+  if (!initAccess && pathname != '/signout') {
     return (
       <PurpleLayout>
         <LogoGreen />
