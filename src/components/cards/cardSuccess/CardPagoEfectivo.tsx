@@ -25,7 +25,6 @@ import { handleDownload, handleShare } from '@/utils/toolHelper';
  * @param codeQr - Qr Code Pago Efectivo
  */
 export default function CardPagoEfectivo({ cip, children, label, download, share, codeQr }: CardPagoEfectivoProps) {
-  const codeQrRef = useRef<any>(null);
   const ticketRef = useRef<any>(null);
 
   const ImagePagoEfectivo = {
@@ -43,12 +42,12 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
     }
 
     if (isMobile || isTablet) {
-      handleShare(codeQrRef.current, shareData, 'white');
+      handleShare(ticketRef.current, shareData, 'white');
     }
   };
 
   const handleDownloadClick = () => {
-    handleDownload(codeQrRef.current, 'recarga.png', 'transparent');
+    handleDownload(ticketRef.current, 'recarga.png', 'transparent');
   };
 
   return (
@@ -95,7 +94,7 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
             <Typography fontWeight={700} mb={3}>
               Yape, Plin u otras billeteras:
             </Typography>
-            <Box ref={codeQrRef}>
+            <Box>
               <Image src={codeQr ? codeQr : Qr} alt="Qr Code" width={106} height={106} />
             </Box>
           </Box>
