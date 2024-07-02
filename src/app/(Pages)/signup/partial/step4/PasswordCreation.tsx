@@ -15,7 +15,7 @@ export default function PasswordCreation() {
 
   const { setModalError, setLoadingScreen } = useUiStore();
 
-  const { dec, setShowHeader, onboardingUuId } = useRegisterStore();
+  const { updateStep, setShowHeader, onboardingUuId, ONB_PHASES_TERMS, control } = useRegisterStore();
 
   const { updateCatalog, passwordTermsCatalog } = useCatalogsStore();
 
@@ -82,13 +82,78 @@ export default function PasswordCreation() {
     setShowHeader(true);
   }, [setShowHeader]);
 
+  const validateBiometric = async (data: any) => {
+    setLoadingScreen(true);
+    const requestData = {
+      payload: {
+        contacts: [
+          {
+            person: {
+              names: [
+                {
+                  firstName: encryptForge(
+                    `${ONB_PHASES_TERMS?.consultant?.firstName} ${ONB_PHASES_TERMS?.consultant?.middleName}`
+                  ),
+                  surName: encryptForge(ONB_PHASES_TERMS?.consultant?.firstLastName),
+                },
+              ],
+            },
+            identityDocuments: [
+              {
+                documentType: encryptForge(ONB_PHASES_TERMS?.consultant?.documentType),
+                documentNumber: encryptForge(ONB_PHASES_TERMS?.consultant?.documentNumber),
+                hashedDocumentNumber: encryptForge(ONB_PHASES_TERMS?.consultant?.documentNumber),
+              },
+            ],
+            telephones: [
+              {
+                number: encryptForge(ONB_PHASES_TERMS?.consultant?.phoneNumber),
+                phoneIdentifier: encryptForge('MOBILE'),
+              },
+            ],
+            emails: [
+              {
+                type: encryptForge('HOME'),
+                email: encryptForge(ONB_PHASES_TERMS?.consultant?.email),
+              },
+            ],
+          },
+        ],
+        control: [
+          {
+            option: 'ACCOUNTID_JM',
+            value: control.accountId,
+          },
+          {
+            option: 'WORKFLOWID_JM',
+            value: control.workflowId,
+          },
+        ],
+      },
+    };
+    api
+      .post('/onboarding/validatebiometric', requestData)
+      .then((response) => {
+        const { decision } = response.data.data;
+        if (decision === 'ACCEPT') {
+          onSubmit(data);
+        }
+      })
+      .catch((e) => {
+        setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
+  };
+
   return (
     <>
       {!loadingModal && (
         <CardStep stepNumber="4">
           <FormPass
             register
-            onSubmit={onSubmit}
+            onSubmit={validateBiometric}
             description={
               <>
                 <Typography variant="subtitle1" sx={{ mb: 3, mx: 'auto' }}>
@@ -108,7 +173,7 @@ export default function PasswordCreation() {
                 <Button
                   variant="outlined"
                   onClick={() => {
-                    dec();
+                    updateStep(4);
                   }}
                 >
                   Anterior
