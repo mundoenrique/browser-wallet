@@ -91,10 +91,10 @@ export default function PasswordCreation() {
             person: {
               names: [
                 {
-                  firstName: encryptForge(ONB_PHASES_TERMS?.consultant?.firstName),
-                  secondName: encryptForge(ONB_PHASES_TERMS?.consultant?.middleName),
+                  firstName: encryptForge(
+                    `${ONB_PHASES_TERMS?.consultant?.firstName} ${ONB_PHASES_TERMS?.consultant?.middleName}`
+                  ),
                   surName: encryptForge(ONB_PHASES_TERMS?.consultant?.firstLastName),
-                  surName2: encryptForge(ONB_PHASES_TERMS?.consultant?.firstLastName),
                 },
               ],
             },
@@ -131,19 +131,15 @@ export default function PasswordCreation() {
         ],
       },
     };
-    console.log('🚀 ~ validateBiometric ~ requestData:', requestData);
     api
       .post('/onboarding/validatebiometric', requestData)
       .then((response) => {
         const { decision } = response.data.data;
         if (decision === 'ACCEPT') {
-          // onSubmit(data);
-          console.log('🚀 ~ validateBiometric ~ decision:', decision);
-          console.log('🚀 ~ onSubmit(data)');
+          onSubmit(data);
         }
       })
       .catch((e) => {
-        console.log('🚀 ~ validateBiometric ~ e:', e);
         setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
       })
       .finally(() => {

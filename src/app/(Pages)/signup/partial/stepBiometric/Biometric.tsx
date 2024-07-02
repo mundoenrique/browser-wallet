@@ -16,16 +16,6 @@ export default function Biometric() {
   const receiveMessage = useCallback(
     (event: any) => {
       let data = window.JSON.parse(event.data);
-      console.log('ID Verification Web was loaded in an iframe.');
-      console.log('auth-token:', data.authorizationToken);
-      console.log('event-type:', data.eventType);
-      console.log('date-time:', data.dateTime);
-      console.log('workflow-execution-id:', data.workflowExecutionId);
-      console.log('account-id:', data.accountId);
-      console.log('customer-internal-reference:', data.customerInternalReference);
-      console.log('value:', data.payload.value);
-      console.log('metainfo:', data.payload.metainfo);
-      //Estamos verificando tu información
       if (data.payload.value === 'success') setLoadingScreen(true, { message: 'Estamos verificando tu información' });
       if (data.payload.value === 'error') setBtnBack(true);
     },
