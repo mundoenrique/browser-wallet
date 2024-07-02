@@ -29,6 +29,7 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
 
   const ImagePagoEfectivo = {
     src: PagoEfectivo,
+    width: 480,
     alt: 'Logo Pago Efectivo',
   };
   const shareData: any = {

@@ -26,6 +26,7 @@ export const handleDownload = async (element: HTMLElement, fileName: string, bac
     removeContainer: false,
     allowTaint: true,
     backgroundColor: backgroundColor,
+    scale: 1.5,
   });
   const image = canvas.toDataURL('image/png');
   const link = document.createElement('a');
