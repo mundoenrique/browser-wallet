@@ -127,4 +127,5 @@ export interface CardPagoEfectivoProps {
   downloadGA?: () => void;
   share?: boolean;
   shareGA?: () => void;
+  codeQr?: string;
 }

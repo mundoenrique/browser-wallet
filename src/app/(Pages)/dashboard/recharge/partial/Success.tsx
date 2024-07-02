@@ -15,6 +15,8 @@ export default function Success() {
 
   const linkData = useCollectStore((state) => state.linkData);
 
+  const [qr, setQr] = useState<string>(linkData?.qr ?? '');
+
   const [url, setUrl] = useState<string>(linkData?.url ?? '');
 
   const [providerPaymentCode, setProviderPaymentCode] = useState<string>(linkData?.providerPaymentCode ?? '');
@@ -22,6 +24,7 @@ export default function Success() {
   useEffect(() => {
     setProviderPaymentCode(linkData?.providerPaymentCode ?? '');
     setUrl(linkData?.url ?? '');
+    setQr(linkData?.qr ?? '');
   }, [linkData]);
 
   useEffect(() => {
@@ -40,7 +43,7 @@ export default function Success() {
 
   return (
     <>
-      <PurpleLayout hidePelca bigModal left navbar>
+      <PurpleLayout hidePelca bigModal left navbar width="calc(100% - 315px)">
         <ContainerLayout>
           <Typography
             variant="h6"
@@ -53,6 +56,7 @@ export default function Success() {
           </Typography>
           <CardPagoEfectivo
             cip={providerPaymentCode}
+            codeQr={qr}
             label="Guardar código QR"
             download
             downloadGA={() => {

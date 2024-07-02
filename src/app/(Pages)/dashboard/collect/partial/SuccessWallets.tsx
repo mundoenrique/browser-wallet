@@ -16,6 +16,8 @@ export default function SuccessWallets() {
 
   const linkData = useCollectStore((state) => state.linkData);
 
+  const [qr, setQr] = useState<string>(linkData?.qr ?? '');
+
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const [name, setName] = useState<string>(load?.name ?? '');
@@ -34,6 +36,7 @@ export default function SuccessWallets() {
     setUrl(linkData?.url ?? '');
     setAmount(linkData?.amount ?? 0);
     setName(load?.name ?? '');
+    setQr(linkData?.qr ?? '');
   }, [linkData, load]);
 
   useEffect(() => {
@@ -52,7 +55,7 @@ export default function SuccessWallets() {
 
   return (
     <>
-      <PurpleLayout hidePelca bigModal left navbar>
+      <PurpleLayout hidePelca bigModal left navbar width="calc(100% - 315px)">
         <ContainerLayout>
           <Typography
             variant="h6"
@@ -65,6 +68,7 @@ export default function SuccessWallets() {
           </Typography>
           <CardPagoEfectivo
             cip={providerPaymentCode}
+            codeQr={qr}
             label="Compartir"
             share
             shareGA={() => {
