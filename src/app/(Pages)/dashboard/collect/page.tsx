@@ -99,8 +99,8 @@ export default function Collect() {
     e.preventDefault();
 
     const validate = {
-      min: parseFloat(data.amount) < 1,
-      max: parseFloat(data.amount) > 4950,
+      min: parseFloat(data.amount) <= 1,
+      max: parseFloat(data.amount) >= 4950,
     };
 
     if (validate.min || validate.max) {
@@ -144,6 +144,7 @@ export default function Collect() {
             name="numberClient"
             control={control}
             label="¿A quién le quieres cobrar?"
+            inputProps={{ maxLength: 9 }}
             endAdornment={<GroupIcon />}
           />
           <InputText name="nameClient" control={control} label="Nombre de la persona" endAdornment={<GroupIcon />} />

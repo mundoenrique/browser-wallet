@@ -68,8 +68,8 @@ export default function Transfer() {
 
   const onSubmit = async (data: any) => {
     const validate = {
-      min: parseFloat(data.amount) < 1,
-      max: parseFloat(data.amount) > 4950,
+      min: parseFloat(data.amount) <= 1,
+      max: parseFloat(data.amount) >= 4950,
       differentAccount: data.numberClient !== getUserPhone(),
     };
 
@@ -237,6 +237,7 @@ export default function Transfer() {
             name="numberClient"
             control={control}
             label="¿A quién quieres transferir dinero?"
+            inputProps={{ maxLength: 9 }}
             endAdornment={<GroupIcon />}
           />
           <InputTextPay name="amount" control={control} label="¿Cuánto dinero quieres transferir?" />

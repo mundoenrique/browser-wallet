@@ -18,6 +18,7 @@ import React from 'react';
  * @typeParam getOptionLabel (Optional): Function
  * @typeParam disabled (Optional): boolean
  * @typeParam readOnly (Optional): boolean
+ * @typeParam inputProps (Optional): any
  */
 export interface FormMUIProps {
   name: string;
@@ -32,6 +33,7 @@ export interface FormMUIProps {
   disabled?: boolean;
   readOnly?: boolean;
   sx?: SxProps;
+  inputProps?: any;
 }
 
 /**
