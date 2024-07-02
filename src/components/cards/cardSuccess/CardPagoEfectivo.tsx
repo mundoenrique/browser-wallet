@@ -29,6 +29,7 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
 
   const ImagePagoEfectivo = {
     src: PagoEfectivo,
+    width: 480,
     alt: 'Logo Pago Efectivo',
   };
   const shareData: any = {
@@ -95,7 +96,11 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
               Yape, Plin u otras billeteras:
             </Typography>
             <Box>
-              <Image src={codeQr ? codeQr : Qr} alt="Qr Code" width={106} height={106} />
+              {codeQr ? (
+                <Image src={codeQr} alt="Qr Code" width={106} height={106} priority />
+              ) : (
+                <Image src={Qr} alt="Qr Code" width={106} height={106} priority />
+              )}
             </Box>
           </Box>
         </CardReport>
