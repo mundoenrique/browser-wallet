@@ -1,18 +1,22 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import { AuthOtpFormProps } from '@/interfaces';
 import InputOTP from '@/components/form/InputOTP';
-import { useOtpStore, useUiStore, useUserStore } from '@/store';
 import { encryptForge, handleMaskOtp } from '@/utils/toolHelper';
+import { useHeadersStore, useOtpStore, useUiStore, useUserStore } from '@/store';
 
 export default function AuthOtp(props: AuthOtpFormProps) {
   const { handleResendOTP } = props;
+
+  const host = useHeadersStore((state) => state.host);
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
@@ -27,9 +31,34 @@ export default function AuthOtp(props: AuthOtpFormProps) {
   const schema = getSchema(['otp']);
   const phoneNumber: string = getUserPhone();
 
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/password-recover`,
+        page_title: 'Yiro :: recuperarContraseña :: código',
+        page_referrer: `${host}/signin`,
+        section: 'Yiro :: recuperarContraseña :: código',
+        previous_section: 'Yiro :: login :: interno',
+      },
+    });
+  }, [host]);
+
   const handleReset = () => {
     handleResendOTP();
     reset();
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'Yiro :: recuperarContraseña :: codigo',
+        previous_section: 'Yiro :: login :: interno',
+        selected_content: 'Reenviar código',
+        destination_page: `${host}/password-recover`,
+      },
+    });
   };
 
   const { control, handleSubmit, reset } = useForm({
@@ -86,7 +115,25 @@ export default function AuthOtp(props: AuthOtpFormProps) {
           handleResendOTP={handleReset}
         />
       </Box>
-      <Button variant="contained" type="submit" sx={{ maxWidth: 284, width: '100%', mx: 'auto', mb: { xs: 3, md: 0 } }}>
+
+      <Button
+        variant="contained"
+        type="submit"
+        sx={{ maxWidth: 284, width: '100%', mx: 'auto', mb: { xs: 3, md: 0 } }}
+        onClick={() => {
+          sendGTMEvent({
+            event: 'ga4.trackEvent',
+            eventName: 'select_content',
+            eventParams: {
+              content_type: 'boton',
+              section: 'Yiro :: recuperarContraseña :: codigo',
+              previous_section: 'Yiro :: login :: interno',
+              selected_content: 'Continuar',
+              destination_page: `${host}/password-recover`,
+            },
+          });
+        }}
+      >
         Continuar
       </Button>
     </Box>

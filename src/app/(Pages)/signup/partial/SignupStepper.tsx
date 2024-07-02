@@ -2,11 +2,14 @@
 
 import { Box } from '@mui/material';
 //Internal app
-import { useRegisterStore } from '@/store';
 import { NavExternal } from '@/components';
+import { sendGTMEvent } from '@next/third-parties/google';
+import { useHeadersStore, useRegisterStore } from '@/store';
 
 export default function SignupStepper(props: { currentStep: number; children: JSX.Element[] }) {
   const { currentStep, children } = props;
+
+  const { backLink } = useHeadersStore();
 
   const { showHeader } = useRegisterStore();
 
@@ -20,7 +23,25 @@ export default function SignupStepper(props: { currentStep: number; children: JS
         flexDirection: 'column',
       }}
     >
-      {showHeader && <NavExternal image closeApp />}
+      {showHeader && (
+        <NavExternal
+          image
+          closeApp
+          onClick={() => {
+            sendGTMEvent({
+              event: 'ga4.trackEvent',
+              eventName: 'select_content',
+              eventParams: {
+                content_type: 'boton',
+                section: 'Yiro :: onboarding',
+                previous_section: 'identify',
+                selected_content: 'Volver a ésika Conmigo',
+                destination_page: `${backLink}`,
+              },
+            });
+          }}
+        />
+      )}
 
       {children[currentStep]}
     </Box>

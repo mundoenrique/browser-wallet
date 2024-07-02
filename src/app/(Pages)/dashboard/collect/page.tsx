@@ -5,17 +5,26 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { api } from '@/utils/api';
 import { GroupIcon } from '%/Icons';
 import { getSchema } from '@/config';
+import { formatAmount } from '@/utils/toolHelper';
 import SuccessCards from './partial/SuccessCards';
 import Wallets from '%/images/suppliers/wallets.png';
 import SuccessWallets from './partial/SuccessWallets';
 import Franchises from '%/images/suppliers/franchises.png';
 import { ContainerLayout, InputText, InputTextPay } from '@/components';
-import { useMenuStore, useNavTitleStore, useClientStore, useUserStore, useCollectStore, useUiStore } from '@/store';
-import { formatAmount } from '@/utils/toolHelper';
+import {
+  useMenuStore,
+  useNavTitleStore,
+  useClientStore,
+  useUserStore,
+  useCollectStore,
+  useUiStore,
+  useHeadersStore,
+} from '@/store';
 
 export default function Collect() {
   const schema = getSchema(['nameClient', 'numberClient', 'amount']);
@@ -25,6 +34,8 @@ export default function Collect() {
   const { setCurrentItem } = useMenuStore();
 
   const { updateTitle } = useNavTitleStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   const userId = useUserStore((state) => state.user.userId);
 
@@ -39,6 +50,20 @@ export default function Collect() {
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
   const [showActionBtn, setShowActionBtn] = useState<string>('');
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/collect`,
+        page_title: 'cobrar :: monto',
+        page_referrer: `${host}/dashboard`,
+        section: 'cobrar :: monto',
+        previous_section: 'dashboard',
+      },
+    });
+  }, [host]);
 
   const {
     control,
@@ -153,11 +178,47 @@ export default function Collect() {
             ¿Cómo te va a pagar el cliente?
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Button variant="payment" type="submit" sx={{ width: 144, p: 2 }} id="wallets">
+            <Button
+              variant="payment"
+              type="submit"
+              sx={{ width: 144, p: 2 }}
+              id="wallets"
+              onClick={() => {
+                sendGTMEvent({
+                  event: 'ga4.trackEvent',
+                  eventName: 'select_content',
+                  eventParams: {
+                    content_type: 'boton',
+                    section: 'cobrar :: monto',
+                    previous_section: 'dashboard',
+                    selected_content: 'Billetera digital, Banco o agencia',
+                    destination_page: `${host}/dashboard/collect`,
+                  },
+                });
+              }}
+            >
               Billetera digital, Banco o agencia
               <Image src={Wallets} alt="Billetas y bancos" priority />
             </Button>
-            <Button variant="payment" type="submit" sx={{ width: 144, p: 2 }} id="cards">
+            <Button
+              variant="payment"
+              type="submit"
+              sx={{ width: 144, p: 2 }}
+              id="cards"
+              onClick={() => {
+                sendGTMEvent({
+                  event: 'ga4.trackEvent',
+                  eventName: 'select_content',
+                  eventParams: {
+                    content_type: 'boton',
+                    section: 'cobrar :: monto',
+                    previous_section: 'dashboard',
+                    selected_content: 'Tarjeta de crédito o débito',
+                    destination_page: `${host}/dashboard/collect`,
+                  },
+                });
+              }}
+            >
               Tarjeta de crédito o débito
               <Image src={Franchises} alt="Billetas y bancos" priority />
             </Button>

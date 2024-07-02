@@ -2,16 +2,19 @@
 
 import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { CardStep } from '..';
 import Ending from '../Ending';
 import { api } from '@/utils/api';
 import { FormPass } from '@/components';
 import { encryptForge } from '@/utils/toolHelper';
-import { useRegisterStore, useUiStore, useCatalogsStore, useUserStore } from '@/store';
+import { useRegisterStore, useUiStore, useCatalogsStore, useUserStore, useHeadersStore } from '@/store';
 
 export default function PasswordCreation() {
   const { setUserId } = useUserStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   const { setModalError, setLoadingScreen } = useUiStore();
 
@@ -20,6 +23,20 @@ export default function PasswordCreation() {
   const { updateCatalog, passwordTermsCatalog } = useCatalogsStore();
 
   const [loadingModal, setLoadingModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/signup`,
+        page_title: 'Yiro :: onboarding :: step4 :: createPassword',
+        page_referrer: `${host}/identify`,
+        section: 'Yiro :: onboarding :: step4 :: createPassword',
+        previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+      },
+    });
+  }, [host]);
 
   useEffect(() => {
     const fetchTermPasswordCatalog = async () => {
@@ -174,11 +191,38 @@ export default function PasswordCreation() {
                   variant="outlined"
                   onClick={() => {
                     updateStep(4);
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'select_content',
+                      eventParams: {
+                        content_type: 'boton',
+                        section: 'Yiro :: onboarding :: step4 :: createPassword',
+                        previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                        selected_content: 'Anterior',
+                        destination_page: `${host}/signup`,
+                      },
+                    });
                   }}
                 >
                   Anterior
                 </Button>
-                <Button variant="contained" type="submit">
+                <Button
+                  variant="contained"
+                  type="submit"
+                  onClick={() => {
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'select_content',
+                      eventParams: {
+                        content_type: 'boton',
+                        section: 'Yiro :: onboarding :: step4 :: createPassword',
+                        previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                        selected_content: 'Siguiente',
+                        destination_page: `${host}/signup`,
+                      },
+                    });
+                  }}
+                >
                   Siguiente
                 </Button>
               </>

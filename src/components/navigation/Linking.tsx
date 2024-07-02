@@ -17,6 +17,7 @@ import { LinkingProps } from '@/interfaces';
  * @param hidenArrow - Hide the arrow icon.
  * @param fontSize - Font size.
  * @param iconSize - Object with height and width for the icon.
+ * @param onClick - Handle action.
  * @param adormentStart - Show the icon at the beginning of the element.
  * @param adormentEnd - Show the icon at the end of the element.
  */
