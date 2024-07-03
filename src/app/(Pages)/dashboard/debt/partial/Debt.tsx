@@ -28,6 +28,7 @@ export default function Debt() {
   const debt = useDebStore((state) => state.debt);
 
   const host = useHeadersStore((state) => state.host);
+
   const balance = useDebStore((state) => state.balance);
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
