@@ -3,6 +3,7 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useCallback, useEffect, useState } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, Button, Card, Stack, Typography } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
@@ -11,12 +12,22 @@ import ModalOtp from '@/components/modal/ModalOtp';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { encryptForge, formatAmount } from '@/utils/toolHelper';
 import { ContainerLayout, InputTextPay, Linking } from '@/components';
-import { useDebStore, useMenuStore, useNavTitleStore, useOtpStore, useUiStore, useUserStore } from '@/store';
+import {
+  useDebStore,
+  useHeadersStore,
+  useMenuStore,
+  useNavTitleStore,
+  useOtpStore,
+  useUiStore,
+  useUserStore,
+} from '@/store';
 
 export default function Debt() {
   const schema = getSchema(['amount']);
 
   const debt = useDebStore((state) => state.debt);
+
+  const host = useHeadersStore((state) => state.host);
 
   const balance = useDebStore((state) => state.balance);
 
@@ -41,6 +52,20 @@ export default function Debt() {
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
   const [openOtp, setOpenOtp] = useState<boolean>(false);
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/debt`,
+        page_title: 'Yiro :: pagarDeuda :: monto',
+        page_referrer: `${host}/dashboard`,
+        section: 'Yiro :: pagarDeuda :: monto',
+        previous_section: 'dashboard',
+      },
+    });
+  }, [host]);
 
   const { control, handleSubmit, getValues, setError } = useForm({
     defaultValues: { amount: '' },
@@ -143,7 +168,24 @@ export default function Debt() {
 
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           <InputTextPay name="amount" control={control} label="¿Cuánto deseas pagar?" />
-          <Button variant="contained" type="submit" fullWidth>
+          <Button
+            variant="contained"
+            type="submit"
+            fullWidth
+            onClick={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: 'Yiro :: pagarDeuda :: monto',
+                  previous_section: 'dashboard',
+                  selected_content: 'Pagar',
+                  destination_page: `${host}/dashboard/debt`,
+                },
+              });
+            }}
+          >
             Pagar
           </Button>
         </Box>

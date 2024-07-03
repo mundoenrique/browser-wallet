@@ -6,14 +6,19 @@ import { useCallback, useEffect, useRef } from 'react';
 import OTP from './partial/OTP';
 import { api } from '@/utils/api';
 import { OtpStore } from '@/interfaces';
+import { NavExternal } from '@/components';
 import UpdatePass from './partial/UpdatePass';
-import { useOtpStore, useUiStore, useUserStore } from '@/store';
+import { sendGTMEvent } from '@next/third-parties/google';
+import { useHeadersStore, useOtpStore, useUiStore, useUserStore } from '@/store';
 
 export default function Recover() {
   const {
     user: { userId },
   } = useUserStore();
+
   const { setModalError } = useUiStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   const { countdown, counting, setCounting, setTime, otpValid, setOtpUuid } = useOtpStore();
 
@@ -62,5 +67,25 @@ export default function Recover() {
     return validatePage || routes['OTP'];
   };
 
-  return <Card variant="signup">{configRecoverRoutes(otpValid)}</Card>;
+  return (
+    <>
+      <NavExternal
+        image
+        onClick={() => {
+          sendGTMEvent({
+            event: 'ga4.trackEvent',
+            eventName: 'select_content',
+            eventParams: {
+              content_type: 'boton',
+              section: 'Yiro :: recuperarContraseña',
+              previous_section: 'Yiro :: login :: interno',
+              selected_content: 'Volver',
+              destination_page: `${host}/signin`,
+            },
+          });
+        }}
+      />
+      <Card variant="signup">{configRecoverRoutes(otpValid)}</Card>
+    </>
+  );
 }

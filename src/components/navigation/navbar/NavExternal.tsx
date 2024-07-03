@@ -13,8 +13,9 @@ import { MuiNavExternalProps } from '@/interfaces';
  * @param image - Confirm and display the product logo.
  * @param color - Link Text Color.
  * @param closeApp - Confirm if the link to exit the application is displayed.
+ * @param onClick - Handle action.
  */
-export default function NavExternal({ image, color, closeApp }: MuiNavExternalProps): JSX.Element {
+export default function NavExternal({ image, color, closeApp, onClick }: MuiNavExternalProps): JSX.Element {
   const { backLink } = useHeadersStore();
 
   return (
@@ -44,9 +45,16 @@ export default function NavExternal({ image, color, closeApp }: MuiNavExternalPr
         }}
       >
         {!closeApp ? (
-          <Linking href="/signin" label="Volver" mb={0} adormentStart />
+          <Linking href="/signin" label="Volver" mb={0} adormentStart onClick={onClick} />
         ) : (
-          <Linking href={backLink} label="Volver a ésika Conmigo" mb={0} color={color} adormentStart />
+          <Linking
+            href={backLink}
+            label="Volver a ésika Conmigo"
+            mb={0}
+            color={color}
+            adormentStart
+            onClick={onClick}
+          />
         )}
       </Box>
     </Box>

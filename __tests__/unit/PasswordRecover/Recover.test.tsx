@@ -6,9 +6,9 @@ jest.mock('@/utils/api', () => ({
   api: {
     post: jest.fn().mockResolvedValue({
       status: 200,
-      data: { data: { otpUuId: 'abc123' } }
-    })
-  }
+      data: { data: { otpUuId: 'abc123' } },
+    }),
+  },
 }));
 
 jest.mock('@/app/(Pages)/password-recover/partial/OTP', () => ({
@@ -22,6 +22,10 @@ jest.mock('@/app/(Pages)/password-recover/partial/UpdatePass', () => ({
 }));
 
 jest.mock('@/store', () => ({
+  useHeadersStore: jest.fn(() => ({
+    host: jest.fn(),
+    back: jest.fn(),
+  })),
   useUserStore: jest.fn(() => ({ user: { userId: 'mockedUserId' } })),
   useUiStore: jest.fn(() => ({ setModalError: jest.fn() })),
   useOtpStore: jest.fn(() => ({

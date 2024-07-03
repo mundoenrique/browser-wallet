@@ -2,17 +2,18 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { Button, Box, Typography, Zoom } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
-import { useRegisterStore, useUiStore } from '@/store';
-import { encryptForge } from '@/utils/toolHelper';
+import ErrorPage from './ErrorPage';
 import LogoPurple from '%/images/LogoPurple';
+import { encryptForge } from '@/utils/toolHelper';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import animation1 from '%/images/pwa/animation1.png';
 import animation2 from '%/images/pwa/animation2.png';
 import animation3 from '%/images/pwa/animation3.png';
-import ErrorPage from './ErrorPage';
+import { useHeadersStore, useRegisterStore, useUiStore } from '@/store';
 
 const animationState = [
   {
@@ -43,8 +44,13 @@ const animationState = [
 
 export default function Landing() {
   const inc = useRegisterStore((state) => state.inc);
-  const setShowHeader = useRegisterStore((state) => state.setShowHeader);
+
+  const host = useHeadersStore((state) => state.host);
+
   const phaseInfo = useRegisterStore((state) => state.ONB_PHASES_TERMS);
+
+  const setShowHeader = useRegisterStore((state) => state.setShowHeader);
+
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
   const [error, setError] = useState<boolean>(false);
@@ -114,6 +120,20 @@ export default function Landing() {
   };
 
   useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/signup`,
+        page_title: 'Yiro :: onboarding :: step0',
+        page_referrer: `${host}/identify`,
+        section: 'Yiro :: onboarding :: step0',
+        previous_section: 'identify',
+      },
+    });
+  }, [host]);
+
+  useEffect(() => {
     setShowHeader(true);
   }, [setShowHeader]);
 
@@ -160,6 +180,17 @@ export default function Landing() {
           sx={{ width: 320 }}
           onClick={() => {
             verifyUser();
+            sendGTMEvent({
+              event: 'ga4.trackEvent',
+              eventName: 'select_content',
+              eventParams: {
+                content_type: 'boton',
+                section: 'Yiro :: onboarding :: step0',
+                previous_section: 'identify',
+                selected_content: '¡Inicia YA!',
+                destination_page: `${host}/signup`,
+              },
+            });
           }}
         >
           ¡Inicia YA!

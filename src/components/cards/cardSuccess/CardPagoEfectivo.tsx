@@ -1,10 +1,10 @@
 'use client';
 
 import { useRef } from 'react';
+import Image from 'next/image';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { isBrowser, isMobile, isTablet } from 'react-device-detect';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
-import Image from 'next/image';
 //Internal app
 import { CopyIcons } from '%/Icons';
 import CardReport from './CardReport';
@@ -21,10 +21,21 @@ import { handleDownload, handleShare } from '@/utils/toolHelper';
  * @param children - Add elements from the parent
  * @param label - Label of buttons
  * @param download - handling for file download
+ * @param downloadGA - handle Google Analytics
  * @param share - handling for image shared
+ * @param shareGA - handle Google Analytics
  * @param codeQr - Qr Code Pago Efectivo
  */
-export default function CardPagoEfectivo({ cip, children, label, download, share, codeQr }: CardPagoEfectivoProps) {
+export default function CardPagoEfectivo({
+  cip,
+  children,
+  label,
+  download,
+  downloadGA,
+  share,
+  shareGA,
+  codeQr,
+}: CardPagoEfectivoProps) {
   const ticketRef = useRef<any>(null);
 
   const ImagePagoEfectivo = {
@@ -38,6 +49,7 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
   };
 
   const handleShareClick = () => {
+    downloadGA;
     if (isBrowser) {
       handleShare(ticketRef.current, shareData, fuchsiaBlue[800]);
     }
@@ -48,7 +60,8 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
   };
 
   const handleDownloadClick = () => {
-    handleDownload(ticketRef.current, 'recarga.png', 'transparent');
+    shareGA;
+    handleDownload(ticketRef.current, 'recarga.png', fuchsiaBlue[800]);
   };
 
   return (
@@ -97,9 +110,9 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
             </Typography>
             <Box>
               {codeQr ? (
-                <Image src={codeQr} alt="Qr Code" width={106} height={106} priority />
+                <Image src={codeQr} alt="Código Qr" width={106} height={106} priority />
               ) : (
-                <Image src={Qr} alt="Qr Code" width={106} height={106} priority />
+                <Image src={Qr} alt="Código Qr" width={106} height={106} priority />
               )}
             </Box>
           </Box>
