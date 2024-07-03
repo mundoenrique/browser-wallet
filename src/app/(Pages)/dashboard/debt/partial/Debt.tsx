@@ -124,6 +124,19 @@ export default function Debt() {
   );
 
   const onSubmit = (data: any) => {
+    const validate = {
+      min: parseFloat(data.amount) < 1,
+      max: parseFloat(data.amount) > 4950,
+    };
+
+    if (validate.min || validate.max) {
+      validate.min && setError('amount', { type: 'customError', message: 'El monto debe ser mayor a S/ 1.00' });
+
+      validate.max && setError('amount', { type: 'customError', message: 'El monto debe ser menor a S/ 4950.00' });
+
+      return;
+    }
+
     const balanceAmount = parseFloat(balance.availableBalance);
     const amount = parseFloat(data.amount);
     if (amount > balanceAmount) {

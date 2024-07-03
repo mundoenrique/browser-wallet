@@ -124,14 +124,14 @@ export default function Collect() {
     e.preventDefault();
 
     const validate = {
-      min: parseFloat(data.amount) <= 1,
-      max: parseFloat(data.amount) >= 4950,
+      min: parseFloat(data.amount) < 1,
+      max: parseFloat(data.amount) > 4950,
     };
 
     if (validate.min || validate.max) {
-      validate.min && setError('amount', { type: 'customError', message: 'El monto debe ser mayor a 1.00' });
+      validate.min && setError('amount', { type: 'customError', message: 'El monto debe ser mayor a S/ 1.00' });
 
-      validate.max && setError('amount', { type: 'customError', message: 'El monto debe ser menor a 4950' });
+      validate.max && setError('amount', { type: 'customError', message: 'El monto debe ser menor a S/ 4950.00' });
 
       return;
     }
