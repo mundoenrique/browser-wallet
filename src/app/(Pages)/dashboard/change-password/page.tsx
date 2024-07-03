@@ -9,6 +9,7 @@ import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
+import { encryptForge } from '@/utils/toolHelper';
 import ModalOtp from '@/components/modal/ModalOtp';
 import { ContainerLayout, InputPass, ModalResponsive } from '@/components';
 import { useNavTitleStore, useMenuStore, useUserStore, useUiStore, useHeadersStore } from '@/store';
@@ -58,8 +59,8 @@ export default function ChangePassword() {
   const onSubmitOtp = async () => {
     setLoadingScreen(true);
     const requestData = {
-      currentPassword: getValues('currentPassword'),
-      newPassword: getValues('newPassword'),
+      currentPassword: encryptForge(getValues('currentPassword')),
+      newPassword: encryptForge(getValues('newPassword')),
     };
     api
       .put(`/onboarding/users/${userId}/password`, requestData)
@@ -88,11 +89,6 @@ export default function ChangePassword() {
         pop_up_title: 'Verificación en dos pasos',
       },
     });
-  };
-
-  const redirect = () => {
-    setOpenRc(false);
-    router.push('/dashboard');
   };
 
   useEffect(() => {
@@ -168,7 +164,14 @@ export default function ChangePassword() {
         processCode="CHANGE_PASSWORD_OTP"
       />
 
-      <ModalResponsive open={openRc} handleClose={() => redirect} data-testid="modal-succes">
+      <ModalResponsive
+        open={openRc}
+        handleClose={() => {
+          setOpenRc(false);
+          router.push('/dashboard');
+        }}
+        data-testid="modal-succes"
+      >
         <Typography variant="subtitle2">🥳 Actualización exitosa</Typography>
       </ModalResponsive>
     </>
