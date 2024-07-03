@@ -1,4 +1,4 @@
-import { render, waitFor, screen } from '@testing-library/react';
+import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 //Internal app
 import Recover from '@/app/(Pages)/password-recover/page';
 
@@ -55,7 +55,7 @@ describe('Recover', () => {
     jest.useFakeTimers();
     const setIntervalSpy = jest.spyOn(global, 'setInterval');
     render(<Recover />);
-    expect(setIntervalSpy).toHaveBeenCalled();
+    await waitFor(() => expect(setIntervalSpy).toHaveBeenCalled());
     jest.useRealTimers();
     setIntervalSpy.mockRestore();
   });
@@ -104,7 +104,7 @@ describe('Recover', () => {
     jest.useFakeTimers();
     const setIntervalSpy = jest.spyOn(global, 'setInterval');
     render(<Recover />);
-    expect(setIntervalSpy).toHaveBeenCalled();
+    await waitFor(() => expect(setIntervalSpy).toHaveBeenCalled());
     jest.useRealTimers();
     setIntervalSpy.mockRestore();
   });
