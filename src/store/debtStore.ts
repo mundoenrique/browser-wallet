@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 //Internal app
-import { DebtStore, IBalance, IPayOffDebt, IPayOffDebtError } from '@/interfaces';
+import { DebtStore, IBalance, IDebt, IPayOffDebtError } from '@/interfaces';
 
 export const useDebStore = create<DebtStore>()(
   persist(
@@ -13,7 +13,7 @@ export const useDebStore = create<DebtStore>()(
       balance: null,
       setDebt: (data) => set({ debt: data }),
       setView: (value) => set({ view: value }),
-      setPayOffDebt: (data: IPayOffDebt) => set({ payOffDebt: data }),
+      setPayOffDebt: (data: IDebt) => set({ payOffDebt: data }),
       setError: (data: IPayOffDebtError) => set({ error: data }),
       setBalance: (data: IBalance) => set({ balance: data }),
     }),
