@@ -5,6 +5,7 @@ import { handleApiResponse } from '.';
 import { JWT_HEADER, JWS_HEADER, SESSION_ID } from './constants';
 import { IApiGeeResponse, IEncryptedBody, IJWTPayload } from '@/interfaces';
 import { verifyJWT, encryptJWE, decryptJWE, signJWE, verifyDetachedJWS } from './jwt';
+import { encryptForge } from './toolHelper';
 
 type EnvVariableKey =
   | 'BACK_URL'
@@ -134,9 +135,8 @@ export async function handleResponse(
     const jwe: string = await encryptJWE(responseObj, jweAppPublicKey);
     const encryptedResponse = { data: jwe };
     const jws: string = await signJWE(jwsApiPrivateKey, jwe);
-
     if (isBrowser) {
-      cookieSet = `sessionId=${responseObj.data.sessionId}; HttpOnly=true; Path=/; Secure=true; SameSite=true`
+      cookieSet = `sessionId=${encryptForge(responseObj.data.sessionId)}; HttpOnly=true; Path=/; Secure=true; SameSite=true`
     }
 
     const response = NextResponse.json(encryptedResponse, {

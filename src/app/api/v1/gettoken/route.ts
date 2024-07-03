@@ -3,6 +3,7 @@ import uuid4 from 'uuid4';
 //Internal app
 import logger from '@/utils/logger';
 import { decryptJWE, getEnvVariable, handleResponse, signJWT, postRedis } from '@/utils';
+import { encryptForge } from '@/utils/toolHelper';
 
 export async function POST(request: NextRequest) {
   const { url, method } = request;
@@ -11,7 +12,7 @@ export async function POST(request: NextRequest) {
 
     const uuid = uuid4();
     const stateObject = { state: { login: 'false' }, version: 0 };
-    await postRedis(`session:${uuid}`, stateObject )
+    await postRedis(`session:${encryptForge(uuid)}`, stateObject )
 
     const encryptedBody = await request.json();
     const { data } = encryptedBody;
