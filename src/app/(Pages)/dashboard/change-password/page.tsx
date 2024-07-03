@@ -7,10 +7,14 @@ import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { getSchema } from '@/config';
 import ModalOtp from '@/components/modal/ModalOtp';
-import { useNavTitleStore, useMenuStore } from '@/store';
+import { useNavTitleStore, useMenuStore, useUserStore, useUiStore } from '@/store';
 import { ContainerLayout, InputPass, ModalResponsive } from '@/components';
+import { api } from '@/utils/api';
+import { useRouter } from 'next/navigation';
 
 export default function ChangePassword() {
+  const router = useRouter();
+
   const { setCurrentItem } = useMenuStore();
 
   const { updateTitle } = useNavTitleStore();
@@ -21,7 +25,11 @@ export default function ChangePassword() {
 
   const schemaFormPassword = getSchema(['newPassword', 'newPasswordConfirmation', 'currentPassword']);
 
-  const { control, handleSubmit, reset } = useForm({
+  const userId = useUserStore((state) => state.user.userId);
+
+  const { setModalError, setLoadingScreen } = useUiStore();
+
+  const { control, handleSubmit, reset, getValues } = useForm({
     defaultValues: { newPassword: '', newPasswordConfirmation: '', currentPassword: '' },
     resolver: yupResolver(schemaFormPassword),
   });
@@ -31,9 +39,29 @@ export default function ChangePassword() {
   };
 
   const onSubmitOtp = async () => {
-    setOpenOtp(false);
-    setOpenRc(true);
-    reset();
+    setLoadingScreen(true);
+    const requestData = {
+      currentPassword: getValues('currentPassword'),
+      newPassword: getValues('newPassword'),
+    };
+    api
+      .put(`/onboarding/users/${userId}/password`, requestData)
+      .then(() => {
+        setOpenOtp(false);
+        setOpenRc(true);
+      })
+      .catch(() => {
+        setModalError({ title: 'Algo salió mal', description: 'No pudimos cambiar la contraseña.' });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+        reset();
+      });
+  };
+
+  const redirect = () => {
+    setOpenRc(false);
+    router.push('/dashboard');
   };
 
   useEffect(() => {
@@ -77,7 +105,7 @@ export default function ChangePassword() {
         processCode="CHANGE_PASSWORD_OTP"
       />
 
-      <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)} data-testid="modal-succes">
+      <ModalResponsive open={openRc} handleClose={() => redirect} data-testid="modal-succes">
         <Typography variant="subtitle2">🥳 Actualización exitosa</Typography>
       </ModalResponsive>
     </>
