@@ -20,3 +20,11 @@ export type DataUserProps = {
   referer: string | null;
   host: string | null;
 };
+
+/**
+ * Loading screen
+ * @typeParam message: string
+ */
+export type LoadingScreenProps = {
+  message: string;
+};

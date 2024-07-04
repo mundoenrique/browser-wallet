@@ -2,16 +2,21 @@
 
 import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
-import { useCollectStore } from '@/store';
 import { ModalCollect } from './ModalCollect';
 import { formattedSortDate } from '@/utils/dates';
+import { useCollectStore, useHeadersStore } from '@/store';
 import { CardInfoOperation, CardPagoEfectivo, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
 export default function SuccessWallets() {
+  const host = useHeadersStore((state) => state.host);
+
   const load = useCollectStore((state) => state.load);
 
   const linkData = useCollectStore((state) => state.linkData);
+
+  const [qr, setQr] = useState<string>(linkData?.qr ?? '');
 
   const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -31,11 +36,26 @@ export default function SuccessWallets() {
     setUrl(linkData?.url ?? '');
     setAmount(linkData?.amount ?? 0);
     setName(load?.name ?? '');
+    setQr(linkData?.qr ?? '');
   }, [linkData, load]);
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/collect`,
+        page_title: 'cobrar :: realizarOperacion :: pagoEfectivo',
+        page_referrer: `${host}/dashboard`,
+        section: 'cobrar :: realizarOperacion :: pagoEfectivo',
+        previous_section: 'cobrar :: monto',
+      },
+    });
+  }, [host]);
 
   return (
     <>
-      <PurpleLayout hidePelca bigModal left navbar>
+      <PurpleLayout hidePelca bigModal left navbar width="calc(100% - 315px)">
         <ContainerLayout>
           <Typography
             variant="h6"
@@ -46,20 +66,93 @@ export default function SuccessWallets() {
           <Typography color="white" fontSize={14}>
             Comparte esta información para que te paguen a través de Pago Efectivo:
           </Typography>
-          <CardPagoEfectivo cip={providerPaymentCode} label="Compartir" share>
+          <CardPagoEfectivo
+            cip={providerPaymentCode}
+            codeQr={qr}
+            label="Compartir"
+            share
+            shareGA={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: 'cobrar :: realizarOperacion :: pagoEfectivo',
+                  previous_section: 'cobrar :: monto',
+                  selected_content: 'Compartir',
+                  destination_page: `${host}/dashboard/collect`,
+                },
+              });
+            }}
+          >
             <CardInfoOperation date={formattedSortDate(expirationDate)} amount={amount} name={name} />
-            <Button variant="underline" sx={{ mb: 2 }} onClick={() => setShowModal(true)}>
+            <Button
+              variant="underline"
+              sx={{ mb: 2 }}
+              onClick={() => {
+                setShowModal(true);
+                sendGTMEvent({
+                  event: 'ga4.trackEvent',
+                  eventName: 'select_content',
+                  eventParams: {
+                    content_type: 'boton',
+                    section: 'cobrar :: realizarOperacion :: pagoEfectivo',
+                    previous_section: 'cobrar :: monto',
+                    selected_content: '¿Cómo me realizarán el pago?',
+                    destination_page: `${host}/dashboard/collect`,
+                  },
+                });
+              }}
+            >
               ¿Cómo me realizarán el pago?
             </Button>
           </CardPagoEfectivo>
 
           <Box sx={{ width: '100%', display: { xs: 'flex', md: 'none' }, justifyContent: 'center' }}>
-            <Linking href="/dashboard" label="Volver al inicio" hidenArrow color="white" underline fontSize={16} />
+            <Linking
+              href="/dashboard"
+              label="Volver al inicio"
+              hidenArrow
+              color="white"
+              underline
+              fontSize={16}
+              onClick={() => {
+                sendGTMEvent({
+                  event: 'ga4.trackEvent',
+                  eventName: 'select_content',
+                  eventParams: {
+                    content_type: 'boton',
+                    section: 'cobrar :: realizarOperacion :: pagoEfectivo',
+                    previous_section: 'cobrar :: monto',
+                    selected_content: 'Volver al inicio',
+                    destination_page: `${host}/dashboard`,
+                  },
+                });
+              }}
+            />
           </Box>
         </ContainerLayout>
       </PurpleLayout>
 
-      <ModalCollect open={showModal} handleClose={() => setShowModal(false)} />
+      <ModalCollect
+        open={showModal}
+        handleClose={() => {
+          setShowModal(false);
+          sendGTMEvent({
+            event: 'ga4.trackEvent',
+            eventName: 'select_content',
+            eventParams: {
+              content_type: 'boton_modal',
+              section: 'cobrar :: realizarOperacion :: pagoEfectivo',
+              previous_section: 'cobrar :: monto',
+              selected_content: 'Cerrar',
+              destination_page: `${host}/dashboard/collect`,
+              pop_up_type: 'Cobro',
+              pop_up_title: '¿Cómo realizar la recarga?',
+            },
+          });
+        }}
+      />
     </>
   );
 }

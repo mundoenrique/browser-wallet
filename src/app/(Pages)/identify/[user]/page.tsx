@@ -9,7 +9,8 @@ export default async function UserPage({ params }: any) {
   const redis = createRedisInstance();
   const { user } = params;
 
-  const referer = headersList.get('referer');
+  const protocol = headersList.get('x-forwarded-proto');
+  const referer = headersList.get('referer') || '';
   const host = headersList.get('host');
 
   const userData = await redis.get(`${user}`);
@@ -18,5 +19,5 @@ export default async function UserPage({ params }: any) {
 
   if (!userData) return <NotFoundError code={404} />;
 
-  return <DataUser user={userData} referer={referer} host={host} />;
+  return <DataUser user={userData} referer={referer} host={`${protocol}://${host}`} />;
 }

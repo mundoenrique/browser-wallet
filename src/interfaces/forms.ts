@@ -1,8 +1,8 @@
-import { SwitchProps, SxProps } from '@mui/material';
+import React from 'react';
 import { DateView, DesktopDatePickerProps } from '@mui/x-date-pickers';
+import { OutlinedInputProps, SwitchProps, SxProps } from '@mui/material';
 //Internal app
 import { IClientProps } from './store';
-import React from 'react';
 
 /**
  * Form global variables
@@ -18,6 +18,7 @@ import React from 'react';
  * @typeParam getOptionLabel (Optional): Function
  * @typeParam disabled (Optional): boolean
  * @typeParam readOnly (Optional): boolean
+ * @typeParam inputProps (Optional): any
  */
 export interface FormMUIProps {
   name: string;
@@ -32,6 +33,7 @@ export interface FormMUIProps {
   disabled?: boolean;
   readOnly?: boolean;
   sx?: SxProps;
+  inputProps?: any;
 }
 
 /**
@@ -46,6 +48,7 @@ export interface TextFieldProps extends FormMUIProps {
   additionalInfo?: boolean;
   colorText?: string;
   endAdornment?: React.ReactNode;
+  inputProperties?: OutlinedInputProps;
 }
 
 /**

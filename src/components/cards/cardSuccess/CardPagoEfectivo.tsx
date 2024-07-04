@@ -1,13 +1,14 @@
 'use client';
 
 import { useRef } from 'react';
+import Image from 'next/image';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { isBrowser, isMobile, isTablet } from 'react-device-detect';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 //Internal app
 import { CopyIcons } from '%/Icons';
-import Qr from '%/images/arts/QR.png';
 import CardReport from './CardReport';
+import Qr from '%/images/arts/default-qr.svg';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardPagoEfectivoProps } from '@/interfaces';
 import PagoEfectivo from '%/images/suppliers/pagoEfectivo.png';
@@ -20,14 +21,26 @@ import { handleDownload, handleShare } from '@/utils/toolHelper';
  * @param children - Add elements from the parent
  * @param label - Label of buttons
  * @param download - handling for file download
+ * @param downloadGA - handle Google Analytics
  * @param share - handling for image shared
+ * @param shareGA - handle Google Analytics
+ * @param codeQr - Qr Code Pago Efectivo
  */
-export default function CardPagoEfectivo({ cip, children, label, download, share }: CardPagoEfectivoProps) {
-  const codeQrRef = useRef<any>(null);
+export default function CardPagoEfectivo({
+  cip,
+  children,
+  label,
+  download,
+  downloadGA,
+  share,
+  shareGA,
+  codeQr,
+}: CardPagoEfectivoProps) {
   const ticketRef = useRef<any>(null);
 
   const ImagePagoEfectivo = {
     src: PagoEfectivo,
+    width: 480,
     alt: 'Logo Pago Efectivo',
   };
   const shareData: any = {
@@ -36,17 +49,19 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
   };
 
   const handleShareClick = () => {
+    downloadGA;
     if (isBrowser) {
       handleShare(ticketRef.current, shareData, fuchsiaBlue[800]);
     }
 
     if (isMobile || isTablet) {
-      handleShare(codeQrRef.current, shareData, 'white');
+      handleShare(ticketRef.current, shareData, 'white');
     }
   };
 
   const handleDownloadClick = () => {
-    handleDownload(codeQrRef.current, 'recarga.png', fuchsiaBlue[800]);
+    shareGA;
+    handleDownload(ticketRef.current, 'recarga.png', fuchsiaBlue[800]);
   };
 
   return (
@@ -93,21 +108,25 @@ export default function CardPagoEfectivo({ cip, children, label, download, share
             <Typography fontWeight={700} mb={3}>
               Yape, Plin u otras billeteras:
             </Typography>
-            <picture ref={codeQrRef}>
-              <img src={Qr.src} alt="Qr Code" />
-            </picture>
+            <Box>
+              {codeQr ? (
+                <Image src={codeQr} alt="Código Qr" width={106} height={106} priority />
+              ) : (
+                <Image src={Qr} alt="Código Qr" width={106} height={106} priority />
+              )}
+            </Box>
           </Box>
         </CardReport>
       </Box>
       {children}
 
-      {download && (
+      {download && codeQr && (
         <Button variant="secondary" onClick={handleDownloadClick} sx={{ mb: 4 }}>
           {label}
         </Button>
       )}
 
-      {share && (
+      {share && codeQr && (
         <Button variant="secondary" onClick={handleShareClick} sx={{ mb: 4 }}>
           {label}
         </Button>

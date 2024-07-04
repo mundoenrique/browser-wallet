@@ -34,7 +34,7 @@ describe('Dashboard', () => {
   const routerPushMock = jest.fn();
 
   beforeEach(async () => {
-    mockRouterPush(routerPushMock)
+    mockRouterPush(routerPushMock);
     await act(async () => {
       render(<Dashboard />);
     });

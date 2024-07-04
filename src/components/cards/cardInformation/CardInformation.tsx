@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { api } from '@/utils/api';
 import ModalOtp from '@/components/modal/ModalOtp';
@@ -8,7 +9,7 @@ import BackInformation from './partial/BackInformation';
 import FrontInformation from './partial/FrontInformation';
 import { BodyCard, BodyCardAction } from './partial/BodyCards';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
-import { useUiStore, useUserStore, useOtpStore, useConfigCardStore, useDebStore } from '@/store';
+import { useUiStore, useUserStore, useOtpStore, useConfigCardStore, useDebStore, useHeadersStore } from '@/store';
 
 const cardTypeQuery = (cardType: string) => {
   const cardObject: { [key: string]: object } = {
@@ -38,6 +39,8 @@ const cardTypeQuery = (cardType: string) => {
  */
 export default function CardInformation() {
   const [open, setOpen] = useState<boolean>(false);
+
+  const host = useHeadersStore((state) => state.host);
 
   const resetOtp = useOtpStore((state) => state.reset);
 
@@ -73,11 +76,36 @@ export default function CardInformation() {
 
   const handleShowDetaild = () => {
     setOpen(true);
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'dashboard',
+        previous_section: 'Yiro :: login :: interno',
+        selected_content: 'Ver número',
+        destination_page: `${host}/dashboard`,
+      },
+    });
   };
 
   const onSubmitOtp = useCallback(
     async (data: any) => {
       setLoadingScreen(true);
+      sendGTMEvent({
+        event: 'ga4.trackEvent',
+        eventName: 'select_content',
+        eventParams: {
+          content_type: 'boton_modal',
+          section: 'dashboard',
+          previous_section: 'Yiro :: login :: interno',
+          selected_content: 'Verificar',
+          destination_page: `${host}/dashboard`,
+          pop_up_type: 'login',
+          pop_up_title: 'Verificación en dos pasos',
+        },
+      });
+
       const { otp } = data;
 
       const payload = {
@@ -183,7 +211,22 @@ export default function CardInformation() {
             balanceError={balanceError}
           />
           <BackInformation
-            hideDetails={() => setShowDetails(false)}
+            hideDetails={() => {
+              setShowDetails(false);
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton_modal',
+                  section: 'dashboard',
+                  previous_section: 'Yiro :: login :: interno',
+                  selected_content: 'Cerrar',
+                  destination_page: `${host}/dashboard`,
+                  pop_up_type: 'login',
+                  pop_up_title: 'Información de la tarjeta',
+                },
+              });
+            }}
             holder={cardbackData?.holderName ?? ''}
             cardNumber={showDetails ? (cardbackData?.pan ? decryptForge(cardbackData?.pan) ?? '' : '') : ''}
             expDate={
@@ -195,7 +238,25 @@ export default function CardInformation() {
       </BodyCard>
 
       {open && (
-        <ModalOtp open={open} handleClose={() => setOpen(false)} onSubmit={onSubmitOtp} processCode="SEE_CARD_NUMBER" />
+        <ModalOtp
+          open={open}
+          handleClose={() => {
+            setOpen(false);
+            sendGTMEvent({
+              event: 'ga4.trackEvent',
+              eventName: 'select_content',
+              eventParams: {
+                section: 'dashboard',
+                previous_section: 'Yiro :: login :: interno',
+                pop_up_type: 'login',
+                pop_up_title: 'Verificación en dos pasos',
+                content_type: 'modal',
+              },
+            });
+          }}
+          onSubmit={onSubmitOtp}
+          processCode="SEE_CARD_NUMBER"
+        />
       )}
     </>
   );

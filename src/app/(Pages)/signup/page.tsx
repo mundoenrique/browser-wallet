@@ -10,7 +10,7 @@ import {
   InfoVerification,
   CelularValidation,
   PasswordCreation,
-  ErrorPage,
+  Biometric,
 } from './partial';
 
 export default function Signup() {
@@ -27,6 +27,8 @@ export default function Signup() {
       <Ocupation />
 
       <PEP />
+
+      <Biometric />
 
       <PasswordCreation />
     </SignupStepper>

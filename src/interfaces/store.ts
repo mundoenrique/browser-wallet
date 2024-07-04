@@ -98,7 +98,7 @@ export interface MenuStore {
  * Qr code
  */
 export type QrPropsStore = {
-  user: any | null;
+  user: any;
   cardIdActivate: string | null;
   setUser: (_data: any) => void;
   setCardIdActivate: (_data: string) => void;
@@ -162,6 +162,8 @@ export interface ConfigCardStore {
  * @typeParam pepFormState - object | null
  * @typeParam biometricFormState - null
  * @typeParam user - object | null
+ * @typeParam control - object | null
+ * @typeParam updateControl - (data: any) => void
  */
 export interface RegisterStore {
   step: number;
@@ -178,6 +180,8 @@ export interface RegisterStore {
   onboardingUuId: string | null;
   biometricFormState: null;
   user: IUserRegisterProps;
+  control: any;
+  updateControl: (_data: any) => void;
 }
 
 /**
@@ -237,9 +241,9 @@ export interface CatalogsStore {
  * @typeParam getUserPhone: () => string
  */
 export interface UserStore {
-  user: any | null;
-  userId: any | null;
-  cardInformation: any | null;
+  user: any;
+  userId: any;
+  cardInformation: any;
   setCardInformation: (_data: any) => void;
   setUser: (_data: any) => void;
   setUserId: (_data: any) => void;
@@ -288,11 +292,11 @@ export interface OtpStore {
  * @typeParam setBalance: (_data: IBalance) => void
  */
 export interface DebtStore {
-  debt: any | null;
+  debt: any;
   view: 'DEBT' | 'SUCCESS' | 'ERROR' | string | undefined;
   payOffDebt: IPayOffDebt | null;
   error: IPayOffDebtError | null;
-  balance: any | null;
+  balance: any;
   setDebt: (_data: any) => void;
   setView: (_data: string) => void;
   setPayOffDebt: (_data: IPayOffDebt) => void;
@@ -316,6 +320,7 @@ export interface ILinkData {
   expirationDate: string | null;
   currencyCode: string | null;
   url: string | null;
+  qr: string;
 }
 
 export interface ICollectStore {
