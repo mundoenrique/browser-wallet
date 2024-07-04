@@ -27,7 +27,7 @@
 
 ## Versión
 
-0.14.0 (Versión preliminar)
+0.15.0 (Versión preliminar)
 
 ## Requerimientos
 

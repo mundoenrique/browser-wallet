@@ -1,4 +1,4 @@
-import { IPayOffDebt, IPayOffDebtError } from './api';
+import { IDebt, IPayOffDebtError } from './api';
 
 /**
  * Public and private key
@@ -287,19 +287,19 @@ export interface OtpStore {
  * @typeParam balance - Initial state {@defaultValue `null`}
  * @typeParam setDebt: (_data: any) => void
  * @typeParam setView: (_data: any) => void
- * @typeParam setPayOffDebt: (_data: IPayOffDebt) => void
+ * @typeParam setPayOffDebt: (_data: IDebt) => void
  * @typeParam setError: (_data: IPayOffDebtError) => void
  * @typeParam setBalance: (_data: IBalance) => void
  */
 export interface DebtStore {
   debt: any;
   view: 'DEBT' | 'SUCCESS' | 'ERROR' | string | undefined;
-  payOffDebt: IPayOffDebt | null;
+  payOffDebt: IDebt | null;
   error: IPayOffDebtError | null;
   balance: any;
   setDebt: (_data: any) => void;
   setView: (_data: string) => void;
-  setPayOffDebt: (_data: IPayOffDebt) => void;
+  setPayOffDebt: (_data: IDebt) => void;
   setError: (_data: IPayOffDebtError) => void;
   setBalance: (_data: IBalance) => void;
 }
