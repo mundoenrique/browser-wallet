@@ -4,10 +4,13 @@ import Image from 'next/image';
 import { Box, Button, Stack, Typography } from '@mui/material';
 //Internal app
 import { WhatsappIcon } from '%/Icons';
-import { PurpleLayout } from '@/components';
+import { Linking, PurpleLayout } from '@/components';
 import { fuchsiaBlue } from '@/theme/theme-default';
+import { useHeadersStore } from '@/store';
 
 export default function ErrorPage() {
+  const { backLink } = useHeadersStore();
+
   const handleWhatsapp = () => {
     window.open('https://api.whatsapp.com/send?phone=51997535474', '_blank');
   };
@@ -27,14 +30,7 @@ export default function ErrorPage() {
             Parece que algo salió mal al procesar tu solicitud. Por favor contáctanos si persiste el problema.
           </Typography>
         </Stack>
-
-        <Button
-          variant="text"
-          onClick={() => console.log('Volver a intentar')}
-          sx={{ textDecoration: 'underline', fontWeight: '700', color: 'white', mb: 3 }}
-        >
-          Volver a intentar
-        </Button>
+        <Linking href={backLink} label="Volver a intentar" color="white" underline />
         <Button
           variant="secondary"
           onClick={handleWhatsapp}
