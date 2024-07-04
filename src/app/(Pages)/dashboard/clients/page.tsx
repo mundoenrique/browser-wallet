@@ -77,7 +77,7 @@ export default function Clients() {
   const containerDesktop = useRef<HTMLDivElement | null>(null);
 
   const filterActive = currentView === ENUM_VIEW.FILTERS;
-  const disabledBtnDelete = '3';
+  const disabledBtnDelete = 'PENDING';
 
   const initialized = useRef<boolean>(false);
 
@@ -114,7 +114,7 @@ export default function Clients() {
     setError(false);
     api
       .get(`/payments/${user.userId}/chargelist`, {
-        params: { days: 30, limit: 100, page: 1, date: filterMonth },
+        params: { days: 30, limit: 100, page: 1, date: filterMonth.value },
       })
       .then((response) => {
         const {

@@ -8,8 +8,8 @@ import { sendGTMEvent } from '@next/third-parties/google';
 import { api } from '@/utils/api';
 import { expiredFormatDate } from '@/utils/dates';
 import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
-import { useChargeStore, useDebStore, useMenuStore, useUiStore, useUserStore } from '@/store';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
+import { useHeadersStore, useChargeStore, useDebStore, useMenuStore, useUiStore, useUserStore } from '@/store';
 
 export default function Dashboard() {
   const { push } = useRouter();

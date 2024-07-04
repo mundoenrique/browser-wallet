@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation';
 import IconButton from '@mui/material/IconButton';
 import { Box, Typography, Avatar, Collapse } from '@mui/material';
 //Internal app
-import { useClientStore } from '@/store';
+import { api } from '@/utils/api';
+import { useClientStore, useUserStore, useUiStore } from '@/store';
 import { SkeletonTable } from '@/components';
 import { CashIcons, DeleteIcons } from '%/Icons';
 import { stringAvatar } from '@/utils/toolHelper';
@@ -21,7 +22,14 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
 
   const { setClient } = useClientStore();
 
+  const userId = useUserStore((state) => state.userId);
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
   const [showOptions, setShowOptions] = useState(null);
+
   const [clientsData, setClientsData] = useState<IClientProps[]>(data);
 
   const statusObject: { [key: string]: { text: string; color: string } } = {
@@ -54,19 +62,17 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
     setShowOptions(null);
   };
 
-  const handleDelete = (client: IClientProps) => {
-    const newClientsData = clientsData.map((item) => {
-      if (item.id === client.id) {
-        return {
-          ...item,
-          status_type: '5',
-          status: 'Cancelado',
-        };
-      }
-      return item;
-    });
-    setClientsData(newClientsData);
-    setShowOptions(null);
+  const handleDelete = async (client: IClientProps) => {
+    setLoadingScreen(true);
+    api
+      .delete(`/payments/${userId}/charges/${client.id}`)
+      .then(() => {})
+      .catch((e) => {
+        setModalError(e);
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
   };
 
   const handleNameClick = (index: number) => {
@@ -139,10 +145,10 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                  <Typography variant="subtitle2" color={statusObject[client.status].color}>
+                  <Typography variant="subtitle2" color={statusObject[client.status]?.color}>
                     {Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(client.amount)}
                   </Typography>
-                  <Typography fontSize={10} lineHeight="16px" color={statusObject[client.status].color}>
+                  <Typography fontSize={10} lineHeight="16px" color={statusObject[client.status]?.color}>
                     {statusObject[client.status].text}
                   </Typography>
                 </Box>
@@ -185,8 +191,8 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
                     justifyContent: 'center',
                   }}
                 >
-                  <IconButton onClick={() => handleDelete(client)} disabled={client.status_type !== disabledBtnDelete}>
-                    <DeleteIcons sx={{ color: client.status_type === disabledBtnDelete ? slate[700] : '' }} />
+                  <IconButton onClick={() => handleDelete(client)} disabled={client.status !== disabledBtnDelete}>
+                    <DeleteIcons sx={{ color: client.status === disabledBtnDelete ? slate[700] : '' }} />
                   </IconButton>
                 </Box>
               </Box>
