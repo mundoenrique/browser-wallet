@@ -118,13 +118,23 @@ export interface ICardDebt {
  */
 export interface IPayOffDebt {
   code: string;
-  data: {
-    currencyCode: string;
-    amount: number | string | null;
-    description: string;
-    transactionDate: string;
-    transactionIdentifier: number;
-  };
+  data: IDebt;
+}
+
+/**
+ * IDebt Data
+ * @typeParam currencyCode: string
+ * @typeParam amount: number | string | null
+ * @typeParam description: string
+ * @typeParam transactionDate: string
+ * @typeParam transactionIdentifier: number
+ */
+export interface IDebt {
+  currencyCode: string;
+  amount: number | string | null;
+  description: string;
+  transactionDate: string;
+  transactionIdentifier: number;
 }
 
 /**

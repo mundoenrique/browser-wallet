@@ -85,8 +85,8 @@ export default function Transfer() {
 
   const onSubmit = async (data: any) => {
     const validate = {
-      min: parseFloat(data.amount) <= 1,
-      max: parseFloat(data.amount) >= 4950,
+      min: parseFloat(data.amount) < 1,
+      max: parseFloat(data.amount) > 4950,
       differentAccount: data.numberClient !== getUserPhone(),
     };
 
@@ -94,9 +94,10 @@ export default function Transfer() {
       !validate.differentAccount &&
         setError('numberClient', { type: 'customError', message: 'No se puede transferir a la misma cuenta' });
 
-      validate.min && setError('amount', { type: 'customError', message: 'El monto debe ser mayor a 1.00' });
+      validate.min && setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });
 
-      validate.max && setError('amount', { type: 'customError', message: 'El monto debe ser menor a 4950' });
+      validate.max &&
+        setError('amount', { type: 'customError', message: 'El monto debe ser menor o igual a S/ 4950.00' });
 
       return;
     }

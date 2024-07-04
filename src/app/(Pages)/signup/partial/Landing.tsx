@@ -74,7 +74,7 @@ export default function Landing() {
     setLoadingScreen(true);
     const { consultant } = phaseInfo as any;
 
-    const shortDoc = consultant.documentNumber.substring(2, consultant.documentNumber - 1);
+    const shortDoc = consultant.documentType === 'DNI' ? consultant.documentNumber.slice(2) : consultant.documentNumber;
 
     const documentPayload = {
       documentType: encryptForge(consultant.documentType),
