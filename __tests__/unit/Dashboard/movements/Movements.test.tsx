@@ -1,7 +1,19 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
 import Movements from '@/app/(Pages)/dashboard/movements/page';
 import { redirectLinks, mockRouterPush } from '../../../tools/unitTestHelper.test';
+
+jest.mock('@/store', () => ({
+  ...jest.requireActual('@/store'),
+  useHeadersStore: jest.fn(() => ({
+    host: jest.fn(),
+    back: jest.fn(),
+  })),
+  useUserStore: jest.fn(() => ({
+    getUserCardId: jest.fn(() => 'mockedCardId'),
+    user: { userId: 'mockedUserId', firstName: 'John' },
+  })),
+}));
 
 describe('Movements', () => {
   const routerPushMock = jest.fn();
