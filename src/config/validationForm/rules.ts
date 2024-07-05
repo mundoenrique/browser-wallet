@@ -104,6 +104,7 @@ export const validationRules: ValidationRule = {
     .test('nameClientValid', 'Ingrese un nombre válido', (value) => regularExpressions.alphaName?.test(value)),
   numberClient: yup
     .string()
+    .min(9, 'El número celular debe tener 9 dígitos')
     .required('Campo obligatorio')
     .test('numberClientValid', 'Ingrese un teléfono válido', (value) => regularExpressions.phone?.test(value)),
 };
