@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { api } from '@/utils/api';
 import { GroupIcon } from '%/Icons';
@@ -14,9 +15,11 @@ import { TransferDetail } from '@/interfaces';
 import ModalOtp from '@/components/modal/ModalOtp';
 import { encryptForge, decryptForge } from '@/utils/toolHelper';
 import { ContainerLayout, InputText, InputTextPay } from '@/components';
-import { useMenuStore, useNavTitleStore, useUiStore, useUserStore, useOtpStore } from '@/store';
+import { useMenuStore, useNavTitleStore, useUiStore, useUserStore, useOtpStore, useHeadersStore } from '@/store';
 
 export default function Transfer() {
+  const host = useHeadersStore((state) => state.host);
+
   const resetOtp = useOtpStore((state) => state.reset);
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
@@ -66,6 +69,20 @@ export default function Transfer() {
     setCurrentItem('transfer');
   }, [updateTitle, setCurrentItem]);
 
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/transfer`,
+        page_title: 'Yiro :: transferencia :: monto',
+        page_referrer: `${host}/dashboard`,
+        section: 'Yiro :: transferencia :: monto',
+        previous_section: 'dashboard',
+      },
+    });
+  }, [host]);
+
   const onSubmit = async (data: any) => {
     const validate = {
       min: parseFloat(data.amount) < 1,
@@ -77,9 +94,10 @@ export default function Transfer() {
       !validate.differentAccount &&
         setError('numberClient', { type: 'customError', message: 'No se puede transferir a la misma cuenta' });
 
-      validate.min && setError('amount', { type: 'customError', message: 'El monto debe ser mayor a 1.00' });
+      validate.min && setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });
 
-      validate.max && setError('amount', { type: 'customError', message: 'El monto debe ser menor a 4950' });
+      validate.max &&
+        setError('amount', { type: 'customError', message: 'El monto debe ser menor o igual a S/ 4950.00' });
 
       return;
     }
@@ -237,11 +255,29 @@ export default function Transfer() {
             name="numberClient"
             control={control}
             label="¿A quién quieres transferir dinero?"
+            inputProps={{ maxLength: 9 }}
             endAdornment={<GroupIcon />}
           />
           <InputTextPay name="amount" control={control} label="¿Cuánto dinero quieres transferir?" />
 
-          <Button variant="contained" type="submit" fullWidth>
+          <Button
+            variant="contained"
+            type="submit"
+            fullWidth
+            onClick={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: 'Yiro :: transferencia :: monto',
+                  previous_section: 'dashboard',
+                  selected_content: 'Enviar',
+                  destination_page: `${host}/dashboard`,
+                },
+              });
+            }}
+          >
             Enviar
           </Button>
         </Box>

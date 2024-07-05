@@ -8,6 +8,7 @@ export default async function UserPage({ params }: any) {
   const headersList = headers();
   const { user } = params;
 
+  const protocol = headersList.get('x-forwarded-proto');
   const referer = headersList.get('referer') || '';
   const host = headersList.get('host');
 
@@ -16,5 +17,5 @@ export default async function UserPage({ params }: any) {
 
   if (!userData) return <NotFoundError code={404} />;
 
-  return <DataUser user={userData} referer={referer} host={host} />;
+  return <DataUser user={userData} referer={referer} host={`${protocol}://${host}`} />;
 }

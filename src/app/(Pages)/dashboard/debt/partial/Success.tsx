@@ -1,19 +1,37 @@
 'use client';
 
+import { useEffect } from 'react';
 import Dollar from '@mui/icons-material/AttachMoney';
 import Clock from '@mui/icons-material/QueryBuilder';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { Avatar, Box, Card, Divider, Stack, Typography } from '@mui/material';
 //Internal app
-import { useDebStore } from '@/store';
 import { EsikaIsotipo } from '%/Icons';
 import { formatDate } from '@/utils/dates';
 import { fuchsiaBlue } from '@/theme/theme-default';
+import { useDebStore, useHeadersStore } from '@/store';
 import { CardTicket, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
 export default function Success() {
+  const host = useHeadersStore((state) => state.host);
+
   const setView = useDebStore((state) => state.setView);
 
   const payOffDebt = useDebStore((state) => state.payOffDebt);
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/debt`,
+        page_title: 'Yiro :: pagarDeuda :: operacionExitosa',
+        page_referrer: `${host}/dashboard`,
+        section: 'Yiro :: pagarDeuda :: operacionExitosa',
+        previous_section: 'Yiro :: pagarDeuda :: monto',
+      },
+    });
+  }, [host]);
 
   const description = [
     {
@@ -24,12 +42,12 @@ export default function Success() {
     {
       icon: <Dollar sx={{ color: 'primary.main' }} />,
       label: 'Por valor',
-      description: `S/ ${payOffDebt?.data.amount}`,
+      description: `S/ ${payOffDebt?.amount}`,
     },
     {
       icon: <Clock sx={{ color: 'primary.main' }} />,
       label: 'Fecha y hora',
-      description: payOffDebt?.data?.transactionDate ? formatDate(payOffDebt?.data?.transactionDate) : '-',
+      description: payOffDebt?.transactionDate ? formatDate(payOffDebt?.transactionDate) : '-',
     },
   ];
 
@@ -43,7 +61,23 @@ export default function Success() {
           Comprobante
         </Typography>
 
-        <CardTicket textBotton="Guardar" download>
+        <CardTicket
+          textBotton="Guardar"
+          download
+          downloadGA={() =>
+            sendGTMEvent({
+              event: 'ga4.trackEvent',
+              eventName: 'select_content',
+              eventParams: {
+                content_type: 'boton',
+                section: 'Yiro :: pagarDeuda :: operacionExitosa',
+                previous_section: 'Yiro :: pagarDeuda :: monto',
+                selected_content: 'Guardar',
+                destination_page: `${host}/dashboard/debt`,
+              },
+            })
+          }
+        >
           <Box sx={{ display: 'grid', width: '100%' }}>
             <Typography variant="subtitle1" textAlign="center">
               Has pagado
@@ -55,7 +89,7 @@ export default function Success() {
               Los datos de la transacción son:
             </Typography>
             <Typography variant="body1" color="primary" textAlign="center" mb={3} fontWeight={700}>
-              {payOffDebt?.data?.transactionIdentifier}
+              {payOffDebt?.transactionIdentifier}
             </Typography>
             <Card sx={{ boxShadow: 'none', p: 1 }}>
               <Stack direction="column" divider={<Divider orientation="horizontal" />} spacing={1}>

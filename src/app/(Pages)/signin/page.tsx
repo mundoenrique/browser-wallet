@@ -13,7 +13,7 @@ import { getSchema } from '@/config';
 import LogoGreen from '%/images/LogoGreen';
 import { encryptForge } from '@/utils/toolHelper';
 import { TCredentials, TUserDetail } from '@/interfaces';
-import { InputPass, ModalResponsive } from '@/components';
+import { InputPass, ModalResponsive, NavExternal } from '@/components';
 import { useHeadersStore, useOtpStore, useRegisterStore, useUiStore, useUserStore } from '@/store';
 //Eliminar este store despues de la certificacion de inicio de sesión
 import { accessSessionStore } from '@/store/accessSessionStore';
@@ -24,15 +24,20 @@ export default function Signin() {
   const schema = getSchema(['password']);
 
   const router = useRouter();
+
   const user = useRegisterStore((state) => state.user);
-  const host = useHeadersStore((state) => state.host);
+
   const { setOTPValid } = useOtpStore();
+
+  const { backLink } = useHeadersStore();
 
   const { setModalError } = useUiStore();
 
   const { setUser, userId } = useUserStore();
 
   const { setAccessSession } = accessSessionStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   const { setLoadingScreen, loadingScreen } = useUiStore();
 
@@ -110,6 +115,23 @@ export default function Signin() {
 
   return (
     <>
+      <NavExternal
+        color="white"
+        closeApp
+        onClick={() => {
+          sendGTMEvent({
+            event: 'ga4.trackEvent',
+            eventName: 'select_content',
+            eventParams: {
+              content_type: 'boton',
+              section: 'Yiro :: login :: interno',
+              previous_section: 'identify',
+              selected_content: 'Volver a ésika Conmigo',
+              destination_page: `${backLink}`,
+            },
+          });
+        }}
+      />
       <Box
         component="form"
         data-testid="signin-form"

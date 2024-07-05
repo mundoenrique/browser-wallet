@@ -4,13 +4,14 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import Success from './partial/Success';
-import { ContainerLayout, InputTextPay } from '@/components';
-import { useNavTitleStore, useMenuStore, useUserStore, useCollectStore, useUiStore } from '@/store';
 import { formatAmount } from '@/utils/toolHelper';
+import { ContainerLayout, InputTextPay } from '@/components';
+import { useNavTitleStore, useMenuStore, useUserStore, useCollectStore, useUiStore, useHeadersStore } from '@/store';
 
 export default function Recharge() {
   const schema = getSchema(['amount']);
@@ -18,6 +19,8 @@ export default function Recharge() {
   const { setCurrentItem } = useMenuStore();
 
   const { updateTitle } = useNavTitleStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   const userId = useUserStore((state) => state.user.userId);
 
@@ -36,11 +39,25 @@ export default function Recharge() {
   const [openRc, setOpenRc] = useState<boolean>(false);
 
   useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/recharge`,
+        page_title: 'Yiro :: recargas :: monto',
+        page_referrer: `${host}/dashboard`,
+        section: 'Yiro :: recargas :: monto',
+        previous_section: 'dashboard',
+      },
+    });
+  }, [host]);
+
+  useEffect(() => {
     updateTitle('Generar recarga');
     setCurrentItem('recharge');
   }, [updateTitle, setCurrentItem]);
 
-  const { control, handleSubmit, getValues, setError } = useForm({
+  const { control, handleSubmit, getValues, setError, reset } = useForm({
     defaultValues: { amount: '' },
     resolver: yupResolver(schema),
   });
@@ -67,8 +84,9 @@ export default function Recharge() {
       })
       .finally(() => {
         setLoadingScreen(false);
+        reset();
       });
-  }, [setLoadingScreen, firstName, firstLastName, getUserPhone, getValues, userId, setLinkData, setModalError]);
+  }, [setLoadingScreen, firstName, firstLastName, getUserPhone, getValues, userId, setLinkData, setModalError, reset]);
 
   const onSubmit = async (data: any) => {
     const validate = {
@@ -77,9 +95,10 @@ export default function Recharge() {
     };
 
     if (validate.min || validate.max) {
-      validate.min && setError('amount', { type: 'customError', message: 'El monto debe ser mayor a 1.00' });
+      validate.min && setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });
 
-      validate.max && setError('amount', { type: 'customError', message: 'El monto debe ser menor a 4950' });
+      validate.max &&
+        setError('amount', { type: 'customError', message: 'El monto debe ser menor o igual a S/ 4950.00' });
 
       return;
     }
@@ -98,7 +117,24 @@ export default function Recharge() {
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           <InputTextPay name="amount" control={control} label="¿Cuánto deseas recargar?" />
-          <Button variant="contained" type="submit" fullWidth>
+          <Button
+            variant="contained"
+            type="submit"
+            fullWidth
+            onClick={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: 'Yiro :: recargas :: monto',
+                  previous_section: 'dashboard',
+                  selected_content: 'Recargar',
+                  destination_page: `${host}/dashboard/recharge`,
+                },
+              });
+            }}
+          >
             Recargar
           </Button>
         </Box>

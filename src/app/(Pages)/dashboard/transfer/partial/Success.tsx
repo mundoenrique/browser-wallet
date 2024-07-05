@@ -1,15 +1,34 @@
 'use client';
 
+import { useEffect } from 'react';
 import Dollar from '@mui/icons-material/AttachMoney';
 import Clock from '@mui/icons-material/QueryBuilder';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { Avatar, Box, Card, Divider, Stack, Typography } from '@mui/material';
 //Internal app
+import { useHeadersStore } from '@/store';
 import { CardTicketProps } from '@/interfaces';
 import { stringAvatar } from '@/utils/toolHelper';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardTicket, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
 export default function Success({ onClick, transferDetail }: CardTicketProps) {
+  const host = useHeadersStore((state) => state.host);
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/transfer`,
+        page_title: 'Yiro :: transferencia :: operacionExitosa',
+        page_referrer: `${host}/dashboard/transfer`,
+        section: 'Yiro :: transferencia :: operacionExitosa',
+        previous_section: 'Yiro :: transferencia :: monto',
+      },
+    });
+  }, [host]);
+
   const description = [
     {
       icon: stringAvatar(transferDetail?.receiver ?? '').children,
