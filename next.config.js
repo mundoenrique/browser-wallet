@@ -18,9 +18,13 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: '/:path*',
         headers: [
           { key: 'Access-Control-Allow-Credentials', value: 'true' },
-          { key: 'Access-Control-Allow-Origin', value: 'https://pre1a.niubizqr.pagoefectivo.pe' }, // replace this your actual origin
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: ['https://pre1a.niubizqr.pagoefectivo.pe', 'https://sb2revamp.somosbelcorp.com'],
+          },
           { key: 'Access-Control-Allow-Methods', value: 'GET,DELETE,PATCH,POST,PUT' },
           {
             key: 'Access-Control-Allow-Headers',
@@ -33,4 +37,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
