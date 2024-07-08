@@ -1,16 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 //Internal app
-import { useDrawerStore } from '@/store';
+import { useDrawerStore, useAccessSessionStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { ChildrenProps } from '@/interfaces';
 import Navbar from '../navigation/navbar/Navbar';
 import Sidebar from '../navigation/sidebar/Sidebar';
 import NavbarLower from '../navigation/navbar/NavbarLower';
-//Eliminar este store despues de la certificacion de inicio de sesión
-import { accessSessionStore } from '@/store/accessSessionStore';
+import { Timersession } from '@/components';
 
 /**
  * Container used in the internal views of the application
@@ -20,17 +19,19 @@ import { accessSessionStore } from '@/store/accessSessionStore';
 export default function MainLayout({ children }: ChildrenProps): JSX.Element {
   const drawerWidth = 315;
 
-  //Eliminar esta logica despues de la certificacion de inicio de sesión
-  const { accessSession } = accessSessionStore();
+  const accessSession = useAccessSessionStore((state) => state.accessSession);
+
   const { drawerStatus, setDrawerStatus } = useDrawerStore();
 
   const [isClosing, setIsClosing] = useState<boolean>(false);
 
   const { push } = useRouter();
 
-  if (accessSession === false) {
-    push('/signin');
-  }
+  useEffect(() => {
+    if (accessSession === false) {
+      push('/signin');
+    }
+  },[])
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -51,6 +52,7 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
     <>
       {accessSession && (
         <Box sx={{ display: 'flex' }}>
+          <Timersession />
           <Navbar onClick={handleDrawerToggle} />
           <Sidebar
             open={drawerStatus}
