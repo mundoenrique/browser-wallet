@@ -24,8 +24,6 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   const setinitAccess = useActiveAppStore((state) => state.setinitAccess);
   const setCreateAccess = useActiveAppStore((state) => state.setCreateAccess);
 
-  console.log('EL PATHNAME ', pathname)
-
   useEffect(() => {
     if (!activeApp && pathname != '/signout') {
       const jweKeypair = new NodeRSA({ b: 2048 });
