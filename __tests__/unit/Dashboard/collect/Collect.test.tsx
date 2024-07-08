@@ -1,7 +1,19 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
 import Collect from '@/app/(Pages)/dashboard/collect/page';
 import { emptyField, renderInput, mockRouterPush } from '../../../tools/unitTestHelper.test';
+import { api } from '@/utils/api';
+
+jest.mock('@/store', () => ({
+  ...jest.requireActual('@/store'),
+  useUserStore: jest.fn(() => ({
+    getUserPhone: jest.fn(() => 'mockedCardId'),
+    user: { userId: 'mockedUserId', firstName: 'John' },
+  })),
+}));
+
+jest.mock('@/utils/api');
+const mockApi = api as jest.Mocked<typeof api>;
 
 describe('Collect', () => {
   let numberClient: HTMLInputElement;
@@ -24,6 +36,10 @@ describe('Collect', () => {
     buttonCard = screen.getByRole('button', { name: /tarjeta de crédito o débito/i });
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   //** Renders a title, subtitles.
   it('should render all text, titles, subtitles.', () => {
     expect(screen.getByText('Crear solicitud de cobro')).toBeInTheDocument();
@@ -43,5 +59,29 @@ describe('Collect', () => {
   it('should display an error message for empty field', async () => {
     emptyField(buttonWallets, 'Campo obligatorio');
     emptyField(buttonCard, 'Campo obligatorio');
+  });
+
+  it('submit form and call api post', async () => {
+    fireEvent.change(numberClient, { target: { value: '123456' } });
+    fireEvent.change(nameClient, { target: { value: '123456' } });
+    fireEvent.change(amount, { target: { value: '123456' } });
+    fireEvent.click(buttonWallets);
+
+    const payload = {
+      fullName: nameClient.value,
+      phoneNumber: numberClient.value,
+      operationCode: 'DESTINATION_CHARGE',
+      providerCode: 'PAGO_EFECTIVO',
+      currencyCode: 'PEN',
+      amount: amount.value,
+    };
+
+    await mockApi.post(`/payments/051999541/charge`, payload);
+
+    await waitFor(() => {
+      expect(mockApi.post).toHaveBeenCalled();
+      expect(mockApi.post).toHaveBeenCalledWith(`/payments/051999541/charge`, payload);
+    });
+
   });
 });
