@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   try {
 
     const uuid = uuid4();
-    const stateObject = { state: { login: 'false' }, version: 0 };
+    const stateObject = { state: { }, version: 0 };
     await postRedis(`session:${encryptForge(uuid)}`, stateObject )
 
     const encryptedBody = await request.json();
