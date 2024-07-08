@@ -1,10 +1,10 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { api } from '@/utils/api';
@@ -12,7 +12,7 @@ import { getSchema } from '@/config';
 import { encryptForge } from '@/utils/toolHelper';
 import ModalOtp from '@/components/modal/ModalOtp';
 import { ContainerLayout, InputPass, ModalResponsive } from '@/components';
-import { useNavTitleStore, useMenuStore, useUserStore, useUiStore, useHeadersStore } from '@/store';
+import { useNavTitleStore, useMenuStore, useUserStore, useUiStore, useHeadersStore, useOtpStore } from '@/store';
 
 export default function ChangePassword() {
   const router = useRouter();
@@ -27,9 +27,13 @@ export default function ChangePassword() {
 
   const [openRc, setOpenRc] = useState<boolean>(false);
 
+  const resetOtp = useOtpStore((state) => state.reset);
+
+  const otpUuid = useOtpStore((state) => state.otpUuid);
+
   const [openOtp, setOpenOtp] = useState<boolean>(false);
 
-  const userId = useUserStore((state) => state.user.userId);
+  const { userId } = useUserStore((state) => state.user);
 
   const { setModalError, setLoadingScreen } = useUiStore();
 
@@ -56,7 +60,7 @@ export default function ChangePassword() {
     setOpenOtp(true);
   };
 
-  const onSubmitOtp = async () => {
+  const handleChangePassword = async () => {
     setLoadingScreen(true);
     const requestData = {
       currentPassword: encryptForge(getValues('currentPassword')),
@@ -65,7 +69,6 @@ export default function ChangePassword() {
     api
       .put(`/onboarding/users/${userId}/password`, requestData)
       .then(() => {
-        setOpenOtp(false);
         setOpenRc(true);
       })
       .catch(() => {
@@ -75,21 +78,48 @@ export default function ChangePassword() {
         setLoadingScreen(false);
         reset();
       });
-
-    sendGTMEvent({
-      event: 'ga4.trackEvent',
-      eventName: 'select_content',
-      eventParams: {
-        content_type: 'boton_modal',
-        section: 'Yiro :: cambiarContraseña',
-        previous_section: 'dashboard',
-        selected_content: 'Verificar',
-        destination_page: `${host}/dashboard/change-password`,
-        pop_up_type: 'Cambiar contraseña',
-        pop_up_title: 'Verificación en dos pasos',
-      },
-    });
   };
+
+  const onSubmitOtp = useCallback(
+    async (data: any) => {
+      setLoadingScreen(true);
+      const { otp } = data;
+      const payload = {
+        otpProcessCode: 'CHANGE_PASSWORD_OTP',
+        otpUuId: otpUuid,
+        otpCode: encryptForge(otp),
+      };
+
+      api
+        .post(`/users/${userId}/validate/tfa`, payload)
+        .then((response) => {
+          if (response.data.code === '200.00.000') {
+            setOpenOtp(false);
+            handleChangePassword();
+            resetOtp();
+          }
+        })
+        .catch((e) => {
+          setModalError({ error: e });
+          setLoadingScreen(false);
+        });
+
+      sendGTMEvent({
+        event: 'ga4.trackEvent',
+        eventName: 'select_content',
+        eventParams: {
+          content_type: 'boton_modal',
+          section: 'Yiro :: cambiarContraseña',
+          previous_section: 'dashboard',
+          selected_content: 'Verificar',
+          destination_page: `${host}/dashboard/change-password`,
+          pop_up_type: 'Cambiar contraseña',
+          pop_up_title: 'Verificación en dos pasos',
+        },
+      });
+    },
+    [otpUuid] //eslint-disable-line
+  );
 
   useEffect(() => {
     updateTitle('Cambiar contraseña');
