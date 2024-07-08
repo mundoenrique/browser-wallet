@@ -5,28 +5,126 @@ import { useCallback, useEffect, useState } from 'react';
 //Internal app
 import { api } from '@/utils/api';
 import { useRegisterStore, useUiStore } from '@/store';
+import { encryptForge } from '@/utils/toolHelper';
 
 export default function Biometric() {
-  const { loadingScreen, setModalError, setLoadingScreen } = useUiStore();
-  const { updateStep, updateControl } = useRegisterStore();
+  const { setModalError, setLoadingScreen } = useUiStore();
+  const { updateStep, updateControl, ONB_PHASES_TERMS, control } = useRegisterStore();
 
   const [url, setUrl] = useState<string>('');
   const [btnBack, setBtnBack] = useState<boolean>(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const validateBiometric = useCallback(async () => {
+    const payload = {
+      payload: {
+        contacts: [
+          {
+            person: {
+              names: [
+                {
+                  firstName: encryptForge(
+                    `${ONB_PHASES_TERMS?.consultant?.firstName} ${ONB_PHASES_TERMS?.consultant?.middleName}`
+                  ),
+                  surName: encryptForge(ONB_PHASES_TERMS?.consultant?.firstLastName),
+                },
+              ],
+            },
+            identityDocuments: [
+              {
+                documentType: encryptForge(ONB_PHASES_TERMS?.consultant?.documentType),
+                documentNumber: encryptForge(ONB_PHASES_TERMS?.consultant?.documentNumber),
+                hashedDocumentNumber: encryptForge(ONB_PHASES_TERMS?.consultant?.documentNumber),
+              },
+            ],
+            telephones: [
+              {
+                number: encryptForge(ONB_PHASES_TERMS?.consultant?.phoneNumber),
+                phoneIdentifier: encryptForge('MOBILE'),
+              },
+            ],
+            emails: [
+              {
+                type: encryptForge('HOME'),
+                email: encryptForge(ONB_PHASES_TERMS?.consultant?.email),
+              },
+            ],
+          },
+        ],
+        control: [
+          {
+            option: 'ACCOUNTID_JM',
+            value: control?.accountId,
+          },
+          {
+            option: 'WORKFLOWID_JM',
+            value: control?.workflowId,
+          },
+        ],
+      },
+    };
+    await api
+      .post('/onboarding/validatebiometric', payload)
+      .then((response) => {
+        const { decision } = response.data.data;
+        if (decision === 'ACCEPT') {
+          const firstTimer = setTimeout(() => {
+            setLoadingScreen(true, { message: 'Verificación correcta' });
+            const secondTimer = setTimeout(() => {
+              updateStep(6);
+            }, 4000);
+            return () => {
+              setLoadingScreen(false);
+              clearTimeout(secondTimer);
+            };
+          }, 4000);
+          return () => {
+            setLoadingScreen(false);
+            clearTimeout(firstTimer);
+          };
+        } else {
+          updateStep(4);
+          setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
+        }
+      })
+      .catch((e) => {
+        updateStep(4);
+        setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
+  }, [
+    control,
+    ONB_PHASES_TERMS?.consultant?.firstName,
+    ONB_PHASES_TERMS?.consultant?.middleName,
+    ONB_PHASES_TERMS?.consultant?.firstLastName,
+    ONB_PHASES_TERMS?.consultant?.documentType,
+    ONB_PHASES_TERMS?.consultant?.documentNumber,
+    ONB_PHASES_TERMS?.consultant?.phoneNumber,
+    ONB_PHASES_TERMS?.consultant?.email,
+    setLoadingScreen,
+    updateStep,
+    setModalError,
+  ]);
+
   const receiveMessage = useCallback(
-    (event: any) => {
+    async (event: any) => {
       let data = window.JSON.parse(event.data);
-      if (data.payload.value === 'success') setLoadingScreen(true, { message: 'Estamos verificando tu información' });
+      if (data.payload.value === 'success') {
+        setLoadingScreen(true, { message: 'Estamos verificando tu información' });
+        await validateBiometric();
+      }
       if (data.payload.value === 'error') setBtnBack(true);
     },
-    [setLoadingScreen, setBtnBack]
+    [setLoadingScreen, validateBiometric]
   );
 
   const captureBiometrics = useCallback(() => {
+    updateControl({ accountId: '', workflowId: '' });
     setUrl('');
     const requestFormData = {
       deviceDetect: 'web',
-      identifier: 'a89ae7e8-bdc0-4aee-b4ec-23ca70d0d020',
     };
     setLoadingScreen(true);
     api
@@ -47,26 +145,7 @@ export default function Biometric() {
 
   useEffect(() => {
     captureBiometrics();
-  }, [captureBiometrics]);
-
-  useEffect(() => {
-    if (loadingScreen) {
-      const firstTimer = setTimeout(() => {
-        setLoadingScreen(true, { message: 'Verificación correcta' });
-        const secondTimer = setTimeout(() => {
-          updateStep(6);
-        }, 4000);
-        return () => {
-          setLoadingScreen(false);
-          clearTimeout(secondTimer);
-        };
-      }, 4000);
-      return () => {
-        setLoadingScreen(false);
-        clearTimeout(firstTimer);
-      };
-    }
-  }, [updateStep, setLoadingScreen, loadingScreen]);
+  }, []);
 
   return (
     <Box

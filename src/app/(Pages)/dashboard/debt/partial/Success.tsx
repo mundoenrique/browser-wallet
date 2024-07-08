@@ -42,12 +42,12 @@ export default function Success() {
     {
       icon: <Dollar sx={{ color: 'primary.main' }} />,
       label: 'Por valor',
-      description: `S/ ${payOffDebt?.data.amount}`,
+      description: `S/ ${payOffDebt?.amount}`,
     },
     {
       icon: <Clock sx={{ color: 'primary.main' }} />,
       label: 'Fecha y hora',
-      description: payOffDebt?.data?.transactionDate ? formatDate(payOffDebt?.data?.transactionDate) : '-',
+      description: payOffDebt?.transactionDate ? formatDate(payOffDebt?.transactionDate) : '-',
     },
   ];
 
@@ -89,7 +89,7 @@ export default function Success() {
               Los datos de la transacción son:
             </Typography>
             <Typography variant="body1" color="primary" textAlign="center" mb={3} fontWeight={700}>
-              {payOffDebt?.data?.transactionIdentifier}
+              {payOffDebt?.transactionIdentifier}
             </Typography>
             <Card sx={{ boxShadow: 'none', p: 1 }}>
               <Stack direction="column" divider={<Divider orientation="horizontal" />} spacing={1}>

@@ -28,6 +28,7 @@ export default function Debt() {
   const debt = useDebStore((state) => state.debt);
 
   const host = useHeadersStore((state) => state.host);
+
   const balance = useDebStore((state) => state.balance);
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
@@ -123,6 +124,20 @@ export default function Debt() {
   );
 
   const onSubmit = (data: any) => {
+    const validate = {
+      min: parseFloat(data.amount) < 1,
+      max: parseFloat(data.amount) > 4950,
+    };
+
+    if (validate.min || validate.max) {
+      validate.min && setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });
+
+      validate.max &&
+        setError('amount', { type: 'customError', message: 'El monto debe ser menor o igual a S/ 4950.00' });
+
+      return;
+    }
+
     const balanceAmount = parseFloat(balance.availableBalance);
     const amount = parseFloat(data.amount);
     if (amount > balanceAmount) {
