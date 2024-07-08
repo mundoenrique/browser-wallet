@@ -8,17 +8,20 @@ import { Box, Stack, Typography } from '@mui/material';
 import { PurpleLayout } from '@/components';
 import Linking from '@/components/navigation/Linking';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { useActiveAppStore } from '@/store';
+import { useActiveAppStore, useHeadersStore } from '@/store';
 import { useEffect } from 'react';
-
+import Cookie from "js-cookie";
 
 export default function signOut() {
   const router = useRouter();
 
   const setActiveApp = useActiveAppStore((state) => state.setActiveApp);
   const setinitAccess = useActiveAppStore((state) => state.setinitAccess);
+  const backLink = useHeadersStore((state) => state.backLink);
 
   useEffect(() => {
+    Cookie.remove('sessionId', { path: '/' })
+    sessionStorage.clear();
     setActiveApp(false)
     setinitAccess(false)
   })
@@ -33,11 +36,11 @@ export default function signOut() {
             </Typography>
           </Box>
           <Typography variant="body2" color={fuchsiaBlue[50]} textAlign="left">
-            vuelve a iniciar sesion desde tu empresa
+            Vuelve a iniciar sesion desde somos Belcorp
           </Typography>
         </Stack>
 
-        <Linking href="" label="Volver" hidenArrow color="white" underline onClick={() => router.back()} />
+        <Linking href="" label="Volver" hidenArrow color="white" underline onClick={() =>  router.push(backLink)} />
       </Box>
 </PurpleLayout>
 }
