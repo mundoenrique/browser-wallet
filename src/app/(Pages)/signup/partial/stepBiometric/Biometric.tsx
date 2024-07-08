@@ -9,13 +9,15 @@ import { encryptForge } from '@/utils/toolHelper';
 
 export default function Biometric() {
   const { setModalError, setLoadingScreen } = useUiStore();
-  const { updateStep, updateControl, ONB_PHASES_TERMS, control } = useRegisterStore();
-
+  const { updateStep, updateControl, control } = useRegisterStore();
+  const phaseInfo = useRegisterStore((state) => state.ONB_PHASES_TERMS);
   const [url, setUrl] = useState<string>('');
   const [btnBack, setBtnBack] = useState<boolean>(false);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const validateBiometric = useCallback(async () => {
+    const { consultant } = phaseInfo as any;
+    const shortDoc = consultant.documentType === 'DNI' ? consultant.documentNumber.slice(2) : consultant.documentNumber;
     const payload = {
       payload: {
         contacts: [
@@ -23,30 +25,28 @@ export default function Biometric() {
             person: {
               names: [
                 {
-                  firstName: encryptForge(
-                    `${ONB_PHASES_TERMS?.consultant?.firstName} ${ONB_PHASES_TERMS?.consultant?.middleName}`
-                  ),
-                  surName: encryptForge(ONB_PHASES_TERMS?.consultant?.firstLastName),
+                  firstName: encryptForge(`${consultant.firstName} ${consultant.middleName}`),
+                  surName: encryptForge(consultant.firstLastName),
                 },
               ],
             },
             identityDocuments: [
               {
-                documentType: encryptForge(ONB_PHASES_TERMS?.consultant?.documentType),
-                documentNumber: encryptForge(ONB_PHASES_TERMS?.consultant?.documentNumber),
-                hashedDocumentNumber: encryptForge(ONB_PHASES_TERMS?.consultant?.documentNumber),
+                documentType: encryptForge(consultant.documentType),
+                documentNumber: encryptForge(shortDoc),
+                hashedDocumentNumber: encryptForge(shortDoc),
               },
             ],
             telephones: [
               {
-                number: encryptForge(ONB_PHASES_TERMS?.consultant?.phoneNumber),
+                number: encryptForge(consultant.phoneNumber),
                 phoneIdentifier: encryptForge('MOBILE'),
               },
             ],
             emails: [
               {
                 type: encryptForge('HOME'),
-                email: encryptForge(ONB_PHASES_TERMS?.consultant?.email),
+                email: encryptForge(consultant.email),
               },
             ],
           },
@@ -94,19 +94,7 @@ export default function Biometric() {
       .finally(() => {
         setLoadingScreen(false);
       });
-  }, [
-    control,
-    ONB_PHASES_TERMS?.consultant?.firstName,
-    ONB_PHASES_TERMS?.consultant?.middleName,
-    ONB_PHASES_TERMS?.consultant?.firstLastName,
-    ONB_PHASES_TERMS?.consultant?.documentType,
-    ONB_PHASES_TERMS?.consultant?.documentNumber,
-    ONB_PHASES_TERMS?.consultant?.phoneNumber,
-    ONB_PHASES_TERMS?.consultant?.email,
-    setLoadingScreen,
-    updateStep,
-    setModalError,
-  ]);
+  }, [phaseInfo, control?.accountId, control?.workflowId, setLoadingScreen, updateStep, setModalError]);
 
   const receiveMessage = useCallback(
     async (event: any) => {
