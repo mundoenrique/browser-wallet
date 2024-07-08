@@ -12,7 +12,7 @@ export const regularExpressions: Partial<RegularExpressions> = {
   validNickName: /^[a-zA-Z0-9_]{6,16}$/,
   shortPhrase: /^[a-zA-Z0-9ñáéíóúÑÁÉÍÓÚ\s.]$/,
   longPhrase: /^[a-zA-Z0-9ñáéíóú ().,:;-]{5,150}$/,
-  alphaName: /^[a-zA-Zñáéíóú ]{1,50}$/,
+  alphaName: /^(?!.*\s{2})[A-Za-zÀ-ÿ\s]{1,50}$/,
   alphaLetter: /^[a-zA-Zñáéíóú]{4,20}$/,
   emailValid: /^[^@]{2,64}@[^_@]+\.[a-zA-Z]{2,}$/,
   alphanumunder: /^[wñÑ_]+$/,

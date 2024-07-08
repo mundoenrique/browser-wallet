@@ -30,11 +30,15 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
 
   const { setModalError } = useUiStore();
   const { user, getUserPhone } = useUserStore();
-  const { countdown, counting, setCounting, setTime, setOtpUuid } = useOtpStore();
+
+  const countdown = useOtpStore((state) => state.countdown);
+  const setTime = useOtpStore((state) => state.setTime);
+  const setOtpUuid = useOtpStore((state) => state.setOtpUuid);
 
   const timerRef = useRef<any>();
   const runDestroy = useRef<boolean>(false);
   const initialized = useRef<boolean>(false);
+  const disabledBtn = useRef<boolean>(false);
 
   const schemaFormOtp = getSchema(['otp']);
 
@@ -48,6 +52,7 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
   }
 
   const requestTFACode = useCallback(async () => {
+    disabledBtn.current = true;
     api
       .post(`/users/${user.userId}/tfa`, { otpProcessCode: processCode ?? '' })
       .then((response) => {
@@ -55,6 +60,9 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
       })
       .catch((e) => {
         setModalError({ error: e });
+      })
+      .finally(() => {
+        disabledBtn.current = false;
       });
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
@@ -64,18 +72,14 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
 
   useEffect(() => {
     if (!initialized.current) {
-      if (!counting) {
-        (async () => {
-          await requestTFACode();
-        })();
+      (async () => {
+        await requestTFACode();
+      })().then(() => {
+        timer();
         setTime(60);
-        timer();
-        setCounting(true);
-        initialized.current = true;
-      } else {
-        timer();
-        initialized.current = true;
-      }
+      });
+
+      initialized.current = true;
     }
     return () => {
       if (!runDestroy.current) {
@@ -104,7 +108,7 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
             handleResendOTP={requestTFACode}
           />
         </Box>
-        <Button variant="contained" type="submit" sx={{ width: '100%', mx: 'auto' }}>
+        <Button variant="contained" type="submit" sx={{ width: '100%', mx: 'auto' }} disabled={disabledBtn.current}>
           {textButton ? textButton : 'Verificar'}
         </Button>
         {closeApp && (
