@@ -8,7 +8,7 @@ import { Box, Button, FormHelperText, Snackbar, Typography, useTheme, useMediaQu
 //Internal app
 import { useOtpStore } from '@/store';
 import { InputOTPProps } from '@/interfaces';
-
+import { formatTime } from '@/utils/toolHelper';
 /**
  * Field used to enter an otp code.
  *
@@ -83,15 +83,10 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
             </Box>
           )}
         />
-        {timeLeft === 0 ? (
-          <Typography variant="body2" mb={5}>
-            De necesitarlo, ya puedes solicitar un nuevo código
-          </Typography>
-        ) : (
-          <Typography variant="body2" mb={5} color="primary.main">
-            Tiempo restante - 0:{timeLeft}
-          </Typography>
-        )}
+
+        <Typography variant="body2" mb={5} color="primary.main">
+          Tiempo restante - {formatTime(timeLeft)}
+        </Typography>
 
         <Button
           onClick={handleResend}
