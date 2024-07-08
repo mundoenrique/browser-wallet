@@ -25,7 +25,7 @@ export default function ChangePin() {
 
   const resetOtp = useOtpStore((state) => state.reset);
 
-  const userId = useUserStore((state) => state.userId);
+  const { userId } = useUserStore((state) => state.user);
 
   const cardId = useUserStore((state) => state.getUserCardId);
 
@@ -40,11 +40,12 @@ export default function ChangePin() {
     resolver: yupResolver(schemaFormPassword),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     setOpenOtp(true);
   };
 
   const changePin = () => {
+    setLoadingScreen(true);
     const payload = {
       pin: encryptForge(getValues('confirmPin')),
     };
@@ -53,13 +54,13 @@ export default function ChangePin() {
       .put(`/cards/${cardId()}/pin`, payload)
       .then(() => {
         setOpenRc(true);
-        reset();
       })
       .catch((e) => {
         setModalError({ error: e });
       })
       .finally(() => {
         setLoadingScreen(false);
+        reset();
       });
   };
 
