@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
   const pathname = nextUrl.pathname;
   const partsUrl = pathname.split('/');
   const protectedApiV1 = ['/api/v1/connect','/api/v1/gettoken','/api/v1/setcode','/api/v1/redis']
-  const protectedRoutes = ['signin', 'dashboard']
+  const protectedRoutes = ['signin', 'signup', 'password-recover', 'qr', 'dashboard']
 
   console.log('PATHNAME MIDDLEWARE ', partsUrl[1])
 
@@ -18,10 +18,9 @@ export async function middleware(request: NextRequest) {
   if (isProtectedRoute) {
     let uuid = request.cookies.get('sessionId')?.value
     const res = await setDataRedis('POST', { uuid: `session:${uuid}`, dataRedis: 'get' });
-
     if (!res) {
       const response = NextResponse.redirect(nextUrl.origin + '/signout');
-      response.cookies.set('sessionId', '');
+      response.cookies.set('sessionId', '', { httpOnly: false });
 
       return response
     } else {
@@ -48,5 +47,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/v1/:path*','/signin','/dashboard'],
+  matcher: ['/api/v1/:path*','/signin','/dashboard','/dashboard/:path*'],
 };
