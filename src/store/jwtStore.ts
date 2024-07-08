@@ -1,14 +1,13 @@
 import { type StateCreator, create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { useWeddingBoundStore } from './wedding';
 import { redisStorage } from '@/store/storages/redis.store';
 import { JwtStoreProps } from '@/interfaces/store';
 
-
 const storeAPi: StateCreator<JwtStoreProps, [['zustand/devtools', never]]> = (set) => ({
+
   token: null,
 
-  setToken: (value:string | null) => set({ token:value }, false, 'setToken')
+  setToken: (value:string | null) => set({ token:value })
 });
 
 export const useJwtStore = create<JwtStoreProps>()(
