@@ -1,17 +1,23 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { StateCreator, create } from 'zustand';
+import { persist, devtools } from 'zustand/middleware';
 //Internal app
 import { ICollectStore, ILinkData, ILoad } from '@/interfaces';
+import { redisStorage } from './storages/redis.store';
+
+const storeAPi: StateCreator<ICollectStore, [['zustand/devtools', never]]> = (set) => ({
+
+  load: null,
+  linkData: null,
+  setLoad: (data: ILoad) => set({ load: data }),
+  setLinkData: (data: ILinkData) => set({ linkData: data }),
+  reset: () => set((state) => ({ ...state, load: null, linkData: null }))
+});
 
 export const useCollectStore = create<ICollectStore>()(
-  persist(
-    (set) => ({
-      load: null,
-      linkData: null,
-      setLoad: (data: ILoad) => set({ load: data }),
-      setLinkData: (data: ILinkData) => set({ linkData: data }),
-      reset: () => set((state) => ({ ...state, load: null, linkData: null })),
-    }),
-    { name: 'collect-store', storage: createJSONStorage(() => sessionStorage) }
+  devtools(
+    persist(storeAPi, {
+      name: 'collect-storage',
+      storage: redisStorage,
+    })
   )
 );
