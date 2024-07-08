@@ -10,9 +10,7 @@ import LogoPurple from '%/images/LogoPurple';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { LogoutAppIcons, LogoutIcons } from '%/Icons';
 import ItemSecondarySidebar from './ItemSecondarySidebar';
-import { useConfigCardStore, useHeadersStore } from '@/store';
-//Eliminar este store despues de la certificacion de inicio de sesión
-import { accessSessionStore } from '@/store/accessSessionStore';
+import { useConfigCardStore, useHeadersStore, useAccessSessionStore } from '@/store';
 
 /**
  * Complete sidebar structure.
@@ -23,10 +21,9 @@ import { accessSessionStore } from '@/store/accessSessionStore';
 export default function ListSidebar(): JSX.Element {
   const updatePage = useConfigCardStore((state) => state.updatePage);
 
-  //Eliminar este store despues de la certificacion de inicio de sesión
-  const { setAccessSession } = accessSessionStore();
-
   const { backLink } = useHeadersStore();
+
+  const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
 
   const host = useHeadersStore((state) => state.host);
 
@@ -98,9 +95,8 @@ export default function ListSidebar(): JSX.Element {
           text="Cerrar sesión"
           icon={<LogoutIcons />}
           color
-          onClick={() => {
+          onClick={async () => {
             setAccessSession(false);
-            sessionStorage.clear();
             sendGTMEvent({
               event: 'ga4.trackEvent',
               eventName: 'select_content',

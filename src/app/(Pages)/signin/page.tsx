@@ -14,9 +14,7 @@ import LogoGreen from '%/images/LogoGreen';
 import { encryptForge } from '@/utils/toolHelper';
 import { TCredentials, TUserDetail } from '@/interfaces';
 import { InputPass, ModalResponsive, NavExternal } from '@/components';
-import { useHeadersStore, useOtpStore, useRegisterStore, useUiStore, useUserStore } from '@/store';
-//Eliminar este store despues de la certificacion de inicio de sesión
-import { accessSessionStore } from '@/store/accessSessionStore';
+import { useHeadersStore, useOtpStore, useRegisterStore, useUiStore, useUserStore, useAccessSessionStore } from '@/store';
 
 export default function Signin() {
   const theme = useTheme();
@@ -24,6 +22,8 @@ export default function Signin() {
   const schema = getSchema(['password']);
 
   const router = useRouter();
+
+  const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
 
   const user = useRegisterStore((state) => state.user);
 
@@ -34,8 +34,6 @@ export default function Signin() {
   const { setModalError } = useUiStore();
 
   const { setUser, userId } = useUserStore();
-
-  const { setAccessSession } = accessSessionStore();
 
   const host = useHeadersStore((state) => state.host);
 
@@ -65,8 +63,10 @@ export default function Signin() {
       .then((response) => {
         const { status } = response;
         if (status === 200) {
+          setAccessSession(true)
+          const date = new Date();
+          localStorage.setItem('sessionTime', date.toString());
           router.push('/dashboard');
-          setAccessSession(true);
         }
       })
       .catch((e) => {
