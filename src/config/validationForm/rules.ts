@@ -28,7 +28,7 @@ export const validationRules: ValidationRule = {
     .required('Ingrese un código')
     .min(4, 'El código es de 4 dígitos')
     .test('otpValid', 'El código es númerico', (value) => regularExpressions.numeric?.test(value)),
-  currentPassword: passwordValidation('Ingrese una contraseña'),
+  currentPassword: yup.string().required('Ingresa tu contraseña actual'),
   newPassword: passwordValidation('Ingresa una nueva contraseña').notOneOf(
     [yup.ref('currentPassword')],
     'Está contraseña debe ser diferente a la actual'
@@ -93,7 +93,7 @@ export const validationRules: ValidationRule = {
   ),
   blockType: yup.string().required('Debes seleccionar una opción'),
   newPin: pinValidation('Ingrese tu nuevo Pin'),
-  confirmPin: pinValidation('Confirma tu nuevo Pin').oneOf([yup.ref('newPin')], 'Los Pines no coinciden'),
+  confirmPin: pinValidation('Confirma tu nuevo Pin').oneOf([yup.ref('newPin')], 'Los PINs no coinciden'),
   amount: yup
     .string()
     .required('Campo obligatorio')
@@ -104,6 +104,7 @@ export const validationRules: ValidationRule = {
     .test('nameClientValid', 'Ingrese un nombre válido', (value) => regularExpressions.alphaName?.test(value)),
   numberClient: yup
     .string()
+    .min(9, 'El número celular debe tener 9 dígitos')
     .required('Campo obligatorio')
     .test('numberClientValid', 'Ingrese un teléfono válido', (value) => regularExpressions.phone?.test(value)),
 };
