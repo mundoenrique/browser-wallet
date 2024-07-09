@@ -5,8 +5,12 @@ const nextConfig = {
   poweredByHeader: false,
   output: 'standalone',
   images: {
-    domains: ['pre1a.niubizqr.pagoefectivo.pe'],
-    formats: ['image/webp'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.pagoefectivo.pe',
+      },
+    ],
   },
 };
 
