@@ -15,6 +15,8 @@ export const api = axios.create({
 
 api.interceptors.request.use(
   async (request) => {
+    const date = new Date();
+    localStorage.setItem('sessionTime', date.toString());
     const jweApiPublicKey = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY || '';
     const url = request.url;
     const data = request.data;
