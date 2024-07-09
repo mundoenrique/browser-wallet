@@ -4,16 +4,17 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import IconButton from '@mui/material/IconButton';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, Typography, Avatar, Collapse } from '@mui/material';
+import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 //Internal app
 import { api } from '@/utils/api';
-import { useClientStore, useUserStore, useUiStore } from '@/store';
 import { SkeletonTable } from '@/components';
 import { CashIcons, DeleteIcons } from '%/Icons';
 import { stringAvatar } from '@/utils/toolHelper';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
 import { IClientProps, IListClientsProps } from '@/interfaces';
-import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
+import { useClientStore, useUserStore, useUiStore, useHeadersStore } from '@/store';
 
 export default function ClientList(props: IListClientsProps): JSX.Element {
   const { data, loading, disabledBtnDelete, error } = props;
@@ -21,6 +22,8 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
   const router = useRouter();
 
   const { setClient } = useClientStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   const { userId } = useUserStore((state) => state.user);
 
@@ -54,12 +57,34 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
 
   const handleOptionsClick = (index: any) => {
     setShowOptions(showOptions === index ? null : index);
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'Yiro :: misClientes',
+        previous_section: 'Yiro :: misClientes',
+        selected_content: 'Opción',
+        destination_page: `${host}/dashboard/clients`,
+      },
+    });
   };
 
   const handleCash = (client: IClientProps) => {
     router.push('/dashboard/collect');
     setClient(client);
     setShowOptions(null);
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'Yiro :: misClientes',
+        previous_section: 'dashboard',
+        selected_content: 'reenviar_solicitud',
+        destination_page: `${host}/dashboard/collect`,
+      },
+    });
   };
 
   const handleDelete = async (client: IClientProps) => {
@@ -87,6 +112,18 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
       .finally(() => {
         setLoadingScreen(false);
       });
+
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'Yiro :: misClientes',
+        previous_section: 'dashboard',
+        selected_content: 'borrar_solicitud',
+        destination_page: `${host}/dashboard/clients`,
+      },
+    });
   };
 
   const handleNameClick = (index: number) => {

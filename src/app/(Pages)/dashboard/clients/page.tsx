@@ -1,18 +1,18 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
 import dayjs from 'dayjs';
+import { sendGTMEvent } from '@next/third-parties/google';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Avatar, Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
+import { api } from '@/utils/api';
 import { FilterIcons } from '%/Icons';
 import Filters from './partial/filters';
-import { api } from '@/utils/api';
-import { useUserStore, useUiStore, useChargeStore } from '@/store';
 import ClientList from './partial/listClients';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { useMenuStore, useNavTitleStore } from '@/store';
 import { InputCheckGroupOptionProps } from '@/interfaces';
 import { ContainerLayout, Linking, ModalResponsive } from '@/components';
+import { useUserStore, useUiStore, useChargeStore, useMenuStore, useNavTitleStore, useHeadersStore } from '@/store';
 
 const checkboxOptions = [
   { text: 'Todos mis cobros', value: '' },
@@ -52,28 +52,42 @@ export default function Clients() {
 
   const user = useUserStore((state) => state.user);
 
-  const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
+  const host = useHeadersStore((state) => state.host);
+
+  const setModalError = useUiStore((state) => state.setModalError);
 
   const updateTitle = useNavTitleStore((state) => state.updateTitle);
 
   const chargeAmount = useChargeStore((state) => state.chargeAmount);
 
+  const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
+
   const [open, setOpen] = useState<boolean>(false);
-  const [isLoading, setIsloading] = useState<boolean>(false);
+
   const [error, setError] = useState<boolean>(false);
+
+  const [lastPage, setLastPage] = useState<number>(1);
+
+  const [clientsData, setClientsData] = useState<any>([]);
+
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const [isLoading, setIsloading] = useState<boolean>(false);
+
+  const [filterMonth, setFilterMonth] = useState(dateRank()[0]);
+
+  const [filteredClientData, setFilteredClientData] = useState<any>([]);
+
   const [currentView, setCurrentView] = useState<string>(ENUM_VIEW.MAIN);
+
+  const [paginatedClientData, setPaginatedClientData] = useState<any>([]);
+
   const [paymentStatus, setPaymentStatus] = useState<string>('Todos mis cobros');
 
   const [paymentStatusCode, setPaymentStatusCode] = useState<string>(checkboxOptions[0].value);
 
-  const [clientsData, setClientsData] = useState<any>([]);
-  const [filteredClientData, setFilteredClientData] = useState<any>([]);
-  const [paginatedClientData, setPaginatedClientData] = useState<any>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [lastPage, setLastPage] = useState<number>(1);
-  const [filterMonth, setFilterMonth] = useState(dateRank()[0]);
-
   const containerPWA = useRef<HTMLDivElement | null>(null);
+
   const containerDesktop = useRef<HTMLDivElement | null>(null);
 
   const filterActive = currentView === ENUM_VIEW.FILTERS;
@@ -81,7 +95,19 @@ export default function Clients() {
 
   const initialized = useRef<boolean>(false);
 
-  const setModalError = useUiStore((state) => state.setModalError);
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/clients`,
+        page_title: 'Yiro :: misClientes',
+        page_referrer: `${host}/dashboard`,
+        section: 'Yiro :: misClientes',
+        previous_section: 'dashboard',
+      },
+    });
+  }, [host]);
 
   const onChangeCheckbox = (item: InputCheckGroupOptionProps) => {
     setPaymentStatusCode(item.value);
@@ -91,6 +117,17 @@ export default function Clients() {
   const handleFilters = async (e: Event) => {
     e.preventDefault();
     setCurrentView(ENUM_VIEW.MAIN);
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'Yiro :: misClientes',
+        previous_section: 'dashboard',
+        selected_content: 'Filtro',
+        destination_page: `${host}/dashboard/clients`,
+      },
+    });
   };
 
   const scrollHandle = useCallback(async () => {
