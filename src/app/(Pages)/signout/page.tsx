@@ -1,29 +1,27 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-
+import { useEffect, useState } from 'react';
+import Cookie from "js-cookie";
 //Internal app
 import LogoGreen from '%/images/LogoGreen';
 import { Box, Stack, Typography } from '@mui/material';
 import { PurpleLayout } from '@/components';
 import Linking from '@/components/navigation/Linking';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { useActiveAppStore, useHeadersStore } from '@/store';
-import { useEffect } from 'react';
-import Cookie from "js-cookie";
+import { useHeadersStore } from '@/store';
+import { SESSION_ID } from '@/utils/constants';
+
 
 export default function signOut() {
-  const router = useRouter();
 
-  const setActiveApp = useActiveAppStore((state) => state.setActiveApp);
-  const setinitAccess = useActiveAppStore((state) => state.setinitAccess);
+  const [url, setUrl] = useState<string>('');
   const backLink = useHeadersStore((state) => state.backLink);
 
   useEffect(() => {
-    Cookie.remove('sessionId', { path: '/' })
+    const url: any = (backLink != '') ? backLink : process.env.NEXT_PUBLIC_BACK_URL;
+    setUrl(url);
+    Cookie.remove(SESSION_ID, { path: '/' });
     sessionStorage.clear();
-    setActiveApp(false)
-    setinitAccess(false)
   })
 
   return <PurpleLayout>
@@ -40,7 +38,7 @@ export default function signOut() {
           </Typography>
         </Stack>
 
-        <Linking href="" label="Volver" hidenArrow color="white" underline onClick={() =>  router.push(backLink)} />
+      <Linking href={url} label="Volver" hidenArrow color="white" underline />
       </Box>
 </PurpleLayout>
 }
