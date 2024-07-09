@@ -136,7 +136,7 @@ export async function handleResponse(
     const encryptedResponse = { data: jwe };
     const jws: string = await signJWE(jwsApiPrivateKey, jwe);
     if (isBrowser) {
-      cookieSet = `sessionId=${encryptForge(responseObj.data.sessionId)}; HttpOnly=true; Path=/; Secure=true; SameSite=true`
+      cookieSet = `${SESSION_ID}=${encryptForge(responseObj.data.sessionId)}; HttpOnly=true; Path=/; Secure=true; SameSite=true`
     }
 
     const response = NextResponse.json(encryptedResponse, {

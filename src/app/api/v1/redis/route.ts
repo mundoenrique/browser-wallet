@@ -4,12 +4,13 @@ import { cookies } from 'next/headers'
 //Internal app
 import { createRedisInstance, getRedis, postRedis} from '@/utils/redis';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
+import { SESSION_ID } from '@/utils/constants';
 
 export async function GET(request: NextRequest) {
 
   try {
     const searchParams = request.nextUrl.searchParams;
-    const uuidCookie = cookies().get('sessionId')?.value || null
+    const uuidCookie = cookies().get(SESSION_ID)?.value || null
     const reqData = searchParams.get('reqData') || 'session:'+ uuidCookie;
     const resData: string = await getRedis(reqData) || ''
     const data = encryptForge(resData)
@@ -24,7 +25,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
 
-    const uuidCookie = cookies().get('sessionId')?.value || null
+    const uuidCookie = cookies().get(SESSION_ID)?.value || null
     const dataBody = await request.json();
     const decryptData = JSON.parse(decryptForge(dataBody.data))
     const uuid = (uuidCookie) ? 'session:' + uuidCookie : dataBody.uuid
@@ -37,7 +38,6 @@ export async function POST(request: NextRequest) {
       return new NextResponse(JSON.stringify({ code: '200.00.000', message: 'ok' }), { status: 200 });
     }
 
-
   } catch (error) {
     return NextResponse.json({ code: '500.00.000', message: 'Fail' }, { status: 500 });
   }
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
 
-    const uuidCookie = cookies().get('sessionId')?.value || null
+    const uuidCookie = cookies().get(SESSION_ID)?.value || null
     const dataBody = await request.json();
     const decryptData = JSON.parse(decryptForge(dataBody.data));
     const uuid = (uuidCookie) ? 'session:' + uuidCookie : decryptData.uuid;
@@ -63,7 +63,7 @@ export async function PUT(request: NextRequest) {
         await redis.set(`${uuid}`, JSON.stringify(stateObject));
       }
 
-      await redis.expire(`${uuid}`, 3000);
+      await redis.expire(`${uuid}`, 300);
 
       redis.quit();
 

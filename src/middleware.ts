@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 //Internal app
 import { URL_BASE } from '@/utils/constants';
-import { createRedisInstance } from './utils';
+import { SESSION_ID } from './utils/constants';
 import { setDataRedis } from './utils/toolHelper';
 import { verifyAccess } from './utils/verifyAccess';
 
@@ -16,11 +16,11 @@ export async function middleware(request: NextRequest) {
 
   const isProtectedRoute = protectedRoutes.includes(partsUrl[1]);
   if (isProtectedRoute) {
-    let uuid = request.cookies.get('sessionId')?.value
+    let uuid = request.cookies.get(SESSION_ID)?.value
     const res = await setDataRedis('POST', { uuid: `session:${uuid}`, dataRedis: 'get' });
     if (!res) {
       const response = NextResponse.redirect(nextUrl.origin + '/signout');
-      response.cookies.set('sessionId', '', { httpOnly: false });
+      response.cookies.set(SESSION_ID, '', { httpOnly: false });
 
       return response
     } else {
