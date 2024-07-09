@@ -154,6 +154,7 @@ export default function CardInformation() {
   const getBalance = async () => {
     setBalance(null);
     setBalanceError(false);
+    setBalanceStoreDebt(null);
     api
       .get(`/cards/${getUserCardId()}/balance`)
       .then((response) => {
