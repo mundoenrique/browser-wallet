@@ -22,7 +22,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
 
   const { setClient } = useClientStore();
 
-  const userId = useUserStore((state) => state.userId);
+  const { userId } = useUserStore((state) => state.user);
 
   const setModalError = useUiStore((state) => state.setModalError);
 
@@ -65,8 +65,22 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
   const handleDelete = async (client: IClientProps) => {
     setLoadingScreen(true);
     api
-      .delete(`/payments/${userId}/charges/${client.id}`)
-      .then(() => {})
+      .delete(`/payments/${userId}/charges/${client.chargeId}`)
+      .then(() => {
+        const index = clientsData.findIndex((el) => el.chargeId === client.chargeId);
+
+        const modifiedList =
+          index !== -1
+            ? [
+                ...clientsData.slice(0, index),
+                { ...clientsData[index], status: 'CANCELLED' },
+                ...clientsData.slice(index + 1),
+              ]
+            : clientsData;
+
+        setClientsData(modifiedList);
+        setShowOptions(null);
+      })
       .catch((e) => {
         setModalError(e);
       })

@@ -204,7 +204,7 @@ export type IUserRegisterProps = {
  */
 
 export interface IClientProps {
-  id: number;
+  chargeId: number;
   date: Date;
   name?: string;
   fullname?: string;

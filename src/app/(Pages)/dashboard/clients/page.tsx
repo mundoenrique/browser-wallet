@@ -95,19 +95,17 @@ export default function Clients() {
 
   const scrollHandle = useCallback(async () => {
     const container = containerDesktop.current || containerPWA.current;
-    if (container && !isLoading && currentPage <= lastPage - 1) {
+
+    if (!isLoading && container && currentPage < lastPage) {
       if (match) {
+        let scroll = container.scrollHeight - container.scrollTop - container.clientHeight;
+        scroll <= 20 && setCurrentPage((prevPage) => prevPage + 1);
+      } else {
         let scroll = container?.scrollHeight - window.scrollY - window.innerHeight;
         scroll <= 100 && setCurrentPage((prevPage) => prevPage + 1);
       }
-    } else if (containerPWA.current && !isLoading && currentPage <= lastPage - 1) {
-      let scroll =
-        containerPWA.current?.scrollHeight - containerPWA.current?.scrollTop - containerPWA.current?.clientHeight;
-      if (scroll <= 20) {
-        setCurrentPage((prevPage) => prevPage + 1);
-      }
     }
-  }, [setCurrentPage, isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [setCurrentPage, isLoading, lastPage]); //eslint-disable-line react-hooks/exhaustive-deps
 
   const getClientAPI = async () => {
     setIsloading(true);
@@ -134,9 +132,15 @@ export default function Clients() {
   };
 
   const createPagination = (data: [], page: number) => {
+    setIsloading(true);
     const itemsPage = 20;
+    setLastPage(Math.ceil(data.length / itemsPage));
     const startIndex = (page - 1) * itemsPage;
     const endIndex = startIndex + itemsPage;
+    data.sort((a: any, b: any) => (new Date(a.date) as any) - (new Date(b.date) as any));
+    setTimeout(() => {
+      setIsloading(false);
+    }, 1000);
     return data.slice(startIndex, endIndex);
   };
 
@@ -172,22 +176,29 @@ export default function Clients() {
   }, [paymentStatusCode, clientsData]);
 
   useEffect(() => {
-    setPaginatedClientData((currentState: any) => [
-      ...currentState,
-      ...createPagination(filteredClientData, currentPage),
-    ]);
-  }, [filteredClientData, currentPage]);
+    !isLoading &&
+      setPaginatedClientData((currentState: any) => [
+        ...currentState,
+        ...createPagination(filteredClientData, currentPage),
+      ]);
+  }, [filteredClientData, currentPage]); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
       <ContainerLayout>
         <Box
           sx={{
-            height: { xs: 'calc(100vh - 120px)', md: 'auto' },
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: { xs: 'flex-start', md: 'center' },
             width: { xs: '100%', md: 360 },
+            overflow: 'auto',
             [theme.breakpoints.up('md')]: {
               minHeight: 'calc(100vh + 100px)',
               width: 360,
+            },
+            [theme.breakpoints.down('md')]: {
+              height: 'calc(100vh - 120px)',
             },
           }}
           ref={containerDesktop}
