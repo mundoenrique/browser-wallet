@@ -72,7 +72,7 @@ export async function getRedis(dataGet: string) {
   try {
     const redis = createRedisInstance();
     const resData: string | null = await redis.get(`${dataGet}`);
-    await redis.expire(`${dataGet}`, 3000);
+    await redis.expire(`${dataGet}`, 300);
     await redis.quit();
 
     return resData
@@ -87,7 +87,7 @@ export async function postRedis(keyRedis: any, newData: any) {
     const redis = createRedisInstance();
     if (keyRedis != null) {
       await redis.set(`${keyRedis}`, JSON.stringify(newData));
-      await redis.expire(`${keyRedis}`, 3000);
+      await redis.expire(`${keyRedis}`, 300);
     }
 
     redis.quit();
