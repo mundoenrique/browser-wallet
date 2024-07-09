@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Button } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 //Internal app
 import { api } from '@/utils/api';
 import { useRegisterStore, useUiStore } from '@/store';
@@ -13,6 +13,8 @@ export default function Biometric() {
   const phaseInfo = useRegisterStore((state) => state.ONB_PHASES_TERMS);
   const [url, setUrl] = useState<string>('');
   const [btnBack, setBtnBack] = useState<boolean>(false);
+  const accountId = useRef<string>('');
+  const workflowId = useRef<string>('');
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const validateBiometric = useCallback(async () => {
@@ -54,11 +56,11 @@ export default function Biometric() {
         control: [
           {
             option: 'ACCOUNTID_JM',
-            value: control?.accountId,
+            value: accountId.current,
           },
           {
             option: 'WORKFLOWID_JM',
-            value: control?.workflowId,
+            value: workflowId.current,
           },
         ],
       },
@@ -94,7 +96,7 @@ export default function Biometric() {
       .finally(() => {
         setLoadingScreen(false);
       });
-  }, [phaseInfo, control?.accountId, control?.workflowId, setLoadingScreen, updateStep, setModalError]);
+  }, [phaseInfo, setLoadingScreen, updateStep, setModalError]);
 
   const receiveMessage = useCallback(
     async (event: any) => {
@@ -120,6 +122,8 @@ export default function Biometric() {
       .then((response) => {
         const { web, account, workflowExecution } = response.data.data;
         setUrl(web.href);
+        accountId.current = account.id;
+        workflowId.current = workflowExecution.id;
         updateControl({ accountId: account.id, workflowId: workflowExecution.id });
         window.addEventListener('message', receiveMessage, false);
       })
