@@ -18,5 +18,5 @@ export interface IFiltersProps {
   months: InputCheckGroupOptionProps[];
   onChangeMonth: (option: InputCheckGroupOptionProps) => void;
   monthDefault: InputCheckGroupOptionProps;
-  handleFilters: () => void;
+  handleFilters: (e: any) => void;
 }

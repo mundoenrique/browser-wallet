@@ -204,9 +204,10 @@ export type IUserRegisterProps = {
  */
 
 export interface IClientProps {
-  id: number;
+  chargeId: number;
   date: Date;
-  name: string;
+  name?: string;
+  fullname?: string;
   amount: number;
   status: string;
   status_type: string;
@@ -300,7 +301,7 @@ export interface DebtStore {
   setView: (_data: string) => void;
   setPayOffDebt: (_data: IDebt) => void;
   setError: (_data: IPayOffDebtError) => void;
-  setBalance: (_data: IBalance) => void;
+  setBalance: (_data: IBalance | null) => void;
 }
 export interface IBalance {
   availableBalance: string;
@@ -335,4 +336,14 @@ export interface HeadersStore {
   setBackLink: (_data: any) => void;
   host: string | null;
   setHost: (_data: any) => void;
+}
+
+/**
+ * Charge store
+ * @typeParam debt - Initial state {@defaultValue `null`}
+ * @typeParam setView: (_data: any) => void
+ */
+export interface ChargeStore {
+  chargeAmount: number;
+  setCharge: (data: number) => void;
 }

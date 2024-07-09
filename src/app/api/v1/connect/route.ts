@@ -17,3 +17,7 @@ export async function PUT(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   return HandleCustomerRequest(request);
 }
+
+export async function DELETE(request: NextRequest) {
+  return HandleCustomerRequest(request);
+}
