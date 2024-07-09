@@ -83,7 +83,7 @@ export default function Collect() {
   }, [updateTitle, setCurrentItem]);
 
   useEffect(() => {
-    setValueClient('nameClient', client?.name);
+    setValueClient('nameClient', client?.fullname);
     setValueClient('numberClient', client?.number);
     setValueClient('amount', client?.amount);
     // eslint-disable-next-line react-hooks/exhaustive-deps
