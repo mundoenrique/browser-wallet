@@ -286,7 +286,7 @@ export default function Transfer() {
       {openRc && (
         <Success
           onClick={() => {
-            setOpenRc(false);
+            setOpenRc(!openRc);
           }}
           transferDetail={transferInfo}
         />
