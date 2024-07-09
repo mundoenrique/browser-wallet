@@ -21,9 +21,10 @@ export default function TimmerSession() {
     router.push('/signin');
   };
 
-  const resetSession = () => {
+  const resetSession = async () => {
     const date = new Date();
     localStorage.setItem('sessionTime', date.toString());
+    await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/v1/redis`).then((res) => res.json());
     setOpen(false);
   };
 
@@ -36,7 +37,7 @@ export default function TimmerSession() {
       const date = new Date(localStorage.sessionTime).getTime();
       const now = new Date().getTime();
       const time: number = Math.trunc(Math.abs((date - now) / 1000));
-      const timeRest: number = parseInt(process.env.NEXT_PUBLIC_SESS_EXPIRATION || '60') - time;
+      const timeRest: number = parseInt(process.env.NEXT_PUBLIC_SESS_EXPIRATION || '185') - time;
       if (timeRest === 45) {
         setOpen(true);
       } else if (timeRest <= 0 || isNaN(timeRest)) {
