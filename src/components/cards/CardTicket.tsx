@@ -19,10 +19,9 @@ import { handleDownload, handleShare } from '@/utils/toolHelper';
  * @param shared - Handles the action of sharing an image.
  * @param sharedGA - Handle Google Analytics.
  * @param onClick - Action handling for a button.
- * @param onClick - Handle Google Analytics.
  */
 export default function CardTicket(props: CardTicketProps) {
-  const { children, textBotton, download, downloadGA, shared, sharedGA, onClick, onClickGA } = props;
+  const { children, textBotton, download, downloadGA, shared, sharedGA, onClick } = props;
   const componentRef = useRef<any>(null);
   const shareData: any = { files: [] };
 
@@ -92,14 +91,7 @@ export default function CardTicket(props: CardTicketProps) {
         )}
 
         {onClick && (
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={() => {
-              onClick;
-              onClickGA;
-            }}
-          >
+          <Button variant="contained" fullWidth onClick={onClick}>
             {textBotton}
           </Button>
         )}
