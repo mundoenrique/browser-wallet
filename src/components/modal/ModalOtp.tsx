@@ -38,7 +38,6 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
   const timerRef = useRef<any>();
   const runDestroy = useRef<boolean>(false);
   const initialized = useRef<boolean>(false);
-  const disabledBtn = useRef<boolean>(false);
 
   const schemaFormOtp = getSchema(['otp']);
 
@@ -52,7 +51,6 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
   }
 
   const requestTFACode = useCallback(async () => {
-    disabledBtn.current = true;
     api
       .post(`/users/${user.userId}/tfa`, { otpProcessCode: processCode ?? '' })
       .then((response) => {
@@ -60,9 +58,6 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
       })
       .catch((e) => {
         setModalError({ error: e });
-      })
-      .finally(() => {
-        disabledBtn.current = false;
       });
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
@@ -108,7 +103,7 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
             handleResendOTP={requestTFACode}
           />
         </Box>
-        <Button variant="contained" type="submit" sx={{ width: '100%', mx: 'auto' }} disabled={disabledBtn.current}>
+        <Button variant="contained" type="submit" sx={{ width: '100%', mx: 'auto' }}>
           {textButton ? textButton : 'Verificar'}
         </Button>
         {closeApp && (
