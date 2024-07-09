@@ -301,7 +301,7 @@ export interface DebtStore {
   setView: (_data: string) => void;
   setPayOffDebt: (_data: IDebt) => void;
   setError: (_data: IPayOffDebtError) => void;
-  setBalance: (_data: IBalance) => void;
+  setBalance: (_data: IBalance | null) => void;
 }
 export interface IBalance {
   availableBalance: string;

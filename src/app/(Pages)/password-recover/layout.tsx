@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-
 //Internal app
 import { ChildrenProps } from '@/interfaces';
 
@@ -9,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function RecoverLayout({ children }: ChildrenProps) {
-  return { children };
+  return <>{children}</>;
 }
