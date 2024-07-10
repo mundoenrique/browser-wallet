@@ -27,8 +27,6 @@ export default function ChangePassword() {
 
   const [openRc, setOpenRc] = useState<boolean>(false);
 
-  const resetOtp = useOtpStore((state) => state.reset);
-
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
   const [openOtp, setOpenOtp] = useState<boolean>(false);
@@ -96,7 +94,6 @@ export default function ChangePassword() {
           if (response.data.code === '200.00.000') {
             setOpenOtp(false);
             handleChangePassword();
-            resetOtp();
           }
         })
         .catch((e) => {

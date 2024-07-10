@@ -85,9 +85,7 @@ export default function Collect() {
   useEffect(() => {
     setValueClient('nameClient', client?.fullname);
     setValueClient('numberClient', client?.number);
-    setValueClient('amount', client?.amount);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [client]);
+  }, [client]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const rcViews: any = {
     wallets: <SuccessWallets />,

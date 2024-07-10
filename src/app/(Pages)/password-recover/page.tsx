@@ -1,7 +1,7 @@
 'use client';
 
 import { Card } from '@mui/material';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 //Internal
 import OTP from './partial/OTP';
 import { api } from '@/utils/api';
@@ -20,10 +20,11 @@ export default function Recover() {
 
   const host = useHeadersStore((state) => state.host);
 
-  const { countdown, counting, setCounting, setTime, otpValid, setOtpUuid } = useOtpStore();
+  const otpValid = useOtpStore((state) => state.otpValid);
 
-  const timerRef = useRef<NodeJS.Timeout>();
-  const initialized = useRef<boolean>();
+  const setOtpUuid = useOtpStore((state) => state.setOtpUuid);
+
+  const [timeLeft, setTimeLeft] = useState<number>(60);
 
   const requestTFACode = useCallback(async () => {
     api
@@ -39,24 +40,14 @@ export default function Recover() {
       });
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
-  const timer = useCallback(async () => {
-    timerRef.current = setInterval(() => countdown(), 1000);
-  }, []); //eslint-disable-line react-hooks/exhaustive-deps
-
   useEffect(() => {
-    if (!counting && !initialized.current) {
-      (async () => {
-        await requestTFACode();
-      })();
-      setTime(60);
-      timer();
-      setCounting(true);
-      initialized.current = true;
-    } else if (counting && !initialized.current) {
-      timer();
-      initialized.current = true;
+    if (timeLeft > 0) {
+      const timerId = setTimeout(() => {
+        setTimeLeft(timeLeft - 1);
+      }, 1000);
+      return () => clearTimeout(timerId);
     }
-  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [timeLeft]); //eslint-disable-line react-hooks/exhaustive-deps
 
   const configRecoverRoutes = (page: OtpStore['otpValid']) => {
     const routes: { [key: string]: JSX.Element } = {

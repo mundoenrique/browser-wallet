@@ -64,7 +64,11 @@ export default function ActivatePhysicalCard() {
 
   const { updatePage } = useConfigCardStore();
 
-  const { timeLeft, countdown, setTime } = useOtpStore();
+  const timeLeft = useOtpStore((state) => state.timeLeft);
+
+  const countdown = useOtpStore((state) => state.countdown);
+
+  const setTime = useOtpStore((state) => state.setTime);
 
   const { userId } = useUserStore((state) => state.user);
 
