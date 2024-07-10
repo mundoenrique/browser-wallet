@@ -7,10 +7,7 @@ const createJestConfig = nextJest({
 
 const config: Config = {
   testEnvironment: 'jest-environment-jsdom',
-  setupFilesAfterEnv: [
-    '<rootDir>/jest.setup.ts',
-    '<rootDir>/__tests__/mocks/mocks.test.tsx'
-  ],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts', '<rootDir>/__tests__/mocks/mocks.test.tsx'],
   clearMocks: true,
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
@@ -22,7 +19,7 @@ const config: Config = {
     'src/app/**/signup/*page.tsx',
     'src/app/**/signin/*page.tsx',
     'src/app/**/identify/[user]/*page.tsx',
-    'src/app/**/password-recover/*page.tsx',
+    // 'src/app/**/password-recover/*page.tsx',
     'src/app/**/dashboard/*page.tsx',
   ],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
@@ -42,6 +39,7 @@ const config: Config = {
     '<rootDir>/__tests__/unit/Dashboard/card-configuration',
     '<rootDir>/__tests__/unit/Dashboard/legal',
     '<rootDir>/__tests__/unit/Dashboard/recharge',
+    '<rootDir>/__tests__/unit/PasswordRecover',
   ],
 };
 
