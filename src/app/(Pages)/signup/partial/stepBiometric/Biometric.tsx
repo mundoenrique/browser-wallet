@@ -16,8 +16,10 @@ export default function Biometric() {
   const accountId = useRef<string>('');
   const workflowId = useRef<string>('');
 
+  const hasRun = useRef(false);
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const validateBiometric = useCallback(async () => {
+  const validateBiometric = useCallback(() => {
     const { consultant } = phaseInfo as any;
     const shortDoc = consultant.documentType === 'DNI' ? consultant.documentNumber.slice(2) : consultant.documentNumber;
     const payload = {
@@ -65,10 +67,12 @@ export default function Biometric() {
         ],
       },
     };
-    await api
+    console.log('🚀 ~ validateBiometric ~ payload:', payload);
+    api
       .post('/onboarding/validatebiometric', payload)
       .then((response) => {
         const { decision } = response.data.data;
+        console.log('🚀 ~validatebiometric .then ~ response.data.data:', response.data.data);
         if (decision === 'ACCEPT') {
           const firstTimer = setTimeout(() => {
             setLoadingScreen(true, { message: 'Verificación correcta' });
@@ -90,6 +94,7 @@ export default function Biometric() {
         }
       })
       .catch((e) => {
+        console.log('🚀 ~ validateBiometric ~ e:', e);
         updateStep(4);
         setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
       })
@@ -101,6 +106,7 @@ export default function Biometric() {
   const receiveMessage = useCallback(
     async (event: any) => {
       let data = window.JSON.parse(event.data);
+      console.log('🚀 ~receiveMessage data.payload.value:', data.payload.value);
       if (data.payload.value === 'success') {
         setLoadingScreen(true, { message: 'Estamos verificando tu información' });
         await validateBiometric();
@@ -111,6 +117,7 @@ export default function Biometric() {
   );
 
   const captureBiometrics = useCallback(() => {
+    window.addEventListener('message', receiveMessage, false);
     updateControl({ accountId: '', workflowId: '' });
     setUrl('');
     const requestFormData = {
@@ -125,7 +132,6 @@ export default function Biometric() {
         accountId.current = account.id;
         workflowId.current = workflowExecution.id;
         updateControl({ accountId: account.id, workflowId: workflowExecution.id });
-        window.addEventListener('message', receiveMessage, false);
       })
       .catch((e) => {
         setModalError({ error: e });
@@ -136,7 +142,11 @@ export default function Biometric() {
   }, [receiveMessage, setLoadingScreen, setModalError, updateControl]);
 
   useEffect(() => {
-    captureBiometrics();
+    if (!hasRun.current) {
+      captureBiometrics();
+      console.log('Función ejecutada una vez');
+      hasRun.current = true;
+    }
   }, []);
 
   return (
