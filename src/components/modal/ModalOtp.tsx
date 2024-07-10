@@ -29,14 +29,19 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
   const { handleClose, open, onSubmit, closeApp, title, textButton, processCode } = props;
 
   const { setModalError } = useUiStore();
+
   const { user, getUserPhone } = useUserStore();
 
   const countdown = useOtpStore((state) => state.countdown);
+
   const setTime = useOtpStore((state) => state.setTime);
+
   const setOtpUuid = useOtpStore((state) => state.setOtpUuid);
 
   const timerRef = useRef<any>();
+
   const runDestroy = useRef<boolean>(false);
+
   const initialized = useRef<boolean>(false);
 
   const schemaFormOtp = getSchema(['otp']);
@@ -69,10 +74,9 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
     if (!initialized.current) {
       (async () => {
         await requestTFACode();
-      })().then(() => {
-        timer();
-        setTime(60);
-      });
+      })();
+      setTime(60);
+      timer();
 
       initialized.current = true;
     }
