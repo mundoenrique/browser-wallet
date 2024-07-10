@@ -172,27 +172,29 @@ export default function ChangePassword() {
         </Box>
       </ContainerLayout>
 
-      <ModalOtp
-        open={openOtp}
-        handleClose={() => {
-          setOpenOtp(false);
-          sendGTMEvent({
-            event: 'ga4.trackEvent',
-            eventName: 'select_content',
-            eventParams: {
-              content_type: 'boton_modal',
-              section: 'Yiro :: cambiarContraseña',
-              previous_section: 'dashboard',
-              selected_content: 'Cerrar',
-              destination_page: `${host}/dashboard/change-password`,
-              pop_up_type: 'Cambiar contraseña',
-              pop_up_title: 'Verificación en dos pasos',
-            },
-          });
-        }}
-        onSubmit={onSubmitOtp}
-        processCode="CHANGE_PASSWORD_OTP"
-      />
+      {openOtp && (
+        <ModalOtp
+          open={openOtp}
+          handleClose={() => {
+            setOpenOtp(false);
+            sendGTMEvent({
+              event: 'ga4.trackEvent',
+              eventName: 'select_content',
+              eventParams: {
+                content_type: 'boton_modal',
+                section: 'Yiro :: cambiarContraseña',
+                previous_section: 'dashboard',
+                selected_content: 'Cerrar',
+                destination_page: `${host}/dashboard/change-password`,
+                pop_up_type: 'Cambiar contraseña',
+                pop_up_title: 'Verificación en dos pasos',
+              },
+            });
+          }}
+          onSubmit={onSubmitOtp}
+          processCode="CHANGE_PASSWORD_OTP"
+        />
+      )}
 
       <ModalResponsive
         open={openRc}

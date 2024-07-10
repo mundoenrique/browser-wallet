@@ -64,13 +64,13 @@ export default function Movements() {
 
   const scrollHandle = useCallback(async () => {
     const container = containerDesktop.current || containerPWA.current;
+
     if (!isLoading && container && currentPage < lastPage) {
       if (match) {
         let scroll = container.scrollHeight - container.scrollTop - container.clientHeight;
         scroll <= 20 && setCurrentPage((prevPage) => prevPage + 1);
       } else {
         let scroll = container?.scrollHeight - window.scrollY - window.innerHeight;
-
         scroll <= 100 && setCurrentPage((prevPage) => prevPage + 1);
       }
     }

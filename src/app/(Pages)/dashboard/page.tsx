@@ -9,7 +9,7 @@ import { api } from '@/utils/api';
 import { expiredFormatDate } from '@/utils/dates';
 import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
-import { useDebStore, useHeadersStore, useMenuStore, useUiStore, useUserStore } from '@/store';
+import { useHeadersStore, useChargeStore, useDebStore, useMenuStore, useUiStore, useUserStore } from '@/store';
 
 export default function Dashboard() {
   const { push } = useRouter();
@@ -27,6 +27,8 @@ export default function Dashboard() {
   const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
 
   const setReloadFunction = useUiStore((state) => state.setReloadFunction);
+
+  const setCharge = useChargeStore((state) => state.setCharge);
 
   const [movementData, setMovementData] = useState<[]>([]);
 
@@ -111,9 +113,11 @@ export default function Dashboard() {
       .get(`/payments/${userId}/charge`)
       .then((response: any) => {
         setCardClients(response.data);
+        setCharge(response.data.data.amount);
       })
       .catch(() => {
         setReloadFunction(() => getCharge());
+
         setCardClients({
           code: '',
           data: {

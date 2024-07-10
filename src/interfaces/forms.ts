@@ -204,6 +204,7 @@ export interface IListClientsProps {
   data: IClientProps[];
   loading: boolean;
   disabledBtnDelete: string;
+  error: boolean;
 }
 
 export interface NumericFormatCustomInput {
