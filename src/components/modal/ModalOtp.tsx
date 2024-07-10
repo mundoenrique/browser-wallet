@@ -26,7 +26,7 @@ import { useUiStore, useOtpStore, useUserStore } from '@/store';
  * @returns Json with the verification code
  */
 export default function ModalOtp(props: ModalOtpProps): JSX.Element {
-  const { handleClose, open, onSubmit, closeApp, title, textButton, processCode } = props;
+  const { handleClose, open, onSubmit, closeApp, title, textButton, processCode, disableSubmit } = props;
 
   const { setModalError } = useUiStore();
 
@@ -86,7 +86,7 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
             setTime={setTimeLeft}
           />
         </Box>
-        <Button variant="contained" type="submit" sx={{ width: '100%', mx: 'auto' }}>
+        <Button variant="contained" type="submit" sx={{ width: '100%', mx: 'auto' }} disabled={disableSubmit ?? false}>
           {textButton ? textButton : 'Verificar'}
         </Button>
         {closeApp && (

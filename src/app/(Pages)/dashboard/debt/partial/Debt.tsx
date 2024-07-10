@@ -51,6 +51,8 @@ export default function Debt() {
 
   const [openOtp, setOpenOtp] = useState<boolean>(false);
 
+  const [disableSubmit, setDisableSubmit] = useState<boolean>(false);
+
   useEffect(() => {
     sendGTMEvent({
       event: 'ga4.trackEvent',
@@ -97,6 +99,7 @@ export default function Debt() {
 
   const onSubmitOtp = useCallback(
     async (data: any) => {
+      setDisableSubmit(true);
       const { otp } = data;
       const payload = {
         otpProcessCode: 'DEBT_PAYMENT_OTP',
@@ -115,6 +118,9 @@ export default function Debt() {
         .catch((e) => {
           setModalError({ error: e });
           setLoadingScreen(false);
+        })
+        .finally(() => {
+          setDisableSubmit(false);
         });
     },
     [otpUuid] //eslint-disable-line
@@ -207,6 +213,7 @@ export default function Debt() {
           handleClose={() => setOpenOtp(false)}
           onSubmit={onSubmitOtp}
           processCode="DEBT_PAYMENT_OTP"
+          disableSubmit={disableSubmit}
         />
       )}
     </>
