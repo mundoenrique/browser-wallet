@@ -255,27 +255,19 @@ export interface UserStore {
 /**
  * OTP store
  * @typeParam otpValid - Initial state {@defaultValue `undefined`}
- * @typeParam timeLeft - Initial state {@defaultValue `0`}
- * @typeParam counting - Initial state {@defaultValue `false`}
- * @typeParam setCounting: (value: boolean) => void
- * @typeParam countdown: () => void
- * @typeParam setTime: (value: number) => void
+ * @typeParam otpUuid:  Initial state {@defaultValue ``}
+ * @typeParam setOtpUuid: () => void
  * @typeParam setOTPValid: (value: string) => void
- * @typeParam reset: ()=>void
+ *
  */
 export interface OtpStore {
   otpValid: 'OTP' | 'PASSWORD' | 'ENDING' | undefined;
-  timeLeft: number;
-  counting: boolean;
   otpUuid: string;
-  otpCode: string;
-  setOtpCode: (value: string) => void;
-  setOtpUuid: (value: string) => void;
-  setCounting: (value: boolean) => void;
+  timeLeft: number;
   countdown: () => void;
   setTime: (value: number) => void;
+  setOtpUuid: (value: string) => void;
   setOTPValid: (value: OtpStore['otpValid']) => void;
-  reset: () => void;
 }
 
 /**

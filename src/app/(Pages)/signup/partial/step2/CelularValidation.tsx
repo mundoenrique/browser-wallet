@@ -19,19 +19,15 @@ export default function CelularValidation() {
 
   const host = useHeadersStore((state) => state.host);
 
-  const resetOtp = useOtpStore((state) => state.reset);
-
   const { setModalError, setLoadingScreen } = useUiStore();
 
   const { inc, dec, onboardingUuId, ONB_PHASES_TERMS } = useRegisterStore();
 
-  const { timeLeft, countdown, counting, setCounting, setTime, otpUuid, setOtpUuid } = useOtpStore();
+  const { otpUuid, setOtpUuid } = useOtpStore();
+
+  const [timeLeft, setTimeLeft] = useState<number>(60);
 
   const [open, setOpen] = useState(false);
-
-  const timerRef = useRef<any>();
-
-  const initialized = useRef<boolean>(false);
 
   const { handleSubmit, control, reset } = useForm({
     defaultValues: { otp: '' },
@@ -79,7 +75,6 @@ export default function CelularValidation() {
       .then((response) => {
         if (response.data.code === '200.00.000') {
           inc();
-          resetOtp();
         }
       })
       .catch((e) => {
@@ -92,28 +87,12 @@ export default function CelularValidation() {
     reset();
   };
 
-  const timer = useCallback(async () => {
-    timerRef.current = setInterval(() => countdown(), 1000);
-  }, []); //eslint-disable-line react-hooks/exhaustive-deps
-
   useEffect(() => {
-    if (!counting && !initialized.current) {
-      (async () => {
-        await requestTFACode();
-      })();
-      setTime(60);
-      timer();
-      setCounting(true);
-      initialized.current = true;
-    } else if (counting && !initialized.current) {
-      timer();
-      initialized.current = true;
-    }
-  }, []); //eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (timeLeft === 0 && counting) {
-      clearInterval(timerRef.current);
+    if (timeLeft > 0) {
+      const timerId = setTimeout(() => {
+        setTimeLeft(timeLeft - 1);
+      }, 1000);
+      return () => clearTimeout(timerId);
     }
   }, [timeLeft]); //eslint-disable-line react-hooks/exhaustive-deps
 
@@ -183,9 +162,7 @@ export default function CelularValidation() {
             <Button
               onClick={async () => {
                 await requestTFACode();
-                setTime(60);
-                timer();
-                setCounting(true);
+                setTimeLeft(60);
                 reset();
                 setOpen(!open);
                 sendGTMEvent({

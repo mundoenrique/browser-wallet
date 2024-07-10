@@ -286,7 +286,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
             variant="contained"
             type="submit"
             onClick={() => {
-              showOptions && handleDelete(clientsData[showOptions]);
+              showOptions != null && handleDelete(clientsData[showOptions]);
             }}
           >
             Aceptar

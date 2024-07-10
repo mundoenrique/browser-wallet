@@ -24,8 +24,8 @@ import { formatTime } from '@/utils/toolHelper';
  * @label MUI Otp input - {@link https://viclafouch.github.io/mui-otp-input/}
  */
 export default function InputOTP(props: InputOTPProps): JSX.Element {
-  const { control, name, length, title, text, labelError, handleResendOTP } = props;
-  const { timeLeft, setTime } = useOtpStore();
+  const { control, name, length, title, text, labelError, handleResendOTP, timeLeft, setTime } = props;
+
   const [open, setOpen] = useState(false);
 
   const theme = useTheme();

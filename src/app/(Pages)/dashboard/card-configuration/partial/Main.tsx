@@ -18,8 +18,6 @@ export default function CardConfiguration() {
 
   const match = useMediaQuery(theme.breakpoints.up('sm'));
 
-  const resetOtp = useOtpStore((state) => state.reset);
-
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
   const { userId } = useUserStore((state) => state.user);
@@ -76,7 +74,6 @@ export default function CardConfiguration() {
           if (response.data.code === '200.00.000') {
             setOpenOtp(false);
             handleSubmit(onSubmit)();
-            resetOtp();
           }
         })
         .catch((e) => {
