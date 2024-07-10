@@ -24,35 +24,20 @@ export const useOtpStore = create<OtpStore>()(
     (set, get) => ({
       otpValid: 'OTP',
 
-      timeLeft: 0,
-
-      counting: false,
-
       otpUuid: '',
 
-      otpCode: '',
-
-      setOtpCode: (value) =>
-        set({
-          otpCode: value,
-        }),
-
-      setOtpUuid: (value) => set({ otpUuid: value }),
-
-      setCounting: (value) => set({ counting: value }),
+      timeLeft: 0,
 
       countdown: () => {
         const { timeLeft } = get();
         if (timeLeft > 0) {
           set((state: any) => ({ timeLeft: state.timeLeft - 1 }));
-        } else {
-          set(() => ({ counting: false }));
         }
       },
 
-      setTime: (value: number) => set({ timeLeft: value }),
+      setTime: (value) => set({ timeLeft: value }),
 
-      reset: () => set((state) => ({ ...state, timeLeft: 60, counting: false })),
+      setOtpUuid: (value) => set({ otpUuid: value }),
 
       setOTPValid: (value) => set({ otpValid: value }),
     }),

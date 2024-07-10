@@ -33,8 +33,6 @@ export default function Debt() {
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
-  const resetOtp = useOtpStore((state) => state.reset);
-
   const setView = useDebStore((state) => state.setView);
 
   const { userId } = useUserStore((state) => state.user);
@@ -112,7 +110,6 @@ export default function Debt() {
           if (response.data.code === '200.00.000') {
             setOpenOtp(false);
             payOffDebt();
-            resetOtp();
           }
         })
         .catch((e) => {

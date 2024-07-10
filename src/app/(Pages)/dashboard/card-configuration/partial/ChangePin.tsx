@@ -23,8 +23,6 @@ export default function ChangePin() {
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
-  const resetOtp = useOtpStore((state) => state.reset);
-
   const { userId } = useUserStore((state) => state.user);
 
   const cardId = useUserStore((state) => state.getUserCardId);
@@ -80,7 +78,6 @@ export default function ChangePin() {
           if (response.data.code === '200.00.000') {
             setOpenOtp(false);
             changePin();
-            resetOtp();
           }
         })
         .catch((e) => {

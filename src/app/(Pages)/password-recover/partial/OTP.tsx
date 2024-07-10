@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -28,7 +28,10 @@ export default function AuthOtp(props: AuthOtpFormProps) {
 
   const getUserPhone = useUserStore((state) => state.getUserPhone);
 
+  const [timeLeft, setTimeLeft] = useState<number>(60);
+
   const schema = getSchema(['otp']);
+
   const phoneNumber: string = getUserPhone();
 
   useEffect(() => {
@@ -92,6 +95,15 @@ export default function AuthOtp(props: AuthOtpFormProps) {
       });
   };
 
+  useEffect(() => {
+    if (timeLeft > 0) {
+      const timerId = setTimeout(() => {
+        setTimeLeft(timeLeft - 1);
+      }, 1000);
+      return () => clearTimeout(timerId);
+    }
+  }, [timeLeft]);
+
   return (
     <Box
       component="form"
@@ -113,6 +125,8 @@ export default function AuthOtp(props: AuthOtpFormProps) {
             phoneNumber
           )}. Ingrésalo aquí.`}
           handleResendOTP={handleReset}
+          timeLeft={timeLeft}
+          setTime={setTimeLeft}
         />
       </Box>
 
