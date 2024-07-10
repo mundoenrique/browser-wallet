@@ -35,7 +35,7 @@ export default function Biometric() {
   }, [setLoadingScreen, updateStep]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const validateBiometric = useCallback(() => {
+  const validateBiometric = async () => {
     const { consultant } = phaseInfo as any;
     const shortDoc = consultant.documentType === 'DNI' ? consultant.documentNumber.slice(2) : consultant.documentNumber;
     const payload = {
@@ -83,7 +83,8 @@ export default function Biometric() {
         ],
       },
     };
-    api
+    setLoadingScreen(true, { message: 'Estamos verificando tu información' });
+    await api
       .post('/onboarding/validatebiometric', payload, {
         headers: { identifier: 'e30b625a-e085-42a5-aac2-3d52f73ad8fe' },
       })
@@ -92,6 +93,7 @@ export default function Biometric() {
         if (decision === 'ACCEPT') {
           validateView();
         } else {
+          setLoadingScreen(false);
           updateStep(4);
           setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
         }
@@ -100,19 +102,15 @@ export default function Biometric() {
         updateStep(4);
         setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
       });
-  }, [phaseInfo, validateView, updateStep, setModalError]);
+  };
 
-  const receiveMessage = useCallback(
-    (event: any) => {
-      let data = window.JSON.parse(event.data);
-      if (data.payload.value === 'success') {
-        setLoadingScreen(true, { message: 'Estamos verificando tu información' });
-        validateBiometric();
-      }
-      if (data.payload.value === 'error') setBtnBack(true);
-    },
-    [setLoadingScreen, validateBiometric]
-  );
+  const receiveMessage = (event: any) => {
+    let data = window.JSON.parse(event.data);
+    if (data.payload.value === 'success') {
+      validateBiometric();
+    }
+    if (data.payload.value === 'error') setBtnBack(true);
+  };
 
   const captureBiometrics = useCallback(() => {
     window.addEventListener('message', receiveMessage, false);
@@ -139,14 +137,14 @@ export default function Biometric() {
       .finally(() => {
         setLoadingScreen(false);
       });
-  }, [receiveMessage, setLoadingScreen, setModalError, updateControl]);
+  }, []);
 
   useEffect(() => {
     if (!hasRun.current) {
       captureBiometrics();
       hasRun.current = true;
     }
-  }, []);
+  }, [captureBiometrics]);
 
   return (
     <Box
