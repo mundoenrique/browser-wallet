@@ -105,10 +105,13 @@ export default function Landing() {
       .then((responses: any) => {
         const [blackListResponse, docVerificationResponse] = responses;
 
+        const isSuccessCodeBlack = (response: any) => response?.data?.code === '200.00.343';
         const isSuccessCode = (response: any) => response?.data?.code === '200.00.000';
 
-        if (isSuccessCode(blackListResponse) && isSuccessCode(docVerificationResponse)) {
+        if (isSuccessCodeBlack(blackListResponse) && isSuccessCode(docVerificationResponse)) {
           inc();
+        } else {
+          setError(true);
         }
       })
       .catch(() => {
