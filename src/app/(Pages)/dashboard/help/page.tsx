@@ -12,7 +12,7 @@ import { ContainerLayout, HandleCard } from '@/components';
 import { useNavTitleStore, useMenuStore, useHeadersStore } from '@/store';
 
 export default function Help() {
-  // const { push } = useRouter()
+  const { push } = useRouter();
 
   const { setCurrentItem } = useMenuStore();
 
@@ -20,9 +20,9 @@ export default function Help() {
 
   const host = useHeadersStore((state) => state.host);
 
-  // const handleQuestions = () => {
-  //   push('/dashboard/help/frequent-questions');
-  // };
+  const handleQuestions = () => {
+    push('/dashboard/help/frequent-questions');
+  };
 
   const handleWhatsapp = () => {
     window.open('https://api.whatsapp.com/send?phone=51997535474', '_blank');
@@ -73,10 +73,10 @@ export default function Help() {
           ¿Necesitas contactarnos?
         </Typography>
         <Stack spacing={2}>
-          {/* <HandleCard avatar={<Questions color="primary" sx={{ p: '2px' }} />} onClick={handleQuestions}>
-        <Typography variant="subtitle2">Preguntas frecuentes</Typography>
-        <Typography variant="body2">Inquietudes y asesorías </Typography>
-      </HandleCard> */}
+          <HandleCard avatar={<Questions color="primary" sx={{ p: '2px' }} />} onClick={handleQuestions}>
+            <Typography variant="subtitle2">Preguntas frecuentes</Typography>
+            <Typography variant="body2">Inquietudes y asesorías </Typography>
+          </HandleCard>
 
           <HandleCard avatar={<WhatsappIcon color="primary" sx={{ p: '3px' }} />} onClick={handleWhatsapp}>
             <Typography variant="subtitle2">Contáctanos por WhatsApp</Typography>
