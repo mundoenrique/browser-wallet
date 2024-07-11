@@ -158,3 +158,14 @@ export const formatTime = (seconds: number) => {
 export const formatAmount = (amount: string) => {
   return parseFloat(amount).toFixed(2);
 };
+
+
+export const validateTime = (timeSession: number, dateSession:string) => {
+
+  const date = new Date(dateSession).getTime();
+  const now = new Date().getTime();
+  const time: number = Math.trunc(Math.abs((date - now) / 1000));
+  const timeRest: number = timeSession - time;
+
+  return timeRest
+}
