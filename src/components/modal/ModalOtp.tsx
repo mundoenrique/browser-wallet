@@ -71,6 +71,10 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
     }
   }, [formState, reset]);
 
+  useEffect(() => {
+    requestTFACode();
+  }, [requestTFACode]);
+
   return (
     <ModalResponsive open={open} handleClose={handleClose}>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
