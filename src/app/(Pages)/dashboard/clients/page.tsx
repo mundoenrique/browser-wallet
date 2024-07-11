@@ -174,7 +174,7 @@ export default function Clients() {
     setLastPage(Math.ceil(data.length / itemsPage));
     const startIndex = (page - 1) * itemsPage;
     const endIndex = startIndex + itemsPage;
-    data.sort((a: any, b: any) => (new Date(a.date) as any) - (new Date(b.date) as any));
+    data.sort((a: any, b: any) => (new Date(b.date) as any) - (new Date(a.date) as any));
     setTimeout(() => {
       setIsloading(false);
     }, 1000);

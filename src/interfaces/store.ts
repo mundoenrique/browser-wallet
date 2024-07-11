@@ -204,22 +204,26 @@ export type IUserRegisterProps = {
  */
 
 export interface IClientProps {
-  chargeId: number;
-  date: Date;
+  chargeId?: string;
+  date?: string;
   name?: string;
   fullname?: string;
   amount: number;
   status: string;
-  status_type: string;
-  month: string;
-  number: string;
+  status_type?: string;
+  month?: string;
+  number?: string;
 }
 
 export interface ClientStore {
-  client: IClientProps | null;
-  setClient: (data: IClientProps) => void;
+  client: ClientPay | null;
+  setClient: (data: ClientPay) => void;
 }
 
+export interface ClientPay {
+  fullname: string | undefined;
+  number: string | undefined;
+}
 export interface CatalogsStore {
   termsCatalog: { code: string; value: string }[];
   passwordTermsCatalog: { code: string; value: string }[];
