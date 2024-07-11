@@ -3,29 +3,27 @@
 import io from 'socket.io-client';
 //Internal app
 import { QRCodeReader } from '@/components';
-import { useCallback, useEffect, useState } from 'react';
 
 let socket: any;
 
 export default function Qr() {
-  const [cardIdActivate, setCardIdActivate] = useState<any>(null);
-
-  const handleSocketEmit = useCallback(async () => {
+  const handleSocketEmit = async (cardId: any) => {
     await fetch('/api/socket');
     socket = io('', {
       path: '/api/my_socket',
     });
-    socket.emit('sendData', cardIdActivate);
-  }, [cardIdActivate]); //eslint-disable-line react-hooks/exhaustive-deps
+    socket.emit('sendData', cardId);
+  };
 
-  useEffect(() => {
-    handleSocketEmit();
-  }, [cardIdActivate]); //eslint-disable-line react-hooks/exhaustive-deps
-
-  const readCodeFunction = (data: any): Promise<any> => {
+  const readCodeFunction = (cardId: any): Promise<any> => {
     return new Promise((resolve) => {
-      setCardIdActivate(data);
-      resolve(data);
+      if (!cardId) {
+        resolve(null);
+      } else {
+        handleSocketEmit(cardId);
+        resolve(cardId);
+        socket.disconnect();
+      }
     });
   };
   return <QRCodeReader readCode={readCodeFunction} />;

@@ -84,7 +84,7 @@ export default function Landing() {
     const blacklistPayload = {
       names: encryptForge(`${consultant.firstName} ${consultant.middleName}`),
       lastNames: encryptForge(`${consultant.firstLastName} ${consultant.secondLastName}`),
-      documentNumber: encryptForge(consultant.documentNumber),
+      documentNumber: encryptForge(shortDoc),
       documentType: encryptForge(consultant.documentType),
       identifier: '123e4567-e89b-42d3-a456-556642440000', //TODO: TEMPORAL MIENTRAS HACEN EL CAMBIO A HEADERS
     };
@@ -105,9 +105,10 @@ export default function Landing() {
       .then((responses: any) => {
         const [blackListResponse, docVerificationResponse] = responses;
 
+        const isSuccessCodeBlack = (response: any) => response?.data?.code === '200.00.343';
         const isSuccessCode = (response: any) => response?.data?.code === '200.00.000';
 
-        if (isSuccessCode(blackListResponse) && isSuccessCode(docVerificationResponse)) {
+        if (isSuccessCodeBlack(blackListResponse) && isSuccessCode(docVerificationResponse)) {
           inc();
         }
       })
