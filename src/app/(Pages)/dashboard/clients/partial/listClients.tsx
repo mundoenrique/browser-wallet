@@ -74,7 +74,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
 
   const handleCash = (client: IClientProps) => {
     router.push('/dashboard/collect');
-    setClient(client);
+    setClient({ fullname: client.fullname, number: client.number });
     setShowOptions(null);
     sendGTMEvent({
       event: 'ga4.trackEvent',
@@ -241,7 +241,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
                         bgcolor: '#FBE5E5',
                         height: 59,
                         width: 59,
-                        display: 'flex',
+                        display: client.status === 'PENDING' ? 'flex' : 'none',
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}

@@ -40,6 +40,8 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
 
   const schemaFormOtp = getSchema(['otp']);
 
+  const initialized = useRef<boolean>(false);
+
   const { control, handleSubmit, reset, formState } = useForm({
     defaultValues: { otp: '' },
     resolver: yupResolver(schemaFormOtp),
@@ -72,33 +74,43 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
   }, [formState, reset]);
 
   useEffect(() => {
-    requestTFACode();
+    if (!initialized.current) {
+      initialized.current = true;
+      requestTFACode();
+    }
   }, [requestTFACode]);
 
   return (
-    <ModalResponsive open={open} handleClose={handleClose}>
-      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Box mb={3}>
-          <InputOTP
-            name="otp"
-            control={control}
-            length={4}
-            title={title ? title : '🎰 Verificación en dos pasos'}
-            text={`Ingresa el código enviado a tu número celular +51 *** *** ${handleMaskOtp(getUserPhone())} `}
-            handleResendOTP={requestTFACode}
-            timeLeft={timeLeft}
-            setTime={setTimeLeft}
-          />
-        </Box>
-        <Button variant="contained" type="submit" sx={{ width: '100%', mx: 'auto' }} disabled={disableSubmit ?? false}>
-          {textButton ? textButton : 'Verificar'}
-        </Button>
-        {closeApp && (
-          <Button variant="outlined" sx={{ width: '100%', mx: 'auto', mt: 2 }} onClick={handleClose}>
-            Conservar cuenta Yiro
+    <>
+      <ModalResponsive open={open} handleClose={handleClose}>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+          <Box mb={3}>
+            <InputOTP
+              name="otp"
+              control={control}
+              length={4}
+              title={title ? title : '🎰 Verificación en dos pasos'}
+              text={`Ingresa el código enviado a tu número celular +51 *** *** ${handleMaskOtp(getUserPhone())} `}
+              handleResendOTP={requestTFACode}
+              timeLeft={timeLeft}
+              setTime={setTimeLeft}
+            />
+          </Box>
+          <Button
+            variant="contained"
+            type="submit"
+            sx={{ width: '100%', mx: 'auto' }}
+            disabled={disableSubmit ?? false}
+          >
+            {textButton ? textButton : 'Verificar'}
           </Button>
-        )}
-      </Box>
-    </ModalResponsive>
+          {closeApp && (
+            <Button variant="outlined" sx={{ width: '100%', mx: 'auto', mt: 2 }} onClick={handleClose}>
+              Conservar cuenta Yiro
+            </Button>
+          )}
+        </Box>
+      </ModalResponsive>
+    </>
   );
 }
