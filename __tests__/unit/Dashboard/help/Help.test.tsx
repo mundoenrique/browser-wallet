@@ -1,18 +1,16 @@
-import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen, fireEvent } from '@testing-library/react';
 //Internal app
 import Help from '@/app/(Pages)/dashboard/help/page';
 import { mockRouterPush } from '../../../tools/unitTestHelper.test';
 
 describe('Help', () => {
   const routerPushMock = jest.fn();
-  const handleWhatsappMock = jest.fn();
 
   beforeEach(async () => {
     mockRouterPush(routerPushMock)
     await act(async () => {
-      render(<Help handleWhatsapp={handleWhatsappMock}/>);
+      render(<Help />);
     });
-    expect(render).toBeTruthy();
   });
 
   //** Renders a title, subtitles.
@@ -32,5 +30,12 @@ describe('Help', () => {
     expect(screen.getByText(/contáctanos por WhatsApp/i)).toBeInTheDocument();
     fireEvent.click(whatsappHandleCard);
     expect(window.open).toHaveBeenCalledWith('https://api.whatsapp.com/send?phone=51997535474', '_blank');
+  });
+
+  it('calls handleQuestionsfunction when Questions HandleCard is clicked', () => {
+    const questionspHandleCard = screen.getByText('Preguntas frecuentes');
+    expect(screen.getByText(/contáctanos por WhatsApp/i)).toBeInTheDocument();
+    fireEvent.click(questionspHandleCard);
+    expect(routerPushMock).toHaveBeenCalledWith('/dashboard/help/frequent-questions');
   });
 });
