@@ -2,7 +2,7 @@
 
 import dayjs from 'dayjs';
 import { sendGTMEvent } from '@next/third-parties/google';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { Avatar, Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
@@ -16,7 +16,7 @@ import { useUserStore, useUiStore, useChargeStore, useMenuStore, useNavTitleStor
 
 const checkboxOptions = [
   { text: 'Todos mis cobros', value: '' },
-  { text: 'Cobrado', value: 'CHARGED' },
+  { text: 'Cobrado', value: 'PAID' },
   { text: 'Cobros pendientes', value: 'PENDING' },
   { text: 'Cobros vencidos', value: 'EXPIRED' },
   { text: 'Cancelado', value: 'CANCELLED' },
@@ -94,6 +94,7 @@ export default function Clients() {
   const disabledBtnDelete = 'PENDING';
 
   const initialized = useRef<boolean>(false);
+  const isClients = useRef<boolean>(false);
 
   useEffect(() => {
     sendGTMEvent({
@@ -117,6 +118,7 @@ export default function Clients() {
   const handleFilters = async (e: Event) => {
     e.preventDefault();
     setCurrentView(ENUM_VIEW.MAIN);
+    await getClientAPI();
     sendGTMEvent({
       event: 'ga4.trackEvent',
       eventName: 'select_content',
@@ -149,14 +151,17 @@ export default function Clients() {
     setError(false);
     api
       .get(`/payments/${user.userId}/chargelist`, {
-        params: { days: 30, limit: 100, page: 1, date: filterMonth.value },
+        params: { days: 30, limit: 100, page: 1, date: filterMonth.value, transactionCode: paymentStatusCode },
       })
       .then((response) => {
         const {
           data: { data },
         } = response;
         if (data) {
+          isClients.current = false;
           setClientsData(data);
+        } else {
+          isClients.current = true;
         }
       })
       .catch((e) => {
@@ -181,6 +186,11 @@ export default function Clients() {
     return data.slice(startIndex, endIndex);
   };
 
+  const changeViewFilters = () => {
+    setClientsData([]);
+    setCurrentView(ENUM_VIEW.FILTERS);
+  };
+
   useEffect(() => {
     window.addEventListener('scroll', scrollHandle);
     return () => {
@@ -195,7 +205,7 @@ export default function Clients() {
     } else {
       initialized.current = false;
     }
-  }, [filterMonth]); //eslint-disable-line react-hooks/exhaustive-deps
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     updateTitle('Mis clientes');
@@ -205,12 +215,12 @@ export default function Clients() {
   useEffect(() => {
     setPaginatedClientData([]);
     setCurrentPage(1);
-    if (!(paymentStatusCode === '')) {
-      setFilteredClientData(clientsData.filter((el: any) => el.status == paymentStatusCode));
-      return;
-    }
+    // if (!(paymentStatusCode === '')) {
+    //   setFilteredClientData(clientsData.filter((el: any) => el.status == paymentStatusCode));
+    //   return;
+    // }
     setFilteredClientData(clientsData);
-  }, [paymentStatusCode, clientsData]);
+  }, [clientsData]);
 
   useEffect(() => {
     !isLoading &&
@@ -304,7 +314,7 @@ export default function Clients() {
                   </Avatar>
                 }
                 sx={{ justifyContent: 'flex-start' }}
-                onClick={() => (match ? setCurrentView(ENUM_VIEW.FILTERS) : setOpen(true))}
+                onClick={() => (match ? changeViewFilters() : setOpen(true))}
               >
                 {`${filterMonth.text ?? ''} ${filterMonth.text && paymentStatus && '-'} ${paymentStatus ?? ''}`}
               </Button>
@@ -313,6 +323,7 @@ export default function Clients() {
                 loading={isLoading}
                 disabledBtnDelete={disabledBtnDelete}
                 error={error}
+                isClients={isClients.current}
               />
             </Box>
           )}

@@ -207,6 +207,7 @@ export interface IListClientsProps {
   loading: boolean;
   disabledBtnDelete: string;
   error: boolean;
+  isClients: boolean;
 }
 
 export interface NumericFormatCustomInput {
