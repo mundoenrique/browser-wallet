@@ -17,7 +17,7 @@ import { IClientProps, IListClientsProps } from '@/interfaces';
 import { useClientStore, useUserStore, useUiStore, useHeadersStore } from '@/store';
 
 export default function ClientList(props: IListClientsProps): JSX.Element {
-  const { data, loading, disabledBtnDelete, error } = props;
+  const { data, loading, disabledBtnDelete, error, isClients } = props;
 
   const router = useRouter();
 
@@ -150,116 +150,112 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
           },
         }}
       >
-        {data.length > 0
-          ? clientsData.map((client: IClientProps, index: number) => (
-              <Box
-                key={index}
-                component="li"
-                sx={{
-                  height: 60,
-                  display: 'flex',
-                  bgcolor: slate[100],
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  borderBottom: ` 1px solid ${slate[300]}`,
-                }}
+        {data.length > 0 &&
+          clientsData.map((client: IClientProps, index: number) => (
+            <Box
+              key={index}
+              component="li"
+              sx={{
+                height: 60,
+                display: 'flex',
+                bgcolor: slate[100],
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                borderBottom: ` 1px solid ${slate[300]}`,
+              }}
+            >
+              <Box sx={{ display: 'flex', flexShrink: 0, width: 'calc(100% - 40px)' }}>
+                <Box sx={{ px: '12px' }}>
+                  <Avatar
+                    sx={{
+                      bgcolor: fuchsiaBlue[200],
+                      color: 'primary.main',
+                      fontSize: 12,
+                      fontWeight: 700,
+                      height: 28,
+                      width: 28,
+                    }}
+                    {...stringAvatar(client.fullname ?? '')}
+                  />
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flex: 1,
+                    justifyContent: 'space-between',
+                    minWidth: 170,
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => handleNameClick(index)}
+                >
+                  <Box>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ maxWidth: 140, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+                    >
+                      {client.fullname}
+                    </Typography>
+                    <Typography fontSize={10} lineHeight="16px">
+                      {dayjs(client.date).format('MMMM D, h:mm a')}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                    <Typography variant="subtitle2" color={statusObject[client.status]?.color}>
+                      {Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(client.amount)}
+                    </Typography>
+                    <Typography fontSize={10} lineHeight="16px" color={statusObject[client.status]?.color}>
+                      {statusObject[client.status]?.text}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+              {showOptions !== index && (
+                <IconButton onClick={() => handleOptionsClick(index)}>
+                  <MoreVertOutlinedIcon />
+                </IconButton>
+              )}
+              <Collapse
+                orientation={'horizontal'}
+                in={showOptions === index}
+                timeout={300}
+                sx={{ flexShrink: 0 }}
+                easing={{ enter: 'out' }}
               >
-                <Box sx={{ display: 'flex', flexShrink: 0, width: 'calc(100% - 40px)' }}>
-                  <Box sx={{ px: '12px' }}>
-                    <Avatar
-                      sx={{
-                        bgcolor: fuchsiaBlue[200],
-                        color: 'primary.main',
-                        fontSize: 12,
-                        fontWeight: 700,
-                        height: 28,
-                        width: 28,
-                      }}
-                      {...stringAvatar(client.fullname ?? '')}
-                    />
+                <Box sx={{ display: 'flex', alignItems: 'center', ml: '12px' }}>
+                  <Box
+                    sx={{
+                      bgcolor: '#D3FCB6',
+                      height: 59,
+                      width: 59,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <IconButton onClick={() => handleCash(client)}>
+                      <CashIcons sx={{ color: slate[700] }} />
+                    </IconButton>
                   </Box>
                   <Box
                     sx={{
-                      display: 'flex',
-                      flex: 1,
-                      justifyContent: 'space-between',
-                      minWidth: 170,
-                      cursor: 'pointer',
+                      bgcolor: '#FBE5E5',
+                      height: 59,
+                      width: 59,
+                      display: client.status === 'PENDING' ? 'flex' : 'none',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                     }}
-                    onClick={() => handleNameClick(index)}
                   >
-                    <Box>
-                      <Typography
-                        variant="subtitle2"
-                        sx={{ maxWidth: 140, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
-                      >
-                        {client.fullname}
-                      </Typography>
-                      <Typography fontSize={10} lineHeight="16px">
-                        {dayjs(client.date).format('MMMM D, h:mm a')}
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                      <Typography variant="subtitle2" color={statusObject[client.status]?.color}>
-                        {Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(client.amount)}
-                      </Typography>
-                      <Typography fontSize={10} lineHeight="16px" color={statusObject[client.status]?.color}>
-                        {statusObject[client.status]?.text}
-                      </Typography>
-                    </Box>
+                    <IconButton onClick={() => setOpenDeleteModal(true)} disabled={client.status !== disabledBtnDelete}>
+                      <DeleteIcons sx={{ color: client.status === disabledBtnDelete ? slate[700] : '' }} />
+                    </IconButton>
                   </Box>
                 </Box>
-                {showOptions !== index && (
-                  <IconButton onClick={() => handleOptionsClick(index)}>
-                    <MoreVertOutlinedIcon />
-                  </IconButton>
-                )}
-                <Collapse
-                  orientation={'horizontal'}
-                  in={showOptions === index}
-                  timeout={300}
-                  sx={{ flexShrink: 0 }}
-                  easing={{ enter: 'out' }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', ml: '12px' }}>
-                    <Box
-                      sx={{
-                        bgcolor: '#D3FCB6',
-                        height: 59,
-                        width: 59,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <IconButton onClick={() => handleCash(client)}>
-                        <CashIcons sx={{ color: slate[700] }} />
-                      </IconButton>
-                    </Box>
-                    <Box
-                      sx={{
-                        bgcolor: '#FBE5E5',
-                        height: 59,
-                        width: 59,
-                        display: client.status === 'PENDING' ? 'flex' : 'none',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <IconButton
-                        onClick={() => setOpenDeleteModal(true)}
-                        disabled={client.status !== disabledBtnDelete}
-                      >
-                        <DeleteIcons sx={{ color: client.status === disabledBtnDelete ? slate[700] : '' }} />
-                      </IconButton>
-                    </Box>
-                  </Box>
-                </Collapse>
-              </Box>
-            ))
-          : !loading && <EmptySlot />}
-
-        {loading && <SkeletonTable />}
+              </Collapse>
+            </Box>
+          ))}
+        {isClients && !loading && <EmptySlot />}
+        {data.length == 0 && loading && <SkeletonTable />}
         {error && <ErrorSlot />}
       </Box>
       <ModalResponsive

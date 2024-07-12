@@ -20,7 +20,7 @@ const config: Config = {
     'src/app/**/signin/*page.tsx',
     'src/app/**/identify/[user]/*page.tsx',
     // 'src/app/**/password-recover/*page.tsx',
-    'src/app/**/dashboard/*page.tsx',
+    // 'src/app/**/dashboard/*page.tsx',
   ],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   coverageProvider: 'v8',
@@ -40,6 +40,7 @@ const config: Config = {
     '<rootDir>/__tests__/unit/Dashboard/legal',
     '<rootDir>/__tests__/unit/Dashboard/recharge',
     '<rootDir>/__tests__/unit/PasswordRecover',
+    '<rootDir>/__tests__/unit/Dashboard',
   ],
 };
 
