@@ -41,6 +41,7 @@ describe('Dashboard', () => {
   //** Renders a title, subtitles.
   it('should render all text, titles, subtitles.', () => {
     expect(screen.getByText('Últimos movimientos')).toBeInTheDocument();
+    expect(screen.getByText('Ver todo')).toBeInTheDocument();
   });
 
   it('call API getMovements', async () => {
