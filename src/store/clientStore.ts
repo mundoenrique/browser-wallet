@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 //Internal app
-import { ClientStore, IClientProps } from '@/interfaces';
+import { ClientStore } from '@/interfaces';
 
 /**
  * Store client
@@ -10,5 +10,5 @@ import { ClientStore, IClientProps } from '@/interfaces';
  */
 export const useClientStore = create<ClientStore>((set) => ({
   client: null,
-  setClient: (data: IClientProps) => set(() => ({ client: data })),
+  setClient: (data) => set(() => ({ client: data })),
 }));

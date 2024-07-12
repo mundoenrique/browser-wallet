@@ -42,8 +42,6 @@ export default function CardInformation() {
 
   const host = useHeadersStore((state) => state.host);
 
-  const resetOtp = useOtpStore((state) => state.reset);
-
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
   const { userId } = useUserStore((state) => state.user);
@@ -120,7 +118,6 @@ export default function CardInformation() {
           if (response.data.code === '200.00.000') {
             setOpen(false);
             getDecryptData();
-            resetOtp();
           }
         })
         .catch((e) => {

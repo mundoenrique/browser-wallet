@@ -32,6 +32,7 @@ export interface ModalOtpProps {
   title?: string | boolean;
   textButton?: string | boolean;
   processCode: string;
+  disableSubmit?: boolean;
 }
 
 /**

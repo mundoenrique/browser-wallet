@@ -85,6 +85,7 @@ const setError = (eCode?: string, context?: string) => {
     '066': { description: 'El número de teléfono ya ha sido registrado por otro usuario' },
     '085': { description: 'El código OTP ha expirado' },
     '093': { description: 'El usuario se encuentra bloqueado' },
+    '106': { title: 'Usuario invalido', description: 'Por favor ponte en contacto con Somos Belcorp' },
     '312': { description: 'El correo ya ha sido registrado por otro usuario' },
     '313': { description: 'El id de usuario ya se encuentra registrado' },
     '338': { description: 'Código de transacción no válido' },
