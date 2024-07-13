@@ -31,9 +31,7 @@ async function redirectLinks(textLink: HTMLElement, routePath: string, router: F
  */
 function emptyField(submitButton: HTMLElement, erroMsg: string) {
   fireEvent.click(submitButton);
-  waitFor(() => {
-    expect(screen.queryByText(erroMsg)).toBeInTheDocument();
-  });
+  waitFor(() => expect(screen.queryByText(erroMsg)).toBeInTheDocument());
 }
 
 /**
