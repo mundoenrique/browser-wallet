@@ -45,11 +45,6 @@ export const useUserStore = create<UserStore>()(
           } = get().user;
           return decryptForge(cardId);
         },
-
-        isUserCardVirtual: () => {
-          const cardInformation = get().cardInformation;
-          return cardInformation ? cardInformation.cardType === 'VIRTUAL' : true;
-        },
       }),
       {
         name: 'user-store',

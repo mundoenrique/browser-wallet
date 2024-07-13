@@ -4,13 +4,24 @@ import { useEffect, useState } from 'react';
 import { Avatar, Box, Button, Card, Stack, Typography } from '@mui/material';
 //Internal app
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { useConfigCardStore, useNavTitleStore } from '@/store';
+import { useConfigCardStore, useNavTitleStore, useUserStore, useUiStore } from '@/store';
 import { ContainerLayout, Linking, ModalResponsive } from '@/components';
+import { api } from '@/utils/api';
 
 export default function RequestPhysicalCard() {
-  const { updateTitle } = useNavTitleStore();
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
 
-  const { updatePage } = useConfigCardStore();
+  const updatePage = useConfigCardStore((state) => state.updatePage);
+
+  const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
+  const loadingScreen = useUiStore((state) => state.loadingScreen);
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const { userId } = useUserStore((state) => state.user);
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -19,7 +30,19 @@ export default function RequestPhysicalCard() {
   }, [updateTitle]);
 
   const handleSendCard = () => {
-    setOpen(!open);
+    setLoadingScreen(true);
+    api
+      .post(`/users/${userId}/physicalcard`)
+      .then(() => {
+        setCardProperties('cardActivationStatus', 'PENDING');
+        setOpen(!open);
+      })
+      .catch((e) => {
+        setModalError({ error: e });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
   };
 
   return (
@@ -93,12 +116,18 @@ export default function RequestPhysicalCard() {
           </Stack>
         </Card>
 
-        <Button variant="contained" onClick={handleSendCard}>
+        <Button variant="contained" onClick={handleSendCard} disabled={loadingScreen}>
           Solicitar tarjeta
         </Button>
       </ContainerLayout>
 
-      <ModalResponsive open={open} handleClose={() => setOpen(false)}>
+      <ModalResponsive
+        open={open}
+        handleClose={() => {
+          setOpen(false);
+          updatePage('main');
+        }}
+      >
         <Typography variant="subtitle1">💳 ¡Listo! Te enviaremos tu tarjeta en el siguiente pedido.</Typography>
       </ModalResponsive>
     </>

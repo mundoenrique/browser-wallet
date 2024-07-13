@@ -1,8 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import Image from 'next/image';
 import { sendGTMEvent } from '@next/third-parties/google';
-import { Box, Card, Divider, List, Typography } from '@mui/material';
+import { Box, Card, Divider, List, Typography, Link as LinkMui } from '@mui/material';
 //Internal app
 import card from '%/images/cardYiro.svg';
 import ItemsSidebar from './ItemsSidebar';
@@ -11,6 +12,7 @@ import { fuchsiaBlue } from '@/theme/theme-default';
 import { LogoutAppIcons, LogoutIcons } from '%/Icons';
 import ItemSecondarySidebar from './ItemSecondarySidebar';
 import { useConfigCardStore, useHeadersStore } from '@/store';
+
 //Eliminar este store despues de la certificacion de inicio de sesión
 import { accessSessionStore } from '@/store/accessSessionStore';
 
@@ -23,12 +25,18 @@ import { accessSessionStore } from '@/store/accessSessionStore';
 export default function ListSidebar(): JSX.Element {
   const updatePage = useConfigCardStore((state) => state.updatePage);
 
+  const isCardVirtual = useConfigCardStore((state) => state.isCardVirtual);
+
+  const cardActivationStatus = useConfigCardStore((state) => state.cardActivationStatus);
+
   //Eliminar este store despues de la certificacion de inicio de sesión
   const { setAccessSession } = accessSessionStore();
 
   const { backLink } = useHeadersStore();
 
   const host = useHeadersStore((state) => state.host);
+
+  const virtual = isCardVirtual();
 
   return (
     <>
@@ -45,31 +53,65 @@ export default function ListSidebar(): JSX.Element {
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', cursor: 'pointer' }}>
-        <Card
-          variant="detailCard"
-          sx={{ mt: { xs: 10, md: 'auto' }, mb: { xs: 0, md: 'auto' } }}
-          onClick={() => {
-            updatePage('requestPhysicalCard');
-            sendGTMEvent({
-              event: 'ga4.trackEvent',
-              eventName: 'select_content',
-              eventParams: {
-                content_type: 'boton',
-                section: `Yiro :: ¿Ya solicitaste tu tarjeta? :: menu_1`,
-                previous_section: 'dashboard',
-                selected_content: 'menu_1 :: ¿Ya solicitaste tu tarjeta?',
-                destination_page: `${host}/card-configuration`,
-              },
-            });
-          }}
-        >
-          <Box sx={{ mr: 3, display: 'flex', alignItems: 'center' }}>
-            <Image src={card} width={70} height={44} alt="Tarjeta Yiro" priority />
-          </Box>
-          <Typography fontSize="14px" fontWeight={700} mr={4}>
-            ¿Ya solicitaste tu tarjeta?
-          </Typography>
-        </Card>
+        <LinkMui component={Link} href="/dashboard/card-configuration" sx={{ textDecoration: 'none' }}>
+          {virtual && (
+            <>
+              {cardActivationStatus === 'PENDING' ? (
+                <Card
+                  variant="detailCard"
+                  sx={{ mt: { xs: 10, md: 'auto' }, mb: { xs: 0, md: 'auto' } }}
+                  onClick={() => {
+                    updatePage('activatePhysicalCard');
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'select_content',
+                      eventParams: {
+                        content_type: 'boton',
+                        section: `Yiro :: ¿Ya activaste tu tarjeta? :: menu_1`,
+                        previous_section: 'dashboard',
+                        selected_content: 'menu_1 :: ¿Ya activaste tu tarjeta?',
+                        destination_page: `${host}/card-configuration`,
+                      },
+                    });
+                  }}
+                >
+                  <Box sx={{ mr: 3, display: 'flex', alignItems: 'center' }}>
+                    <Image src={card} width={70} height={44} alt="Tarjeta Yiro" priority />
+                  </Box>
+                  <Typography fontSize="14px" fontWeight={700} mr={4}>
+                    ¿Ya activaste tu tarjeta?
+                  </Typography>
+                </Card>
+              ) : (
+                <Card
+                  variant="detailCard"
+                  sx={{ mt: { xs: 10, md: 'auto' }, mb: { xs: 0, md: 'auto' } }}
+                  onClick={() => {
+                    updatePage('requestPhysicalCard');
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'select_content',
+                      eventParams: {
+                        content_type: 'boton',
+                        section: `Yiro :: ¿Ya solicitaste tu tarjeta? :: menu_1`,
+                        previous_section: 'dashboard',
+                        selected_content: 'menu_1 :: ¿Ya solicitaste tu tarjeta?',
+                        destination_page: `${host}/card-configuration`,
+                      },
+                    });
+                  }}
+                >
+                  <Box sx={{ mr: 3, display: 'flex', alignItems: 'center' }}>
+                    <Image src={card} width={70} height={44} alt="Tarjeta Yiro" priority />
+                  </Box>
+                  <Typography fontSize="14px" fontWeight={700} mr={4}>
+                    ¿Ya solicitaste tu tarjeta?
+                  </Typography>
+                </Card>
+              )}
+            </>
+          )}
+        </LinkMui>
         <ItemsSidebar />
       </Box>
 

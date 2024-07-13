@@ -19,12 +19,16 @@ export default function CardConfiguration() {
 
   const { updateTitle } = useNavTitleStore();
 
-  const { page, updatePage } = useConfigCardStore();
+  const page = useConfigCardStore((state) => state.page);
+
+  const updatePage = useConfigCardStore((state) => state.updatePage);
 
   useEffect(() => {
     updateTitle('Configuración de mi tarjeta');
     setCurrentItem('card-settings');
-    updatePage('main');
+    return () => {
+      updatePage('main');
+    };
   }, [updateTitle, setCurrentItem, updatePage]);
 
   const configCardRoutes = (page: string) => {

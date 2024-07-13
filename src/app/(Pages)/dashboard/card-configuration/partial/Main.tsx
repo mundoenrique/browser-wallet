@@ -44,7 +44,7 @@ export default function CardConfiguration() {
 
   const isCardVirtual = useConfigCardStore((state) => state.isCardVirtual);
 
-  const isUserCardVirtual = useUserStore((state) => state.isUserCardVirtual);
+  const cardActivationStatus = useConfigCardStore((state) => state.cardActivationStatus);
 
   const [openOtp, setOpenOtp] = useState<boolean>(false);
 
@@ -130,16 +130,30 @@ export default function CardConfiguration() {
         <CardInformation />
 
         <Stack spacing={3 / 2} mt={3}>
-          {isUserCardVirtual() && (
-            <HandleCard
-              onClick={() => {
-                updatePage('activatePhysicalCard');
-              }}
-              avatar={<CardIcons color="primary" sx={{ p: '2px' }} />}
-              icon={<Arrow />}
-            >
-              <Typography variant="subtitle2">Activa tu tarjeta física</Typography>
-            </HandleCard>
+          {virtualCard && (
+            <>
+              {cardActivationStatus === 'PENDING' ? (
+                <HandleCard
+                  onClick={() => {
+                    updatePage('activatePhysicalCard');
+                  }}
+                  avatar={<CardIcons color="primary" sx={{ p: '2px' }} />}
+                  icon={<Arrow />}
+                >
+                  <Typography variant="subtitle2">Activa tu tarjeta física</Typography>
+                </HandleCard>
+              ) : (
+                <HandleCard
+                  onClick={() => {
+                    updatePage('requestPhysicalCard');
+                  }}
+                  avatar={<CardIcons color="primary" sx={{ p: '2px' }} />}
+                  icon={<Arrow />}
+                >
+                  <Typography variant="subtitle2">Solicita tu tarjeta física</Typography>
+                </HandleCard>
+              )}
+            </>
           )}
           <HandleCard
             avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />}
