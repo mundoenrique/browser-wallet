@@ -64,9 +64,9 @@ const useSocket = ({ onInfoUser }: UseSocketProps) => {
 };
 
 export default function ActivatePhysicalCard() {
-  const { updateTitle } = useNavTitleStore();
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
 
-  const { updatePage } = useConfigCardStore();
+  const updatePage = useConfigCardStore((state) => state.updatePage);
 
   const host = useHeadersStore((state) => state.host);
 

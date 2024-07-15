@@ -15,9 +15,9 @@ import {
 } from './partial';
 
 export default function CardConfiguration() {
-  const { setCurrentItem } = useMenuStore();
+  const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
 
-  const { updateTitle } = useNavTitleStore();
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
 
   const page = useConfigCardStore((state) => state.page);
 

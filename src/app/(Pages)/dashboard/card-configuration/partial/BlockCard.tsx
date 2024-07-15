@@ -17,9 +17,9 @@ import { useUserStore, useUiStore, useOtpStore, useNavTitleStore, useConfigCardS
 export default function BlockCard() {
   const router = useRouter();
 
-  const { updateTitle } = useNavTitleStore();
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
 
-  const { updatePage } = useConfigCardStore();
+  const updatePage = useConfigCardStore((state) => state.updatePage);
 
   const host = useHeadersStore((state) => state.host);
 

@@ -38,13 +38,6 @@ export const useConfigCardStore = create<ConfigCardStore>()(
       return Object.hasOwn(blockObject, 'code');
     },
     /**
-     * Set card type attibute, if virtual then value is true, otherwise is false
-     */
-    isCardVirtual: () => {
-      const cardType = get().cardType;
-      return cardType === 'VIRTUAL';
-    },
-    /**
      * Card block type
      */
     blockType: {},
