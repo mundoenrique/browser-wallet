@@ -89,7 +89,7 @@ const RowDetail = ({ row }: { row: TableDataProps['data'][number] }) => (
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 / 2 }}>
         <Typography variant="subtitle2" color={row.transactionType === 'C' ? slate[700] : '#EE2737'}>
-          S/ {row.amount}
+          {Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(row.amount)}
         </Typography>
         <Avatar sx={{ bgcolor: row.transactionType === 'C' ? '#C8EDC5' : '#FFC8C8', height: 16, width: 16 }}>
           {row.transactionType === 'C' ? (

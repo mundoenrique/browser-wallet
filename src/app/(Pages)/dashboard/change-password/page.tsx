@@ -27,8 +27,6 @@ export default function ChangePassword() {
 
   const [openRc, setOpenRc] = useState<boolean>(false);
 
-  const resetOtp = useOtpStore((state) => state.reset);
-
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
   const [openOtp, setOpenOtp] = useState<boolean>(false);
@@ -96,7 +94,6 @@ export default function ChangePassword() {
           if (response.data.code === '200.00.000') {
             setOpenOtp(false);
             handleChangePassword();
-            resetOtp();
           }
         })
         .catch((e) => {
@@ -172,27 +169,29 @@ export default function ChangePassword() {
         </Box>
       </ContainerLayout>
 
-      <ModalOtp
-        open={openOtp}
-        handleClose={() => {
-          setOpenOtp(false);
-          sendGTMEvent({
-            event: 'ga4.trackEvent',
-            eventName: 'select_content',
-            eventParams: {
-              content_type: 'boton_modal',
-              section: 'Yiro :: cambiarContraseña',
-              previous_section: 'dashboard',
-              selected_content: 'Cerrar',
-              destination_page: `${host}/dashboard/change-password`,
-              pop_up_type: 'Cambiar contraseña',
-              pop_up_title: 'Verificación en dos pasos',
-            },
-          });
-        }}
-        onSubmit={onSubmitOtp}
-        processCode="CHANGE_PASSWORD_OTP"
-      />
+      {openOtp && (
+        <ModalOtp
+          open={openOtp}
+          handleClose={() => {
+            setOpenOtp(false);
+            sendGTMEvent({
+              event: 'ga4.trackEvent',
+              eventName: 'select_content',
+              eventParams: {
+                content_type: 'boton_modal',
+                section: 'Yiro :: cambiarContraseña',
+                previous_section: 'dashboard',
+                selected_content: 'Cerrar',
+                destination_page: `${host}/dashboard/change-password`,
+                pop_up_type: 'Cambiar contraseña',
+                pop_up_title: 'Verificación en dos pasos',
+              },
+            });
+          }}
+          onSubmit={onSubmitOtp}
+          processCode="CHANGE_PASSWORD_OTP"
+        />
+      )}
 
       <ModalResponsive
         open={openRc}

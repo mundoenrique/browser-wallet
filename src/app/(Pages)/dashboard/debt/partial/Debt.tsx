@@ -33,8 +33,6 @@ export default function Debt() {
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
-  const resetOtp = useOtpStore((state) => state.reset);
-
   const setView = useDebStore((state) => state.setView);
 
   const { userId } = useUserStore((state) => state.user);
@@ -52,6 +50,8 @@ export default function Debt() {
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
   const [openOtp, setOpenOtp] = useState<boolean>(false);
+
+  const [disableSubmit, setDisableSubmit] = useState<boolean>(false);
 
   useEffect(() => {
     sendGTMEvent({
@@ -99,6 +99,7 @@ export default function Debt() {
 
   const onSubmitOtp = useCallback(
     async (data: any) => {
+      setDisableSubmit(true);
       const { otp } = data;
       const payload = {
         otpProcessCode: 'DEBT_PAYMENT_OTP',
@@ -112,12 +113,14 @@ export default function Debt() {
           if (response.data.code === '200.00.000') {
             setOpenOtp(false);
             payOffDebt();
-            resetOtp();
           }
         })
         .catch((e) => {
           setModalError({ error: e });
           setLoadingScreen(false);
+        })
+        .finally(() => {
+          setDisableSubmit(false);
         });
     },
     [otpUuid] //eslint-disable-line
@@ -138,9 +141,8 @@ export default function Debt() {
       return;
     }
 
-    const balanceAmount = parseFloat(balance.availableBalance);
     const amount = parseFloat(data.amount);
-    if (amount > balanceAmount) {
+    if (!balance || amount > parseFloat(balance.availableBalance)) {
       setError('amount', {
         type: 'customError',
         message: 'No cuenta con saldo disponible.',
@@ -211,6 +213,7 @@ export default function Debt() {
           handleClose={() => setOpenOtp(false)}
           onSubmit={onSubmitOtp}
           processCode="DEBT_PAYMENT_OTP"
+          disableSubmit={disableSubmit}
         />
       )}
     </>

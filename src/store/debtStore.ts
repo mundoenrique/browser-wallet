@@ -15,7 +15,7 @@ const storeAPi: StateCreator<DebtStore, [['zustand/devtools', never]]> = (set) =
   setView: (value) => set({ view: value }),
   setPayOffDebt: (data: IDebt) => set({ payOffDebt: data }),
   setError: (data: IPayOffDebtError) => set({ error: data }),
-  setBalance: (data: IBalance) => set({ balance: data })
+  setBalance: (data: IBalance | null) => set({ balance: data })
 });
 
 export const useDebStore = create<DebtStore>()(

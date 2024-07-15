@@ -22,8 +22,6 @@ export default function BlockCard() {
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
-  const resetOtp = useOtpStore((state) => state.reset);
-
   const { userId } = useUserStore((state) => state.user);
 
   const setModalError = useUiStore((state) => state.setModalError);
@@ -64,7 +62,6 @@ export default function BlockCard() {
           if (response.data.code === '200.00.000') {
             setOpenOtp(false);
             onSubmit();
-            resetOtp();
           }
         })
         .catch((e) => {

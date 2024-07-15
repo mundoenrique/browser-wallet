@@ -1,38 +1,45 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import dayjs from 'dayjs';
+import { sendGTMEvent } from '@next/third-parties/google';
+import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { Avatar, Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
+import { api } from '@/utils/api';
 import { FilterIcons } from '%/Icons';
 import Filters from './partial/filters';
 import ClientList from './partial/listClients';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { useMenuStore, useNavTitleStore } from '@/store';
 import { InputCheckGroupOptionProps } from '@/interfaces';
 import { ContainerLayout, Linking, ModalResponsive } from '@/components';
+import { useUserStore, useUiStore, useChargeStore, useMenuStore, useNavTitleStore, useHeadersStore } from '@/store';
 
 const checkboxOptions = [
   { text: 'Todos mis cobros', value: '' },
-  { text: 'Cobrado', value: '2' },
-  { text: 'Cobros pendientes', value: '3' },
-  { text: 'Cobros vencidos', value: '4' },
-  { text: 'Cancelado', value: '5' },
+  { text: 'Cobrado', value: 'PAID' },
+  { text: 'Cobros pendientes', value: 'PENDING' },
+  { text: 'Cobros vencidos', value: 'EXPIRED' },
+  { text: 'Cancelado', value: 'CANCELLED' },
 ];
 
-const months = [
-  { text: 'Enero', value: '1' },
-  { text: 'Febrero', value: '2' },
-  { text: 'Marzo', value: '3' },
-  { text: 'Abril', value: '4' },
-  { text: 'Mayo', value: '5' },
-  { text: 'Junio', value: '6' },
-  { text: 'Julio', value: '7' },
-  { text: 'Agosto', value: '8' },
-  { text: 'Septiembre', value: '9' },
-  { text: 'Octubre', value: '10' },
-  { text: 'Noviembre', value: '11' },
-  { text: 'Diciembre', value: '12' },
-];
+/**
+ * Generates the months that would be used for filtering
+ * @returns Array with the last three months
+ */
+const dateRank = (): { text: string; value: string }[] => {
+  const handleDate = dayjs().locale('es');
+
+  let months: { value: string; text: string }[] = [];
+
+  for (let i = 0; i < 3; i++) {
+    const monthDate = handleDate.subtract(i, 'month');
+    months.push({
+      text: monthDate.format('MMMM'),
+      value: `${monthDate.format('MM/YYYY')}`,
+    });
+  }
+  return months;
+};
 
 export default function Clients() {
   const ENUM_VIEW = {
@@ -43,71 +50,145 @@ export default function Clients() {
   const theme = useTheme();
   const match = useMediaQuery(theme.breakpoints.up('md'));
 
-  const { setCurrentItem } = useMenuStore();
-  const { updateTitle } = useNavTitleStore();
+  const user = useUserStore((state) => state.user);
+
+  const host = useHeadersStore((state) => state.host);
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
+
+  const chargeAmount = useChargeStore((state) => state.chargeAmount);
+
+  const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
 
   const [open, setOpen] = useState<boolean>(false);
-  const [isLoading, setIsloading] = useState<boolean>(false);
-  const [currentView, setCurrentView] = useState<string>(ENUM_VIEW.MAIN);
-  const [paymentStatus, setPaymentStatus] = useState<string>('Todos mis cobros');
-  const [month, setMonth] = useState<InputCheckGroupOptionProps>({ text: '', value: '1' });
-  const [paymentStatusCode, setPaymentStatusCode] = useState<string>(checkboxOptions[0].value);
+
+  const [error, setError] = useState<boolean>(false);
 
   const [lastPage, setLastPage] = useState<number>(1);
+
   const [clientsData, setClientsData] = useState<any>([]);
+
   const [currentPage, setCurrentPage] = useState<number>(1);
 
+  const [isLoading, setIsloading] = useState<boolean>(false);
+
+  const [filterMonth, setFilterMonth] = useState(dateRank()[0]);
+
+  const [filteredClientData, setFilteredClientData] = useState<any>([]);
+
+  const [currentView, setCurrentView] = useState<string>(ENUM_VIEW.MAIN);
+
+  const [paginatedClientData, setPaginatedClientData] = useState<any>([]);
+
+  const [paymentStatus, setPaymentStatus] = useState<string>('Todos mis cobros');
+
+  const [paymentStatusCode, setPaymentStatusCode] = useState<string>(checkboxOptions[0].value);
+
   const containerPWA = useRef<HTMLDivElement | null>(null);
+
   const containerDesktop = useRef<HTMLDivElement | null>(null);
 
   const filterActive = currentView === ENUM_VIEW.FILTERS;
-  const disabledBtnDelete = '3';
+  const disabledBtnDelete = 'PENDING';
 
-  const reset = () => {
-    setCurrentPage(1);
-    setClientsData([]);
-    setLastPage(1);
-  };
+  const initialized = useRef<boolean>(false);
+  const isClients = useRef<boolean>(false);
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/clients`,
+        page_title: 'Yiro :: misClientes',
+        page_referrer: `${host}/dashboard`,
+        section: 'Yiro :: misClientes',
+        previous_section: 'dashboard',
+      },
+    });
+  }, [host]);
 
   const onChangeCheckbox = (item: InputCheckGroupOptionProps) => {
     setPaymentStatusCode(item.value);
     setPaymentStatus(item.text);
   };
 
-  const onChangeMonth = (item: InputCheckGroupOptionProps) => {
-    if (item.text) setMonth(item);
-    else setMonth({ text: '', value: '' });
-  };
-
-  const handleFilters = async () => {
+  const handleFilters = async (e: Event) => {
+    e.preventDefault();
     setCurrentView(ENUM_VIEW.MAIN);
-    reset();
     await getClientAPI();
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'Yiro :: misClientes',
+        previous_section: 'dashboard',
+        selected_content: 'Filtro',
+        destination_page: `${host}/dashboard/clients`,
+      },
+    });
   };
 
   const scrollHandle = useCallback(async () => {
-    if (containerDesktop.current && !isLoading && currentPage <= lastPage - 1) {
-      let scroll = containerDesktop.current?.scrollHeight - window.scrollY - window.innerHeight;
-      if (scroll <= 100) {
-        setCurrentPage((prevPage) => prevPage + 1);
-      }
-    } else if (containerPWA.current && !isLoading && currentPage <= lastPage - 1) {
-      let scroll =
-        containerPWA.current?.scrollHeight - containerPWA.current?.scrollTop - containerPWA.current?.clientHeight;
-      if (scroll <= 20) {
-        setCurrentPage((prevPage) => prevPage + 1);
+    const container = containerDesktop.current || containerPWA.current;
+
+    if (!isLoading && container && currentPage < lastPage) {
+      if (match) {
+        let scroll = container.scrollHeight - container.scrollTop - container.clientHeight;
+        scroll <= 20 && setCurrentPage((prevPage) => prevPage + 1);
+      } else {
+        let scroll = container?.scrollHeight - window.scrollY - window.innerHeight;
+        scroll <= 100 && setCurrentPage((prevPage) => prevPage + 1);
       }
     }
-  }, [setCurrentPage, isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [setCurrentPage, isLoading, lastPage]); //eslint-disable-line react-hooks/exhaustive-deps
 
   const getClientAPI = async () => {
-    const response = await fetch(
-      `./clients/api?limit=10&currentPage=${currentPage}&month=${month.value}&status=${paymentStatusCode}`
-    );
-    const data: any = await response.json();
-    const newData: never[] | any = data.data;
-    setClientsData(newData);
-    setLastPage(data.metadata.LastPage);
+    setIsloading(true);
+    setError(false);
+    api
+      .get(`/payments/${user.userId}/chargelist`, {
+        params: { days: 30, limit: 100, page: 1, date: filterMonth.value, transactionCode: paymentStatusCode },
+      })
+      .then((response) => {
+        const {
+          data: { data },
+        } = response;
+        if (data) {
+          isClients.current = false;
+          setClientsData(data);
+        } else {
+          isClients.current = true;
+        }
+      })
+      .catch((e) => {
+        setError(true);
+        setModalError({ error: e });
+      })
+      .finally(() => {
+        setIsloading(false);
+      });
+  };
+
+  const createPagination = (data: [], page: number) => {
+    setIsloading(true);
+    const itemsPage = 20;
+    setLastPage(Math.ceil(data.length / itemsPage));
+    const startIndex = (page - 1) * itemsPage;
+    const endIndex = startIndex + itemsPage;
+    data.sort((a: any, b: any) => (new Date(b.date) as any) - (new Date(a.date) as any));
+    setTimeout(() => {
+      setIsloading(false);
+    }, 1000);
+    return data.slice(startIndex, endIndex);
+  };
+
+  const changeViewFilters = () => {
+    setClientsData([]);
+    setCurrentView(ENUM_VIEW.FILTERS);
   };
 
   useEffect(() => {
@@ -118,34 +199,53 @@ export default function Clients() {
   }, [scrollHandle]);
 
   useEffect(() => {
-    (async () => {
-      setIsloading(true);
-      const response = await fetch(
-        `./clients/api?limit=10&currentPage=${currentPage}&month=${month.value}&status=${paymentStatusCode}`
-      );
-      const data: any = await response.json();
-      const newData: never[] | any = [...clientsData, ...data.data];
-      setClientsData(newData);
-      setLastPage(data.metadata.LastPage);
-      setIsloading(false);
-    })();
-  }, [currentPage]); //eslint-disable-line react-hooks/exhaustive-deps
+    if (!initialized.current) {
+      getClientAPI();
+      initialized.current = true;
+    } else {
+      initialized.current = false;
+    }
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     updateTitle('Mis clientes');
     setCurrentItem('Inicio');
   }, [updateTitle, setCurrentItem]);
 
+  useEffect(() => {
+    setPaginatedClientData([]);
+    setCurrentPage(1);
+    // if (!(paymentStatusCode === '')) {
+    //   setFilteredClientData(clientsData.filter((el: any) => el.status == paymentStatusCode));
+    //   return;
+    // }
+    setFilteredClientData(clientsData);
+  }, [clientsData]);
+
+  useEffect(() => {
+    !isLoading &&
+      setPaginatedClientData((currentState: any) => [
+        ...currentState,
+        ...createPagination(filteredClientData, currentPage),
+      ]);
+  }, [filteredClientData, currentPage]); //eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <>
       <ContainerLayout>
         <Box
           sx={{
-            height: { xs: 'calc(100vh - 120px)', md: 'auto' },
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: { xs: 'flex-start', md: 'center' },
             width: { xs: '100%', md: 360 },
+            overflow: 'auto',
             [theme.breakpoints.up('md')]: {
               minHeight: 'calc(100vh + 100px)',
               width: 360,
+            },
+            [theme.breakpoints.down('md')]: {
+              height: 'calc(100vh - 120px)',
             },
           }}
           ref={containerDesktop}
@@ -155,7 +255,7 @@ export default function Clients() {
               variant="h6"
               align="center"
               color={fuchsiaBlue[800]}
-              sx={{ mb: 5, display: { xs: 'none', md: 'block' } }}
+              sx={{ my: 5, display: { xs: 'none', md: 'block' } }}
             >
               Mis clientes
             </Typography>
@@ -165,7 +265,7 @@ export default function Clients() {
             </Typography>
 
             <Typography variant="h6" align="center" color={fuchsiaBlue[800]} sx={{ mb: 2 }}>
-              S/ 720.00
+              {Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(chargeAmount)}
             </Typography>
 
             <Linking
@@ -181,12 +281,12 @@ export default function Clients() {
 
           {filterActive ? (
             <Filters
-              months={months}
-              monthDefault={month}
+              months={dateRank()}
+              monthDefault={filterMonth}
               checkboxOptions={checkboxOptions}
-              handleFilters={() => handleFilters()}
+              handleFilters={(e) => handleFilters(e)}
               checkboxOptionDefault={paymentStatusCode}
-              onChangeMonth={(item: InputCheckGroupOptionProps) => onChangeMonth(item)}
+              onChangeMonth={setFilterMonth}
               onChangeCheckbox={(item: InputCheckGroupOptionProps) => onChangeCheckbox(item)}
             />
           ) : (
@@ -214,13 +314,17 @@ export default function Clients() {
                   </Avatar>
                 }
                 sx={{ justifyContent: 'flex-start' }}
-                onClick={() => (match ? setCurrentView(ENUM_VIEW.FILTERS) : setOpen(true))}
+                onClick={() => (match ? changeViewFilters() : setOpen(true))}
               >
-                {month.text && paymentStatus && `${month.text} - ${paymentStatus}  `}
-                {month.text && !paymentStatus && `${month.text}`}
-                {!month.text && paymentStatus && `${paymentStatus}`}
+                {`${filterMonth.text ?? ''} ${filterMonth.text && paymentStatus && '-'} ${paymentStatus ?? ''}`}
               </Button>
-              <ClientList data={clientsData} loading={isLoading} disabledBtnDelete={disabledBtnDelete} />
+              <ClientList
+                data={paginatedClientData}
+                loading={isLoading}
+                disabledBtnDelete={disabledBtnDelete}
+                error={error}
+                isClients={isClients.current}
+              />
             </Box>
           )}
         </Box>
@@ -228,12 +332,14 @@ export default function Clients() {
       <ModalResponsive open={open} handleClose={() => setOpen(false)}>
         <Box sx={{ textAlign: 'start' }}>
           <Filters
-            months={months}
-            monthDefault={month}
+            months={dateRank()}
+            monthDefault={filterMonth}
             checkboxOptions={checkboxOptions}
-            handleFilters={() => handleFilters()}
+            handleFilters={(e) => {
+              handleFilters(e);
+            }}
             checkboxOptionDefault={paymentStatusCode}
-            onChangeMonth={(item: InputCheckGroupOptionProps) => onChangeMonth(item)}
+            onChangeMonth={setFilterMonth}
             onChangeCheckbox={(item: InputCheckGroupOptionProps) => onChangeCheckbox(item)}
           />
         </Box>

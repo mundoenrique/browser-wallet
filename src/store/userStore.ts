@@ -27,6 +27,7 @@ const storeAPi: StateCreator<UserStore, [['zustand/devtools', never]]> = (set,ge
     } = get().user;
     return decryptForge(cardId);
   },
+
   isUserCardVirtual: () => {
     const cardInformation = get().cardInformation;
     return cardInformation ? cardInformation.cardType === 'VIRTUAL' : true;

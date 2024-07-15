@@ -205,21 +205,26 @@ export type IUserRegisterProps = {
  */
 
 export interface IClientProps {
-  id: number;
-  date: Date;
-  name: string;
+  chargeId?: string;
+  date?: string;
+  name?: string;
+  fullname?: string;
   amount: number;
   status: string;
-  status_type: string;
-  month: string;
-  number: string;
+  status_type?: string;
+  month?: string;
+  number?: string;
 }
 
 export interface ClientStore {
-  client: IClientProps | null;
-  setClient: (data: IClientProps) => void;
+  client: ClientPay | null;
+  setClient: (data: ClientPay) => void;
 }
 
+export interface ClientPay {
+  fullname: string | undefined;
+  number: string | undefined;
+}
 export interface CatalogsStore {
   termsCatalog: { code: string; value: string }[];
   passwordTermsCatalog: { code: string; value: string }[];
@@ -255,27 +260,19 @@ export interface UserStore {
 /**
  * OTP store
  * @typeParam otpValid - Initial state {@defaultValue `undefined`}
- * @typeParam timeLeft - Initial state {@defaultValue `0`}
- * @typeParam counting - Initial state {@defaultValue `false`}
- * @typeParam setCounting: (value: boolean) => void
- * @typeParam countdown: () => void
- * @typeParam setTime: (value: number) => void
+ * @typeParam otpUuid:  Initial state {@defaultValue ``}
+ * @typeParam setOtpUuid: () => void
  * @typeParam setOTPValid: (value: string) => void
- * @typeParam reset: ()=>void
+ *
  */
 export interface OtpStore {
   otpValid: 'OTP' | 'PASSWORD' | 'ENDING' | undefined;
-  timeLeft: number;
-  counting: boolean;
   otpUuid: string;
-  otpCode: string;
-  setOtpCode: (value: string) => void;
-  setOtpUuid: (value: string) => void;
-  setCounting: (value: boolean) => void;
+  timeLeft: number;
   countdown: () => void;
   setTime: (value: number) => void;
+  setOtpUuid: (value: string) => void;
   setOTPValid: (value: OtpStore['otpValid']) => void;
-  reset: () => void;
 }
 
 /**
@@ -301,7 +298,7 @@ export interface DebtStore {
   setView: (_data: string) => void;
   setPayOffDebt: (_data: IDebt) => void;
   setError: (_data: IPayOffDebtError) => void;
-  setBalance: (_data: IBalance) => void;
+  setBalance: (_data: IBalance | null) => void;
 }
 export interface IBalance {
   availableBalance: string;
@@ -353,4 +350,13 @@ export interface ActiveAppStore {
   setActiveApp: (_activeApp: boolean | null) => void;
   setCreateAccess: (_createAccess: string | null) => void;
   setinitAccess: (_initAccess: boolean | null) => void;
+}
+
+ /* Charge store
+ * @typeParam debt - Initial state {@defaultValue `null`}
+ * @typeParam setView: (_data: any) => void
+ */
+export interface ChargeStore {
+  chargeAmount: number;
+  setCharge: (data: number) => void;
 }

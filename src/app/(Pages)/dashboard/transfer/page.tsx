@@ -20,8 +20,6 @@ import { useMenuStore, useNavTitleStore, useUiStore, useUserStore, useOtpStore, 
 export default function Transfer() {
   const host = useHeadersStore((state) => state.host);
 
-  const resetOtp = useOtpStore((state) => state.reset);
-
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
   const { userId } = useUserStore((state) => state.user);
@@ -227,7 +225,6 @@ export default function Transfer() {
         .then((response) => {
           if (response.data.code === '200.00.000') {
             setOpenModalOtp(false);
-            resetOtp();
             handleConfirmation();
           }
         })
@@ -286,7 +283,7 @@ export default function Transfer() {
       {openRc && (
         <Success
           onClick={() => {
-            setOpenRc(false);
+            setOpenRc(!openRc);
           }}
           transferDetail={transferInfo}
         />

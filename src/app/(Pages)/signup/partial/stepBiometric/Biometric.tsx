@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Button } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 //Internal app
 import { api } from '@/utils/api';
 import { useRegisterStore, useUiStore } from '@/store';
@@ -9,13 +9,33 @@ import { encryptForge } from '@/utils/toolHelper';
 
 export default function Biometric() {
   const { setModalError, setLoadingScreen } = useUiStore();
-  const { updateStep, updateControl, control } = useRegisterStore();
+  const { updateStep, updateControl } = useRegisterStore();
   const phaseInfo = useRegisterStore((state) => state.ONB_PHASES_TERMS);
   const [url, setUrl] = useState<string>('');
   const [btnBack, setBtnBack] = useState<boolean>(false);
+  const accountId = useRef<string>('');
+  const workflowId = useRef<string>('');
+
+  const hasRun = useRef(false);
+
+  const validateView = useCallback(() => {
+    const firstTimer = setTimeout(() => {
+      setLoadingScreen(true, { message: 'Verificación correcta' });
+      const secondTimer = setTimeout(() => {
+        updateStep(6);
+        setLoadingScreen(false);
+      }, 4000);
+      return () => {
+        clearTimeout(secondTimer);
+      };
+    }, 4000);
+    return () => {
+      clearTimeout(firstTimer);
+    };
+  }, [setLoadingScreen, updateStep]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const validateBiometric = useCallback(async () => {
+  const validateBiometric = async () => {
     const { consultant } = phaseInfo as any;
     const shortDoc = consultant.documentType === 'DNI' ? consultant.documentNumber.slice(2) : consultant.documentNumber;
     const payload = {
@@ -54,35 +74,26 @@ export default function Biometric() {
         control: [
           {
             option: 'ACCOUNTID_JM',
-            value: control?.accountId,
+            value: accountId.current,
           },
           {
             option: 'WORKFLOWID_JM',
-            value: control?.workflowId,
+            value: workflowId.current,
           },
         ],
       },
     };
+    setLoadingScreen(true, { message: 'Estamos verificando tu información' });
     await api
-      .post('/onboarding/validatebiometric', payload)
+      .post('/onboarding/validatebiometric', payload, {
+        headers: { identifier: 'e30b625a-e085-42a5-aac2-3d52f73ad8fe' },
+      })
       .then((response) => {
         const { decision } = response.data.data;
         if (decision === 'ACCEPT') {
-          const firstTimer = setTimeout(() => {
-            setLoadingScreen(true, { message: 'Verificación correcta' });
-            const secondTimer = setTimeout(() => {
-              updateStep(6);
-            }, 4000);
-            return () => {
-              setLoadingScreen(false);
-              clearTimeout(secondTimer);
-            };
-          }, 4000);
-          return () => {
-            setLoadingScreen(false);
-            clearTimeout(firstTimer);
-          };
+          validateView();
         } else {
+          setLoadingScreen(false);
           updateStep(4);
           setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
         }
@@ -90,25 +101,19 @@ export default function Biometric() {
       .catch((e) => {
         updateStep(4);
         setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
-      })
-      .finally(() => {
-        setLoadingScreen(false);
       });
-  }, [phaseInfo, control?.accountId, control?.workflowId, setLoadingScreen, updateStep, setModalError]);
+  };
 
-  const receiveMessage = useCallback(
-    async (event: any) => {
-      let data = window.JSON.parse(event.data);
-      if (data.payload.value === 'success') {
-        setLoadingScreen(true, { message: 'Estamos verificando tu información' });
-        await validateBiometric();
-      }
-      if (data.payload.value === 'error') setBtnBack(true);
-    },
-    [setLoadingScreen, validateBiometric]
-  );
+  const receiveMessage = (event: any) => {
+    let data = window.JSON.parse(event.data);
+    if (data.payload.value === 'success') {
+      validateBiometric();
+    }
+    if (data.payload.value === 'error') setBtnBack(true);
+  };
 
   const captureBiometrics = useCallback(() => {
+    window.addEventListener('message', receiveMessage, false);
     updateControl({ accountId: '', workflowId: '' });
     setUrl('');
     const requestFormData = {
@@ -116,12 +121,15 @@ export default function Biometric() {
     };
     setLoadingScreen(true);
     api
-      .post('/onboarding/capturephotobiometrics ', requestFormData)
+      .post('/onboarding/capturephotobiometrics ', requestFormData, {
+        headers: { identifier: 'e30b625a-e085-42a5-aac2-3d52f73ad8fe' },
+      })
       .then((response) => {
         const { web, account, workflowExecution } = response.data.data;
         setUrl(web.href);
+        accountId.current = account.id;
+        workflowId.current = workflowExecution.id;
         updateControl({ accountId: account.id, workflowId: workflowExecution.id });
-        window.addEventListener('message', receiveMessage, false);
       })
       .catch((e) => {
         setModalError({ error: e });
@@ -129,11 +137,14 @@ export default function Biometric() {
       .finally(() => {
         setLoadingScreen(false);
       });
-  }, [receiveMessage, setLoadingScreen, setModalError, updateControl]);
+  }, []);
 
   useEffect(() => {
-    captureBiometrics();
-  }, []);
+    if (!hasRun.current) {
+      captureBiometrics();
+      hasRun.current = true;
+    }
+  }, [captureBiometrics]);
 
   return (
     <Box

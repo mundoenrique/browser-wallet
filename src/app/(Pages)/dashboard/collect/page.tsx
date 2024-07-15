@@ -29,7 +29,9 @@ import {
 export default function Collect() {
   const schema = getSchema(['nameClient', 'numberClient', 'amount']);
 
-  const { client } = useClientStore();
+  const client = useClientStore((state) => state.client);
+
+  const setClient = useClientStore((state) => state.setClient);
 
   const { setCurrentItem } = useMenuStore();
 
@@ -83,11 +85,12 @@ export default function Collect() {
   }, [updateTitle, setCurrentItem]);
 
   useEffect(() => {
-    setValueClient('nameClient', client?.name);
+    setValueClient('nameClient', client?.fullname);
     setValueClient('numberClient', client?.number);
-    setValueClient('amount', client?.amount);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [client]);
+    return () => {
+      setClient({ fullname: '', number: '' });
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const rcViews: any = {
     wallets: <SuccessWallets />,

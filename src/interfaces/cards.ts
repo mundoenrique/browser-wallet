@@ -85,7 +85,6 @@ export interface CardTicketProps extends ChildrenProps {
   sharedGA?: () => void;
   transferDetail?: TransferDetail;
   onClick?: () => void | boolean;
-  onClickGA?: () => void;
 }
 
 export interface TransferDetail {

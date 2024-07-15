@@ -63,6 +63,8 @@ export interface InputOTPProps extends FormMUIProps {
   text: string;
   length: number;
   handleResendOTP?: any;
+  timeLeft: number;
+  setTime: (a: number) => void;
 }
 
 /**
@@ -204,6 +206,8 @@ export interface IListClientsProps {
   data: IClientProps[];
   loading: boolean;
   disabledBtnDelete: string;
+  error: boolean;
+  isClients: boolean;
 }
 
 export interface NumericFormatCustomInput {

@@ -30,7 +30,6 @@ export default function handler(req: any, res: any) {
     });
 
     socket.on('sendData', (user) => {
-      console.log('Client data - socket:', user);
       socket.broadcast.emit('infoUser', user);
     });
   };

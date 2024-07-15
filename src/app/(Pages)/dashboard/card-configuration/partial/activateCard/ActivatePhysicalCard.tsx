@@ -31,7 +31,10 @@ const useSocket = ({ onInfoUser }: UseSocketProps) => {
       });
 
       socket.on('infoUser', (data: any) => {
-        onInfoUser(data);
+        if (data) {
+          socket.disconnect();
+          onInfoUser(data);
+        }
       });
 
       socket.on('disconnect', () => {
@@ -48,7 +51,7 @@ const useSocket = ({ onInfoUser }: UseSocketProps) => {
         socketRef.current.disconnect();
       }
     };
-  }, [onInfoUser]);
+  }, []);
 
   const disconnectSocket = useCallback(() => {
     if (socketRef.current) {
@@ -64,7 +67,11 @@ export default function ActivatePhysicalCard() {
 
   const { updatePage } = useConfigCardStore();
 
-  const { timeLeft, countdown, setTime } = useOtpStore();
+  const timeLeft = useOtpStore((state) => state.timeLeft);
+
+  const countdown = useOtpStore((state) => state.countdown);
+
+  const setTime = useOtpStore((state) => state.setTime);
 
   const { userId } = useUserStore((state) => state.user);
 
@@ -76,18 +83,18 @@ export default function ActivatePhysicalCard() {
 
   const [showQR, setShowQR] = useState<boolean>(false);
 
-  const [cardId, setCardId] = useState<string | null>(null);
-
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const timerRef = useRef<any>();
 
+  const cardId = useRef<string | null>(null);
+
   const baseURL = process.env.NEXT_PUBLIC_WEB_URL;
   const url = `${baseURL}/qr`;
 
-  const getCardInformation = useCallback(async () => {
-    api
-      .get(`/cards/${cardId}`, { params: { decryptData: false } })
+  const getCardInformation = async () => {
+    await api
+      .get(`/cards/${cardId.current}`, { params: { decryptData: false } })
       .then((response: any) => {
         const { status, data } = response;
         if (status === 200) {
@@ -97,42 +104,39 @@ export default function ActivatePhysicalCard() {
       .catch(() => {
         setModalError({ title: 'Algo salió mal', description: 'No descargar la información de tu tarjeta.' });
       });
-  }, [cardId]); //eslint-disable-line react-hooks/exhaustive-deps
+  };
 
-  const cardholderAssociation = useCallback(async () => {
+  const cardholderAssociation = async () => {
     const data = {
-      cardId,
+      cardId: cardId.current,
       userId,
     };
-
-    api
+    await api
       .post('/cards/cardholders', data)
       .then((response: any) => {
         const { status } = response;
         if (status === 200) {
           if (isBrowser) {
-            disconnectSocket();
             setShowModal(false);
           }
           getCardInformation();
           updatePage('success');
         }
       })
-      .catch(() => {
+      .catch((e) => {
         if (isBrowser) {
-          disconnectSocket();
           setShowModal(false);
         }
         setModalError({ title: 'Algo salió mal', description: 'No pudimos activar tu tarjeta.' });
       });
-  }, [cardId]); //eslint-disable-line react-hooks/exhaustive-deps
+  };
 
   useEffect(() => {
     updateTitle('Activación de tarjeta física');
   }, [updateTitle]);
 
   const openModal = () => {
-    setCardId(null);
+    cardId.current = null;
     if (isBrowser) {
       setShowModal(true);
       setTime(120);
@@ -142,15 +146,13 @@ export default function ActivatePhysicalCard() {
     }
   };
 
-  const handleInfoUser = useCallback(
-    (data: any) => {
-      if (data !== null) {
-        setCardId(JSON.parse(data));
-        cardholderAssociation();
-      }
-    },
-    [cardholderAssociation]
-  );
+  const handleInfoUser = async (data: any) => {
+    if (data !== null && typeof data === 'string') {
+      disconnectSocket();
+      cardId.current = JSON.parse(data);
+      await cardholderAssociation();
+    }
+  };
 
   const { socketRef, disconnectSocket } = useSocket({ onInfoUser: handleInfoUser });
 
@@ -168,6 +170,7 @@ export default function ActivatePhysicalCard() {
 
   useEffect(() => {
     if (showModal) {
+      cardId.current = null;
       socketRef.current?.connect();
     } else {
       disconnectSocket();
@@ -176,9 +179,10 @@ export default function ActivatePhysicalCard() {
   }, [showModal]); //eslint-disable-line react-hooks/exhaustive-deps
 
   const readCodeFunction = (data: any): Promise<any> => {
+    console.log('🚀 ~ readCodeFunction ~ data:', data);
     return new Promise((resolve) => {
       if (data) {
-        setCardId(JSON.parse(data));
+        cardId.current = JSON.parse(data);
         setShowQR(false);
         cardholderAssociation();
       }
