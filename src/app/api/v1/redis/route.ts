@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 //Internal app
 import { createRedisInstance, getRedis, postRedis} from '@/utils/redis';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
-import { SESSION_ID } from '@/utils/constants';
+import { SESSION_ID, TIME_SESSION_REDIS } from '@/utils/constants';
 
 export async function GET(request: NextRequest) {
 
@@ -12,8 +12,8 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const uuidCookie = cookies().get(SESSION_ID)?.value || null
     const reqData = searchParams.get('reqData') || 'session:'+ uuidCookie;
-    const resData: string = await getRedis(reqData) || ''
-    const data = encryptForge(resData)
+    const resData: string = await getRedis(reqData) || '';
+    const data = (resData) ? encryptForge(resData) : '';
 
     return new NextResponse(JSON.stringify({ data }), { status: 200 });
 
@@ -46,24 +46,24 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
 
-    const uuidCookie = cookies().get(SESSION_ID)?.value || null
+    const uuidCookie = cookies().get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile')) || null
     const dataBody = await request.json();
     const decryptData = JSON.parse(decryptForge(dataBody.data));
-    const uuid = (uuidCookie) ? 'session:' + uuidCookie : decryptData.uuid;
+    const uuid = (decryptData.uuid) ? decryptData.uuid : 'session:' + uuidCookie;
 
     try {
       const redis = createRedisInstance();
-      const data = JSON.parse(decryptData.data)
+      const data = decryptData.data
       const dataRedis: string | null = await redis.get(`${uuid}`);
       let stateObject: any;
 
       if (dataRedis) {
         stateObject = JSON.parse(dataRedis);
-        stateObject.state = Object.assign({}, stateObject.state, data.state);
-        await redis.set(`${uuid}`, JSON.stringify(stateObject));
+        const newObject = { ...stateObject, ...data }
+        await redis.set(`${uuid}`, JSON.stringify(newObject));
       }
 
-      await redis.expire(`${uuid}`, 300);
+      await redis.expire(`${uuid}`, TIME_SESSION_REDIS);
 
       redis.quit();
 
