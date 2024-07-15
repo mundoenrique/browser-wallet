@@ -29,7 +29,7 @@ export default function RequestPhysicalCard() {
     updateTitle('Solicitar tarjeta física');
   }, [updateTitle]);
 
-  const handleSendCard = () => {
+  const handleSendCard = async () => {
     setLoadingScreen(true);
     api
       .post(`/users/${userId}/physicalcard`)
