@@ -2,8 +2,7 @@ import { type StateCreator, create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
 //Internal app
 import { RegisterStore } from '@/interfaces';
-import { redisStorage } from '@/store/storages/redis.store';
-import { useWeddingBoundStore } from './wedding';
+import { redisStorage } from '@/store/storages/register.store';
 
 /**
  * Stores and modifies the status of onboarding process screens and forms

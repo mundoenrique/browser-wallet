@@ -1,8 +1,7 @@
 import { type StateCreator, create } from 'zustand';
 import { persist, createJSONStorage, devtools } from 'zustand/middleware';
 //Internal app
-import { redisStorage } from '@/store/storages/redis.store';
-import { useWeddingBoundStore } from './wedding';
+import { redisStorage } from '@/store/storages/user.store';
 import { decryptForge } from '@/utils/toolHelper';
 import { TCardInformation, TUserDetail, UserStore } from '@/interfaces';
 

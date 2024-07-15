@@ -10,9 +10,14 @@ const storageApi: StateStorage = {
       const data = await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/v1/redis`)
         .then((res) => res.json());
 
-      const derypt = decryptForge(data.data)
+        if (data.data) {
+          const decrypt = decryptForge(data.data)
+          const response = JSON.parse(decrypt)
 
-      return derypt;
+          return JSON.stringify(response.accessSession);
+        }
+
+        return ''
 
     } catch (error) {
       console.error(error);
@@ -22,7 +27,8 @@ const storageApi: StateStorage = {
 
   setItem: async function (name: string, value: any): Promise<void> {
 
-    await setDataRedis('PUT', {uuid:null, data: value })
+    const accessSession = JSON.parse(value);
+    await setDataRedis('PUT', {uuid:null, data: { accessSession } })
 
     return;
   },

@@ -1,6 +1,6 @@
 import { type StateCreator, create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { redisStorage } from './storages/redis.store';
+import { redisStorage } from './storages/accessSession.store';
 
 const storeAPi: StateCreator<any, [['zustand/devtools', never]]> = (set) => ({
 

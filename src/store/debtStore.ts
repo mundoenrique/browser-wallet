@@ -1,6 +1,6 @@
 import { StateCreator, create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { redisStorage } from '@/store/storages/redis.store';
+import { redisStorage } from '@/store/storages/debt.store';
 
 //Internal app
 import { DebtStore, IBalance, IDebt, IPayOffDebtError } from '@/interfaces';

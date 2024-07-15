@@ -1,7 +1,7 @@
 import { type StateCreator, create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { useWeddingBoundStore } from './wedding';
-import { redisStorage } from '@/store/storages/redis.store';
+import { redisStorage } from '@/store/storages/keys.store';
 import { KeyStoreProps } from '@/interfaces/store';
 
 

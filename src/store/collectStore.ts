@@ -2,7 +2,7 @@ import { StateCreator, create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
 //Internal app
 import { ICollectStore, ILinkData, ILoad } from '@/interfaces';
-import { redisStorage } from './storages/redis.store';
+import { redisStorage } from './storages/collect.store';
 
 const storeAPi: StateCreator<ICollectStore, [['zustand/devtools', never]]> = (set) => ({
 
