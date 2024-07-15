@@ -42,8 +42,9 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
     if (!initAccess && activeApp) {
       (async () => {
         try {
+          const idDevice = window.navigation.activation.entry.key
           const { jwePublicKey, jwsPublicKey } = keys as {jwePublicKey:string, jwsPublicKey:string}
-          const response = await api.post('/gettoken', { jwePublicKey, jwsPublicKey, isBrowser });
+          const response = await api.post('/gettoken', { jwePublicKey, jwsPublicKey, isBrowser, idDevice });
           const token = (await response.data.data.jwt) as string;
           setKeys(keys);
           setToken(token);
