@@ -135,7 +135,7 @@ export interface ConfigCardStore {
     | 'survey'
     | 'success';
   cardActivationStatus: string;
-  isCardVirtual: () => boolean;
+
   isCardBlocked: () => boolean;
   cardType: string;
   blockType: object;

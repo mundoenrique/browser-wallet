@@ -42,7 +42,7 @@ export default function CardConfiguration() {
 
   const isCardBlocked = useConfigCardStore((state) => state.isCardBlocked);
 
-  const isCardVirtual = useConfigCardStore((state) => state.isCardVirtual);
+  const cardType = useConfigCardStore((state) => state.cardType);
 
   const cardActivationStatus = useConfigCardStore((state) => state.cardActivationStatus);
 
@@ -106,7 +106,7 @@ export default function CardConfiguration() {
       });
   };
 
-  const virtualCard = isCardVirtual();
+  const virtualCard = cardType === 'VIRTUAL';
 
   return (
     <Box sx={{ width: 320, mx: { xs: 'auto', md: 3 } }}>
