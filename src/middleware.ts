@@ -24,7 +24,14 @@ export async function middleware(request: NextRequest) {
 
       return response
     } else {
-      return NextResponse.next();
+
+      const data = JSON.parse(res)
+
+      if (data.accessSession.state.accessSession && partsUrl[1] === 'signin') {
+        return NextResponse.redirect(nextUrl.origin + '/dashboard');
+      } else {
+        return NextResponse.next();
+      }
     }
   }
 
