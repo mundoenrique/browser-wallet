@@ -10,9 +10,9 @@ export async function POST(request: NextRequest) {
 
   try {
 
+    const ipAddress = request.headers.get('X-Forwarded-For');
     const uuid = uuid4();
-    const stateObject = { state: { }, version: 0 };
-    await postRedis(`session:${encryptForge(uuid)}`, stateObject )
+    const date = new Date();
 
     const encryptedBody = await request.json();
     const { data } = encryptedBody;
@@ -23,7 +23,16 @@ export async function POST(request: NextRequest) {
 
     logger.debug('Request middleware Web %s', JSON.stringify({ method, reqUrl: url, body: decryptedPayload }));
 
-    const { jwePublicKey, jwsPublicKey, isBrowser } = decryptedPayload as { jwePublicKey: string; jwsPublicKey: string, isBrowser: boolean; };
+    const { jwePublicKey, jwsPublicKey, isBrowser, idDevice } = decryptedPayload as {
+      jwePublicKey: string,
+      jwsPublicKey: string,
+      isBrowser: boolean,
+      idDevice: string
+    };
+
+    const deviceId = (idDevice)? idDevice : null
+    const stateObject = { timeSession: date.toString(), ipAddress, uuid, deviceId };
+    await postRedis(`session:${encryptForge(uuid)}`, stateObject)
 
     const token = await signJWT(jwsPrivateKey, { jwePublicKey, jwsPublicKey, uuid });
 
