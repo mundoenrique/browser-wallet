@@ -212,7 +212,7 @@ export interface IClientProps {
   status: string;
   status_type?: string;
   month?: string;
-  number?: string;
+  phoneNumber?: string;
 }
 
 export interface ClientStore {
@@ -222,7 +222,7 @@ export interface ClientStore {
 
 export interface ClientPay {
   fullname: string | undefined;
-  number: string | undefined;
+  phoneNumber: string | undefined;
 }
 export interface CatalogsStore {
   termsCatalog: { code: string; value: string }[];
