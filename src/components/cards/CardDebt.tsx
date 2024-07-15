@@ -42,10 +42,12 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
         flexDirection: 'column',
         justifyContent: 'space-between',
         borderRadius: '14px',
-        cursor: onClick ? 'pointer' : 'initial',
+        cursor: onClick && parseFloat(data.data?.amount as string) > 0 ? 'pointer' : 'initial',
         bgcolor: fuchsiaBlue[50],
       }}
-      onClick={onClick}
+      onClick={() => {
+        parseFloat(data.data?.amount as string) > 0 && onClick && onClick();
+      }}
     >
       <Box sx={{ display: 'flex', height: 28, justifyContent: 'space-between' }}>
         <Typography sx={{ fontSize: 10, fontWeight: 600, py: OweMe ? 1 : 1 / 2, px: 1 }}>
