@@ -14,7 +14,7 @@ import LogoGreen from '%/images/LogoGreen';
 import { encryptForge } from '@/utils/toolHelper';
 import { TCredentials, TUserDetail } from '@/interfaces';
 import { InputPass, ModalResponsive, NavExternal } from '@/components';
-import { useHeadersStore, useOtpStore, useRegisterStore, useUiStore, useUserStore } from '@/store';
+import { useHeadersStore, useOtpStore, useRegisterStore, useUiStore, useUserStore, useConfigCardStore } from '@/store';
 //Eliminar este store despues de la certificacion de inicio de sesión
 import { accessSessionStore } from '@/store/accessSessionStore';
 
@@ -38,6 +38,8 @@ export default function Signin() {
   const { setAccessSession } = accessSessionStore();
 
   const host = useHeadersStore((state) => state.host);
+
+  const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
 
   const { setLoadingScreen, loadingScreen } = useUiStore();
 
@@ -81,8 +83,12 @@ export default function Signin() {
     await api
       .get(`/users/${id}`)
       .then((response) => {
-        setUser(response.data.data);
-        setUserData(response.data.data);
+        const userDetail = response.data.data;
+        setUser(userDetail);
+        setUserData(userDetail);
+        if (userDetail.physicalCards) {
+          setCardProperties('cardActivationStatus', userDetail.physicalCards.status);
+        }
       })
       .catch((e) => {
         setModalError({ error: e });

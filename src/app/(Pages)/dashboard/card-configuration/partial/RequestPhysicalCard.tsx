@@ -34,8 +34,11 @@ export default function RequestPhysicalCard() {
 
   const handleSendCard = async () => {
     setLoadingScreen(true);
+    const payload = {
+      userId: userId,
+    };
     api
-      .post(`/users/${userId}/physicalcard`)
+      .post(`/cards/users/physicalcard`, { payload })
       .then(() => {
         setCardProperties('cardActivationStatus', 'PENDING');
         setOpen(!open);
