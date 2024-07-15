@@ -101,8 +101,6 @@ export default function DataUser({ user, referer, host }: DataUserProps) {
           })
           .then(async (response) => {
             setUserValidation(response.data);
-            const stateObject = { state: { accesApp:'true' }, version: 0 };
-            await setDataRedis('PUT', {uuid:null, data: JSON.stringify(stateObject) })
           })
           .catch(() => {
             setModalError();
