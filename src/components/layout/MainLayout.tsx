@@ -9,7 +9,8 @@ import { ChildrenProps } from '@/interfaces';
 import Navbar from '../navigation/navbar/Navbar';
 import Sidebar from '../navigation/sidebar/Sidebar';
 import NavbarLower from '../navigation/navbar/NavbarLower';
-import { Timersession } from '@/components';
+import { PurpleLayout, Timersession } from '@/components';
+import LogoGreen from '%/images/LogoGreen';
 
 /**
  * Container used in the internal views of the application
@@ -50,7 +51,7 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
 
   return (
     <>
-      {accessSession && (
+      {accessSession ? (
         <Box sx={{ display: 'flex' }}>
           <Timersession />
           <Navbar onClick={handleDrawerToggle} />
@@ -74,6 +75,10 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
 
           <NavbarLower />
         </Box>
+      ) : (
+        <PurpleLayout>
+          <LogoGreen />
+        </PurpleLayout>
       )}
     </>
   );
