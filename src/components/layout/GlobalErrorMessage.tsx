@@ -106,6 +106,7 @@ const setError = (eCode?: string, context?: string) => {
     '992': { description: 'Firma no válida.' },
     '993': { description: 'Token de acceso vencido.' },
     '999': { description: 'Error interno del servidor' },
+    '1000': { description: 'La sesión ha expirado' },
 
     login: { '057': { description: 'Cuenta Bloqueada', title: 'login Inválido' } },
   };
