@@ -82,7 +82,11 @@ const RowDetail = ({ row }: { row: TableDataProps['data'][number] }) => (
       }}
     >
       <Box>
-        <Typography variant="subtitle2" noWrap sx={{ maxWidth: 140 }}>
+        <Typography
+          variant="subtitle2"
+          noWrap
+          sx={{ maxWidth: 140, textTransform: 'lowercase', '&::first-letter': { textTransform: 'uppercase' } }}
+        >
           {row.description ?? '-'}
         </Typography>
         <Typography sx={{ fontSize: 10, lineHeight: '16px' }}>{dayjs(row.date).format('MMMM D, h:mm a')}</Typography>

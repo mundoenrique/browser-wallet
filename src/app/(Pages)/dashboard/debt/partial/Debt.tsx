@@ -156,7 +156,7 @@ export default function Debt() {
   };
 
   useEffect(() => {
-    updateTitle('Pagar deuda con ésika');
+    updateTitle('Pagar deuda con Belcorp');
     setCurrentItem('home');
   }, [updateTitle, setCurrentItem]);
 
@@ -174,7 +174,7 @@ export default function Debt() {
           color="primary"
           sx={{ color: 'primary.main', mb: 6, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
         >
-          Pagar deuda con ésika
+          Pagar deuda con Belcorp
         </Typography>
 
         <Linking href="/dashboard" label="Volver" adormentStart />

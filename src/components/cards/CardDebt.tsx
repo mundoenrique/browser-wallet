@@ -76,14 +76,16 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
       </Box>
       <Box px={1}>
         <Typography sx={{ fontSize: 10, fontWeight: 400 }}>
-          {OweMe ? 'Mis clientes me deben' : 'Mi deuda con ésika'}
+          {OweMe ? 'Mis clientes me deben' : 'Mi deuda con Belcorp'}
         </Typography>
         <Typography variant="h6" noWrap>
           {data?.code === '200.00.000' ? (
             loading ? (
               <Skeleton variant="text" />
             ) : data.data?.amount ? (
-              `S/ ${data.data?.amount}`
+              `${Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(
+                data.data?.amount as number
+              )}`
             ) : (
               'S/ 0.00'
             )
