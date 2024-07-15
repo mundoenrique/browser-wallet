@@ -10,7 +10,8 @@ import { api } from '@/utils/api';
 import { CardIcons } from '%/Icons';
 import { formatTime } from '@/utils/toolHelper';
 import { ContainerLayout, HandleCard, Linking, ModalResponsive, QRCodeReader } from '@/components';
-import { useNavTitleStore, useConfigCardStore, useUiStore, useUserStore, useOtpStore } from '@/store';
+import { useNavTitleStore, useConfigCardStore, useUiStore, useUserStore, useOtpStore, useHeadersStore } from '@/store';
+import { sendGTMEvent } from '@next/third-parties/google';
 
 interface UseSocketProps {
   onInfoUser: (data: any) => void;
@@ -67,13 +68,15 @@ export default function ActivatePhysicalCard() {
 
   const { updatePage } = useConfigCardStore();
 
-  const timeLeft = useOtpStore((state) => state.timeLeft);
-
-  const countdown = useOtpStore((state) => state.countdown);
+  const host = useHeadersStore((state) => state.host);
 
   const setTime = useOtpStore((state) => state.setTime);
 
   const { userId } = useUserStore((state) => state.user);
+
+  const timeLeft = useOtpStore((state) => state.timeLeft);
+
+  const countdown = useOtpStore((state) => state.countdown);
 
   const setModalError = useUiStore((state) => state.setModalError);
 
@@ -144,6 +147,17 @@ export default function ActivatePhysicalCard() {
     } else {
       setShowQR(true);
     }
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'Yiro :: configuracionTarjeta :: activaTarjetaFisica :: inicio',
+        previous_section: 'Yiro :: configuracionTarjeta :: menu',
+        selected_content: 'Escanear Código QR',
+        destination_page: `${host}/dashboard/card-configuration/activaTarjetaFisica/escaneaQR`,
+      },
+    });
   };
 
   const handleInfoUser = async (data: any) => {
@@ -189,6 +203,20 @@ export default function ActivatePhysicalCard() {
       resolve(data);
     });
   };
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/card-configuration/activaTarjetaFisica/inicio`,
+        page_title: 'Yiro :: configuracionTarjeta :: activaTarjetaFisica :: inicio',
+        page_referrer: `${host}/dashboard/card-configuration/menu`,
+        section: 'Yiro :: configuracionTarjeta :: activaTarjetaFisica :: inicio',
+        previous_section: 'Yiro :: configuracionTarjeta :: menu',
+      },
+    });
+  }, [host]);
 
   return (
     <>

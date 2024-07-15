@@ -148,7 +148,7 @@ export default function Dashboard() {
       eventParams: {
         page_location: `${host}/dashboard`,
         page_title: 'dashboard',
-        page_referrer: `${host}/signin`,
+        page_referrer: `${host}/signin/interno`,
         section: 'dashboard',
         previous_section: 'Yiro :: login :: interno',
       },

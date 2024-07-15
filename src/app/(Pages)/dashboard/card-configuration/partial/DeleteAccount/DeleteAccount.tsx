@@ -2,19 +2,38 @@
 
 import { useEffect } from 'react';
 import { Button, Typography, Stack } from '@mui/material';
+import { sendGTMEvent } from '@next/third-parties/google';
 import SadnessIcon from '@mui/icons-material/SentimentDissatisfiedOutlined';
 //Internal app
-import { useNavTitleStore, useConfigCardStore } from '@/store';
 import { ContainerLayout, HandleCard, Linking } from '@/components';
+import { useNavTitleStore, useConfigCardStore, useHeadersStore } from '@/store';
 
 export default function DeleteAccount() {
+  const { backLink } = useHeadersStore();
+
   const { updateTitle } = useNavTitleStore();
 
   const { updatePage } = useConfigCardStore();
 
+  const host = useHeadersStore((state) => state.host);
+
   useEffect(() => {
     updateTitle('Eliminar cuenta');
   }, [updateTitle]);
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/card-configuration/eliminarCuenta`,
+        page_title: 'Yiro :: configuracionTarjeta :: eliminarCuenta',
+        page_referrer: `${host}/dashboard/card-configuration/menu`,
+        section: 'Yiro :: configuracionTarjeta :: eliminarCuenta',
+        previous_section: 'Yiro :: configuracionTarjeta :: menu',
+      },
+    });
+  }, [host]);
 
   return (
     <ContainerLayout>
@@ -49,6 +68,17 @@ export default function DeleteAccount() {
           variant="contained"
           onClick={() => {
             updatePage('survey');
+            sendGTMEvent({
+              event: 'ga4.trackEvent',
+              eventName: 'select_content',
+              eventParams: {
+                content_type: 'boton',
+                section: 'Yiro :: configuracionTarjeta :: eliminarCuenta',
+                previous_section: 'Yiro :: configuracionTarjeta :: menu',
+                selected_content: 'Continuar',
+                destination_page: `${backLink}`,
+              },
+            });
           }}
         >
           Continuar

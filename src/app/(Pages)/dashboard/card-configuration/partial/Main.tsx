@@ -3,6 +3,7 @@
 import { useForm } from 'react-hook-form';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
 import { useEffect, useCallback, useState } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, Stack, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
@@ -11,12 +12,22 @@ import ModalOtp from '@/components/modal/ModalOtp';
 import { HandleCard, InputSwitch, UserWelcome } from '@/components';
 import { CardCloseIcon, CardIcons, KeyIcons, PersonWrongIcon } from '%/Icons';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
-import { useNavTitleStore, useMenuStore, useConfigCardStore, useUserStore, useUiStore, useOtpStore } from '@/store';
+import {
+  useNavTitleStore,
+  useMenuStore,
+  useConfigCardStore,
+  useUserStore,
+  useUiStore,
+  useOtpStore,
+  useHeadersStore,
+} from '@/store';
 
 export default function CardConfiguration() {
   const theme = useTheme();
 
   const match = useMediaQuery(theme.breakpoints.up('sm'));
+
+  const host = useHeadersStore((state) => state.host);
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
@@ -106,6 +117,20 @@ export default function CardConfiguration() {
       });
   };
 
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/card-configuration/menu`,
+        page_title: 'Yiro :: configuracionTarjeta :: menu',
+        page_referrer: `${host}/dashboard`,
+        section: 'Yiro :: configuracionTarjeta :: menu',
+        previous_section: 'dashboard',
+      },
+    });
+  }, [host]);
+
   const virtualCard = isCardVirtual();
 
   return (
@@ -136,6 +161,17 @@ export default function CardConfiguration() {
                 <HandleCard
                   onClick={() => {
                     updatePage('activatePhysicalCard');
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'select_content',
+                      eventParams: {
+                        content_type: 'boton',
+                        section: 'Yiro :: configuracionTarjeta :: menu',
+                        previous_section: 'dashboard',
+                        selected_content: 'Activa tu tarjeta física',
+                        destination_page: `${host}/dashboard/card-configuration/activaTarjetaFisica/inicio`,
+                      },
+                    });
                   }}
                   avatar={<CardIcons color="primary" sx={{ p: '2px' }} />}
                   icon={<Arrow />}
@@ -146,6 +182,17 @@ export default function CardConfiguration() {
                 <HandleCard
                   onClick={() => {
                     updatePage('requestPhysicalCard');
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'select_content',
+                      eventParams: {
+                        content_type: 'boton',
+                        section: 'Yiro :: configuracionTarjeta :: menu',
+                        previous_section: 'dashboard',
+                        selected_content: 'Solicita tu tarjeta física',
+                        destination_page: `${host}/dashboard/card-configuration/solicitarTarjetaFisica`,
+                      },
+                    });
                   }}
                   avatar={<CardIcons color="primary" sx={{ p: '2px' }} />}
                   icon={<Arrow />}
@@ -166,6 +213,17 @@ export default function CardConfiguration() {
                     if (cardInfo) {
                       e.preventDefault();
                       setOpenOtp(true);
+                      sendGTMEvent({
+                        event: 'ga4.trackEvent',
+                        eventName: 'select_content',
+                        eventParams: {
+                          content_type: 'boton',
+                          section: 'Yiro :: configuracionTarjeta :: menu',
+                          previous_section: 'dashboard',
+                          selected_content: 'Bloqueo temporal',
+                          destination_page: `${host}/dashboard/card-configuration`,
+                        },
+                      });
                     }
                   },
                   disabled: !cardInfo,
@@ -184,6 +242,17 @@ export default function CardConfiguration() {
             <HandleCard
               onClick={() => {
                 updatePage('blockCard');
+                sendGTMEvent({
+                  event: 'ga4.trackEvent',
+                  eventName: 'select_content',
+                  eventParams: {
+                    content_type: 'boton',
+                    section: 'Yiro :: configuracionTarjeta :: menu',
+                    previous_section: 'dashboard',
+                    selected_content: 'Bloquear por perdida o robo',
+                    destination_page: `${host}/dashboard/card-configuration/bloquearTarjeta`,
+                  },
+                });
               }}
               avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />}
               icon={<Arrow />}
@@ -196,6 +265,17 @@ export default function CardConfiguration() {
             <HandleCard
               onClick={() => {
                 updatePage('changePin');
+                sendGTMEvent({
+                  event: 'ga4.trackEvent',
+                  eventName: 'select_content',
+                  eventParams: {
+                    content_type: 'boton',
+                    section: 'Yiro :: configuracionTarjeta :: menu',
+                    previous_section: 'dashboard',
+                    selected_content: 'Cambiar PIN',
+                    destination_page: `${host}/dashboard/card-configuration/cambiarPin`,
+                  },
+                });
               }}
               avatar={<KeyIcons color="primary" sx={{ p: '2px' }} />}
               icon={<Arrow />}
@@ -207,6 +287,17 @@ export default function CardConfiguration() {
           <HandleCard
             onClick={() => {
               updatePage('deleteAccount');
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: 'Yiro :: configuracionTarjeta :: menu',
+                  previous_section: 'dashboard',
+                  selected_content: 'Eliminar cuenta Yiro',
+                  destination_page: `${host}/dashboard/card-configuration/eliminarCuenta`,
+                },
+              });
             }}
             avatar={<PersonWrongIcon color="primary" sx={{ p: '2px' }} />}
             icon={<Arrow />}

@@ -182,7 +182,7 @@ export default function Signin() {
                       section: 'Yiro :: login :: interno',
                       previous_section: 'somosbelcorp',
                       selected_content: 'Olvide mi contraseña',
-                      destination_page: `${host}/password-recover`,
+                      destination_page: `${host}password-recover/crearContraseña`,
                     },
                   })
                 }
@@ -207,7 +207,7 @@ export default function Signin() {
                 section: 'Yiro :: login :: interno',
                 previous_section: 'somosbelcorp',
                 selected_content: 'Ingresar',
-                destination_page: '/dashboard',
+                destination_page: `${host}/dashboard`,
               },
             })
           }

@@ -1,27 +1,30 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { Avatar, Box, Button, Card, Stack, Typography } from '@mui/material';
 //Internal app
-import { fuchsiaBlue } from '@/theme/theme-default';
-import { useConfigCardStore, useNavTitleStore, useUserStore, useUiStore } from '@/store';
-import { ContainerLayout, Linking, ModalResponsive } from '@/components';
 import { api } from '@/utils/api';
+import { fuchsiaBlue } from '@/theme/theme-default';
+import { ContainerLayout, Linking, ModalResponsive } from '@/components';
+import { useConfigCardStore, useNavTitleStore, useUserStore, useUiStore, useHeadersStore } from '@/store';
 
 export default function RequestPhysicalCard() {
   const updateTitle = useNavTitleStore((state) => state.updateTitle);
 
-  const updatePage = useConfigCardStore((state) => state.updatePage);
+  const host = useHeadersStore((state) => state.host);
 
-  const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
-
-  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
-
-  const loadingScreen = useUiStore((state) => state.loadingScreen);
+  const { userId } = useUserStore((state) => state.user);
 
   const setModalError = useUiStore((state) => state.setModalError);
 
-  const { userId } = useUserStore((state) => state.user);
+  const loadingScreen = useUiStore((state) => state.loadingScreen);
+
+  const updatePage = useConfigCardStore((state) => state.updatePage);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
+  const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -44,6 +47,20 @@ export default function RequestPhysicalCard() {
         setLoadingScreen(false);
       });
   };
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/card-configuration/solicitarTarjetaFisica`,
+        page_title: 'Yiro :: configuracionTarjeta :: solicitarTarjetaFisica',
+        page_referrer: `${host}/dashboard/card-configuration/menu`,
+        section: 'Yiro :: configuracionTarjeta :: solicitarTarjetaFisica',
+        previous_section: 'Yiro :: configuracionTarjeta :: menu',
+      },
+    });
+  }, [host]);
 
   return (
     <>

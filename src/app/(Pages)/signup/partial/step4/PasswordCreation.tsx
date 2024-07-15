@@ -29,9 +29,9 @@ export default function PasswordCreation() {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: `${host}/signup`,
+        page_location: `${host}/signup/onboarding/step4`,
         page_title: 'Yiro :: onboarding :: step4 :: createPassword',
-        page_referrer: `${host}/identify`,
+        page_referrer: `${host}/signup/onboarding/step3-2`,
         section: 'Yiro :: onboarding :: step4 :: createPassword',
         previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
       },
@@ -134,7 +134,7 @@ export default function PasswordCreation() {
                         section: 'Yiro :: onboarding :: step4 :: createPassword',
                         previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
                         selected_content: 'Anterior',
-                        destination_page: `${host}/signup`,
+                        destination_page: `${host}/signin`,
                       },
                     });
                   }}
@@ -153,7 +153,7 @@ export default function PasswordCreation() {
                         section: 'Yiro :: onboarding :: step4 :: createPassword',
                         previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
                         selected_content: 'Siguiente',
-                        destination_page: `${host}/signup`,
+                        destination_page: `${host}/signin`,
                       },
                     });
                   }}
