@@ -1,20 +1,20 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import IconButton from '@mui/material/IconButton';
+import { useCallback, useEffect, useState } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, Typography, Avatar, Collapse, Button } from '@mui/material';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 //Internal app
 import { api } from '@/utils/api';
-import { ModalResponsive, SkeletonTable } from '@/components';
 import { CashIcons, DeleteIcons } from '%/Icons';
 import { stringAvatar } from '@/utils/toolHelper';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
+import { ModalResponsive, SkeletonTable } from '@/components';
 import { IClientProps, IListClientsProps } from '@/interfaces';
-import { useClientStore, useUserStore, useUiStore, useHeadersStore } from '@/store';
+import { useClientStore, useUserStore, useUiStore, useHeadersStore, useChargeStore } from '@/store';
 
 export default function ClientList(props: IListClientsProps): JSX.Element {
   const { data, loading, disabledBtnDelete, error, isClients } = props;
@@ -26,6 +26,8 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
   const host = useHeadersStore((state) => state.host);
 
   const { userId } = useUserStore((state) => state.user);
+
+  const setCharge = useChargeStore((state) => state.setCharge);
 
   const setModalError = useUiStore((state) => state.setModalError);
 
@@ -106,6 +108,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
             : clientsData;
 
         setClientsData(modifiedList);
+        getCharge();
       })
       .catch((e) => {
         setModalError(e);
@@ -132,6 +135,21 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
   const handleNameClick = (index: number) => {
     setShowOptions(null);
   };
+
+  const getCharge = useCallback(async () => {
+    api
+      .get(`/payments/${userId}/charge`)
+      .then((response: any) => {
+        setCharge(response.data.data.amount);
+      })
+      .catch(() => {
+        setModalError({
+          title: 'Algo salió mal',
+          description: 'No pudimos cargar la información de lo que te deben tus clientes.',
+        });
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -254,10 +272,14 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
               </Collapse>
             </Box>
           ))}
+
         {isClients && !loading && <EmptySlot />}
+
         {data.length == 0 && loading && <SkeletonTable />}
+
         {error && <ErrorSlot />}
       </Box>
+
       <ModalResponsive
         open={openDeleteModal}
         handleClose={() => {

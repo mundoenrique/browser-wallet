@@ -160,12 +160,6 @@ export default function Debt() {
     setCurrentItem('home');
   }, [updateTitle, setCurrentItem]);
 
-  useEffect(() => {
-    if (parseFloat(debt.amount) === 0) {
-      router.push('/dashboard');
-    }
-  }, [debt]);
-
   return (
     <>
       <ContainerLayout>
