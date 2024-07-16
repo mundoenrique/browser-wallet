@@ -144,20 +144,14 @@ export default function Clients() {
         scroll <= 100 && setCurrentPage((prevPage) => prevPage + 1);
       }
     }
-  }, [setCurrentPage, isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [setCurrentPage, isLoading, lastPage]); //eslint-disable-line react-hooks/exhaustive-deps
 
   const getClientAPI = async () => {
     setIsloading(true);
     setError(false);
     api
       .get(`/payments/${user.userId}/chargelist`, {
-        params: {
-          days: 30,
-          limit: 100,
-          page: currentPage,
-          date: filterMonth.value,
-          transactionCode: paymentStatusCode,
-        },
+        params: { days: 30, limit: 100, page: 1, date: filterMonth.value, transactionCode: paymentStatusCode },
       })
       .then((response) => {
         const {
@@ -165,7 +159,7 @@ export default function Clients() {
         } = response;
         if (data) {
           isClients.current = false;
-          setClientsData((state: any) => [...state, ...data]);
+          setClientsData(data);
         } else {
           isClients.current = true;
         }
@@ -198,11 +192,6 @@ export default function Clients() {
   };
 
   useEffect(() => {
-    setCurrentPage(1);
-    setClientsData([]);
-  }, [filterMonth]);
-
-  useEffect(() => {
     window.addEventListener('scroll', scrollHandle);
     return () => {
       window.removeEventListener('scroll', scrollHandle);
@@ -216,7 +205,7 @@ export default function Clients() {
     } else {
       initialized.current = false;
     }
-  }, [currentPage, filterMonth]); //eslint-disable-line react-hooks/exhaustive-deps
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     updateTitle('Mis clientes');
@@ -226,6 +215,10 @@ export default function Clients() {
   useEffect(() => {
     setPaginatedClientData([]);
     setCurrentPage(1);
+    // if (!(paymentStatusCode === '')) {
+    //   setFilteredClientData(clientsData.filter((el: any) => el.status == paymentStatusCode));
+    //   return;
+    // }
     setFilteredClientData(clientsData);
   }, [clientsData]);
 
