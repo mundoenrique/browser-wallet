@@ -1,10 +1,9 @@
 import { StateCreator } from 'zustand';
-
 //Internal app
 import { decryptForge } from '@/utils/toolHelper';
 import { TCardInformation, TUserDetail, UserStore } from '@/interfaces';
 
-export const createUserSlice: StateCreator<UserStore> = (set,get) => ({
+export const createUserSlice: StateCreator<UserStore> = (set, get) => ({
   user: null,
   userId: null,
   cardInformation: null,
@@ -29,5 +28,5 @@ export const createUserSlice: StateCreator<UserStore> = (set,get) => ({
   isUserCardVirtual: () => {
     const cardInformation = get().cardInformation;
     return cardInformation ? cardInformation.cardType === 'VIRTUAL' : true;
-  }
+  },
 });

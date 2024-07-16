@@ -9,26 +9,26 @@ export async function middleware(request: NextRequest) {
   const { url, nextUrl } = request;
   const pathname = nextUrl.pathname;
   const partsUrl = pathname.split('/');
-  const protectedApiV1 = ['/api/v1/connect','/api/v1/gettoken','/api/v1/setcode','/api/v1/redis']
-  const protectedRoutes = ['signin', 'signup', 'password-recover', 'qr', 'dashboard']
+  const protectedApiV1 = ['/api/v1/connect', '/api/v1/gettoken', '/api/v1/setcode', '/api/v1/redis'];
+  const protectedRoutes = ['signin', 'signup', 'password-recover', 'qr', 'dashboard'];
 
-  console.log('PATHNAME MIDDLEWARE ', partsUrl[1])
+  console.log('PATHNAME MIDDLEWARE ', partsUrl[1]);
 
   const isProtectedRoute = protectedRoutes.includes(partsUrl[1]);
   if (isProtectedRoute) {
-    let uuid = request.cookies.get(SESSION_ID)?.value
+    let uuid = request.cookies.get(SESSION_ID)?.value;
     const res = await setDataRedis('POST', { uuid: `session:${uuid}`, dataRedis: 'get' });
+
     if (!res) {
-      const response = NextResponse.redirect(nextUrl.origin + '/signout');
+      const response = NextResponse.redirect(`${nextUrl.origin}/signout`);
       response.cookies.set(SESSION_ID, '', { httpOnly: false });
 
-      return response
+      return response;
     } else {
-
-      const data = JSON.parse(res)
+      const data = JSON.parse(res);
 
       if (data.accessSession.state.accessSession && partsUrl[1] === 'signin') {
-        return NextResponse.redirect(nextUrl.origin + '/dashboard');
+        return NextResponse.redirect(`${nextUrl.origin}/dashboard`);
       } else {
         return NextResponse.next();
       }
@@ -37,7 +37,7 @@ export async function middleware(request: NextRequest) {
 
   console.log('middleware-pathname: ', pathname);
 
-  const isProtectedApi = protectedApiV1.includes(pathname)
+  const isProtectedApi = protectedApiV1.includes(pathname);
 
   if (isProtectedApi) {
     return NextResponse.next();
@@ -54,5 +54,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/v1/:path*','/signin','/dashboard','/dashboard/:path*'],
+  matcher: ['/api/v1/:path*', '/signin', '/dashboard', '/dashboard/:path*'],
 };

@@ -1,15 +1,14 @@
-import { NextRequest, NextResponse } from 'next/server';
 import uuid4 from 'uuid4';
+import { NextRequest, NextResponse } from 'next/server';
 //Internal app
 import logger from '@/utils/logger';
-import { decryptJWE, getEnvVariable, handleResponse, signJWT, postRedis } from '@/utils';
 import { encryptForge } from '@/utils/toolHelper';
+import { decryptJWE, getEnvVariable, handleResponse, signJWT, postRedis } from '@/utils';
 
 export async function POST(request: NextRequest) {
   const { url, method } = request;
 
   try {
-
     const ipAddress = request.headers.get('X-Forwarded-For');
     const uuid = uuid4();
     const date = new Date();
@@ -24,15 +23,15 @@ export async function POST(request: NextRequest) {
     logger.debug('Request middleware Web %s', JSON.stringify({ method, reqUrl: url, body: decryptedPayload }));
 
     const { jwePublicKey, jwsPublicKey, isBrowser, idDevice } = decryptedPayload as {
-      jwePublicKey: string,
-      jwsPublicKey: string,
-      isBrowser: boolean,
-      idDevice: string
+      jwePublicKey: string;
+      jwsPublicKey: string;
+      isBrowser: boolean;
+      idDevice: string;
     };
 
-    const deviceId = (idDevice)? idDevice : null
+    const deviceId = idDevice ? idDevice : null;
     const stateObject = { timeSession: date.toString(), ipAddress, uuid, deviceId };
-    await postRedis(`session:${encryptForge(uuid)}`, stateObject)
+    await postRedis(`session:${encryptForge(uuid)}`, stateObject);
 
     const token = await signJWT(jwsPrivateKey, { jwePublicKey, jwsPublicKey, uuid });
 

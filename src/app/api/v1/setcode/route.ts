@@ -9,8 +9,8 @@ export async function GET(request: NextRequest) {
   const countryCode = searchParams.get('countryCode');
   const user = uuid4();
 
-  const data = { code: consultantCode, country: countryCode }
-  await postRedis(`identify:${user}`,data)
+  const data = { code: consultantCode, country: countryCode };
+  await postRedis(`identify:${user}`, data);
 
   const response = {
     data: `/identify/${user}`,

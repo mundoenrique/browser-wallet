@@ -1,9 +1,8 @@
 import uuid4 from 'uuid4';
 import axios from 'axios';
-
 //Internal app
-import { useJwtStore, useKeyStore, useActiveAppStore } from '@/store';
 import { JWS_HEADER, JWT_HEADER } from './constants';
+import { useJwtStore, useKeyStore, useActiveAppStore } from '@/store';
 import { decryptJWE, encryptJWE, signJWE, verifyDetachedJWS, verifyJWT } from './jwt';
 
 export const api = axios.create({

@@ -70,7 +70,7 @@ const storeAPi: StateCreator<RegisterStore, [['zustand/devtools', never]]> = (se
   control: null,
 
   updateFormState: (form, data) => set((state) => ({ ...state, [form]: data })),
-  updateControl: (data: any) => set({ control: data })
+  updateControl: (data: any) => set({ control: data }),
 });
 
 export const useRegisterStore = create<RegisterStore>()(

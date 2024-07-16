@@ -1,5 +1,5 @@
-import Redis, { RedisOptions } from 'ioredis';
 import { TIME_SESSION_REDIS } from '.';
+import Redis, { RedisOptions } from 'ioredis';
 
 const redis = {
   host: process.env.REDIS_HOST || '',
@@ -69,21 +69,19 @@ export function createRedisInstance(config = getRedisConfiguration()) {
 }
 
 export async function getRedis(dataGet: string) {
-
   try {
     const redis = createRedisInstance();
     const resData: string | null = await redis.get(`${dataGet}`);
     await redis.expire(`${dataGet}`, TIME_SESSION_REDIS);
     await redis.quit();
 
-    return resData
+    return resData;
   } catch (error) {
     throw new Error('Error get data Redis.');
   }
 }
 
 export async function postRedis(keyRedis: any, newData: any) {
-
   try {
     const redis = createRedisInstance();
     if (keyRedis != null) {
@@ -92,19 +90,16 @@ export async function postRedis(keyRedis: any, newData: any) {
     }
 
     redis.quit();
-
   } catch (error) {
     throw new Error('Error post data Redis: ');
   }
 }
 
-export async function delRedis(sesionId:string) {
-
+export async function delRedis(sesionId: string) {
   try {
     const redis = createRedisInstance();
     redis.del(sesionId);
-    redis.quit()
-
+    redis.quit();
   } catch (error) {
     throw new Error('Error delete data Redis.');
   }

@@ -1,13 +1,13 @@
+import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
-import { cookies } from 'next/headers'
 import axios, { AxiosRequestHeaders } from 'axios';
 //Internal app
 import logger from './logger';
-import { createRedisInstance, delRedis, getRedis } from './redis';
 import { handleApiRequest } from './apiHandle';
 import { APIGEE_HEADERS_NAME, SESSION_ID } from './constants';
-import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './apiHelpers';
+import { createRedisInstance, delRedis, getRedis } from './redis';
 import { encryptForge, setDataRedis, validateTime } from './toolHelper';
+import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './apiHelpers';
 
 const baseURL = getEnvVariable('BACK_URL');
 
@@ -125,10 +125,10 @@ export async function getOauthBearer() {
 export async function HandleCustomerRequest(request: NextRequest) {
   let { method, headers } = request;
 
-  const validate = await validateSession(request)
+  const validate = await validateSession(request);
 
   if (validate) {
-    await refreshTime(request)
+    await refreshTime(request);
   } else {
     method = 'SESSION';
   }
@@ -167,7 +167,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
       responseBack = await apiGee.delete(url);
       break;
     case 'session':
-      responseBack = sessionExpired()
+      responseBack = sessionExpired();
       break;
     default:
       responseBack = { data: Error(`Invalid method: ${method}`) };
@@ -179,15 +179,14 @@ export async function HandleCustomerRequest(request: NextRequest) {
 }
 
 async function validateSession(request: NextRequest) {
-  let uuid = request.cookies.get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile'))
-  const dataRedis = await getRedis(`session:${uuid}`) || null;
+  let uuid = request.cookies.get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile'));
+  const dataRedis = (await getRedis(`session:${uuid}`)) || null;
   if (dataRedis) {
-
     const resRedis = JSON.parse(dataRedis);
-    const timeRest: number = (resRedis.timeSession) ? validateTime(185, resRedis.timeSession) : 0;
+    const timeRest: number = resRedis.timeSession ? validateTime(185, resRedis.timeSession) : 0;
 
-    const time = (timeRest <= 0) ? false : true;
-    (timeRest <= 0) ? await delRedis(`session:${uuid}`) : '';
+    const time = timeRest <= 0 ? false : true;
+    timeRest <= 0 ? await delRedis(`session:${uuid}`) : '';
     return time;
   } else {
     return false;
@@ -195,7 +194,6 @@ async function validateSession(request: NextRequest) {
 }
 
 function sessionExpired() {
-
   logger.debug('El tiempo de session en redis ha finalizado');
 
   const response = {
@@ -203,19 +201,18 @@ function sessionExpired() {
     data: {
       code: '401.00.1000',
       datetime: new Date(),
-      message: 'Session redis expired'
-    }
-  }
+      message: 'Session redis expired',
+    },
+  };
 
   return response;
 }
 
 async function refreshTime(request: NextRequest) {
-
-  const uuidCookie = cookies().get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile'))
+  const uuidCookie = cookies().get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile'));
   if (uuidCookie) {
     const date = new Date();
     const stateObject = { timeSession: date.toString() };
-    await setDataRedis('PUT', {uuid: `session:${uuidCookie}`, data: stateObject })
+    await setDataRedis('PUT', { uuid: `session:${uuidCookie}`, data: stateObject });
   }
 }

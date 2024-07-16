@@ -1,5 +1,4 @@
 import { StateCreator } from 'zustand';
-
 //Internal app
 import { RegisterStore } from '@/interfaces';
 
@@ -48,5 +47,5 @@ export const createRegisterSlice: StateCreator<RegisterStore> = (set) => ({
 
   onboardingUuId: null,
 
-  updateFormState: (form, data) => set((state) => ({ ...state, [form]: data }))
+  updateFormState: (form, data) => set((state) => ({ ...state, [form]: data })),
 });

@@ -1,11 +1,11 @@
 import { type StateCreator, create } from 'zustand';
-import { persist, createJSONStorage, devtools } from 'zustand/middleware';
+import { persist, devtools } from 'zustand/middleware';
 //Internal app
-import { redisStorage } from '@/store/storages/user.store';
 import { decryptForge } from '@/utils/toolHelper';
+import { redisStorage } from '@/store/storages/user.store';
 import { TCardInformation, TUserDetail, UserStore } from '@/interfaces';
 
-const storeAPi: StateCreator<UserStore, [['zustand/devtools', never]]> = (set,get) => ({
+const storeAPi: StateCreator<UserStore, [['zustand/devtools', never]]> = (set, get) => ({
   user: null,
   userId: null,
   cardInformation: null,
@@ -31,7 +31,7 @@ const storeAPi: StateCreator<UserStore, [['zustand/devtools', never]]> = (set,ge
   isUserCardVirtual: () => {
     const cardInformation = get().cardInformation;
     return cardInformation ? cardInformation.cardType === 'VIRTUAL' : true;
-  }
+  },
 });
 
 export const useUserStore = create<UserStore>()(

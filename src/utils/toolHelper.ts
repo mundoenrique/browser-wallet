@@ -54,7 +54,7 @@ export const handleShare = async (element: HTMLElement, shareData: any, backgrou
     });
     if (webShareSupported) {
       const blob: Blob = await new Promise((resolve: any) => canvas.toBlob(resolve, 'image/png'));
-      const file: File = new File([blob], 'cobro.png', { type: 'image/png' });
+      const file: File = new File([blob], 'ticket.png', { type: 'image/png' });
       shareData['files'].push(file);
       await navigator.share(shareData);
     } else {
@@ -112,22 +112,20 @@ export const decryptForge = (encryptedData: any) => {
 };
 
 export const setDataRedis = async (method: string, data = {}) => {
-
-  const encryptData = encryptForge(JSON.stringify(data))
+  const encryptData = encryptForge(JSON.stringify(data));
   const response = await fetch(process.env.NEXT_PUBLIC_WEB_URL + '/api/v1/redis', {
     method: method,
     mode: 'cors',
     cache: 'no-cache',
     credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: { 'Content-Type': 'application/json' },
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
-    body: JSON.stringify({data:encryptData})
+    body: JSON.stringify({ data: encryptData }),
   });
+
   return response.json();
-}
+};
 
 /**
  * Manages the masking of the phone number for sending the otp
@@ -159,13 +157,11 @@ export const formatAmount = (amount: string) => {
   return parseFloat(amount).toFixed(2);
 };
 
-
-export const validateTime = (timeSession: number, dateSession:string) => {
-
+export const validateTime = (timeSession: number, dateSession: string) => {
   const date = new Date(dateSession).getTime();
   const now = new Date().getTime();
   const time: number = Math.trunc(Math.abs((date - now) / 1000));
   const timeRest: number = timeSession - time;
 
-  return timeRest
-}
+  return timeRest;
+};
