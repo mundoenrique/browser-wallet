@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -33,6 +33,10 @@ export default function AuthOtp(props: AuthOtpFormProps) {
   const schema = getSchema(['otp']);
 
   const phoneNumber: string = getUserPhone();
+
+  const setOtpUuid = useOtpStore((state) => state.setOtpUuid);
+
+  const initialized = useRef<boolean>(false);
 
   useEffect(() => {
     sendGTMEvent({
@@ -94,6 +98,27 @@ export default function AuthOtp(props: AuthOtpFormProps) {
         reset();
       });
   };
+
+  const requestTFACode = useCallback(async () => {
+    api
+      .post(`/users/${userId}/tfa`, { otpProcessCode: 'CHANGE_PASSWORD_OTP' })
+      .then((response) => {
+        const { data, status } = response;
+        if (status === 200) {
+          setOtpUuid(data.data.otpUuId);
+        }
+      })
+      .catch((e) => {
+        setModalError({ error: e });
+      });
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!initialized.current) {
+      initialized.current = true;
+      requestTFACode();
+    }
+  }, [requestTFACode]);
 
   useEffect(() => {
     if (timeLeft > 0) {

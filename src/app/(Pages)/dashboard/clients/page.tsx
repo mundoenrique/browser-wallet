@@ -151,7 +151,13 @@ export default function Clients() {
     setError(false);
     api
       .get(`/payments/${user.userId}/chargelist`, {
-        params: { days: 30, limit: 100, page: 1, date: filterMonth.value, transactionCode: paymentStatusCode },
+        params: {
+          days: 30,
+          limit: 100,
+          page: currentPage,
+          date: filterMonth.value,
+          transactionCode: paymentStatusCode,
+        },
       })
       .then((response) => {
         const {
@@ -215,10 +221,6 @@ export default function Clients() {
   useEffect(() => {
     setPaginatedClientData([]);
     setCurrentPage(1);
-    // if (!(paymentStatusCode === '')) {
-    //   setFilteredClientData(clientsData.filter((el: any) => el.status == paymentStatusCode));
-    //   return;
-    // }
     setFilteredClientData(clientsData);
   }, [clientsData]);
 

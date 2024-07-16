@@ -1,7 +1,7 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import IconButton from '@mui/material/IconButton';
 import { sendGTMEvent } from '@next/third-parties/google';
@@ -14,7 +14,7 @@ import { CashIcons, DeleteIcons } from '%/Icons';
 import { stringAvatar } from '@/utils/toolHelper';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
 import { IClientProps, IListClientsProps } from '@/interfaces';
-import { useClientStore, useUserStore, useUiStore, useHeadersStore } from '@/store';
+import { useClientStore, useUserStore, useUiStore, useHeadersStore, useChargeStore } from '@/store';
 
 export default function ClientList(props: IListClientsProps): JSX.Element {
   const { data, loading, disabledBtnDelete, error, isClients } = props;
@@ -36,6 +36,8 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
   const [clientsData, setClientsData] = useState<IClientProps[]>(data);
 
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+
+  const setCharge = useChargeStore((state) => state.setCharge);
 
   const statusObject: { [key: string]: { text: string; color: string } } = {
     PENDING: {
@@ -106,6 +108,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
             : clientsData;
 
         setClientsData(modifiedList);
+        getCharge();
       })
       .catch((e) => {
         setModalError(e);
@@ -132,6 +135,20 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
   const handleNameClick = (index: number) => {
     setShowOptions(null);
   };
+
+  const getCharge = useCallback(async () => {
+    api
+      .get(`/payments/${userId}/charge`)
+      .then((response: any) => {
+        setCharge(response.data.data.amount);
+      })
+      .catch(() => {
+        setModalError({
+          title: 'Algo salió mal',
+          description: 'No pudimos cargar la información de lo que te deben tus clientes.',
+        });
+      });
+  }, []);
 
   return (
     <>
