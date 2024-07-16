@@ -144,7 +144,7 @@ export default function Clients() {
         scroll <= 100 && setCurrentPage((prevPage) => prevPage + 1);
       }
     }
-  }, [setCurrentPage, isLoading, lastPage]); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [setCurrentPage, isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
 
   const getClientAPI = async () => {
     setIsloading(true);
@@ -165,7 +165,7 @@ export default function Clients() {
         } = response;
         if (data) {
           isClients.current = false;
-          setClientsData(data);
+          setClientsData((state: any) => [...state, ...data]);
         } else {
           isClients.current = true;
         }
@@ -198,6 +198,11 @@ export default function Clients() {
   };
 
   useEffect(() => {
+    setCurrentPage(1);
+    setClientsData([]);
+  }, [filterMonth]);
+
+  useEffect(() => {
     window.addEventListener('scroll', scrollHandle);
     return () => {
       window.removeEventListener('scroll', scrollHandle);
@@ -211,7 +216,7 @@ export default function Clients() {
     } else {
       initialized.current = false;
     }
-  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentPage, filterMonth]); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     updateTitle('Mis clientes');
