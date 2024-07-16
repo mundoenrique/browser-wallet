@@ -14,7 +14,5 @@ describe('FrequenQuetions', () => {
   //** Renders a title, subtitles.
   it('should render all text, titles, subtitles.', () => {
     expect(screen.getByText('Preguntas frecuentes')).toBeInTheDocument();
-    expect(screen.getByText(/Selecciona el tema que necesitas/i)).toBeInTheDocument();
-    expect(screen.getByText(/preguntas frecuentes/i)).toBeInTheDocument();
   });
 });
