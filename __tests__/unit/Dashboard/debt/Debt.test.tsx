@@ -9,7 +9,7 @@ describe('Debit', () => {
   const routerPushMock = jest.fn();
 
   beforeEach(async () => {
-    mockRouterPush(routerPushMock)
+    mockRouterPush(routerPushMock);
   });
 
   //** Renders a title, subtitles.
@@ -17,7 +17,7 @@ describe('Debit', () => {
     await act(async () => {
       render(<Debit />);
     });
-    expect(screen.getByText(/pagar deuda con ésika/i)).toBeInTheDocument();
+    expect(screen.getByText(/pagar deuda con Belcorp/i)).toBeInTheDocument();
     expect(screen.getByText(/deuda total/i)).toBeInTheDocument();
   });
 

@@ -37,7 +37,7 @@ export default function Success() {
     {
       icon: <EsikaIsotipo sx={{ color: 'primary.main' }} />,
       label: 'Pagado a',
-      description: 'Belcorp ésika',
+      description: 'Somos Belcorp',
     },
     {
       icon: <Dollar sx={{ color: 'primary.main' }} />,

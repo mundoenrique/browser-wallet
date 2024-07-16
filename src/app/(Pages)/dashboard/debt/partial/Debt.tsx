@@ -1,6 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useCallback, useEffect, useState } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
@@ -23,6 +24,8 @@ import {
 } from '@/store';
 
 export default function Debt() {
+  const router = useRouter();
+
   const schema = getSchema(['amount']);
 
   const debt = useDebStore((state) => state.debt);
@@ -94,7 +97,7 @@ export default function Debt() {
           setLoadingScreen(false);
         });
     },
-    [debt.id] //eslint-disable-line
+    [debt?.id] //eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const onSubmitOtp = useCallback(
@@ -153,9 +156,15 @@ export default function Debt() {
   };
 
   useEffect(() => {
-    updateTitle('Pagar deuda con ésika');
+    updateTitle('Pagar deuda con Belcorp');
     setCurrentItem('home');
   }, [updateTitle, setCurrentItem]);
+
+  useEffect(() => {
+    if (parseFloat(debt.amount) === 0) {
+      router.push('/dashboard');
+    }
+  }, [debt]);
 
   return (
     <>
@@ -165,7 +174,7 @@ export default function Debt() {
           color="primary"
           sx={{ color: 'primary.main', mb: 6, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
         >
-          Pagar deuda con ésika
+          Pagar deuda con Belcorp
         </Typography>
 
         <Linking href="/dashboard" label="Volver" adormentStart />

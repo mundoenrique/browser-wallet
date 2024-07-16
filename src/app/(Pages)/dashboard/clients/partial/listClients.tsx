@@ -74,7 +74,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
 
   const handleCash = (client: IClientProps) => {
     router.push('/dashboard/collect');
-    setClient({ fullname: client.fullname, number: client.number });
+    setClient({ fullname: client.fullname, phoneNumber: client.phoneNumber });
     setShowOptions(null);
     sendGTMEvent({
       event: 'ga4.trackEvent',

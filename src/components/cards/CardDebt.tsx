@@ -42,10 +42,12 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
         flexDirection: 'column',
         justifyContent: 'space-between',
         borderRadius: '14px',
-        cursor: onClick ? 'pointer' : 'initial',
+        cursor: onClick && parseFloat(data.data?.amount as string) > 0 ? 'pointer' : 'initial',
         bgcolor: fuchsiaBlue[50],
       }}
-      onClick={onClick}
+      onClick={() => {
+        parseFloat(data.data?.amount as string) > 0 && onClick && onClick();
+      }}
     >
       <Box sx={{ display: 'flex', height: 28, justifyContent: 'space-between' }}>
         <Typography sx={{ fontSize: 10, fontWeight: 600, py: OweMe ? 1 : 1 / 2, px: 1 }}>
@@ -74,14 +76,16 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
       </Box>
       <Box px={1}>
         <Typography sx={{ fontSize: 10, fontWeight: 400 }}>
-          {OweMe ? 'Mis clientes me deben' : 'Mi deuda con ésika'}
+          {OweMe ? 'Mis clientes me deben' : 'Mi deuda con Belcorp'}
         </Typography>
         <Typography variant="h6" noWrap>
           {data?.code === '200.00.000' ? (
             loading ? (
               <Skeleton variant="text" />
             ) : data.data?.amount ? (
-              `S/ ${data.data?.amount}`
+              `${Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(
+                data.data?.amount as number
+              )}`
             ) : (
               'S/ 0.00'
             )
