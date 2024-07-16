@@ -1,18 +1,18 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import IconButton from '@mui/material/IconButton';
+import { useCallback, useEffect, useState } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, Typography, Avatar, Collapse, Button } from '@mui/material';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 //Internal app
 import { api } from '@/utils/api';
-import { ModalResponsive, SkeletonTable } from '@/components';
 import { CashIcons, DeleteIcons } from '%/Icons';
 import { stringAvatar } from '@/utils/toolHelper';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
+import { ModalResponsive, SkeletonTable } from '@/components';
 import { IClientProps, IListClientsProps } from '@/interfaces';
 import { useClientStore, useUserStore, useUiStore, useHeadersStore, useChargeStore } from '@/store';
 
@@ -27,6 +27,8 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
 
   const { userId } = useUserStore((state) => state.user);
 
+  const setCharge = useChargeStore((state) => state.setCharge);
+
   const setModalError = useUiStore((state) => state.setModalError);
 
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
@@ -36,8 +38,6 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
   const [clientsData, setClientsData] = useState<IClientProps[]>(data);
 
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
-
-  const setCharge = useChargeStore((state) => state.setCharge);
 
   const statusObject: { [key: string]: { text: string; color: string } } = {
     PENDING: {
@@ -148,6 +148,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
           description: 'No pudimos cargar la información de lo que te deben tus clientes.',
         });
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -271,10 +272,14 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
               </Collapse>
             </Box>
           ))}
+
         {isClients && !loading && <EmptySlot />}
+
         {data.length == 0 && loading && <SkeletonTable />}
+
         {error && <ErrorSlot />}
       </Box>
+
       <ModalResponsive
         open={openDeleteModal}
         handleClose={() => {
