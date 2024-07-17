@@ -11,7 +11,6 @@ export async function POST(request: NextRequest) {
   try {
     const ipAddress = request.headers.get('X-Forwarded-For');
     const uuid = uuid4();
-    const date = new Date();
 
     const encryptedBody = await request.json();
     const { data } = encryptedBody;
@@ -30,7 +29,7 @@ export async function POST(request: NextRequest) {
     };
 
     const deviceId = idDevice ? idDevice : null;
-    const stateObject = { timeSession: date.toString(), ipAddress, uuid, deviceId };
+    const stateObject = { ipAddress, uuid, deviceId };
     await postRedis(`session:${encryptForge(uuid)}`, stateObject);
 
     const token = await signJWT(jwsPrivateKey, { jwePublicKey, jwsPublicKey, uuid });
