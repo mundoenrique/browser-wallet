@@ -132,7 +132,7 @@ export default function Signin() {
               content_type: 'boton',
               section: 'Yiro :: login :: interno',
               previous_section: 'identify',
-              selected_content: 'Volver a ésika Conmigo',
+              selected_content: 'Volver a Somos Belcorp',
               destination_page: `${backLink}`,
             },
           });
@@ -157,11 +157,11 @@ export default function Signin() {
             <LogoGreen />
           </Box>
           <Box mb={8}>
-            <Typography variant="body2" color="white">
-              Dinero en tu bolsillo,
+            <Typography variant="h6" color="white" fontWeight={700}>
+              Tu aliado digital,
             </Typography>
-            <Typography color="success.main" variant="h6">
-              ¡Sin complicaciones!
+            <Typography variant="h6" color="white" fontWeight={700}>
+              ágil y seguro
             </Typography>
           </Box>
           {userData ? (
@@ -187,13 +187,13 @@ export default function Signin() {
                       content_type: 'boton',
                       section: 'Yiro :: login :: interno',
                       previous_section: 'somosbelcorp',
-                      selected_content: 'Olvide mi contraseña',
-                      destination_page: `${host}password-recover/crearContraseña`,
+                      selected_content: 'Olvidé mi contraseña',
+                      destination_page: `${host}/password-recover`,
                     },
                   })
                 }
               >
-                Olvide mi contraseña
+                Olvidé mi contraseña
               </LinkMui>
             </Box>
           </Box>

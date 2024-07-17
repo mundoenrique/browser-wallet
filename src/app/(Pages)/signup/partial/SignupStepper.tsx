@@ -35,7 +35,7 @@ export default function SignupStepper(props: { currentStep: number; children: JS
                 content_type: 'boton',
                 section: 'Yiro :: onboarding',
                 previous_section: 'identify',
-                selected_content: 'Volver a ésika Conmigo',
+                selected_content: 'Volver a Somos Belcorp',
                 destination_page: `${backLink}`,
               },
             });

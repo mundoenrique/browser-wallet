@@ -92,7 +92,7 @@ export default function ListSidebar(): JSX.Element {
       <List>
         <ItemSecondarySidebar
           href={backLink}
-          text="Regresa a ésika conmigo"
+          text="Regresa a Somos Belcorp"
           icon={<LogoutAppIcons />}
           onClick={() => {
             sendGTMEvent({
@@ -100,9 +100,9 @@ export default function ListSidebar(): JSX.Element {
               eventName: 'select_content',
               eventParams: {
                 content_type: 'boton',
-                section: `Yiro :: Regresa a ésika conmigo :: menu_1`,
+                section: `Yiro :: Regresa a Somos Belcorp :: menu_1`,
                 previous_section: 'dashboard',
-                selected_content: 'menu_1 :: Regresa a ésika conmigo',
+                selected_content: 'menu_1 :: Regresa a Somos Belcorp',
                 destination_page: `${backLink}`,
               },
             });
