@@ -1,5 +1,7 @@
-import { create } from 'zustand';
-import { devtools, persist, createJSONStorage } from 'zustand/middleware';
+import { StateCreator, create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
+import { redisStorage } from '@/store/storages/card.store';
+
 //Internal app
 import { ConfigCardStore } from '@/interfaces';
 
@@ -14,64 +16,66 @@ import { ConfigCardStore } from '@/interfaces';
  * @param isCardVirtual - Return  a boolean for card Type
  * @param setCardActivationStatus - object
  */
-export const useConfigCardStore = create<ConfigCardStore>()(
-  devtools(
-    persist(
-      (set, get) => ({
-        /**
+const storeAPi: StateCreator<ConfigCardStore, [['zustand/devtools', never]]> = (set,get) => ({
+  /**
          * Component name for de page/section rendering
          */
-        page: '',
-        /**
-         * Set value for the page component
-         */
-        updatePage: (newPage) => {
-          set({ page: newPage });
-        },
-        /**
-         * set card activation status
-         */
-        cardActivationStatus: '',
-        /**
-         * Return true or false if card is blocked
-         */
-        isCardBlocked: () => {
-          const blockObject = get().blockType;
-          return Object.hasOwn(blockObject, 'code');
-        },
-        /**
-         * Card block type
-         */
-        blockType: {},
-        /**
-         * Type of card VIRTUAL / PHYSICAL
-         */
-        cardType: '',
-        /**
-         * Card status Active/Inactive
-         */
-        cardStatus: '',
-        /**
-         * set if card info is loaded
-         */
-        cardInfo: false,
-        /**
-         * Var to dispatch an update
-         */
-        updateCardInfo: false,
-        /**
-         * Dispatch an update
-         */
-        toggleUpdate: () => set((state) => ({ updateCardInfo: !state.updateCardInfo })),
-        /**
-         * set  values for  card object: cardType, cardBlockStatus, cardStatus
-         */
-        setCardProperties: (key, value) =>
-          set((state) => {
-            return { ...state, [key]: value };
-          }),
-      }),
-      { name: 'card-store', storage: createJSONStorage(() => sessionStorage) }
-    )
+  page: '',
+  /**
+   * Set value for the page component
+   */
+  updatePage: (newPage) => {
+    set({ page: newPage });
+  },
+  /**
+   * set card activation status
+   */
+  cardActivationStatus: '',
+  /**
+   * Return true or false if card is blocked
+   */
+  isCardBlocked: () => {
+    const blockObject = get().blockType;
+    return Object.hasOwn(blockObject, 'code');
+  },
+  /**
+   * Card block type
+   */
+  blockType: {},
+  /**
+   * Type of card VIRTUAL / PHYSICAL
+   */
+  cardType: '',
+  /**
+   * Card status Active/Inactive
+   */
+  cardStatus: '',
+  /**
+   * set if card info is loaded
+   */
+  cardInfo: false,
+  /**
+   * Var to dispatch an update
+   */
+  updateCardInfo: false,
+  /**
+   * Dispatch an update
+   */
+  toggleUpdate: () => set((state) => ({ updateCardInfo: !state.updateCardInfo })),
+  /**
+   * set  values for  card object: cardType, cardBlockStatus, cardStatus
+   */
+  setCardProperties: (key, value) =>
+    set((state) => {
+      return { ...state, [key]: value };
+    }),
+});
+
+export const useConfigCardStore = create<ConfigCardStore>()(
+  devtools(
+    persist(storeAPi, {
+      name: 'card-storage',
+      storage: redisStorage,
+    })
   )
 );
