@@ -1,7 +1,8 @@
 import { type StateCreator, create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { redisStorage } from '@/store/storages/jwt.store';
+//Internal app
 import { JwtStoreProps } from '@/interfaces/store';
+import { redisStorage } from '@/store/storages/jwt.store';
 
 const storeAPi: StateCreator<JwtStoreProps, [['zustand/devtools', never]]> = (set) => ({
   token: null,

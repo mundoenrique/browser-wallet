@@ -1,33 +1,32 @@
 'use client';
 
-import { Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button, Typography, Box } from '@mui/material';
 // Internal app
 import { ModalResponsive } from '.';
-import { Box } from '@mui/system';
-import { useRouter } from 'next/navigation';
 import { useAccessSessionStore } from '@/store';
 import { setDataRedis, validateTime } from '@/utils/toolHelper';
 
 export default function TimmerSession() {
+  const { push } = useRouter();
 
   const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
 
   const [open, setOpen] = useState<boolean>(false);
-  const router = useRouter();
 
   const closeSession = async () => {
     localStorage.removeItem('sessionTime');
     await setDataRedis('DELETE', { data: { delParam: 'timeSession' } });
-    setAccessSession(false)
-    router.push('/signin');
+    setAccessSession(false);
+    push('/signin');
   };
 
   const resetSession = async () => {
     const date = new Date();
     localStorage.setItem('sessionTime', date.toString());
     const stateObject = { timeSession: date.toString() };
-    await setDataRedis('PUT', {uuid: null, data: stateObject })
+    await setDataRedis('PUT', { uuid: null, data: stateObject });
     setOpen(false);
   };
 
@@ -53,22 +52,15 @@ export default function TimmerSession() {
   }, []);
 
   return (
-    <>
-      <ModalResponsive open={open} handleClose={closeSession}>
-        <Box component="form" autoComplete="off">
-          <Typography variant="subtitle1" mb="12px">
-            Tu sesión está a punto de expirar. Desea seguir utilizando su App?
-          </Typography>
-          <Button
-            variant="contained"
-            type="button"
-            onClick={resetSession}
-          >
-            Continuar
-          </Button>
-
-        </Box>
-      </ModalResponsive>
-    </>
+    <ModalResponsive open={open} handleClose={closeSession}>
+      <Box>
+        <Typography variant="subtitle1" mb={3}>
+          Tu sesión está a punto de expirar. Desea seguir utilizando su App?
+        </Typography>
+        <Button variant="contained" onClick={resetSession} sx={{ width: '100%', mx: 'auto' }}>
+          Continuar
+        </Button>
+      </Box>
+    </ModalResponsive>
   );
 }

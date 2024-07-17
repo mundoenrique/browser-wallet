@@ -1,16 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
+import { useEffect, useState } from 'react';
 //Internal app
-import { useDrawerStore, useAccessSessionStore } from '@/store';
+import LogoGreen from '%/images/LogoGreen';
 import { useRouter } from 'next/navigation';
 import { ChildrenProps } from '@/interfaces';
 import Navbar from '../navigation/navbar/Navbar';
 import Sidebar from '../navigation/sidebar/Sidebar';
-import NavbarLower from '../navigation/navbar/NavbarLower';
 import { PurpleLayout, Timersession } from '@/components';
-import LogoGreen from '%/images/LogoGreen';
+import NavbarLower from '../navigation/navbar/NavbarLower';
+import { useDrawerStore, useAccessSessionStore } from '@/store';
 
 /**
  * Container used in the internal views of the application
@@ -20,9 +20,9 @@ import LogoGreen from '%/images/LogoGreen';
 export default function MainLayout({ children }: ChildrenProps): JSX.Element {
   const drawerWidth = 315;
 
-  const accessSession = useAccessSessionStore((state) => state.accessSession);
-
   const { drawerStatus, setDrawerStatus } = useDrawerStore();
+
+  const accessSession = useAccessSessionStore((state) => state.accessSession);
 
   const [isClosing, setIsClosing] = useState<boolean>(false);
 
@@ -32,7 +32,7 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
     if (accessSession === false) {
       push('/signin');
     }
-  },[])
+  }, []);
 
   const handleDrawerClose = () => {
     setIsClosing(true);
