@@ -16,9 +16,10 @@ export default function TimmerSession() {
   const [open, setOpen] = useState<boolean>(false);
   const router = useRouter();
 
-  const closeSession = () => {
-    setAccessSession(false)
+  const closeSession = async () => {
     localStorage.removeItem('sessionTime');
+    await setDataRedis('DELETE', { data: { delParam: 'timeSession' } });
+    setAccessSession(false)
     router.push('/signin');
   };
 
@@ -36,7 +37,7 @@ export default function TimmerSession() {
         closeSession();
       }
 
-      const timeRest: number = validateTime(185, localStorage.sessionTime);
+      const timeRest: number = validateTime(180, localStorage.sessionTime);
 
       if (timeRest === 25) {
         setOpen(true);
