@@ -20,7 +20,6 @@ export default function signOut() {
   useEffect(() => {
     const url: any = (backLink != '') ? backLink : process.env.NEXT_PUBLIC_ALLOW_ORIGIN;
     setUrl(url);
-    Cookie.remove(SESSION_ID, { path: '/' });
     sessionStorage.clear();
   })
 

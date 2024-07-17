@@ -21,7 +21,7 @@ export async function middleware(request: NextRequest) {
 
     if (!res) {
       const response = NextResponse.redirect(`${nextUrl.origin}/signout`);
-      response.cookies.set(SESSION_ID, '', { httpOnly: false });
+      response.cookies.set(SESSION_ID, '', { expires: new Date(0) });
 
       return response;
     } else {
