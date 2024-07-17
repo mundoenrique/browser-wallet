@@ -51,9 +51,9 @@ export default function PEP() {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: `${host}/signup`,
+        page_location: `${host}/signup/onboarding/step3-2`,
         page_title: 'Yiro :: onboarding :: step3 :: 3.3PEP',
-        page_referrer: `${host}/identify`,
+        page_referrer: `${host}/signup/onboarding/step3-1`,
         section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
         previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
       },
@@ -94,9 +94,9 @@ export default function PEP() {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: `${host}/signup`,
+        page_location: `${host}/signup/onboarding/step3-2`,
         page_title: 'Yiro :: onboarding :: step3 :: 3.3PEP',
-        page_referrer: `${host}/identify`,
+        page_referrer: `${host}/signup/onboarding/step3-1`,
         section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
         previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
       },
@@ -166,9 +166,9 @@ export default function PEP() {
         event: 'ga4.trackEvent',
         eventName: 'select_content',
         eventParams: {
-          page_location: `${host}/signup`,
+          page_location: `${host}/signup/onboarding/step3-2`,
           page_title: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
-          page_referrer: `${host}/identify`,
+          page_referrer: `${host}/signup/onboarding/step3-1`,
           section: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
           previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
         },
@@ -430,7 +430,7 @@ export default function PEP() {
                       section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
                       previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
                       selected_content: isPep ? 'Si' : 'No',
-                      destination_page: `${host}/signup`,
+                      destination_page: `${host}/signup/onboarding/step4`,
                     },
                   });
                 }}
@@ -463,7 +463,7 @@ export default function PEP() {
                         section: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
                         previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
                         selected_content: 'Si',
-                        destination_page: `${host}/signup`,
+                        destination_page: `${host}/signup/onboarding/step4`,
                       },
                     });
                   } else {
@@ -476,7 +476,7 @@ export default function PEP() {
                         section: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
                         previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
                         selected_content: 'No',
-                        destination_page: `${host}/signup`,
+                        destination_page: `${host}/signup/onboarding/step4`,
                       },
                     });
                   }
@@ -549,7 +549,7 @@ export default function PEP() {
                         section: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
                         previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
                         selected_content: 'Agregar parientes',
-                        destination_page: `${host}/signup`,
+                        destination_page: `${host}/signup/onboarding/step4`,
                       },
                     });
                   }}
@@ -575,7 +575,7 @@ export default function PEP() {
                     : 'Yiro :: onboarding :: step3 :: 3.3PEP',
                   previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
                   selected_content: 'Anterior',
-                  destination_page: `${host}/signup`,
+                  destination_page: `${host}/signup/onboarding/step4`,
                 },
               });
             }}
@@ -596,7 +596,7 @@ export default function PEP() {
                     : 'Yiro :: onboarding :: step3 :: 3.3PEP',
                   previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
                   selected_content: 'Siguiente',
-                  destination_page: `${host}/signup`,
+                  destination_page: `${host}/signup/onboarding/step4`,
                 },
               });
             }}
@@ -618,7 +618,7 @@ export default function PEP() {
               section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
               previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
               selected_content: '¿Qué es una Persona Expuesta Políticamente(PEP)?',
-              destination_page: `${host}/signup`,
+              destination_page: `${host}/signup/onboarding/step4`,
             },
           });
         }}

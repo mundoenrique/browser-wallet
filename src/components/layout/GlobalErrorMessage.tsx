@@ -106,6 +106,7 @@ const setError = (eCode?: string, context?: string) => {
     '990': { description: 'Token de acceso no válido.' },
     '992': { description: 'Firma no válida.' },
     '993': { description: 'Token de acceso vencido.' },
+    '995': { description: 'La nueva contraseña no puede ser la misma que las últimas 3 utilizadas.' },
     '999': { description: 'Error interno del servidor' },
     '1000': { description: 'La sesión ha expirado' },
 

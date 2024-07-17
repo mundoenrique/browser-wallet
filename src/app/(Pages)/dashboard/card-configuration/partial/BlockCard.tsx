@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useState, useCallback } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, Button, Typography, Stack } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
@@ -11,14 +12,16 @@ import { getSchema } from '@/config';
 import { encryptForge } from '@/utils/toolHelper';
 import ModalOtp from '@/components/modal/ModalOtp';
 import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/components';
-import { useUserStore, useUiStore, useOtpStore, useNavTitleStore, useConfigCardStore } from '@/store';
+import { useUserStore, useUiStore, useOtpStore, useNavTitleStore, useConfigCardStore, useHeadersStore } from '@/store';
 
 export default function BlockCard() {
   const router = useRouter();
 
-  const { updateTitle } = useNavTitleStore();
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
 
-  const { updatePage } = useConfigCardStore();
+  const updatePage = useConfigCardStore((state) => state.updatePage);
+
+  const host = useHeadersStore((state) => state.host);
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
@@ -99,6 +102,20 @@ export default function BlockCard() {
       });
   };
 
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/card-configuration/bloquearTarjeta`,
+        page_title: 'Yiro :: Yiro :: configuracionTarjeta :: bloquearTarjeta',
+        page_referrer: `${host}/dashboard/card-configuration/menu`,
+        section: 'Yiro :: Yiro :: configuracionTarjeta :: bloquearTarjeta',
+        previous_section: 'Yiro :: configuracionTarjeta :: menu',
+      },
+    });
+  }, [host]);
+
   const blockCardType = [
     {
       text: 'Por perdida(definitivo)',
@@ -142,10 +159,38 @@ export default function BlockCard() {
           component="form"
           onSubmit={handleSubmit(() => {
             setOpenOtp(true);
+            sendGTMEvent({
+              event: 'ga4.trackEvent',
+              eventName: 'select_content',
+              eventParams: {
+                content_type: 'boton',
+                section: 'Yiro :: Yiro :: configuracionTarjeta :: bloquearTarjeta',
+                previous_section: 'Yiro :: configuracionTarjeta :: menu',
+                selected_content: 'Bloqueo definitivo',
+                destination_page: `${host}/dashboard/card-configuration/menu`,
+              },
+            });
           })}
         >
           <InputRadio options={blockCardType} name="blockType" control={control} />
-          <Button variant="contained" type="submit" fullWidth>
+          <Button
+            variant="contained"
+            type="submit"
+            fullWidth
+            onClick={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: 'Yiro :: Yiro :: configuracionTarjeta :: bloquearTarjeta',
+                  previous_section: 'Yiro :: configuracionTarjeta :: menu',
+                  selected_content: 'Bloquear',
+                  destination_page: `${host}/dashboard`,
+                },
+              });
+            }}
+          >
             Bloquear
           </Button>
         </Box>
@@ -169,6 +214,19 @@ export default function BlockCard() {
           onClick={() => {
             setOpen(false);
             router.push('/dashboard');
+            sendGTMEvent({
+              event: 'ga4.trackEvent',
+              eventName: 'select_content',
+              eventParams: {
+                content_type: 'boton_modal',
+                section: 'Yiro :: Yiro :: configuracionTarjeta :: bloquearTarjeta',
+                previous_section: 'Yiro :: configuracionTarjeta :: menu',
+                selected_content: 'Crear nueva cuenta',
+                destination_page: `${host}/dashboard`,
+                pop_up_type: 'Bloquear',
+                pop_up_title: 'Tarjeta bloqueada',
+              },
+            });
           }}
           fullWidth
         >

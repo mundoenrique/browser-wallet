@@ -86,9 +86,9 @@ export default function Collect() {
 
   useEffect(() => {
     setValueClient('nameClient', client?.fullname);
-    setValueClient('numberClient', client?.number);
+    setValueClient('numberClient', client?.phoneNumber);
     return () => {
-      setClient({ fullname: '', number: '' });
+      setClient({ fullname: '', phoneNumber: '' });
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

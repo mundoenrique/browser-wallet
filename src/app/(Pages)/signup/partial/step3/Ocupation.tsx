@@ -44,9 +44,9 @@ export default function Ocupation() {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: `${host}/signup`,
+        page_location: `${host}/signup/onboarding/step3-1`,
         page_title: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
-        page_referrer: `${host}/identify`,
+        page_referrer: `${host}/signup/onboarding/step2`,
         section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
         previous_section: 'Yiro :: onboarding :: step2',
       },
@@ -67,9 +67,9 @@ export default function Ocupation() {
         event: 'ga4.trackEvent',
         eventName: 'page_view_ga4',
         eventParams: {
-          page_location: `${host}/signup`,
+          page_location: `${host}/signup/onboarding/step3-1`,
           page_title: 'Yiro :: onboarding :: step3 :: 3.2consultora',
-          page_referrer: `${host}/identify`,
+          page_referrer: `${host}/signup/onboarding/step2`,
           section: 'Yiro :: onboarding :: step3 :: 3.2consultora',
           previous_section: 'Yiro :: onboarding :: step2',
         },
@@ -80,9 +80,9 @@ export default function Ocupation() {
         event: 'ga4.trackEvent',
         eventName: 'page_view_ga4',
         eventParams: {
-          page_location: `${host}/signup`,
+          page_location: `${host}/signup/onboarding/step3-1`,
           page_title: 'Yiro :: onboarding :: step3 :: 3.2noConsultora',
-          page_referrer: `${host}/identify`,
+          page_referrer: `${host}/signup/onboarding/step2`,
           section: 'Yiro :: onboarding :: step3 :: 3.2noConsultora',
           previous_section: 'Yiro :: onboarding :: step2',
         },
@@ -200,7 +200,7 @@ export default function Ocupation() {
                     : 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
                   previous_section: 'Yiro :: onboarding :: step2',
                   selected_content: 'Anterior',
-                  destination_page: `${host}/signup`,
+                  destination_page: `${host}/signup/onboarding/step3-2`,
                 },
               });
             }}
@@ -222,7 +222,7 @@ export default function Ocupation() {
                     : 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
                   previous_section: 'Yiro :: onboarding :: step2',
                   selected_content: 'Siguiente',
-                  destination_page: `${host}/signup`,
+                  destination_page: `${host}/signup/onboarding/step3-2`,
                 },
               });
             }}

@@ -7,9 +7,15 @@ import { TCardInformation, TUserDetail, UserStore } from '@/interfaces';
 
 const storeAPi: StateCreator<UserStore, [['zustand/devtools', never]]> = (set, get) => ({
   user: null,
-  userId: null,
-  cardInformation: null,
 
+  userId: null,
+  /**
+   * set user object
+   */
+  cardInformation: null,
+  /**
+   * set card information
+   */
   setCardInformation: (data: TCardInformation) => set({ user: data }),
 
   setUser: (data: TUserDetail) => set({ user: data }),
@@ -26,11 +32,6 @@ const storeAPi: StateCreator<UserStore, [['zustand/devtools', never]]> = (set, g
       cardSolutions: { cardId },
     } = get().user;
     return decryptForge(cardId);
-  },
-
-  isUserCardVirtual: () => {
-    const cardInformation = get().cardInformation;
-    return cardInformation ? cardInformation.cardType === 'VIRTUAL' : true;
   },
 });
 

@@ -4,28 +4,31 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 import { useEffect, useState, useCallback } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import { encryptForge } from '@/utils/toolHelper';
 import ModalOtp from '@/components/modal/ModalOtp';
 import { ContainerLayout, InputPass, Linking, ModalResponsive } from '@/components';
-import { useNavTitleStore, useConfigCardStore, useUiStore, useOtpStore, useUserStore } from '@/store';
+import { useNavTitleStore, useConfigCardStore, useUiStore, useOtpStore, useUserStore, useHeadersStore } from '@/store';
 
 export default function ChangePin() {
-  const updateTitle = useNavTitleStore((state) => state.updateTitle);
-
-  const updatePage = useConfigCardStore((state) => state.updatePage);
-
-  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
-
-  const setModalError = useUiStore((state) => state.setModalError);
+  const host = useHeadersStore((state) => state.host);
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
   const { userId } = useUserStore((state) => state.user);
 
   const cardId = useUserStore((state) => state.getUserCardId);
+
+  const updatePage = useConfigCardStore((state) => state.updatePage);
+
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
   const [openRc, setOpenRc] = useState<boolean>(false);
 
@@ -92,6 +95,20 @@ export default function ChangePin() {
     updateTitle('Cambiar PIN');
   }, [updateTitle]);
 
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/card-configuration/cambiarPin`,
+        page_title: 'Yiro :: configuracionTarjeta :: cambiarPin',
+        page_referrer: `${host}/dashboard/card-configuration/menu`,
+        section: 'Yiro :: configuracionTarjeta :: cambiarPin',
+        previous_section: 'Yiro :: configuracionTarjeta :: menu',
+      },
+    });
+  }, [host]);
+
   return (
     <>
       <ContainerLayout>
@@ -129,7 +146,24 @@ export default function ChangePin() {
             label="Confirmar tu nuevo Pin"
             inputProperties={{ inputProps: { maxLength: 4 } }}
           />
-          <Button variant="contained" type="submit" fullWidth>
+          <Button
+            variant="contained"
+            type="submit"
+            fullWidth
+            onClick={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: 'Yiro :: configuracionTarjeta :: cambiarPin',
+                  previous_section: 'Yiro :: configuracionTarjeta :: menu',
+                  selected_content: 'Cambiar PIN',
+                  destination_page: `${host}/dashboard/card-configuration/menu`,
+                },
+              });
+            }}
+          >
             Cambiar PIN
           </Button>
         </Box>

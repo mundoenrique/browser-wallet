@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -34,14 +34,18 @@ export default function AuthOtp(props: AuthOtpFormProps) {
 
   const phoneNumber: string = getUserPhone();
 
+  const setOtpUuid = useOtpStore((state) => state.setOtpUuid);
+
+  const initialized = useRef<boolean>(false);
+
   useEffect(() => {
     sendGTMEvent({
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: `${host}/password-recover`,
+        page_location: `${host}/password-recover/crearContraseña`,
         page_title: 'Yiro :: recuperarContraseña :: código',
-        page_referrer: `${host}/signin`,
+        page_referrer: `${host}/password-recover/codigo `,
         section: 'Yiro :: recuperarContraseña :: código',
         previous_section: 'Yiro :: login :: interno',
       },
@@ -59,7 +63,7 @@ export default function AuthOtp(props: AuthOtpFormProps) {
         section: 'Yiro :: recuperarContraseña :: codigo',
         previous_section: 'Yiro :: login :: interno',
         selected_content: 'Reenviar código',
-        destination_page: `${host}/password-recover`,
+        destination_page: `${host}/signin/interno`,
       },
     });
   };
@@ -94,6 +98,27 @@ export default function AuthOtp(props: AuthOtpFormProps) {
         reset();
       });
   };
+
+  const requestTFACode = useCallback(async () => {
+    api
+      .post(`/users/${userId}/tfa`, { otpProcessCode: 'CHANGE_PASSWORD_OTP' })
+      .then((response) => {
+        const { data, status } = response;
+        if (status === 200) {
+          setOtpUuid(data.data.otpUuId);
+        }
+      })
+      .catch((e) => {
+        setModalError({ error: e });
+      });
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!initialized.current) {
+      initialized.current = true;
+      requestTFACode();
+    }
+  }, [requestTFACode]);
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -143,7 +168,7 @@ export default function AuthOtp(props: AuthOtpFormProps) {
               section: 'Yiro :: recuperarContraseña :: codigo',
               previous_section: 'Yiro :: login :: interno',
               selected_content: 'Continuar',
-              destination_page: `${host}/password-recover`,
+              destination_page: `${host}/signin/interno`,
             },
           });
         }}

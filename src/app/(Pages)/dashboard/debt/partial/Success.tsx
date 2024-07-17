@@ -24,9 +24,9 @@ export default function Success() {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: `${host}/dashboard/debt`,
+        page_location: `${host}/dashboard/debt/operacionExitosa`,
         page_title: 'Yiro :: pagarDeuda :: operacionExitosa',
-        page_referrer: `${host}/dashboard`,
+        page_referrer: `${host}/dashboard/debt`,
         section: 'Yiro :: pagarDeuda :: operacionExitosa',
         previous_section: 'Yiro :: pagarDeuda :: monto',
       },
@@ -37,7 +37,7 @@ export default function Success() {
     {
       icon: <EsikaIsotipo sx={{ color: 'primary.main' }} />,
       label: 'Pagado a',
-      description: 'Belcorp ésika',
+      description: 'Somos Belcorp',
     },
     {
       icon: <Dollar sx={{ color: 'primary.main' }} />,

@@ -48,7 +48,7 @@ export default function Navbar(props: NavbarProps): JSX.Element {
         </IconButton>
 
         {dashboardNav ? (
-          <Linking href={backLink} label="Volver a ésika Conmigo" mb={0} adormentEnd />
+          <Linking href={backLink} label="Volver a Somos Belcorp" mb={0} adormentEnd />
         ) : (
           <>
             <Typography variant="subtitle1" color="primary.main">

@@ -1,8 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import Image from 'next/image';
 import { sendGTMEvent } from '@next/third-parties/google';
-import { Box, Card, Divider, List, Typography } from '@mui/material';
+import { Box, Card, Divider, List, Typography, Link as LinkMui } from '@mui/material';
 //Internal app
 import card from '%/images/cardYiro.svg';
 import ItemsSidebar from './ItemsSidebar';
@@ -20,6 +21,10 @@ import { useConfigCardStore, useHeadersStore, useAccessSessionStore } from '@/st
  */
 export default function ListSidebar(): JSX.Element {
   const updatePage = useConfigCardStore((state) => state.updatePage);
+
+  const cardType = useConfigCardStore((state) => state.cardType);
+
+  const cardActivationStatus = useConfigCardStore((state) => state.cardActivationStatus);
 
   const { backLink } = useHeadersStore();
 
@@ -42,38 +47,48 @@ export default function ListSidebar(): JSX.Element {
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', cursor: 'pointer' }}>
-        <Card
-          variant="detailCard"
-          sx={{ mt: { xs: 10, md: 'auto' }, mb: { xs: 0, md: 'auto' } }}
-          onClick={() => {
-            updatePage('requestPhysicalCard');
-            sendGTMEvent({
-              event: 'ga4.trackEvent',
-              eventName: 'select_content',
-              eventParams: {
-                content_type: 'boton',
-                section: `Yiro :: ¿Ya solicitaste tu tarjeta? :: menu_1`,
-                previous_section: 'dashboard',
-                selected_content: 'menu_1 :: ¿Ya solicitaste tu tarjeta?',
-                destination_page: `${host}/card-configuration`,
-              },
-            });
-          }}
-        >
-          <Box sx={{ mr: 3, display: 'flex', alignItems: 'center' }}>
-            <Image src={card} width={70} height={44} alt="Tarjeta Yiro" priority />
-          </Box>
-          <Typography fontSize="14px" fontWeight={700} mr={4}>
-            ¿Ya solicitaste tu tarjeta?
-          </Typography>
-        </Card>
+        <LinkMui component={Link} href="/dashboard/card-configuration" sx={{ textDecoration: 'none' }}>
+          {cardType === 'VIRTUAL' && (
+            <Card
+              variant="detailCard"
+              sx={{ mt: { xs: 10, md: 'auto' }, mb: { xs: 0, md: 'auto' } }}
+              onClick={() => {
+                updatePage(cardActivationStatus === 'PENDING' ? 'activatePhysicalCard' : 'requestPhysicalCard');
+                sendGTMEvent({
+                  event: 'ga4.trackEvent',
+                  eventName: 'select_content',
+                  eventParams: {
+                    content_type: 'boton',
+                    section:
+                      cardActivationStatus === 'PENDING'
+                        ? `Yiro :: ¿Ya activaste tu tarjeta? :: menu_1`
+                        : `Yiro :: ¿Ya solicitaste tu tarjeta? :: menu_1`,
+                    previous_section: 'dashboard',
+                    selected_content:
+                      cardActivationStatus === 'PENDING'
+                        ? 'menu_1 :: ¿Ya activaste tu tarjeta?'
+                        : 'menu_1 :: ¿Ya solicitaste tu tarjeta?',
+                    destination_page: `${host}/card-configuration`,
+                  },
+                });
+              }}
+            >
+              <Box sx={{ mr: 3, display: 'flex', alignItems: 'center' }}>
+                <Image src={card} width={70} height={44} alt="Tarjeta Yiro" priority />
+              </Box>
+              <Typography fontSize="14px" fontWeight={700} mr={4}>
+                {cardActivationStatus === 'PENDING' ? '¿Ya activaste tu tarjeta?' : '¿Ya solicitaste tu tarjeta?'}
+              </Typography>
+            </Card>
+          )}
+        </LinkMui>
         <ItemsSidebar />
       </Box>
 
       <List>
         <ItemSecondarySidebar
           href={backLink}
-          text="Regresa a ésika conmigo"
+          text="Regresa a Somos Belcorp"
           icon={<LogoutAppIcons />}
           onClick={() => {
             sendGTMEvent({
@@ -81,9 +96,9 @@ export default function ListSidebar(): JSX.Element {
               eventName: 'select_content',
               eventParams: {
                 content_type: 'boton',
-                section: `Yiro :: Regresa a ésika conmigo :: menu_1`,
+                section: `Yiro :: Regresa a Somos Belcorp :: menu_1`,
                 previous_section: 'dashboard',
-                selected_content: 'menu_1 :: Regresa a ésika conmigo',
+                selected_content: 'menu_1 :: Regresa a Somos Belcorp',
                 destination_page: `${backLink}`,
               },
             });
