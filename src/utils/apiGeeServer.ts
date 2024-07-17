@@ -5,7 +5,7 @@ import axios, { AxiosRequestHeaders } from 'axios';
 import logger from './logger';
 import { handleApiRequest } from './apiHandle';
 import { APIGEE_HEADERS_NAME, SESSION_ID } from './constants';
-import { createRedisInstance, delRedis, getRedis } from './redis';
+import { createRedisInstance, delRedis, getRedis, putRedis } from './redis';
 import { encryptForge, setDataRedis, validateTime } from './toolHelper';
 import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './apiHelpers';
 
@@ -127,9 +127,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
 
   const validate = await validateSession(request);
 
-  if (validate) {
-    await refreshTime(request);
-  } else {
+  if (!validate) {
     method = 'SESSION';
   }
 
@@ -156,6 +154,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
       break;
     case 'post':
       responseBack = await apiGee.post(url, { data: jweString, dataReq: data });
+      startSession(request, url, responseBack.status)
       break;
     case 'put':
       responseBack = await apiGee.put(url, { data: jweString, dataReq: data });
@@ -183,10 +182,15 @@ async function validateSession(request: NextRequest) {
   const dataRedis = (await getRedis(`session:${uuid}`)) || null;
   if (dataRedis) {
     const resRedis = JSON.parse(dataRedis);
-    const timeRest: number = resRedis.timeSession ? validateTime(185, resRedis.timeSession) : 0;
+
+    if (!resRedis.timeSession) return true;
+
+    const timeRest: number = resRedis.timeSession ? validateTime(180, resRedis.timeSession) : 0;
 
     const time = timeRest <= 0 ? false : true;
-    timeRest <= 0 ? await delRedis(`session:${uuid}`) : '';
+    time ? await refreshTime(request) : '';
+    !time ? await delRedis(`session:${uuid}`) : '';
+
     return time;
   } else {
     return false;
@@ -211,8 +215,19 @@ function sessionExpired() {
 async function refreshTime(request: NextRequest) {
   const uuidCookie = cookies().get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile'));
   if (uuidCookie) {
+
     const date = new Date();
     const stateObject = { timeSession: date.toString() };
-    await setDataRedis('PUT', { uuid: `session:${uuidCookie}`, data: stateObject });
+    putRedis(`session:${uuidCookie}`, stateObject);
   }
+}
+
+function startSession(request: NextRequest, url: string, status: number) {
+  let start = false
+  if (url.includes('/users/credentials') && status == 200) {
+    refreshTime(request)
+    start = true
+  }
+
+  return start
 }
