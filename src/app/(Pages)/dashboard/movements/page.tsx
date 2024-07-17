@@ -1,8 +1,8 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { sendGTMEvent } from '@next/third-parties/google';
 import { useEffect, useRef, useState } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, Typography, useTheme } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
@@ -52,8 +52,6 @@ export default function Movements() {
 
   const [filterMonth, setFilterMonth] = useState(dateRank()[0].value);
 
-  const initialized = useRef<boolean>(false);
-
   const containerDesktop = useRef<HTMLDivElement | null>(null);
 
   const getMovementsData = async () => {
@@ -65,13 +63,13 @@ export default function Movements() {
         params: {
           date: filterMonth,
           days: 90,
-          limit: 20,
+          limit: 1000,
           page: currentPage,
         },
       })
       .then((response) => {
         const {
-          data: { data, metadata },
+          data: { data },
         } = response;
         if (data) {
           setMovementData((state: any) => [...state, ...data]);
@@ -85,20 +83,6 @@ export default function Movements() {
         setIsloading(false);
       });
   };
-
-  useEffect(() => {
-    if (!initialized.current) {
-      getMovementsData();
-      initialized.current = true;
-    } else {
-      initialized.current = false;
-    }
-  }, [currentPage, filterMonth]); //eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    setCurrentPage(1);
-    setMovementData([]);
-  }, [filterMonth]);
 
   useEffect(() => {
     updateTitle('Movimientos');
@@ -118,6 +102,10 @@ export default function Movements() {
       },
     });
   }, [host]);
+
+  useEffect(() => {
+    getMovementsData();
+  }, [currentPage, filterMonth]); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -164,6 +152,8 @@ export default function Movements() {
             disableClearable
             onChange={(e: any, newValue: any) => {
               setFilterMonth(newValue.value);
+              setCurrentPage(1);
+              setMovementData([]);
             }}
             onClick={() => {
               sendGTMEvent({
@@ -193,8 +183,9 @@ export default function Movements() {
           }}
         >
           <LastMovements data={movementData} loading={isLoading} error={isError} />
-          {movementData.length > 25 * currentPage - 1 && movementData.length < 100 && (
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+
+          {movementData.length > 25 * currentPage - 1 && (
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mt: 1 }}>
               <Linking href="#" onClick={() => setCurrentPage((state) => state + 1)} label="➕ Ver más" />
             </Box>
           )}
