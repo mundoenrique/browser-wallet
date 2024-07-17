@@ -95,6 +95,26 @@ export async function postRedis(keyRedis: any, newData: any) {
   }
 }
 
+export async function putRedis(keyRedis: any, newData: any) {
+  try {
+    const redis = createRedisInstance();
+    const dataRedis: string | null = await redis.get(`${keyRedis}`);
+    let stateObject: any;
+
+    if (dataRedis) {
+      stateObject = JSON.parse(dataRedis);
+      const newObject = { ...stateObject, ...newData };
+      await redis.set(`${keyRedis}`, JSON.stringify(newObject));
+    }
+
+    await redis.expire(`${keyRedis}`, TIME_SESSION_REDIS);
+
+    redis.quit();
+  } catch (error) {
+    throw new Error('Error put data Redis: ');
+  }
+}
+
 export async function delRedis(sesionId: string) {
   try {
     const redis = createRedisInstance();
