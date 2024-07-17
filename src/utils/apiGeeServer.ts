@@ -203,7 +203,7 @@ function sessionExpired() {
   const response = {
     status: 401,
     data: {
-      code: '401.00.1000',
+      code: '401.00.9998',
       datetime: new Date(),
       message: 'Session redis expired',
     },
