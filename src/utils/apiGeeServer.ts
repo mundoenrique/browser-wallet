@@ -4,9 +4,9 @@ import axios, { AxiosRequestHeaders } from 'axios';
 //Internal app
 import logger from './logger';
 import { handleApiRequest } from './apiHandle';
+import { encryptForge, validateTime } from './toolHelper';
 import { APIGEE_HEADERS_NAME, SESSION_ID } from './constants';
 import { createRedisInstance, delRedis, getRedis, putRedis } from './redis';
-import { encryptForge, setDataRedis, validateTime } from './toolHelper';
 import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './apiHelpers';
 
 const baseURL = getEnvVariable('BACK_URL');
@@ -97,10 +97,10 @@ export async function getOauthBearer() {
     const client_id = process.env.CREDENTIALS_KEY;
     const client_secret = process.env.CREDENTIALS_SECRET;
 
-    delete apiGee.defaults.headers.common['Authorization'];
-    delete apiGee.defaults.headers.common['X-Tenant-Id'];
     delete apiGee.defaults.headers.common['X-Token'];
+    delete apiGee.defaults.headers.common['X-Tenant-Id'];
     delete apiGee.defaults.headers.common['X-Request-Id'];
+    delete apiGee.defaults.headers.common['Authorization'];
 
     const response = await apiGee.post(
       `oauth2/v1/token`,
@@ -154,7 +154,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
       break;
     case 'post':
       responseBack = await apiGee.post(url, { data: jweString, dataReq: data });
-      startSession(request, url, responseBack.status)
+      startSession(request, url, responseBack.status);
       break;
     case 'put':
       responseBack = await apiGee.put(url, { data: jweString, dataReq: data });
@@ -215,7 +215,6 @@ function sessionExpired() {
 async function refreshTime(request: NextRequest) {
   const uuidCookie = cookies().get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile'));
   if (uuidCookie) {
-
     const date = new Date();
     const stateObject = { timeSession: date.toString() };
     putRedis(`session:${uuidCookie}`, stateObject);
@@ -223,11 +222,11 @@ async function refreshTime(request: NextRequest) {
 }
 
 function startSession(request: NextRequest, url: string, status: number) {
-  let start = false
+  let start = false;
   if (url.includes('/users/credentials') && status == 200) {
-    refreshTime(request)
-    start = true
+    refreshTime(request);
+    start = true;
   }
 
-  return start
+  return start;
 }
