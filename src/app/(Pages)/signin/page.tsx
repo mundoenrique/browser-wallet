@@ -11,7 +11,7 @@ import { Box, Button, Link as LinkMui, Skeleton, Typography, useMediaQuery, useT
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import LogoGreen from '%/images/LogoGreen';
-import { encryptForge } from '@/utils/toolHelper';
+import { encryptForge, setDataRedis } from '@/utils/toolHelper';
 import { TCredentials, TUserDetail } from '@/interfaces';
 import { InputPass, ModalResponsive, NavExternal } from '@/components';
 import { useHeadersStore, useOtpStore, useRegisterStore, useUiStore, useUserStore, useAccessSessionStore } from '@/store';
@@ -94,6 +94,9 @@ export default function Signin() {
 
   useEffect(() => {
     const id = userId ? userId : user.userId;
+    (async () => {
+      await setDataRedis('DELETE', { data: { delParam: 'timeSession' } });
+    })()
     getUserDetails(id);
     setOTPValid('OTP');
     // eslint-disable-next-line react-hooks/exhaustive-deps
