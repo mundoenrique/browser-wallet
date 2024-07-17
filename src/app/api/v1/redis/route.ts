@@ -73,3 +73,29 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ code: '500.00.000', message: 'Fail' }, { status: 500 });
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const redis = createRedisInstance();
+    const dataBody = await request.json();
+    const decryptData = JSON.parse(decryptForge(dataBody.data));
+
+    const uuid = cookies().get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile'));
+    const delParam = decryptData.data.delParam || '';
+
+    const dataRedis: string | null = await redis.get(`session:${uuid}`);
+
+    if (dataRedis) {
+      let stateObject = JSON.parse(dataRedis);
+      delete stateObject[delParam];
+      await redis.set(`session:${uuid}`, JSON.stringify(stateObject));
+    }
+
+    const res = { data: { code: '200.00.000', message: 'ok' } };
+    const response = encryptForge(JSON.stringify(res));
+
+    return new NextResponse(JSON.stringify({ data: response }), { status: 200 });
+  } catch (error) {
+    return new NextResponse(JSON.stringify({ error: 'Failed to get Data' }), { status: 500 });
+  }
+}
