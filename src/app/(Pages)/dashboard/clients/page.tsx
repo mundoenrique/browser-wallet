@@ -1,8 +1,8 @@
 'use client';
 
 import dayjs from 'dayjs';
+import { useEffect, useRef, useState } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
-import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { Avatar, Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
@@ -48,6 +48,7 @@ export default function Clients() {
   };
 
   const theme = useTheme();
+
   const match = useMediaQuery(theme.breakpoints.up('md'));
 
   const user = useUserStore((state) => state.user);
@@ -67,7 +68,6 @@ export default function Clients() {
   const [error, setError] = useState<boolean>(false);
 
   const [clientsData, setClientsData] = useState<any>([]);
-  console.log('🚀 ~ Clients ~ clientsData length:', clientsData.length);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -81,12 +81,13 @@ export default function Clients() {
 
   const [paymentStatusCode, setPaymentStatusCode] = useState<string>(checkboxOptions[0].value);
 
+  const isClients = useRef<boolean>(false);
+
   const containerDesktop = useRef<HTMLDivElement | null>(null);
 
   const filterActive = currentView === ENUM_VIEW.FILTERS;
-  const disabledBtnDelete = 'PENDING';
 
-  const isClients = useRef<boolean>(false);
+  const disabledBtnDelete = 'PENDING';
 
   useEffect(() => {
     sendGTMEvent({
@@ -264,11 +265,14 @@ export default function Clients() {
               />
             </Box>
           )}
-          {clientsData.length > 24 && clientsData.length < 100 && (
-            <Linking href="#" onClick={() => setCurrentPage((state) => state + 1)} label="Ver más" />
+          {clientsData.length > 25 * currentPage - 1 && clientsData.length < 100 && (
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+              <Linking href="#" onClick={() => setCurrentPage((state) => state + 1)} label="➕ Ver más" />
+            </Box>
           )}
         </Box>
       </ContainerLayout>
+
       <ModalResponsive open={open} handleClose={() => setOpen(false)}>
         <Box sx={{ textAlign: 'start' }}>
           <Filters
@@ -277,6 +281,7 @@ export default function Clients() {
             checkboxOptions={checkboxOptions}
             handleFilters={(e) => {
               handleFilters(e);
+              setOpen(false);
             }}
             checkboxOptionDefault={paymentStatusCode}
             onChangeMonth={setFilterMonth}

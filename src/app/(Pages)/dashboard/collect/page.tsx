@@ -157,6 +157,12 @@ export default function Collect() {
     }
   }, [generateCharge, reset, showActionBtn]);
 
+  const handleKeyDown = (e: any) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   return (
     <>
       <ContainerLayout>
@@ -168,7 +174,7 @@ export default function Collect() {
           Crear solicitud de cobro
         </Typography>
 
-        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} onKeyDown={handleKeyDown}>
           <InputText
             name="numberClient"
             control={control}
