@@ -66,9 +66,8 @@ export default function Clients() {
 
   const [error, setError] = useState<boolean>(false);
 
-  const [lastPage, setLastPage] = useState<number>(1);
-
   const [clientsData, setClientsData] = useState<any>([]);
+  console.log('🚀 ~ Clients ~ clientsData length:', clientsData.length);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -76,24 +75,17 @@ export default function Clients() {
 
   const [filterMonth, setFilterMonth] = useState(dateRank()[0]);
 
-  const [filteredClientData, setFilteredClientData] = useState<any>([]);
-
   const [currentView, setCurrentView] = useState<string>(ENUM_VIEW.MAIN);
-
-  const [paginatedClientData, setPaginatedClientData] = useState<any>([]);
 
   const [paymentStatus, setPaymentStatus] = useState<string>('Todos mis cobros');
 
   const [paymentStatusCode, setPaymentStatusCode] = useState<string>(checkboxOptions[0].value);
-
-  const containerPWA = useRef<HTMLDivElement | null>(null);
 
   const containerDesktop = useRef<HTMLDivElement | null>(null);
 
   const filterActive = currentView === ENUM_VIEW.FILTERS;
   const disabledBtnDelete = 'PENDING';
 
-  const initialized = useRef<boolean>(false);
   const isClients = useRef<boolean>(false);
 
   useEffect(() => {
@@ -132,26 +124,18 @@ export default function Clients() {
     });
   };
 
-  const scrollHandle = useCallback(async () => {
-    const container = containerDesktop.current || containerPWA.current;
-
-    if (!isLoading && container && currentPage < lastPage) {
-      if (match) {
-        let scroll = container.scrollHeight - container.scrollTop - container.clientHeight;
-        scroll <= 20 && setCurrentPage((prevPage) => prevPage + 1);
-      } else {
-        let scroll = container?.scrollHeight - window.scrollY - window.innerHeight;
-        scroll <= 100 && setCurrentPage((prevPage) => prevPage + 1);
-      }
-    }
-  }, [setCurrentPage, isLoading, lastPage]); //eslint-disable-line react-hooks/exhaustive-deps
-
   const getClientAPI = async () => {
     setIsloading(true);
     setError(false);
     api
       .get(`/payments/${user.userId}/chargelist`, {
-        params: { days: 30, limit: 100, page: 1, date: filterMonth.value, transactionCode: paymentStatusCode },
+        params: {
+          days: 30,
+          limit: 100,
+          page: currentPage,
+          date: filterMonth.value,
+          transactionCode: paymentStatusCode,
+        },
       })
       .then((response) => {
         const {
@@ -159,7 +143,7 @@ export default function Clients() {
         } = response;
         if (data) {
           isClients.current = false;
-          setClientsData(data);
+          setClientsData((state: any) => [...state, ...data]);
         } else {
           isClients.current = true;
         }
@@ -173,39 +157,10 @@ export default function Clients() {
       });
   };
 
-  const createPagination = (data: [], page: number) => {
-    setIsloading(true);
-    const itemsPage = 20;
-    setLastPage(Math.ceil(data.length / itemsPage));
-    const startIndex = (page - 1) * itemsPage;
-    const endIndex = startIndex + itemsPage;
-    data.sort((a: any, b: any) => (new Date(b.date) as any) - (new Date(a.date) as any));
-    setTimeout(() => {
-      setIsloading(false);
-    }, 1000);
-    return data.slice(startIndex, endIndex);
-  };
-
   const changeViewFilters = () => {
     setClientsData([]);
     setCurrentView(ENUM_VIEW.FILTERS);
   };
-
-  useEffect(() => {
-    window.addEventListener('scroll', scrollHandle);
-    return () => {
-      window.removeEventListener('scroll', scrollHandle);
-    };
-  }, [scrollHandle]);
-
-  useEffect(() => {
-    if (!initialized.current) {
-      getClientAPI();
-      initialized.current = true;
-    } else {
-      initialized.current = false;
-    }
-  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     updateTitle('Mis clientes');
@@ -213,22 +168,8 @@ export default function Clients() {
   }, [updateTitle, setCurrentItem]);
 
   useEffect(() => {
-    setPaginatedClientData([]);
-    setCurrentPage(1);
-    // if (!(paymentStatusCode === '')) {
-    //   setFilteredClientData(clientsData.filter((el: any) => el.status == paymentStatusCode));
-    //   return;
-    // }
-    setFilteredClientData(clientsData);
-  }, [clientsData]);
-
-  useEffect(() => {
-    !isLoading &&
-      setPaginatedClientData((currentState: any) => [
-        ...currentState,
-        ...createPagination(filteredClientData, currentPage),
-      ]);
-  }, [filteredClientData, currentPage]); //eslint-disable-line react-hooks/exhaustive-deps
+    getClientAPI();
+  }, [currentPage]); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -291,10 +232,6 @@ export default function Clients() {
             />
           ) : (
             <Box
-              onScroll={() => {
-                scrollHandle();
-              }}
-              ref={containerPWA}
               sx={{
                 display: 'block',
                 height: { xs: 'calc(100% + 100px)', md: 'auto' },
@@ -319,13 +256,16 @@ export default function Clients() {
                 {`${filterMonth.text ?? ''} ${filterMonth.text && paymentStatus && '-'} ${paymentStatus ?? ''}`}
               </Button>
               <ClientList
-                data={paginatedClientData}
+                data={clientsData}
                 loading={isLoading}
                 disabledBtnDelete={disabledBtnDelete}
                 error={error}
                 isClients={isClients.current}
               />
             </Box>
+          )}
+          {clientsData.length > 24 && clientsData.length < 100 && (
+            <Linking href="#" onClick={() => setCurrentPage((state) => state + 1)} label="Ver más" />
           )}
         </Box>
       </ContainerLayout>
