@@ -139,9 +139,10 @@ export async function handleResponse(
     const jws: string = await signJWE(jwsApiPrivateKey, jwe);
 
     if (isBrowser) {
+      var expires = (new Date(Date.now()+ 86400*1000)).toUTCString();
       cookieSet = `${SESSION_ID}=${encryptForge(
         responseObj.data.sessionId
-      )}; HttpOnly=true; Path=/; Secure=true; SameSite=true`;
+      )}; HttpOnly=true; Path=/; Secure=true; SameSite=true; Expires=${expires};`;
     }
 
     const response = NextResponse.json(encryptedResponse, {
