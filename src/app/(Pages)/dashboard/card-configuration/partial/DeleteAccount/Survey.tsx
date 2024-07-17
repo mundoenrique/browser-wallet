@@ -4,16 +4,19 @@ import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { getSchema } from '@/config';
 import ModalOtp from '@/components/modal/ModalOtp';
-import { useNavTitleStore, useConfigCardStore } from '@/store';
+import { useNavTitleStore, useConfigCardStore, useHeadersStore } from '@/store';
 import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/components';
 
 export default function Survey() {
   const { updateTitle } = useNavTitleStore();
 
   const { updatePage } = useConfigCardStore();
+
+  const host = useHeadersStore((state) => state.host);
 
   const [openRc, setOpenRc] = useState<boolean>(false);
 
@@ -32,6 +35,17 @@ export default function Survey() {
 
   const onSubmit = async (data: any) => {
     setOpenOtp(true);
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'Yiro :: configuracionTarjeta :: eliminarCuenta',
+        previous_section: 'Yiro :: configuracionTarjeta :: menu',
+        selected_content: `${data}`,
+        destination_page: `${host}/dashboard/card-configuration/menu`,
+      },
+    });
   };
 
   const onSubmitOtp = async (data: any) => {

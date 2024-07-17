@@ -3,9 +3,9 @@
 import Info from '@mui/icons-material/InfoOutlined';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useCallback, useEffect, useState } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
 import { MuiOtpInput } from 'mui-one-time-password-input';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Button, FormHelperText, Snackbar, Typography } from '@mui/material';
 //internal app
 import { CardStep } from '..';
@@ -39,9 +39,9 @@ export default function CelularValidation() {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: `${host}/signup`,
+        page_location: `${host}/signup/onboarding/step2`,
         page_title: 'Yiro :: onboarding :: step2',
-        page_referrer: `${host}/identify`,
+        page_referrer: `${host}/signup/onboarding/step1`,
         section: 'Yiro :: onboarding :: step2',
         previous_section: 'Yiro :: onboarding :: step1',
       },
@@ -173,7 +173,7 @@ export default function CelularValidation() {
                     section: 'Yiro :: onboarding :: step2',
                     previous_section: 'Yiro :: onboarding :: step1',
                     selected_content: 'Reenviar código',
-                    destination_page: `${host}/signup`,
+                    destination_page: `${host}/signup/onboarding/step3`,
                   },
                 });
               }}
@@ -207,7 +207,7 @@ export default function CelularValidation() {
                     section: 'Yiro :: onboarding :: step2',
                     previous_section: 'Yiro :: onboarding :: step1',
                     selected_content: 'Anterior',
-                    destination_page: `${host}/signup`,
+                    destination_page: `${host}/signup/onboarding/step3`,
                   },
                 });
               }}
@@ -226,7 +226,7 @@ export default function CelularValidation() {
                     section: 'Yiro :: onboarding :: step2',
                     previous_section: 'Yiro :: onboarding :: step1',
                     selected_content: 'Siguiente',
-                    destination_page: `${host}/signup`,
+                    destination_page: `${host}/signup/onboarding/step3`,
                   },
                 });
               }}

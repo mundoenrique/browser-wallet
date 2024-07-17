@@ -15,16 +15,20 @@ import {
 } from './partial';
 
 export default function CardConfiguration() {
-  const { setCurrentItem } = useMenuStore();
+  const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
 
-  const { updateTitle } = useNavTitleStore();
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
 
-  const { page, updatePage } = useConfigCardStore();
+  const page = useConfigCardStore((state) => state.page);
+
+  const updatePage = useConfigCardStore((state) => state.updatePage);
 
   useEffect(() => {
     updateTitle('Configuración de mi tarjeta');
     setCurrentItem('card-settings');
-    updatePage('main');
+    return () => {
+      updatePage('main');
+    };
   }, [updateTitle, setCurrentItem, updatePage]);
 
   const configCardRoutes = (page: string) => {

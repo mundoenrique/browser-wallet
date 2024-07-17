@@ -43,9 +43,9 @@ export default function AuthOtp(props: AuthOtpFormProps) {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: `${host}/password-recover`,
+        page_location: `${host}/password-recover/crearContraseña`,
         page_title: 'Yiro :: recuperarContraseña :: código',
-        page_referrer: `${host}/signin`,
+        page_referrer: `${host}/password-recover/codigo `,
         section: 'Yiro :: recuperarContraseña :: código',
         previous_section: 'Yiro :: login :: interno',
       },
@@ -63,7 +63,7 @@ export default function AuthOtp(props: AuthOtpFormProps) {
         section: 'Yiro :: recuperarContraseña :: codigo',
         previous_section: 'Yiro :: login :: interno',
         selected_content: 'Reenviar código',
-        destination_page: `${host}/password-recover`,
+        destination_page: `${host}/signin/interno`,
       },
     });
   };
@@ -168,7 +168,7 @@ export default function AuthOtp(props: AuthOtpFormProps) {
               section: 'Yiro :: recuperarContraseña :: codigo',
               previous_section: 'Yiro :: login :: interno',
               selected_content: 'Continuar',
-              destination_page: `${host}/password-recover`,
+              destination_page: `${host}/signin/interno`,
             },
           });
         }}

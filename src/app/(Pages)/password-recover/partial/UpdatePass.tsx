@@ -27,9 +27,9 @@ export default function UpdatePass() {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: `${host}/password-recover`,
+        page_location: `${host}/password-recover/codigo`,
         page_title: 'Yiro :: recuperarContraseña :: crearContraseña',
-        page_referrer: `${host}/signin`,
+        page_referrer: `${host}/signin/interno`,
         section: 'Yiro :: recuperarContraseña :: crearContraseña',
         previous_section: 'Yiro :: recuperarContraseña :: código',
       },
@@ -68,7 +68,7 @@ export default function UpdatePass() {
         section: 'Yiro :: recuperarContraseña :: codigo',
         previous_section: 'Yiro :: login :: interno',
         selected_content: '!Nueva contraseña!',
-        destination_page: `${host}/signin`,
+        destination_page: `${host}/password-recover/crearContraseña`,
       },
     });
   };
@@ -105,7 +105,7 @@ export default function UpdatePass() {
                   section: 'Yiro :: recuperarContraseña :: crearContraseña',
                   previous_section: 'Yiro :: recuperarContraseña :: codigo',
                   selected_content: 'Guardar',
-                  destination_page: `${host}/password-recover`,
+                  destination_page: `${host}/password-recover/crearContraseña`,
                 },
               });
             }}
