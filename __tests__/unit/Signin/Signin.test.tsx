@@ -106,7 +106,7 @@ describe('Signin', () => {
     });
 
     it('should send GTM event when clicked', () => {
-      const navExternal = screen.getByText('Volver a ésika Conmigo');
+      const navExternal = screen.getByText('Volver a Somos Belcorp');
       fireEvent.click(navExternal);
       waitFor(() => {
         expect(sendGTMEvent).toHaveBeenCalled();
