@@ -2,19 +2,36 @@
 
 import { useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { ContainerLayout, Linking } from '@/components';
-import { useNavTitleStore, useMenuStore } from '@/store';
+import { useNavTitleStore, useMenuStore, useHeadersStore } from '@/store';
 
 export default function Question() {
   const { setCurrentItem } = useMenuStore();
 
   const { updateTitle } = useNavTitleStore();
 
+  const host = useHeadersStore((state) => state.host);
+
   useEffect(() => {
     updateTitle('Preguntas frecuentes');
     setCurrentItem('help');
   }, [updateTitle, setCurrentItem]);
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/help`,
+        page_title: 'Yiro :: ayuda :: preguntas frecuentes',
+        page_referrer: `${host}/dashboard`,
+        section: 'Yiro :: ayuda :: Preguntas frecuentes',
+        previous_section: 'dashboard',
+      },
+    });
+  }, [host]);
 
   return (
     <ContainerLayout>

@@ -32,7 +32,7 @@ export default function Success() {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: `${host}/dashboard/recharge`,
+        page_location: `${host}/dashboard/rechargeY/realizarOperacion/pagoEfectivo`,
         page_title: 'Yiro :: recargas :: realizarOperacion :: pagoEfectivo',
         page_referrer: `${host}/dashboard/recharge`,
         section: 'Yiro :: recargas :: realizarOperacion :: pagoEfectivo',

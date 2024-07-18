@@ -74,7 +74,8 @@ export default function Landing() {
     setLoadingScreen(true);
     const { consultant } = phaseInfo as any;
 
-    const shortDoc = consultant.documentType === 'DNI' ? consultant.documentNumber.slice(2) : consultant.documentNumber;
+    const shortDoc =
+      consultant.documentType === 'DNI' ? consultant.documentNumber.slice(-8) : consultant.documentNumber;
 
     const documentPayload = {
       documentType: encryptForge(consultant.documentType),
@@ -125,7 +126,7 @@ export default function Landing() {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: `${host}/signup`,
+        page_location: `${host}/signup/onboarding/step0`,
         page_title: 'Yiro :: onboarding :: step0',
         page_referrer: `${host}/identify`,
         section: 'Yiro :: onboarding :: step0',
@@ -189,7 +190,7 @@ export default function Landing() {
                 section: 'Yiro :: onboarding :: step0',
                 previous_section: 'identify',
                 selected_content: '¡Inicia YA!',
-                destination_page: `${host}/signup`,
+                destination_page: `${host}/signup/onboarding/step1`,
               },
             });
           }}

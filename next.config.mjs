@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  reactStrictMode: false,
   crossOrigin: 'anonymous',
   poweredByHeader: false,
   output: 'standalone',

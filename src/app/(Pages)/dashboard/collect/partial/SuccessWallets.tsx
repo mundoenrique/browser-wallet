@@ -44,9 +44,9 @@ export default function SuccessWallets() {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: `${host}/dashboard/collect`,
+        page_location: `${host}dashboard/collect/realizarOperacion/pagoEfectivo`,
         page_title: 'cobrar :: realizarOperacion :: pagoEfectivo',
-        page_referrer: `${host}/dashboard`,
+        page_referrer: `${host}/dashboard/collect`,
         section: 'cobrar :: realizarOperacion :: pagoEfectivo',
         previous_section: 'cobrar :: monto',
       },

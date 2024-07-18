@@ -14,7 +14,7 @@ import LogoGreen from '%/images/LogoGreen';
 import { encryptForge } from '@/utils/toolHelper';
 import { TCredentials, TUserDetail } from '@/interfaces';
 import { InputPass, ModalResponsive, NavExternal } from '@/components';
-import { useHeadersStore, useOtpStore, useRegisterStore, useUiStore, useUserStore } from '@/store';
+import { useHeadersStore, useOtpStore, useRegisterStore, useUiStore, useUserStore, useConfigCardStore } from '@/store';
 //Eliminar este store despues de la certificacion de inicio de sesión
 import { accessSessionStore } from '@/store/accessSessionStore';
 
@@ -38,6 +38,8 @@ export default function Signin() {
   const { setAccessSession } = accessSessionStore();
 
   const host = useHeadersStore((state) => state.host);
+
+  const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
 
   const { setLoadingScreen, loadingScreen } = useUiStore();
 
@@ -81,8 +83,12 @@ export default function Signin() {
     await api
       .get(`/users/${id}`)
       .then((response) => {
-        setUser(response.data.data);
-        setUserData(response.data.data);
+        const userDetail = response.data.data;
+        setUser(userDetail);
+        setUserData(userDetail);
+        if (userDetail.physicalCards) {
+          setCardProperties('cardActivationStatus', userDetail.physicalCards.status);
+        }
       })
       .catch((e) => {
         setModalError({ error: e });
@@ -126,7 +132,7 @@ export default function Signin() {
               content_type: 'boton',
               section: 'Yiro :: login :: interno',
               previous_section: 'identify',
-              selected_content: 'Volver a ésika Conmigo',
+              selected_content: 'Volver a Somos Belcorp',
               destination_page: `${backLink}`,
             },
           });
@@ -151,11 +157,11 @@ export default function Signin() {
             <LogoGreen />
           </Box>
           <Box mb={8}>
-            <Typography variant="body2" color="white">
-              Dinero en tu bolsillo,
+            <Typography variant="h6" color="white" fontWeight={700}>
+              Tu aliado digital,
             </Typography>
-            <Typography color="success.main" variant="h6">
-              ¡Sin complicaciones!
+            <Typography variant="h6" color="white" fontWeight={700}>
+              ágil y seguro
             </Typography>
           </Box>
           {userData ? (
@@ -181,13 +187,13 @@ export default function Signin() {
                       content_type: 'boton',
                       section: 'Yiro :: login :: interno',
                       previous_section: 'somosbelcorp',
-                      selected_content: 'Olvide mi contraseña',
+                      selected_content: 'Olvidé mi contraseña',
                       destination_page: `${host}/password-recover`,
                     },
                   })
                 }
               >
-                Olvide mi contraseña
+                Olvidé mi contraseña
               </LinkMui>
             </Box>
           </Box>
@@ -207,7 +213,7 @@ export default function Signin() {
                 section: 'Yiro :: login :: interno',
                 previous_section: 'somosbelcorp',
                 selected_content: 'Ingresar',
-                destination_page: '/dashboard',
+                destination_page: `${host}/dashboard`,
               },
             })
           }

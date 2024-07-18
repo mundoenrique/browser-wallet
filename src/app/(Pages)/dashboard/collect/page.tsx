@@ -86,9 +86,9 @@ export default function Collect() {
 
   useEffect(() => {
     setValueClient('nameClient', client?.fullname);
-    setValueClient('numberClient', client?.number);
+    setValueClient('numberClient', client?.phoneNumber);
     return () => {
-      setClient({ fullname: '', number: '' });
+      setClient({ fullname: '', phoneNumber: '' });
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -157,6 +157,12 @@ export default function Collect() {
     }
   }, [generateCharge, reset, showActionBtn]);
 
+  const handleKeyDown = (e: any) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   return (
     <>
       <ContainerLayout>
@@ -168,7 +174,7 @@ export default function Collect() {
           Crear solicitud de cobro
         </Typography>
 
-        <Box name="form" component="form" onSubmit={handleSubmit(onSubmit)}>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} onKeyDown={handleKeyDown}>
           <InputText
             name="numberClient"
             control={control}

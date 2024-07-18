@@ -1,16 +1,30 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { Avatar, Box, Button, Card, Stack, Typography } from '@mui/material';
 //Internal app
+import { api } from '@/utils/api';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { useConfigCardStore, useNavTitleStore } from '@/store';
 import { ContainerLayout, Linking, ModalResponsive } from '@/components';
+import { useConfigCardStore, useNavTitleStore, useUserStore, useUiStore, useHeadersStore } from '@/store';
 
 export default function RequestPhysicalCard() {
-  const { updateTitle } = useNavTitleStore();
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
 
-  const { updatePage } = useConfigCardStore();
+  const host = useHeadersStore((state) => state.host);
+
+  const { userId } = useUserStore((state) => state.user);
+
+  const setModalError = useUiStore((state) => state.setModalError);
+
+  const loadingScreen = useUiStore((state) => state.loadingScreen);
+
+  const updatePage = useConfigCardStore((state) => state.updatePage);
+
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
+
+  const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -18,9 +32,36 @@ export default function RequestPhysicalCard() {
     updateTitle('Solicitar tarjeta física');
   }, [updateTitle]);
 
-  const handleSendCard = () => {
-    setOpen(!open);
+  const handleSendCard = async () => {
+    setLoadingScreen(true);
+
+    api
+      .post(`/cards/users/physicalcard`, { userId: userId })
+      .then(() => {
+        setCardProperties('cardActivationStatus', 'PENDING');
+        setOpen(!open);
+      })
+      .catch((e) => {
+        setModalError({ error: e });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
+      });
   };
+
+  useEffect(() => {
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'page_view_ga4',
+      eventParams: {
+        page_location: `${host}/dashboard/card-configuration/solicitarTarjetaFisica`,
+        page_title: 'Yiro :: configuracionTarjeta :: solicitarTarjetaFisica',
+        page_referrer: `${host}/dashboard/card-configuration/menu`,
+        section: 'Yiro :: configuracionTarjeta :: solicitarTarjetaFisica',
+        previous_section: 'Yiro :: configuracionTarjeta :: menu',
+      },
+    });
+  }, [host]);
 
   return (
     <>
@@ -93,12 +134,18 @@ export default function RequestPhysicalCard() {
           </Stack>
         </Card>
 
-        <Button variant="contained" onClick={handleSendCard}>
+        <Button variant="contained" onClick={handleSendCard} disabled={loadingScreen}>
           Solicitar tarjeta
         </Button>
       </ContainerLayout>
 
-      <ModalResponsive open={open} handleClose={() => setOpen(false)}>
+      <ModalResponsive
+        open={open}
+        handleClose={() => {
+          setOpen(false);
+          updatePage('main');
+        }}
+      >
         <Typography variant="subtitle1">💳 ¡Listo! Te enviaremos tu tarjeta en el siguiente pedido.</Typography>
       </ModalResponsive>
     </>

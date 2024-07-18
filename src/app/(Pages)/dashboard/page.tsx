@@ -148,7 +148,7 @@ export default function Dashboard() {
       eventParams: {
         page_location: `${host}/dashboard`,
         page_title: 'dashboard',
-        page_referrer: `${host}/signin`,
+        page_referrer: `${host}/signin/interno`,
         section: 'dashboard',
         previous_section: 'Yiro :: login :: interno',
       },
@@ -228,7 +228,7 @@ export default function Dashboard() {
                       content_type: 'boton',
                       section: 'Yiro :: dashboard',
                       previous_section: 'Yiro :: login :: interno',
-                      selected_content: 'Mi deuda con ésika',
+                      selected_content: 'Mi deuda con Belcorp',
                       destination_page: `${host}/dashboard/clients`,
                     },
                   });

@@ -35,9 +35,9 @@ export default function SuccessCards() {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: `${host}/dashboard/collect`,
+        page_location: `${host}/dashboard/collect/realizarOperacion/tarjeta`,
         page_title: 'cobrar :: realizarOperacion :: tarjeta',
-        page_referrer: `${host}/dashboard`,
+        page_referrer: `${host}/dashboard/collect`,
         section: 'cobrar :: realizarOperacion :: tarjeta',
         previous_section: 'cobrar :: monto',
       },

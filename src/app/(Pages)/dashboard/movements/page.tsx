@@ -1,9 +1,9 @@
 'use client';
 
 import dayjs from 'dayjs';
+import { useEffect, useRef, useState } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { Box, Typography, useTheme, useMediaQuery } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
 import { fuchsiaBlue } from '@/theme/theme-default';
@@ -32,8 +32,6 @@ const dateRank = (): { value: string; text: string }[] => {
 export default function Movements() {
   const theme = useTheme();
 
-  const match = useMediaQuery(theme.breakpoints.down('md'));
-
   const { getUserCardId } = useUserStore();
 
   const { setCurrentItem } = useMenuStore();
@@ -41,8 +39,6 @@ export default function Movements() {
   const { updateTitle } = useNavTitleStore();
 
   const host = useHeadersStore((state) => state.host);
-
-  const [lastPage, setLastPage] = useState<number>(1);
 
   const [isError, setIsError] = useState<boolean>(false);
 
@@ -56,25 +52,7 @@ export default function Movements() {
 
   const [filterMonth, setFilterMonth] = useState(dateRank()[0].value);
 
-  const initialized = useRef<boolean>(false);
-
-  const containerPWA = useRef<HTMLDivElement | null>(null);
-
   const containerDesktop = useRef<HTMLDivElement | null>(null);
-
-  const scrollHandle = useCallback(async () => {
-    const container = containerDesktop.current || containerPWA.current;
-
-    if (!isLoading && container && currentPage < lastPage) {
-      if (match) {
-        let scroll = container.scrollHeight - container.scrollTop - container.clientHeight;
-        scroll <= 20 && setCurrentPage((prevPage) => prevPage + 1);
-      } else {
-        let scroll = container?.scrollHeight - window.scrollY - window.innerHeight;
-        scroll <= 100 && setCurrentPage((prevPage) => prevPage + 1);
-      }
-    }
-  }, [setCurrentPage, isLoading]); //eslint-disable-line react-hooks/exhaustive-deps
 
   const getMovementsData = async () => {
     setIsloading(true);
@@ -85,17 +63,16 @@ export default function Movements() {
         params: {
           date: filterMonth,
           days: 90,
-          limit: 20,
+          limit: 1000,
           page: currentPage,
         },
       })
       .then((response) => {
         const {
-          data: { data, metadata },
+          data: { data },
         } = response;
         if (data) {
           setMovementData((state: any) => [...state, ...data]);
-          setLastPage(metadata.lastPage);
         }
       })
       .catch(() => {
@@ -108,30 +85,9 @@ export default function Movements() {
   };
 
   useEffect(() => {
-    if (!initialized.current) {
-      getMovementsData();
-      initialized.current = true;
-    } else {
-      initialized.current = false;
-    }
-  }, [currentPage, filterMonth]); //eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    setCurrentPage(1);
-    setMovementData([]);
-  }, [filterMonth]);
-
-  useEffect(() => {
     updateTitle('Movimientos');
     setCurrentItem('home');
   }, [updateTitle, setCurrentItem]);
-
-  useEffect(() => {
-    window.addEventListener('scroll', scrollHandle);
-    return () => {
-      window.removeEventListener('scroll', scrollHandle);
-    };
-  }, [scrollHandle]);
 
   useEffect(() => {
     sendGTMEvent({
@@ -146,6 +102,10 @@ export default function Movements() {
       },
     });
   }, [host]);
+
+  useEffect(() => {
+    getMovementsData();
+  }, [currentPage, filterMonth]); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -192,6 +152,8 @@ export default function Movements() {
             disableClearable
             onChange={(e: any, newValue: any) => {
               setFilterMonth(newValue.value);
+              setCurrentPage(1);
+              setMovementData([]);
             }}
             onClick={() => {
               sendGTMEvent({
@@ -210,10 +172,6 @@ export default function Movements() {
         </Box>
 
         <Box
-          onScroll={() => {
-            scrollHandle();
-          }}
-          ref={containerPWA}
           sx={{
             display: 'block',
             height: { xs: 'calc(100% + 100px)', md: 'auto' },
@@ -225,6 +183,12 @@ export default function Movements() {
           }}
         >
           <LastMovements data={movementData} loading={isLoading} error={isError} />
+
+          {movementData.length > 25 * currentPage - 1 && (
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mt: 1 }}>
+              <Linking href="#" onClick={() => setCurrentPage((state) => state + 1)} label="➕ Ver más" />
+            </Box>
+          )}
         </Box>
       </Box>
 

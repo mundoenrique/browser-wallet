@@ -24,7 +24,7 @@ describe('Signin', () => {
   const sendGTMEvent = jest.fn();
 
   beforeEach(async () => {
-    mockRouterPush(routerPushMock)
+    mockRouterPush(routerPushMock);
     await act(async () => {
       render(<Signin />);
     });
@@ -46,8 +46,8 @@ describe('Signin', () => {
         expect(mockApi.get).toHaveBeenCalled();
         expect(mockApi.get).toHaveBeenCalledWith(`/users/${userData.userId}`);
         expect(screen.getByRole('img', { name: /logo/i })).toBeInTheDocument();
-        expect(screen.getByText(/dinero en tu bolsillo/i)).toBeInTheDocument();
-        expect(screen.getByText(/¡sin complicaciones!/i)).toBeInTheDocument();
+        expect(screen.getByText(/Tu aliado digital,/i)).toBeInTheDocument();
+        expect(screen.getByText(/ágil y seguro/i)).toBeInTheDocument();
         expect(screen.getByText(`¡Hola ${userData.firstName}!`)).toBeInTheDocument();
         expect(screen.getByText(/para continuar, ingresa la contraseña de tu cuenta digital./i)).toBeInTheDocument();
       });
@@ -71,7 +71,7 @@ describe('Signin', () => {
     });
 
     it('should render password recovery link and navigate to password recovery page when link is clicked', async () => {
-      const textLink = screen.getByText(/olvide mi contraseña/i);
+      const textLink = screen.getByText(/olvidé mi contraseña/i);
       const routePath = '/password-recover';
       redirectLinks(textLink, routePath, routerPushMock);
     });

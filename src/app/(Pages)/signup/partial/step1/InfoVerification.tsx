@@ -43,7 +43,7 @@ export default function InfoVerification() {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: `${host}/signup`,
+        page_location: `${host}/signup/onboarding/step1`,
         page_title: 'Yiro :: onboarding :: step1',
         page_referrer: `${host}/identify`,
         section: 'Yiro :: onboarding :: step1',
@@ -172,7 +172,7 @@ export default function InfoVerification() {
         section: 'Yiro :: onboarding :: step1',
         previous_section: 'Yiro :: onboarding :: step0',
         selected_content: 'Acepto Términos y Condiciones y Política de Privacidad de Datos',
-        destination_page: `${host}/signup`,
+        destination_page: `${host}/signup/onboarding/step2`,
       },
     });
   };
@@ -332,7 +332,7 @@ export default function InfoVerification() {
                         section: 'Yiro :: onboarding :: step1',
                         previous_section: 'Yiro :: onboarding :: step0',
                         selected_content: 'editar_celular',
-                        destination_page: `${host}/signup`,
+                        destination_page: `${host}/signup/onboarding/step2`,
                       },
                     });
                   }}
@@ -395,7 +395,7 @@ export default function InfoVerification() {
                         section: 'Yiro :: onboarding :: step1',
                         previous_section: 'Yiro :: onboarding :: step0',
                         selected_content: 'editar_email',
-                        destination_page: `${host}/signup`,
+                        destination_page: `${host}/signup/onboarding/step2`,
                       },
                     });
                   }}
@@ -433,7 +433,7 @@ export default function InfoVerification() {
                   section: 'Yiro :: onboarding :: step1',
                   previous_section: 'Yiro :: onboarding :: step0',
                   selected_content: 'Autorizo el envío de publicidad',
-                  destination_page: `${host}/signup`,
+                  destination_page: `${host}/signup/onboarding/step2`,
                 },
               });
             }}
@@ -454,7 +454,7 @@ export default function InfoVerification() {
                 section: 'Yiro :: onboarding :: step1',
                 previous_section: 'Yiro :: onboarding :: step0',
                 selected_content: 'Continuar',
-                destination_page: `${host}/signup`,
+                destination_page: `${host}/signup/onboarding/step2`,
               },
             });
           }}
@@ -488,7 +488,7 @@ export default function InfoVerification() {
                   section: 'Yiro :: onboarding :: step1',
                   previous_section: 'Yiro :: onboarding :: step0',
                   selected_content: 'Guardar',
-                  destination_page: `${host}/signup`,
+                  destination_page: `${host}/signup/onboarding/step2`,
                   pop_up_type: 'onboarding',
                   pop_up_title: 'Editar número de celular',
                 },
@@ -525,7 +525,7 @@ export default function InfoVerification() {
                   section: 'Yiro :: onboarding :: step1',
                   previous_section: 'Yiro :: onboarding :: step0',
                   selected_content: 'Guardar',
-                  destination_page: `${host}/signup`,
+                  destination_page: `${host}/signup/onboarding/step2`,
                   pop_up_type: 'onboarding',
                   pop_up_title: 'Editar email',
                 },
@@ -549,7 +549,7 @@ export default function InfoVerification() {
               section: 'Yiro :: onboarding :: step1 :: terminosYCondiciones',
               previous_section: 'Yiro :: onboarding :: step1',
               selected_content: 'Cerrar',
-              destination_page: `${host}/signup`,
+              destination_page: `${host}/signup/onboarding/step2`,
               pop_up_type: 'onboarding',
               pop_up_title: 'Terminos y condiciones',
             },

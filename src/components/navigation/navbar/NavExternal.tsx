@@ -49,7 +49,7 @@ export default function NavExternal({ image, color, closeApp, onClick }: MuiNavE
         ) : (
           <Linking
             href={backLink}
-            label="Volver a ésika Conmigo"
+            label="Volver a Somos Belcorp"
             mb={0}
             color={color}
             adormentStart

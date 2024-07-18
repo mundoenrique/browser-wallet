@@ -135,7 +135,7 @@ export interface ConfigCardStore {
     | 'survey'
     | 'success';
   cardActivationStatus: string;
-  isCardVirtual: () => boolean;
+
   isCardBlocked: () => boolean;
   cardType: string;
   blockType: object;
@@ -144,7 +144,10 @@ export interface ConfigCardStore {
   updateCardInfo: boolean;
   toggleUpdate: () => void;
   updatePage: (_newPage: ConfigCardStore['page']) => void;
-  setCardProperties: (_key: 'blockType' | 'cardType' | 'cardStatus' | 'cardInfo', _value: any) => void;
+  setCardProperties: (
+    _key: 'blockType' | 'cardType' | 'cardStatus' | 'cardInfo' | 'cardActivationStatus',
+    _value: any
+  ) => void;
 }
 
 /**
@@ -212,7 +215,7 @@ export interface IClientProps {
   status: string;
   status_type?: string;
   month?: string;
-  number?: string;
+  phoneNumber?: string;
 }
 
 export interface ClientStore {
@@ -222,7 +225,7 @@ export interface ClientStore {
 
 export interface ClientPay {
   fullname: string | undefined;
-  number: string | undefined;
+  phoneNumber: string | undefined;
 }
 export interface CatalogsStore {
   termsCatalog: { code: string; value: string }[];
@@ -253,7 +256,6 @@ export interface UserStore {
   setUserId: (_data: any) => void;
   getUserPhone: () => string;
   getUserCardId: () => string;
-  isUserCardVirtual: () => boolean;
 }
 
 /**
