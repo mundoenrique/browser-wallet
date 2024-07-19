@@ -1,37 +1,75 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
+import { api } from '@/utils/api';
 import { getSchema } from '@/config';
+import { encryptForge } from '@/utils/toolHelper';
 import ModalOtp from '@/components/modal/ModalOtp';
-import { useNavTitleStore, useConfigCardStore, useHeadersStore } from '@/store';
 import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/components';
+import {
+  useNavTitleStore,
+  useConfigCardStore,
+  useHeadersStore,
+  useUserStore,
+  useUiStore,
+  accessSessionStore,
+  useOtpStore,
+} from '@/store';
 
 export default function Survey() {
+  const schema = getSchema(['blockType']);
+
+  const { backLink } = useHeadersStore();
+
   const { updateTitle } = useNavTitleStore();
 
   const { updatePage } = useConfigCardStore();
 
+  const user = useUserStore((state) => state.user);
+
+  const { setAccessSession } = accessSessionStore();
+
   const host = useHeadersStore((state) => state.host);
+
+  const otpUuid = useOtpStore((state) => state.otpUuid);
+
+  const { setModalError, setLoadingScreen } = useUiStore();
 
   const [openRc, setOpenRc] = useState<boolean>(false);
 
   const [openOtp, setOpenOtp] = useState<boolean>(false);
 
-  const schema = getSchema(['blockType']);
-
   useEffect(() => {
     updateTitle('Ayúdanos con esta encuesta');
   }, [updateTitle]);
 
-  const { control, handleSubmit, reset } = useForm({
+  const { control, handleSubmit, reset, getValues } = useForm({
     defaultValues: { blockType: '' },
     resolver: yupResolver(schema),
   });
+
+  const deleteAccount = async () => {
+    const reasonCode = getValues('blockType');
+    api
+      .delete(`/users/${user.userId}`, { params: { reasonCode } })
+      .then((response) => {
+        console.log('🚀 ~ deleteAccount ~ response:', response);
+        setAccessSession(false);
+        sessionStorage.clear();
+        window.open(backLink);
+      })
+      .catch(() => {
+        setModalError({
+          title: 'Algo salió mal',
+          description: 'No pudimos eliminar tu cuenta en este momento. Intentalo nuevamente.',
+        });
+      });
+  };
 
   const onSubmit = async (data: any) => {
     setOpenOtp(true);
@@ -48,33 +86,55 @@ export default function Survey() {
     });
   };
 
-  const onSubmitOtp = async (data: any) => {
-    console.log(data);
-    setOpenOtp(false);
-    setOpenRc(true);
-    reset();
-  };
+  const onSubmitOtp = useCallback(
+    async (data: any) => {
+      setLoadingScreen(true);
+      const { otp } = data;
+      const payload = {
+        otpProcessCode: 'CARD_CANCELLATION_OTP',
+        otpUuId: otpUuid,
+        otpCode: encryptForge(otp),
+      };
+
+      api
+        .post(`/users/${user.userId}/validate/tfa`, payload)
+        .then((response) => {
+          if (response.data.code === '200.00.000') {
+            setOpenOtp(false);
+            deleteAccount();
+            setOpenOtp(false);
+            setOpenRc(true);
+            reset();
+          }
+        })
+        .catch((e) => {
+          setModalError({ error: e });
+          setLoadingScreen(false);
+        });
+    },
+    [otpUuid] //eslint-disable-line
+  );
 
   const blockCardType = [
     {
       text: 'No la uso con frecuencia',
-      value: '65',
+      value: '001',
     },
     {
       text: 'No me sirve para mi negocio',
-      value: '66',
+      value: '002',
     },
     {
       text: 'Es complicada para usar',
-      value: '67',
+      value: '003',
     },
     {
       text: 'Ya tengo otros medios pago',
-      value: '68',
+      value: '004',
     },
     {
       text: 'No hay motivo solo quiero eliminar',
-      value: '69',
+      value: '005',
     },
   ];
 
@@ -111,16 +171,17 @@ export default function Survey() {
         </Box>
       </ContainerLayout>
 
-      <ModalOtp
-        open={openOtp}
-        handleClose={() => setOpenOtp(false)}
-        onSubmit={onSubmitOtp}
-        title="🎰 Verifica tu identidad para eliminar cuenta"
-        textButton="Eliminar cuenta Yiro"
-        closeApp
-        processCode="CHANGE_PASSWORD_OTP"
-      />
-
+      {openOtp && (
+        <ModalOtp
+          open={openOtp}
+          handleClose={() => setOpenOtp(false)}
+          onSubmit={onSubmitOtp}
+          title="🎰 Verifica tu identidad para eliminar cuenta"
+          textButton="Eliminar cuenta Yiro"
+          closeApp
+          processCode="CARD_CANCELLATION_OTP"
+        />
+      )}
       <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>
         <Typography variant="subtitle1" mb={3}>
           🚫 Tu cuenta ha sido eliminada
