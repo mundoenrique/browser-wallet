@@ -34,8 +34,11 @@ export const useConfigCardStore = create<ConfigCardStore>()(
          * set card activation status
          */
         cardActivationStatus: () => {
-          useUserStore.getState().user;
-          return '';
+          const user = useUserStore.getState().user;
+          if (!Object.hasOwn(user, 'physicalCards')) {
+            return 'NONE';
+          }
+          return user.physicalCards.status;
         },
         /**
          * Return true or false if card is blocked
