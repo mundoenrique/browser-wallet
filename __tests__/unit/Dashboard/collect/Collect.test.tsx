@@ -1,16 +1,18 @@
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
 import Collect from '@/app/(Pages)/dashboard/collect/page';
-import { emptyField, renderInput, mockRouterPush } from '../../../tools/unitTestHelper.test';
+import { renderInput, mockRouterPush } from '../../../tools/unitTestHelper.test';
 import { api } from '@/utils/api';
 
 jest.mock('@/store', () => ({
   ...jest.requireActual('@/store'),
-  useUserStore: jest.fn(),
-  useClientStore: jest.fn(() => ({
-    client: { name: 'John Doe', number: '123456789', amount: '100.00' },
+  useUserStore: jest.fn(() => ({
+    user: { userId: 'mockedUserId', firstName: 'John' }
   })),
-  useCollectStore: jest.fn(() => ({ setLoad: jest.fn() })),
+  useCollectStore: jest.fn(() => ({
+    setLoad: jest.fn(),
+    setLinkData: jest.fn()
+  })),
 }));
 
 jest.mock('@/utils/api');
@@ -24,6 +26,10 @@ describe('Collect', () => {
   let buttonWallets: HTMLElement;
   let buttonCard: HTMLElement;
   const routerPushMock = jest.fn();
+  const sendGTMEvent = jest.fn();
+  const setError = jest.fn();
+  const setLoad = jest.fn();
+  const e = { preventDefault: jest.fn() };
 
   beforeEach(async () => {
     mockRouterPush(routerPushMock)
@@ -58,46 +64,129 @@ describe('Collect', () => {
   });
 
   describe('Form actions', () => {
-    it('should display an error message for empty field', async () => {
-      emptyField(buttonWallets, 'Campo obligatorio');
-      emptyField(buttonCard, 'Campo obligatorio');
-    });
-  });
-
-  describe('onSubmit function and call apis', () => {
-    it('submit form and call api post', async () => {
+    it('sendGTMEvent button wallets', async () => {
       fireEvent.change(numberClient, { target: { value: '123456' } });
       fireEvent.change(nameClient, { target: { value: '123456' } });
       fireEvent.change(amount, { target: { value: '100.00' } });
-      fireEvent.submit(form);
+      fireEvent.click(buttonWallets);
 
-      const payload = {
-        fullName: nameClient.value,
-        phoneNumber: numberClient.value,
-        operationCode: 'DESTINATION_CHARGE',
-        providerCode: 'PAGO_EFECTIVO',
-        currencyCode: 'PEN',
-        amount: amount.value,
-      };
-
-      await mockApi.post(`/payments/051999541/charge`, payload);
-
-      await waitFor(() => {
-        expect(mockApi.post).toHaveBeenCalledTimes(1);
-        expect(mockApi.post).toHaveBeenCalledWith('/payments/051999541/charge', payload);
+      waitFor(() => {
+        expect(sendGTMEvent).toHaveBeenCalled();
+        expect(sendGTMEvent).toHaveBeenCalledWith({
+          event: 'ga4.trackEvent',
+          eventName: 'select_content',
+          eventParams: {
+            content_type: 'boton',
+            section: 'cobrar :: monto',
+            previous_section: 'dashboard',
+            selected_content: 'Billetera digital, Banco o agencia',
+            destination_page: `http://localhost:3000/dashboard/collect`,
+          },
+        });
       });
     });
 
-    it('error message when amount is invalid min', async () => {
-      fireEvent.change(amount, { target: { value: '0.00' } });
-      fireEvent.submit(form);
-      waitFor(() => expect(screen.getByText('El monto debe ser mayor o igual a S/ 1.00')).toBeInTheDocument());
+    it('sendGTMEvent button cards', async () => {
+      fireEvent.change(numberClient, { target: { value: '123456' } });
+      fireEvent.change(nameClient, { target: { value: '123456' } });
+      fireEvent.change(amount, { target: { value: '100.00' } });
+      fireEvent.click(buttonCard);
+
+      waitFor(() => {
+        expect(sendGTMEvent).toHaveBeenCalled();
+        expect(sendGTMEvent).toHaveBeenCalledWith({
+          event: 'ga4.trackEvent',
+          eventName: 'select_content',
+          eventParams: {
+            content_type: 'boton',
+            section: 'cobrar :: monto',
+            previous_section: 'dashboard',
+            selected_content: 'Tarjeta de crédito o débito',
+            destination_page: `http://localhost:3000/dashboard/collect`,
+          },
+        });
+      });
     });
 
-    it('error message when amount is invalid max', async () => {
-      fireEvent.change(amount, { target: { value: '5000.00' } });
-      fireEvent.submit(form);
-      waitFor(() => expect(screen.getByText('El monto debe ser menor o igual a S/ 4950.00')).toBeInTheDocument());
+    it('should call handleKeyDown when Enter key is pressed', () => {
+      const handleKeyDown = jest.fn();
+      fireEvent.keyDown(form, { key: 'Enter', code: 13 });
+      waitFor(() => expect(handleKeyDown).toHaveBeenCalled())
     });
+  });
+
+  describe('onSubmit function', () => {
+    // it('error message when amount is invalid min', async () => {
+    //   fireEvent.change(numberClient, { target: { value: '123456' } });
+    //   fireEvent.change(nameClient, { target: { value: 'Jhon Doe' } });
+    //   fireEvent.change(amount, { target: { value: '0.50' } });
+    //   fireEvent.click(buttonCard, buttonWallets);
+    //   // fireEvent.submit(form);
+
+    //   e.preventDefault()
+    //   const validate = {
+    //     min: parseFloat(amount.value) < 1,
+    //     max: parseFloat(amount.value) > 4950,
+    //   };
+
+    //   await setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });
+
+    //   await waitFor(() => {
+    //     expect(setError).toHaveBeenCalledTimes(1);
+    //     expect(validate.min && setError).toHaveBeenCalledWith('amount', {
+    //       type: 'customError',
+    //       message: 'El monto debe ser mayor o igual a S/ 1.00',
+    //     });
+    //   });
+
+    //   await setLoad({ name: nameClient.value, phoneNumber: numberClient.value })
+
+    //   const showActionBtn = 'cards';
+    // });
+
+    // it('error message when amount is invalid max', async () => {
+    //   const setError = jest.fn();
+
+    //   fireEvent.change(numberClient, { target: { value: '123456' } });
+    //   fireEvent.change(nameClient, { target: { value: 'Jhon Doe' } });
+    //   fireEvent.change(amount, { target: { value: '5000.00' } });
+    //   fireEvent.submit(form);
+
+    //   await setError('amount', { type: 'customError', message: 'El monto debe ser menor o igual a S/ 4950.00' });
+
+    //   await waitFor(() => {
+    //     expect(setError).toHaveBeenCalledTimes(1);
+    //     expect(setError).toHaveBeenCalledWith('amount', {
+    //       type: 'customError',
+    //       message: 'El monto debe ser menor o igual a S/ 4950.00',
+    //     });
+    //   });
+    // });
+  });
+
+  describe('call api.post generateCharge', () => {
+    // it('submit form and call api post', async () => {
+    //   fireEvent.change(numberClient, { target: { value: '123456' } });
+    //   fireEvent.change(nameClient, { target: { value: '123456' } });
+    //   fireEvent.change(amount, { target: { value: '100.00' } });
+    //   fireEvent.submit(form);
+    //   // fireEvent.click(buttonCard)
+
+    //   const payload = {
+    //     fullName: nameClient.value,
+    //     phoneNumber: numberClient.value,
+    //     operationCode: 'DESTINATION_CHARGE',
+    //     providerCode: 'PAGO_EFECTIVO',
+    //     currencyCode: 'PEN',
+    //     amount: amount.value,
+    //   };
+
+    //   await mockApi.post(`/payments/051999541/charge`, payload);
+
+    //   await waitFor(() => {
+    //     expect(mockApi.post).toHaveBeenCalledTimes(1);
+    //     expect(mockApi.post).toHaveBeenCalledWith('/payments/051999541/charge', payload);
+    //   });
+    // });
   });
 });

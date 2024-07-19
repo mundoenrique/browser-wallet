@@ -174,7 +174,7 @@ export default function Collect() {
           Crear solicitud de cobro
         </Typography>
 
-        <Box component="form" onSubmit={handleSubmit(onSubmit)} onKeyDown={handleKeyDown}>
+        <Box name="form" component="form" onSubmit={handleSubmit(onSubmit)} onKeyDown={handleKeyDown}>
           <InputText
             name="numberClient"
             control={control}
