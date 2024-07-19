@@ -3,9 +3,9 @@
 import Info from '@mui/icons-material/InfoOutlined';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useCallback, useEffect, useState } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
 import { MuiOtpInput } from 'mui-one-time-password-input';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Button, FormHelperText, Snackbar, Typography } from '@mui/material';
 //internal app
 import { CardStep } from '..';
@@ -29,7 +29,9 @@ export default function CelularValidation() {
 
   const [open, setOpen] = useState(false);
 
-  const { handleSubmit, control, reset } = useForm({
+  const initialized = useRef<boolean>(false);
+
+  const { handleSubmit, control, reset, formState } = useForm({
     defaultValues: { otp: '' },
     resolver: yupResolver(schema),
   });
@@ -96,6 +98,18 @@ export default function CelularValidation() {
     }
   }, [timeLeft]); //eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset({ otp: '' });
+    }
+  }, [formState, reset]);
+
+  useEffect(() => {
+    if (!initialized.current) {
+      initialized.current = true;
+      requestTFACode();
+    }
+  }, [requestTFACode]);
   return (
     <>
       <CardStep stepNumber="2">
