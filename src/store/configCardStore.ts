@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { devtools, persist, createJSONStorage } from 'zustand/middleware';
 //Internal app
+import { useUserStore } from './userStore';
 import { ConfigCardStore } from '@/interfaces';
 
 /**
@@ -28,41 +29,33 @@ export const useConfigCardStore = create<ConfigCardStore>()(
         updatePage: (newPage) => {
           set({ page: newPage });
         },
+        cardInformation: {},
         /**
          * set card activation status
          */
-        cardActivationStatus: '',
+        cardActivationStatus: () => {
+          useUserStore.getState().user;
+          return '';
+        },
         /**
          * Return true or false if card is blocked
          */
         isCardBlocked: () => {
-          const blockObject = get().blockType;
-          return Object.hasOwn(blockObject, 'code');
+          const { blockType } = get().cardInformation;
+          return blockType && Object.hasOwn(blockType, 'code');
+        },
+        isTempBlock: () => {
+          const { blockType } = get().cardInformation;
+          return blockType && Object.hasOwn(blockType, 'code') && blockType.code === 'PB';
+        },
+        isPhysicalCard: () => {
+          const { cardType } = get().cardInformation;
+          return cardType && cardType === 'PHYSIC';
         },
         /**
          * Card block type
          */
         blockType: {},
-        /**
-         * Type of card VIRTUAL / PHYSICAL
-         */
-        cardType: '',
-        /**
-         * Card status Active/Inactive
-         */
-        cardStatus: '',
-        /**
-         * set if card info is loaded
-         */
-        cardInfo: false,
-        /**
-         * Var to dispatch an update
-         */
-        updateCardInfo: false,
-        /**
-         * Dispatch an update
-         */
-        toggleUpdate: () => set((state) => ({ updateCardInfo: !state.updateCardInfo })),
         /**
          * set  values for  card object: cardType, cardBlockStatus, cardStatus
          */
