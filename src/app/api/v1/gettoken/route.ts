@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     };
 
     const deviceId = idDevice ? idDevice : null;
-    const stateObject = { ipAddress, uuid, deviceId };
+    const stateObject = { login: false, ipAddress, uuid, deviceId };
     await postRedis(`session:${encryptForge(uuid)}`, stateObject);
 
     const token = await signJWT(jwsPrivateKey, { jwePublicKey, jwsPublicKey, uuid });
