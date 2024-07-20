@@ -158,7 +158,7 @@ export default function CardConfiguration() {
         <CardInformation />
 
         <Stack spacing={3 / 2} mt={3}>
-          {!isPhysicalCard && (
+          {!isPhysicalCard() && (
             <>
               {cardActivationStatus() === 'PENDING' ? (
                 <HandleCard

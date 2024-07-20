@@ -132,9 +132,9 @@ export default function CardInformation() {
     api
       .get(`/cards/${getUserCardId()}`)
       .then((response) => {
-        const { cardStatus, cardType, blockType } = response.data.data;
         setCardData(response.data.data);
         setCardProperties('cardInformation', response.data.data);
+        console.log(response);
       })
       .catch((e) => {
         setCardInformationError(true);
@@ -185,6 +185,11 @@ export default function CardInformation() {
       }, 120000);
     }
   }, [showDetails]);
+
+  useEffect(() => {
+    getCardInformation();
+    getBalance();
+  }, []);
 
   return (
     <>
