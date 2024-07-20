@@ -85,9 +85,7 @@ export default function Biometric() {
     };
     setLoadingScreen(true, { message: 'Estamos verificando tu información' });
     await api
-      .post('/onboarding/validatebiometric', payload, {
-        headers: { identifier: 'e30b625a-e085-42a5-aac2-3d52f73ad8fe' },
-      })
+      .post('/onboarding/validatebiometric', payload)
       .then((response) => {
         const { decision } = response.data.data;
         if (decision === 'ACCEPT') {
@@ -121,9 +119,7 @@ export default function Biometric() {
     };
     setLoadingScreen(true);
     api
-      .post('/onboarding/capturephotobiometrics ', requestFormData, {
-        headers: { identifier: 'e30b625a-e085-42a5-aac2-3d52f73ad8fe' },
-      })
+      .post('/onboarding/capturephotobiometrics ', requestFormData)
       .then((response) => {
         const { web, account, workflowExecution } = response.data.data;
         setUrl(web.href);

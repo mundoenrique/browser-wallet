@@ -33,6 +33,8 @@ export type KeyStoreProps = {
  */
 export type JwtStoreProps = {
   token: string | null;
+  uuid: string | null;
+  setUuid: (_uuid: string) => void;
   setToken: (_token: string) => void;
 };
 
