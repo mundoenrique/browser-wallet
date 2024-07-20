@@ -16,7 +16,9 @@ export const useJwtStore = create<JwtStoreProps>()(
     persist(
       (set) => ({
         token: null,
+        uuid: null,
 
+        setUuid: (uuid) => set({ uuid }),
         setToken: (token) => set({ token }),
       }),
       {
