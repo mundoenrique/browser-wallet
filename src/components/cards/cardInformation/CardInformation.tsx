@@ -54,8 +54,6 @@ export default function CardInformation() {
 
   const setReloadFunction = useUiStore((state) => state.setReloadFunction);
 
-  const updateCardInfo = useConfigCardStore((state) => state.updateCardInfo);
-
   const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
 
   const setBalanceStoreDebt = useDebStore((state) => state.setBalance);
@@ -134,12 +132,9 @@ export default function CardInformation() {
     api
       .get(`/cards/${getUserCardId()}`)
       .then((response) => {
-        const { cardStatus, cardType, blockType } = response.data.data;
         setCardData(response.data.data);
-        setCardProperties('cardStatus', cardStatus);
-        setCardProperties('cardType', cardType);
-        setCardProperties('blockType', blockType);
-        setCardProperties('cardInfo', true);
+        setCardProperties('cardInformation', response.data.data);
+        console.log(response);
       })
       .catch((e) => {
         setCardInformationError(true);
@@ -184,17 +179,17 @@ export default function CardInformation() {
   };
 
   useEffect(() => {
-    getCardInformation();
-    getBalance();
-  }, [updateCardInfo]); //eslint-disable-line
-
-  useEffect(() => {
     if (showDetails) {
       setTimeout(() => {
         setShowDetails(false);
       }, 120000);
     }
   }, [showDetails]);
+
+  useEffect(() => {
+    getCardInformation();
+    getBalance();
+  }, []);
 
   return (
     <>

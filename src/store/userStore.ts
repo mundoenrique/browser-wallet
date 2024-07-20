@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage, devtools } from 'zustand/middleware';
 //Internal app
 import { decryptForge } from '@/utils/toolHelper';
-import { TCardInformation, TUserDetail, UserStore } from '@/interfaces';
+import { TUserDetail, UserStore } from '@/interfaces';
 
 /**
  * Store for user data
@@ -24,21 +24,23 @@ export const useUserStore = create<UserStore>()(
         /**
          * set user object
          */
-        cardInformation: null,
-        /**
-         * set card information
-         */
-        setCardInformation: (data: TCardInformation) => set({ user: data }),
-
         setUser: (data: TUserDetail) => set({ user: data }),
-
+        /**
+         * set user Id
+         */
         setUserId: (data: string) => set({ userId: data }),
-
+        /**
+         *
+         * @returns user phone number
+         */
         getUserPhone: () => {
           const { phoneNumber } = get().user;
           return decryptForge(phoneNumber);
         },
-
+        /**
+         *
+         * @returns user cardId
+         */
         getUserCardId: () => {
           const {
             cardSolutions: { cardId },

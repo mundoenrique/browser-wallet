@@ -38,7 +38,6 @@ export default function RequestPhysicalCard() {
     api
       .post(`/cards/users/physicalcard`, { userId: userId })
       .then(() => {
-        setCardProperties('cardActivationStatus', 'PENDING');
         setOpen(!open);
       })
       .catch((e) => {
