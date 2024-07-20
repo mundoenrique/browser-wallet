@@ -115,6 +115,28 @@ export async function putRedis(keyRedis: any, newData: any) {
   }
 }
 
+export async function delDataRedis(keyRedis: any, delParam: any) {
+  try {
+    const redis = createRedisInstance();
+    const dataRedis: string | null = await redis.get(`${keyRedis}`);
+    let stateObject: any;
+
+    const time = (keyRedis === 'activeSession') ? 60 * 60 * 8 : TIME_SESSION_REDIS;
+
+    if (dataRedis) {
+      stateObject = JSON.parse(dataRedis);
+      delete stateObject[delParam]
+      await redis.set(keyRedis, JSON.stringify(stateObject));
+    }
+
+    await redis.expire(`${keyRedis}`, time);
+
+    redis.quit();
+  } catch (error) {
+    throw new Error('Error put data Redis: ');
+  }
+}
+
 export async function delRedis(sesionId: string) {
   try {
     const redis = createRedisInstance();
