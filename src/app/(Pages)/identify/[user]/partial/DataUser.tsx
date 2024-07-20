@@ -9,7 +9,6 @@ import LogoGreen from '%/images/LogoGreen';
 import { DataUserProps } from '@/interfaces';
 import { PurpleLayout, NotFoundError } from '@/components';
 import { useHeadersStore, useRegisterStore, useUiStore } from '@/store';
-import { setDataRedis } from '@/utils/toolHelper';
 
 /**
  * Convert phasename
