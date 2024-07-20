@@ -13,6 +13,8 @@ import { useHeadersStore, useUiStore, useUserStore } from '@/store';
 export default function UpdatePass() {
   const host = useHeadersStore((state) => state.host);
 
+  const [disableSubmit, setDisableSubmit] = useState<boolean>(false);
+
   const {
     user: { userId },
   } = useUserStore();
@@ -39,20 +41,19 @@ export default function UpdatePass() {
   const onSubmit = async (data: any) => {
     const { newPasswordConfirmation } = data;
     setLoadingScreen(true);
+    setDisableSubmit(true);
 
     api
       .put(`/users/${userId}/credentials`, { password: encryptForge(newPasswordConfirmation) })
-      .then((response) => {
-        const { status } = response;
-        if (status === 200) {
-          setOpen(true);
-        }
+      .then(() => {
+        setOpen(true);
       })
       .catch((e) => {
         setModalError({ error: e });
       })
       .finally(() => {
         setLoadingScreen(false);
+        setDisableSubmit(false);
       });
   };
 
@@ -96,6 +97,7 @@ export default function UpdatePass() {
             variant="primary"
             type="submit"
             sx={{ maxWidth: 284, width: '100%' }}
+            disabled={disableSubmit ?? false}
             onClick={() => {
               sendGTMEvent({
                 event: 'ga4.trackEvent',

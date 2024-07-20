@@ -20,7 +20,7 @@ export const regularExpressions: Partial<RegularExpressions> = {
   company: /^[a-zA-Z0-9ñáéíóúÑÁÉÍÓÚ\s.]+$/,
   password: {
     consecutive_group: /(012|123|234|345|456|567|678|789|890)\1/,
-    consecutive_ascedant: /(0123|1234|2345|3456|4567|5678|6789|7890)/,
+    consecutive_ascedant: /(012|123|234|345|456|567|678|789|890)/,
     consecutive_descendant: /(0987|9876|8765|7654|6543|5432|4321|3210)/,
     repeated: /(\d)\1\1/,
   },
