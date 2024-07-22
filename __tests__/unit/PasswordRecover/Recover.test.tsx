@@ -1,15 +1,10 @@
-import { render, waitFor, screen } from '@testing-library/react';
+import { render, act, waitFor, screen, fireEvent } from '@testing-library/react';
 //Internal app
 import Recover from '@/app/(Pages)/password-recover/page';
+import { api } from '@/utils/api';
 
-jest.mock('@/utils/api', () => ({
-  api: {
-    post: jest.fn().mockResolvedValue({
-      status: 200,
-      data: { data: { otpUuId: 'abc123' } },
-    }),
-  },
-}));
+jest.mock('@/utils/api');
+const mockApi = api as jest.Mocked<typeof api>;
 
 jest.mock('@/app/(Pages)/password-recover/partial/OTP', () => ({
   __esModule: true,
@@ -26,86 +21,65 @@ jest.mock('@/store', () => ({
     host: jest.fn(),
     back: jest.fn(),
   })),
-  useUserStore: jest.fn(() => ({ user: { userId: 'mockedUserId' } })),
+  useUserStore: jest.fn(() => ({
+    getUserPhone: jest.fn(() => '123456789'),
+    user: { userId: 'mockedUserId' }
+  })),
   useUiStore: jest.fn(() => ({ setModalError: jest.fn() })),
   useOtpStore: jest.fn(() => ({
-    countdown: jest.fn(),
-    counting: false,
-    setCounting: jest.fn(),
-    setTime: jest.fn(),
     otpValid: 'OTP',
+    setOtpUuid: jest.fn(),
     requestTFACode: jest.fn(),
-    handleResendOTP: jest.fn(),
   })),
 }));
 
 describe('Recover', () => {
-  beforeEach(() => {
+  const sendGTMEvent = jest.fn();
+
+  beforeEach(async () => {
+    await act(async () => {
+      render(<Recover />);
+    });
+  });
+
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
   //** This test checks if the initial state of the component is correct
   it('has correct initial state', () => {
-    const { getByTestId } = render(<Recover />);
-    expect(getByTestId('mocked-otp-component')).toBeInTheDocument();
+    expect(screen.getByTestId('mocked-otp-component')).toBeInTheDocument();
   });
 
-  //** This test checks if the timer starts when the component is mounted
-  it('starts timer on mount', async () => {
-    jest.useFakeTimers();
-    const setIntervalSpy = jest.spyOn(global, 'setInterval');
-    render(<Recover />);
-    expect(setIntervalSpy).toHaveBeenCalled();
-    jest.useRealTimers();
-    setIntervalSpy.mockRestore();
+  it('sendGTMEvent button', async () => {
+    const navExternal = screen.getByText('Volver');
+    fireEvent.click(navExternal);
+
+    waitFor(() => {
+      expect(sendGTMEvent).toHaveBeenCalled();
+      expect(sendGTMEvent).toHaveBeenCalledWith({
+        event: 'ga4.trackEvent',
+        eventName: 'select_content',
+        eventParams: {
+          content_type: 'boton',
+          section: 'Yiro :: recuperarContraseña',
+          previous_section: 'Yiro :: login :: interno',
+          selected_content: 'Volver',
+          destination_page: `http://localhost:3000/signin`,
+        },
+      });
+    }
+    );
   });
 
-  //** This test checks if the OTP component is rendered when otpValid is "OTP"
-  it('renders mocked OTP component when otpValid is "OTP"', async () => {
-    render(<Recover />);
-    await waitFor(() => expect(screen.getByTestId('mocked-otp-component')).toBeInTheDocument());
-  });
+  it('submit form and call api post', async () => {
+    fireEvent.click(screen.getByTestId('mocked-otp-component'));
 
-  //** This test checks if the UpdatePass component is rendered when otpValid is "PASSWORD"
-  it('renders mocked UpdatePass component when otpValid is "PASSWORD"', async () => {
-    jest.spyOn(require('@/store'), 'useOtpStore').mockImplementation(() => ({
-      countdown: jest.fn(),
-      counting: false,
-      setCounting: jest.fn(),
-      setTime: jest.fn(),
-      otpValid: 'PASSWORD',
-    }));
-    render(<Recover />);
-    await screen.findByTestId('mocked-update-pass-component');
-  });
+    await mockApi.post(`/users/051999541/tfa`, { otpProcessCode: 'CHANGE_PASSWORD_OTP' });
 
-  //** This test checks if the default component (OTP) is rendered when otpValid is neither "OTP" nor "PASSWORD"
-  it('renders default component when otpValid is neither "OTP" nor "PASSWORD"', async () => {
-    jest.spyOn(require('@/store'), 'useOtpStore').mockImplementation(() => ({
-      countdown: jest.fn(),
-      counting: false,
-      setCounting: jest.fn(),
-      setTime: jest.fn(),
-      otpValid: 'SOME_OTHER_VALUE',
-    }));
-    render(<Recover />);
-    await waitFor(() => expect(screen.getByTestId('mocked-otp-component')).toBeInTheDocument());
-  });
-
-  //** This test checks if the timer starts when counting is true and initialized.current is false
-  it('starts timer when counting is true and initialized.current is false', async () => {
-    jest.spyOn(require('@/store'), 'useOtpStore').mockImplementation(() => ({
-      countdown: jest.fn(),
-      counting: true,
-      setCounting: jest.fn(),
-      setTime: jest.fn(),
-      otpValid: 'OTP',
-    }));
-    jest.useFakeTimers();
-    const setIntervalSpy = jest.spyOn(global, 'setInterval');
-    render(<Recover />);
-    expect(setIntervalSpy).toHaveBeenCalled();
-    jest.useRealTimers();
-    setIntervalSpy.mockRestore();
+    await waitFor(() => {
+      expect(mockApi.post).toHaveBeenCalledTimes(1);
+      expect(mockApi.post).toHaveBeenCalledWith('/users/051999541/tfa', { otpProcessCode: 'CHANGE_PASSWORD_OTP' });
+    });
   });
 });

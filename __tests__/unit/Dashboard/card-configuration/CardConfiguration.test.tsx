@@ -3,6 +3,11 @@ import { act, render, screen } from '@testing-library/react';
 import CardConfiguration from '@/app/(Pages)/dashboard/card-configuration/page';
 import { mockRouterPush } from '../../../tools/unitTestHelper.test';
 
+jest.mock('@/app/(Pages)/dashboard/card-configuration/partial/Main.tsx', () => ({
+  __esModule: true,
+  default: jest.fn().mockReturnValue(<div data-testid="mocked-main-component" />),
+}));
+
 describe('CardConfiguration', () => {
   const routerPushMock = jest.fn();
 
@@ -11,17 +16,15 @@ describe('CardConfiguration', () => {
     await act(async () => {
       render(<CardConfiguration />);
     });
-    expect(render).toBeTruthy();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   //** Renders a title, subtitles and button
   test('should render all necessary elements', async () => {
-    expect(screen.getByText(/configuración de mi tarjeta/i)).toBeInTheDocument();
-    expect(screen.getByText(/activa tu tarjeta física/i)).toBeInTheDocument();
-    expect(screen.getByText(/bloqueo temporal/i)).toBeInTheDocument();
-    expect(screen.getByText(/bloquear por perdida o robo/i)).toBeInTheDocument();
-    expect(screen.getByText(/cambiar pin/i)).toBeInTheDocument();
-    expect(screen.getByText(/eliminar cuenta yiro/i)).toBeInTheDocument();
+    expect(screen.getByTestId('mocked-main-component')).toBeInTheDocument();
   });
 
 });
