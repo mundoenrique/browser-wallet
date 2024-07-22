@@ -130,29 +130,4 @@ describe('Collect', () => {
       });
     });
   });
-
-  describe('call api.post generateCharge', () => {
-    // it('submit form and call api post', async () => {
-    //   fireEvent.change(numberClient, { target: { value: '123456789' } });
-    //   fireEvent.change(nameClient, { target: { value: 'Jhon Doe' } });
-    //   fireEvent.change(amount, { target: { value: '10.00' } });
-    //   fireEvent.submit(form);
-
-    //   const payload = {
-    //     fullName: nameClient.value,
-    //     phoneNumber: numberClient.value,
-    //     operationCode: 'DESTINATION_CHARGE',
-    //     providerCode: 'PAGO_EFECTIVO',
-    //     currencyCode: 'PEN',
-    //     amount: amount.value,
-    //   };
-
-    //   await mockApi.post(`/payments/051999541/charge`, payload);
-
-    //   await waitFor(() => {
-    //     expect(mockApi.post).toHaveBeenCalledTimes(1);
-    //     expect(mockApi.post).toHaveBeenCalledWith('/payments/051999541/charge', payload);
-    //   });
-    // });
-  });
 });

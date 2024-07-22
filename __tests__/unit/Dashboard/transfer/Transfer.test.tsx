@@ -45,28 +45,6 @@ describe('Transfer', () => {
       renderInput(amount);
       renderInput(submitButton);
     });
-
-    // it('should render component success.', async () => {
-    //   const setOpenRc = jest.fn();
-    //   const openRc = jest.fn();
-    //   const transferInfo = {
-    //     receiver: '',
-    //     amount: null,
-    //     date: '',
-    //     transactionCode: '',
-    //   };
-
-    //   await act(async () => {
-    //     render(
-    //       <Success
-    //       onClick={() => {
-    //         setOpenRc(!openRc);
-    //       }}
-    //       transferDetail={transferInfo}
-    //       />
-    //     );
-    //   });
-    // });
   });
 
   describe('Navigates sendGtmEvent', () => {
@@ -90,60 +68,5 @@ describe('Transfer', () => {
         });
       });
     });
-  });
-
-  describe('Call onSubmits', () => {
-    // it('calls onSubmitOtp api.post validate tfa', async () => {
-    //   const setOpenOtp = jest.fn(() => true);
-
-    //   let otpInput: HTMLInputElement = screen.getByRole('textbox', { name: /otp/i });
-    //   let otpButton: HTMLElement = screen.getByRole('button', { name: /verificar/i });
-
-    //   fireEvent.change(otpInput, { target: { value: '1234' } });
-    //   fireEvent.click(otpButton);
-
-    //   const setLoadinScreen = jest.fn(() => true);
-
-    //   const payload = {
-    //     otpProcessCode: 'CHANGE_PASSWORD_OTP',
-    //     otpUuId: '1123456789',
-    //     otpCode: otpInput.value,
-    //   };
-
-    //   await mockApi.post('/users/051999541/validate/tfa', payload);
-
-    //   await waitFor(() => {
-    //     expect(mockApi.post).toHaveBeenCalledTimes(1);
-    //     expect(mockApi.post).toHaveBeenCalledWith(`/users/051999541/validate/tfa`, payload);
-    //   });
-    // });
-
-    // test('handleConfirmation call api.post sendMoney', async () => {
-    //   fireEvent.change(numberClient, { target: { value: '123456789' } });
-    //   fireEvent.change(amount, { target: { value: '10.00' } });
-    //   fireEvent.click(submitButton);
-
-    //   const payload = {
-    //     sender: {
-    //     cardId: senderCardId(),
-    //     },
-    //     receiver: {
-    //       cardId: receiverCardId,
-    //     },
-    //     amount: amount,
-    //     fee: '0.00',
-    //     tax: '0.00',
-    //     description: 'Web transfer',
-    //     source: 'Web transfer',
-    //     externalId: '-',
-    //   };
-
-    //   await mockApi.post('/cards/sendmoney', payload);
-
-    //   await waitFor(() => {
-    //     expect(mockApi.post).toHaveBeenCalledTimes(1);
-    //     expect(mockApi.post).toHaveBeenCalledWith('/cards/sendmoney', payload);
-    //   });
-    // });
   });
 });
