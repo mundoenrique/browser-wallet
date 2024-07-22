@@ -72,25 +72,6 @@ describe('Signin', () => {
       renderInput(submitButton);
     });
 
-    it('should render password recovery link and navigate to password recovery page when link is clicked', async () => {
-      const textLink = screen.getByText(/olvidé mi contraseña/i);
-      fireEvent.click(textLink);
-      waitFor(() => {
-        expect(sendGTMEvent).toHaveBeenCalled();
-        expect(sendGTMEvent).toHaveBeenCalledWith({
-          event: 'ga4.trackEvent',
-          eventName: 'select_content',
-          eventParams: {
-            content_type: 'boton',
-            section: 'Yiro :: login :: interno',
-            previous_section: 'somosbelcorp',
-            selected_content: 'Olvidé mi contraseña',
-            destination_page: `https://example.com/password-recover`,
-          },
-        });
-      });
-    });
-
     it('should call the API LOGIN with the correct credentials and navigate to dashboard', async () => {
       fireEvent.change(passwordInput, { target: { value: '123456' } });
       fireEvent.click(submitButton);
@@ -105,7 +86,6 @@ describe('Signin', () => {
       await waitFor(() => {
         expect(mockApi.post).toHaveBeenCalled();
         expect(mockApi.post).toHaveBeenCalledWith('/users/credentials', requestData);
-        // expect(routerPushMock).toHaveBeenCalledWith('/dashboard');
       });
     });
 
@@ -136,6 +116,26 @@ describe('Signin', () => {
             destination_page: `https://example.com`,
           },
         });
+      });
+    });
+
+    it('should render password recovery link and navigate to password recovery page when link is clicked', async () => {
+      const textLink = screen.getByText('Olvidé mi contraseña');
+      fireEvent.click(textLink);
+      waitFor(() => {
+        expect(sendGTMEvent).toHaveBeenCalled();
+        expect(sendGTMEvent).toHaveBeenCalledWith({
+          event: 'ga4.trackEvent',
+          eventName: 'select_content',
+          eventParams: {
+            content_type: 'boton',
+            section: 'Yiro :: login :: interno',
+            previous_section: 'somosbelcorp',
+            selected_content: 'Olvidé mi contraseña',
+            destination_page: `https://example.com`,
+          },
+        });
+        expect(routerPushMock).toHaveBeenCalledWith('/password-recover');
       });
     });
   });
