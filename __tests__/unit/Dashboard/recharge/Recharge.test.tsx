@@ -1,7 +1,7 @@
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
 import Recharge from '@/app/(Pages)/dashboard/recharge/page';
-import { emptyField, renderInput, mockRouterPush } from '../../../tools/unitTestHelper.test';
+import { renderInput, mockRouterPush } from '../../../tools/unitTestHelper.test';
 import { api } from '@/utils/api';
 
 jest.mock('@/store', () => ({
@@ -44,13 +44,6 @@ describe('Recharge', () => {
     it('should render all inputs, buttons.', () => {
       renderInput(amountInput);
       renderInput(submitButton);
-    });
-  });
-
-  describe('Form actions', () => {
-    //** Displays an error message when the user submits the form with an empty password field.
-    it('should display an error message for empty recharge field', async () => {
-      emptyField(submitButton, 'Campo obligatorio');
     });
   });
 

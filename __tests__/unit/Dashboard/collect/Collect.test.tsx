@@ -60,6 +60,31 @@ describe('Collect', () => {
     });
   });
 
+  describe('onSubmit function', () => {
+    it('error message when amount is invalid min', async () => {
+      const setError = jest.fn();
+      const e = { preventDefault: jest.fn() };
+      fireEvent.change(numberClient, { target: { value: '123456789' } });
+      fireEvent.change(nameClient, { target: { value: 'Jhon Doe' } });
+      fireEvent.change(amount, { target: { value: '0.50' } });
+      fireEvent.submit(form);
+
+      e.preventDefault()
+      const validate = {
+        min: parseFloat(amount.value) < 1,
+        max: parseFloat(amount.value) < 4950
+      };
+
+      await setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });
+
+      expect(setError).toHaveBeenCalledTimes(1);
+      expect(validate.min && setError).toHaveBeenCalledWith('amount', {
+        type: 'customError',
+        message: 'El monto debe ser mayor o igual a S/ 1.00',
+      });
+    });
+  });
+
   describe('Form actions', () => {
     it('sendGTMEvent button wallets', async () => {
       fireEvent.change(numberClient, { target: { value: '123456' } });
@@ -103,42 +128,6 @@ describe('Collect', () => {
           },
         });
       });
-    });
-
-    // it('should call handleKeyDown when Enter key is pressed', () => {
-    //   const handleKeyDown = jest.fn();
-    //   fireEvent.keyDown(form, { key: 'Enter', code: 13 });
-    //   waitFor(() => {
-    //     expect(handleKeyDown).toHaveBeenCalled();
-    //     expect(handleKeyDown).toHaveBeenCalledWith(expect.objectContaining({ key: 'Enter' }));
-    //   })
-    // });
-  });
-
-  describe('onSubmit function', () => {
-    it('error message when amount is invalid min', async () => {
-      const setError = jest.fn();
-      const e = { preventDefault: jest.fn() };
-      fireEvent.change(numberClient, { target: { value: '123456789' } });
-      fireEvent.change(nameClient, { target: { value: 'Jhon Doe' } });
-      fireEvent.change(amount, { target: { value: '0.50' } });
-      fireEvent.submit(form);
-
-      e.preventDefault()
-      const validate = {
-        min: parseFloat(amount.value) < 1,
-        max: parseFloat(amount.value) < 4950
-      };
-
-      await setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });
-
-      expect(setError).toHaveBeenCalledTimes(1);
-      expect(validate.min && setError).toHaveBeenCalledWith('amount', {
-        type: 'customError',
-        message: 'El monto debe ser mayor o igual a S/ 1.00',
-      });
-
-      // setLoad({ name: nameClient.value, phoneNumber: numberClient.value })
     });
   });
 
