@@ -20,8 +20,10 @@ api.interceptors.request.use(
 
     if (url !== '/gettoken') {
       const token = useJwtStore.getState().token;
+      const identifier = useJwtStore.getState().uuid;
       request.headers[JWT_HEADER] = token;
       request.headers['X-Request-Id'] = uuid4();
+      request.headers['identifier'] = identifier;
     }
 
     if (data) {

@@ -2,11 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 //Internal app
 import logger from '@/utils/logger';
 import { decryptJWE, getEnvVariable, handleResponse, signJWT } from '@/utils';
+import uuid4 from 'uuid4';
 
 export async function POST(request: NextRequest) {
   const { url, method } = request;
 
   try {
+    const uuid = uuid4();
     const encryptedBody = await request.json();
     const { data } = encryptedBody;
     const jwePrivateKey = getEnvVariable('MIDDLE_JWE_PRIVATE_KEY');
@@ -20,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     const token = await signJWT(jwsPrivateKey, { jwePublicKey, jwsPublicKey });
 
-    const responsePayload = { code: '200.00.000', message: 'Process Ok', data: token };
+    const responsePayload = { code: '200.00.000', message: 'Process Ok', data: { jwt: token, sessionId: uuid } };
 
     logger.debug('Response middleware Web %s', JSON.stringify({ status: 200, data: responsePayload }));
 

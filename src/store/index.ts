@@ -20,3 +20,4 @@ export * from '@/store/otpStore';
 export * from '@/store/debtStore';
 export * from '@/store/chargeStore';
 export * from '@/store/collectStore';
+export * from '@/store/accessSessionStore';

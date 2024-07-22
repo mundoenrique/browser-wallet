@@ -1,4 +1,5 @@
 import { IDebt, IPayOffDebtError } from './api';
+import { TCardInformation } from '@/interfaces';
 
 /**
  * Public and private key
@@ -32,6 +33,8 @@ export type KeyStoreProps = {
  */
 export type JwtStoreProps = {
   token: string | null;
+  uuid: string | null;
+  setUuid: (_uuid: string) => void;
   setToken: (_token: string) => void;
 };
 
@@ -134,20 +137,13 @@ export interface ConfigCardStore {
     | 'deleteAccount'
     | 'survey'
     | 'success';
-  cardActivationStatus: string;
-
+  cardActivationStatus: () => string;
   isCardBlocked: () => boolean;
-  cardType: string;
-  blockType: object;
-  cardStatus: string;
-  cardInfo: boolean;
-  updateCardInfo: boolean;
-  toggleUpdate: () => void;
+  isTempBlock: () => boolean;
+  cardInformation: TCardInformation | { [key: string]: any };
   updatePage: (_newPage: ConfigCardStore['page']) => void;
-  setCardProperties: (
-    _key: 'blockType' | 'cardType' | 'cardStatus' | 'cardInfo' | 'cardActivationStatus',
-    _value: any
-  ) => void;
+  setCardProperties: (_key: 'cardInformation', _value: any) => void;
+  isPhysicalCard: () => boolean;
 }
 
 /**
@@ -250,8 +246,6 @@ export interface CatalogsStore {
 export interface UserStore {
   user: any;
   userId: any;
-  cardInformation: any;
-  setCardInformation: (_data: any) => void;
   setUser: (_data: any) => void;
   setUserId: (_data: any) => void;
   getUserPhone: () => string;

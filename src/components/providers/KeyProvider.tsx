@@ -14,6 +14,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   const token = useJwtStore((state) => state.token);
   const setKeys = useKeyStore((state) => state.setKeys);
   const setToken = useJwtStore((state) => state.setToken);
+  const setUuid = useJwtStore((state) => state.setUuid);
   const activeKeys = useKeyStore((state) => state.activeKeys);
   const jwePublicKey = useKeyStore((state) => state.jwePublicKey);
   const jwsPublicKey = useKeyStore((state) => state.jwsPublicKey);
@@ -37,8 +38,10 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
       (async () => {
         try {
           const response = await api.post('/gettoken', { jwePublicKey, jwsPublicKey });
-          const token = (await response.data.data) as string;
+          const token = (await response.data.data.jwt) as string;
+          const uuid = (await response.data.data.sessionId) as string;
           setToken(token);
+          setUuid(uuid);
         } catch (error) {
           console.error('Error generating JWT token:', error);
         }

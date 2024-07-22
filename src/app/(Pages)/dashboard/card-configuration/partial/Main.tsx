@@ -33,9 +33,13 @@ export default function CardConfiguration() {
 
   const { userId } = useUserStore((state) => state.user);
 
-  const cardInfo = useConfigCardStore((state) => state.cardInfo);
+  const { isPhysicalCard } = useConfigCardStore();
 
-  const blockType = useConfigCardStore((state) => state.blockType);
+  const { isTempBlock } = useConfigCardStore();
+
+  const { cardActivationStatus } = useConfigCardStore();
+
+  const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
 
   const setModalError = useUiStore((state) => state.setModalError);
 
@@ -47,15 +51,9 @@ export default function CardConfiguration() {
 
   const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
 
-  const toggleUpdate = useConfigCardStore((state) => state.toggleUpdate);
-
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
   const isCardBlocked = useConfigCardStore((state) => state.isCardBlocked);
-
-  const cardType = useConfigCardStore((state) => state.cardType);
-
-  const cardActivationStatus = useConfigCardStore((state) => state.cardActivationStatus);
 
   const [openOtp, setOpenOtp] = useState<boolean>(false);
 
@@ -67,6 +65,13 @@ export default function CardConfiguration() {
   const { control, handleSubmit, setValue } = useForm({
     defaultValues: { temporaryBlock: isCardBlocked() },
   });
+
+  const getCardInformation = async () => {
+    await api.get(`/cards/${getUserCardId()}`, { params: { decryptData: false } }).then((response: any) => {
+      const { data } = response;
+      setCardProperties('cardInformation', data.data);
+    });
+  };
 
   const onSubmitOtp = useCallback(
     async (data: any) => {
@@ -96,8 +101,8 @@ export default function CardConfiguration() {
   );
 
   useEffect(() => {
-    setValue('temporaryBlock', Object.hasOwn(blockType, 'code'));
-  }, [blockType, setValue]);
+    setValue('temporaryBlock', isTempBlock());
+  }, [isTempBlock, setValue]);
 
   const onSubmit = async (data: any) => {
     const payload = data.temporaryBlock
@@ -106,8 +111,8 @@ export default function CardConfiguration() {
 
     api
       .post(`/cards/${getUserCardId()}/block`, payload)
-      .then(() => {
-        toggleUpdate();
+      .then(async () => {
+        await getCardInformation();
       })
       .catch((e) => {
         setModalError({ error: e });
@@ -131,8 +136,6 @@ export default function CardConfiguration() {
     });
   }, [host]);
 
-  const virtualCard = cardType === 'VIRTUAL';
-
   return (
     <Box sx={{ width: 320, mx: { xs: 'auto', md: 3 } }}>
       <Box
@@ -155,9 +158,9 @@ export default function CardConfiguration() {
         <CardInformation />
 
         <Stack spacing={3 / 2} mt={3}>
-          {virtualCard && (
+          {!isPhysicalCard() && (
             <>
-              {cardActivationStatus === 'PENDING' ? (
+              {cardActivationStatus() === 'PENDING' ? (
                 <HandleCard
                   onClick={() => {
                     updatePage('activatePhysicalCard');
@@ -210,35 +213,29 @@ export default function CardConfiguration() {
                 control={control}
                 switchProps={{
                   onClick: (e) => {
-                    if (cardInfo) {
-                      e.preventDefault();
-                      setOpenOtp(true);
-                      sendGTMEvent({
-                        event: 'ga4.trackEvent',
-                        eventName: 'select_content',
-                        eventParams: {
-                          content_type: 'boton',
-                          section: 'Yiro :: configuracionTarjeta :: menu',
-                          previous_section: 'dashboard',
-                          selected_content: 'Bloqueo temporal',
-                          destination_page: `${host}/dashboard/card-configuration`,
-                        },
-                      });
-                    }
+                    e.preventDefault();
+                    setOpenOtp(true);
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'select_content',
+                      eventParams: {
+                        content_type: 'boton',
+                        section: 'Yiro :: configuracionTarjeta :: menu',
+                        previous_section: 'dashboard',
+                        selected_content: 'Bloqueo temporal',
+                        destination_page: `${host}/dashboard/card-configuration`,
+                      },
+                    });
                   },
-                  disabled: !cardInfo,
                 }}
               />
             }
-            disabled={!cardInfo}
           >
             <Typography variant="subtitle2">Bloqueo temporal</Typography>
-            <Typography fontSize={10}>
-              Estatus: Tarjeta {Object.hasOwn(blockType, 'code') ? 'bloqueada' : 'desbloqueada'}
-            </Typography>
+            <Typography fontSize={10}>Estatus: Tarjeta {isTempBlock() ? 'bloqueada' : 'desbloqueada'}</Typography>
           </HandleCard>
 
-          {!virtualCard && (
+          {isPhysicalCard() && (
             <HandleCard
               onClick={() => {
                 updatePage('blockCard');
@@ -261,7 +258,7 @@ export default function CardConfiguration() {
             </HandleCard>
           )}
 
-          {!virtualCard && (
+          {isPhysicalCard() && (
             <HandleCard
               onClick={() => {
                 updatePage('changePin');
