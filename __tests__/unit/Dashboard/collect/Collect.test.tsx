@@ -111,8 +111,11 @@ describe('Collect', () => {
     it('should call handleKeyDown when Enter key is pressed', () => {
       const handleKeyDown = jest.fn();
       fireEvent.keyDown(form, { key: 'Enter', code: 13 });
-      waitFor(() => expect(handleKeyDown).toHaveBeenCalled())
-    });
+      waitFor(() => {
+        expect(handleKeyDown).toHaveBeenCalled();
+        expect(handleKeyDown).toHaveBeenCalledWith(expect.objectContaining({ key: 'Enter' }));
+      })
+      });
   });
 
   describe('onSubmit function', () => {

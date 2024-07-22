@@ -72,8 +72,21 @@ describe('Signin', () => {
 
     it('should render password recovery link and navigate to password recovery page when link is clicked', async () => {
       const textLink = screen.getByText(/olvidé mi contraseña/i);
-      const routePath = '/password-recover';
-      redirectLinks(textLink, routePath, routerPushMock);
+      fireEvent.click(textLink);
+      waitFor(() => {
+        expect(sendGTMEvent).toHaveBeenCalled();
+        expect(sendGTMEvent).toHaveBeenCalledWith({
+          event: 'ga4.trackEvent',
+          eventName: 'select_content',
+          eventParams: {
+            content_type: 'boton',
+            section: 'Yiro :: login :: interno',
+            previous_section: 'somosbelcorp',
+            selected_content: 'Olvidé mi contraseña',
+            destination_page: `https://example.com/password-recover`,
+          },
+        });
+      });
     });
 
     it('should call the API LOGIN with the correct credentials and navigate to dashboard', async () => {
