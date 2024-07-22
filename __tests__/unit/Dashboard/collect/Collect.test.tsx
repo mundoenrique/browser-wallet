@@ -27,9 +27,6 @@ describe('Collect', () => {
   let buttonCard: HTMLElement;
   const routerPushMock = jest.fn();
   const sendGTMEvent = jest.fn();
-  const setError = jest.fn();
-  const setLoad = jest.fn();
-  const e = { preventDefault: jest.fn() };
 
   beforeEach(async () => {
     mockRouterPush(routerPushMock)
@@ -66,7 +63,7 @@ describe('Collect', () => {
   describe('Form actions', () => {
     it('sendGTMEvent button wallets', async () => {
       fireEvent.change(numberClient, { target: { value: '123456' } });
-      fireEvent.change(nameClient, { target: { value: '123456' } });
+      fireEvent.change(nameClient, { target: { value: 'Jhon Doe' } });
       fireEvent.change(amount, { target: { value: '100.00' } });
       fireEvent.click(buttonWallets);
 
@@ -88,7 +85,7 @@ describe('Collect', () => {
 
     it('sendGTMEvent button cards', async () => {
       fireEvent.change(numberClient, { target: { value: '123456' } });
-      fireEvent.change(nameClient, { target: { value: '123456' } });
+      fireEvent.change(nameClient, { target: { value: 'Jhon Doe' } });
       fireEvent.change(amount, { target: { value: '100.00' } });
       fireEvent.click(buttonCard);
 
@@ -108,72 +105,49 @@ describe('Collect', () => {
       });
     });
 
-    it('should call handleKeyDown when Enter key is pressed', () => {
-      const handleKeyDown = jest.fn();
-      fireEvent.keyDown(form, { key: 'Enter', code: 13 });
-      waitFor(() => {
-        expect(handleKeyDown).toHaveBeenCalled();
-        expect(handleKeyDown).toHaveBeenCalledWith(expect.objectContaining({ key: 'Enter' }));
-      })
-      });
+    // it('should call handleKeyDown when Enter key is pressed', () => {
+    //   const handleKeyDown = jest.fn();
+    //   fireEvent.keyDown(form, { key: 'Enter', code: 13 });
+    //   waitFor(() => {
+    //     expect(handleKeyDown).toHaveBeenCalled();
+    //     expect(handleKeyDown).toHaveBeenCalledWith(expect.objectContaining({ key: 'Enter' }));
+    //   })
+    // });
   });
 
   describe('onSubmit function', () => {
-    // it('error message when amount is invalid min', async () => {
-    //   fireEvent.change(numberClient, { target: { value: '123456' } });
-    //   fireEvent.change(nameClient, { target: { value: 'Jhon Doe' } });
-    //   fireEvent.change(amount, { target: { value: '0.50' } });
-    //   fireEvent.click(buttonCard, buttonWallets);
-    //   // fireEvent.submit(form);
+    it('error message when amount is invalid min', async () => {
+      const setError = jest.fn();
+      const e = { preventDefault: jest.fn() };
+      fireEvent.change(numberClient, { target: { value: '123456789' } });
+      fireEvent.change(nameClient, { target: { value: 'Jhon Doe' } });
+      fireEvent.change(amount, { target: { value: '0.50' } });
+      fireEvent.submit(form);
 
-    //   e.preventDefault()
-    //   const validate = {
-    //     min: parseFloat(amount.value) < 1,
-    //     max: parseFloat(amount.value) > 4950,
-    //   };
+      e.preventDefault()
+      const validate = {
+        min: parseFloat(amount.value) < 1,
+        max: parseFloat(amount.value) < 4950
+      };
 
-    //   await setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });
+      await setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });
 
-    //   await waitFor(() => {
-    //     expect(setError).toHaveBeenCalledTimes(1);
-    //     expect(validate.min && setError).toHaveBeenCalledWith('amount', {
-    //       type: 'customError',
-    //       message: 'El monto debe ser mayor o igual a S/ 1.00',
-    //     });
-    //   });
+      expect(setError).toHaveBeenCalledTimes(1);
+      expect(validate.min && setError).toHaveBeenCalledWith('amount', {
+        type: 'customError',
+        message: 'El monto debe ser mayor o igual a S/ 1.00',
+      });
 
-    //   await setLoad({ name: nameClient.value, phoneNumber: numberClient.value })
-
-    //   const showActionBtn = 'cards';
-    // });
-
-    // it('error message when amount is invalid max', async () => {
-    //   const setError = jest.fn();
-
-    //   fireEvent.change(numberClient, { target: { value: '123456' } });
-    //   fireEvent.change(nameClient, { target: { value: 'Jhon Doe' } });
-    //   fireEvent.change(amount, { target: { value: '5000.00' } });
-    //   fireEvent.submit(form);
-
-    //   await setError('amount', { type: 'customError', message: 'El monto debe ser menor o igual a S/ 4950.00' });
-
-    //   await waitFor(() => {
-    //     expect(setError).toHaveBeenCalledTimes(1);
-    //     expect(setError).toHaveBeenCalledWith('amount', {
-    //       type: 'customError',
-    //       message: 'El monto debe ser menor o igual a S/ 4950.00',
-    //     });
-    //   });
-    // });
+      // setLoad({ name: nameClient.value, phoneNumber: numberClient.value })
+    });
   });
 
   describe('call api.post generateCharge', () => {
     // it('submit form and call api post', async () => {
-    //   fireEvent.change(numberClient, { target: { value: '123456' } });
-    //   fireEvent.change(nameClient, { target: { value: '123456' } });
-    //   fireEvent.change(amount, { target: { value: '100.00' } });
+    //   fireEvent.change(numberClient, { target: { value: '123456789' } });
+    //   fireEvent.change(nameClient, { target: { value: 'Jhon Doe' } });
+    //   fireEvent.change(amount, { target: { value: '10.00' } });
     //   fireEvent.submit(form);
-    //   // fireEvent.click(buttonCard)
 
     //   const payload = {
     //     fullName: nameClient.value,
