@@ -39,8 +39,6 @@ export default function Signin() {
 
   const host = useHeadersStore((state) => state.host);
 
-  const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
-
   const { setLoadingScreen, loadingScreen } = useUiStore();
 
   const [errorMessage] = useState<string>('');
@@ -100,11 +98,6 @@ export default function Signin() {
         console.log(userDetail);
         setUser(userDetail);
         setUserData(userDetail);
-        if (userDetail.physicalCards) {
-          setTimeout(() => {
-            setCardProperties('cardActivationStatus', userDetail.physicalCards.status);
-          }, 1500);
-        }
       })
       .catch((e) => {
         setModalError({ error: e });

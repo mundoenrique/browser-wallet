@@ -5,6 +5,8 @@ jest.mock('@next/third-parties/google', () => ({
 
 jest.mock('@/utils/toolHelper', () => ({
   encryptForge: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
+  handleMaskOtp: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
+  stringAvatar: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
 }))
 
 jest.mock('next/navigation', () => ({

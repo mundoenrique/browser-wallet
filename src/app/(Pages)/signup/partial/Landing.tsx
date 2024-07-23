@@ -13,7 +13,7 @@ import { fuchsiaBlue } from '@/theme/theme-default';
 import animation1 from '%/images/pwa/animation1.png';
 import animation2 from '%/images/pwa/animation2.png';
 import animation3 from '%/images/pwa/animation3.png';
-import { useHeadersStore, useRegisterStore, useUiStore } from '@/store';
+import { useHeadersStore, useJwtStore, useRegisterStore, useUiStore } from '@/store';
 
 const animationState = [
   {
@@ -47,6 +47,8 @@ export default function Landing() {
 
   const host = useHeadersStore((state) => state.host);
 
+  const identifier = useJwtStore((state) => state.uuid);
+
   const phaseInfo = useRegisterStore((state) => state.ONB_PHASES_TERMS);
 
   const setShowHeader = useRegisterStore((state) => state.setShowHeader);
@@ -74,7 +76,8 @@ export default function Landing() {
     setLoadingScreen(true);
     const { consultant } = phaseInfo as any;
 
-    const shortDoc = consultant.documentType === 'DNI' ? consultant.documentNumber.slice(2) : consultant.documentNumber;
+    const shortDoc =
+      consultant.documentType === 'DNI' ? consultant.documentNumber.slice(-8) : consultant.documentNumber;
 
     const documentPayload = {
       documentType: encryptForge(consultant.documentType),
@@ -86,20 +89,12 @@ export default function Landing() {
       lastNames: encryptForge(`${consultant.firstLastName} ${consultant.secondLastName}`),
       documentNumber: encryptForge(shortDoc),
       documentType: encryptForge(consultant.documentType),
-      identifier: '123e4567-e89b-42d3-a456-556642440000', //TODO: TEMPORAL MIENTRAS HACEN EL CAMBIO A HEADERS
+      identifier,
     };
 
-    const blacklist = api.post('/onboarding/blacklist', blacklistPayload, {
-      headers: {
-        identifier: '123e4567-e89b-42d3-a456-556642440000',
-      },
-    });
+    const blacklist = api.post('/onboarding/blacklist', blacklistPayload);
 
-    const documentValidation = api.post('/onboarding/documents/validate', documentPayload, {
-      headers: {
-        identifier: '123e4567-e89b-42d3-a456-556642440000',
-      },
-    });
+    const documentValidation = api.post('/onboarding/documents/validate', documentPayload);
 
     Promise.all([blacklist, documentValidation])
       .then((responses: any) => {

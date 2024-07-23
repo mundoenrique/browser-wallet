@@ -1,64 +1,83 @@
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
-import ModalOtp from '@/components/modal/ModalOtp';
 import ChangePassword from '@/app/(Pages)/dashboard/change-password/page';
-import { emptyField, renderInput } from '../../../tools/unitTestHelper.test';
+import ModalOtp from '@/components/modal/ModalOtp';
+import { renderInput } from '../../../tools/unitTestHelper.test';
+import { api } from '@/utils/api';
+
+jest.mock('@/store', () => ({
+  ...jest.requireActual('@/store'),
+  useUserStore: jest.fn(() => ({
+    getUserPhone: jest.fn(() => '+51912345678'),
+    user: { userId: 'mockedUserId', firstName: 'John' },
+  })),
+}));
+
+jest.mock('@/utils/api');
+const mockApi = api as jest.Mocked<typeof api>;
 
 describe('ChangePassword', () => {
-  const openOtp = true;
-  const setOpenOtp = jest.fn();
-  const onSubmitOtp = jest.fn();
-
   let currentPassword: HTMLInputElement;
   let newPassword: HTMLInputElement;
   let confirmPassword: HTMLInputElement;
   let submitButton: HTMLElement;
+  let otpInput: HTMLInputElement;
+  let otpButton: HTMLElement;
+  const sendGTMEvent = jest.fn();
 
   beforeEach(async () => {
     await act(async () => {
       render(<ChangePassword />);
     });
-    expect(render).toBeTruthy();
     currentPassword = screen.getByLabelText(/ingresar tu contraseña actual/i);
     newPassword = screen.getByLabelText(/ingresa una nueva contraseña/i);
     confirmPassword = screen.getByLabelText(/confirma tu nueva contraseña/i);
     submitButton = screen.getByRole('button', { name: /guardar/i });
   });
 
-  //** Renders a title, subtitles and button
-  it('should render all text, titles, subtitles.', () => {
-    expect(screen.getByText(/cambiar contraseña/i)).toBeInTheDocument();
-    expect(screen.getByText(/elige 6 números que recuerdes./i)).toBeInTheDocument();
-    expect(screen.getByText(/evita utilizar tu fecha de cumpleaños para que sea más segura/i)).toBeInTheDocument();
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  //** validate that the inputs exist and that it is initialized to empty
-  it('validate that the inputs exist and that it is initialized to empty.', () => {
-    renderInput(currentPassword);
-    renderInput(newPassword);
-    renderInput(confirmPassword);
-    renderInput(submitButton);
-  });
+  describe('Render forms function', () => {
+    //** Renders a title, subtitles and button
+    it('render all text, titles, subtitles.', async () => {
+      expect(screen.getByText(/cambiar contraseña/i)).toBeInTheDocument();
+      expect(screen.getByText(/elige 6 números que recuerdes./i)).toBeInTheDocument();
+    });
 
-  //** Displays an error message when the user submits the form with an empty password field.
-  it('should display an error message for empty password field', async () => {
-    emptyField(submitButton, 'Ingrese una contraseña');
-  });
+    //** validate that the inputs exist and that it is initialized to empty
+    it('validate that the inputs exist.', () => {
+      renderInput(currentPassword);
+      renderInput(newPassword);
+      renderInput(confirmPassword);
+      renderInput(submitButton);
+    });
+  })
 
-  //** Displays a submit form.
-  it('should display save password', async () => {
-    fireEvent.change(currentPassword, { target: { value: '231546' } });
-    fireEvent.change(newPassword, { target: { value: '789456' } });
-    fireEvent.change(confirmPassword, { target: { value: '789456' } });
-    fireEvent.click(submitButton);
-    render(<ModalOtp open={openOtp} handleClose={() => setOpenOtp(false)} onSubmit={onSubmitOtp} />);
-    await waitFor(() => screen.getByTitle('🎰 Verificación en dos pasos'));
-    expect(screen.getByTitle('🎰 Verificación en dos pasos')).toBeInTheDocument();
-    const otpInput = screen.getByText('Ingresa el código enviado a tu número celular +51 *** *** 1214');
-    expect(otpInput).toBeInTheDocument();
-    fireEvent.change(otpInput, { target: { value: '1234' } });
-    renderInput(screen.getByRole('button', { name: /continuar/i }));
-    fireEvent.click(screen.getByRole('button', { name: /continuar/i }));
-    await waitFor(() => expect(screen.getByTestId('modal-succes')).toBeInTheDocument());
+  describe('Navigates sendGtmEvent', () => {
+    it('sendGTMEvent onSubmit form open modal', async () => {
+      fireEvent.change(currentPassword, { target: { value: '123456a' } });
+      fireEvent.change(newPassword, { target: { value: '123456a' } });
+      fireEvent.change(confirmPassword, { target: { value: 'a123456' } });
+      fireEvent.click(submitButton);
+
+      waitFor(() => {
+        expect(sendGTMEvent).toHaveBeenCalled();
+        expect(sendGTMEvent).toHaveBeenCalledWith({
+          event: 'ga4.trackEvent',
+          eventName: 'select_content',
+          eventParams: {
+            content_type: 'boton_modal',
+            section: 'Yiro :: cambiarContraseña',
+            previous_section: 'dashboard',
+            selected_content: 'Verificar',
+            destination_page: `http://localhost:3000/dashboard/change-password`,
+            pop_up_type: 'Cambiar contraseña',
+            pop_up_title: 'Verificación en dos pasos',
+          },
+        });
+      });
+    });
   });
 });

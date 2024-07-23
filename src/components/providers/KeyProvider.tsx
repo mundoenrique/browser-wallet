@@ -21,6 +21,8 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
 
   const setToken = useJwtStore((state) => state.setToken);
 
+  const setUuid = useJwtStore((state) => state.setUuid);
+
   const activeApp = useActiveAppStore((state) => state.activeApp);
 
   const initAccess = useActiveAppStore((state) => state.initAccess);
@@ -56,8 +58,10 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
           const { jwePublicKey, jwsPublicKey } = keys as { jwePublicKey: string; jwsPublicKey: string };
           const response = await api.post('/gettoken', { jwePublicKey, jwsPublicKey, isBrowser, idDevice });
           const token = (await response.data.data.jwt) as string;
+          const uuid = (await response.data.data.sessionId) as string;
           setKeys(keys);
           setToken(token);
+          setUuid(uuid);
           setCreateAccess('');
           setinitAccess(true);
           setAccessSession(false);

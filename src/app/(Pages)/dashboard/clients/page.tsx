@@ -1,8 +1,8 @@
 'use client';
 
 import dayjs from 'dayjs';
+import { useEffect, useRef, useState } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
-import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { Avatar, Box, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
@@ -48,6 +48,7 @@ export default function Clients() {
   };
 
   const theme = useTheme();
+
   const match = useMediaQuery(theme.breakpoints.up('md'));
 
   const user = useUserStore((state) => state.user);
@@ -66,8 +67,6 @@ export default function Clients() {
 
   const [error, setError] = useState<boolean>(false);
 
-  const [lastPage, setLastPage] = useState<number>(1);
-
   const [clientsData, setClientsData] = useState<any>([]);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -76,25 +75,19 @@ export default function Clients() {
 
   const [filterMonth, setFilterMonth] = useState(dateRank()[0]);
 
-  const [filteredClientData, setFilteredClientData] = useState<any>([]);
-
   const [currentView, setCurrentView] = useState<string>(ENUM_VIEW.MAIN);
-
-  const [paginatedClientData, setPaginatedClientData] = useState<any>([]);
 
   const [paymentStatus, setPaymentStatus] = useState<string>('Todos mis cobros');
 
   const [paymentStatusCode, setPaymentStatusCode] = useState<string>(checkboxOptions[0].value);
 
-  const containerPWA = useRef<HTMLDivElement | null>(null);
+  const isClients = useRef<boolean>(false);
 
   const containerDesktop = useRef<HTMLDivElement | null>(null);
 
   const filterActive = currentView === ENUM_VIEW.FILTERS;
-  const disabledBtnDelete = 'PENDING';
 
-  const initialized = useRef<boolean>(false);
-  const isClients = useRef<boolean>(false);
+  const disabledBtnDelete = 'PENDING';
 
   useEffect(() => {
     sendGTMEvent({
@@ -117,6 +110,8 @@ export default function Clients() {
 
   const handleFilters = async (e: Event) => {
     e.preventDefault();
+    setClientsData([]);
+    setCurrentPage(1);
     setCurrentView(ENUM_VIEW.MAIN);
     await getClientAPI();
     sendGTMEvent({
@@ -132,26 +127,18 @@ export default function Clients() {
     });
   };
 
-  const scrollHandle = useCallback(async () => {
-    const container = containerDesktop.current || containerPWA.current;
-
-    if (!isLoading && container && currentPage < lastPage) {
-      if (match) {
-        let scroll = container.scrollHeight - container.scrollTop - container.clientHeight;
-        scroll <= 20 && setCurrentPage((prevPage) => prevPage + 1);
-      } else {
-        let scroll = container?.scrollHeight - window.scrollY - window.innerHeight;
-        scroll <= 100 && setCurrentPage((prevPage) => prevPage + 1);
-      }
-    }
-  }, [setCurrentPage, isLoading, lastPage]); //eslint-disable-line react-hooks/exhaustive-deps
-
   const getClientAPI = async () => {
     setIsloading(true);
     setError(false);
     api
       .get(`/payments/${user.userId}/chargelist`, {
-        params: { days: 30, limit: 100, page: 1, date: filterMonth.value, transactionCode: paymentStatusCode },
+        params: {
+          days: 30,
+          limit: 100,
+          page: currentPage,
+          date: filterMonth.value,
+          transactionCode: paymentStatusCode,
+        },
       })
       .then((response) => {
         const {
@@ -159,7 +146,7 @@ export default function Clients() {
         } = response;
         if (data) {
           isClients.current = false;
-          setClientsData(data);
+          setClientsData((state: any) => [...state, ...data]);
         } else {
           isClients.current = true;
         }
@@ -173,62 +160,14 @@ export default function Clients() {
       });
   };
 
-  const createPagination = (data: [], page: number) => {
-    setIsloading(true);
-    const itemsPage = 20;
-    setLastPage(Math.ceil(data.length / itemsPage));
-    const startIndex = (page - 1) * itemsPage;
-    const endIndex = startIndex + itemsPage;
-    data.sort((a: any, b: any) => (new Date(b.date) as any) - (new Date(a.date) as any));
-    setTimeout(() => {
-      setIsloading(false);
-    }, 1000);
-    return data.slice(startIndex, endIndex);
-  };
-
-  const changeViewFilters = () => {
-    setClientsData([]);
-    setCurrentView(ENUM_VIEW.FILTERS);
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', scrollHandle);
-    return () => {
-      window.removeEventListener('scroll', scrollHandle);
-    };
-  }, [scrollHandle]);
-
-  useEffect(() => {
-    if (!initialized.current) {
-      getClientAPI();
-      initialized.current = true;
-    } else {
-      initialized.current = false;
-    }
-  }, []); //eslint-disable-line react-hooks/exhaustive-deps
-
   useEffect(() => {
     updateTitle('Mis clientes');
     setCurrentItem('Inicio');
   }, [updateTitle, setCurrentItem]);
 
   useEffect(() => {
-    setPaginatedClientData([]);
-    setCurrentPage(1);
-    // if (!(paymentStatusCode === '')) {
-    //   setFilteredClientData(clientsData.filter((el: any) => el.status == paymentStatusCode));
-    //   return;
-    // }
-    setFilteredClientData(clientsData);
-  }, [clientsData]);
-
-  useEffect(() => {
-    !isLoading &&
-      setPaginatedClientData((currentState: any) => [
-        ...currentState,
-        ...createPagination(filteredClientData, currentPage),
-      ]);
-  }, [filteredClientData, currentPage]); //eslint-disable-line react-hooks/exhaustive-deps
+    getClientAPI();
+  }, [currentPage]); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -291,10 +230,6 @@ export default function Clients() {
             />
           ) : (
             <Box
-              onScroll={() => {
-                scrollHandle();
-              }}
-              ref={containerPWA}
               sx={{
                 display: 'block',
                 height: { xs: 'calc(100% + 100px)', md: 'auto' },
@@ -314,21 +249,35 @@ export default function Clients() {
                   </Avatar>
                 }
                 sx={{ justifyContent: 'flex-start' }}
-                onClick={() => (match ? changeViewFilters() : setOpen(true))}
+                onClick={() => (match ? setCurrentView(ENUM_VIEW.FILTERS) : setOpen(true))}
               >
                 {`${filterMonth.text ?? ''} ${filterMonth.text && paymentStatus && '-'} ${paymentStatus ?? ''}`}
               </Button>
               <ClientList
-                data={paginatedClientData}
+                data={clientsData}
                 loading={isLoading}
                 disabledBtnDelete={disabledBtnDelete}
                 error={error}
                 isClients={isClients.current}
               />
+
+              {clientsData.length > 25 * currentPage - 1 && clientsData.length < 100 && (
+                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mt: 2 }}>
+                  <Linking
+                    href="#"
+                    onClick={(e) => {
+                      setCurrentPage((state) => state + 1);
+                      e.preventDefault();
+                    }}
+                    label="➕ Ver más"
+                  />
+                </Box>
+              )}
             </Box>
           )}
         </Box>
       </ContainerLayout>
+
       <ModalResponsive open={open} handleClose={() => setOpen(false)}>
         <Box sx={{ textAlign: 'start' }}>
           <Filters
@@ -337,6 +286,7 @@ export default function Clients() {
             checkboxOptions={checkboxOptions}
             handleFilters={(e) => {
               handleFilters(e);
+              setOpen(false);
             }}
             checkboxOptionDefault={paymentStatusCode}
             onChangeMonth={setFilterMonth}

@@ -52,7 +52,7 @@ const useSocket = ({ onInfoUser }: UseSocketProps) => {
         socketRef.current.disconnect();
       }
     };
-  }, []);
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   const disconnectSocket = useCallback(() => {
     if (socketRef.current) {
@@ -68,11 +68,15 @@ export default function ActivatePhysicalCard() {
 
   const updatePage = useConfigCardStore((state) => state.updatePage);
 
+  const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
+
   const host = useHeadersStore((state) => state.host);
 
   const setTime = useOtpStore((state) => state.setTime);
 
   const { userId } = useUserStore((state) => state.user);
+
+  const setUser = useUserStore((state) => state.setUser);
 
   const timeLeft = useOtpStore((state) => state.timeLeft);
 
@@ -80,7 +84,7 @@ export default function ActivatePhysicalCard() {
 
   const setModalError = useUiStore((state) => state.setModalError);
 
-  const setCardInformation = useUserStore((state) => state.setCardInformation);
+  const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
   const { SVG } = useQRCode();
 
@@ -101,7 +105,7 @@ export default function ActivatePhysicalCard() {
       .then((response: any) => {
         const { status, data } = response;
         if (status === 200) {
-          setCardInformation(data.data);
+          setCardProperties('cardInformation', data.data);
         }
       })
       .catch(() => {
@@ -109,20 +113,29 @@ export default function ActivatePhysicalCard() {
       });
   };
 
+  const getUserDetails = async () => {
+    await api.get(`/users/${userId}`).then((response) => {
+      const userDetail = response.data.data;
+      setUser(userDetail);
+    });
+  };
+
   const cardholderAssociation = async () => {
+    setLoadingScreen(true);
     const data = {
       cardId: cardId.current,
       userId,
     };
     await api
       .post('/cards/cardholders', data)
-      .then((response: any) => {
+      .then(async (response: any) => {
         const { status } = response;
         if (status === 200) {
           if (isBrowser) {
             setShowModal(false);
           }
-          getCardInformation();
+          await getUserDetails();
+          await getCardInformation();
           updatePage('success');
         }
       })
@@ -131,6 +144,9 @@ export default function ActivatePhysicalCard() {
           setShowModal(false);
         }
         setModalError({ title: 'Algo salió mal', description: 'No pudimos activar tu tarjeta.' });
+      })
+      .then(() => {
+        setLoadingScreen(false);
       });
   };
 

@@ -38,6 +38,8 @@ export default function Recharge() {
 
   const [openRc, setOpenRc] = useState<boolean>(false);
 
+  const [disableSubmit, setDisableSubmit] = useState<boolean>(false);
+
   useEffect(() => {
     sendGTMEvent({
       event: 'ga4.trackEvent',
@@ -64,6 +66,7 @@ export default function Recharge() {
 
   const generateCharge = useCallback(async () => {
     setLoadingScreen(true);
+    setDisableSubmit(true);
     const payload = {
       fullName: `${firstName} ${firstLastName}`,
       phoneNumber: getUserPhone(),
@@ -84,6 +87,7 @@ export default function Recharge() {
       })
       .finally(() => {
         setLoadingScreen(false);
+        setDisableSubmit(false);
         reset();
       });
   }, [setLoadingScreen, firstName, firstLastName, getUserPhone, getValues, userId, setLinkData, setModalError, reset]);
@@ -121,6 +125,7 @@ export default function Recharge() {
             variant="contained"
             type="submit"
             fullWidth
+            disabled={disableSubmit ?? false}
             onClick={() => {
               sendGTMEvent({
                 event: 'ga4.trackEvent',

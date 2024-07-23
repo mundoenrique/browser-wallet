@@ -34,7 +34,7 @@ export default function ListSidebar(): JSX.Element {
 
   const user = useUserStore((state) => state.user);
 
-  const cardType = useConfigCardStore((state) => state.cardType);
+  const isPhysicalCard = useConfigCardStore((state) => state.isPhysicalCard);
 
   const cardActivationStatus = useConfigCardStore((state) => state.cardActivationStatus);
 
@@ -67,24 +67,24 @@ export default function ListSidebar(): JSX.Element {
 
       <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', cursor: 'pointer' }}>
         <LinkMui component={Link} href="/dashboard/card-configuration" sx={{ textDecoration: 'none' }}>
-          {cardType === 'VIRTUAL' && (
+          {!isPhysicalCard() && (
             <Card
               variant="detailCard"
               sx={{ mt: { xs: 10, md: 'auto' }, mb: { xs: 0, md: 'auto' } }}
               onClick={() => {
-                updatePage(cardActivationStatus === 'PENDING' ? 'activatePhysicalCard' : 'requestPhysicalCard');
+                updatePage(cardActivationStatus() === 'PENDING' ? 'activatePhysicalCard' : 'requestPhysicalCard');
                 sendGTMEvent({
                   event: 'ga4.trackEvent',
                   eventName: 'select_content',
                   eventParams: {
                     content_type: 'boton',
                     section:
-                      cardActivationStatus === 'PENDING'
+                      cardActivationStatus() === 'PENDING'
                         ? `Yiro :: ¿Ya activaste tu tarjeta? :: menu_1`
                         : `Yiro :: ¿Ya solicitaste tu tarjeta? :: menu_1`,
                     previous_section: 'dashboard',
                     selected_content:
-                      cardActivationStatus === 'PENDING'
+                      cardActivationStatus() === 'PENDING'
                         ? 'menu_1 :: ¿Ya activaste tu tarjeta?'
                         : 'menu_1 :: ¿Ya solicitaste tu tarjeta?',
                     destination_page: `${host}/card-configuration`,
@@ -96,7 +96,7 @@ export default function ListSidebar(): JSX.Element {
                 <Image src={card} width={70} height={44} alt="Tarjeta Yiro" priority />
               </Box>
               <Typography fontSize="14px" fontWeight={700} mr={4}>
-                {cardActivationStatus === 'PENDING' ? '¿Ya activaste tu tarjeta?' : '¿Ya solicitaste tu tarjeta?'}
+                {cardActivationStatus() === 'PENDING' ? '¿Ya activaste tu tarjeta?' : '¿Ya solicitaste tu tarjeta?'}
               </Typography>
             </Card>
           )}

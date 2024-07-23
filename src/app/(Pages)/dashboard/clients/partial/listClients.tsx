@@ -209,7 +209,12 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
                   <Box>
                     <Typography
                       variant="subtitle2"
-                      sx={{ maxWidth: 140, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+                      sx={{
+                        maxWidth: { xs: 120, md: 160 },
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
                     >
                       {client.fullname}
                     </Typography>
