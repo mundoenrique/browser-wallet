@@ -4,11 +4,14 @@ import { cookies } from 'next/headers';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
 import { SESSION_ID, TIME_SESSION_REDIS } from '@/utils/constants';
 import { createRedisInstance, getRedis, postRedis } from '@/utils/redis';
+import { decryptJWE, delRedis, getEnvVariable, handleResponse, putRedis } from '@/utils';
+import logger from '@/utils/logger';
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const uuidCookie = cookies().get(SESSION_ID)?.value || null;
+    const uuidCookie =
+      cookies().get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile')) || null;
     const reqData = searchParams.get('reqData') || 'session:' + uuidCookie;
     const resData: string = (await getRedis(reqData)) || '';
     const data = resData ? encryptForge(resData) : '';
@@ -21,10 +24,11 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const uuidCookie = cookies().get(SESSION_ID)?.value || null;
+    const uuidCookie =
+      cookies().get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile')) || null;
     const dataBody = await request.json();
     const decryptData = JSON.parse(decryptForge(dataBody.data));
-    const uuid = uuidCookie ? 'session:' + uuidCookie : dataBody.uuid;
+    const uuid = decryptData.uuid ? decryptData.uuid : 'session:' + uuidCookie;
 
     if (decryptData.dataRedis === 'get') {
       const resData: string = (await getRedis(decryptData.uuid)) || '';
@@ -75,26 +79,50 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+  const { url, method } = request;
+
   try {
+
+    const encryptedBody = await request.json();
+    const { data } = encryptedBody;
+    const jwePrivateKey = getEnvVariable('MIDDLE_JWE_PRIVATE_KEY');
+    const jwsPrivateKey = getEnvVariable('MIDDLE_JWS_PRIVATE_KEY');
+
+    const decryptedPayload = await decryptJWE(data, jwePrivateKey);
+
+    logger.debug('Request middleware Web %s', JSON.stringify({ method, reqUrl: url, body: decryptedPayload }));
+
+    const { key, delParam, jwePublicKey } = decryptedPayload as { key: string, delParam: string; jwePublicKey: string};
+
+    const uuid = cookies().get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile')) || null;
     const redis = createRedisInstance();
-    const dataBody = await request.json();
-    const decryptData = JSON.parse(decryptForge(dataBody.data));
 
-    const uuid = cookies().get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile'));
-    const delParam = decryptData.data.delParam || '';
+    let keyRedis = (key) ? key : `session:${uuid}`;
+    const time = (keyRedis !== 'activeSession') ? TIME_SESSION_REDIS : 60 * 60 * 8;
 
-    const dataRedis: string | null = await redis.get(`session:${uuid}`);
+    const dataRedis: string | null = await redis.get(keyRedis);
 
     if (dataRedis) {
       let stateObject = JSON.parse(dataRedis);
       delete stateObject[delParam];
-      await redis.set(`session:${uuid}`, JSON.stringify(stateObject));
+      await redis.set(keyRedis, JSON.stringify(stateObject));
+      await redis.expire(keyRedis, time);
+      await redis.quit();
     }
 
-    const res = { data: { code: '200.00.000', message: 'ok' } };
-    const response = encryptForge(JSON.stringify(res));
+     if (!key) {
+      const stateObject = { login: false };
+      await putRedis(`session:${uuid}`, stateObject);
+     }
 
-    return new NextResponse(JSON.stringify({ data: response }), { status: 200 });
+    request.headers.get('X-Session-Mobile') && await delRedis(`session:${encryptForge(request.headers.get('X-Session-Mobile'))}`);
+
+    const responsePayload = { code: '200.00.000', message: 'Process Ok', data: { message: ''} };
+
+    let response: NextResponse;
+    response = await handleResponse(responsePayload, jwePublicKey, jwsPrivateKey, 200);
+    return response;
+
   } catch (error) {
     return new NextResponse(JSON.stringify({ error: 'Failed to get Data' }), { status: 500 });
   }
