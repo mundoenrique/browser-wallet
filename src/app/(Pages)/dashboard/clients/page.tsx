@@ -110,6 +110,8 @@ export default function Clients() {
 
   const handleFilters = async (e: Event) => {
     e.preventDefault();
+    setClientsData([]);
+    setCurrentPage(1);
     setCurrentView(ENUM_VIEW.MAIN);
     await getClientAPI();
     sendGTMEvent({
@@ -156,11 +158,6 @@ export default function Clients() {
       .finally(() => {
         setIsloading(false);
       });
-  };
-
-  const changeViewFilters = () => {
-    setClientsData([]);
-    setCurrentView(ENUM_VIEW.FILTERS);
   };
 
   useEffect(() => {
@@ -252,7 +249,7 @@ export default function Clients() {
                   </Avatar>
                 }
                 sx={{ justifyContent: 'flex-start' }}
-                onClick={() => (match ? changeViewFilters() : setOpen(true))}
+                onClick={() => (match ? setCurrentView(ENUM_VIEW.FILTERS) : setOpen(true))}
               >
                 {`${filterMonth.text ?? ''} ${filterMonth.text && paymentStatus && '-'} ${paymentStatus ?? ''}`}
               </Button>
@@ -263,11 +260,19 @@ export default function Clients() {
                 error={error}
                 isClients={isClients.current}
               />
-            </Box>
-          )}
-          {clientsData.length > 25 * currentPage - 1 && clientsData.length < 100 && (
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-              <Linking href="#" onClick={() => setCurrentPage((state) => state + 1)} label="➕ Ver más" />
+
+              {clientsData.length > 25 * currentPage - 1 && clientsData.length < 100 && (
+                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mt: 2 }}>
+                  <Linking
+                    href="#"
+                    onClick={(e) => {
+                      setCurrentPage((state) => state + 1);
+                      e.preventDefault();
+                    }}
+                    label="➕ Ver más"
+                  />
+                </Box>
+              )}
             </Box>
           )}
         </Box>
