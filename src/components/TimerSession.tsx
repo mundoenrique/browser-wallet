@@ -5,19 +5,23 @@ import { useRouter } from 'next/navigation';
 import { Button, Typography, Box } from '@mui/material';
 // Internal app
 import { ModalResponsive } from '.';
-import { useAccessSessionStore } from '@/store';
+import { useAccessSessionStore, useKeyStore, useUserStore } from '@/store';
 import { setDataRedis, validateTime } from '@/utils/toolHelper';
+import { api } from '@/utils/api';
 
 export default function TimmerSession() {
   const { push } = useRouter();
 
+  const jwePublicKey = useKeyStore((state) => state.jwePublicKey);
   const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
+  const user = useUserStore((state) => state.user);
 
   const [open, setOpen] = useState<boolean>(false);
 
   const closeSession = async () => {
     localStorage.removeItem('sessionTime');
-    await setDataRedis('DELETE', { data: { delParam: 'timeSession' } });
+    await api.delete('/redis', { data: { jwePublicKey, delParam: 'timeSession' } });
+    await api.delete('/redis', { data: { key: 'activeSession', jwePublicKey, delParam: user.userId } });
     setAccessSession(false);
     push('/signin');
   };
@@ -47,6 +51,7 @@ export default function TimmerSession() {
     };
 
     const intervalSession = setInterval(timerSession, 1000);
+    localStorage.setItem('intervalId', intervalSession.toString());
 
     return () => clearInterval(intervalSession);
   }, []);
