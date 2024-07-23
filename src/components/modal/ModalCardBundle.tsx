@@ -1,23 +1,23 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Typography, Stack, Button } from '@mui/material';
 import { sendGTMEvent } from '@next/third-parties/google';
 
 //Internal app
-import { useHeadersStore, useUserStore, useUiStore } from '@/store';
-import ModalResponsive from './ModalResponsive';
 import { api } from '@/utils/api';
+import ModalResponsive from './ModalResponsive';
+import { useHeadersStore, useUserStore, useUiStore } from '@/store';
 
 export default function ModalCardBundle({ open }: { open: boolean }) {
   const router = useRouter();
 
+  const host = useHeadersStore((state) => state.host);
+
   const setUser = useUserStore((state) => state.setUser);
 
   const { userId } = useUserStore((state) => state.user);
-
-  const host = useHeadersStore((state) => state.host);
 
   const setModalError = useUiStore((state) => state.setModalError);
 

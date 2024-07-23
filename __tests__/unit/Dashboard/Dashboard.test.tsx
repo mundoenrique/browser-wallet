@@ -1,18 +1,14 @@
 import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 // Internal app
+import { api } from '@/utils/api';
 import Dashboard from '@/app/(Pages)/dashboard/page';
 import { mockRouterPush } from '../../tools/unitTestHelper.test';
-import { api } from '@/utils/api';
 
 jest.mock('@/store', () => ({
   ...jest.requireActual('@/store'),
   useUserStore: jest.fn(() => ({
     getUserCardId: jest.fn().mockReturnValue('mockedCardId'),
-    user: {
-      userId: 'mockedUserId',
-      firstName: 'Jhon Doe',
-      cardSolutions: { status: null },
-    },
+    user: { userId: 'mockedUserId', firstName: 'Jhon Doe' },
   })),
 }));
 
@@ -49,7 +45,7 @@ describe('Dashboard', () => {
   });
 
   it('call API getMovements', async () => {
-    await mockApi.get(`/cards/123456/transactions`, { params: { days: 90, limit: 5 } })
+    await mockApi.get(`/cards/123456/transactions`, { params: { days: 90, limit: 5 } });
     await waitFor(() => {
       expect(mockApi.get).toHaveBeenCalled();
       expect(mockApi.get).toHaveBeenCalledWith(`/cards/123456/transactions`, { params: { days: 90, limit: 5 } });
@@ -57,11 +53,11 @@ describe('Dashboard', () => {
   });
 
   it('call API getMovements error', async () => {
-      mockApi.get.mockImplementation(() => Promise.reject(new Error('API error')));
-      await waitFor(() => {
-        expect(mockApi.get).toHaveBeenCalled();
-      });
+    mockApi.get.mockImplementation(() => Promise.reject(new Error('API error')));
+    await waitFor(() => {
+      expect(mockApi.get).toHaveBeenCalled();
     });
+  });
 
   describe('Navigations', () => {
     //** Navigates to /dashboard/debt on CardDebt click

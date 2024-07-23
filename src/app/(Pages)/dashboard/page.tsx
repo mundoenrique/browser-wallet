@@ -7,7 +7,7 @@ import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { api } from '@/utils/api';
 import { expiredFormatDate } from '@/utils/dates';
-import { CardDebt, LastMovements, Linking, UserWelcome, ModalCardBundle } from '@/components';
+import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
 import { useHeadersStore, useChargeStore, useDebStore, useMenuStore, useUiStore, useUserStore } from '@/store';
 
@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   const setDebt = useDebStore((state) => state.setDebt);
 
-  const { userId, cardSolutions } = useUserStore((state) => state.user);
+  const { userId } = useUserStore((state) => state.user);
 
   const setModalError = useUiStore((state) => state.setModalError);
 
@@ -54,8 +54,6 @@ export default function Dashboard() {
       clients: null,
     },
   });
-
-  const [cardBundle, setCardBundle] = useState<boolean>(false);
 
   const getMovements = useCallback(async () => {
     setLoadingMovements(true);
@@ -156,21 +154,6 @@ export default function Dashboard() {
       },
     });
   }, [host]);
-
-  useEffect(() => {
-    if (
-      cardSolutions &&
-      (
-        cardSolutions.status?.code === '17' ||
-        cardSolutions.status?.code === '41' ||
-        cardSolutions.status?.code === '43'
-      )
-    ) {
-      setCardBundle(true);
-      return;
-    }
-    setCardBundle(false);
-  }, [cardSolutions]);
 
   return (
     <>
@@ -295,7 +278,6 @@ export default function Dashboard() {
           </Box>
         </Box>
       </Box>
-      <ModalCardBundle open={cardBundle} />
     </>
   );
 }
