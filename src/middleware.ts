@@ -12,8 +12,6 @@ export async function middleware(request: NextRequest) {
   const protectedApiV0 = ['onboarding', 'catalogs', 'payments', 'users', 'cards'];
   const protectedRoutes = ['signin', 'signup', 'password-recover', 'qr', 'dashboard'];
 
-  console.log('PATHNAME MIDDLEWARE ', partsUrl[1]);
-
   const isProtectedRoute = protectedRoutes.includes(partsUrl[1]);
   if (isProtectedRoute) {
     let uuid = request.cookies.get(SESSION_ID)?.value;
@@ -35,8 +33,6 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  console.log('middleware-pathname: ', pathname);
-
   const isProtectedApiV1 = protectedApiV1.includes(pathname);
 
   if (isProtectedApiV1) {
@@ -52,16 +48,9 @@ export async function middleware(request: NextRequest) {
 
   if (isProtectedApiV0) {
 
-    let uuid = request.cookies.get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile'));
-    const res = await setDataRedis('POST', { uuid: `session:${uuid}`, dataRedis: 'get' });
-
-    if (res) {
-      const response = NextResponse.rewrite(new URL(protectedApiV1[0], url));
-      response.headers.set('x-url', apiUrl);
-      return response;
-    } else {
-      return NextResponse.redirect(`${nextUrl.origin}/signout`);
-     }
+    const response = NextResponse.rewrite(new URL(protectedApiV1[0], url));
+    response.headers.set('x-url', apiUrl);
+    return response;
   }
 }
 
