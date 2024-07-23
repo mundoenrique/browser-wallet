@@ -1,16 +1,47 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 //Internal app
-import { useUiStore } from '@/store';
+import { useAccessSessionStore, useKeyStore, useUiStore, useUserStore } from '@/store';
 import ModalError from '../modal/ModalError';
+import { ModalResponsive } from '..';
+import { Box, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { api } from '@/utils/api';
 
 export default function GlobalErrorMessage() {
+  const { push } = useRouter();
+
   const showModalError = useUiStore((state) => state.showModalError);
   const reloadFunction = useUiStore((state) => state.reloadFunction);
   const closeModalError = useUiStore((state) => state.closeModalError);
   const modalErrorObject = useUiStore((state) => state.modalErrorObject);
   const clearReloadFunction = useUiStore((state) => state.clearReloadFunction);
+  const jwePublicKey = useKeyStore((state) => state.jwePublicKey);
+  const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
+  const user = useUserStore((state) => state.user);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const closeSession = async () => {
+    localStorage.removeItem('sessionTime');
+    localStorage.removeItem('intervalId');
+    await api.delete('/redis', { data: { jwePublicKey, delParam: 'timeSession' } });
+    await api.delete('/redis', { data: { key: 'activeSession', jwePublicKey, delParam: user.userId } });
+    setAccessSession(false);
+    setOpen(false);
+    push('/signin');
+  };
+
+  const sessionExpired = async (eCode: string) => {
+    const code = eCode?.split('.').pop() ?? '';
+
+    if (code === '9998') {
+      setOpen(true);
+      clearInterval(Number(localStorage.getItem('intervalId')));
+      setTimeout(() => { closeSession() }, 5000);
+    }
+
+  }
 
   const resetError = () => {
     closeModalError();
@@ -32,6 +63,7 @@ export default function GlobalErrorMessage() {
         const { title: modalTitle, description: modalDescription } = setError(errorCode, context);
         title = modalTitle;
         description = modalDescription;
+        sessionExpired(errorCode)
       } else {
         const { title: modalTitle, description: modalDescription } = setError();
         title = modalTitle;
@@ -49,13 +81,22 @@ export default function GlobalErrorMessage() {
   }, [modalErrorObject]);
 
   return (
-    <ModalError
-      title={modalMessage.title}
-      description={modalMessage.description}
-      open={showModalError}
-      handleClose={resetError}
-      handleReload={reloadFunction}
-    />
+    <>
+      <ModalError
+        title={modalMessage.title}
+        description={modalMessage.description}
+        open={showModalError}
+        handleClose={resetError}
+        handleReload={reloadFunction}
+      />
+      <ModalResponsive open={open} handleClose={closeSession}>
+        <Box>
+          <Typography variant="subtitle1" mb={3}>
+            Tu sesión ha finalizado, clic en cerrar para ingresar nuevamente.
+          </Typography>
+        </Box>
+      </ModalResponsive>
+    </>
   );
 }
 
