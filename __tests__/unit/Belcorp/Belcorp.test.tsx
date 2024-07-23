@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, act, screen, fireEvent, waitFor } from '@testing-library/react';
+//Internal app
 import Belcorp from '@/app/(Pages)/belcorp/page';
 import { renderInput } from '../../tools/unitTestHelper.test';
 
@@ -42,7 +43,5 @@ describe('Belcorp component', () => {
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalled();
     });
-
   });
-
 });

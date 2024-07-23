@@ -1,4 +1,4 @@
-import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 //Internal app
 import Movements from '@/app/(Pages)/dashboard/movements/page';
 import { redirectLinks, mockRouterPush } from '../../../tools/unitTestHelper.test';
@@ -19,7 +19,7 @@ describe('Movements', () => {
   const routerPushMock = jest.fn();
 
   beforeEach(async () => {
-    mockRouterPush(routerPushMock)
+    mockRouterPush(routerPushMock);
     await act(async () => {
       render(<Movements />);
     });

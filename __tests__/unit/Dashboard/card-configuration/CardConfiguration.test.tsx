@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react';
 //Internal app
-import CardConfiguration from '@/app/(Pages)/dashboard/card-configuration/page';
 import { mockRouterPush } from '../../../tools/unitTestHelper.test';
+import CardConfiguration from '@/app/(Pages)/dashboard/card-configuration/page';
 
 jest.mock('@/app/(Pages)/dashboard/card-configuration/partial/Main.tsx', () => ({
   __esModule: true,
@@ -12,7 +12,7 @@ describe('CardConfiguration', () => {
   const routerPushMock = jest.fn();
 
   beforeEach(async () => {
-    mockRouterPush(routerPushMock)
+    mockRouterPush(routerPushMock);
     await act(async () => {
       render(<CardConfiguration />);
     });
@@ -26,5 +26,4 @@ describe('CardConfiguration', () => {
   test('should render all necessary elements', async () => {
     expect(screen.getByTestId('mocked-main-component')).toBeInTheDocument();
   });
-
 });
