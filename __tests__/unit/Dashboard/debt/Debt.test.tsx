@@ -1,74 +1,46 @@
-import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 //Internal app
-import Debit from '@/app/(Pages)/dashboard/debt/page';
-import { emptyField, renderInput, mockRouterPush } from '../../../tools/unitTestHelper.test';
+import MyDebt from '@/app/(Pages)/dashboard/debt/page';
+import { useDebStore } from '@/store';
 
-describe('Debit', () => {
-  let submitButton: HTMLElement;
-  let inputDebit: HTMLInputElement;
-  const routerPushMock = jest.fn();
+// Mock the components
+jest.mock('@/app/(Pages)/dashboard/debt/partial', () => ({
+  Success: jest.fn(() => <div>Success Component</div>),
+  Error: jest.fn(() => <div>Error Component</div>),
+  Debt: jest.fn(() => <div>Debt Component</div>),
+}));
 
-  beforeEach(async () => {
-    mockRouterPush(routerPushMock);
+describe('MyDebt Component', () => {
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  //** Renders a title, subtitles.
-  it('should render all text, titles, subtitles.', async () => {
-    await act(async () => {
-      render(<Debit />);
-    });
-    expect(screen.getByText(/pagar deuda con Belcorp/i)).toBeInTheDocument();
-    expect(screen.getByText(/deuda total/i)).toBeInTheDocument();
+  //** Renders the Debt component when the view is DEBT
+  it('renders Debt component when view is DEBT', () => {
+    useDebStore.setState({ view: 'DEBT' });
+    const { getByText } = render(<MyDebt />);
+    expect(getByText('Debt Component')).toBeInTheDocument();
   });
 
-  //** Renders a inputs, buttons.
-  it('should render all inputs, buttons.', async () => {
-    await act(async () => {
-      render(<Debit />);
-    });
-    submitButton = screen.getByRole('button', { name: /pagar/i });
-    inputDebit = screen.getByLabelText(/¿cuánto deseas pagar?/i);
-    renderInput(inputDebit);
-    renderInput(submitButton);
+  //** Renders the Success component when the view is SUCCESS
+  it('renders Success component when view is SUCCESS', () => {
+    useDebStore.setState({ view: 'SUCCESS' });
+    const { getByText } = render(<MyDebt />);
+    expect(getByText('Success Component')).toBeInTheDocument();
   });
 
-  //** Display a link to the dashboard page and navigate to dashboard page when link is clicked.
-  it('should navigate to dashboard page when link is clicked', async () => {
-    await act(async () => {
-      render(<Debit />);
-    });
-    expect(screen.getByText(/volver/i)).toBeInTheDocument();
-    expect(screen.getByText(/volver/i).getAttribute('href')).toBe('/dashboard');
-    fireEvent.click(screen.getByText(/volver/i));
-    await waitFor(() => {
-      expect(routerPushMock).toHaveBeenCalledWith('/dashboard');
-    });
+  //** Renders the Error component when the view is ERROR
+  it('renders Error component when view is ERROR', () => {
+    useDebStore.setState({ view: 'ERROR' });
+    const { getByText } = render(<MyDebt />);
+    expect(getByText('Error Component')).toBeInTheDocument();
   });
 
-  //** Displays an error message when the user submits the form with an empty password field.
-  it('should display an error message for empty debit field', async () => {
-    await act(async () => {
-      render(<Debit />);
-    });
-    inputDebit = screen.getByLabelText(/¿cuánto deseas pagar?/i);
-    emptyField(submitButton, 'ingresa un monto');
-  });
-
-  it('should render the form and submit the debit', async () => {
-    const onSubmitMock = jest.fn();
-    await act(async () => {
-      render(<Debit onSubmit={onSubmitMock} />);
-    });
-
-    submitButton = screen.getByRole('button', { name: /pagar/i });
-    inputDebit = screen.getByLabelText(/¿cuánto deseas pagar?/i);
-    fireEvent.change(inputDebit, { target: { value: '350' } });
-    fireEvent.click(submitButton);
-
-    expect(onSubmitMock).toHaveBeenCalledTimes(1);
-    expect(onSubmitMock).toHaveBeenCalledWith({ amount: '350' });
-
-    const successComponent = await screen.getByText('Comprobante');
-    expect(successComponent).toBeInTheDocument();
+  //** Renders the Debt component as default when the view is undefined
+  it('renders Debt component as default when view is undefined', () => {
+    useDebStore.setState({ view: undefined });
+    const { getByText } = render(<MyDebt />);
+    expect(getByText('Debt Component')).toBeInTheDocument();
   });
 });
