@@ -17,7 +17,7 @@ import {
   useHeadersStore,
   useUserStore,
   useUiStore,
-  accessSessionStore,
+  useAccessSessionStore,
   useOtpStore,
 } from '@/store';
 
@@ -32,7 +32,7 @@ export default function Survey() {
 
   const user = useUserStore((state) => state.user);
 
-  const { setAccessSession } = accessSessionStore();
+  const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
 
   const host = useHeadersStore((state) => state.host);
 
