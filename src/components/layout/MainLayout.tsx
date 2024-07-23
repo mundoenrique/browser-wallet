@@ -32,7 +32,7 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
     if (accessSession === false) {
       push('/signin');
     }
-  }, []);
+  }, [accessSession]);
 
   const handleDrawerClose = () => {
     setIsClosing(true);
