@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Cookie from "js-cookie";
 //Internal app
 import LogoGreen from '%/images/LogoGreen';
 import { Box, Stack, Typography } from '@mui/material';
@@ -9,8 +8,6 @@ import { PurpleLayout } from '@/components';
 import Linking from '@/components/navigation/Linking';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { useHeadersStore } from '@/store';
-import { SESSION_ID } from '@/utils/constants';
-
 
 export default function signOut() {
 
@@ -18,10 +15,10 @@ export default function signOut() {
   const backLink = useHeadersStore((state) => state.backLink);
 
   useEffect(() => {
-    const url: any = (backLink != '') ? backLink : process.env.NEXT_PUBLIC_ALLOW_ORIGIN;
-    setUrl(url);
+    const urlRef: any = (backLink != '') ? backLink : process.env.NEXT_PUBLIC_ALLOW_ORIGIN;
+    setUrl(urlRef);
     sessionStorage.clear();
-  })
+  }, [backLink, setUrl]);
 
   return <PurpleLayout>
     <Box sx={{ width: { xs: 'auto', sm: 542 }, display: 'grid', justifyItems: 'center', textAlign: 'center', mx: 3 }}>
@@ -33,7 +30,7 @@ export default function signOut() {
             </Typography>
           </Box>
           <Typography variant="body2" color={fuchsiaBlue[50]} textAlign="left">
-            Vuelve a iniciar sesion desde somos Belcorp
+            Vuelve a iniciar sesion desde Somos Belcorp
           </Typography>
         </Stack>
 
