@@ -60,7 +60,7 @@ const CloseButtonContainer = styled(Box, {
  */
 
 const ModalResponsive = forwardRef(function MyModalResponsive(props: MuiModalProps, ref: any) {
-  const { open, handleClose, children, ...others } = props;
+  const { open, handleClose, children, disabledClosed = false, ...others } = props;
   const theme = useTheme();
   const match = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -84,20 +84,23 @@ const ModalResponsive = forwardRef(function MyModalResponsive(props: MuiModalPro
       >
         <Slide direction="up" in={open} mountOnEnter unmountOnExit timeout={match ? 300 : 0}>
           <BodyModal {...others}>
-            <CloseButtonContainer onClick={handleClose}>
-              <MuiLink
-                sx={{
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1,
-                  color: fuchsiaBlue[800],
-                  textDecoration: 'none',
-                }}
-              >
-                <Typography>Cerrar</Typography>
-                <CloseIcon />
-              </MuiLink>
+            <CloseButtonContainer>
+              {!disabledClosed && (
+                <MuiLink
+                  onClick={handleClose}
+                  sx={{
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    color: fuchsiaBlue[800],
+                    textDecoration: 'none',
+                  }}
+                >
+                  <Typography>Cerrar</Typography>
+                  <CloseIcon />
+                </MuiLink>
+              )}
             </CloseButtonContainer>
             {children}
           </BodyModal>

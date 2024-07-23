@@ -18,7 +18,6 @@ export default function PWAInstallBar() {
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
-      // console.log('install', e);
       setOpenBar(true);
     });
     if (iOSDevice && !(window as any).navigator.standalone) {

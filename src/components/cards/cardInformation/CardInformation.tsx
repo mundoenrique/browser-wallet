@@ -44,7 +44,7 @@ export default function CardInformation() {
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
-  const { userId } = useUserStore((state) => state.user);
+  const { userId, cardSolutions } = useUserStore((state) => state.user);
 
   const setModalError = useUiStore((state) => state.setModalError);
 
@@ -134,7 +134,6 @@ export default function CardInformation() {
       .then((response) => {
         setCardData(response.data.data);
         setCardProperties('cardInformation', response.data.data);
-        console.log(response);
       })
       .catch((e) => {
         setCardInformationError(true);
@@ -189,7 +188,11 @@ export default function CardInformation() {
   useEffect(() => {
     getCardInformation();
     getBalance();
-  }, []);
+  }, []); //eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    getCardInformation();
+  }, [cardSolutions]); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
