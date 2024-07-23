@@ -9,7 +9,7 @@ import Linking from '@/components/navigation/Linking';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { useHeadersStore } from '@/store';
 
-export default function signOut() {
+export default function SignOut() {
 
   const [url, setUrl] = useState<string>('');
   const backLink = useHeadersStore((state) => state.backLink);
