@@ -16,6 +16,7 @@ api.interceptors.request.use(
   async (request) => {
     const date = new Date();
     localStorage.setItem('sessionTime', date.toString());
+    const idDevice = window.navigation.activation.entry.key;
     const jweApiPublicKey = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY || '';
     const url = request.url;
     const data = request.data;
@@ -24,6 +25,7 @@ api.interceptors.request.use(
       const token = useJwtStore.getState().token;
       request.headers[JWT_HEADER] = token;
       request.headers['X-Request-Id'] = uuid4();
+      request.headers['X-Device-Id'] = idDevice;
     }
 
     if (data) {
