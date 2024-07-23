@@ -1,9 +1,8 @@
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
-import Transfer from '@/app/(Pages)/dashboard/transfer/page';
-import Success from '@/app/(Pages)/dashboard/transfer/partial/Success';
-import { renderInput } from '../../../tools/unitTestHelper.test';
 import { api } from '@/utils/api';
+import Transfer from '@/app/(Pages)/dashboard/transfer/page';
+import { renderInput } from '../../../tools/unitTestHelper.test';
 
 jest.mock('@/store', () => ({
   ...jest.requireActual('@/store'),

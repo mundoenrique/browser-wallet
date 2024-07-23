@@ -1,16 +1,17 @@
 'use client';
 
-import { useState } from 'react';
 import { Box } from '@mui/material';
+import { useEffect, useState } from 'react';
 //Internal app
-import { useDrawerStore } from '@/store';
 import { useRouter } from 'next/navigation';
 import { ChildrenProps } from '@/interfaces';
 import Navbar from '../navigation/navbar/Navbar';
 import Sidebar from '../navigation/sidebar/Sidebar';
+import { useDrawerStore, useUserStore } from '@/store';
 import NavbarLower from '../navigation/navbar/NavbarLower';
 //Eliminar este store despues de la certificacion de inicio de sesión
 import { accessSessionStore } from '@/store/accessSessionStore';
+import ModalCardBundle from '../modal/ModalCardBundle';
 
 /**
  * Container used in the internal views of the application
@@ -18,15 +19,19 @@ import { accessSessionStore } from '@/store/accessSessionStore';
  * @param children - Children elements.
  */
 export default function MainLayout({ children }: ChildrenProps): JSX.Element {
+  const { push } = useRouter();
   const drawerWidth = 315;
 
   //Eliminar esta logica despues de la certificacion de inicio de sesión
   const { accessSession } = accessSessionStore();
+
   const { drawerStatus, setDrawerStatus } = useDrawerStore();
+
+  const { cardSolutions } = useUserStore((state) => state.user);
 
   const [isClosing, setIsClosing] = useState<boolean>(false);
 
-  const { push } = useRouter();
+  const [cardBundle, setCardBundle] = useState<boolean>(false);
 
   if (accessSession === false) {
     push('/signin');
@@ -46,6 +51,18 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
       setDrawerStatus(!drawerStatus);
     }
   };
+
+  useEffect(() => {
+    if (
+      cardSolutions.status?.code === '17' ||
+      cardSolutions.status?.code === '41' ||
+      cardSolutions.status?.code === '43'
+    ) {
+      setCardBundle(true);
+      return;
+    }
+    setCardBundle(false);
+  }, [cardSolutions]);
 
   return (
     <>
@@ -73,6 +90,8 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
           <NavbarLower />
         </Box>
       )}
+
+      <ModalCardBundle open={cardBundle} />
     </>
   );
 }

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 
 /**
  * Function to validate that the inputs exist and that it is initialized to empty

@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 //Internal app
-import MyDebt from '@/app/(Pages)/dashboard/debt/page';
 import { useDebStore } from '@/store';
+import MyDebt from '@/app/(Pages)/dashboard/debt/page';
 
 // Mock the components
 jest.mock('@/app/(Pages)/dashboard/debt/partial', () => ({
@@ -11,7 +11,6 @@ jest.mock('@/app/(Pages)/dashboard/debt/partial', () => ({
 }));
 
 describe('MyDebt Component', () => {
-
   afterEach(() => {
     jest.clearAllMocks();
   });

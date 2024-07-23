@@ -5,18 +5,16 @@ import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useState, useCallback } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
-import { Box, Button, Typography, Stack } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import { encryptForge } from '@/utils/toolHelper';
 import ModalOtp from '@/components/modal/ModalOtp';
-import { ContainerLayout, InputRadio, Linking, ModalResponsive } from '@/components';
+import { ContainerLayout, InputRadio, Linking, ModalCardBundle } from '@/components';
 import { useUserStore, useUiStore, useOtpStore, useNavTitleStore, useConfigCardStore, useHeadersStore } from '@/store';
 
 export default function BlockCard() {
-  const router = useRouter();
-
   const updateTitle = useNavTitleStore((state) => state.updateTitle);
 
   const updatePage = useConfigCardStore((state) => state.updatePage);
@@ -27,6 +25,8 @@ export default function BlockCard() {
 
   const { userId } = useUserStore((state) => state.user);
 
+  const setUser = useUserStore((state) => state.setUser);
+
   const setModalError = useUiStore((state) => state.setModalError);
 
   const getUserCardId = useUserStore((state) => state.getUserCardId);
@@ -34,8 +34,6 @@ export default function BlockCard() {
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
   const [openOtp, setOpenOtp] = useState<boolean>(false);
-
-  const [open, setOpen] = useState<boolean>(false);
 
   const schema = getSchema(['blockType']);
 
@@ -75,6 +73,13 @@ export default function BlockCard() {
     [otpUuid] //eslint-disable-line
   );
 
+  const getUserDetails = async () => {
+    await api.get(`/users/${userId}`).then((response) => {
+      const userDetail = response.data.data;
+      setUser(userDetail);
+    });
+  };
+
   const onSubmit = async () => {
     setLoadingScreen(true);
     const payload = {
@@ -91,8 +96,8 @@ export default function BlockCard() {
 
     api
       .post(`/cards/${getUserCardId()}/block`, payload)
-      .then(() => {
-        setOpen(!open);
+      .then(async () => {
+        await getUserDetails();
       })
       .catch((e: any) => {
         setModalError({ error: e });
@@ -196,43 +201,6 @@ export default function BlockCard() {
         </Box>
       </ContainerLayout>
 
-      <ModalResponsive open={open} handleClose={() => setOpen(false)}>
-        <Typography variant="subtitle1" mb={3}>
-          🚫 Tarjeta Bloqueada
-        </Typography>
-        <Stack spacing={2} sx={{ textAlign: 'left' }} mb={3}>
-          <Typography variant="body2">Tu tarjeta esta bloqueada.</Typography>
-          <Typography variant="body2">Además estamos creándote una nueva cuenta Yiro Virtual</Typography>
-          <Typography variant="body2">
-            No te preocupes conservaras todos los datos de tu cuenta anterior y puedes seguir usando nuestros servicios.
-          </Typography>
-          <Typography variant="body2">Si quieres una nueva tarjeta física tienes que volver a solicitarla.</Typography>
-          <Typography variant="body2">Si tienes afiliado un pago recurrente tienes que volver a generarlo.</Typography>
-        </Stack>
-        <Button
-          variant="contained"
-          onClick={() => {
-            setOpen(false);
-            router.push('/dashboard');
-            sendGTMEvent({
-              event: 'ga4.trackEvent',
-              eventName: 'select_content',
-              eventParams: {
-                content_type: 'boton_modal',
-                section: 'Yiro :: Yiro :: configuracionTarjeta :: bloquearTarjeta',
-                previous_section: 'Yiro :: configuracionTarjeta :: menu',
-                selected_content: 'Crear nueva cuenta',
-                destination_page: `${host}/dashboard`,
-                pop_up_type: 'Bloquear',
-                pop_up_title: 'Tarjeta bloqueada',
-              },
-            });
-          }}
-          fullWidth
-        >
-          Crear nueva cuenta
-        </Button>
-      </ModalResponsive>
       {openOtp && (
         <ModalOtp
           open={openOtp}

@@ -156,96 +156,54 @@ export default function Dashboard() {
   }, [host]);
 
   return (
-    <Box
-      sx={{
-        background: { md: 'linear-gradient(35deg, rgba(146,218,142,0) 45%, rgba(172,255,167,0.6) 100%)' },
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <>
       <Box
         sx={{
-          width: { xs: '100%', sm: 320 },
-          mx: { xs: 'auto', md: 3 },
+          background: { md: 'linear-gradient(35deg, rgba(146,218,142,0) 45%, rgba(172,255,167,0.6) 100%)' },
+          minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
-          height: '100%',
         }}
       >
-        <UserWelcome />
-
         <Box
           sx={{
+            width: { xs: '100%', sm: 320 },
+            mx: { xs: 'auto', md: 3 },
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: { xs: 'flex-start', md: 'center' },
-            mb: { xs: '60px', md: 0 },
+            justifyContent: 'center',
+            height: '100%',
           }}
         >
-          <CardInformation />
+          <UserWelcome />
 
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              width: '100%',
-              bgcolor: { xs: 'white', sm: 'initial' },
-              borderRadius: '14px',
-              mt: 2,
+              justifyContent: { xs: 'flex-start', md: 'center' },
+              mb: { xs: '60px', md: 0 },
             }}
           >
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, mt: 2, width: 320 }}>
-              <CardDebt
-                data={cardMyDebt}
-                onClick={() => {
-                  push('/dashboard/debt');
-                  sendGTMEvent({
-                    event: 'ga4.trackEvent',
-                    eventName: 'select_content',
-                    eventParams: {
-                      content_type: 'boton',
-                      section: 'Yiro :: dashboard',
-                      previous_section: 'Yiro :: login :: interno',
-                      selected_content: 'Me deben',
-                      destination_page: `${host}/dashboard/debt`,
-                    },
-                  });
-                }}
-              />
-              <CardDebt
-                data={cardClients}
-                OweMe
-                onClick={() => {
-                  push('/dashboard/clients');
-                  sendGTMEvent({
-                    event: 'ga4.trackEvent',
-                    eventName: 'select_content',
-                    eventParams: {
-                      content_type: 'boton',
-                      section: 'Yiro :: dashboard',
-                      previous_section: 'Yiro :: login :: interno',
-                      selected_content: 'Mi deuda con Belcorp',
-                      destination_page: `${host}/dashboard/clients`,
-                    },
-                  });
-                }}
-              />
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, width: 320 }}>
-              <Typography variant="subtitle1">Últimos movimientos</Typography>
-              {movementData.length > 0 ? (
-                <Linking
-                  href="/dashboard/movements"
-                  color="primary.main"
-                  label="Ver todo"
-                  mb={0}
-                  hidenArrow
-                  underline
+            <CardInformation />
+
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                width: '100%',
+                bgcolor: { xs: 'white', sm: 'initial' },
+                borderRadius: '14px',
+                mt: 2,
+              }}
+            >
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, mt: 2, width: 320 }}>
+                <CardDebt
+                  data={cardMyDebt}
                   onClick={() => {
+                    push('/dashboard/debt');
                     sendGTMEvent({
                       event: 'ga4.trackEvent',
                       eventName: 'select_content',
@@ -253,30 +211,74 @@ export default function Dashboard() {
                         content_type: 'boton',
                         section: 'Yiro :: dashboard',
                         previous_section: 'Yiro :: login :: interno',
-                        selected_content: 'Ver todo',
-                        destination_page: `${host}/dashboard/movements`,
+                        selected_content: 'Me deben',
+                        destination_page: `${host}/dashboard/debt`,
                       },
                     });
                   }}
                 />
-              ) : (
-                <Typography variant="subtitle1" color={'grey'} fontWeight={700} fontSize={'12px'}>
-                  Ver todo
-                </Typography>
-              )}
-            </Box>
-            <Box sx={{ width: 320, minHeight: '300px' }}>
-              <LastMovements
-                data={movementData}
-                loading={loadingMovements}
-                error={errorMovements}
-                emptySlot={<EmptySlot />}
-              />
+                <CardDebt
+                  data={cardClients}
+                  OweMe
+                  onClick={() => {
+                    push('/dashboard/clients');
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'select_content',
+                      eventParams: {
+                        content_type: 'boton',
+                        section: 'Yiro :: dashboard',
+                        previous_section: 'Yiro :: login :: interno',
+                        selected_content: 'Mi deuda con Belcorp',
+                        destination_page: `${host}/dashboard/clients`,
+                      },
+                    });
+                  }}
+                />
+              </Box>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, width: 320 }}>
+                <Typography variant="subtitle1">Últimos movimientos</Typography>
+                {movementData.length > 0 ? (
+                  <Linking
+                    href="/dashboard/movements"
+                    color="primary.main"
+                    label="Ver todo"
+                    mb={0}
+                    hidenArrow
+                    underline
+                    onClick={() => {
+                      sendGTMEvent({
+                        event: 'ga4.trackEvent',
+                        eventName: 'select_content',
+                        eventParams: {
+                          content_type: 'boton',
+                          section: 'Yiro :: dashboard',
+                          previous_section: 'Yiro :: login :: interno',
+                          selected_content: 'Ver todo',
+                          destination_page: `${host}/dashboard/movements`,
+                        },
+                      });
+                    }}
+                  />
+                ) : (
+                  <Typography variant="subtitle1" color={'grey'} fontWeight={700} fontSize={'12px'}>
+                    Ver todo
+                  </Typography>
+                )}
+              </Box>
+              <Box sx={{ width: 320, minHeight: '300px' }}>
+                <LastMovements
+                  data={movementData}
+                  loading={loadingMovements}
+                  error={errorMovements}
+                  emptySlot={<EmptySlot />}
+                />
+              </Box>
             </Box>
           </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 }
 

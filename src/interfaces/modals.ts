@@ -12,6 +12,7 @@ export interface MuiModalProps extends BoxProps {
   open: boolean;
   handleClose: (..._e: any[]) => void;
   children?: React.ReactNode;
+  disabledClosed?: boolean;
 }
 
 /**

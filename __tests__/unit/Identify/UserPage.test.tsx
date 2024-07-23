@@ -1,5 +1,6 @@
-import { createRedisInstance } from '@/utils/redis';
 import { headers } from 'next/headers';
+//Internal app
+import { createRedisInstance } from '@/utils/redis';
 import UserPage from '@/app/(Pages)/identify/[user]/page';
 import NotFoundError from '@/components/errors/NotFoundError';
 import DataUser from '@/app/(Pages)/identify/[user]/partial/DataUser';

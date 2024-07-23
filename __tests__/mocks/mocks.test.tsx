@@ -7,7 +7,7 @@ jest.mock('@/utils/toolHelper', () => ({
   encryptForge: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
   handleMaskOtp: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
   stringAvatar: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
-}))
+}));
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
@@ -37,4 +37,3 @@ jest.mock('@/utils/redis', () => ({
 jest.mock('next/headers', () => ({
   headers: jest.fn().mockReturnValue(new Map([['referer', 'testReferer']])),
 }));
-
