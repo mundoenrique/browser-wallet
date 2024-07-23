@@ -159,9 +159,12 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (
-      cardSolutions.status?.code === '17' ||
-      cardSolutions.status?.code === '41' ||
-      cardSolutions.status?.code === '43'
+      cardSolutions &&
+      (
+        cardSolutions.status?.code === '17' ||
+        cardSolutions.status?.code === '41' ||
+        cardSolutions.status?.code === '43'
+      )
     ) {
       setCardBundle(true);
       return;

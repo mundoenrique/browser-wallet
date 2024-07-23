@@ -8,7 +8,11 @@ jest.mock('@/store', () => ({
   ...jest.requireActual('@/store'),
   useUserStore: jest.fn(() => ({
     getUserCardId: jest.fn().mockReturnValue('mockedCardId'),
-    user: { userId: 'mockedUserId', firstName: 'John' },
+    user: {
+      userId: 'mockedUserId',
+      firstName: 'Jhon Doe',
+      cardSolutions: { status: null },
+    },
   })),
 }));
 
