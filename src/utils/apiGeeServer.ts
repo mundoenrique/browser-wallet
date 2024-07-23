@@ -129,8 +129,7 @@ export async function getOauthBearer() {
 export async function HandleCustomerRequest(request: NextRequest) {
   let { method, headers } = request;
 
-  const device = await validateDevice(request);
-  const validate:any = (device) ? await validateSession(request) : {status: false, code: '401.00.9999'};
+  const validate = await validateSession(request);
 
   if (!validate.status) {
     method = 'SESSION';
