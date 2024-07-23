@@ -33,7 +33,9 @@ export default function Signin() {
 
   const { setModalError } = useUiStore();
 
-  const { setUser, userId } = useUserStore();
+  const setUser = useUserStore((state) => state.setUser);
+
+  const  userId  = useUserStore((state) => state.userId);
 
   const host = useHeadersStore((state) => state.host);
 
@@ -72,7 +74,18 @@ export default function Signin() {
         }
       })
       .catch((e) => {
-        setModalError({ error: e });
+        const { code } = e.response.data.data;
+        if (code) {
+          const eCode = code?.split('.').pop() ?? '';
+          switch (eCode) {
+            case '9999':
+              router.push('/signout');
+              break;
+            default:
+              setModalError({ error: e });
+              break;
+          }
+        }
       })
       .finally(() => {
         setLoadingScreen(false);
@@ -84,10 +97,13 @@ export default function Signin() {
       .get(`/users/${id}`)
       .then((response) => {
         const userDetail = response.data.data;
+        console.log(userDetail);
         setUser(userDetail);
         setUserData(userDetail);
         if (userDetail.physicalCards) {
-          setCardProperties('cardActivationStatus', userDetail.physicalCards.status);
+          setTimeout(() => {
+            setCardProperties('cardActivationStatus', userDetail.physicalCards.status);
+          }, 1500);
         }
       })
       .catch((e) => {
@@ -100,9 +116,6 @@ export default function Signin() {
 
   useEffect(() => {
     const id = userId ? userId : user.userId;
-    (async () => {
-      await setDataRedis('DELETE', { data: { delParam: 'timeSession' } });
-    })()
     getUserDetails(id);
     setOTPValid('OTP');
     // eslint-disable-next-line react-hooks/exhaustive-deps
