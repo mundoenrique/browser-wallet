@@ -1,9 +1,8 @@
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
-import ChangePassword from '@/app/(Pages)/dashboard/change-password/page';
-import ModalOtp from '@/components/modal/ModalOtp';
-import { renderInput } from '../../../tools/unitTestHelper.test';
 import { api } from '@/utils/api';
+import { renderInput } from '../../../tools/unitTestHelper.test';
+import ChangePassword from '@/app/(Pages)/dashboard/change-password/page';
 
 jest.mock('@/store', () => ({
   ...jest.requireActual('@/store'),
@@ -53,7 +52,7 @@ describe('ChangePassword', () => {
       renderInput(confirmPassword);
       renderInput(submitButton);
     });
-  })
+  });
 
   describe('Navigates sendGtmEvent', () => {
     it('sendGTMEvent onSubmit form open modal', async () => {

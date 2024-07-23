@@ -1,8 +1,9 @@
 import React from 'react';
-import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
+//Internal app
+import { api } from '@/utils/api';
 import Clients from '@/app/(Pages)/dashboard/clients/page';
 import { mockRouterPush } from '../../../tools/unitTestHelper.test';
-import { api } from '@/utils/api';
 
 jest.mock('@/app/(Pages)/dashboard/clients/partial/listClients', () => ({
   __esModule: true,
@@ -12,7 +13,7 @@ jest.mock('@/app/(Pages)/dashboard/clients/partial/listClients', () => ({
 jest.mock('@/store', () => ({
   ...jest.requireActual('@/store'),
   useUserStore: jest.fn(() => ({
-    user: { userId: 'mockedUserId', firstName: 'John' }
+    user: { userId: 'mockedUserId', firstName: 'John' },
   })),
 }));
 
@@ -21,19 +22,19 @@ const mockApi = api as jest.Mocked<typeof api>;
 
 describe('Clients', () => {
   const clientsData = [
-      {
-        id: 1,
-        name: "Client 1",
-        date: "2022-01-01",
-        status: "PAID",
-        amount: 100,
-      },
-    ];
+    {
+      id: 1,
+      name: 'Client 1',
+      date: '2022-01-01',
+      status: 'PAID',
+      amount: 100,
+    },
+  ];
   const routerPushMock = jest.fn();
   mockApi.get.mockResolvedValue({ status: 200, data: { data: clientsData } });
 
   beforeEach(async () => {
-    mockRouterPush(routerPushMock)
+    mockRouterPush(routerPushMock);
     await act(async () => {
       render(<Clients />);
     });
@@ -52,9 +53,8 @@ describe('Clients', () => {
 
     await waitFor(() => {
       expect(mockApi.get).toHaveBeenCalled();
-      expect(mockApi.get).toHaveBeenCalledWith(
-        `/payments/123456789/chargelist`, {
-        params: { days: 30, limit: 100, page: 1, date: 7, transactionCode: 1 }
+      expect(mockApi.get).toHaveBeenCalledWith(`/payments/123456789/chargelist`, {
+        params: { days: 30, limit: 100, page: 1, date: 7, transactionCode: 1 },
       });
     });
   });

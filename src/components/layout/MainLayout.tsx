@@ -10,7 +10,8 @@ import Navbar from '../navigation/navbar/Navbar';
 import Sidebar from '../navigation/sidebar/Sidebar';
 import { PurpleLayout, Timersession } from '@/components';
 import NavbarLower from '../navigation/navbar/NavbarLower';
-import { useDrawerStore, useAccessSessionStore } from '@/store';
+import { useDrawerStore, useUserStore, useAccessSessionStore } from '@/store';
+import ModalCardBundle from '../modal/ModalCardBundle';
 
 /**
  * Container used in the internal views of the application
@@ -18,15 +19,18 @@ import { useDrawerStore, useAccessSessionStore } from '@/store';
  * @param children - Children elements.
  */
 export default function MainLayout({ children }: ChildrenProps): JSX.Element {
+  const { push } = useRouter();
   const drawerWidth = 315;
 
   const { drawerStatus, setDrawerStatus } = useDrawerStore();
 
   const accessSession = useAccessSessionStore((state) => state.accessSession);
 
+  const { cardSolutions } = useUserStore((state) => state.user);
+
   const [isClosing, setIsClosing] = useState<boolean>(false);
 
-  const { push } = useRouter();
+  const [cardBundle, setCardBundle] = useState<boolean>(false);
 
   useEffect(() => {
     if (accessSession === false) {
@@ -48,6 +52,18 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
       setDrawerStatus(!drawerStatus);
     }
   };
+
+  useEffect(() => {
+    if (
+      cardSolutions.status?.code === '17' ||
+      cardSolutions.status?.code === '41' ||
+      cardSolutions.status?.code === '43'
+    ) {
+      setCardBundle(true);
+      return;
+    }
+    setCardBundle(false);
+  }, [cardSolutions]);
 
   return (
     <>
@@ -80,6 +96,8 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
           <LogoGreen />
         </PurpleLayout>
       )}
+
+      <ModalCardBundle open={cardBundle} />
     </>
   );
 }

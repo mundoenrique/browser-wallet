@@ -1,7 +1,7 @@
 import { render, act, waitFor, screen, fireEvent } from '@testing-library/react';
 //Internal app
-import Recover from '@/app/(Pages)/password-recover/page';
 import { api } from '@/utils/api';
+import Recover from '@/app/(Pages)/password-recover/page';
 
 jest.mock('@/utils/api');
 const mockApi = api as jest.Mocked<typeof api>;
@@ -23,7 +23,7 @@ jest.mock('@/store', () => ({
   })),
   useUserStore: jest.fn(() => ({
     getUserPhone: jest.fn(() => '123456789'),
-    user: { userId: 'mockedUserId' }
+    user: { userId: 'mockedUserId' },
   })),
   useUiStore: jest.fn(() => ({ setModalError: jest.fn() })),
   useOtpStore: jest.fn(() => ({
@@ -68,8 +68,7 @@ describe('Recover', () => {
           destination_page: `http://localhost:3000/signin`,
         },
       });
-    }
-    );
+    });
   });
 
   it('submit form and call api post', async () => {

@@ -1,17 +1,17 @@
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
+import { api } from '@/utils/api';
 import Collect from '@/app/(Pages)/dashboard/collect/page';
 import { renderInput, mockRouterPush } from '../../../tools/unitTestHelper.test';
-import { api } from '@/utils/api';
 
 jest.mock('@/store', () => ({
   ...jest.requireActual('@/store'),
   useUserStore: jest.fn(() => ({
-    user: { userId: 'mockedUserId', firstName: 'John' }
+    user: { userId: 'mockedUserId', firstName: 'John' },
   })),
   useCollectStore: jest.fn(() => ({
     setLoad: jest.fn(),
-    setLinkData: jest.fn()
+    setLinkData: jest.fn(),
   })),
 }));
 
@@ -29,7 +29,7 @@ describe('Collect', () => {
   const sendGTMEvent = jest.fn();
 
   beforeEach(async () => {
-    mockRouterPush(routerPushMock)
+    mockRouterPush(routerPushMock);
     await act(async () => {
       render(<Collect />);
     });
@@ -69,10 +69,10 @@ describe('Collect', () => {
       fireEvent.change(amount, { target: { value: '0.50' } });
       fireEvent.submit(form);
 
-      e.preventDefault()
+      e.preventDefault();
       const validate = {
         min: parseFloat(amount.value) < 1,
-        max: parseFloat(amount.value) < 4950
+        max: parseFloat(amount.value) < 4950,
       };
 
       await setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });

@@ -1,8 +1,8 @@
 import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 //Internal app
 import { api } from '@/utils/api';
-import Signin from '@/app/(Pages)/signin/page';
 import { NavExternal } from '@/components';
+import Signin from '@/app/(Pages)/signin/page';
 import { renderInput, mockRouterPush } from '../../tools/unitTestHelper.test';
 
 jest.mock('@/utils/api');
