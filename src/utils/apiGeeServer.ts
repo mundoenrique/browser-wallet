@@ -194,7 +194,7 @@ async function validateSession(request: NextRequest) {
     if (!viewApi) return {status: true, code: '200.00.000'}
 
     const timeRest: number = (resRedis.timeSession && resRedis.login) ?
-      validateTime(60, resRedis.timeSession) : 0;
+      validateTime(180, resRedis.timeSession) : 0;
 
     const time = timeRest <= 0 ? {status: false, code: '401.00.9998'} : {status: true, code: '200.00.000'};
     if (!time.status && request.headers.get('X-Session-Mobile')) await delRedis(`session:${uuid}`);
