@@ -4,8 +4,8 @@ import { Box, Button } from '@mui/material';
 import { useCallback, useEffect, useRef, useState } from 'react';
 //Internal app
 import { api } from '@/utils/api';
-import { useRegisterStore, useUiStore } from '@/store';
 import { encryptForge } from '@/utils/toolHelper';
+import { useRegisterStore, useUiStore } from '@/store';
 
 export default function Biometric() {
   const { setModalError, setLoadingScreen } = useUiStore();
@@ -136,6 +136,7 @@ export default function Biometric() {
       .finally(() => {
         setLoadingScreen(false);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

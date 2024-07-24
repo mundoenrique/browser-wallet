@@ -1,8 +1,8 @@
 import uuid4 from 'uuid4';
 import axios from 'axios';
 //Internal app
-import { useJwtStore, useKeyStore } from '@/store';
 import { JWS_HEADER, JWT_HEADER } from './constants';
+import { useJwtStore, useKeyStore, useActiveAppStore } from '@/store';
 import { decryptJWE, encryptJWE, signJWE, verifyDetachedJWS, verifyJWT } from './jwt';
 
 export const api = axios.create({
@@ -14,6 +14,9 @@ export const api = axios.create({
 
 api.interceptors.request.use(
   async (request) => {
+    const date = new Date();
+    localStorage.setItem('sessionTime', date.toString());
+    const idDevice = window.navigation.activation.entry.key;
     const jweApiPublicKey = process.env.NEXT_PUBLIC_MIDDLE_JWE_PUBLIC_KEY || '';
     const url = request.url;
     const data = request.data;
@@ -23,6 +26,7 @@ api.interceptors.request.use(
       const identifier = useJwtStore.getState().uuid;
       request.headers[JWT_HEADER] = token;
       request.headers['X-Request-Id'] = uuid4();
+      request.headers['X-Device-Id'] = idDevice;
       request.headers['identifier'] = identifier;
     }
 
@@ -49,7 +53,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   async (response) => {
     const jwsApiPublicKey = process.env.NEXT_PUBLIC_MIDDLE_JWS_PUBLIC_KEY || '';
-    const jwePrivateKey = useKeyStore.getState().jwePrivateKey || '';
+    const jwePrivateKey = useKeyStore.getState().jwePrivateKey || useActiveAppStore.getState().createAccess || '';
     const jwtHeader = response.headers[JWT_HEADER];
     const data = response.data;
 

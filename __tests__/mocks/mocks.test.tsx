@@ -7,6 +7,7 @@ jest.mock('@/utils/toolHelper', () => ({
   encryptForge: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
   handleMaskOtp: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
   stringAvatar: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
+  setDataRedis: jest.fn().mockResolvedValue({})
 }));
 
 jest.mock('next/navigation', () => ({
@@ -32,6 +33,8 @@ jest.mock('mui-one-time-password-input', () => {
 
 jest.mock('@/utils/redis', () => ({
   createRedisInstance: jest.fn(),
+  delRedis: jest.fn(),
+  getRedis: jest.fn(),
 }));
 
 jest.mock('next/headers', () => ({

@@ -28,6 +28,7 @@ export interface IJWTPayload {
   jwsPublicKey: string;
   jwePublicKey: string;
   id?: number;
+  uuid?: string
 }
 
 /**

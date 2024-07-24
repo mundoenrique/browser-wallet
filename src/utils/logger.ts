@@ -1,6 +1,5 @@
 import 'winston-daily-rotate-file';
 import { createLogger, format, transports } from 'winston';
-//Internal app
 
 const { colorize, combine, json, label, printf, simple, splat, timestamp, uncolorize } = format;
 const levels = { error: 0, warn: 1, debug: 2, info: 3 };

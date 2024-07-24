@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 //Internal app
 import logger from './logger';
 import { handleApiResponse } from '.';
-import { JWT_HEADER, JWS_HEADER } from './constants';
+import { encryptForge } from './toolHelper';
+import { JWT_HEADER, JWS_HEADER, SESSION_ID } from './constants';
 import { IApiGeeResponse, IEncryptedBody, IJWTPayload } from '@/interfaces';
 import { verifyJWT, encryptJWE, decryptJWE, signJWE, verifyDetachedJWS } from './jwt';
 
@@ -103,7 +104,9 @@ export async function handleJWE(
     const encryptedBody: IEncryptedBody = await request.json();
     const paylaod: string = encryptedBody.data;
     const jws: string | null = request.headers.get(JWS_HEADER);
+
     await verifyDetachedJWS(jws, jwsAppPublicKey, paylaod);
+
     const data = await decryptJWE(paylaod, jweApiPrivateKey);
 
     return data;
@@ -126,14 +129,29 @@ export async function handleResponse(
   responseObj: any,
   jweAppPublicKey: string,
   jwsApiPrivateKey: string,
-  status: number = 200
+  status: number = 200,
+  isBrowser: boolean = false
 ): Promise<NextResponse> {
   try {
+    let cookieSet: any = '';
     const jwe: string = await encryptJWE(responseObj, jweAppPublicKey);
     const encryptedResponse = { data: jwe };
     const jws: string = await signJWE(jwsApiPrivateKey, jwe);
 
-    const response = NextResponse.json(encryptedResponse, { status });
+    if (isBrowser) {
+      var expires = (new Date(Date.now()+ 86400*1000)).toUTCString();
+      cookieSet = `${SESSION_ID}=${encryptForge(
+        responseObj.data.sessionId
+      )}; HttpOnly=true; Path=/; Secure=true; SameSite=true; Expires=${expires};`;
+    }
+
+    const response = NextResponse.json(encryptedResponse, {
+      status,
+      headers: {
+        'Set-Cookie': cookieSet,
+      },
+    });
+
     response.headers.set(JWS_HEADER, `JWS ${jws}`);
 
     return response;

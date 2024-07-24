@@ -2,20 +2,18 @@ import { headers } from 'next/headers';
 //Internal app
 import DataUser from './partial/DataUser';
 import { NotFoundError } from '@/components';
-import { createRedisInstance } from '@/utils/redis';
+import { delRedis, getRedis } from '@/utils/redis';
 
 export default async function UserPage({ params }: any) {
   const headersList = headers();
-  const redis = createRedisInstance();
   const { user } = params;
 
   const protocol = headersList.get('x-forwarded-proto');
   const referer = headersList.get('referer') || '';
   const host = headersList.get('host');
 
-  const userData = await redis.get(`${user}`);
-  redis.del(`${user}`);
-  redis.quit();
+  const userData = await getRedis(`identify:${user}`)
+  await delRedis(`identify:${user}`)
 
   if (!userData) return <NotFoundError code={404} />;
 

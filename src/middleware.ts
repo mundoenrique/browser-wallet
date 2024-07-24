@@ -1,30 +1,58 @@
 import { NextResponse, type NextRequest } from 'next/server';
 //Internal app
 import { URL_BASE } from '@/utils/constants';
+import { SESSION_ID } from './utils/constants';
+import { setDataRedis } from './utils/toolHelper';
 
 export async function middleware(request: NextRequest) {
   const { url, nextUrl } = request;
   const pathname = nextUrl.pathname;
+  const partsUrl = pathname.split('/');
+  const protectedApiV1 = ['/api/v1/connect', '/api/v1/gettoken', '/api/v1/setcode', '/api/v1/redis'];
+  const protectedApiV0 = ['onboarding', 'catalogs', 'payments', 'users', 'cards'];
+  const protectedRoutes = ['signin', 'signup', 'password-recover', 'qr', 'dashboard'];
 
-  const SetCode = '/api/v1/setcode';
-  const apiConnectUrl = '/api/v1/connect';
-  const apiGetTokenAuthUrl = '/api/v1/gettoken';
+  const isProtectedRoute = protectedRoutes.includes(partsUrl[1]);
+  if (isProtectedRoute) {
+    let uuid = request.cookies.get(SESSION_ID)?.value;
+    const res = await setDataRedis('POST', { uuid: `session:${uuid}`, dataRedis: 'get' });
 
-  if (pathname === apiConnectUrl || pathname === apiGetTokenAuthUrl || pathname === SetCode) {
+    if (!res) {
+      const response = NextResponse.redirect(`${nextUrl.origin}/signout`);
+      response.cookies.set(SESSION_ID, '', { expires: new Date(0) });
+
+      return response;
+    } else {
+      const data = JSON.parse(res);
+
+      if (data.accessSession.state.accessSession && partsUrl[1] === 'signin') {
+        return NextResponse.redirect(`${nextUrl.origin}/dashboard`);
+      } else {
+        return NextResponse.next();
+      }
+    }
+  }
+
+  const isProtectedApiV1 = protectedApiV1.includes(pathname);
+
+  if (isProtectedApiV1) {
     return NextResponse.next();
   }
 
-  const response = NextResponse.rewrite(new URL(apiConnectUrl, url));
-  const partsUrl = pathname.split('/');
   const url_api_name: string = partsUrl[3] || '';
   const resUrlBase = pathname.substring(pathname.indexOf(url_api_name) + url_api_name.length);
   const apiUrl: string = URL_BASE[url_api_name] + resUrlBase + nextUrl.search;
+  const partsUrlApi = apiUrl.split('/');
 
-  response.headers.set('x-url', apiUrl);
+  const isProtectedApiV0 = protectedApiV0.includes(partsUrlApi[2]);
 
-  return response;
+  if (isProtectedApiV0) {
+    const response = NextResponse.rewrite(new URL(protectedApiV1[0], url));
+    response.headers.set('x-url', apiUrl);
+    return response;
+  }
 }
 
 export const config = {
-  matcher: '/api/v1/:path*',
+  matcher: ['/api/v1/:path*', '/signin', '/signup', '/password-recover', '/qr', '/dashboard', '/dashboard/:path*'],
 };

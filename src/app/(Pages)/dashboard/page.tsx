@@ -22,13 +22,13 @@ export default function Dashboard() {
 
   const { userId } = useUserStore((state) => state.user);
 
+  const setCharge = useChargeStore((state) => state.setCharge);
+
   const setModalError = useUiStore((state) => state.setModalError);
 
   const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
 
   const setReloadFunction = useUiStore((state) => state.setReloadFunction);
-
-  const setCharge = useChargeStore((state) => state.setCharge);
 
   const [movementData, setMovementData] = useState<[]>([]);
 

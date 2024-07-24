@@ -1,57 +1,47 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage, devtools } from 'zustand/middleware';
+import { type StateCreator, create } from 'zustand';
+import { persist, devtools } from 'zustand/middleware';
 //Internal app
 import { decryptForge } from '@/utils/toolHelper';
+import { redisStorage } from '@/store/storages/user.store';
 import { TUserDetail, UserStore } from '@/interfaces';
 
-/**
- * Store for user data
- *
- * @param user - User object {@defaulValue `null`}
- * @param userId - User id {@defaulValue `null`}
- * @param setUser - Set user object
- * @param setUserId - Set user id
- * @param getUserPhone - Return user phone
- * @param getUserCardId - Return user card id
- */
+const storeAPi: StateCreator<UserStore, [['zustand/devtools', never]]> = (set, get) => ({
+  user: null,
+
+  userId: null,
+  /**
+   * set user object
+   */
+  setUser: (data: TUserDetail) => set({ user: data }),
+  /**
+   * set user Id
+   */
+  setUserId: (data: string) => set({ userId: data }),
+  /**
+   *
+   * @returns user phone number
+   */
+  getUserPhone: () => {
+    const { phoneNumber } = get().user;
+    return decryptForge(phoneNumber);
+  },
+  /**
+   *
+   * @returns user cardId
+   */
+  getUserCardId: () => {
+    const {
+      cardSolutions: { cardId },
+    } = get().user;
+    return decryptForge(cardId);
+  },
+});
+
 export const useUserStore = create<UserStore>()(
   devtools(
-    persist(
-      (set, get) => ({
-        user: null,
-
-        userId: null,
-        /**
-         * set user object
-         */
-        setUser: (data: TUserDetail) => set({ user: data }),
-        /**
-         * set user Id
-         */
-        setUserId: (data: string) => set({ userId: data }),
-        /**
-         *
-         * @returns user phone number
-         */
-        getUserPhone: () => {
-          const { phoneNumber } = get().user;
-          return decryptForge(phoneNumber);
-        },
-        /**
-         *
-         * @returns user cardId
-         */
-        getUserCardId: () => {
-          const {
-            cardSolutions: { cardId },
-          } = get().user;
-          return decryptForge(cardId);
-        },
-      }),
-      {
-        name: 'user-store',
-        storage: createJSONStorage(() => sessionStorage),
-      }
-    )
+    persist(storeAPi, {
+      name: 'user-storage',
+      storage: redisStorage,
+    })
   )
 );

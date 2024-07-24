@@ -16,7 +16,6 @@ export type KeyStoreProps = {
   jwePrivateKey: string | null;
   jwsPublicKey: string | null;
   jwsPrivateKey: string | null;
-  activeKeys: boolean;
   setKeys: (_keys: {
     jwePublicKey: string;
     jwePrivateKey: string;
@@ -30,6 +29,8 @@ export type KeyStoreProps = {
  *
  * @typeParam token: string | null
  * @typeParam setToken: (_token: string) => void
+ * @typeParam sessionId: string | null
+ * @typeParam setSessionId: (_setSessionId: string) => void
  */
 export type JwtStoreProps = {
   token: string | null;
@@ -331,7 +332,23 @@ export interface HeadersStore {
 }
 
 /**
- * Charge store
+ * Active Keys
+ *
+ * @typeParam activeApp: boolean
+ * @typeParam createAccess: string
+ * @typeParam setActiveApp: (activeApp: boolean) => void
+ * @typeParam setCreateAccess: (createAccess: string) => void
+ */
+export interface ActiveAppStore {
+  activeApp: boolean | null;
+  initAccess: boolean | null;
+  createAccess: string | null;
+  setActiveApp: (_activeApp: boolean | null) => void;
+  setCreateAccess: (_createAccess: string | null) => void;
+  setinitAccess: (_initAccess: boolean | null) => void;
+}
+
+ /* Charge store
  * @typeParam debt - Initial state {@defaultValue `null`}
  * @typeParam setView: (_data: any) => void
  */

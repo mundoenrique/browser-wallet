@@ -1,7 +1,8 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage, devtools } from 'zustand/middleware';
+import { type StateCreator, create } from 'zustand';
+import { persist, devtools } from 'zustand/middleware';
 //Internal app
 import { RegisterStore } from '@/interfaces';
+import { redisStorage } from '@/store/storages/register.store';
 
 /**
  * Stores and modifies the status of onboarding process screens and forms
@@ -21,59 +22,62 @@ import { RegisterStore } from '@/interfaces';
  * @param onboardingUuId - Storage of onboarding uuid
  * @param updateFormState - Function to set the data of completed forms
  */
+
+const storeAPi: StateCreator<RegisterStore, [['zustand/devtools', never]]> = (set) => ({
+  step: 0,
+
+  showHeader: true,
+
+  setShowHeader: (value) => set({ showHeader: value }),
+
+  inc: () => set((state) => ({ step: state.step + 1 })),
+
+  dec: () => set((state) => ({ step: state.step - 1 })),
+
+  updateStep: (newAmount) => set({ step: newAmount }),
+
+  ONB_PHASES_TERMS: null,
+
+  ONB_PHASES_CONSULT_DATA: null,
+
+  ONB_PHASES_PEP: null,
+
+  biometricFormState: null,
+
+  user: {
+    firstName: null,
+    lastName: null,
+    userId: null,
+  },
+
+  termsDefinition: [
+    {
+      name: 'TERMINO 1',
+      code: 'TERM1',
+    },
+
+    {
+      name: 'TERMINO 2',
+      code: 'TERM2',
+    },
+    {
+      name: 'TERMINO 3',
+      code: 'TERM3',
+    },
+  ],
+
+  onboardingUuId: null,
+  control: null,
+
+  updateFormState: (form, data) => set((state) => ({ ...state, [form]: data })),
+  updateControl: (data: any) => set({ control: data }),
+});
+
 export const useRegisterStore = create<RegisterStore>()(
   devtools(
-    persist(
-      (set) => ({
-        step: 0,
-
-        showHeader: true,
-
-        setShowHeader: (value) => set({ showHeader: value }),
-
-        inc: () => set((state) => ({ step: state.step + 1 })),
-
-        dec: () => set((state) => ({ step: state.step - 1 })),
-
-        updateStep: (newAmount) => set({ step: newAmount }),
-
-        ONB_PHASES_TERMS: null,
-
-        ONB_PHASES_CONSULT_DATA: null,
-
-        ONB_PHASES_PEP: null,
-
-        biometricFormState: null,
-
-        user: {
-          firstName: null,
-          lastName: null,
-          userId: null,
-        },
-
-        termsDefinition: [
-          {
-            name: 'TERMINO 1',
-            code: 'TERM1',
-          },
-
-          {
-            name: 'TERMINO 2',
-            code: 'TERM2',
-          },
-          {
-            name: 'TERMINO 3',
-            code: 'TERM3',
-          },
-        ],
-
-        onboardingUuId: null,
-        control: null,
-
-        updateFormState: (form, data) => set((state) => ({ ...state, [form]: data })),
-        updateControl: (data: any) => set({ control: data }),
-      }),
-      { name: 'app-store', storage: createJSONStorage(() => sessionStorage) }
-    )
+    persist(storeAPi, {
+      name: 'app-storage',
+      storage: redisStorage,
+    })
   )
 );

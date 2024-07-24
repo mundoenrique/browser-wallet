@@ -1,17 +1,16 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Box, Button, Typography } from '@mui/material';
 import { useEffect, useState, useCallback } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
-import { Box, Button, Typography } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import { encryptForge } from '@/utils/toolHelper';
 import ModalOtp from '@/components/modal/ModalOtp';
-import { ContainerLayout, InputRadio, Linking, ModalCardBundle } from '@/components';
+import { ContainerLayout, InputRadio, Linking } from '@/components';
 import { useUserStore, useUiStore, useOtpStore, useNavTitleStore, useConfigCardStore, useHeadersStore } from '@/store';
 
 export default function BlockCard() {

@@ -14,9 +14,14 @@ import LogoGreen from '%/images/LogoGreen';
 import { encryptForge } from '@/utils/toolHelper';
 import { TCredentials, TUserDetail } from '@/interfaces';
 import { InputPass, ModalResponsive, NavExternal } from '@/components';
-import { useHeadersStore, useOtpStore, useRegisterStore, useUiStore, useUserStore, useConfigCardStore } from '@/store';
-//Eliminar este store despues de la certificacion de inicio de sesión
-import { accessSessionStore } from '@/store/accessSessionStore';
+import {
+  useHeadersStore,
+  useOtpStore,
+  useRegisterStore,
+  useUiStore,
+  useUserStore,
+  useAccessSessionStore,
+} from '@/store';
 
 export default function Signin() {
   const theme = useTheme();
@@ -25,21 +30,23 @@ export default function Signin() {
 
   const router = useRouter();
 
-  const { user } = useRegisterStore();
-
   const { setOTPValid } = useOtpStore();
 
   const { backLink } = useHeadersStore();
 
   const { setModalError } = useUiStore();
 
-  const { setUser, userId } = useUserStore();
-
-  const { setAccessSession } = accessSessionStore();
-
   const host = useHeadersStore((state) => state.host);
 
+  const user = useRegisterStore((state) => state.user);
+
+  const setUser = useUserStore((state) => state.setUser);
+
+  const userId = useUserStore((state) => state.userId);
+
   const { setLoadingScreen, loadingScreen } = useUiStore();
+
+  const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
 
   const [errorMessage] = useState<string>('');
 
@@ -65,12 +72,25 @@ export default function Signin() {
       .then((response) => {
         const { status } = response;
         if (status === 200) {
-          router.push('/dashboard');
           setAccessSession(true);
+          const date = new Date();
+          localStorage.setItem('sessionTime', date.toString());
+          router.push('/dashboard');
         }
       })
       .catch((e) => {
-        setModalError({ error: e });
+        const { code } = e.response.data.data;
+        if (code) {
+          const eCode = code?.split('.').pop() ?? '';
+          switch (eCode) {
+            case '9999':
+              router.push('/signout');
+              break;
+            default:
+              setModalError({ error: e });
+              break;
+          }
+        }
       })
       .finally(() => {
         setLoadingScreen(false);

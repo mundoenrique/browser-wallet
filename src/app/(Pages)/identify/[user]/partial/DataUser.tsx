@@ -98,7 +98,7 @@ export default function DataUser({ user, referer, host }: DataUserProps) {
               countryCode: country,
             },
           })
-          .then((response) => {
+          .then(async (response) => {
             setUserValidation(response.data);
           })
           .catch(() => {

@@ -11,10 +11,10 @@ import LogoPurple from '%/images/LogoPurple';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { LogoutAppIcons, LogoutIcons } from '%/Icons';
 import ItemSecondarySidebar from './ItemSecondarySidebar';
-import { useConfigCardStore, useHeadersStore } from '@/store';
-
-//Eliminar este store despues de la certificacion de inicio de sesión
-import { accessSessionStore } from '@/store/accessSessionStore';
+import { useConfigCardStore, useHeadersStore, useAccessSessionStore, useKeyStore, useUserStore } from '@/store';
+import { api } from '@/utils/api';
+import { useRouter } from 'next/navigation';
+import { setDataRedis } from '@/utils/toolHelper';
 
 /**
  * Complete sidebar structure.
@@ -23,18 +23,33 @@ import { accessSessionStore } from '@/store/accessSessionStore';
  * In the sybar structure we find: The logo, primary menu elements (ItemsSidebar.tsx) and secondary menu elements (ItemSecondarySidebar.tsx)
  */
 export default function ListSidebar(): JSX.Element {
+
+  const { push } = useRouter();
+
+  const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
+
   const updatePage = useConfigCardStore((state) => state.updatePage);
+
+  const jwePublicKey = useKeyStore((state) => state.jwePublicKey);
+
+  const user = useUserStore((state) => state.user);
 
   const isPhysicalCard = useConfigCardStore((state) => state.isPhysicalCard);
 
   const cardActivationStatus = useConfigCardStore((state) => state.cardActivationStatus);
 
-  //Eliminar este store despues de la certificacion de inicio de sesión
-  const { setAccessSession } = accessSessionStore();
-
   const { backLink } = useHeadersStore();
 
   const host = useHeadersStore((state) => state.host);
+
+  const closeSession = async () => {
+    localStorage.removeItem('sessionTime');
+    const stateObject = { login: false };
+    await setDataRedis('PUT', { uuid: null, data: stateObject });
+    await api.delete('/redis', { data: { jwePublicKey, delParam: 'timeSession' } });
+    await api.delete('/redis', { data: { key: 'activeSession', jwePublicKey, delParam: user.userId } });
+    setAccessSession(false);
+  };
 
   return (
     <>
@@ -110,13 +125,12 @@ export default function ListSidebar(): JSX.Element {
         />
         <Divider variant="middle" sx={{ bgcolor: `${fuchsiaBlue[400]}` }} />
         <ItemSecondarySidebar
-          href="/signin"
+          href=""
           text="Cerrar sesión"
           icon={<LogoutIcons />}
           color
-          onClick={() => {
-            setAccessSession(false);
-            sessionStorage.clear();
+          onClick={async () => {
+            await closeSession();
             sendGTMEvent({
               event: 'ga4.trackEvent',
               eventName: 'select_content',

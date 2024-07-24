@@ -1,5 +1,6 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { type StateCreator, create } from 'zustand';
+import { persist, devtools } from 'zustand/middleware';
+import { redisStorage } from '@/store/storages/charge.store';
 //Internal app
 import { ChargeStore } from '@/interfaces';
 
@@ -9,12 +10,17 @@ import { ChargeStore } from '@/interfaces';
  * @param chargeAmount - Initial state {@defaultValue `0`}
  * @param setCharge - Function that sets the new value
  */
+const storeAPi: StateCreator<ChargeStore, [['zustand/devtools', never]]> = (set) => ({
+
+  chargeAmount: 0,
+  setCharge: (data: number) => set(() => ({ chargeAmount: data })),
+});
+
 export const useChargeStore = create<ChargeStore>()(
-  persist(
-    (set) => ({
-      chargeAmount: 0,
-      setCharge: (data: number) => set(() => ({ chargeAmount: data })),
-    }),
-    { name: 'charge-store', storage: createJSONStorage(() => sessionStorage) }
+  devtools(
+    persist(storeAPi, {
+      name: 'charge-storage',
+      storage: redisStorage,
+    })
   )
 );

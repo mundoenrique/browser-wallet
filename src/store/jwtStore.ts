@@ -1,30 +1,22 @@
-import { create } from 'zustand';
-import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+import { type StateCreator, create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
 //Internal app
 import { JwtStoreProps } from '@/interfaces/store';
+import { redisStorage } from '@/store/storages/jwt.store';
 
-/**
- * Store for JWT
- *
- * @param token - Initial state {@defaultValue `null`}
- * @param setToken - Function that sets the new value
- *
- * @remarks This state persists in sessionStorage
- */
+const storeAPi: StateCreator<JwtStoreProps, [['zustand/devtools', never]]> = (set) => ({
+  token: null,
+  uuid: null,
+
+  setUuid: (uuid) => set({ uuid }),
+  setToken: (token) => set({ token }),
+});
+
 export const useJwtStore = create<JwtStoreProps>()(
   devtools(
-    persist(
-      (set) => ({
-        token: null,
-        uuid: null,
-
-        setUuid: (uuid) => set({ uuid }),
-        setToken: (token) => set({ token }),
-      }),
-      {
-        name: 'jwt-store',
-        storage: createJSONStorage(() => sessionStorage),
-      }
-    )
+    persist(storeAPi, {
+      name: 'jwt-storage',
+      storage: redisStorage,
+    })
   )
 );

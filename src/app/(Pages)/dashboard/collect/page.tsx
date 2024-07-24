@@ -29,19 +29,19 @@ import {
 export default function Collect() {
   const schema = getSchema(['nameClient', 'numberClient', 'amount']);
 
-  const client = useClientStore((state) => state.client);
-
-  const setClient = useClientStore((state) => state.setClient);
-
   const { setCurrentItem } = useMenuStore();
 
   const { updateTitle } = useNavTitleStore();
 
   const host = useHeadersStore((state) => state.host);
 
+  const client = useClientStore((state) => state.client);
+
   const userId = useUserStore((state) => state.user.userId);
 
   const setLoad = useCollectStore((state) => state.setLoad);
+
+  const setClient = useClientStore((state) => state.setClient);
 
   const loadingScreen = useUiStore((state) => state.loadingScreen);
 

@@ -3,15 +3,15 @@
 import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 //Internal app
+import LogoGreen from '%/images/LogoGreen';
 import { useRouter } from 'next/navigation';
 import { ChildrenProps } from '@/interfaces';
 import Navbar from '../navigation/navbar/Navbar';
 import Sidebar from '../navigation/sidebar/Sidebar';
-import { useDrawerStore, useUserStore } from '@/store';
+import { PurpleLayout, Timersession } from '@/components';
 import NavbarLower from '../navigation/navbar/NavbarLower';
-//Eliminar este store despues de la certificacion de inicio de sesión
-import { accessSessionStore } from '@/store/accessSessionStore';
 import ModalCardBundle from '../modal/ModalCardBundle';
+import { useDrawerStore, useUserStore, useAccessSessionStore } from '@/store';
 
 /**
  * Container used in the internal views of the application
@@ -22,10 +22,9 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
   const { push } = useRouter();
   const drawerWidth = 315;
 
-  //Eliminar esta logica despues de la certificacion de inicio de sesión
-  const { accessSession } = accessSessionStore();
-
   const { drawerStatus, setDrawerStatus } = useDrawerStore();
+
+  const accessSession = useAccessSessionStore((state) => state.accessSession);
 
   const { cardSolutions } = useUserStore((state) => state.user);
 
@@ -33,9 +32,12 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
 
   const [cardBundle, setCardBundle] = useState<boolean>(false);
 
-  if (accessSession === false) {
-    push('/signin');
-  }
+  useEffect(() => {
+    if (accessSession === false) {
+      push('/signin');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessSession]);
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -66,8 +68,9 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
 
   return (
     <>
-      {accessSession && (
+      {accessSession ? (
         <Box sx={{ display: 'flex' }}>
+          <Timersession />
           <Navbar onClick={handleDrawerToggle} />
           <Sidebar
             open={drawerStatus}
@@ -89,6 +92,10 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
 
           <NavbarLower />
         </Box>
+      ) : (
+        <PurpleLayout>
+          <LogoGreen />
+        </PurpleLayout>
       )}
 
       <ModalCardBundle open={cardBundle} />

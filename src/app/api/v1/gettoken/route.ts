@@ -1,14 +1,17 @@
+import uuid4 from 'uuid4';
 import { NextRequest, NextResponse } from 'next/server';
 //Internal app
 import logger from '@/utils/logger';
-import { decryptJWE, getEnvVariable, handleResponse, signJWT } from '@/utils';
-import uuid4 from 'uuid4';
+import { encryptForge } from '@/utils/toolHelper';
+import { decryptJWE, getEnvVariable, handleResponse, signJWT, postRedis } from '@/utils';
 
 export async function POST(request: NextRequest) {
   const { url, method } = request;
 
   try {
+    const ipAddress = request.headers.get('X-Forwarded-For');
     const uuid = uuid4();
+
     const encryptedBody = await request.json();
     const { data } = encryptedBody;
     const jwePrivateKey = getEnvVariable('MIDDLE_JWE_PRIVATE_KEY');
@@ -18,9 +21,18 @@ export async function POST(request: NextRequest) {
 
     logger.debug('Request middleware Web %s', JSON.stringify({ method, reqUrl: url, body: decryptedPayload }));
 
-    const { jwePublicKey, jwsPublicKey } = decryptedPayload as { jwePublicKey: string; jwsPublicKey: string };
+    const { jwePublicKey, jwsPublicKey, isBrowser, idDevice } = decryptedPayload as {
+      jwePublicKey: string;
+      jwsPublicKey: string;
+      isBrowser: boolean;
+      idDevice: string;
+    };
 
-    const token = await signJWT(jwsPrivateKey, { jwePublicKey, jwsPublicKey });
+    const deviceId = idDevice ? idDevice : null;
+    const stateObject = { login: false, ipAddress, uuid, deviceId };
+    await postRedis(`session:${encryptForge(uuid)}`, stateObject);
+
+    const token = await signJWT(jwsPrivateKey, { jwePublicKey, jwsPublicKey, uuid });
 
     const responsePayload = { code: '200.00.000', message: 'Process Ok', data: { jwt: token, sessionId: uuid } };
 
@@ -28,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     let response: NextResponse;
 
-    response = await handleResponse(responsePayload, jwePublicKey, jwsPrivateKey);
+    response = await handleResponse(responsePayload, jwePublicKey, jwsPrivateKey, 200, isBrowser);
 
     return response;
   } catch (error) {

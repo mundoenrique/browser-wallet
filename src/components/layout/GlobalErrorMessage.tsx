@@ -1,16 +1,59 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 //Internal app
-import { useUiStore } from '@/store';
+import { api } from '@/utils/api';
+import { ModalResponsive } from '..';
+import { useRouter } from 'next/navigation';
 import ModalError from '../modal/ModalError';
+import { Box, Typography } from '@mui/material';
+import { useAccessSessionStore, useKeyStore, useUiStore, useUserStore } from '@/store';
 
 export default function GlobalErrorMessage() {
+  const { push } = useRouter();
+
+  const user = useUserStore((state) => state.user);
+
+  const jwePublicKey = useKeyStore((state) => state.jwePublicKey);
+
   const showModalError = useUiStore((state) => state.showModalError);
+
   const reloadFunction = useUiStore((state) => state.reloadFunction);
+
   const closeModalError = useUiStore((state) => state.closeModalError);
+
   const modalErrorObject = useUiStore((state) => state.modalErrorObject);
+
   const clearReloadFunction = useUiStore((state) => state.clearReloadFunction);
+
+  const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
+
+  const [open, setOpen] = useState<boolean>(false);
+
+  const closeSession = async () => {
+    localStorage.removeItem('sessionTime');
+    localStorage.removeItem('intervalId');
+    await api.delete('/redis', { data: { jwePublicKey, delParam: 'timeSession' } });
+    await api.delete('/redis', { data: { key: 'activeSession', jwePublicKey, delParam: user.userId } });
+    setAccessSession(false);
+    setOpen(false);
+    push('/signin');
+  };
+
+  const sessionExpired = async (eCode: string) => {
+    const code = eCode?.split('.').pop() ?? '';
+
+    if (code === '9998') {
+      setOpen(true);
+      clearInterval(Number(localStorage.getItem('intervalId')));
+      setTimeout(() => {
+        closeSession();
+      }, 5000);
+    } else if (code === '9999') {
+      await api.delete('/redis', { data: { key: 'activeSession', jwePublicKey, delParam: user.userId } });
+      push('/signout');
+    }
+  };
 
   const resetError = () => {
     closeModalError();
@@ -32,6 +75,7 @@ export default function GlobalErrorMessage() {
         const { title: modalTitle, description: modalDescription } = setError(errorCode, context);
         title = modalTitle;
         description = modalDescription;
+        sessionExpired(errorCode);
       } else {
         const { title: modalTitle, description: modalDescription } = setError();
         title = modalTitle;
@@ -46,16 +90,26 @@ export default function GlobalErrorMessage() {
     }
 
     return { title: title, description: description };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalErrorObject]);
 
   return (
-    <ModalError
-      title={modalMessage.title}
-      description={modalMessage.description}
-      open={showModalError}
-      handleClose={resetError}
-      handleReload={reloadFunction}
-    />
+    <>
+      <ModalError
+        title={modalMessage.title}
+        description={modalMessage.description}
+        open={showModalError}
+        handleClose={resetError}
+        handleReload={reloadFunction}
+      />
+      <ModalResponsive open={open} handleClose={closeSession}>
+        <Box>
+          <Typography variant="subtitle1" mb={3}>
+            Tu sesión ha finalizado, clic en cerrar para ingresar nuevamente.
+          </Typography>
+        </Box>
+      </ModalResponsive>
+    </>
   );
 }
 
@@ -108,6 +162,7 @@ const setError = (eCode?: string, context?: string) => {
     '993': { description: 'Token de acceso vencido.' },
     '995': { description: 'La nueva contraseña no puede ser la misma que las últimas 3 utilizadas.' },
     '999': { description: 'Error interno del servidor' },
+    '9998': { description: 'La sesión ha expirado' },
 
     login: { '057': { description: 'Cuenta Bloqueada', title: 'login Inválido' } },
   };

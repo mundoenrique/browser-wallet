@@ -1,3 +1,4 @@
+import { TIME_SESSION_REDIS } from '.';
 import Redis, { RedisOptions } from 'ioredis';
 
 const redis = {
@@ -64,5 +65,84 @@ export function createRedisInstance(config = getRedisConfiguration()) {
     return redis;
   } catch (e) {
     throw new Error(`[Redis] Could not create a Redis instance`);
+  }
+}
+
+export async function getRedis(dataGet: string) {
+  try {
+    const redis = createRedisInstance();
+    const resData: string | null = await redis.get(`${dataGet}`);
+    await redis.expire(`${dataGet}`, TIME_SESSION_REDIS);
+    await redis.quit();
+
+    return resData;
+  } catch (error) {
+    throw new Error('Error get data Redis.');
+  }
+}
+
+export async function postRedis(keyRedis: any, newData: any) {
+  try {
+    const redis = createRedisInstance();
+    if (keyRedis != null) {
+      await redis.set(`${keyRedis}`, JSON.stringify(newData));
+      await redis.expire(`${keyRedis}`, TIME_SESSION_REDIS);
+    }
+
+    redis.quit();
+  } catch (error) {
+    throw new Error('Error post data Redis: ');
+  }
+}
+
+export async function putRedis(keyRedis: any, newData: any) {
+  try {
+    const redis = createRedisInstance();
+    const dataRedis: string | null = await redis.get(`${keyRedis}`);
+    let stateObject: any;
+
+    if (dataRedis) {
+      stateObject = JSON.parse(dataRedis);
+      const newObject = { ...stateObject, ...newData };
+      await redis.set(`${keyRedis}`, JSON.stringify(newObject));
+    }
+
+    await redis.expire(`${keyRedis}`, TIME_SESSION_REDIS);
+
+    redis.quit();
+  } catch (error) {
+    throw new Error('Error put data Redis: ');
+  }
+}
+
+export async function delDataRedis(keyRedis: any, delParam: any) {
+  try {
+    const redis = createRedisInstance();
+    const dataRedis: string | null = await redis.get(`${keyRedis}`);
+    let stateObject: any;
+
+    const time = (keyRedis === 'activeSession') ? 60 * 60 * 8 : TIME_SESSION_REDIS;
+
+    if (dataRedis) {
+      stateObject = JSON.parse(dataRedis);
+      delete stateObject[delParam]
+      await redis.set(keyRedis, JSON.stringify(stateObject));
+    }
+
+    await redis.expire(`${keyRedis}`, time);
+
+    redis.quit();
+  } catch (error) {
+    throw new Error('Error put data Redis: ');
+  }
+}
+
+export async function delRedis(sesionId: string) {
+  try {
+    const redis = createRedisInstance();
+    redis.del(sesionId);
+    redis.quit();
+  } catch (error) {
+    throw new Error('Error delete data Redis.');
   }
 }

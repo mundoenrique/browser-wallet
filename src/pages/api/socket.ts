@@ -10,7 +10,6 @@ import { Server, Socket } from 'socket.io';
 export default function handler(req: any, res: any) {
   const sockets: Record<string, Socket> = {};
   if (res.socket.server.io) {
-    console.log('Server already started!');
     res.end();
     return;
   }
@@ -21,11 +20,9 @@ export default function handler(req: any, res: any) {
   res.socket.server.io = io;
 
   const onConnection = (socket: Socket) => {
-    console.log('Logged in user:', socket.id);
     sockets[socket.id] = socket;
 
     socket.on('disconnect', () => {
-      console.log('Disconnected user:', socket.id);
       delete sockets[socket.id];
     });
 
@@ -35,6 +32,5 @@ export default function handler(req: any, res: any) {
   };
 
   io.on('connection', onConnection);
-  console.log('Socket server started successfully!');
   res.end();
 }

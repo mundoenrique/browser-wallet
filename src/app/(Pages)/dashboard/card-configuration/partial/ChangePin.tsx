@@ -22,11 +22,11 @@ export default function ChangePin() {
 
   const cardId = useUserStore((state) => state.getUserCardId);
 
+  const setModalError = useUiStore((state) => state.setModalError);
+
   const updatePage = useConfigCardStore((state) => state.updatePage);
 
   const updateTitle = useNavTitleStore((state) => state.updateTitle);
-
-  const setModalError = useUiStore((state) => state.setModalError);
 
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
