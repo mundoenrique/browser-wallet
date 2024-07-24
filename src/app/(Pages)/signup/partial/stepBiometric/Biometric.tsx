@@ -96,17 +96,20 @@ export default function Biometric() {
           setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
         }
       })
-      .catch((e) => {
+      .catch(() => {
+        setLoadingScreen(false);
         updateStep(4);
         setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
       });
   };
 
   const receiveMessage = (event: any) => {
+    if (typeof event.data !== 'string') return;
+
     let data = window.JSON.parse(event.data);
-    if (data.payload.value === 'success') {
-      validateBiometric();
-    }
+
+    if (data.payload.value === 'success') validateBiometric();
+
     if (data.payload.value === 'error') setBtnBack(true);
   };
 
