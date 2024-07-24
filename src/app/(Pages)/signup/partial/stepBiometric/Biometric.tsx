@@ -96,7 +96,8 @@ export default function Biometric() {
           setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
         }
       })
-      .catch((e) => {
+      .catch(() => {
+        setLoadingScreen(false);
         updateStep(4);
         setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
       });
