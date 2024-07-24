@@ -32,8 +32,16 @@ jest.mock('mui-one-time-password-input', () => {
 
 jest.mock('@/utils/redis', () => ({
   createRedisInstance: jest.fn(),
+  delRedis: jest.fn(),
+  getRedis: jest.fn(),
 }));
 
 jest.mock('next/headers', () => ({
   headers: jest.fn().mockReturnValue(new Map([['referer', 'testReferer']])),
+}));
+
+// Mock the toolHelper module
+jest.mock('@/utils/toolHelper', () => ({
+  ...jest.requireActual('@/utils/toolHelper'),
+  setDataRedis: jest.fn().mockResolvedValue({}),
 }));
