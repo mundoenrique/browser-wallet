@@ -209,7 +209,6 @@ export default function ActivatePhysicalCard() {
   }, [showModal]); //eslint-disable-line react-hooks/exhaustive-deps
 
   const readCodeFunction = (data: any): Promise<any> => {
-    console.log('🚀 ~ readCodeFunction ~ data:', data);
     return new Promise((resolve) => {
       if (data) {
         cardId.current = JSON.parse(data);

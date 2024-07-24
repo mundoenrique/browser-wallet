@@ -11,10 +11,17 @@ import { Box, Button, Link as LinkMui, Skeleton, Typography, useMediaQuery, useT
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import LogoGreen from '%/images/LogoGreen';
-import { encryptForge, setDataRedis } from '@/utils/toolHelper';
+import { encryptForge } from '@/utils/toolHelper';
 import { TCredentials, TUserDetail } from '@/interfaces';
 import { InputPass, ModalResponsive, NavExternal } from '@/components';
-import { useHeadersStore, useOtpStore, useRegisterStore, useUiStore, useUserStore, useConfigCardStore, useAccessSessionStore } from '@/store';
+import {
+  useHeadersStore,
+  useOtpStore,
+  useRegisterStore,
+  useUiStore,
+  useUserStore,
+  useAccessSessionStore,
+} from '@/store';
 
 export default function Signin() {
   const theme = useTheme();
@@ -23,23 +30,23 @@ export default function Signin() {
 
   const router = useRouter();
 
-  const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
-
-  const user = useRegisterStore((state) => state.user);
-
   const { setOTPValid } = useOtpStore();
 
   const { backLink } = useHeadersStore();
 
   const { setModalError } = useUiStore();
 
-  const setUser = useUserStore((state) => state.setUser);
-
-  const  userId  = useUserStore((state) => state.userId);
-
   const host = useHeadersStore((state) => state.host);
 
+  const user = useRegisterStore((state) => state.user);
+
+  const setUser = useUserStore((state) => state.setUser);
+
+  const userId = useUserStore((state) => state.userId);
+
   const { setLoadingScreen, loadingScreen } = useUiStore();
+
+  const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
 
   const [errorMessage] = useState<string>('');
 
@@ -65,7 +72,7 @@ export default function Signin() {
       .then((response) => {
         const { status } = response;
         if (status === 200) {
-          setAccessSession(true)
+          setAccessSession(true);
           const date = new Date();
           localStorage.setItem('sessionTime', date.toString());
           router.push('/dashboard');
@@ -95,7 +102,6 @@ export default function Signin() {
       .get(`/users/${id}`)
       .then((response) => {
         const userDetail = response.data.data;
-        console.log(userDetail);
         setUser(userDetail);
         setUserData(userDetail);
       })
