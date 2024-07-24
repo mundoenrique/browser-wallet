@@ -18,6 +18,7 @@ export default function SignOut() {
     const urlRef: any = (backLink != '') ? backLink : process.env.NEXT_PUBLIC_ALLOW_ORIGIN;
     setUrl(urlRef);
     sessionStorage.clear();
+    localStorage.clear();
   }, [backLink, setUrl]);
 
   return <PurpleLayout>
