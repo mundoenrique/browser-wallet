@@ -103,9 +103,7 @@ export default function Biometric() {
   };
 
   const receiveMessage = (event: any) => {
-    if (typeof event.data !== 'string') {
-      return;
-    }
+    if (typeof event.data !== 'string') return;
     let data = window.JSON.parse(event.data);
     if (data.payload.value === 'success') {
       validateBiometric();
