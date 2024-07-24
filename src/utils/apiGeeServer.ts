@@ -207,7 +207,7 @@ async function validateSession(request: NextRequest) {
 
 function sessionExpired(validate: any) {
 
-  logger.debug('El tiempo de session ha finalizado');
+  logger.debug('The session time is over');
 
   const response: any = {
     status: 401,
