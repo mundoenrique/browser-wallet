@@ -40,6 +40,7 @@ export default function GlobalErrorMessage() {
       clearInterval(Number(localStorage.getItem('intervalId')));
       setTimeout(() => { closeSession() }, 5000);
     } else if (code === '9999') {
+      await api.delete('/redis', { data: { key: 'activeSession', jwePublicKey, delParam: user.userId } });
       push('/signout');
     }
 
