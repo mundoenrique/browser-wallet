@@ -7,6 +7,7 @@ jest.mock('@/utils/toolHelper', () => ({
   encryptForge: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
   handleMaskOtp: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
   stringAvatar: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
+  setDataRedis: jest.fn().mockResolvedValue({})
 }));
 
 jest.mock('next/navigation', () => ({
@@ -38,10 +39,4 @@ jest.mock('@/utils/redis', () => ({
 
 jest.mock('next/headers', () => ({
   headers: jest.fn().mockReturnValue(new Map([['referer', 'testReferer']])),
-}));
-
-// Mock the toolHelper module
-jest.mock('@/utils/toolHelper', () => ({
-  ...jest.requireActual('@/utils/toolHelper'),
-  setDataRedis: jest.fn().mockResolvedValue({}),
 }));
