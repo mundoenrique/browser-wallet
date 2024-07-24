@@ -14,7 +14,6 @@ const storageApi: StateStorage = {
 
       return '';
     } catch (error) {
-      console.error(error);
       return null;
     }
   },

@@ -1,4 +1,4 @@
-import { decryptForge, setDataRedis } from '@/utils/toolHelper';
+import { decryptForge, setDataRedis } from '../../utils/toolHelper';
 import { StateStorage, createJSONStorage } from 'zustand/middleware';
 
 const storageApi: StateStorage = {
@@ -15,7 +15,6 @@ const storageApi: StateStorage = {
 
       return '';
     } catch (error) {
-      console.error(error);
       return null;
     }
   },
