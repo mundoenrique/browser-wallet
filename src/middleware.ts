@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 //Internal app
 import { URL_BASE } from '@/utils/constants';
 import { SESSION_ID } from './utils/constants';
-import { encryptForge, setDataRedis } from './utils/toolHelper';
+import { setDataRedis } from './utils/toolHelper';
 
 export async function middleware(request: NextRequest) {
   const { url, nextUrl } = request;
@@ -47,7 +47,6 @@ export async function middleware(request: NextRequest) {
   const isProtectedApiV0 = protectedApiV0.includes(partsUrlApi[2]);
 
   if (isProtectedApiV0) {
-
     const response = NextResponse.rewrite(new URL(protectedApiV1[0], url));
     response.headers.set('x-url', apiUrl);
     return response;
@@ -55,5 +54,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/v1/:path*','/signin','/signup','/password-recover','/qr','/dashboard','/dashboard/:path*'],
+  matcher: ['/api/v1/:path*', '/signin', '/signup', '/password-recover', '/qr', '/dashboard', '/dashboard/:path*'],
 };

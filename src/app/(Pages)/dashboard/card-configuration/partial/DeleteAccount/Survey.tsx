@@ -32,13 +32,13 @@ export default function Survey() {
 
   const user = useUserStore((state) => state.user);
 
-  const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
-
   const host = useHeadersStore((state) => state.host);
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
 
   const { setModalError, setLoadingScreen } = useUiStore();
+
+  const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
 
   const [openRc, setOpenRc] = useState<boolean>(false);
 
@@ -57,10 +57,8 @@ export default function Survey() {
     const reasonCode = getValues('blockType');
     api
       .delete(`/users/${user.userId}`, { params: { reasonCode } })
-      .then((response) => {
-        console.log('🚀 ~ deleteAccount ~ response:', response);
+      .then(() => {
         setAccessSession(false);
-        sessionStorage.clear();
         window.open(backLink);
       })
       .catch(() => {

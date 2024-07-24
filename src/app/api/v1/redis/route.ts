@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 //Internal app
+import logger from '@/utils/logger';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
 import { SESSION_ID, TIME_SESSION_REDIS } from '@/utils/constants';
 import { createRedisInstance, getRedis, postRedis } from '@/utils/redis';
 import { decryptJWE, delRedis, getEnvVariable, handleResponse, putRedis } from '@/utils';
-import logger from '@/utils/logger';
 
 export async function GET(request: NextRequest) {
   try {
@@ -66,7 +66,7 @@ export async function PUT(request: NextRequest) {
 
       redis.quit();
     } catch (error) {
-      throw new Error('Error put data Redis: ');
+      throw new Error(`Error put data Redis: ${error}`);
     }
 
     const res = { data: { code: '200.00.000', message: 'ok' } };
@@ -82,7 +82,6 @@ export async function DELETE(request: NextRequest) {
   const { url, method } = request;
 
   try {
-
     const encryptedBody = await request.json();
     const { data } = encryptedBody;
     const jwePrivateKey = getEnvVariable('MIDDLE_JWE_PRIVATE_KEY');
@@ -92,13 +91,13 @@ export async function DELETE(request: NextRequest) {
 
     logger.debug('Request middleware Web %s', JSON.stringify({ method, reqUrl: url, body: decryptedPayload }));
 
-    const { key, delParam, jwePublicKey } = decryptedPayload as { key: string, delParam: string; jwePublicKey: string};
+    const { key, delParam, jwePublicKey } = decryptedPayload as { key: string; delParam: string; jwePublicKey: string };
 
     const uuid = cookies().get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile')) || null;
     const redis = createRedisInstance();
 
-    let keyRedis = (key) ? key : `session:${uuid}`;
-    const time = (keyRedis !== 'activeSession') ? TIME_SESSION_REDIS : 60 * 60 * 8;
+    let keyRedis = key ? key : `session:${uuid}`;
+    const time = keyRedis !== 'activeSession' ? TIME_SESSION_REDIS : 60 * 60 * 8;
 
     const dataRedis: string | null = await redis.get(keyRedis);
 
@@ -110,19 +109,19 @@ export async function DELETE(request: NextRequest) {
       await redis.quit();
     }
 
-     if (!key) {
+    if (!key) {
       const stateObject = { login: false };
       await putRedis(`session:${uuid}`, stateObject);
-     }
+    }
 
-    request.headers.get('X-Session-Mobile') && await delRedis(`session:${encryptForge(request.headers.get('X-Session-Mobile'))}`);
+    request.headers.get('X-Session-Mobile') &&
+      (await delRedis(`session:${encryptForge(request.headers.get('X-Session-Mobile'))}`));
 
-    const responsePayload = { code: '200.00.000', message: 'Process Ok', data: { message: ''} };
+    const responsePayload = { code: '200.00.000', message: 'Process Ok', data: { message: '' } };
 
     let response: NextResponse;
     response = await handleResponse(responsePayload, jwePublicKey, jwsPrivateKey, 200);
     return response;
-
   } catch (error) {
     return new NextResponse(JSON.stringify({ error: 'Failed to get Data' }), { status: 500 });
   }

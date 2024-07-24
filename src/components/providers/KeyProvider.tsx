@@ -70,6 +70,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
         }
       })();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initAccess, activeApp, keys, setToken, setKeys, setinitAccess, setCreateAccess, setAccessSession]);
 
   if (!initAccess && pathname != '/signout') {

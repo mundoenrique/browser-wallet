@@ -1,5 +1,6 @@
-import { decryptForge, setDataRedis } from '../../utils/toolHelper';
 import { StateStorage, createJSONStorage } from 'zustand/middleware';
+//Internal app
+import { decryptForge, setDataRedis } from '@/utils/toolHelper';
 
 const storageApi: StateStorage = {
   getItem: async function (name: string): Promise<string | null> {
@@ -27,7 +28,7 @@ const storageApi: StateStorage = {
   },
 
   removeItem: function (name: string): void | Promise<void> {
-    return
+    return;
   },
 };
 

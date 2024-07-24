@@ -33,18 +33,14 @@ export function verifyAccess(namePage: string, dependence?: { [key: string]: str
     if (access[namePage].dependence) {
       const pageDependence = access[namePage].dependence;
       if (JSON.stringify(pageDependence) === JSON.stringify(dependence)) {
-        console.log(`Acceso permitido a ${namePage} con la dependence ${JSON.stringify(dependence)}`);
         return true;
       } else {
-        console.log(`Acceso denegado a ${namePage} con la dependence ${JSON.stringify(dependence)}`);
         return false;
       }
     } else {
-      console.log(`Acceso permitido a ${namePage}`);
       return access[namePage];
     }
   } else {
-    console.log(`La página ${namePage} no existe en los permisos`);
     return false;
   }
 }

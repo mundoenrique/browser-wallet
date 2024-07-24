@@ -10,8 +10,8 @@ import Navbar from '../navigation/navbar/Navbar';
 import Sidebar from '../navigation/sidebar/Sidebar';
 import { PurpleLayout, Timersession } from '@/components';
 import NavbarLower from '../navigation/navbar/NavbarLower';
-import { useDrawerStore, useUserStore, useAccessSessionStore } from '@/store';
 import ModalCardBundle from '../modal/ModalCardBundle';
+import { useDrawerStore, useUserStore, useAccessSessionStore } from '@/store';
 
 /**
  * Container used in the internal views of the application
@@ -36,6 +36,7 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
     if (accessSession === false) {
       push('/signin');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessSession]);
 
   const handleDrawerClose = () => {

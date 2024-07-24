@@ -10,8 +10,6 @@ import { ContainerLayout, Linking, ModalResponsive } from '@/components';
 import { useConfigCardStore, useNavTitleStore, useUserStore, useUiStore, useHeadersStore } from '@/store';
 
 export default function RequestPhysicalCard() {
-  const updateTitle = useNavTitleStore((state) => state.updateTitle);
-
   const host = useHeadersStore((state) => state.host);
 
   const { userId } = useUserStore((state) => state.user);
@@ -20,11 +18,11 @@ export default function RequestPhysicalCard() {
 
   const loadingScreen = useUiStore((state) => state.loadingScreen);
 
+  const updateTitle = useNavTitleStore((state) => state.updateTitle);
+
   const updatePage = useConfigCardStore((state) => state.updatePage);
 
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
-
-  const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
 
   const [open, setOpen] = useState<boolean>(false);
 

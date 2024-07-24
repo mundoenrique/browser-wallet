@@ -4,17 +4,19 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Typography, Box } from '@mui/material';
 // Internal app
-import { ModalResponsive } from '.';
-import { useAccessSessionStore, useKeyStore, useUserStore } from '@/store';
-import { setDataRedis, validateTime } from '@/utils/toolHelper';
 import { api } from '@/utils/api';
+import { ModalResponsive } from '.';
+import { setDataRedis, validateTime } from '@/utils/toolHelper';
+import { useAccessSessionStore, useKeyStore, useUserStore } from '@/store';
 
 export default function TimmerSession() {
   const { push } = useRouter();
 
-  const jwePublicKey = useKeyStore((state) => state.jwePublicKey);
-  const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
   const user = useUserStore((state) => state.user);
+
+  const jwePublicKey = useKeyStore((state) => state.jwePublicKey);
+
+  const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -54,6 +56,7 @@ export default function TimmerSession() {
     localStorage.setItem('intervalId', intervalSession.toString());
 
     return () => clearInterval(intervalSession);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
