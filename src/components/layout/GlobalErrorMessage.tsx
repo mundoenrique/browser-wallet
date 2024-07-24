@@ -39,6 +39,8 @@ export default function GlobalErrorMessage() {
       setOpen(true);
       clearInterval(Number(localStorage.getItem('intervalId')));
       setTimeout(() => { closeSession() }, 5000);
+    } else if (code === '9999') {
+      push('/signout');
     }
 
   }
