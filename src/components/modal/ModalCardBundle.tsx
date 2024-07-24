@@ -17,39 +17,32 @@ export default function ModalCardBundle({ open }: { open: boolean }) {
 
   const setUser = useUserStore((state) => state.setUser);
 
-  const { userId } = useUserStore((state) => state.user);
+  const user = useUserStore((state) => state.user);
 
   const setModalError = useUiStore((state) => state.setModalError);
 
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const getUserDetails = async () => {
-    await api.get(`/users/${userId}`).then((response) => {
-      const userDetail = response.data.data;
-      setUser(userDetail);
-    });
-  };
+  const [block, setBlock] = useState<boolean>(false);
 
   const requestBundledCard = async () => {
     setLoadingScreen(true);
-    setLoading(true);
+    setBlock(true);
     const payload = {
-      userId: userId,
+      userId: user.userId,
     };
 
     api
       .post('/cards/issuance', payload)
-      .then(async () => {
-        await getUserDetails();
+      .then((response) => {
+        setUser({ ...user, cardSolutions: { ...user.cardSolutions, status: {}, cardId: response.data.data.cardId } });
       })
       .catch((e) => {
         setModalError({ error: e });
       })
       .finally(() => {
         setLoadingScreen(false);
-        setLoading(false);
+        setBlock(false);
       });
   };
 
@@ -93,7 +86,7 @@ export default function ModalCardBundle({ open }: { open: boolean }) {
           });
         }}
         fullWidth
-        disabled={loading}
+        disabled={block}
       >
         Crear nueva cuenta
       </Button>
