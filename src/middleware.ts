@@ -17,6 +17,8 @@ export async function middleware(request: NextRequest) {
     let uuid = request.cookies.get(SESSION_ID)?.value;
     const res = await setDataRedis('POST', { uuid: `session:${uuid}`, dataRedis: 'get' });
 
+    console.log('Data de redis desde el middleware ', res);
+
     if (!res) {
       const response = NextResponse.redirect(`${nextUrl.origin}/signout`);
       response.cookies.set(SESSION_ID, '', { expires: new Date(0) });
