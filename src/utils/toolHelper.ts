@@ -115,7 +115,6 @@ export const setDataRedis = async (method: string, data = {}) => {
   try {
     const encryptData = encryptForge(JSON.stringify(data));
     const url = process.env.NEXT_PUBLIC_WEB_URL + '/api/v1/redis';
-    console.log(`Making request to ${url} with method ${method}`);
 
     const response = await fetch(url, {
       method: method,
@@ -124,13 +123,11 @@ export const setDataRedis = async (method: string, data = {}) => {
     });
 
     if (!response.ok) {
-      console.error(`API response error: ${response.status} ${response.statusText}`);
       throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
     }
 
     return await response.json();
   } catch (error) {
-    console.error('Fetch failed:', error);
     throw error;
   }
 };
