@@ -112,19 +112,27 @@ export const decryptForge = (encryptedData: any) => {
 };
 
 export const setDataRedis = async (method: string, data = {}) => {
-  const encryptData = encryptForge(JSON.stringify(data));
-  const response = await fetch(process.env.NEXT_PUBLIC_WEB_URL + '/api/v1/redis', {
-    method: method,
-    mode: 'cors',
-    cache: 'no-cache',
-    credentials: 'same-origin',
-    headers: { 'Content-Type': 'application/json' },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-    body: JSON.stringify({ data: encryptData }),
-  });
+  try {
+    const encryptData = encryptForge(JSON.stringify(data));
+    const url = process.env.NEXT_PUBLIC_WEB_URL + '/api/v1/redis';
+    console.log(`Making request to ${url} with method ${method}`);
 
-  return response.json();
+    const response = await fetch(url, {
+      method: method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: encryptData }),
+    });
+
+    if (!response.ok) {
+      console.error(`API response error: ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Fetch failed:', error);
+    throw error;
+  }
 };
 
 /**
