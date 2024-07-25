@@ -10,7 +10,6 @@ jest.mock('@/store', () => ({
     getUserPhone: jest.fn(() => '123456789'),
     user: { userId: 'mockedUserId', firstName: 'John' },
   })),
-  useCollectStore: jest.fn(() => ({ setLinkData: jest.fn() })),
 }));
 
 jest.mock('@/utils/api');
@@ -34,7 +33,7 @@ describe('Recharge', () => {
     jest.clearAllMocks();
   });
 
-  describe('Render forms function', () => {
+  describe('Render forms', () => {
     //** Renders a title, subtitles.
     it('should render all text, titles, subtitles.', () => {
       expect(screen.getByText(/generar recarga/i)).toBeInTheDocument();
@@ -47,15 +46,17 @@ describe('Recharge', () => {
     });
   });
 
-  it('error message when amount is invalid min', async () => {
-    fireEvent.change(amountInput, { target: { value: '0.00' } });
-    fireEvent.click(submitButton);
-    waitFor(() => expect(screen.getByText('El monto debe ser mayor o igual a S/ 1.00')).toBeInTheDocument());
-  });
+  describe('Show errors and call api.post', () => {
+    it('error message when amount is invalid min', async () => {
+      fireEvent.change(amountInput, { target: { value: '0.50' } });
+      fireEvent.click(submitButton);
+      waitFor(() => expect(screen.getByText('El monto debe ser mayor o igual a S/ 1.00')).toBeInTheDocument());
+    });
 
-  it('error message when amount is invalid max', async () => {
-    fireEvent.change(amountInput, { target: { value: '5000.00' } });
-    fireEvent.click(submitButton);
-    waitFor(() => expect(screen.getByText('El monto debe ser menor o igual a S/ 4950.00')).toBeInTheDocument());
-  });
+    it('error message when amount is invalid max', async () => {
+      fireEvent.change(amountInput, { target: { value: '5000.00' } });
+      fireEvent.click(submitButton);
+      waitFor(() => expect(screen.getByText('El monto debe ser menor o igual a S/ 4950.00')).toBeInTheDocument());
+    });
+  })
 });
