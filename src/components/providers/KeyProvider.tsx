@@ -19,6 +19,8 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
 
   const setKeys = useKeyStore((state) => state.setKeys);
 
+  const token = useJwtStore((state) => state.token);
+
   const setToken = useJwtStore((state) => state.setToken);
 
   const setUuid = useJwtStore((state) => state.setUuid);
@@ -73,7 +75,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initAccess, activeApp, keys, setToken, setKeys, setinitAccess, setCreateAccess, setAccessSession]);
 
-  if (!initAccess && pathname != '/signout') {
+  if (!token && !initAccess && pathname != '/signout') {
     return (
       <PurpleLayout>
         <LogoGreen />
