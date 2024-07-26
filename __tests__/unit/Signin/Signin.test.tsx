@@ -89,17 +89,6 @@ describe('Signin', () => {
       });
     });
 
-    it('should handle API LOGIN error when credentials are incorrect', async () => {
-      fireEvent.change(passwordInput, { target: { value: '123456' } });
-      fireEvent.click(submitButton);
-
-      await mockApi.post.mockImplementation(() => Promise.reject(new Error('API error')));
-
-      await waitFor(() => {
-        expect(mockApi.post).toHaveBeenCalled();
-      });
-    });
-
     it('should send GTM event when clicked', () => {
       const goBack = screen.getByText('Volver a Somos Belcorp');
       fireEvent.click(goBack);

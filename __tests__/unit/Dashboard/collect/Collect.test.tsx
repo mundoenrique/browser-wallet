@@ -1,6 +1,5 @@
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
-import { api } from '@/utils/api';
 import Collect from '@/app/(Pages)/dashboard/collect/page';
 import { renderInput, mockRouterPush } from '../../../tools/unitTestHelper.test';
 
@@ -9,14 +8,7 @@ jest.mock('@/store', () => ({
   useUserStore: jest.fn(() => ({
     user: { userId: 'mockedUserId', firstName: 'John' },
   })),
-  useCollectStore: jest.fn(() => ({
-    setLoad: jest.fn(),
-    setLinkData: jest.fn(),
-  })),
 }));
-
-jest.mock('@/utils/api');
-const mockApi = api as jest.Mocked<typeof api>;
 
 describe('Collect', () => {
   let form: HTMLFormElement;
@@ -60,7 +52,7 @@ describe('Collect', () => {
     });
   });
 
-  describe('onSubmit function', () => {
+  describe('Show errors and call api.post', () => {
     it('error message when amount is invalid min', async () => {
       const setError = jest.fn();
       const e = { preventDefault: jest.fn() };
@@ -72,15 +64,40 @@ describe('Collect', () => {
       e.preventDefault();
       const validate = {
         min: parseFloat(amount.value) < 1,
-        max: parseFloat(amount.value) < 4950,
       };
 
-      await setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });
+      await act(async () => {
+        setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });
+      });
 
       expect(setError).toHaveBeenCalledTimes(1);
       expect(validate.min && setError).toHaveBeenCalledWith('amount', {
         type: 'customError',
         message: 'El monto debe ser mayor o igual a S/ 1.00',
+      });
+    });
+
+    it('error message when amount is invalid max', async () => {
+      const setError = jest.fn();
+      const e = { preventDefault: jest.fn() };
+      fireEvent.change(numberClient, { target: { value: '123456789' } });
+      fireEvent.change(nameClient, { target: { value: 'Jhon Doe' } });
+      fireEvent.change(amount, { target: { value: '5000.00' } });
+      fireEvent.submit(form);
+
+      e.preventDefault();
+      const validate = {
+        max: parseFloat(amount.value) < 4950,
+      };
+
+      await act(async () => {
+        await setError('amount', { type: 'customError', message: 'El monto debe ser menor o igual a S/ 4950.00' });
+      });
+
+      expect(setError).toHaveBeenCalledTimes(1);
+      expect(validate.max && setError).toHaveBeenCalledWith('amount', {
+        type: 'customError',
+        message: 'El monto debe ser menor o igual a S/ 4950.00',
       });
     });
   });
