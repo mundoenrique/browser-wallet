@@ -1,4 +1,3 @@
-import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
 //Internal app
 import { api } from '@/utils/api';
@@ -31,22 +30,25 @@ describe('Clients', () => {
     },
   ];
   const routerPushMock = jest.fn();
-  mockApi.get.mockResolvedValue({ status: 200, data: { data: clientsData } });
 
   beforeEach(async () => {
     mockRouterPush(routerPushMock);
-    await act(async () => {
-      render(<Clients />);
-    });
+    mockApi.get.mockResolvedValue({ status: 200, data: { data: clientsData } });
   });
 
   //** Renders a title, subtitles.
-  it('should render all text, titles, subtitles.', () => {
+  it('should render all text, titles, subtitles.', async () => {
+    await act(async () => {
+      render(<Clients />);
+    });
     expect(screen.getByText(/mis clientes/i)).toBeInTheDocument();
     expect(screen.getByText(/total deuda clientes/i)).toBeInTheDocument();
   });
 
-  it('calls onSubmit function when form is submitted', async () => {
+  it('calls getClientesApi function', async () => {
+    await act(async () => {
+      render(<Clients />);
+    })
     await mockApi.get(`/payments/123456789/chargelist`, {
       params: { days: 30, limit: 100, page: 1, date: 7, transactionCode: 1 },
     });
@@ -57,5 +59,23 @@ describe('Clients', () => {
         params: { days: 30, limit: 100, page: 1, date: 7, transactionCode: 1 },
       });
     });
+  });
+
+  it('CALL API GET ERROR', async () => {
+    await mockApi.get.mockRejectedValue(new Error('Error fetching clients data'));
+
+    await act(async () => {
+      render(<Clients />);
+    })
+
+    await waitFor(() => {
+      expect(mockApi.get).toHaveBeenCalled();
+    });
+  });
+
+  it('handle filters.', async () => {
+    await act(async () => {
+      render(<Clients />);
+    })
   });
 });
