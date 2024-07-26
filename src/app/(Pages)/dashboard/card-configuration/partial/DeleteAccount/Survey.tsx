@@ -59,7 +59,7 @@ export default function Survey() {
       .delete(`/users/${user.userId}`, { params: { reasonCode } })
       .then(() => {
         setAccessSession(false);
-        window.open(backLink);
+        setOpenRc(true);
       })
       .catch(() => {
         setModalError({
@@ -98,10 +98,8 @@ export default function Survey() {
         .post(`/users/${user.userId}/validate/tfa`, payload)
         .then(async (response) => {
           if (response.data.code === '200.00.000') {
-            setOpenOtp(false);
             await deleteAccount();
             setOpenOtp(false);
-            setOpenRc(true);
             reset();
           }
         })
@@ -182,7 +180,13 @@ export default function Survey() {
           processCode="CARD_CANCELLATION_OTP"
         />
       )}
-      <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>
+      <ModalResponsive
+        open={openRc}
+        handleClose={() => {
+          setOpenRc(false);
+          window.open(backLink);
+        }}
+      >
         <Typography variant="subtitle1" mb={3}>
           🚫 Tu cuenta ha sido eliminada
         </Typography>
