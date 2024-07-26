@@ -27,9 +27,10 @@ const config: Config = {
     'src/app/**/dashboard/movements/*page.tsx',
     'src/app/**/dashboard/recharge/*page.tsx',
     'src/app/**/dashboard/*page.tsx',
-    // 'src/app/**/identify/[user]/*page.tsx',
+    'src/app/**/identify/[user]/*page.tsx',
     'src/app/**/password-recover/*page.tsx',
-    // 'src/app/**/signin/*page.tsx',
+    'src/app/**/signin/*page.tsx',
+    'src/app/**/signout/*page.tsx',
     'src/app/**/signup/*page.tsx',
     'src/app/**/conditions/*page.tsx',
     'src/app/**/questions/*page.tsx',
@@ -42,10 +43,8 @@ const config: Config = {
   testPathIgnorePatterns: [
     '<rootDir>/__tests__/mocks/',
     '<rootDir>/__tests__/tools/',
-    '<rootDir>/__tests__/unit/Dashboard/change-password',
-    '<rootDir>/__tests__/unit/Dashboard/transfer',
-    '<rootDir>/__tests__/unit/Signin',
-    '<rootDir>/__tests__/unit/Identify',
+    '<rootDir>/__tests__/unit/Dashboard/change-password/',
+    '<rootDir>/__tests__/unit/Dashboard/transfer/',
   ],
 };
 
