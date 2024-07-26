@@ -1,6 +1,5 @@
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 //Internal app
-import { api } from '@/utils/api';
 import Collect from '@/app/(Pages)/dashboard/collect/page';
 import { renderInput, mockRouterPush } from '../../../tools/unitTestHelper.test';
 
@@ -10,9 +9,6 @@ jest.mock('@/store', () => ({
     user: { userId: 'mockedUserId', firstName: 'John' },
   })),
 }));
-
-jest.mock('@/utils/api');
-const mockApi = api as jest.Mocked<typeof api>;
 
 describe('Collect', () => {
   let form: HTMLFormElement;
@@ -70,7 +66,9 @@ describe('Collect', () => {
         min: parseFloat(amount.value) < 1,
       };
 
-      await setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });
+      await act(async () => {
+        setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });
+      });
 
       expect(setError).toHaveBeenCalledTimes(1);
       expect(validate.min && setError).toHaveBeenCalledWith('amount', {
@@ -92,7 +90,9 @@ describe('Collect', () => {
         max: parseFloat(amount.value) < 4950,
       };
 
-      await setError('amount', { type: 'customError', message: 'El monto debe ser menor o igual a S/ 4950.00' });
+      await act(async () => {
+        await setError('amount', { type: 'customError', message: 'El monto debe ser menor o igual a S/ 4950.00' });
+      });
 
       expect(setError).toHaveBeenCalledTimes(1);
       expect(validate.max && setError).toHaveBeenCalledWith('amount', {
