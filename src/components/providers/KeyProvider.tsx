@@ -16,6 +16,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   const pathname = usePathname();
 
   const [keys, setKeysStore] = useState<any>('');
+  const [time, setTime] = useState<boolean>(true);
 
   const setKeys = useKeyStore((state) => state.setKeys);
 
@@ -35,6 +36,8 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
 
   const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
 
+  const token = useJwtStore((state) => state.token);
+
   useEffect(() => {
     if (!activeApp && pathname != '/signout') {
       const jweKeypair = new NodeRSA({ b: 2048 });
@@ -46,9 +49,11 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
       setKeysStore({ jwePublicKey, jwePrivateKey, jwsPublicKey, jwsPrivateKey });
       setCreateAccess(jwePrivateKey);
       setActiveApp(true);
+    } else {
+      setTimeout(() => { setTime(false); }, 3000);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeApp, setActiveApp, setCreateAccess]);
+  }, [activeApp, time, setTimeout, setActiveApp, setCreateAccess]);
 
   useEffect(() => {
     if (!initAccess && activeApp) {
@@ -73,7 +78,8 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initAccess, activeApp, keys, setToken, setKeys, setinitAccess, setCreateAccess, setAccessSession]);
 
-  if (!initAccess && pathname != '/signout') {
+  if (time || (!initAccess && !token && pathname != '/signout')) {
+
     return (
       <PurpleLayout>
         <LogoGreen />
@@ -81,5 +87,6 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
     );
   }
 
-  return <>{children}</>;
+  return <>{ children }</>;
+
 }
