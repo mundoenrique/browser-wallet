@@ -96,10 +96,10 @@ export default function Survey() {
 
       api
         .post(`/users/${user.userId}/validate/tfa`, payload)
-        .then((response) => {
+        .then(async (response) => {
           if (response.data.code === '200.00.000') {
             setOpenOtp(false);
-            deleteAccount();
+            await deleteAccount();
             setOpenOtp(false);
             setOpenRc(true);
             reset();
@@ -108,6 +108,9 @@ export default function Survey() {
         .catch((e) => {
           setModalError({ error: e });
           setLoadingScreen(false);
+        })
+        .finally(() => {
+          setLoadingScreen(true);
         });
     },
     [otpUuid] //eslint-disable-line
