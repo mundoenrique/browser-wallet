@@ -107,10 +107,9 @@ export default function Survey() {
         })
         .catch((e) => {
           setModalError({ error: e });
-          setLoadingScreen(false);
         })
         .finally(() => {
-          setLoadingScreen(true);
+          setLoadingScreen(false);
         });
     },
     [otpUuid] //eslint-disable-line
