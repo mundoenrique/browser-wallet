@@ -341,11 +341,9 @@ export interface HeadersStore {
  */
 export interface ActiveAppStore {
   activeApp: boolean | null;
-  initAccess: boolean | null;
   createAccess: string | null;
   setActiveApp: (_activeApp: boolean | null) => void;
   setCreateAccess: (_createAccess: string | null) => void;
-  setinitAccess: (_initAccess: boolean | null) => void;
 }
 
  /* Charge store

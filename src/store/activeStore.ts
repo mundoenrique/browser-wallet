@@ -19,10 +19,8 @@ export const useActiveAppStore = create<ActiveAppStore>()(
   persist(
     (set) => ({
       activeApp: false,
-      initAccess: false,
       createAccess: '',
       setActiveApp: (activeApp) => set({ activeApp }),
-      setinitAccess: (initAccess) => set({ initAccess }),
       setCreateAccess: (createAccess) => set({ createAccess })
     }),
     {
