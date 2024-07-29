@@ -27,7 +27,7 @@ export async function middleware(request: NextRequest) {
     } else {
       const data = JSON.parse(res);
 
-      if (data.accessSession.state.accessSession && partsUrl[1] === 'signin') {
+      if (data.login && partsUrl[1] === 'signin') {
         return NextResponse.redirect(`${nextUrl.origin}/dashboard`);
       } else {
         return NextResponse.next();
