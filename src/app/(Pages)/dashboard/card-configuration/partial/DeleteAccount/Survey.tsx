@@ -1,6 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
@@ -22,6 +23,8 @@ import {
 } from '@/store';
 
 export default function Survey() {
+  const { push } = useRouter();
+
   const schema = getSchema(['blockType']);
 
   const { backLink } = useHeadersStore();
@@ -176,7 +179,7 @@ export default function Survey() {
           onSubmit={onSubmitOtp}
           title="🎰 Verifica tu identidad para eliminar cuenta"
           textButton="Eliminar cuenta Yiro"
-          closeApp
+          closeApp={() => push('/dashboard')}
           processCode="CARD_CANCELLATION_OTP"
         />
       )}
