@@ -105,7 +105,7 @@ export default function ModalOtp(props: ModalOtpProps): JSX.Element {
             {textButton ? textButton : 'Verificar'}
           </Button>
           {closeApp && (
-            <Button variant="outlined" sx={{ width: '100%', mx: 'auto', mt: 2 }} onClick={handleClose}>
+            <Button variant="outlined" sx={{ width: '100%', mx: 'auto', mt: 2 }} onClick={closeApp}>
               Conservar cuenta Yiro
             </Button>
           )}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
@@ -22,6 +23,8 @@ import {
 } from '@/store';
 
 export default function Survey() {
+  const { push } = useRouter();
+
   const schema = getSchema(['blockType']);
 
   const { backLink } = useHeadersStore();
@@ -59,7 +62,7 @@ export default function Survey() {
       .delete(`/users/${user.userId}`, { params: { reasonCode } })
       .then(() => {
         setAccessSession(false);
-        window.open(backLink);
+        setOpenRc(true);
       })
       .catch(() => {
         setModalError({
@@ -98,10 +101,8 @@ export default function Survey() {
         .post(`/users/${user.userId}/validate/tfa`, payload)
         .then(async (response) => {
           if (response.data.code === '200.00.000') {
-            setOpenOtp(false);
             await deleteAccount();
             setOpenOtp(false);
-            setOpenRc(true);
             reset();
           }
         })
@@ -178,11 +179,17 @@ export default function Survey() {
           onSubmit={onSubmitOtp}
           title="🎰 Verifica tu identidad para eliminar cuenta"
           textButton="Eliminar cuenta Yiro"
-          closeApp
+          closeApp={() => push('/dashboard')}
           processCode="CARD_CANCELLATION_OTP"
         />
       )}
-      <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>
+      <ModalResponsive
+        open={openRc}
+        handleClose={() => {
+          setOpenRc(false);
+          window.open(backLink);
+        }}
+      >
         <Typography variant="subtitle1" mb={3}>
           🚫 Tu cuenta ha sido eliminada
         </Typography>
