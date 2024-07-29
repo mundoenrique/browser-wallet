@@ -26,11 +26,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
 
   const activeApp = useActiveAppStore((state) => state.activeApp);
 
-  const initAccess = useActiveAppStore((state) => state.initAccess);
-
   const setActiveApp = useActiveAppStore((state) => state.setActiveApp);
-
-  const setinitAccess = useActiveAppStore((state) => state.setinitAccess);
 
   const setCreateAccess = useActiveAppStore((state) => state.setCreateAccess);
 
@@ -56,7 +52,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   }, [activeApp, time, setTimeout, setActiveApp, setCreateAccess]);
 
   useEffect(() => {
-    if (!initAccess && activeApp) {
+    if (!token && activeApp) {
       (async () => {
         try {
           const idDevice = window.navigation.activation.entry.key;
@@ -67,18 +63,18 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
           setKeys(keys);
           setToken(token);
           setUuid(uuid);
-          setCreateAccess('');
-          setinitAccess(true);
           setAccessSession(false);
         } catch (error) {
           console.error('Error generating JWT token:', error);
         }
       })();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initAccess, activeApp, keys, setToken, setKeys, setinitAccess, setCreateAccess, setAccessSession]);
 
-  if (time || (!initAccess && !token && pathname != '/signout')) {
+    token && setCreateAccess('');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token, activeApp, keys, setToken, setKeys, setCreateAccess, setAccessSession]);
+
+  if (time || (!token && pathname != '/signout')) {
 
     return (
       <PurpleLayout>
