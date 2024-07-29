@@ -29,7 +29,7 @@ export interface ModalOtpProps {
   handleClose: () => void;
   open: boolean;
   onSubmit: (_data: any) => Promise<void>;
-  closeApp?: boolean;
+  closeApp?: () => void | boolean;
   title?: string | boolean;
   textButton?: string | boolean;
   processCode: string;
