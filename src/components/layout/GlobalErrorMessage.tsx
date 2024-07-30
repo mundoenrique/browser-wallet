@@ -105,7 +105,7 @@ export default function GlobalErrorMessage() {
       <ModalResponsive open={open} handleClose={closeSession}>
         <Box>
           <Typography variant="subtitle1" mb={3}>
-            Tu sesión ha finalizado, clic en cerrar para ingresar nuevamente.
+            Tu sesión ha finalizado, haz clic en cerrar para ingresar nuevamente.
           </Typography>
         </Box>
       </ModalResponsive>
@@ -133,7 +133,7 @@ const setError = (eCode?: string, context?: string) => {
     '044': { description: 'Fondos insuficientes.' },
     '051': { description: 'Número máximo de transacciones alcanzado.' },
     '052': { description: 'Datos no disponibles, por favor inténtelo nuevamente.' },
-    '057': { title: 'Usuario bloqueado', description: 'Tu cuenta de acceso ha sido bloqueada por 24h.' },
+    '057': { description: 'El usuario se encuentra bloqueado.' },
     '058': {
       title: 'Credenciales inválidas',
       description: 'Después de 3 intentos incorrectos el acceso se bloqueará. En caso no recuerdes tu clave, cámbiala.',
@@ -142,7 +142,7 @@ const setError = (eCode?: string, context?: string) => {
     '066': { description: 'El número de teléfono ya ha sido registrado por otro usuario.' },
     '080': { description: 'Debes ingresar al menos la fecha o el número de días.' },
     '085': { description: 'El código OTP ha expirado.' },
-    '093': { description: 'El usuario se encuentra bloqueado.' },
+    '093': { title: 'Usuario bloqueado', description: 'Tu cuenta de acceso ha sido bloqueada por 24h.' },
     '106': { title: 'Usuario invalido', description: 'Por favor ponte en contacto con Somos Belcorp.' },
     '110': { description: 'Transacción no encontrada.' },
     '312': { description: 'El correo ya ha sido registrado por otro usuario.' },
@@ -166,6 +166,8 @@ const setError = (eCode?: string, context?: string) => {
     '407': { description: 'La tarjeta ha expirado.' },
     '437': { description: 'No hemos podido procesar la transacción.' },
     '464': { description: 'El código OTP no es válido.' },
+    '480': { description: 'Tu usuario se encuentra inactivo.' },
+    '481': { description: 'Tu usuario se encuentra cancelado.' },
     '486': { description: 'La tarjeta ya se encuentra asociada a una cuenta.' },
     '507': { description: 'Los datos no corresponden al usuario registrado.' },
     '522': { description: 'Supera el límite de frecuencia de retiros.' },
@@ -178,7 +180,7 @@ const setError = (eCode?: string, context?: string) => {
     '999': { description: 'Error interno del servidor.' },
     '9998': { description: 'La sesión ha expirado' },
 
-    login: { '057': { description: 'Cuenta Bloqueada', title: 'login Inválido' } },
+    login: { '057': { description: 'Cuenta Bloqueada', title: 'login Inválido.' } },
   };
 
   const contextErrors = context && errorsMessages[context];
