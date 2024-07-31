@@ -164,6 +164,7 @@ const setError = (eCode?: string, context?: string) => {
     '387': { description: 'La transacción fue rechazada, verifique la información del pago.' },
     '396': { description: 'Parametros inválidos.' },
     '407': { description: 'La tarjeta ha expirado.' },
+    '427': { description: 'La tarjeta es invalida.' },
     '437': { description: 'No hemos podido procesar la transacción.' },
     '464': { description: 'El código OTP no es válido.' },
     '480': { description: 'Tu usuario se encuentra inactivo.' },
