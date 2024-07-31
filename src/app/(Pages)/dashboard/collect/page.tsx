@@ -199,7 +199,7 @@ export default function Collect() {
                   eventName: 'select_content',
                   eventParams: {
                     content_type: 'boton',
-                    section: 'cobrar :: monto',
+                    section: 'cobrar',
                     previous_section: 'dashboard',
                     selected_content: 'Billetera digital, Banco o agencia',
                     destination_page: `${host}/dashboard/collect`,
@@ -221,7 +221,7 @@ export default function Collect() {
                   eventName: 'select_content',
                   eventParams: {
                     content_type: 'boton',
-                    section: 'cobrar :: monto',
+                    section: 'cobrar',
                     previous_section: 'dashboard',
                     selected_content: 'Tarjeta de crédito o débito',
                     destination_page: `${host}/dashboard/collect`,

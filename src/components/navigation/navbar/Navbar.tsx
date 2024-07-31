@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import MenuIcon from '@mui/icons-material/Menu';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { AppBar, IconButton, Toolbar, Typography, Box } from '@mui/material';
 //Internal app
 import Linking from '../Linking';
@@ -48,7 +49,25 @@ export default function Navbar(props: NavbarProps): JSX.Element {
         </IconButton>
 
         {dashboardNav ? (
-          <Linking href={backLink} label="Volver a Somos Belcorp" mb={0} adormentEnd />
+          <Linking
+            href={backLink}
+            label="Volver a Somos Belcorp"
+            mb={0}
+            adormentEnd
+            onClick={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: 'Yiro :: Volver a Somos Belcorp :: menu_1',
+                  previous_section: 'dashboard',
+                  selected_content: 'menu_1 :: Volver a Somos Belcorp',
+                  destination_page: `${backLink}`,
+                },
+              });
+            }}
+          />
         ) : (
           <>
             <Typography variant="subtitle1" color="primary.main">
