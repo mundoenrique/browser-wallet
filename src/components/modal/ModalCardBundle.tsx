@@ -33,7 +33,7 @@ export default function ModalCardBundle({ open }: { open: boolean }) {
     };
 
     api
-      .post('/cards/issuance', payload)
+      .post('/cards/replacement', payload)
       .then((response) => {
         setUser({ ...user, cardSolutions: { ...user.cardSolutions, status: {}, cardId: response.data.data.cardId } });
       })
