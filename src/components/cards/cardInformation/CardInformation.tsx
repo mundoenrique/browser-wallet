@@ -15,8 +15,8 @@ const cardTypeQuery = (cardType: string) => {
   const cardObject: { [key: string]: object } = {
     VIRTUAL: {
       decryptData: true,
-      cvvNumber: false,
-      dynCvvNumber: true,
+      cvvNumber: true,
+      dynCvvNumber: false,
     },
     PHYSICAL: {
       decryptData: true,
