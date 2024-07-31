@@ -209,7 +209,7 @@ export default function Dashboard() {
                       eventName: 'select_content',
                       eventParams: {
                         content_type: 'boton',
-                        section: 'Yiro :: dashboard',
+                        section: 'dashboard',
                         previous_section: 'Yiro :: login :: interno',
                         selected_content: 'Me deben',
                         destination_page: `${host}/dashboard/debt`,
@@ -227,7 +227,7 @@ export default function Dashboard() {
                       eventName: 'select_content',
                       eventParams: {
                         content_type: 'boton',
-                        section: 'Yiro :: dashboard',
+                        section: 'dashboard',
                         previous_section: 'Yiro :: login :: interno',
                         selected_content: 'Mi deuda con Belcorp',
                         destination_page: `${host}/dashboard/clients`,
@@ -252,7 +252,7 @@ export default function Dashboard() {
                         eventName: 'select_content',
                         eventParams: {
                           content_type: 'boton',
-                          section: 'Yiro :: dashboard',
+                          section: 'dashboard',
                           previous_section: 'Yiro :: login :: interno',
                           selected_content: 'Ver todo',
                           destination_page: `${host}/dashboard/movements`,
