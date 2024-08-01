@@ -51,6 +51,13 @@ export default function Survey() {
     updateTitle('Ayúdanos con esta encuesta');
   }, [updateTitle]);
 
+  useEffect(() => {
+    openRc &&
+      (async () => {
+        await deleteAccount();
+      })();
+  }, [openRc]); //eslint-disable-line
+
   const { control, handleSubmit, reset, getValues } = useForm({
     defaultValues: { blockType: '' },
     resolver: yupResolver(schema),
@@ -63,6 +70,7 @@ export default function Survey() {
       .then(() => {
         setAccessSession(false);
         setOpenRc(true);
+        push(backLink != '' ? backLink : (process.env.NEXT_PUBLIC_ALLOW_ORIGIN as string));
       })
       .catch(() => {
         setModalError({
@@ -101,8 +109,8 @@ export default function Survey() {
         .post(`/users/${user.userId}/validate/tfa`, payload)
         .then(async (response) => {
           if (response.data.code === '200.00.000') {
-            await deleteAccount();
             setOpenOtp(false);
+            setOpenRc(true);
             reset();
           }
         })
@@ -179,7 +187,6 @@ export default function Survey() {
           onSubmit={onSubmitOtp}
           title="🎰 Verifica tu identidad para eliminar cuenta"
           textButton="Eliminar cuenta Yiro"
-          closeApp={() => push('/dashboard')}
           processCode="CARD_CANCELLATION_OTP"
         />
       )}
