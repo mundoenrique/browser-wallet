@@ -33,11 +33,13 @@ export default function CardConfiguration() {
 
   const { userId } = useUserStore((state) => state.user);
 
-  const { isPhysicalCard } = useConfigCardStore();
+  const isPhysicalCard = useConfigCardStore((state) => state.isPhysicalCard);
 
-  const { isTempBlock } = useConfigCardStore();
+  const isTempBlock = useConfigCardStore((state) => state.isTempBlock);
 
-  const { cardActivationStatus } = useConfigCardStore();
+  const cardActivationStatus = useConfigCardStore((state) => state.cardActivationStatus);
+
+  const cardInformation = useConfigCardStore((state) => state.cardInformation);
 
   const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
 
@@ -102,7 +104,7 @@ export default function CardConfiguration() {
 
   useEffect(() => {
     setValue('temporaryBlock', isTempBlock());
-  }, [isTempBlock, setValue]);
+  }, [isTempBlock, setValue, cardInformation]);
 
   const onSubmit = async (data: any) => {
     const payload = data.temporaryBlock
