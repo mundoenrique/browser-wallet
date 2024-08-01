@@ -88,9 +88,11 @@ export default function CardConfiguration() {
 
       api
         .post(`/users/${userId}/validate/tfa`, payload)
-        .then(() => {
-          setOpenOtp(false);
-          handleSubmit(onSubmit)();
+        .then((response) => {
+          if (response.data.code === '200.00.000') {
+            setOpenOtp(false);
+            handleSubmit(onSubmit)();
+          }
         })
         .catch((e) => {
           setModalError({ error: e });
