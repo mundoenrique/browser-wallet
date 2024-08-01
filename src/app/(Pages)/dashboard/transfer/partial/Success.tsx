@@ -101,7 +101,27 @@ export default function Success({ onClick, transferDetail }: CardTicketProps) {
         </CardTicket>
 
         <Box sx={{ width: '100%', display: { xs: 'flex', md: 'none' }, justifyContent: 'center' }}>
-          <Linking href="/dashboard" label="Volver al inicio" hidenArrow color="white" underline fontSize={16} />
+          <Linking
+            href="/dashboard"
+            label="Volver al inicio"
+            hidenArrow
+            color="white"
+            underline
+            fontSize={16}
+            onClick={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: 'Yiro :: transferencia :: operacionExitosa',
+                  previous_section: 'Yiro :: transferencia :: monto',
+                  selected_content: 'Volver al inicio',
+                  destination_page: `${host}/dashboard`,
+                },
+              });
+            }}
+          />
         </Box>
       </ContainerLayout>
     </PurpleLayout>

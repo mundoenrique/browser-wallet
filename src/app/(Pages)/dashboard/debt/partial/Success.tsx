@@ -61,23 +61,7 @@ export default function Success() {
           Comprobante
         </Typography>
 
-        <CardTicket
-          textBotton="Guardar"
-          download
-          downloadGA={() =>
-            sendGTMEvent({
-              event: 'ga4.trackEvent',
-              eventName: 'select_content',
-              eventParams: {
-                content_type: 'boton',
-                section: 'Yiro :: pagarDeuda :: operacionExitosa',
-                previous_section: 'Yiro :: pagarDeuda :: monto',
-                selected_content: 'Guardar',
-                destination_page: `${host}/dashboard/debt`,
-              },
-            })
-          }
-        >
+        <CardTicket textBotton="Guardar" download>
           <Box sx={{ display: 'grid', width: '100%' }}>
             <Typography variant="subtitle1" textAlign="center">
               Has pagado

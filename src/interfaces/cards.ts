@@ -80,9 +80,7 @@ export interface CardTicketProps extends ChildrenProps {
   avatarText?: string | React.ReactNode;
   textBotton?: string;
   download?: boolean;
-  downloadGA?: () => void;
   shared?: boolean;
-  sharedGA?: () => void;
   transferDetail?: TransferDetail;
   onClick?: () => void | boolean;
 }
@@ -114,17 +112,13 @@ export interface CardInfoOperationProps {
  * @typeParam children: React.ReactNode
  * @typeParam label: string
  * @typeParam download (Optional): boolean
- * @typeParam downloadGA (Optional): () => void;
  * @typeParam share (Optional): boolean
- * @typeParam shareGA (Optional): () => void;
  */
 export interface CardPagoEfectivoProps {
   cip: string;
   children: React.ReactNode;
   label: string;
   download?: boolean;
-  downloadGA?: () => void;
   share?: boolean;
-  shareGA?: () => void;
   codeQr?: string;
 }

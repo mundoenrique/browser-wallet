@@ -3,11 +3,13 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { isBrowser, isMobile, isTablet } from 'react-device-detect';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 //Internal app
 import { CopyIcons } from '%/Icons';
 import CardReport from './CardReport';
+import { useHeadersStore } from '@/store';
 import Qr from '%/images/arts/default-qr.svg';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardPagoEfectivoProps } from '@/interfaces';
@@ -21,22 +23,13 @@ import { handleDownload, handleShare } from '@/utils/toolHelper';
  * @param children - Add elements from the parent
  * @param label - Label of buttons
  * @param download - handling for file download
- * @param downloadGA - handle Google Analytics
  * @param share - handling for image shared
- * @param shareGA - handle Google Analytics
  * @param codeQr - Qr Code Pago Efectivo
  */
-export default function CardPagoEfectivo({
-  cip,
-  children,
-  label,
-  download,
-  downloadGA,
-  share,
-  shareGA,
-  codeQr,
-}: CardPagoEfectivoProps) {
+export default function CardPagoEfectivo({ cip, children, label, download, share, codeQr }: CardPagoEfectivoProps) {
   const ticketRef = useRef<any>(null);
+
+  const host = useHeadersStore((state) => state.host);
 
   const ImagePagoEfectivo = {
     src: PagoEfectivo,
@@ -49,7 +42,18 @@ export default function CardPagoEfectivo({
   };
 
   const handleShareClick = () => {
-    downloadGA;
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'cobrar :: realizarOperacion :: pagoEfectivo',
+        previous_section: 'cobrar',
+        selected_content: 'Compartir',
+        destination_page: `${host}/dashboard/collect`,
+      },
+    });
+
     if (isBrowser) {
       handleShare(ticketRef.current, shareData, fuchsiaBlue[800]);
     }
@@ -60,7 +64,18 @@ export default function CardPagoEfectivo({
   };
 
   const handleDownloadClick = () => {
-    shareGA;
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'Yiro :: recargas :: realizarOperacion :: pagoEfectivo',
+        previous_section: 'Yiro :: recargas :: monto',
+        selected_content: 'Guardar código QR',
+        destination_page: `${host}/dashboard/recharge`,
+      },
+    });
+
     handleDownload(ticketRef.current, 'recarga.png', fuchsiaBlue[800]);
   };
 
@@ -89,7 +104,26 @@ export default function CardPagoEfectivo({
             <Typography variant="subtitle1" sx={{ display: 'flex', color: 'primary.main', alignItems: 'center' }}>
               {cip}
               <CopyToClipboard text={cip}>
-                <IconButton aria-label="delete" size="small" sx={{ p: 0, ml: 1 }}>
+                <IconButton
+                  aria-label="delete"
+                  size="small"
+                  sx={{ p: 0, ml: 1 }}
+                  onClick={() => {
+                    sendGTMEvent({
+                      event: 'ga4.trackEvent',
+                      eventName: 'select_content',
+                      eventParams: {
+                        content_type: 'boton',
+                        section: share
+                          ? 'cobrar :: realizarOperacion :: pagoEfectivo'
+                          : 'Yiro :: recargas :: realizarOperacion :: pagoEfectivo',
+                        previous_section: share ? 'cobrar' : 'Yiro :: recargas :: monto',
+                        selected_content: 'Copiar CIP',
+                        destination_page: share ? `${host}/dashboard/collect` : `${host}/dashboard/recharge`,
+                      },
+                    });
+                  }}
+                >
                   <CopyIcons sx={{ color: 'primary.main' }} />
                 </IconButton>
               </CopyToClipboard>

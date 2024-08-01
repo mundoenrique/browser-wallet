@@ -48,7 +48,7 @@ export default function SuccessWallets() {
         page_title: 'cobrar :: realizarOperacion :: pagoEfectivo',
         page_referrer: `${host}/dashboard/collect`,
         section: 'cobrar :: realizarOperacion :: pagoEfectivo',
-        previous_section: 'cobrar :: monto',
+        previous_section: 'cobrar',
       },
     });
   }, [host]);
@@ -66,25 +66,7 @@ export default function SuccessWallets() {
           <Typography color="white" fontSize={14}>
             Comparte esta información para que te paguen a través de Pago Efectivo:
           </Typography>
-          <CardPagoEfectivo
-            cip={providerPaymentCode}
-            codeQr={qr}
-            label="Compartir"
-            share
-            shareGA={() => {
-              sendGTMEvent({
-                event: 'ga4.trackEvent',
-                eventName: 'select_content',
-                eventParams: {
-                  content_type: 'boton',
-                  section: 'cobrar :: realizarOperacion :: pagoEfectivo',
-                  previous_section: 'cobrar :: monto',
-                  selected_content: 'Compartir',
-                  destination_page: `${host}/dashboard/collect`,
-                },
-              });
-            }}
-          >
+          <CardPagoEfectivo cip={providerPaymentCode} codeQr={qr} label="Compartir" share>
             <CardInfoOperation date={formattedSortDate(expirationDate)} amount={amount} name={name} />
             <Button
               variant="underline"
@@ -97,7 +79,7 @@ export default function SuccessWallets() {
                   eventParams: {
                     content_type: 'boton',
                     section: 'cobrar :: realizarOperacion :: pagoEfectivo',
-                    previous_section: 'cobrar :: monto',
+                    previous_section: 'cobrar',
                     selected_content: '¿Cómo me realizarán el pago?',
                     destination_page: `${host}/dashboard/collect`,
                   },
@@ -123,7 +105,7 @@ export default function SuccessWallets() {
                   eventParams: {
                     content_type: 'boton',
                     section: 'cobrar :: realizarOperacion :: pagoEfectivo',
-                    previous_section: 'cobrar :: monto',
+                    previous_section: 'cobrar',
                     selected_content: 'Volver al inicio',
                     destination_page: `${host}/dashboard`,
                   },
@@ -144,7 +126,7 @@ export default function SuccessWallets() {
             eventParams: {
               content_type: 'boton_modal',
               section: 'cobrar :: realizarOperacion :: pagoEfectivo',
-              previous_section: 'cobrar :: monto',
+              previous_section: 'cobrar',
               selected_content: 'Cerrar',
               destination_page: `${host}/dashboard/collect`,
               pop_up_type: 'Cobro',

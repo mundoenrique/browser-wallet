@@ -54,25 +54,7 @@ export default function Success() {
           <Typography color="white" fontSize={14}>
             Recarga a través de Pago Efectivo por una de estas 2 opciones:
           </Typography>
-          <CardPagoEfectivo
-            cip={providerPaymentCode}
-            codeQr={qr}
-            label="Guardar código QR"
-            download
-            downloadGA={() => {
-              sendGTMEvent({
-                event: 'ga4.trackEvent',
-                eventName: 'select_content',
-                eventParams: {
-                  content_type: 'boton',
-                  section: 'Yiro :: recargas :: realizarOperacion :: pagoEfectivo',
-                  previous_section: 'Yiro :: recargas :: monto',
-                  selected_content: 'Guardar código QR',
-                  destination_page: `${host}/dashboard/recharge`,
-                },
-              });
-            }}
-          >
+          <CardPagoEfectivo cip={providerPaymentCode} codeQr={qr} label="Guardar código QR" download>
             <Button
               variant="underline"
               sx={{ mb: 2, fontSize: 16 }}

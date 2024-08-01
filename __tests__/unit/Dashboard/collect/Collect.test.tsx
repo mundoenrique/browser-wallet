@@ -116,7 +116,7 @@ describe('Collect', () => {
           eventName: 'select_content',
           eventParams: {
             content_type: 'boton',
-            section: 'cobrar :: monto',
+            section: 'cobrar',
             previous_section: 'dashboard',
             selected_content: 'Billetera digital, Banco o agencia',
             destination_page: `http://localhost:3000/dashboard/collect`,
@@ -138,7 +138,7 @@ describe('Collect', () => {
           eventName: 'select_content',
           eventParams: {
             content_type: 'boton',
-            section: 'cobrar :: monto',
+            section: 'cobrar',
             previous_section: 'dashboard',
             selected_content: 'Tarjeta de crédito o débito',
             destination_page: `http://localhost:3000/dashboard/collect`,
