@@ -70,7 +70,7 @@ export default function Survey() {
       .then(() => {
         setAccessSession(false);
         setOpenRc(true);
-        push(backLink != '' ? backLink : (process.env.NEXT_PUBLIC_ALLOW_ORIGIN as string));
+        window.open(backLink != '' ? backLink : (process.env.NEXT_PUBLIC_ALLOW_ORIGIN as string));
       })
       .catch(() => {
         setModalError({
@@ -111,7 +111,6 @@ export default function Survey() {
           if (response.data.code === '200.00.000') {
             setOpenOtp(false);
             setOpenRc(true);
-            reset();
           }
         })
         .catch((e) => {
