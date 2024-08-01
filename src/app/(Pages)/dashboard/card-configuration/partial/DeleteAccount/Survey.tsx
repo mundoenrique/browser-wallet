@@ -59,6 +59,7 @@ export default function Survey() {
       .delete(`/users/${user.userId}`, { params: { reasonCode } })
       .then(() => {
         setOpenRc(true);
+        setLoadingScreen(false);
       })
       .catch(() => {
         setModalError({
@@ -103,8 +104,6 @@ export default function Survey() {
         })
         .catch((e) => {
           setModalError({ error: e });
-        })
-        .finally(() => {
           setLoadingScreen(false);
         });
     },
