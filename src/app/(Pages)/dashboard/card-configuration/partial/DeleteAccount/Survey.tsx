@@ -1,7 +1,6 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
@@ -23,8 +22,6 @@ import {
 } from '@/store';
 
 export default function Survey() {
-  const { push } = useRouter();
-
   const schema = getSchema(['blockType']);
 
   const { backLink } = useHeadersStore();
@@ -51,14 +48,7 @@ export default function Survey() {
     updateTitle('Ayúdanos con esta encuesta');
   }, [updateTitle]);
 
-  useEffect(() => {
-    openRc &&
-      (async () => {
-        await deleteAccount();
-      })();
-  }, [openRc]); //eslint-disable-line
-
-  const { control, handleSubmit, reset, getValues } = useForm({
+  const { control, handleSubmit, getValues } = useForm({
     defaultValues: { blockType: '' },
     resolver: yupResolver(schema),
   });
@@ -68,9 +58,7 @@ export default function Survey() {
     api
       .delete(`/users/${user.userId}`, { params: { reasonCode } })
       .then(() => {
-        setAccessSession(false);
         setOpenRc(true);
-        window.open(backLink != '' ? backLink : (process.env.NEXT_PUBLIC_ALLOW_ORIGIN as string));
       })
       .catch(() => {
         setModalError({
@@ -107,10 +95,10 @@ export default function Survey() {
 
       api
         .post(`/users/${user.userId}/validate/tfa`, payload)
-        .then(async (response) => {
+        .then((response) => {
           if (response.data.code === '200.00.000') {
             setOpenOtp(false);
-            setOpenRc(true);
+            deleteAccount();
           }
         })
         .catch((e) => {
@@ -192,8 +180,8 @@ export default function Survey() {
       <ModalResponsive
         open={openRc}
         handleClose={() => {
-          setOpenRc(false);
-          window.open(backLink);
+          setAccessSession(false);
+          window.open(backLink != '' ? backLink : (process.env.NEXT_PUBLIC_ALLOW_ORIGIN as string), '_self');
         }}
       >
         <Typography variant="subtitle1" mb={3}>
