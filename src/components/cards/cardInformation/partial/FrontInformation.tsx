@@ -17,7 +17,7 @@ import { FrontInformationProps } from '@/interfaces';
  * @param balance - The available account balance.
  */
 export default function FrontInformation(props: FrontInformationProps): JSX.Element {
-  const { showDetails, cardNumber, balance, cardInformationError, balanceError, cardStatus } = props;
+  const { showDetails, cardNumber, balance, cardInformationError, balanceError } = props;
   const [showBalance, setShowBalance] = useState<boolean>(false);
 
   return (

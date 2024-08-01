@@ -69,8 +69,8 @@ export default function ChangePassword() {
       .then(() => {
         setOpenRc(true);
       })
-      .catch(() => {
-        setModalError({ title: 'Algo salió mal', description: 'No pudimos cambiar la contraseña.' });
+      .catch((e) => {
+        setModalError({ error: e });
       })
       .finally(() => {
         setLoadingScreen(false);
