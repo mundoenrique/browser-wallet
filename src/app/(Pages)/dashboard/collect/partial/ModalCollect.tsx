@@ -5,28 +5,29 @@ import Circle from '@mui/icons-material/Brightness1';
 import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, ListItem, ListItemIcon, ListItemText, Typography, Stack } from '@mui/material';
 //Internal app
-import { useHeadersStore } from '@/store';
 import { MuiModalProps } from '@/interfaces';
 import { ModalResponsive } from '@/components';
 
 export function ModalCollect(props: MuiModalProps) {
   const { open, handleClose } = props;
 
-  const host = useHeadersStore((state) => state.host);
-
   useEffect(() => {
-    sendGTMEvent({
-      event: 'ga4.trackEvent',
-      eventName: 'view_popup',
-      eventParams: {
-        section: 'cobrar :: realizarOperacion :: pagoEfectivo',
-        previous_section: 'cobrar :: monto',
-        pop_up_type: 'Cobro',
-        pop_up_title: '¿Cómo me realizarán el pago?',
-        content_type: 'modal',
-      },
-    });
-  }, [host]);
+    if (open) {
+      sendGTMEvent({
+        event: 'ga4.trackEvent',
+        eventName: 'view_popup',
+        eventParams: {
+          section: 'cobrar :: realizarOperacion :: pagoEfectivo',
+          previous_section: 'cobrar',
+          pop_up_type: 'Cobro',
+          pop_up_title: '¿Cómo me realizarán el pago?',
+          content_type: 'modal',
+        },
+      });
+    }
+    return;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ModalResponsive open={open} handleClose={handleClose}>

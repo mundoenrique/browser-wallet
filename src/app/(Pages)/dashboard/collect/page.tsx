@@ -59,9 +59,9 @@ export default function Collect() {
       eventName: 'page_view_ga4',
       eventParams: {
         page_location: `${host}/dashboard/collect`,
-        page_title: 'cobrar :: monto',
+        page_title: 'cobrar',
         page_referrer: `${host}/dashboard`,
-        section: 'cobrar :: monto',
+        section: 'cobrar',
         previous_section: 'dashboard',
       },
     });

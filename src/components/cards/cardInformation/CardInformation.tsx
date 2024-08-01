@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
@@ -38,6 +39,8 @@ const cardTypeQuery = (cardType: string) => {
  * @returns 3D card with all the cardholder information.
  */
 export default function CardInformation() {
+  const path = usePathname();
+
   const [open, setOpen] = useState<boolean>(false);
 
   const host = useHeadersStore((state) => state.host);
@@ -77,10 +80,10 @@ export default function CardInformation() {
       eventName: 'select_content',
       eventParams: {
         content_type: 'boton',
-        section: 'dashboard',
-        previous_section: 'Yiro :: login :: interno',
+        section: path === '/dashboard' ? 'dashboard' : 'Yiro :: configuracionTarjeta :: menu',
+        previous_section: path === '/dashboard' ? 'Yiro :: login :: interno' : 'dashboard',
         selected_content: 'Ver número',
-        destination_page: `${host}/dashboard`,
+        destination_page: path === '/dashboard' ? `${host}/dashboard` : `${host}/dashboard/card-configuration/menu `,
       },
     });
   };

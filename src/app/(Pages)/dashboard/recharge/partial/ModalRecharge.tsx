@@ -1,6 +1,8 @@
 'use client';
 
+import { useEffect } from 'react';
 import Circle from '@mui/icons-material/Brightness1';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, ListItem, ListItemIcon, ListItemText, Typography, Stack } from '@mui/material';
 //Internal app
 import { MuiModalProps } from '@/interfaces';
@@ -8,6 +10,24 @@ import { ModalResponsive } from '@/components';
 
 export function ModalRecharge(props: MuiModalProps) {
   const { open, handleClose } = props;
+
+  useEffect(() => {
+    if (open) {
+      sendGTMEvent({
+        event: 'ga4.trackEvent',
+        eventName: 'page_view_ga4',
+        eventParams: {
+          section: 'Yiro :: recargas :: realizarOperacion :: pagoEfectivo',
+          previous_section: 'Yiro :: recargas :: monto',
+          pop_up_type: 'Recarga',
+          pop_up_title: '¿Cómo realizar la recarga?',
+          content_type: 'modal',
+        },
+      });
+    }
+    return;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ModalResponsive open={open} handleClose={handleClose}>

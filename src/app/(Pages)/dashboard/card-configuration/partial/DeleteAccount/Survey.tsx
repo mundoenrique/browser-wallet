@@ -1,7 +1,6 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
@@ -23,8 +22,6 @@ import {
 } from '@/store';
 
 export default function Survey() {
-  const { push } = useRouter();
-
   const schema = getSchema(['blockType']);
 
   const { backLink } = useHeadersStore();
@@ -51,7 +48,7 @@ export default function Survey() {
     updateTitle('Ayúdanos con esta encuesta');
   }, [updateTitle]);
 
-  const { control, handleSubmit, reset, getValues } = useForm({
+  const { control, handleSubmit, getValues } = useForm({
     defaultValues: { blockType: '' },
     resolver: yupResolver(schema),
   });
@@ -61,8 +58,8 @@ export default function Survey() {
     api
       .delete(`/users/${user.userId}`, { params: { reasonCode } })
       .then(() => {
-        setAccessSession(false);
         setOpenRc(true);
+        setLoadingScreen(false);
       })
       .catch(() => {
         setModalError({
@@ -99,17 +96,14 @@ export default function Survey() {
 
       api
         .post(`/users/${user.userId}/validate/tfa`, payload)
-        .then(async (response) => {
+        .then((response) => {
           if (response.data.code === '200.00.000') {
-            await deleteAccount();
             setOpenOtp(false);
-            reset();
+            deleteAccount();
           }
         })
         .catch((e) => {
           setModalError({ error: e });
-        })
-        .finally(() => {
           setLoadingScreen(false);
         });
     },
@@ -179,15 +173,14 @@ export default function Survey() {
           onSubmit={onSubmitOtp}
           title="🎰 Verifica tu identidad para eliminar cuenta"
           textButton="Eliminar cuenta Yiro"
-          closeApp={() => push('/dashboard')}
           processCode="CARD_CANCELLATION_OTP"
         />
       )}
       <ModalResponsive
         open={openRc}
         handleClose={() => {
-          setOpenRc(false);
-          window.open(backLink);
+          setAccessSession(false);
+          window.open(backLink != '' ? backLink : (process.env.NEXT_PUBLIC_ALLOW_ORIGIN as string), '_self');
         }}
       >
         <Typography variant="subtitle1" mb={3}>
