@@ -59,13 +59,15 @@ export default function Survey() {
       .delete(`/users/${user.userId}`, { params: { reasonCode } })
       .then(() => {
         setOpenRc(true);
-        setLoadingScreen(false);
       })
       .catch(() => {
         setModalError({
           title: 'Algo salió mal',
           description: 'No pudimos eliminar tu cuenta en este momento. Intentalo nuevamente.',
         });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
       });
   };
 
