@@ -8,6 +8,7 @@ export const JWS_HEADER = 'x-token';
 export const JWT_HEADER = 'x-jwt-auth';
 export const SESSION_ID = 'uidvdo';
 export const TIME_SESSION_REDIS = 600;
+export const TIME_SESSION_CLIENT = 180;
 
 export const AUDIENCE = 'Audiencia';
 export const ISSUER = 'Emisor';

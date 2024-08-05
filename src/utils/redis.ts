@@ -1,6 +1,6 @@
 import Redis, { RedisOptions } from 'ioredis';
 //Internal app
-import { TIME_SESSION_REDIS } from '.';
+import { TIME_SESSION_REDIS } from '@/utils/constants';
 
 const redis = {
   host: process.env.REDIS_HOST || '',

@@ -8,6 +8,7 @@ import { api } from '@/utils/api';
 import { ModalResponsive } from '.';
 import { setDataRedis, validateTime } from '@/utils/toolHelper';
 import { useAccessSessionStore, useKeyStore, useUserStore } from '@/store';
+import { TIME_SESSION_CLIENT } from '@/utils/constants';
 
 export default function TimmerSession() {
   const { push } = useRouter();
@@ -42,7 +43,7 @@ export default function TimmerSession() {
         closeSession();
       }
 
-      const timeRest: number = validateTime(180, localStorage.sessionTime);
+      const timeRest: number = validateTime(TIME_SESSION_CLIENT, localStorage.sessionTime);
 
       if (timeRest === 25) {
         setOpen(true);

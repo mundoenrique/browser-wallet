@@ -7,7 +7,7 @@ import { handleApiRequest } from './apiHandle';
 import { decryptForge, encryptForge, validateTime } from './toolHelper';
 import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './apiHelpers';
 import { createRedisInstance, delDataRedis, delRedis, getRedis, putRedis } from './redis';
-import { APIGEE_HEADERS_NAME, REDIS_CIPHER, SESSION_ID, KEYS_TO_ENCRYPT } from '@/utils/constants';
+import { APIGEE_HEADERS_NAME, REDIS_CIPHER, SESSION_ID, KEYS_TO_ENCRYPT, TIME_SESSION_CLIENT } from '@/utils/constants';
 
 const baseURL = getEnvVariable('BACK_URL');
 
@@ -186,7 +186,8 @@ async function validateSession(request: NextRequest) {
 
     if (!viewApi) return { status: true, code: '200.00.000' };
 
-    const timeRest: number = resRedis.timeSession && resRedis.login ? validateTime(180, resRedis.timeSession) : 0;
+    const timeRest: number =
+      resRedis.timeSession && resRedis.login ? validateTime(TIME_SESSION_CLIENT, resRedis.timeSession) : 0;
 
     const time = timeRest <= 0 ? { status: false, code: '401.00.9998' } : { status: true, code: '200.00.000' };
     if (!time.status && request.headers.get('X-Session-Mobile')) await delRedis(`session:${uuid}`);
