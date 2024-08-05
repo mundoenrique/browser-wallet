@@ -1,4 +1,4 @@
-import { TIME_SESSION_REDIS } from '.';
+import { TIME_SESSION_REDIS } from '@/utils/constants';
 import Redis, { RedisOptions } from 'ioredis';
 
 const redis = {
