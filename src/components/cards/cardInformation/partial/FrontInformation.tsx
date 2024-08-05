@@ -94,7 +94,10 @@ export default function FrontInformation(props: FrontInformationProps): JSX.Elem
                     </Typography>
                   </Button>
                   <Typography variant="body1" color="white" fontWeight={400} noWrap sx={{ opacity: 0.5 }}>
-                    S/ {showBalance ? balance : '******'}
+                    S/
+                    {showBalance
+                      ? Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(balance as any)
+                      : '******'}
                   </Typography>
                 </>
               ) : (
