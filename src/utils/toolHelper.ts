@@ -1,6 +1,7 @@
 import forge from 'node-forge';
 import html2canvas from 'html2canvas';
 import CryptoJS from 'crypto-js';
+//Internal app
 import { useJwtStore } from '@/store';
 import { REDIS_CIPHER } from '@/utils/constants';
 
@@ -126,8 +127,7 @@ export const decryptForge = (encryptedData: any, exchange: any = '') => {
 
 export const setDataRedis = async (method: string, data = {}) => {
   try {
-
-    const encryptData = encryptForge(JSON.stringify(data), REDIS_CIPHER );
+    const encryptData = encryptForge(JSON.stringify(data), REDIS_CIPHER);
     const url = process.env.NEXT_PUBLIC_WEB_URL + '/api/v1/redis';
 
     const response = await fetch(url, {
@@ -185,12 +185,12 @@ export const validateTime = (timeSession: number, dateSession: string) => {
   return timeRest;
 };
 
-export const fastModularExponentiation = function(a:number, b:number, n:number) {
+export const fastModularExponentiation = function (a: number, b: number, n: number) {
   a = a % n;
   var result = 1;
   var x = a;
 
-  while(b > 0){
+  while (b > 0) {
     var leastSignificantBit = b % 2;
     b = Math.floor(b / 2);
 
@@ -206,27 +206,25 @@ export const fastModularExponentiation = function(a:number, b:number, n:number) 
 };
 
 export const generatePublicKey = () => {
-
-  function randomBigInt(max:any) {
+  function randomBigInt(max: any) {
     return Math.floor(Math.random() * Number(max));
   }
 
   const primeNumber = parseInt(process.env.NEXT_PUBLIC_PRIME_NUMBER || '0');
-  const module = parseInt(process.env.NEXT_PUBLIC_MODULE_NUMBER || '0');
+  const modulus = parseInt(process.env.NEXT_PUBLIC_MODULE_NUMBER || '0');
 
   const keyPrivate = randomBigInt(primeNumber);
-  const keyPublic = fastModularExponentiation(module, keyPrivate, primeNumber);
+  const keyPublic = fastModularExponentiation(modulus, keyPrivate, primeNumber);
 
-  return {keyPublic, keyPrivate};
-}
+  return { keyPublic, keyPrivate };
+};
 
-export const generateAesKey = (key:any) => {
-
+export const generateAesKey = (key: any) => {
   const buffer = Buffer.from(key.toString(), 'utf-8');
 
   const numberString = buffer.toString('base64');
 
-  const wordArray = CryptoJS.enc.Utf8.parse(numberString );
+  const wordArray = CryptoJS.enc.Utf8.parse(numberString);
 
   const hash = CryptoJS.SHA256(wordArray);
 
@@ -234,6 +232,3 @@ export const generateAesKey = (key:any) => {
 
   return exchange;
 };
-
-
-

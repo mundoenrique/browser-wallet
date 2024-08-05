@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Box, Typography, Stack } from '@mui/material';
 //Internal app
-import Pet from '%/images/arts/pet-sorry.png';
 import Linking from '../navigation/Linking';
+import Pet from '%/images/arts/pet-sorry.png';
 import PurpleLayout from '../layout/PurpleLayout';
 import { NotFoundErrorProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';

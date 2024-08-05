@@ -1,13 +1,13 @@
+import forge from 'node-forge';
 import { NextRequest } from 'next/server';
 import axios, { AxiosRequestHeaders } from 'axios';
-import forge from 'node-forge';
 //Internal app
 import logger from './logger';
 import { handleApiRequest } from './apiHandle';
 import { decryptForge, encryptForge, validateTime } from './toolHelper';
-import { APIGEE_HEADERS_NAME, REDIS_CIPHER, SESSION_ID, KEYS_TO_ENCRYPT } from '@/utils/constants';
-import { createRedisInstance, delDataRedis, delRedis, getRedis, putRedis } from './redis';
 import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './apiHelpers';
+import { createRedisInstance, delDataRedis, delRedis, getRedis, putRedis } from './redis';
+import { APIGEE_HEADERS_NAME, REDIS_CIPHER, SESSION_ID, KEYS_TO_ENCRYPT } from '@/utils/constants';
 
 const baseURL = getEnvVariable('BACK_URL');
 
@@ -135,7 +135,6 @@ export async function HandleCustomerRequest(request: NextRequest) {
   headers.delete('x-url');
 
   const { data, jweAppPublicKey } = await handleApiRequest(request);
-
 
   if (data) {
     const dataEncrypt = await encrypToApi(request, data);
@@ -317,14 +316,13 @@ async function validateDevice(request: NextRequest) {
 }
 
 async function encrypToApi(request: NextRequest, data: any) {
-
   let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
-  const dataRedis = await getRedis(`session:${uuid}`) || '';
+  const dataRedis = (await getRedis(`session:${uuid}`)) || '';
 
   const decryptedObject = { ...data };
 
   if (dataRedis) {
-    const resRedis = JSON.parse(dataRedis)
+    const resRedis = JSON.parse(dataRedis);
     const secret = forge.util.decode64(resRedis.exchange);
 
     KEYS_TO_ENCRYPT.forEach((key) => {

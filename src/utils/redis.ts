@@ -1,5 +1,6 @@
-import { TIME_SESSION_REDIS } from '.';
 import Redis, { RedisOptions } from 'ioredis';
+//Internal app
+import { TIME_SESSION_REDIS } from '.';
 
 const redis = {
   host: process.env.REDIS_HOST || '',
@@ -121,11 +122,11 @@ export async function delDataRedis(keyRedis: any, delParam: any) {
     const dataRedis: string | null = await redis.get(`${keyRedis}`);
     let stateObject: any;
 
-    const time = (keyRedis === 'activeSession') ? 60 * 60 * 8 : TIME_SESSION_REDIS;
+    const time = keyRedis === 'activeSession' ? 60 * 60 * 8 : TIME_SESSION_REDIS;
 
     if (dataRedis) {
       stateObject = JSON.parse(dataRedis);
-      delete stateObject[delParam]
+      delete stateObject[delParam];
       await redis.set(keyRedis, JSON.stringify(stateObject));
     }
 

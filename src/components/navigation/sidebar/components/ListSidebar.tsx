@@ -5,16 +5,15 @@ import Image from 'next/image';
 import { sendGTMEvent } from '@next/third-parties/google';
 import { Box, Card, Divider, List, Typography, Link as LinkMui } from '@mui/material';
 //Internal app
+import { api } from '@/utils/api';
 import card from '%/images/cardYiro.svg';
 import ItemsSidebar from './ItemsSidebar';
 import LogoPurple from '%/images/LogoPurple';
+import { setDataRedis } from '@/utils/toolHelper';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { LogoutAppIcons, LogoutIcons } from '%/Icons';
 import ItemSecondarySidebar from './ItemSecondarySidebar';
 import { useConfigCardStore, useHeadersStore, useAccessSessionStore, useKeyStore, useUserStore } from '@/store';
-import { api } from '@/utils/api';
-import { useRouter } from 'next/navigation';
-import { setDataRedis } from '@/utils/toolHelper';
 
 /**
  * Complete sidebar structure.
@@ -23,9 +22,6 @@ import { setDataRedis } from '@/utils/toolHelper';
  * In the sybar structure we find: The logo, primary menu elements (ItemsSidebar.tsx) and secondary menu elements (ItemSecondarySidebar.tsx)
  */
 export default function ListSidebar(): JSX.Element {
-
-  const { push } = useRouter();
-
   const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
 
   const updatePage = useConfigCardStore((state) => state.updatePage);

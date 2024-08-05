@@ -8,9 +8,9 @@ import { useRouter } from 'next/navigation';
 import { ChildrenProps } from '@/interfaces';
 import Navbar from '../navigation/navbar/Navbar';
 import Sidebar from '../navigation/sidebar/Sidebar';
+import ModalCardBundle from '../modal/ModalCardBundle';
 import { PurpleLayout, Timersession } from '@/components';
 import NavbarLower from '../navigation/navbar/NavbarLower';
-import ModalCardBundle from '../modal/ModalCardBundle';
 import { useDrawerStore, useUserStore, useAccessSessionStore } from '@/store';
 
 /**
