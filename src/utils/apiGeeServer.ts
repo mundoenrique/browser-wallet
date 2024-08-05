@@ -1,10 +1,11 @@
 import { NextRequest } from 'next/server';
 import axios, { AxiosRequestHeaders } from 'axios';
+import forge from 'node-forge';
 //Internal app
 import logger from './logger';
 import { handleApiRequest } from './apiHandle';
-import { encryptForge, validateTime } from './toolHelper';
-import { APIGEE_HEADERS_NAME, SESSION_ID } from './constants';
+import { decryptForge, encryptForge, validateTime } from './toolHelper';
+import { APIGEE_HEADERS_NAME, REDIS_CIPHER, SESSION_ID, KEYS_TO_ENCRYPT } from '@/utils/constants';
 import { createRedisInstance, delDataRedis, delRedis, getRedis, putRedis } from './redis';
 import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './apiHelpers';
 
@@ -141,8 +142,10 @@ export async function HandleCustomerRequest(request: NextRequest) {
 
   const { data, jweAppPublicKey } = await handleApiRequest(request);
 
+
   if (data) {
-    const { jwe, jws } = await handleApiGeeRequest(data);
+    const dataEncrypt = await encrypToApi(request, data);
+    const { jwe, jws } = await handleApiGeeRequest(dataEncrypt);
     jweString = jwe;
     jwsString = jws;
   }
@@ -181,7 +184,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
 }
 
 async function validateSession(request: NextRequest) {
-  let uuid = request.cookies.get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile'));
+  let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
   const dataRedis = (await getRedis(`session:${uuid}`)) || null;
 
   if (dataRedis) {
@@ -225,7 +228,7 @@ async function refreshTime(uuid: string) {
 
 async function startSession(request: NextRequest, url: string, status: number) {
   if (url.includes('/users/credentials') && status === 200) {
-    let uuid = request.cookies.get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile'));
+    let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
     const device = request.cookies.get(SESSION_ID)?.value ? true : false;
     const dataRedis = (await getRedis(`session:${uuid}`)) || '';
 
@@ -316,4 +319,26 @@ async function validateDevice(request: NextRequest) {
   }
 
   return validate;
+}
+
+async function encrypToApi(request: NextRequest, data: any) {
+
+  let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
+  const dataRedis = await getRedis(`session:${uuid}`) || '';
+
+  const decryptedObject = { ...data };
+
+  if (dataRedis) {
+    const resRedis = JSON.parse(dataRedis)
+    const secret = forge.util.decode64(resRedis.exchange);
+
+    KEYS_TO_ENCRYPT.forEach((key) => {
+      if (decryptedObject.hasOwnProperty(key)) {
+        decryptedObject[key] = decryptForge(decryptedObject[key], secret);
+        decryptedObject[key] = encryptForge(decryptedObject[key], REDIS_CIPHER);
+      }
+    });
+  }
+
+  return decryptedObject;
 }
