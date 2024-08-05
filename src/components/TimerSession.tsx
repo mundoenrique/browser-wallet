@@ -6,9 +6,9 @@ import { Button, Typography, Box } from '@mui/material';
 // Internal app
 import { api } from '@/utils/api';
 import { ModalResponsive } from '.';
+import { TIME_SESSION_CLIENT } from '@/utils/constants';
 import { setDataRedis, validateTime } from '@/utils/toolHelper';
 import { useAccessSessionStore, useKeyStore, useUserStore } from '@/store';
-import { TIME_SESSION_CLIENT } from '@/utils/constants';
 
 export default function TimmerSession() {
   const { push } = useRouter();
