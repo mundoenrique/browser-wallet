@@ -12,6 +12,8 @@ export const TIME_SESSION_REDIS = 600;
 export const AUDIENCE = 'Audiencia';
 export const ISSUER = 'Emisor';
 
+export const REDIS_CIPHER = 'XbL4e4Nmu1whZp7qSy65LVxEVF2uNnE4';
+
 export const APIGEE_HEADERS_NAME = [
   'Authorization',
   'X-Tenant-Id',
@@ -28,3 +30,29 @@ export const URL_BASE: IUrlBase = {
   users: 'api/v0/users',
   cards: 'api/v0/cards',
 };
+
+export const KEYS_TO_ENCRYPT = [
+  'firstName',
+  'secondName',
+  'surName',
+  'surName2',
+  'documentType',
+  'documentNumber',
+  'hashedDocumentNumber',
+  'phone',
+  'phoneIdentifier',
+  'phoneNumber',
+  'type',
+  'email',
+  'names',
+  'lastNames',
+  'currentPassword',
+  'newPassword',
+  'pin',
+  'otpCode',
+  'password',
+  'holderName',
+  'pan',
+  'expiredDate',
+  'cvv'
+];
