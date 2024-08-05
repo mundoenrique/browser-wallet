@@ -4,6 +4,7 @@ import { persist, devtools } from 'zustand/middleware';
 import { decryptForge } from '@/utils/toolHelper';
 import { redisStorage } from '@/store/storages/user.store';
 import { TUserDetail, UserStore } from '@/interfaces';
+import { REDIS_CIPHER } from '@/utils/constants';
 
 const storeAPi: StateCreator<UserStore, [['zustand/devtools', never]]> = (set, get) => ({
   user: null,
@@ -23,7 +24,7 @@ const storeAPi: StateCreator<UserStore, [['zustand/devtools', never]]> = (set, g
    */
   getUserPhone: () => {
     const { phoneNumber } = get().user;
-    return decryptForge(phoneNumber);
+    return decryptForge(phoneNumber, REDIS_CIPHER);
   },
   /**
    *
@@ -33,7 +34,7 @@ const storeAPi: StateCreator<UserStore, [['zustand/devtools', never]]> = (set, g
     const {
       cardSolutions: { cardId },
     } = get().user;
-    return decryptForge(cardId);
+    return decryptForge(cardId, REDIS_CIPHER);
   },
 });
 
