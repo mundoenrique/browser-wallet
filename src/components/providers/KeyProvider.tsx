@@ -11,6 +11,7 @@ import { ChildrenProps } from '@/interfaces';
 import PurpleLayout from '../layout/PurpleLayout';
 import { removePEMHeadersAndFooters } from '@/utils/jwt';
 import { useJwtStore, useKeyStore, useActiveAppStore, useAccessSessionStore } from '@/store';
+import { decryptForge, fastModularExponentiation, generateAesKey, generatePublicKey } from '@/utils/toolHelper';
 
 export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   const pathname = usePathname();
@@ -20,9 +21,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
 
   const setKeys = useKeyStore((state) => state.setKeys);
 
-  const setToken = useJwtStore((state) => state.setToken);
-
-  const setUuid = useJwtStore((state) => state.setUuid);
+  const setDataToken = useJwtStore((state) => state.setDataToken);
 
   const activeApp = useActiveAppStore((state) => state.activeApp);
 
@@ -60,13 +59,23 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
       (async () => {
         try {
           const idDevice = window.navigation.activation.entry.key;
+          const keysAes = generatePublicKey()
           const { jwePublicKey, jwsPublicKey } = keys as { jwePublicKey: string; jwsPublicKey: string };
-          const response = await api.post('/gettoken', { jwePublicKey, jwsPublicKey, isBrowser, idDevice });
+          const response = await api.post('/gettoken', {
+            jwePublicKey,
+            jwsPublicKey,
+            isBrowser,
+            idDevice,
+            exchange: keysAes.keyPublic
+          });
           const token = (await response.data.data.jwt) as string;
           const uuid = (await response.data.data.sessionId) as string;
+          const publicKey = (await response.data.data.exchange) as number;
+          const primeNumber = parseInt(process.env.NEXT_PUBLIC_PRIME_NUMBER || '0');
+          const exchange = fastModularExponentiation(publicKey, keysAes.keyPrivate, primeNumber);
+          const exchangeKey = generateAesKey(exchange)
           setKeys(keys);
-          setToken(token);
-          setUuid(uuid);
+          setDataToken({token, uuid, exchange: exchangeKey.toString()});
           setCreateAccess('');
           setinitAccess(true);
           setAccessSession(false);
@@ -76,7 +85,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
       })();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initAccess, activeApp, keys, setToken, setKeys, setinitAccess, setCreateAccess, setAccessSession]);
+  }, [initAccess, activeApp, keys, setDataToken, setKeys, setinitAccess, setCreateAccess, setAccessSession]);
 
   if (time || (!initAccess && !token && pathname != '/signout')) {
 
