@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
   const partsUrl = pathname.split('/');
   const protectedApiV1 = ['/api/v1/connect', '/api/v1/gettoken', '/api/v1/setcode', '/api/v1/redis'];
   const protectedApiV0 = ['onboarding', 'catalogs', 'payments', 'users', 'cards'];
-  const protectedRoutes = ['signin', 'signup', 'password-recover', 'qr', 'dashboard'];
+  const protectedRoutes = ['signin', 'signup', 'password-recover', 'dashboard'];
 
   const isProtectedRoute = protectedRoutes.includes(partsUrl[1]);
   if (isProtectedRoute) {
@@ -25,7 +25,7 @@ export async function middleware(request: NextRequest) {
     } else {
       const data = JSON.parse(res);
 
-      if (data.accessSession.state.accessSession && partsUrl[1] === 'signin') {
+      if (data.login && partsUrl[1] === 'signin') {
         return NextResponse.redirect(`${nextUrl.origin}/dashboard`);
       } else {
         return NextResponse.next();
@@ -54,5 +54,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/v1/:path*', '/signin', '/signup', '/password-recover', '/qr', '/dashboard', '/dashboard/:path*'],
+  matcher: ['/api/v1/:path*', '/signin', '/signup', '/password-recover', '/dashboard', '/dashboard/:path*'],
 };

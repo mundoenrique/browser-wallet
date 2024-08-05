@@ -35,7 +35,7 @@ export default function SignOut() {
           </Typography>
         </Stack>
 
-      <Linking href={url} label="Volver" hidenArrow color="white" underline />
+      {url && <Linking href={url} label="Volver" hidenArrow color="white" underline />}
       </Box>
 </PurpleLayout>
 }

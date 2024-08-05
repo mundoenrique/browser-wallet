@@ -42,6 +42,7 @@ describe('Belcorp component', () => {
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalled();
+      expect(fetchMock).toHaveBeenCalledWith('/api/v1/setcode/?consultantCode=123456&countryCode=PE');
     });
   });
 });

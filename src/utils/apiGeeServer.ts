@@ -45,15 +45,9 @@ apiGee.interceptors.request.use(
 
 apiGee.interceptors.response.use(
   (response) => {
-    const {
-      status,
-      data,
-      config: { url },
-    } = response;
+    const { status, data } = response;
 
-    if (url === 'oauth2/v1/token' && data) {
-      logger.debug('Response services %s', JSON.stringify({ status, data }));
-    }
+    logger.debug('Response services %s', JSON.stringify({ status, data }));
 
     return response;
   },
@@ -289,6 +283,7 @@ function validateApiRoute(url: string) {
     'api/v0/onboarding/capturephotobiometrics',
     'api/v0/users/credentials',
     'api/v0/users/null',
+    new RegExp(`^api/v0/onboarding/${uuidPattern}/tfa$`),
     new RegExp(`^api/v0/users/${uuidPattern}/credentials$`),
     new RegExp(`^api/v0/users/${uuidPattern}/tfa$`),
     new RegExp(`^api/v0/users/${uuidPattern}$`),

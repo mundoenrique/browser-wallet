@@ -1,8 +1,10 @@
 'use client';
 
 import { useRef } from 'react';
+import { useHeadersStore } from '@/store';
 import { Avatar, Box, Button, Card } from '@mui/material';
 import ShareIcon from '@mui/icons-material/ShareOutlined';
+import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { CardTicketProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
@@ -15,24 +17,46 @@ import { handleDownload, handleShare } from '@/utils/toolHelper';
  * @param children - Child elements.
  * @param textBotton - Button text when in ticket form.
  * @param download - Handle image download.
- * @param downloadGA - Handle Google Analytics.
  * @param shared - Handles the action of sharing an image.
- * @param sharedGA - Handle Google Analytics.
  * @param onClick - Action handling for a button.
  */
 export default function CardTicket(props: CardTicketProps) {
-  const { children, textBotton, download, downloadGA, shared, sharedGA, onClick } = props;
+  const { children, textBotton, download, shared, onClick } = props;
   const componentRef = useRef<any>(null);
   const shareData: any = { files: [] };
 
+  const host = useHeadersStore((state) => state.host);
+
   const handleShareClick = () => {
     handleShare(componentRef.current, shareData, fuchsiaBlue[800]);
-    downloadGA;
+
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'Yiro :: transferencia :: operacionExitosa',
+        previous_section: 'Yiro :: transferencia :: monto',
+        selected_content: 'Compartir',
+        destination_page: `${host}/dashboard/transfer`,
+      },
+    });
   };
 
   const handleDownloadClick = () => {
     handleDownload(componentRef.current, 'comprobante.png', fuchsiaBlue[800]);
-    sharedGA;
+
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'Yiro :: pagarDeuda :: operacionExitosa',
+        previous_section: 'Yiro :: pagarDeuda :: monto',
+        selected_content: 'Guardar',
+        destination_page: `${host}/dashboard/debt`,
+      },
+    });
   };
 
   return (

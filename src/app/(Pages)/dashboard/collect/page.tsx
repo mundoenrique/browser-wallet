@@ -59,9 +59,9 @@ export default function Collect() {
       eventName: 'page_view_ga4',
       eventParams: {
         page_location: `${host}/dashboard/collect`,
-        page_title: 'cobrar :: monto',
+        page_title: 'cobrar',
         page_referrer: `${host}/dashboard`,
-        section: 'cobrar :: monto',
+        section: 'cobrar',
         previous_section: 'dashboard',
       },
     });
@@ -199,7 +199,7 @@ export default function Collect() {
                   eventName: 'select_content',
                   eventParams: {
                     content_type: 'boton',
-                    section: 'cobrar :: monto',
+                    section: 'cobrar',
                     previous_section: 'dashboard',
                     selected_content: 'Billetera digital, Banco o agencia',
                     destination_page: `${host}/dashboard/collect`,
@@ -221,7 +221,7 @@ export default function Collect() {
                   eventName: 'select_content',
                   eventParams: {
                     content_type: 'boton',
-                    section: 'cobrar :: monto',
+                    section: 'cobrar',
                     previous_section: 'dashboard',
                     selected_content: 'Tarjeta de crédito o débito',
                     destination_page: `${host}/dashboard/collect`,

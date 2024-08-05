@@ -17,6 +17,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   const pathname = usePathname();
 
   const [keys, setKeysStore] = useState<any>('');
+
   const [time, setTime] = useState<boolean>(true);
 
   const setKeys = useKeyStore((state) => state.setKeys);
@@ -29,7 +30,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
 
   const setActiveApp = useActiveAppStore((state) => state.setActiveApp);
 
-  const setinitAccess = useActiveAppStore((state) => state.setinitAccess);
+  const setInitAccess = useActiveAppStore((state) => state.setInitAccess);
 
   const setCreateAccess = useActiveAppStore((state) => state.setCreateAccess);
 
@@ -55,7 +56,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   }, [activeApp, time, setTimeout, setActiveApp, setCreateAccess]);
 
   useEffect(() => {
-    if (!initAccess && activeApp) {
+    if (!initAccess && !token && activeApp) {
       (async () => {
         try {
           const idDevice = window.navigation.activation.entry.key;
@@ -77,15 +78,18 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
           setKeys(keys);
           setDataToken({token, uuid, exchange: exchangeKey.toString()});
           setCreateAccess('');
-          setinitAccess(true);
+          setInitAccess(true);
           setAccessSession(false);
+          setInitAccess(true);
         } catch (error) {
           console.error('Error generating JWT token:', error);
         }
       })();
     }
+
+    token && setCreateAccess('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initAccess, activeApp, keys, setDataToken, setKeys, setinitAccess, setCreateAccess, setAccessSession]);
+  }, [initAccess, activeApp, keys, setDataToken, setKeys, setCreateAccess, setAccessSession]);
 
   if (time || (!initAccess && !token && pathname != '/signout')) {
 

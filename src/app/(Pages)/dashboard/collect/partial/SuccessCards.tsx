@@ -39,7 +39,7 @@ export default function SuccessCards() {
         page_title: 'cobrar :: realizarOperacion :: tarjeta',
         page_referrer: `${host}/dashboard/collect`,
         section: 'cobrar :: realizarOperacion :: tarjeta',
-        previous_section: 'cobrar :: monto',
+        previous_section: 'cobrar',
       },
     });
   }, [host]);
@@ -60,7 +60,7 @@ export default function SuccessCards() {
       eventParams: {
         content_type: 'boton',
         section: 'cobrar :: realizarOperacion :: pagoEfectivo',
-        previous_section: 'cobrar :: monto',
+        previous_section: 'cobrar',
         selected_content: 'Compartir',
         destination_page: `${host}/dashboard/collect`,
       },
@@ -111,7 +111,7 @@ export default function SuccessCards() {
                 eventParams: {
                   content_type: 'boton',
                   section: 'cobrar :: realizarOperacion :: pagoEfectivo',
-                  previous_section: 'cobrar :: monto',
+                  previous_section: 'cobrar',
                   selected_content: '¿Cómo me realizarán el pago?',
                   destination_page: `${host}/dashboard/collect`,
                 },
@@ -140,7 +140,7 @@ export default function SuccessCards() {
                   eventParams: {
                     content_type: 'boton',
                     section: 'cobrar :: realizarOperacion :: pagoEfectivo',
-                    previous_section: 'cobrar :: monto',
+                    previous_section: 'cobrar',
                     selected_content: 'Volver al inicio',
                     destination_page: `${host}/dashboard`,
                   },
@@ -161,7 +161,7 @@ export default function SuccessCards() {
             eventParams: {
               content_type: 'boton_modal',
               section: 'cobrar :: realizarOperacion :: pagoEfectivo',
-              previous_section: 'cobrar :: monto',
+              previous_section: 'cobrar',
               selected_content: 'Cerrar',
               destination_page: `${host}/dashboard/collect`,
               pop_up_type: 'Cobro',

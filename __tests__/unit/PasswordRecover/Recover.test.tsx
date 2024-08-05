@@ -17,19 +17,12 @@ jest.mock('@/app/(Pages)/password-recover/partial/UpdatePass', () => ({
 }));
 
 jest.mock('@/store', () => ({
-  useHeadersStore: jest.fn(() => ({
-    host: jest.fn(),
-    back: jest.fn(),
-  })),
-  useUserStore: jest.fn(() => ({
-    getUserPhone: jest.fn(() => '123456789'),
-    user: { userId: 'mockedUserId' },
-  })),
+  useHeadersStore: jest.fn(() => ({ host: jest.fn() })),
+  useUserStore: jest.fn(() => ({ user: { userId: 'mockedUserId' } })),
   useUiStore: jest.fn(() => ({ setModalError: jest.fn() })),
   useOtpStore: jest.fn(() => ({
     otpValid: 'OTP',
     setOtpUuid: jest.fn(),
-    requestTFACode: jest.fn(),
   })),
 }));
 

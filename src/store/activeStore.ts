@@ -22,7 +22,7 @@ export const useActiveAppStore = create<ActiveAppStore>()(
       initAccess: false,
       createAccess: '',
       setActiveApp: (activeApp) => set({ activeApp }),
-      setinitAccess: (initAccess) => set({ initAccess }),
+      setInitAccess: (initAccess) => set({ initAccess }),
       setCreateAccess: (createAccess) => set({ createAccess })
     }),
     {

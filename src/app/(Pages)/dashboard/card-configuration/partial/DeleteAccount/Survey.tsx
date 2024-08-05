@@ -48,7 +48,7 @@ export default function Survey() {
     updateTitle('Ayúdanos con esta encuesta');
   }, [updateTitle]);
 
-  const { control, handleSubmit, reset, getValues } = useForm({
+  const { control, handleSubmit, getValues } = useForm({
     defaultValues: { blockType: '' },
     resolver: yupResolver(schema),
   });
@@ -58,14 +58,16 @@ export default function Survey() {
     api
       .delete(`/users/${user.userId}`, { params: { reasonCode } })
       .then(() => {
-        setAccessSession(false);
-        window.open(backLink);
+        setOpenRc(true);
       })
       .catch(() => {
         setModalError({
           title: 'Algo salió mal',
           description: 'No pudimos eliminar tu cuenta en este momento. Intentalo nuevamente.',
         });
+      })
+      .finally(() => {
+        setLoadingScreen(false);
       });
   };
 
@@ -100,9 +102,6 @@ export default function Survey() {
           if (response.data.code === '200.00.000') {
             setOpenOtp(false);
             deleteAccount();
-            setOpenOtp(false);
-            setOpenRc(true);
-            reset();
           }
         })
         .catch((e) => {
@@ -176,11 +175,16 @@ export default function Survey() {
           onSubmit={onSubmitOtp}
           title="🎰 Verifica tu identidad para eliminar cuenta"
           textButton="Eliminar cuenta Yiro"
-          closeApp
           processCode="CARD_CANCELLATION_OTP"
         />
       )}
-      <ModalResponsive open={openRc} handleClose={() => setOpenRc(false)}>
+      <ModalResponsive
+        open={openRc}
+        handleClose={() => {
+          setAccessSession(false);
+          window.open(backLink != '' ? backLink : (process.env.NEXT_PUBLIC_ALLOW_ORIGIN as string), '_self');
+        }}
+      >
         <Typography variant="subtitle1" mb={3}>
           🚫 Tu cuenta ha sido eliminada
         </Typography>
