@@ -237,51 +237,49 @@ export default function CardConfiguration() {
             <Typography fontSize={10}>Estatus: Tarjeta {isTempBlock() ? 'bloqueada' : 'desbloqueada'}</Typography>
           </HandleCard>
 
-          {isPhysicalCard() && (
-            <HandleCard
-              onClick={() => {
-                updatePage('blockCard');
-                sendGTMEvent({
-                  event: 'ga4.trackEvent',
-                  eventName: 'select_content',
-                  eventParams: {
-                    content_type: 'boton',
-                    section: 'Yiro :: configuracionTarjeta :: menu',
-                    previous_section: 'dashboard',
-                    selected_content: 'Bloquear por perdida o robo',
-                    destination_page: `${host}/dashboard/card-configuration/bloquearTarjeta`,
-                  },
-                });
-              }}
-              avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />}
-              icon={<Arrow />}
-            >
-              <Typography variant="subtitle2">Bloquear por perdida o robo</Typography>
-            </HandleCard>
-          )}
+          <HandleCard
+            disabled={!isPhysicalCard()}
+            onClick={() => {
+              updatePage('blockCard');
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: 'Yiro :: configuracionTarjeta :: menu',
+                  previous_section: 'dashboard',
+                  selected_content: 'Bloquear por perdida o robo',
+                  destination_page: `${host}/dashboard/card-configuration/bloquearTarjeta`,
+                },
+              });
+            }}
+            avatar={<CardCloseIcon color="primary" sx={{ p: '2px' }} />}
+            icon={<Arrow />}
+          >
+            <Typography variant="subtitle2">Bloquear por perdida o robo</Typography>
+          </HandleCard>
 
-          {isPhysicalCard() && (
-            <HandleCard
-              onClick={() => {
-                updatePage('changePin');
-                sendGTMEvent({
-                  event: 'ga4.trackEvent',
-                  eventName: 'select_content',
-                  eventParams: {
-                    content_type: 'boton',
-                    section: 'Yiro :: configuracionTarjeta :: menu',
-                    previous_section: 'dashboard',
-                    selected_content: 'Cambiar PIN',
-                    destination_page: `${host}/dashboard/card-configuration/cambiarPin`,
-                  },
-                });
-              }}
-              avatar={<KeyIcons color="primary" sx={{ p: '2px' }} />}
-              icon={<Arrow />}
-            >
-              <Typography variant="subtitle2">Cambiar PIN</Typography>
-            </HandleCard>
-          )}
+          <HandleCard
+            disabled={!isPhysicalCard()}
+            onClick={() => {
+              updatePage('changePin');
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'boton',
+                  section: 'Yiro :: configuracionTarjeta :: menu',
+                  previous_section: 'dashboard',
+                  selected_content: 'Cambiar PIN',
+                  destination_page: `${host}/dashboard/card-configuration/cambiarPin`,
+                },
+              });
+            }}
+            avatar={<KeyIcons color="primary" sx={{ p: '2px' }} />}
+            icon={<Arrow />}
+          >
+            <Typography variant="subtitle2">Cambiar PIN</Typography>
+          </HandleCard>
 
           <HandleCard
             onClick={() => {
