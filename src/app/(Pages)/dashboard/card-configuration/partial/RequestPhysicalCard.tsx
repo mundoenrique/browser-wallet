@@ -36,10 +36,11 @@ export default function RequestPhysicalCard() {
     api
       .post(`/cards/users/physicalcard`, { userId: userId })
       .then(() => {
-        setOpen(!open);
+        setOpen(true);
       })
       .catch((e) => {
         setModalError({ error: e });
+        setOpen(false);
       })
       .finally(() => {
         setLoadingScreen(false);
