@@ -7,7 +7,8 @@ import { handleApiRequest } from './apiHandle';
 import { decryptForge, encryptForge, validateTime } from './toolHelper';
 import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './apiHelpers';
 import { createRedisInstance, delDataRedis, delRedis, getRedis, putRedis } from './redis';
-import { APIGEE_HEADERS_NAME, REDIS_CIPHER, SESSION_ID, KEYS_TO_ENCRYPT, TIME_SESSION_CLIENT } from '@/utils/constants';
+import { APIGEE_HEADERS_NAME, REDIS_CIPHER, SESSION_ID, TIME_SESSION_CLIENT, KEYS_TO_ENCRYPT_API, KEYS_TO_ENCRYPT_CLIENT } from '@/utils/constants';
+import { decryptJWE, encryptJWE } from '.';
 
 const baseURL = getEnvVariable('BACK_URL');
 
@@ -45,9 +46,9 @@ apiGee.interceptors.request.use(
 
 apiGee.interceptors.response.use(
   (response) => {
-    const { status, data } = response;
+    const { status, data, config } = response;
 
-    logger.debug('Response services %s', JSON.stringify({ status, data }));
+    logger.debug('Response services %s', JSON.stringify({ url: config.url, status, data }));
 
     return response;
   },
@@ -137,7 +138,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
   const { data, jweAppPublicKey } = await handleApiRequest(request);
 
   if (data) {
-    const dataEncrypt = await encrypToApi(request, data);
+    const dataEncrypt = await encrypToDecrypt(request, data, 'server');
     const { jwe, jws } = await handleApiGeeRequest(dataEncrypt);
     jweString = jwe;
     jwsString = jws;
@@ -169,6 +170,10 @@ export async function HandleCustomerRequest(request: NextRequest) {
       break;
     default:
       responseBack = { data: Error(`Invalid method: ${method}`) };
+  }
+
+  if (responseBack.data.data) {
+    responseBack.data.data = await encrypToDecrypt(request, responseBack.data.data, 'client')
   }
 
   const encryptedResponse = await handleApiGeeResponse(responseBack.data, responseBack.status ?? 400, jweAppPublicKey);
@@ -316,22 +321,44 @@ async function validateDevice(request: NextRequest) {
   return validate;
 }
 
-async function encrypToApi(request: NextRequest, data: any) {
+async function encrypToDecrypt(request: NextRequest, data: any, type: string) {
   let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
   const dataRedis = (await getRedis(`session:${uuid}`)) || '';
+  const keysObjet = type === 'server' ? KEYS_TO_ENCRYPT_API : KEYS_TO_ENCRYPT_CLIENT;
+  let decryptedObject = { ...data };
 
-  const decryptedObject = { ...data };
+  if (type === 'client') {
+    const jwePrivateKey = getEnvVariable('BACK_JWE_PRIVATE_KEY');
+    const decryptData = await decryptJWE(data, jwePrivateKey);
+    decryptedObject = { ...decryptData };
+  }
 
   if (dataRedis) {
     const resRedis = JSON.parse(dataRedis);
     const secret = forge.util.decode64(resRedis.exchange);
+    const keyDecrypt = type === 'server' ? secret : REDIS_CIPHER;
+    const keyEncrypt = type === 'server' ? REDIS_CIPHER : secret;
 
-    KEYS_TO_ENCRYPT.forEach((key) => {
-      if (decryptedObject.hasOwnProperty(key)) {
-        decryptedObject[key] = decryptForge(decryptedObject[key], secret);
-        decryptedObject[key] = encryptForge(decryptedObject[key], REDIS_CIPHER);
+    keysObjet.forEach(key => {
+      if (key in decryptedObject) {
+        decryptedObject[key] = decryptForge(decryptedObject[key], keyDecrypt);
+        decryptedObject[key] = encryptForge(decryptedObject[key], keyEncrypt);
+      } else {
+        for (const prop in decryptedObject) {
+          if (typeof decryptedObject[prop] === 'object' && decryptedObject[prop] !== null) {
+            if (key in decryptedObject[prop]) {
+              decryptedObject[prop][key] = decryptForge(decryptedObject[prop][key], keyDecrypt);
+              decryptedObject[prop][key] = encryptForge(decryptedObject[prop][key], keyEncrypt);
+            }
+          }
+        }
       }
     });
+  }
+
+  if (type === 'client') {
+    const { jwe, jws } = await handleApiGeeRequest(decryptedObject);
+    decryptedObject = jwe;
   }
 
   return decryptedObject;

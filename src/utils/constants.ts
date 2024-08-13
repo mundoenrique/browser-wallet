@@ -32,7 +32,7 @@ export const URL_BASE: IUrlBase = {
   cards: 'api/v0/cards',
 };
 
-export const KEYS_TO_ENCRYPT = [
+export const KEYS_TO_ENCRYPT_API = [
   'firstName',
   'secondName',
   'surName',
@@ -52,8 +52,12 @@ export const KEYS_TO_ENCRYPT = [
   'pin',
   'otpCode',
   'password',
-  'holderName',
+];
+
+export const KEYS_TO_ENCRYPT_CLIENT = [
+  'cardId',
+  'phoneNumber',
   'pan',
   'expiredDate',
   'cvv'
-];
+]
