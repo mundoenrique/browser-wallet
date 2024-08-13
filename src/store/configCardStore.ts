@@ -20,50 +20,50 @@ const storeAPi: StateCreator<ConfigCardStore, [['zustand/devtools', never]]> = (
   /**
    * Component name for de page/section rendering
    */
-   page: '',
-   /**
-    * Set value for the page component
-    */
-   updatePage: (newPage) => {
-     set({ page: newPage });
-   },
-   cardInformation: {},
-   /**
-    * set card activation status
-    */
-   cardActivationStatus: () => {
-     const user = useUserStore.getState().user;
-     if (!Object.hasOwn(user, 'physicalCards')) {
-       return 'NONE';
-     }
-     return user.physicalCards.status;
-   },
-   /**
-    * Return true or false if card is blocked
-    */
-   isCardBlocked: () => {
-     const { blockType } = get().cardInformation;
-     return blockType && Object.hasOwn(blockType, 'code');
-   },
-   isTempBlock: () => {
-     const { blockType } = get().cardInformation;
-     return blockType && Object.hasOwn(blockType, 'code') && blockType.code === 'PB';
-   },
-   isPhysicalCard: () => {
-     const { cardType } = get().cardInformation;
-     return cardType && cardType === 'PHYSIC';
-   },
-   /**
-    * Card block type
-    */
-   blockType: {},
-   /**
-    * set  values for  card object: cardType, cardBlockStatus, cardStatus
-    */
-   setCardProperties: (key, value) =>
-     set((state) => {
-       return { ...state, [key]: value };
-     }),
+  page: '',
+  /**
+   * Set value for the page component
+   */
+  updatePage: (newPage) => {
+    set({ page: newPage });
+  },
+  cardInformation: {},
+  /**
+   * set card activation status
+   */
+  cardActivationStatus: () => {
+    const user = useUserStore.getState().user;
+    if (!Object.hasOwn(user, 'physicalCards')) {
+      return 'NONE';
+    }
+    return user.physicalCards.status;
+  },
+  /**
+   * Return true or false if card is blocked
+   */
+  isCardBlocked: () => {
+    const { blockType } = get().cardInformation;
+    return blockType && Object.hasOwn(blockType, 'code');
+  },
+  isTempBlock: () => {
+    const { blockType } = get().cardInformation;
+    return blockType && Object.hasOwn(blockType, 'code') && blockType.code === 'PB';
+  },
+  isPhysicalCard: () => {
+    const { cardType } = get().cardInformation;
+    return cardType && cardType === 'PHYSICAL';
+  },
+  /**
+   * Card block type
+   */
+  blockType: {},
+  /**
+   * set  values for  card object: cardType, cardBlockStatus, cardStatus
+   */
+  setCardProperties: (key, value) =>
+    set((state) => {
+      return { ...state, [key]: value };
+    }),
 });
 
 export const useConfigCardStore = create<ConfigCardStore>()(

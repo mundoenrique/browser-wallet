@@ -24,7 +24,7 @@ export default function HandleCard(props: HandleCardProps): JSX.Element {
         boxShadow: 0,
         display: 'flex',
         p: 1,
-        cursor: onClick ? (disabled ? 'initial' : 'pointer') : 'initial',
+        cursor: disabled ? 'initial' : 'pointer',
         minHeight: large,
         justifyContent: 'space-between',
         alignItems: 'center',
