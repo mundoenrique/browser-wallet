@@ -1,7 +1,7 @@
 'use client';
 
+import { Container } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Container, Typography } from '@mui/material';
 //Internal app
 import LogoGreen from '%/images/LogoGreen';
 import { PurpleLayout } from '@/components';

@@ -3,8 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import logger from './logger';
 import { handleApiResponse } from '.';
 import { encryptForge } from './toolHelper';
-import { JWT_HEADER, JWS_HEADER, SESSION_ID } from './constants';
 import { IApiGeeResponse, IEncryptedBody, IJWTPayload } from '@/interfaces';
+import { JWT_HEADER, JWS_HEADER, SESSION_ID, REDIS_CIPHER } from './constants';
 import { verifyJWT, encryptJWE, decryptJWE, signJWE, verifyDetachedJWS } from './jwt';
 
 type EnvVariableKey =
@@ -139,9 +139,10 @@ export async function handleResponse(
     const jws: string = await signJWE(jwsApiPrivateKey, jwe);
 
     if (isBrowser) {
-      var expires = (new Date(Date.now()+ 86400*1000)).toUTCString();
+      var expires = new Date(Date.now() + 86400 * 1000).toUTCString();
       cookieSet = `${SESSION_ID}=${encryptForge(
-        responseObj.data.sessionId
+        responseObj.data.sessionId,
+        REDIS_CIPHER
       )}; HttpOnly=true; Path=/; Secure=true; SameSite=true; Expires=${expires};`;
     }
 

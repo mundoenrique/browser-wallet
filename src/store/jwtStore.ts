@@ -7,9 +7,11 @@ import { redisStorage } from '@/store/storages/jwt.store';
 const storeAPi: StateCreator<JwtStoreProps, [['zustand/devtools', never]]> = (set) => ({
   token: null,
   uuid: null,
+  exchange: null,
 
-  setUuid: (uuid) => set({ uuid }),
   setToken: (token) => set({ token }),
+  setDataToken: ({token, uuid, exchange}) => set({token, uuid, exchange}),
+
 });
 
 export const useJwtStore = create<JwtStoreProps>()(

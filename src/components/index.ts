@@ -1,6 +1,5 @@
 //pwa
 export { default as QRCodeReader } from './PWA/QRCodeReader';
-export { default as PWAInstallBar } from './PWA/PWAInstallBar';
 //form
 export { default as FormPass } from './form/FormPass';
 export { default as InputText } from './form/InputText';

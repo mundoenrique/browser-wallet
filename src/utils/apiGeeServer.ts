@@ -1,12 +1,21 @@
+import forge from 'node-forge';
 import { NextRequest } from 'next/server';
 import axios, { AxiosRequestHeaders } from 'axios';
 //Internal app
 import logger from './logger';
+import { decryptJWE } from '.';
 import { handleApiRequest } from './apiHandle';
-import { encryptForge, validateTime } from './toolHelper';
-import { APIGEE_HEADERS_NAME, SESSION_ID } from './constants';
-import { createRedisInstance, delDataRedis, delRedis, getRedis, putRedis } from './redis';
+import { decryptForge, encryptForge, validateTime } from './toolHelper';
 import { getEnvVariable, handleApiGeeRequest, handleApiGeeResponse } from './apiHelpers';
+import { createRedisInstance, delDataRedis, delRedis, getRedis, putRedis } from './redis';
+import {
+  APIGEE_HEADERS_NAME,
+  REDIS_CIPHER,
+  SESSION_ID,
+  TIME_SESSION_CLIENT,
+  KEYS_TO_ENCRYPT_API,
+  KEYS_TO_ENCRYPT_CLIENT,
+} from '@/utils/constants';
 
 const baseURL = getEnvVariable('BACK_URL');
 
@@ -44,9 +53,9 @@ apiGee.interceptors.request.use(
 
 apiGee.interceptors.response.use(
   (response) => {
-    const { status, data } = response;
+    const { status, data, config } = response;
 
-    logger.debug('Response services %s', JSON.stringify({ status, data }));
+    logger.debug('Response services %s', JSON.stringify({ url: config.url, status, data }));
 
     return response;
   },
@@ -136,7 +145,8 @@ export async function HandleCustomerRequest(request: NextRequest) {
   const { data, jweAppPublicKey } = await handleApiRequest(request);
 
   if (data) {
-    const { jwe, jws } = await handleApiGeeRequest(data);
+    const dataEncrypt = await encrypToDecrypt(request, data, 'server');
+    const { jwe, jws } = await handleApiGeeRequest(dataEncrypt);
     jweString = jwe;
     jwsString = jws;
   }
@@ -169,13 +179,17 @@ export async function HandleCustomerRequest(request: NextRequest) {
       responseBack = { data: Error(`Invalid method: ${method}`) };
   }
 
+  if (responseBack.data.data) {
+    responseBack.data.data = await encrypToDecrypt(request, responseBack.data.data, 'client');
+  }
+
   const encryptedResponse = await handleApiGeeResponse(responseBack.data, responseBack.status ?? 400, jweAppPublicKey);
 
   return encryptedResponse;
 }
 
 async function validateSession(request: NextRequest) {
-  let uuid = request.cookies.get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile'));
+  let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
   const dataRedis = (await getRedis(`session:${uuid}`)) || null;
 
   if (dataRedis) {
@@ -184,7 +198,8 @@ async function validateSession(request: NextRequest) {
 
     if (!viewApi) return { status: true, code: '200.00.000' };
 
-    const timeRest: number = resRedis.timeSession && resRedis.login ? validateTime(180, resRedis.timeSession) : 0;
+    const timeRest: number =
+      resRedis.timeSession && resRedis.login ? validateTime(TIME_SESSION_CLIENT, resRedis.timeSession) : 0;
 
     const time = timeRest <= 0 ? { status: false, code: '401.00.9998' } : { status: true, code: '200.00.000' };
     if (!time.status && request.headers.get('X-Session-Mobile')) await delRedis(`session:${uuid}`);
@@ -219,7 +234,7 @@ async function refreshTime(uuid: string) {
 
 async function startSession(request: NextRequest, url: string, status: number) {
   if (url.includes('/users/credentials') && status === 200) {
-    let uuid = request.cookies.get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile'));
+    let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
     const device = request.cookies.get(SESSION_ID)?.value ? true : false;
     const dataRedis = (await getRedis(`session:${uuid}`)) || '';
 
@@ -293,6 +308,49 @@ function validateApiRoute(url: string) {
   );
 
   return requiresValidation;
+}
+
+async function encrypToDecrypt(request: NextRequest, data: any, type: string) {
+  let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
+  const dataRedis = (await getRedis(`session:${uuid}`)) || '';
+  const keysObjet = type === 'server' ? KEYS_TO_ENCRYPT_API : KEYS_TO_ENCRYPT_CLIENT;
+  let decryptedObject = { ...data };
+
+  if (type === 'client') {
+    const jwePrivateKey = getEnvVariable('BACK_JWE_PRIVATE_KEY');
+    const decryptData = await decryptJWE(data, jwePrivateKey);
+    decryptedObject = { ...decryptData };
+  }
+
+  if (dataRedis) {
+    const resRedis = JSON.parse(dataRedis);
+    const secret = forge.util.decode64(resRedis.exchange);
+    const keyDecrypt = type === 'server' ? secret : REDIS_CIPHER;
+    const keyEncrypt = type === 'server' ? REDIS_CIPHER : secret;
+
+    keysObjet.forEach((key) => {
+      if (key in decryptedObject) {
+        decryptedObject[key] = decryptForge(decryptedObject[key], keyDecrypt);
+        decryptedObject[key] = encryptForge(decryptedObject[key], keyEncrypt);
+      } else {
+        for (const prop in decryptedObject) {
+          if (typeof decryptedObject[prop] === 'object' && decryptedObject[prop] !== null) {
+            if (key in decryptedObject[prop]) {
+              decryptedObject[prop][key] = decryptForge(decryptedObject[prop][key], keyDecrypt);
+              decryptedObject[prop][key] = encryptForge(decryptedObject[prop][key], keyEncrypt);
+            }
+          }
+        }
+      }
+    });
+  }
+
+  if (type === 'client') {
+    const { jwe, jws } = await handleApiGeeRequest(decryptedObject);
+    decryptedObject = jwe;
+  }
+
+  return decryptedObject;
 }
 
 async function validateDevice(request: NextRequest) {

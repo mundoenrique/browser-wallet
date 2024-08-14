@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 //Internal app
 import logger from '@/utils/logger';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
-import { SESSION_ID, TIME_SESSION_REDIS } from '@/utils/constants';
+import { REDIS_CIPHER, SESSION_ID, TIME_SESSION_REDIS } from '@/utils/constants';
 import { createRedisInstance, getRedis, postRedis } from '@/utils/redis';
 import { decryptJWE, delRedis, getEnvVariable, handleResponse, putRedis } from '@/utils';
 
@@ -11,10 +11,10 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const uuidCookie =
-      cookies().get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile')) || null;
+      cookies().get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || null;
     const reqData = searchParams.get('reqData') || 'session:' + uuidCookie;
     const resData: string = (await getRedis(reqData)) || '';
-    const data = resData ? encryptForge(resData) : '';
+    const data = resData ? encryptForge(resData, REDIS_CIPHER) : '';
 
     return new NextResponse(JSON.stringify({ data }), { status: 200 });
   } catch (error) {
@@ -25,9 +25,9 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const uuidCookie =
-      cookies().get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile')) || null;
+      cookies().get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || null;
     const dataBody = await request.json();
-    const decryptData = JSON.parse(decryptForge(dataBody.data));
+    const decryptData = JSON.parse(decryptForge(dataBody.data, REDIS_CIPHER));
     const uuid = decryptData.uuid ? decryptData.uuid : 'session:' + uuidCookie;
 
     if (decryptData.dataRedis === 'get') {
@@ -45,9 +45,9 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const uuidCookie =
-      cookies().get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile')) || null;
+      cookies().get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || null;
     const dataBody = await request.json();
-    const decryptData = JSON.parse(decryptForge(dataBody.data));
+    const decryptData = JSON.parse(decryptForge(dataBody.data, REDIS_CIPHER));
     const uuid = decryptData.uuid ? decryptData.uuid : 'session:' + uuidCookie;
 
     try {
@@ -70,7 +70,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const res = { data: { code: '200.00.000', message: 'ok' } };
-    const response = encryptForge(JSON.stringify(res));
+    const response = encryptForge(JSON.stringify(res), REDIS_CIPHER);
 
     return new NextResponse(JSON.stringify({ data: response }), { status: 200 });
   } catch (error) {
@@ -93,7 +93,7 @@ export async function DELETE(request: NextRequest) {
 
     const { key, delParam, jwePublicKey } = decryptedPayload as { key: string; delParam: string; jwePublicKey: string };
 
-    const uuid = cookies().get(SESSION_ID)?.value || encryptForge(request.headers.get('X-Session-Mobile')) || null;
+    const uuid = cookies().get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || null;
     const redis = createRedisInstance();
 
     let keyRedis = key ? key : `session:${uuid}`;
@@ -115,7 +115,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     request.headers.get('X-Session-Mobile') &&
-      (await delRedis(`session:${encryptForge(request.headers.get('X-Session-Mobile'))}`));
+      await delRedis(`session:${request.headers.get('X-Session-Mobile')}`)
 
     const responsePayload = { code: '200.00.000', message: 'Process Ok', data: { message: '' } };
 

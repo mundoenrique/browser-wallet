@@ -6,7 +6,6 @@ import Info from '@mui/icons-material/InfoOutlined';
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import { Box, Button, FormHelperText, Snackbar, Typography, useTheme, useMediaQuery } from '@mui/material';
 //Internal app
-import { useOtpStore } from '@/store';
 import { InputOTPProps } from '@/interfaces';
 import { formatTime } from '@/utils/toolHelper';
 /**

@@ -2,8 +2,8 @@ import { type StateCreator, create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
 //Internal app
 import { decryptForge } from '@/utils/toolHelper';
-import { redisStorage } from '@/store/storages/user.store';
 import { TUserDetail, UserStore } from '@/interfaces';
+import { redisStorage } from '@/store/storages/user.store';
 
 const storeAPi: StateCreator<UserStore, [['zustand/devtools', never]]> = (set, get) => ({
   user: null,

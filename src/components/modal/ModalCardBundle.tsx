@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Typography, Stack, Button } from '@mui/material';
 import { sendGTMEvent } from '@next/third-parties/google';
-
 //Internal app
 import { api } from '@/utils/api';
 import ModalResponsive from './ModalResponsive';

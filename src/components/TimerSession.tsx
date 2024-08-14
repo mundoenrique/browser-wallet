@@ -6,6 +6,7 @@ import { Button, Typography, Box } from '@mui/material';
 // Internal app
 import { api } from '@/utils/api';
 import { ModalResponsive } from '.';
+import { TIME_SESSION_CLIENT } from '@/utils/constants';
 import { setDataRedis, validateTime } from '@/utils/toolHelper';
 import { useAccessSessionStore, useKeyStore, useUserStore } from '@/store';
 
@@ -42,7 +43,7 @@ export default function TimmerSession() {
         closeSession();
       }
 
-      const timeRest: number = validateTime(180, localStorage.sessionTime);
+      const timeRest: number = validateTime(TIME_SESSION_CLIENT, localStorage.sessionTime);
 
       if (timeRest === 25) {
         setOpen(true);
