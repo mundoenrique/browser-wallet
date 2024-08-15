@@ -402,7 +402,6 @@ async function validateParam(resRedis: any, url: string, uuid: string) {
 
   if (match[2] === 'credentials') return true;
 
-  // Aquí deberías tener la lógica de comparación dependiendo del tipo de recurso
   switch (resourceType) {
     case 'users':
     case 'payments':
