@@ -43,7 +43,10 @@ export default function GlobalErrorMessage() {
   const sessionExpired = async (eCode: string) => {
     const code = eCode?.split('.').pop() ?? '';
 
-    if (code === '9998') {
+    if (code === '9997') {
+      clearInterval(Number(localStorage.getItem('intervalId')));
+      push('/signout');
+    } else if (code === '9998') {
       setOpen(true);
       clearInterval(Number(localStorage.getItem('intervalId')));
       setTimeout(() => {
