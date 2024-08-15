@@ -60,4 +60,9 @@ export const KEYS_TO_ENCRYPT_CLIENT = [
   'pan',
   'expiredDate',
   'cvv'
-]
+];
+
+export const KEYS_DATA_VALIDATE = [
+  'userId',
+  'cardId'
+];
