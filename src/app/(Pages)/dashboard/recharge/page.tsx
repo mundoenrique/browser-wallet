@@ -9,7 +9,7 @@ import { sendGTMEvent } from '@next/third-parties/google';
 import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import Success from './partial/Success';
-import { encryptForge, formatAmount } from '@/utils/toolHelper';
+import { formatAmount } from '@/utils/toolHelper';
 import { ContainerLayout, InputTextPay } from '@/components';
 import { useNavTitleStore, useMenuStore, useUserStore, useCollectStore, useUiStore, useHeadersStore } from '@/store';
 
@@ -69,7 +69,7 @@ export default function Recharge() {
     setDisableSubmit(true);
     const payload = {
       fullName: `${firstName} ${firstLastName}`,
-      phoneNumber: encryptForge(getUserPhone()),
+      phoneNumber: getUserPhone(),
       operationCode: 'DIRECT_CHARGE',
       providerCode: 'PAGO_EFECTIVO',
       currencyCode: 'PEN',
