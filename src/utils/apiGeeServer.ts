@@ -296,6 +296,7 @@ function validateApiRoute(url: string) {
     'api/v0/users/credentials',
     'api/v0/users/null',
     new RegExp(`^api/v0/onboarding/${uuidPattern}/tfa$`),
+    new RegExp(`^api/v0/onboarding/${uuidPattern}/validate/tfa$`),
     new RegExp(`^api/v0/users/${uuidPattern}/credentials$`),
     new RegExp(`^api/v0/users/${uuidPattern}/tfa$`),
     new RegExp(`^api/v0/users/${uuidPattern}$`),
