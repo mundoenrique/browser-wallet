@@ -85,17 +85,39 @@ const RowDetail = ({ row }: { row: TableDataProps['data'][number] }) => (
         <Typography
           variant="subtitle2"
           noWrap
-          sx={{ maxWidth: 140, textTransform: 'lowercase', '&::first-letter': { textTransform: 'uppercase' } }}
+          sx={{
+            maxWidth: 140,
+            textTransform: 'lowercase',
+            '&::first-letter': { textTransform: 'uppercase' },
+          }}
         >
           {row.description ?? '-'}
         </Typography>
-        <Typography sx={{ fontSize: 10, lineHeight: '16px' }}>{dayjs(row.date).format('MMMM D, h:mm a')}</Typography>
+        <Typography
+          sx={{
+            fontSize: 10,
+            lineHeight: '16px',
+            textTransform: 'lowercase',
+            '&::first-letter': { textTransform: 'uppercase' },
+          }}
+        >
+          {dayjs(row.date).format('MMMM D, h:mm a')}
+        </Typography>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 / 2 }}>
         <Typography variant="subtitle2" color={row.transactionType === 'C' ? slate[700] : '#EE2737'}>
-          {Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(row.amount)}
+          {Intl.NumberFormat('es-PE', {
+            style: 'currency',
+            currency: 'PEN',
+          }).format(row.amount)}
         </Typography>
-        <Avatar sx={{ bgcolor: row.transactionType === 'C' ? '#C8EDC5' : '#FFC8C8', height: 16, width: 16 }}>
+        <Avatar
+          sx={{
+            bgcolor: row.transactionType === 'C' ? '#C8EDC5' : '#FFC8C8',
+            height: 16,
+            width: 16,
+          }}
+        >
           {row.transactionType === 'C' ? (
             <NorthEast sx={{ height: 12, width: 12, color: '#307E0D' }} />
           ) : (
