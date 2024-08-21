@@ -105,7 +105,8 @@ export default function ListSidebar(): JSX.Element {
           href={backLink}
           text="Regresa a Somos Belcorp"
           icon={<LogoutAppIcons />}
-          onClick={() => {
+          onClick={async () => {
+            await closeSession();
             sendGTMEvent({
               event: 'ga4.trackEvent',
               eventName: 'select_content',

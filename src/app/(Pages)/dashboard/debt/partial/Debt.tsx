@@ -145,7 +145,7 @@ export default function Debt() {
     }
 
     const amount = parseFloat(data.amount);
-    if (!balance || amount > parseFloat(balance.availableBalance)) {
+    if (!balance || amount >= parseFloat(balance.availableBalance)) {
       setError('amount', {
         type: 'customError',
         message: 'No cuenta con saldo disponible.',
