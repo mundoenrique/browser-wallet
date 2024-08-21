@@ -42,7 +42,6 @@ export const KEYS_TO_ENCRYPT_API = [
   'hashedDocumentNumber',
   'phone',
   'phoneIdentifier',
-  'phoneNumber',
   'type',
   'email',
   'names',
