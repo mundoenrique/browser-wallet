@@ -11,6 +11,7 @@ import Filters from './partial/filters';
 import ClientList from './partial/listClients';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { InputCheckGroupOptionProps } from '@/interfaces';
+import { capitalizeFirstLetter } from '@/utils/toolHelper';
 import { ContainerLayout, Linking, ModalResponsive } from '@/components';
 import { useUserStore, useUiStore, useChargeStore, useMenuStore, useNavTitleStore, useHeadersStore } from '@/store';
 
@@ -34,7 +35,7 @@ const dateRank = (): { text: string; value: string }[] => {
   for (let i = 0; i < 3; i++) {
     const monthDate = handleDate.subtract(i, 'month');
     months.push({
-      text: monthDate.format('MMMM'),
+      text: capitalizeFirstLetter(monthDate.format('MMMM')),
       value: `${monthDate.format('MM/YYYY')}`,
     });
   }
