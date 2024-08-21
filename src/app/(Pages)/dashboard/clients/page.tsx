@@ -11,7 +11,6 @@ import Filters from './partial/filters';
 import ClientList from './partial/listClients';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { InputCheckGroupOptionProps } from '@/interfaces';
-import { capitalizeFirstLetter } from '@/utils/toolHelper';
 import { ContainerLayout, Linking, ModalResponsive } from '@/components';
 import { useUserStore, useUiStore, useChargeStore, useMenuStore, useNavTitleStore, useHeadersStore } from '@/store';
 
@@ -22,6 +21,12 @@ const checkboxOptions = [
   { text: 'Cobros vencidos', value: 'EXPIRED' },
   { text: 'Cancelado', value: 'CANCELLED' },
 ];
+
+// Function to capitalize the first letter
+const capitalizeFirstLetter = (str: string): string => {
+  if (!str) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
 
 /**
  * Generates the months that would be used for filtering
