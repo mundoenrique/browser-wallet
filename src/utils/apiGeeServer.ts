@@ -331,14 +331,18 @@ async function encrypToDecrypt(request: NextRequest, data: any, type: string) {
 
     keysObjet.forEach((key) => {
       if (key in decryptedObject) {
-        decryptedObject[key] = decryptForge(decryptedObject[key], keyDecrypt);
-        decryptedObject[key] = encryptForge(decryptedObject[key], keyEncrypt);
+        if (!/^[0-9]+$/.test(decryptedObject[key])) {
+          decryptedObject[key] = decryptForge(decryptedObject[key], keyDecrypt);
+          decryptedObject[key] = encryptForge(decryptedObject[key], keyEncrypt);
+        }
       } else {
         for (const prop in decryptedObject) {
           if (typeof decryptedObject[prop] === 'object' && decryptedObject[prop] !== null) {
             if (key in decryptedObject[prop]) {
-              decryptedObject[prop][key] = decryptForge(decryptedObject[prop][key], keyDecrypt);
-              decryptedObject[prop][key] = encryptForge(decryptedObject[prop][key], keyEncrypt);
+              if (!/^[0-9]+$/.test(decryptedObject[prop][key])) {
+                decryptedObject[prop][key] = decryptForge(decryptedObject[prop][key], keyDecrypt);
+                decryptedObject[prop][key] = encryptForge(decryptedObject[prop][key], keyEncrypt);
+             }
             }
           }
         }
@@ -347,7 +351,7 @@ async function encrypToDecrypt(request: NextRequest, data: any, type: string) {
   }
 
   if (type === 'client') {
-    const { jwe, jws } = await handleApiGeeRequest(decryptedObject);
+    const { jwe } = await handleApiGeeRequest(decryptedObject);
     decryptedObject = jwe;
   }
 
