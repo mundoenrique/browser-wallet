@@ -22,6 +22,12 @@ const checkboxOptions = [
   { text: 'Cancelado', value: 'CANCELLED' },
 ];
 
+// Function to capitalize the first letter
+const capitalizeFirstLetter = (str: string): string => {
+  if (!str) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 /**
  * Generates the months that would be used for filtering
  * @returns Array with the last three months
@@ -34,7 +40,7 @@ const dateRank = (): { text: string; value: string }[] => {
   for (let i = 0; i < 3; i++) {
     const monthDate = handleDate.subtract(i, 'month');
     months.push({
-      text: monthDate.format('MMMM'),
+      text: capitalizeFirstLetter(monthDate.format('MMMM')),
       value: `${monthDate.format('MM/YYYY')}`,
     });
   }

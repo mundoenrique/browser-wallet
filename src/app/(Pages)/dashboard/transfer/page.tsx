@@ -113,7 +113,7 @@ export default function Transfer() {
 
         const balance = responseBalance.value?.data?.data?.availableBalance || 0;
 
-        const amountCheck = parseFloat(data.amount) < parseFloat(balance);
+        const amountCheck = parseFloat(data.amount) <= parseFloat(balance);
 
         if (responseReceiver.status === 'fulfilled' && responseBalance.status === 'fulfilled') {
           if (!amountCheck) {
