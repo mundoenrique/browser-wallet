@@ -329,25 +329,7 @@ async function encrypToDecrypt(request: NextRequest, data: any, type: string) {
     const keyDecrypt = type === 'server' ? secret : REDIS_CIPHER;
     const keyEncrypt = type === 'server' ? REDIS_CIPHER : secret;
 
-    keysObjet.forEach((key) => {
-      if (key in decryptedObject) {
-        if (!/^[0-9]+$/.test(decryptedObject[key])) {
-          decryptedObject[key] = decryptForge(decryptedObject[key], keyDecrypt);
-          decryptedObject[key] = encryptForge(decryptedObject[key], keyEncrypt);
-        }
-      } else {
-        for (const prop in decryptedObject) {
-          if (typeof decryptedObject[prop] === 'object' && decryptedObject[prop] !== null) {
-            if (key in decryptedObject[prop]) {
-              if (!/^[0-9]+$/.test(decryptedObject[prop][key])) {
-                decryptedObject[prop][key] = decryptForge(decryptedObject[prop][key], keyDecrypt);
-                decryptedObject[prop][key] = encryptForge(decryptedObject[prop][key], keyEncrypt);
-             }
-            }
-          }
-        }
-      }
-    });
+    encryptJSON(decryptedObject, keysObjet, keyDecrypt, keyEncrypt);
   }
 
   if (type === 'client') {
@@ -356,6 +338,22 @@ async function encrypToDecrypt(request: NextRequest, data: any, type: string) {
   }
 
   return decryptedObject;
+}
+
+function encryptJSON(obj: any, keysObjet:any, keyDecrypt: string, keyEncrypt:string) {
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      if (keysObjet.includes(key) && typeof obj[key] === 'string') {
+        if (!/^[0-9]+$/.test(obj[key])) {
+          obj[key] = decryptForge(obj[key], keyDecrypt);
+          obj[key] = encryptForge(obj[key], keyEncrypt);
+        }
+      }
+      else if (typeof obj[key] === 'object' && obj[key] !== null) {
+        encryptJSON(obj[key], keysObjet, keyDecrypt, keyEncrypt);
+      }
+    }
+  }
 }
 
 async function validateDevice(request: NextRequest) {
