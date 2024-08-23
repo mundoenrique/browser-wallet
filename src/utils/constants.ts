@@ -41,6 +41,7 @@ export const KEYS_TO_ENCRYPT_API = [
   'documentNumber',
   'hashedDocumentNumber',
   'phone',
+  'number',
   'phoneIdentifier',
   'type',
   'email',
@@ -53,10 +54,4 @@ export const KEYS_TO_ENCRYPT_API = [
   'password',
 ];
 
-export const KEYS_TO_ENCRYPT_CLIENT = [
-  'cardId',
-  'phoneNumber',
-  'pan',
-  'expiredDate',
-  'cvv'
-]
+export const KEYS_TO_ENCRYPT_CLIENT = ['cardId', 'phoneNumber', 'pan', 'expiredDate', 'cvv'];

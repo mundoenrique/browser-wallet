@@ -108,9 +108,11 @@ export default function Biometric() {
 
     let data = window.JSON.parse(event.data);
 
-    if (data.payload.value === 'success') validateBiometric();
+    if (data.payload !== undefined) {
+      if (data.payload.value === 'success') validateBiometric();
 
-    if (data.payload.value === 'error') setBtnBack(true);
+      if (data.payload.value === 'error') setBtnBack(true);
+    }
   };
 
   const captureBiometrics = useCallback(() => {
