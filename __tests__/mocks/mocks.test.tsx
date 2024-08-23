@@ -7,7 +7,8 @@ jest.mock('@/utils/toolHelper', () => ({
   encryptForge: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
   handleMaskOtp: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
   stringAvatar: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
-  setDataRedis: jest.fn().mockResolvedValue({})
+  setDataRedis: jest.fn().mockResolvedValue({}),
+  capitalizeFirstLetter: jest.fn(),
 }));
 
 jest.mock('next/navigation', () => ({
