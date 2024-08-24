@@ -145,7 +145,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
   const { data, jweAppPublicKey } = await handleApiRequest(request);
 
   if (data) {
-    const dataEncrypt = await encrypToDecrypt(request, data, 'server');
+    const dataEncrypt = await encrypToDecrypt(request, data, url, 'server');
     const { jwe, jws } = await handleApiGeeRequest(dataEncrypt);
     jweString = jwe;
     jwsString = jws;
@@ -180,7 +180,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
   }
 
   if (responseBack.data.data) {
-    responseBack.data.data = await encrypToDecrypt(request, responseBack.data.data, 'client');
+    responseBack.data.data = await encrypToDecrypt(request, responseBack.data.data, url, 'client');
   }
 
   const encryptedResponse = await handleApiGeeResponse(responseBack.data, responseBack.status ?? 400, jweAppPublicKey);
@@ -311,10 +311,13 @@ function validateApiRoute(url: string) {
   return requiresValidation;
 }
 
-async function encrypToDecrypt(request: NextRequest, data: any, type: string) {
+async function encrypToDecrypt(request: NextRequest, data: any, url: string, type: string) {
   let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
   const dataRedis = (await getRedis(`session:${uuid}`)) || '';
   const keysObjet = type === 'server' ? KEYS_TO_ENCRYPT_API : KEYS_TO_ENCRYPT_CLIENT;
+  const noSessionValidationRoutes = [
+    'api/v0/onboarding/termsandconditions',
+  ];
   let decryptedObject = { ...data };
 
   if (type === 'client') {
@@ -329,7 +332,11 @@ async function encrypToDecrypt(request: NextRequest, data: any, type: string) {
     const keyDecrypt = type === 'server' ? secret : REDIS_CIPHER;
     const keyEncrypt = type === 'server' ? REDIS_CIPHER : secret;
 
-    encryptJSON(decryptedObject, keysObjet, keyDecrypt, keyEncrypt);
+    const requiresValidation = !noSessionValidationRoutes.some((pattern:any) =>
+      typeof pattern === 'string' ? pattern === url : pattern.test(url)
+    );
+
+    if(requiresValidation) encryptJSON(decryptedObject, keysObjet, keyDecrypt, keyEncrypt);
   }
 
   if (type === 'client') {
@@ -344,6 +351,7 @@ function encryptJSON(obj: any, keysObjet:any, keyDecrypt: string, keyEncrypt:str
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
       if (keysObjet.includes(key) && typeof obj[key] === 'string') {
+        console.log('KEY A CIFRAR **** ', key);
         if (!/^[0-9]+$/.test(obj[key])) {
           obj[key] = decryptForge(obj[key], keyDecrypt);
           obj[key] = encryptForge(obj[key], keyEncrypt);
