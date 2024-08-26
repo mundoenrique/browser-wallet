@@ -44,6 +44,7 @@ export default function GlobalErrorMessage() {
     const code = eCode?.split('.').pop() ?? '';
 
     if (code === '9997') {
+      closeModalError();
       clearInterval(Number(localStorage.getItem('intervalId')));
       push('/signout');
     } else if (code === '9998') {
@@ -53,6 +54,7 @@ export default function GlobalErrorMessage() {
         closeSession();
       }, 5000);
     } else if (code === '9999') {
+      closeModalError();
       await api.delete('/redis', { data: { key: 'activeSession', jwePublicKey, delParam: user.userId } });
       push('/signout');
     }
@@ -69,6 +71,8 @@ export default function GlobalErrorMessage() {
 
     if (modalErrorObject) {
       if ('title' in modalErrorObject && 'description' in modalErrorObject) {
+        sessionExpired(modalErrorObject.code || '');
+
         const { title: modalTitle, description: modalDescription } = modalErrorObject;
         title = modalTitle;
         description = modalDescription;
