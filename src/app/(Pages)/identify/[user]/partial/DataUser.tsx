@@ -61,7 +61,7 @@ export default function DataUser({ user, referer, host }: DataUserProps) {
           updateFormState('user', registerData.user);
         },
       },
-      // User rew register
+      // User new register
       PH_PENDING: {
         path: '/signup',
         store: () => {

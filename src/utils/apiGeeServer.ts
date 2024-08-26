@@ -146,7 +146,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
   const { data, jweAppPublicKey } = await handleApiRequest(request);
 
   if (data) {
-    const dataEncrypt = await encrypToDecrypt(request, data, 'server');
+    const dataEncrypt = await encrypToDecrypt(request, data, url, 'server');
     const { jwe, jws } = await handleApiGeeRequest(dataEncrypt);
     jweString = jwe;
     jwsString = jws;
@@ -181,7 +181,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
   }
 
   if (responseBack.data.data) {
-    responseBack.data.data = await encrypToDecrypt(request, responseBack.data.data, 'client');
+    responseBack.data.data = await encrypToDecrypt(request, responseBack.data.data, url, 'client');
   }
 
   const encryptedResponse = await handleApiGeeResponse(responseBack.data, responseBack.status ?? 400, jweAppPublicKey);
@@ -321,16 +321,17 @@ function validateApiRoute(url: string) {
   return requiresValidation;
 }
 
-async function encrypToDecrypt(request: NextRequest, data: any, type: string) {
+async function encrypToDecrypt(request: NextRequest, data: any, url: string, type: string) {
   let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
   const dataRedis = (await getRedis(`session:${uuid}`)) || '';
   const keysObjet = type === 'server' ? KEYS_TO_ENCRYPT_API : KEYS_TO_ENCRYPT_CLIENT;
-  let decryptedObject = { ...data };
+  const noSessionValidationRoutes = ['api/v0/onboarding/termsandconditions'];
+  let decryptedObject = data;
 
   if (type === 'client') {
     const jwePrivateKey = getEnvVariable('BACK_JWE_PRIVATE_KEY');
     const decryptData = await decryptJWE(data, jwePrivateKey);
-    decryptedObject = { ...decryptData };
+    decryptedObject = decryptData;
   }
 
   if (dataRedis) {
@@ -339,26 +340,16 @@ async function encrypToDecrypt(request: NextRequest, data: any, type: string) {
     const keyDecrypt = type === 'server' ? secret : REDIS_CIPHER;
     const keyEncrypt = type === 'server' ? REDIS_CIPHER : secret;
 
-    keysObjet.forEach((key) => {
-      if (key in decryptedObject) {
-        decryptedObject[key] = decryptForge(decryptedObject[key], keyDecrypt);
-        decryptedObject[key] = encryptForge(decryptedObject[key], keyEncrypt);
-      } else {
-        for (const prop in decryptedObject) {
-          if (typeof decryptedObject[prop] === 'object' && decryptedObject[prop] !== null) {
-            if (key in decryptedObject[prop]) {
-              decryptedObject[prop][key] = decryptForge(decryptedObject[prop][key], keyDecrypt);
-              decryptedObject[prop][key] = encryptForge(decryptedObject[prop][key], keyEncrypt);
-            }
-          }
-        }
-      }
-    });
+    const requiresValidation = !noSessionValidationRoutes.some((pattern: any) =>
+      typeof pattern === 'string' ? pattern === url : pattern.test(url)
+    );
+
+    if (requiresValidation) encryptJSON(decryptedObject, keysObjet, keyDecrypt, keyEncrypt);
   }
 
   if (type === 'client') {
     await saveDataValidate(request, decryptedObject)
-    const { jwe, jws } = await handleApiGeeRequest(decryptedObject);
+    const { jwe, } = await handleApiGeeRequest(decryptedObject);
     decryptedObject = jwe;
   }
 
@@ -411,17 +402,32 @@ async function validateParam(resRedis: any, url: string, uuid: string) {
     case 'users':
     case 'payments':
       console.log('validando el userId ', paramFromUrl, ' ------ ', resRedis.userId)
-      if( paramFromUrl != resRedis.userId ) await delRedis(`session:${uuid}`);
+      if (paramFromUrl != resRedis.userId) await delRedis(`session:${uuid}`);
       return paramFromUrl === resRedis.userId
     case 'cards':
       const secret = forge.util.decode64(resRedis.exchange);
       const cardId = decryptForge(resRedis.cardId, secret);
       console.log('validando el cardId ', paramFromUrl, ' ------ ', cardId)
-      if(paramFromUrl != cardId) await delRedis(`session:${uuid}`);
+      if (paramFromUrl != cardId) await delRedis(`session:${uuid}`);
       return paramFromUrl === cardId
     default:
       console.log("Tipo de recurso no soportado");
       return true
+  }
+}
+
+function encryptJSON(obj: any, keysObjet: any, keyDecrypt: string, keyEncrypt: string) {
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      if (keysObjet.includes(key) && typeof obj[key] === 'string') {
+        if (!/^[0-9]+$/.test(obj[key])) {
+          obj[key] = decryptForge(obj[key], keyDecrypt);
+          obj[key] = encryptForge(obj[key], keyEncrypt);
+        }
+      } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+        encryptJSON(obj[key], keysObjet, keyDecrypt, keyEncrypt);
+      }
+    }
   }
 }
 

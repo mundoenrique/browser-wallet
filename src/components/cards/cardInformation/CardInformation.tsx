@@ -55,8 +55,6 @@ export default function CardInformation() {
 
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
-  const setReloadFunction = useUiStore((state) => state.setReloadFunction);
-
   const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
 
   const setBalanceStoreDebt = useDebStore((state) => state.setBalance);
@@ -140,7 +138,6 @@ export default function CardInformation() {
       })
       .catch((e) => {
         setCardInformationError(true);
-        setReloadFunction(() => getCardInformation());
         setModalError({ title: 'Algo salió mal', description: 'No pudimos cargar la información de la tarjeta' });
       });
   };
