@@ -1,7 +1,6 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useCallback, useEffect, useState } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
@@ -24,8 +23,6 @@ import {
 } from '@/store';
 
 export default function Debt() {
-  const router = useRouter();
-
   const schema = getSchema(['amount']);
 
   const debt = useDebStore((state) => state.debt);
@@ -178,9 +175,9 @@ export default function Debt() {
             <Typography variant="body1" color="primary.main">
               Deuda total
             </Typography>
-            <Typography variant="h6">{debt.amount === 0 ? 'S/ 0.00' : debt.amount}</Typography>
+            <Typography variant="h6">{debt?.amount === 0 || !debt?.amount ? 'S/ 0.00' : debt?.amount}</Typography>
             <Typography variant="body2" color="primary.main">
-              {debt.expirationDate}
+              {debt?.expirationDate}
             </Typography>
           </Stack>
         </Card>
