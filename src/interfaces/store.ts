@@ -74,6 +74,7 @@ export interface UiStore {
   clearReloadFunction: () => void;
 }
 interface ErrorMessage {
+  code?: string;
   title: string;
   description: string;
 }

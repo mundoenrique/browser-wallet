@@ -68,9 +68,10 @@ export default function Dashboard() {
       .then((response: any) => {
         response.data.data && setMovementData(response.data.data);
       })
-      .catch(() => {
+      .catch((e) => {
+        const { code } = e.response.data.data;
         setReloadFunction(() => getMovements());
-        setModalError({ title: '¡Oops!', description: 'Error al cargar movimientos.' });
+        setModalError({ code, title: '¡Oops!', description: 'Error al cargar movimientos.' });
       })
       .finally(() => {
         setLoadingMovements(false);
@@ -91,7 +92,8 @@ export default function Dashboard() {
           });
         }
       })
-      .catch(() => {
+      .catch((e) => {
+        const { code } = e.response.data.data;
         setReloadFunction(() => getDebtBalance());
         setCardMyDebt({
           code: '',
@@ -102,6 +104,7 @@ export default function Dashboard() {
           },
         });
         setModalError({
+          code,
           title: 'Algo salió mal',
           description: 'No pudimos cargar la información de tu deuda.',
         });
@@ -115,7 +118,8 @@ export default function Dashboard() {
         setCardClients(response.data);
         setCharge(response.data.data.amount);
       })
-      .catch(() => {
+      .catch((e) => {
+        const { code } = e.response.data.data;
         setReloadFunction(() => getCharge());
 
         setCardClients({
@@ -128,6 +132,7 @@ export default function Dashboard() {
           },
         });
         setModalError({
+          code,
           title: 'Algo salió mal',
           description: 'No pudimos cargar la información de lo que te deben tus clientes.',
         });
