@@ -174,7 +174,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
       responseBack = await apiGee.delete(url);
       break;
     case 'session':
-      responseBack = sessionExpired(validate);
+      responseBack = await sessionExpired(validate);
       break;
     default:
       responseBack = { data: Error(`Invalid method: ${method}`) };
@@ -198,7 +198,10 @@ async function validateSession(request: NextRequest) {
 
     const validateParams = await validateParam(resRedis, request.headers.get('x-url') as string, uuid);
 
-    if (!validateParams)  return { status: false, code: '401.00.9997' };
+    if (!validateParams) {
+      await delRedis(`session:${uuid}`);
+      return { status: false, code: '401.00.9997' };
+    }
 
     const viewApi = validateApiRoute(request.headers.get('x-url') as string);
 
@@ -217,7 +220,8 @@ async function validateSession(request: NextRequest) {
   }
 }
 
-function sessionExpired(validate: any) {
+async function sessionExpired(validate: any) {
+
   logger.debug('The session time is over');
 
   const response: any = {
