@@ -28,8 +28,6 @@ export default function Dashboard() {
 
   const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
 
-  const setReloadFunction = useUiStore((state) => state.setReloadFunction);
-
   const [movementData, setMovementData] = useState<[]>([]);
 
   const [loadingMovements, setLoadingMovements] = useState<boolean>(false);
@@ -69,7 +67,6 @@ export default function Dashboard() {
         response.data.data && setMovementData(response.data.data);
       })
       .catch(() => {
-        setReloadFunction(() => getMovements());
         setModalError({ title: '¡Oops!', description: 'Error al cargar movimientos.' });
       })
       .finally(() => {
@@ -92,7 +89,6 @@ export default function Dashboard() {
         }
       })
       .catch(() => {
-        setReloadFunction(() => getDebtBalance());
         setCardMyDebt({
           code: '',
           data: {
@@ -116,8 +112,6 @@ export default function Dashboard() {
         setCharge(response.data.data.amount);
       })
       .catch(() => {
-        setReloadFunction(() => getCharge());
-
         setCardClients({
           code: '',
           data: {

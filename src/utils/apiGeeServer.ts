@@ -315,15 +315,13 @@ async function encrypToDecrypt(request: NextRequest, data: any, url: string, typ
   let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
   const dataRedis = (await getRedis(`session:${uuid}`)) || '';
   const keysObjet = type === 'server' ? KEYS_TO_ENCRYPT_API : KEYS_TO_ENCRYPT_CLIENT;
-  const noSessionValidationRoutes = [
-    'api/v0/onboarding/termsandconditions',
-  ];
-  let decryptedObject = { ...data };
+  const noSessionValidationRoutes = ['api/v0/onboarding/termsandconditions'];
+  let decryptedObject = data;
 
   if (type === 'client') {
     const jwePrivateKey = getEnvVariable('BACK_JWE_PRIVATE_KEY');
     const decryptData = await decryptJWE(data, jwePrivateKey);
-    decryptedObject = { ...decryptData };
+    decryptedObject = decryptData;
   }
 
   if (dataRedis) {
@@ -332,11 +330,11 @@ async function encrypToDecrypt(request: NextRequest, data: any, url: string, typ
     const keyDecrypt = type === 'server' ? secret : REDIS_CIPHER;
     const keyEncrypt = type === 'server' ? REDIS_CIPHER : secret;
 
-    const requiresValidation = !noSessionValidationRoutes.some((pattern:any) =>
+    const requiresValidation = !noSessionValidationRoutes.some((pattern: any) =>
       typeof pattern === 'string' ? pattern === url : pattern.test(url)
     );
 
-    if(requiresValidation) encryptJSON(decryptedObject, keysObjet, keyDecrypt, keyEncrypt);
+    if (requiresValidation) encryptJSON(decryptedObject, keysObjet, keyDecrypt, keyEncrypt);
   }
 
   if (type === 'client') {
@@ -347,17 +345,15 @@ async function encrypToDecrypt(request: NextRequest, data: any, url: string, typ
   return decryptedObject;
 }
 
-function encryptJSON(obj: any, keysObjet:any, keyDecrypt: string, keyEncrypt:string) {
+function encryptJSON(obj: any, keysObjet: any, keyDecrypt: string, keyEncrypt: string) {
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
       if (keysObjet.includes(key) && typeof obj[key] === 'string') {
-        console.log('KEY A CIFRAR **** ', key);
         if (!/^[0-9]+$/.test(obj[key])) {
           obj[key] = decryptForge(obj[key], keyDecrypt);
           obj[key] = encryptForge(obj[key], keyEncrypt);
         }
-      }
-      else if (typeof obj[key] === 'object' && obj[key] !== null) {
+      } else if (typeof obj[key] === 'object' && obj[key] !== null) {
         encryptJSON(obj[key], keysObjet, keyDecrypt, keyEncrypt);
       }
     }
