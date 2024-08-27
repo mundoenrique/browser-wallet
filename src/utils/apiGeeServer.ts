@@ -130,7 +130,7 @@ export async function getOauthBearer() {
 }
 
 export async function HandleCustomerRequest(request: NextRequest) {
-  let { method, headers,  } = request;
+  let { method, headers } = request;
   const url = headers.get('x-url') as string;
 
   const validate = await validateSession(request);
@@ -221,7 +221,6 @@ async function validateSession(request: NextRequest) {
 }
 
 async function sessionExpired(validate: any) {
-
   logger.debug('The session time is over');
 
   const response: any = {
@@ -348,8 +347,8 @@ async function encrypToDecrypt(request: NextRequest, data: any, url: string, typ
   }
 
   if (type === 'client') {
-    await saveDataValidate(request, decryptedObject, url)
-    const { jwe, } = await handleApiGeeRequest(decryptedObject);
+    await saveDataValidate(request, decryptedObject, url);
+    const { jwe } = await handleApiGeeRequest(decryptedObject);
     decryptedObject = jwe;
   }
 
@@ -357,7 +356,6 @@ async function encrypToDecrypt(request: NextRequest, data: any, url: string, typ
 }
 
 async function saveDataValidate(request: NextRequest, data: any, url: string) {
-
   type DataObject = {
     [key: string]: any;
   };
@@ -367,9 +365,7 @@ async function saveDataValidate(request: NextRequest, data: any, url: string) {
   const dataRedis = (await getRedis(`session:${uuid}`)) || '';
 
   const consultantCodePattern = '\\d{9}';
-  const noSessionValidationRoutes = [
-    new RegExp(`^api/v0/users/search\\?phoneNumber=${consultantCodePattern}$`),
-  ];
+  const noSessionValidationRoutes = [new RegExp(`^api/v0/users/search\\?phoneNumber=${consultantCodePattern}$`)];
 
   const requiresValidation = !noSessionValidationRoutes.some((pattern) =>
     typeof pattern === 'string' ? pattern === url : pattern.test(url)
@@ -395,11 +391,9 @@ async function saveDataValidate(request: NextRequest, data: any, url: string) {
       await putRedis(`session:${uuid}`, result);
     }
   }
-
 }
 
 async function validateParam(resRedis: any, url: string, uuid: string) {
-
   const regex = /api\/v0\/(onboarding|users|payments|cards)\/([a-z0-9-]+)(?:\/.*)?/;
   const match = url.match(regex) || '';
 
@@ -424,14 +418,14 @@ async function validateParam(resRedis: any, url: string, uuid: string) {
     case 'users':
     case 'payments':
       if (paramFromUrl != resRedis.userId) await delRedis(`session:${uuid}`);
-      return paramFromUrl === resRedis.userId
+      return paramFromUrl === resRedis.userId;
     case 'cards':
       const secret = forge.util.decode64(resRedis.exchange);
       const cardId = decryptForge(resRedis.cardId, secret);
       if (paramFromUrl != cardId) await delRedis(`session:${uuid}`);
-      return paramFromUrl === cardId
+      return paramFromUrl === cardId;
     default:
-      return true
+      return true;
   }
 }
 
