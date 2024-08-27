@@ -348,7 +348,7 @@ async function encrypToDecrypt(request: NextRequest, data: any, url: string, typ
   }
 
   if (type === 'client') {
-    await saveDataValidate(request, decryptedObject)
+    await saveDataValidate(request, decryptedObject, url)
     const { jwe, } = await handleApiGeeRequest(decryptedObject);
     decryptedObject = jwe;
   }
@@ -356,7 +356,7 @@ async function encrypToDecrypt(request: NextRequest, data: any, url: string, typ
   return decryptedObject;
 }
 
-async function saveDataValidate(request: NextRequest, data: any) {
+async function saveDataValidate(request: NextRequest, data: any, url: string) {
 
   type DataObject = {
     [key: string]: any;
@@ -365,6 +365,17 @@ async function saveDataValidate(request: NextRequest, data: any) {
   let result: DataObject = {};
   let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
   const dataRedis = (await getRedis(`session:${uuid}`)) || '';
+
+  const consultantCodePattern = '\\d{9}';
+  const noSessionValidationRoutes = [
+    new RegExp(`^api/v0/users/search\\?phoneNumber=${consultantCodePattern}$`),
+  ];
+
+  const requiresValidation = !noSessionValidationRoutes.some((pattern) =>
+    typeof pattern === 'string' ? pattern === url : pattern.test(url)
+  );
+
+  if (!requiresValidation) return true;
 
   if (dataRedis) {
     KEYS_DATA_VALIDATE.forEach((key) => {
@@ -389,29 +400,37 @@ async function saveDataValidate(request: NextRequest, data: any) {
 
 async function validateParam(resRedis: any, url: string, uuid: string) {
 
-  console.log('AQUI LA URL PARA VALIDAR ACCESO *********************************** ', url)
   const regex = /api\/v0\/(onboarding|users|payments|cards)\/([a-z0-9-]+)(?:\/.*)?/;
   const match = url.match(regex) || '';
 
-  const resourceType = match[1]; // Puede ser 'users', 'payments' o 'cards'
-  const paramFromUrl = match[2]; // El ID o valor que viene después del recurso
+  const uuidPattern = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
+  const consultantCodePattern = '\\d{9}';
+  const noSessionValidationRoutes = [
+    'api/v0/users/credentials',
+    new RegExp(`^api/v0/users/search\\?phoneNumber=${consultantCodePattern}$`),
+    new RegExp(`^api/v0/users/${uuidPattern}/tfa$`),
+  ];
 
-  if (match[2] === 'credentials') return true;
+  const requiresValidation = !noSessionValidationRoutes.some((pattern) =>
+    typeof pattern === 'string' ? pattern === url : pattern.test(url)
+  );
+
+  if (!requiresValidation) return true;
+
+  const resourceType = match[1];
+  const paramFromUrl = match[2];
 
   switch (resourceType) {
     case 'users':
     case 'payments':
-      console.log('validando el userId ', paramFromUrl, ' ------ ', resRedis.userId)
       if (paramFromUrl != resRedis.userId) await delRedis(`session:${uuid}`);
       return paramFromUrl === resRedis.userId
     case 'cards':
       const secret = forge.util.decode64(resRedis.exchange);
       const cardId = decryptForge(resRedis.cardId, secret);
-      console.log('validando el cardId ', paramFromUrl, ' ------ ', cardId)
       if (paramFromUrl != cardId) await delRedis(`session:${uuid}`);
       return paramFromUrl === cardId
     default:
-      console.log("Tipo de recurso no soportado");
       return true
   }
 }
