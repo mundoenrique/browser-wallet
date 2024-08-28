@@ -67,7 +67,7 @@ export default function Dashboard() {
         response.data.data && setMovementData(response.data.data);
       })
       .catch((e) => {
-        const { code } = e.response.data.data;
+        const { code } = e.response?.data?.data || 0;
         setModalError({ code, title: '¡Oops!', description: 'Error al cargar movimientos.' });
       })
       .finally(() => {
@@ -90,7 +90,7 @@ export default function Dashboard() {
         }
       })
       .catch((e) => {
-        const { code } = e.response.data.data;
+        const { code } = e.response?.data?.data || 0;
         setCardMyDebt({
           code: '',
           data: {
@@ -115,7 +115,7 @@ export default function Dashboard() {
         setCharge(response.data.data.amount);
       })
       .catch((e) => {
-        const { code } = e.response.data.data;
+        const { code } = e.response?.data?.data || 0;
         setCardClients({
           code: '',
           data: {
