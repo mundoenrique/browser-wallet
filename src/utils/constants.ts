@@ -55,3 +55,8 @@ export const KEYS_TO_ENCRYPT_API = [
 ];
 
 export const KEYS_TO_ENCRYPT_CLIENT = ['cardId', 'phoneNumber', 'pan', 'expiredDate', 'cvv'];
+
+export const KEYS_DATA_VALIDATE = [
+  'userId',
+  'cardId'
+];

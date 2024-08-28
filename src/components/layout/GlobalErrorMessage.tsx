@@ -43,13 +43,20 @@ export default function GlobalErrorMessage() {
   const sessionExpired = async (eCode: string) => {
     const code = eCode?.split('.').pop() ?? '';
 
-    if (code === '9998') {
+    if (code === '9997') {
+      clearInterval(Number(localStorage.getItem('intervalId')));
+      setTimeout(() => {
+        closeModalError();
+        push('/signout');
+      }, 10);
+    } else if (code === '9998') {
       setOpen(true);
       clearInterval(Number(localStorage.getItem('intervalId')));
       setTimeout(() => {
         closeSession();
       }, 5000);
     } else if (code === '9999') {
+
       await api.delete('/redis', { data: { key: 'activeSession', jwePublicKey, delParam: user.userId } });
       push('/signout');
     }
@@ -66,6 +73,8 @@ export default function GlobalErrorMessage() {
 
     if (modalErrorObject) {
       if ('title' in modalErrorObject && 'description' in modalErrorObject) {
+        sessionExpired(modalErrorObject.code || '');
+
         const { title: modalTitle, description: modalDescription } = modalErrorObject;
         title = modalTitle;
         description = modalDescription;
@@ -179,6 +188,7 @@ const setError = (eCode?: string, context?: string) => {
     '993': { description: 'Token de acceso vencido.' },
     '995': { description: 'La nueva contraseña no puede ser la misma que las últimas 3 utilizadas.' },
     '999': { description: 'Error interno del servidor.' },
+    '9997': { description: 'El sistema ha detectado una actividad no autorizada' },
     '9998': { description: 'La sesión ha expirado' },
 
     login: { '057': { description: 'Cuenta Bloqueada', title: 'login Inválido.' } },

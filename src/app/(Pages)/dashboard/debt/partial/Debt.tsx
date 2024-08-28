@@ -175,9 +175,17 @@ export default function Debt() {
             <Typography variant="body1" color="primary.main">
               Deuda total
             </Typography>
-            <Typography variant="h6">{debt?.amount === 0 || !debt?.amount ? 'S/ 0.00' : debt?.amount}</Typography>
+            <Typography variant="h6">
+              {debt?.amount === undefined || debt?.amount === null
+                ? 'Sin datos'
+                : debt?.amount === 0
+                ? 'S/ 0.00'
+                : `${Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(
+                    debt?.amount as number
+                  )}`}
+            </Typography>
             <Typography variant="body2" color="primary.main">
-              {debt?.expirationDate}
+              {debt.expirationDate}
             </Typography>
           </Stack>
         </Card>

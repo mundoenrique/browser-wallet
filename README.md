@@ -104,6 +104,10 @@ WEB_URL={{WEB_HOST_NAME}} \* URL de acceso a la aplicación
 
 BACK_URL={{BACK_HOST_NAME}} \* URL de acceso a los servicios Novopayment
 
+ALLOW_ORIGIN={{PAGE_ALLOW_ORIGIN}} \* URL de página anfitriona.
+
+PRIME_NUMBER={{PRIME_NUMBER}} \* Semilla para solución de algoritmo AES256 (Número primo de 6 dígitos)
+
 LOG_FILE={{ ON | OFF}} \* habilitar o deshabilitar la escritura de logs en archivos
 
 MAX_FIES={{MAX_DAYS_LOG_FILE}} \* Tiempo de expiración de para archivos de logs, por defecto 60 días (60d)

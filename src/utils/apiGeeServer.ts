@@ -15,6 +15,7 @@ import {
   TIME_SESSION_CLIENT,
   KEYS_TO_ENCRYPT_API,
   KEYS_TO_ENCRYPT_CLIENT,
+  KEYS_DATA_VALIDATE,
 } from '@/utils/constants';
 
 const baseURL = getEnvVariable('BACK_URL');
@@ -130,6 +131,7 @@ export async function getOauthBearer() {
 
 export async function HandleCustomerRequest(request: NextRequest) {
   let { method, headers } = request;
+  const url = headers.get('x-url') as string;
 
   const validate = await validateSession(request);
 
@@ -139,7 +141,6 @@ export async function HandleCustomerRequest(request: NextRequest) {
 
   let jwsString: string = '';
   let jweString: string = '';
-  const url = headers.get('x-url') as string;
   headers.delete('x-url');
 
   const { data, jweAppPublicKey } = await handleApiRequest(request);
@@ -173,7 +174,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
       responseBack = await apiGee.delete(url);
       break;
     case 'session':
-      responseBack = sessionExpired(validate);
+      responseBack = await sessionExpired(validate);
       break;
     default:
       responseBack = { data: Error(`Invalid method: ${method}`) };
@@ -194,6 +195,14 @@ async function validateSession(request: NextRequest) {
 
   if (dataRedis) {
     const resRedis = JSON.parse(dataRedis);
+
+    const validateParams = await validateParam(resRedis, request.headers.get('x-url') as string, uuid);
+
+    if (!validateParams) {
+      await delRedis(`session:${uuid}`);
+      return { status: false, code: '401.00.9997' };
+    }
+
     const viewApi = validateApiRoute(request.headers.get('x-url') as string);
 
     if (!viewApi) return { status: true, code: '200.00.000' };
@@ -211,7 +220,7 @@ async function validateSession(request: NextRequest) {
   }
 }
 
-function sessionExpired(validate: any) {
+async function sessionExpired(validate: any) {
   logger.debug('The session time is over');
 
   const response: any = {
@@ -338,11 +347,86 @@ async function encrypToDecrypt(request: NextRequest, data: any, url: string, typ
   }
 
   if (type === 'client') {
+    await saveDataValidate(request, decryptedObject, url);
     const { jwe } = await handleApiGeeRequest(decryptedObject);
     decryptedObject = jwe;
   }
 
   return decryptedObject;
+}
+
+async function saveDataValidate(request: NextRequest, data: any, url: string) {
+  type DataObject = {
+    [key: string]: any;
+  };
+
+  let result: DataObject = {};
+  let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
+  const dataRedis = (await getRedis(`session:${uuid}`)) || '';
+
+  const consultantCodePattern = '\\d{9}';
+  const noSessionValidationRoutes = [new RegExp(`^api/v0/users/search\\?phoneNumber=${consultantCodePattern}$`)];
+
+  const requiresValidation = !noSessionValidationRoutes.some((pattern) =>
+    typeof pattern === 'string' ? pattern === url : pattern.test(url)
+  );
+
+  if (!requiresValidation) return true;
+
+  if (dataRedis) {
+    KEYS_DATA_VALIDATE.forEach((key) => {
+      if (key in data) {
+        result[key] = data[key];
+      } else {
+        for (const prop in data) {
+          if (typeof data[prop] === 'object' && data[prop] !== null) {
+            if (key in data[prop]) {
+              result[key] = data[prop][key];
+            }
+          }
+        }
+      }
+    });
+    if (Object.keys(result).length != 0) {
+      await putRedis(`session:${uuid}`, result);
+    }
+  }
+}
+
+async function validateParam(resRedis: any, url: string, uuid: string) {
+  const regex = /api\/v0\/(onboarding|users|payments|cards)\/([a-z0-9-]+)(?:\/.*)?/;
+  const match = url.match(regex) || '';
+
+  const uuidPattern = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
+  const consultantCodePattern = '\\d{9}';
+  const noSessionValidationRoutes = [
+    'api/v0/users/credentials',
+    new RegExp(`^api/v0/users/search\\?phoneNumber=${consultantCodePattern}$`),
+    new RegExp(`^api/v0/users/${uuidPattern}/tfa$`),
+  ];
+
+  const requiresValidation = !noSessionValidationRoutes.some((pattern) =>
+    typeof pattern === 'string' ? pattern === url : pattern.test(url)
+  );
+
+  if (!requiresValidation) return true;
+
+  const resourceType = match[1];
+  const paramFromUrl = match[2];
+
+  switch (resourceType) {
+    case 'users':
+    case 'payments':
+      if (paramFromUrl != resRedis.userId) await delRedis(`session:${uuid}`);
+      return paramFromUrl === resRedis.userId;
+    case 'cards':
+      const secret = forge.util.decode64(resRedis.exchange);
+      const cardId = decryptForge(resRedis.cardId, secret);
+      if (paramFromUrl != cardId) await delRedis(`session:${uuid}`);
+      return paramFromUrl === cardId;
+    default:
+      return true;
+  }
 }
 
 function encryptJSON(obj: any, keysObjet: any, keyDecrypt: string, keyEncrypt: string) {
