@@ -109,7 +109,10 @@ export default function Biometric() {
     let data = window.JSON.parse(event.data);
 
     if (data.payload !== undefined) {
-      if (data.payload.value === 'success') validateBiometric();
+      if (data.payload.value === 'success') {
+        validateBiometric();
+        window.removeEventListener('message', receiveMessage);
+      }
 
       if (data.payload.value === 'error') setBtnBack(true);
     }
