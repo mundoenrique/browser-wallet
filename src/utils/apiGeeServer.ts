@@ -203,8 +203,13 @@ async function validateSession(request: NextRequest) {
       return { status: false, code: '401.00.9997' };
     }
 
-    const viewApi = validateApiRoute(request.headers.get('x-url') as string);
+    const valDevice = await validateDevice(request);
+    if (!valDevice)  {
+      await delRedis(`session:${uuid}`);
+      return { status: false, code: '401.00.9999' }
+    };
 
+    const viewApi = validateApiRoute(request.headers.get('x-url') as string);
     if (!viewApi) return { status: true, code: '200.00.000' };
 
     const timeRest: number =

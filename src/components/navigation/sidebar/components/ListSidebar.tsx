@@ -68,7 +68,13 @@ export default function ListSidebar(): JSX.Element {
               variant="detailCard"
               sx={{ mt: { xs: 10, md: 'auto' }, mb: { xs: 0, md: 'auto' } }}
               onClick={() => {
-                updatePage(cardActivationStatus() === 'PENDING' ? 'activatePhysicalCard' : 'requestPhysicalCard');
+                updatePage(
+                  cardActivationStatus() === 'PENDING'
+                    ? 'activatePhysicalCard'
+                    : cardActivationStatus() === 'DONE'
+                    ? ''
+                    : 'requestPhysicalCard'
+                );
                 sendGTMEvent({
                   event: 'ga4.trackEvent',
                   eventName: 'select_content',
