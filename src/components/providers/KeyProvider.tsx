@@ -12,6 +12,7 @@ import PurpleLayout from '../layout/PurpleLayout';
 import { removePEMHeadersAndFooters } from '@/utils/jwt';
 import { useJwtStore, useKeyStore, useActiveAppStore, useAccessSessionStore } from '@/store';
 import { decryptForge, fastModularExponentiation, generateAesKey, generatePublicKey } from '@/utils/toolHelper';
+import uuid4 from 'uuid4';
 
 export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   const pathname = usePathname();
@@ -59,7 +60,8 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
     if (!initAccess && !token && activeApp) {
       (async () => {
         try {
-          const idDevice = window.navigation.activation.entry.key;
+          window.name = uuid4();
+          const idDevice = window.name;
           const keysAes = generatePublicKey()
           const { jwePublicKey, jwsPublicKey } = keys as { jwePublicKey: string; jwsPublicKey: string };
           const response = await api.post('/gettoken', {
