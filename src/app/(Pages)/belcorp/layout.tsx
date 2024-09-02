@@ -9,6 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default function BelcorpLayout({ children }: ChildrenProps) {
-  if (process.env.WEB_ENV === 'prod' || process.env.WEB_ENV === 'uat') return <NotFoundError code={404} />;
+  if (process.env.WEB_ENV === 'prod') return <NotFoundError code={404} />;
   return <LoginLayout>{children}</LoginLayout>;
 }
