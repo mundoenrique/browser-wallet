@@ -183,11 +183,7 @@ export async function handleApiGeeResponse(
   const jweApiGeePrivateKey = getEnvVariable('BACK_JWE_PRIVATE_KEY');
 
   if (responseObj.data) {
-    const decryptData = await decryptJWE(responseObj.data, jweApiGeePrivateKey);
-    responseObj.data = decryptData;
-    const { data } = responseObj;
-
-    logger.debug('Response services %s', JSON.stringify({ status, data }));
+    logger.debug('Response services %s', JSON.stringify({ status, data: responseObj.data }));
   }
 
   const response = await handleApiResponse(responseObj, status, jweAppPublicKey);
