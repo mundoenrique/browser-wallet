@@ -56,7 +56,7 @@ apiGee.interceptors.response.use(
   (response) => {
     const { status, data, config } = response;
 
-    logger.debug('Response services %s', JSON.stringify({ url: config.url, status, data }));
+    logger.debug('Response interceptor %s', JSON.stringify({ url: config.url, status, data }));
 
     return response;
   },
@@ -353,8 +353,6 @@ async function encrypToDecrypt(request: NextRequest, data: any, url: string, typ
 
   if (type === 'client') {
     await saveDataValidate(request, decryptedObject, url);
-    const { jwe } = await handleApiGeeRequest(decryptedObject);
-    decryptedObject = jwe;
   }
 
   return decryptedObject;
