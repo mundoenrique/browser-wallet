@@ -18,11 +18,81 @@ export default function PasswordCreation() {
 
   const { setModalError, setLoadingScreen } = useUiStore();
 
-  const { updateStep, setShowHeader, onboardingUuId } = useRegisterStore();
+  const { updateStep, setShowHeader, onboardingUuId, control } = useRegisterStore();
 
   const { updateCatalog, passwordTermsCatalog } = useCatalogsStore();
 
+  const phaseInfo = useRegisterStore((state) => state.ONB_PHASES_TERMS);
+
   const [loadingModal, setLoadingModal] = useState<boolean>(false);
+
+  const validateBiometric = async (data: any) => {
+    const { consultant } = phaseInfo as any;
+    const shortDoc = consultant.documentType === 'DNI' ? consultant.documentNumber.slice(2) : consultant.documentNumber;
+    const payload = {
+      payload: {
+        contacts: [
+          {
+            person: {
+              names: [
+                {
+                  firstName: encryptForge(`${consultant.firstName} ${consultant.middleName}`),
+                  surName: encryptForge(consultant.firstLastName),
+                },
+              ],
+            },
+            identityDocuments: [
+              {
+                documentType: encryptForge(consultant.documentType),
+                documentNumber: encryptForge(shortDoc),
+                hashedDocumentNumber: encryptForge(shortDoc),
+              },
+            ],
+            telephones: [
+              {
+                number: encryptForge(consultant.phoneNumber),
+                phoneIdentifier: encryptForge('MOBILE'),
+              },
+            ],
+            emails: [
+              {
+                type: encryptForge('HOME'),
+                email: encryptForge(consultant.email),
+              },
+            ],
+          },
+        ],
+        control: [
+          {
+            option: 'ACCOUNTID_JM',
+            value: control.accountId,
+          },
+          {
+            option: 'WORKFLOWID_JM',
+            value: control.workflowId,
+          },
+        ],
+      },
+    };
+    setLoadingScreen(true, { message: 'Estamos verificando tu información' });
+    await api
+      .post('/onboarding/validatebiometric', payload)
+      .then((response) => {
+        const { decision } = response.data.data;
+        if (decision === 'ACCEPT') {
+          onSubmit(data);
+        } else {
+          setLoadingScreen(false);
+          updateStep(4);
+          setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
+        }
+      })
+      .catch(() => {
+        setLoadingScreen(false);
+        updateStep(4);
+        setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
+      });
+  };
 
   useEffect(() => {
     sendGTMEvent({
@@ -105,7 +175,7 @@ export default function PasswordCreation() {
         <CardStep stepNumber="4">
           <FormPass
             register
-            onSubmit={onSubmit}
+            onSubmit={validateBiometric}
             description={
               <>
                 <Typography variant="subtitle1" sx={{ mb: 3, mx: 'auto' }}>
