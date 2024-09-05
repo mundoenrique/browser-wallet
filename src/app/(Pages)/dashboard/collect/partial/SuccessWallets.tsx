@@ -117,6 +117,7 @@ export default function SuccessWallets() {
       </PurpleLayout>
 
       <ModalCollect
+        type='wallet'
         open={showModal}
         handleClose={() => {
           setShowModal(false);

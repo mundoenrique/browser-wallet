@@ -9,6 +9,7 @@ import { Dispatch } from 'react';
  * @typeParam children: React.ReactNode
  */
 export interface MuiModalProps extends BoxProps {
+  type?: string;
   open: boolean;
   handleClose: (..._e: any[]) => void;
   children?: React.ReactNode;
