@@ -152,6 +152,7 @@ export default function SuccessCards() {
       </PurpleLayout>
 
       <ModalCollect
+        type='cash'
         open={showModal}
         handleClose={() => {
           setShowModal(false);
