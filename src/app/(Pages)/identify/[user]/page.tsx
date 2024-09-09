@@ -7,7 +7,8 @@ import { delRedis, getRedis } from '@/utils/redis';
 export default async function UserPage({ params, searchParams }: any) {
   const headersList = headers();
   const { user } = params;
-  const { sessionId, clientId } = searchParams
+  const sessionId = searchParams?.sessionId || '';
+  const clientId = searchParams?.clientId || '';
 
   const protocol = headersList.get('x-forwarded-proto');
   const referer = headersList.get('referer') || '';
