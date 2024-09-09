@@ -4,9 +4,10 @@ import DataUser from './partial/DataUser';
 import { NotFoundError } from '@/components';
 import { delRedis, getRedis } from '@/utils/redis';
 
-export default async function UserPage({ params }: any) {
+export default async function UserPage({ params, searchParams }: any) {
   const headersList = headers();
   const { user } = params;
+  const { sessionId, clientId } = searchParams
 
   const protocol = headersList.get('x-forwarded-proto');
   const referer = headersList.get('referer') || '';
@@ -17,5 +18,5 @@ export default async function UserPage({ params }: any) {
 
   if (!userData) return <NotFoundError code={404} />;
 
-  return <DataUser user={userData} referer={referer} host={`${protocol}://${host}`} />;
+  return <DataUser user={userData} referer={`${referer}?sessionId=${sessionId}&clientId=${clientId}`} host={`${protocol}://${host}`} />;
 }
