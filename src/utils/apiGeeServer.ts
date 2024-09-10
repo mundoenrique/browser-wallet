@@ -204,10 +204,10 @@ async function validateSession(request: NextRequest) {
     }
 
     const valDevice = await validateDevice(request);
-    if (!valDevice)  {
+    if (!valDevice) {
       await delRedis(`session:${uuid}`);
-      return { status: false, code: '401.00.9999' }
-    };
+      return { status: false, code: '401.00.9999' };
+    }
 
     const viewApi = validateApiRoute(request.headers.get('x-url') as string);
     if (!viewApi) return { status: true, code: '200.00.000' };
@@ -404,6 +404,7 @@ async function validateParam(resRedis: any, url: string, uuid: string) {
   const consultantCodePattern = '\\d{9}';
   const noSessionValidationRoutes = [
     'api/v0/users/credentials',
+    'api/v0/cards/users/physicalcard',
     new RegExp(`^api/v0/users/search\\?phoneNumber=${consultantCodePattern}$`),
     new RegExp(`^api/v0/users/${uuidPattern}/tfa$`),
   ];
