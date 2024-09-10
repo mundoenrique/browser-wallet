@@ -405,6 +405,7 @@ async function validateParam(resRedis: any, url: string, uuid: string) {
   const noSessionValidationRoutes = [
     'api/v0/users/credentials',
     'api/v0/cards/users/physicalcard',
+    'api/v0/cards/sendmoney',
     new RegExp(`^api/v0/users/search\\?phoneNumber=${consultantCodePattern}$`),
     new RegExp(`^api/v0/users/${uuidPattern}/tfa$`),
   ];
