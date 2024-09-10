@@ -56,7 +56,6 @@ export default function GlobalErrorMessage() {
         closeSession();
       }, 5000);
     } else if (code === '9999') {
-
       await api.delete('/redis', { data: { key: 'activeSession', jwePublicKey, delParam: user.userId } });
       push('/signout');
     }
@@ -178,6 +177,7 @@ const setError = (eCode?: string, context?: string) => {
     '464': { description: 'El código OTP no es válido.' },
     '480': { description: 'Tu usuario se encuentra inactivo.' },
     '481': { description: 'Tu usuario se encuentra cancelado.' },
+    '484': { description: 'Para eliminar la cuenta Yiro no puedes contar con saldoen la cuenta.' },
     '486': { description: 'La tarjeta ya se encuentra asociada a una cuenta.' },
     '507': { description: 'Los datos no corresponden al usuario registrado.' },
     '522': { description: 'Supera el límite de frecuencia de retiros.' },

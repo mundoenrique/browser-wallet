@@ -130,7 +130,9 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
           <>
             <Clock sx={{ fontSize: 12, color: 'primary.main' }} />
             <Typography fontSize={8}>
-              {data.data?.expirationDate ? expiredFormatDate(data.data?.expirationDate) : 'Datos no disponibles'}
+              {data.data?.expirationDate && data.data?.amount != '0.0'
+                ? expiredFormatDate(data.data?.expirationDate)
+                : 'Datos no disponibles'}
             </Typography>
             <ArrowCircle sx={{ fontSize: 12, color: 'primary.main' }} />
           </>
