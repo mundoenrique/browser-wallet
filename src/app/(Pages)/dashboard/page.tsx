@@ -112,7 +112,7 @@ export default function Dashboard() {
       .get(`/payments/${userId}/charge`)
       .then((response: any) => {
         setCardClients(response.data);
-        setCharge(response.data.data.amount);
+        setCharge(response.data?.data?.amount);
       })
       .catch((e) => {
         const { code } = e.response?.data?.data || 0;
