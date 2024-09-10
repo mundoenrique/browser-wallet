@@ -60,11 +60,8 @@ export default function Survey() {
       .then(() => {
         setOpenRc(true);
       })
-      .catch(() => {
-        setModalError({
-          title: 'Algo salió mal',
-          description: 'No pudimos eliminar tu cuenta en este momento. Intentalo nuevamente.',
-        });
+      .catch((e) => {
+        setModalError({ error: e });
       })
       .finally(() => {
         setLoadingScreen(false);
