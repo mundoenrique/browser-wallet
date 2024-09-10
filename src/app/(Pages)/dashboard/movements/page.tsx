@@ -7,6 +7,7 @@ import { Box, Typography, useTheme } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
 import { fuchsiaBlue } from '@/theme/theme-default';
+import { capitalizeFirstLetter } from '@/utils/toolHelper';
 import { InputSelect, LastMovements, Linking, ModalError } from '@/components';
 import { useMenuStore, useNavTitleStore, useHeadersStore, useUserStore } from '@/store';
 
@@ -22,7 +23,7 @@ const dateRank = (): { value: string; text: string }[] => {
   for (let i = 0; i < 3; i++) {
     const monthDate = handleDate.subtract(i, 'month');
     months.push({
-      text: monthDate.format('MMMM'),
+      text: capitalizeFirstLetter(monthDate.format('MMMM')),
       value: `${monthDate.format('MM/YYYY')}`,
     });
   }
