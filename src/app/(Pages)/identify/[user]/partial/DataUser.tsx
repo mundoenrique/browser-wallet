@@ -21,7 +21,7 @@ const phaseToStep = (phase: string) => {
     ONB_PHASES_TERMS: 2,
     ONB_PHASES_OPT: 3,
     ONB_PHASES_CONSULT_DATA: 4,
-    ONB_PHASES_PEP: 5,
+    ONB_PHASES_PEP: 4,
     ONB_PHASES_CONTRASENNIA: 5,
   };
   return phasesSteps[phase] || 0;
