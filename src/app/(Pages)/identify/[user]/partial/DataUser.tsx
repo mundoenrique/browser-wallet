@@ -45,6 +45,7 @@ export default function DataUser({ user, referer, host }: DataUserProps) {
   const [userValidation, setUserValidation] = useState<any>(null);
 
   if (host !== '') setHost(host);
+
   if (referer !== '') updateReferer(referer);
 
   /**
