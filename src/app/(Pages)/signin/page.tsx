@@ -21,6 +21,7 @@ import {
   useUiStore,
   useUserStore,
   useAccessSessionStore,
+  useKeyStore,
 } from '@/store';
 
 export default function Signin() {
@@ -35,6 +36,8 @@ export default function Signin() {
   const { backLink } = useHeadersStore();
 
   const { setModalError } = useUiStore();
+
+  const jwePublicKey = useKeyStore((state) => state.jwePublicKey);
 
   const host = useHeadersStore((state) => state.host);
 
@@ -58,6 +61,12 @@ export default function Signin() {
     defaultValues: { password: '' },
     resolver: yupResolver(schema),
   });
+
+  const closeSession = async () => {
+    sessionStorage.clear();
+    localStorage.clear();
+    await api.delete('/redis', { data: { jwePublicKey, delParam: 'jwt' } });
+  };
 
   const onSubmit = async (data: any) => {
     const { password } = data;
@@ -151,6 +160,7 @@ export default function Signin() {
               destination_page: `${backLink}`,
             },
           });
+          closeSession();
         }}
       />
       <Box

@@ -10,10 +10,10 @@ import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 //Internal app
 import { api } from '@/utils/api';
 import { CashIcons, DeleteIcons } from '%/Icons';
-import { stringAvatar } from '@/utils/toolHelper';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
 import { ModalResponsive, SkeletonTable } from '@/components';
 import { IClientProps, IListClientsProps } from '@/interfaces';
+import { capitalizeFirstLetter, stringAvatar } from '@/utils/toolHelper';
 import { useClientStore, useUserStore, useUiStore, useHeadersStore, useChargeStore } from '@/store';
 
 export default function ClientList(props: IListClientsProps): JSX.Element {
@@ -219,7 +219,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
                       {client.fullname}
                     </Typography>
                     <Typography fontSize={10} lineHeight="16px">
-                      {dayjs(client.date).format('MMMM D, h:mm a')}
+                      {capitalizeFirstLetter(dayjs(client.date).format('MMMM D, h:mm a'))}
                     </Typography>
                   </Box>
                   <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>

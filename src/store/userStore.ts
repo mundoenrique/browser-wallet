@@ -35,6 +35,13 @@ const storeAPi: StateCreator<UserStore, [['zustand/devtools', never]]> = (set, g
     } = get().user;
     return decryptForge(cardId);
   },
+  /**
+   * Set activate card status
+   */
+  setActivateCard: () => {
+    const physicalCards = { status: 'PENDING' };
+    set({ user: { ...get().user, physicalCards } });
+  },
 });
 
 export const useUserStore = create<UserStore>()(

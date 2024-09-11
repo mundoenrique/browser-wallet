@@ -109,7 +109,7 @@ export default function CardTicket(props: CardTicketProps) {
           <Button
             variant="contained"
             startIcon={<ShareIcon />}
-            onClick={handleShareClick}
+            onClick={handleDownloadClick}
             sx={{ minWidth: 52, '&> span': { mr: 0 } }}
           />
         )}

@@ -118,7 +118,7 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
 
               <Typography fontSize={8}>
                 {!maxOweMe
-                  ? 'Datos no disponibles'
+                  ? 'Aún no tienes clientes'
                   : data.data?.amount != '0.00'
                   ? `${maxOweMe}+ Clientes`
                   : '0 Clientes'}
