@@ -19,7 +19,7 @@ import { useHeadersStore, useRegisterStore, useUiStore } from '@/store';
 const phaseToStep = (phase: string) => {
   const phasesSteps: { [key: string]: number } = {
     ONB_PHASES_TERMS: 2,
-    ONB_PHASES_OTP: 3,
+    ONB_PHASES_OPT: 3,
     ONB_PHASES_CONSULT_DATA: 4,
     ONB_PHASES_PEP: 5,
     ONB_PHASES_CONTRASENNIA: 5,
@@ -45,6 +45,7 @@ export default function DataUser({ user, referer, host }: DataUserProps) {
   const [userValidation, setUserValidation] = useState<any>(null);
 
   if (host !== '') setHost(host);
+
   if (referer !== '') updateReferer(referer);
 
   /**
