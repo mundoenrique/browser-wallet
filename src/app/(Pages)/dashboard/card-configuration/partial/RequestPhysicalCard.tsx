@@ -14,6 +14,8 @@ export default function RequestPhysicalCard() {
 
   const { userId } = useUserStore((state) => state.user);
 
+  const setActivateCard = useUserStore((state) => state.setActivateCard);
+
   const setModalError = useUiStore((state) => state.setModalError);
 
   const loadingScreen = useUiStore((state) => state.loadingScreen);
@@ -37,6 +39,7 @@ export default function RequestPhysicalCard() {
       .post(`/cards/users/physicalcard`, { userId: userId })
       .then(() => {
         setOpen(true);
+        setActivateCard();
       })
       .catch((e) => {
         setModalError({ error: e });

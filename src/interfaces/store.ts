@@ -38,11 +38,7 @@ export type JwtStoreProps = {
   exchange: string | null;
 
   setToken: (_token: string) => void;
-  setDataToken: (_tokens: {
-    token: string;
-    uuid: string;
-    exchange: string;
-  }) => void;
+  setDataToken: (_tokens: { token: string; uuid: string; exchange: string }) => void;
 };
 
 /**
@@ -250,6 +246,8 @@ export interface CatalogsStore {
  * @typeParam setUser: (_data: any) => void
  * @typeParam setUserId: (_data: any) => void
  * @typeParam getUserPhone: () => string
+ * @typeParam getUserCardId: () => string
+ * @typeParam setActivateCard: () => void
  */
 export interface UserStore {
   user: any;
@@ -258,6 +256,7 @@ export interface UserStore {
   setUserId: (_data: any) => void;
   getUserPhone: () => string;
   getUserCardId: () => string;
+  setActivateCard: () => void;
 }
 
 /**
@@ -353,10 +352,9 @@ export interface ActiveAppStore {
   setActiveApp: (_activeApp: boolean | null) => void;
   setCreateAccess: (_createAccess: string | null) => void;
   setInitAccess: (_initAccess: boolean | null) => void;
-
 }
 
- /* Charge store
+/* Charge store
  * @typeParam debt - Initial state {@defaultValue `null`}
  * @typeParam setView: (_data: any) => void
  */
