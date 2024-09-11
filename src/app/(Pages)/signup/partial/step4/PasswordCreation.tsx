@@ -81,10 +81,15 @@ export default function PasswordCreation() {
         const { decision } = response.data.data;
         if (decision === 'ACCEPT') {
           onSubmit(data);
-        } else {
+        } else if (decision === 'ERROR' || decision === 'STOP') {
           setLoadingScreen(false);
           updateStep(4);
-          setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
+          setModalError({
+            title: 'Algo salió mal',
+            description: 'No pudimos validar tus datos, inténtalo nuevamente.',
+          });
+        } else {
+          validateBiometric(data);
         }
       })
       .catch(() => {
