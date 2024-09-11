@@ -38,6 +38,12 @@ export default function ListSidebar(): JSX.Element {
 
   const host = useHeadersStore((state) => state.host);
 
+  const returnBelcorp = async () => {
+    sessionStorage.clear();
+    localStorage.clear();
+    await api.delete('/redis', { data: { jwePublicKey, delParam: 'jwt' } });
+  };
+
   const closeSession = async () => {
     localStorage.removeItem('sessionTime');
     const stateObject = { login: false };
@@ -111,8 +117,8 @@ export default function ListSidebar(): JSX.Element {
           href={backLink}
           text="Regresa a Somos Belcorp"
           icon={<LogoutAppIcons />}
-          onClick={async () => {
-            await closeSession();
+          onClick={() => {
+            returnBelcorp();
             sendGTMEvent({
               event: 'ga4.trackEvent',
               eventName: 'select_content',

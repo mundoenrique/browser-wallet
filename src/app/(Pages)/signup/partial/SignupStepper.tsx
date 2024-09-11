@@ -2,9 +2,10 @@
 
 import { Box } from '@mui/material';
 //Internal app
+import { api } from '@/utils/api';
 import { NavExternal } from '@/components';
 import { sendGTMEvent } from '@next/third-parties/google';
-import { useHeadersStore, useRegisterStore } from '@/store';
+import { useHeadersStore, useKeyStore, useRegisterStore } from '@/store';
 
 export default function SignupStepper(props: { currentStep: number; children: JSX.Element[] }) {
   const { currentStep, children } = props;
@@ -12,6 +13,14 @@ export default function SignupStepper(props: { currentStep: number; children: JS
   const { backLink } = useHeadersStore();
 
   const { showHeader } = useRegisterStore();
+
+  const jwePublicKey = useKeyStore((state) => state.jwePublicKey);
+
+  const closeSession = async () => {
+    sessionStorage.clear();
+    localStorage.clear();
+    await api.delete('/redis', { data: { jwePublicKey, delParam: 'jwt' } });
+  };
 
   return (
     <Box
@@ -39,6 +48,7 @@ export default function SignupStepper(props: { currentStep: number; children: JS
                 destination_page: `${backLink}`,
               },
             });
+            closeSession();
           }}
         />
       )}
