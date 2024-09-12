@@ -2,24 +2,23 @@
 
 import 'dayjs/locale/es';
 import { useState, useEffect } from 'react';
-import Clock from '@mui/icons-material/QueryBuilder';
-import { Box, Card, Skeleton, Typography } from '@mui/material';
 import ArrowCircle from '@mui/icons-material/ArrowCircleRightOutlined';
+import { Avatar, AvatarGroup, Box, Card, Skeleton, Typography } from '@mui/material';
 //Internal app
+import { BgButtonPayLarge } from '%/Icons';
 import { CardDebtProps } from '@/interfaces';
-import { expiredFormatDate } from '@/utils/dates';
-import { BgButtonPaySmall, Esika } from '%/Icons';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
 
 /**
- * Cards used to show debts on dashboard
+ * Cards used to show collects on dashboard
  *
  * @param onClick - Confirm and manage the card.
  * @returns Debt balances.
  */
-export default function CardDebt(props: CardDebtProps): JSX.Element {
+export default function CardCollect(props: CardDebtProps): JSX.Element {
   const { onClick, data } = props;
-  const noDebt = data.data?.expirationDate && data.data?.amount != '0.0';
+  const maxOweMe = data?.data?.clients || 0;
+  const clientOweMe = ['', '', '', '', '', '', ''];
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -46,33 +45,26 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
       onClick={onClick}
     >
       <Box sx={{ display: 'flex', height: 28, justifyContent: 'space-between' }}>
-        <Typography sx={{ fontSize: 10, fontWeight: 600, py: 1 / 2, px: 1 }}>
-          {data.data?.amount != 0.0 ? <Esika sx={{ width: '100%' }} /> : 'Tu saldo está al día'}
-        </Typography>
-
-        {data.data?.amount != 0.0 ? (
-          <Box position="relative">
-            <BgButtonPaySmall sx={{ width: 66, height: 28 }} />
-            <Typography
-              sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '60%',
-                transform: 'translate(-50%, -50%)',
-                fontSize: 10,
-                fontWeight: 600,
-                color: 'white',
-              }}
-            >
-              Pagar
-            </Typography>
-          </Box>
-        ) : (
-          ''
-        )}
+        <Typography sx={{ fontSize: 10, fontWeight: 600, py: 1, px: 1 }}>Me deben</Typography>
+        <Box position="relative">
+          <BgButtonPayLarge sx={{ width: 82, height: 28 }} />
+          <Typography
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '60%',
+              transform: 'translate(-50%, -50%)',
+              fontSize: 10,
+              fontWeight: 600,
+              color: 'white',
+            }}
+          >
+            Gestionar
+          </Typography>
+        </Box>
       </Box>
       <Box px={1}>
-        <Typography sx={{ fontSize: 10, fontWeight: 400 }}>Mi deuda con Belcorp</Typography>
+        <Typography sx={{ fontSize: 10, fontWeight: 400 }}>Mis clientes me deben</Typography>
         <Typography variant="h6" noWrap>
           {data?.code === '200.00.000' ? (
             loading ? (
@@ -102,11 +94,26 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
           borderTop: `1px solid ${fuchsiaBlue[400]}`,
         }}
       >
-        <Clock sx={{ fontSize: 12, color: 'primary.main' }} />
-        <Typography fontSize={8} sx={{ width: '100%', pl: 1 }}>
-          {noDebt ? expiredFormatDate(data.data?.expirationDate ?? '') : 'Vencimiento no disponible'}
-        </Typography>
-        {noDebt ? <ArrowCircle sx={{ fontSize: 12, color: 'primary.main' }} /> : <></>}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 / 2 }}>
+          {maxOweMe > 0 && (
+            <AvatarGroup max={maxOweMe > 5 ? 5 : maxOweMe}>
+              {clientOweMe.slice(0, maxOweMe > 5 ? 5 : maxOweMe).map((client, i) => (
+                <Avatar key={i} sx={{ width: 14, height: 14, bgcolor: fuchsiaBlue[400] }} />
+              ))}
+            </AvatarGroup>
+          )}
+
+          <Typography fontSize={8}>
+            {!maxOweMe
+              ? data?.data?.clients == null
+                ? 'Datos no disponibles'
+                : 'Aún no tienes clientes'
+              : data.data?.amount != '0.00'
+              ? `${maxOweMe}+ Clientes`
+              : '0 Clientes'}
+          </Typography>
+        </Box>
+        <ArrowCircle sx={{ fontSize: 12, color: 'primary.main' }} />
       </Box>
     </Card>
   );
