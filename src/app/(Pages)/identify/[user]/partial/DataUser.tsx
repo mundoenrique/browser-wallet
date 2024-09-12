@@ -22,7 +22,7 @@ const phaseToStep = (phase: string) => {
     ONB_PHASES_OPT: 3,
     ONB_PHASES_CONSULT_DATA: 4,
     ONB_PHASES_PEP: 4,
-    ONB_PHASES_CONTRASENNIA: 5,
+    ONB_PHASES_CONTRASENNIA: 4,
   };
   return phasesSteps[phase] || 0;
 };
@@ -67,6 +67,7 @@ export default function DataUser({ user, referer, host }: DataUserProps) {
         path: '/signup',
         store: () => {
           updateFormState('ONB_PHASES_TERMS', registerData);
+          updateStep(0);
         },
       },
       //User register in progress

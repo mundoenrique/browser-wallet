@@ -58,7 +58,7 @@ export default function DeleteAccount() {
         <HandleCard avatar={<SadnessIcon color="primary" sx={{ p: 1 / 2 }} />}>
           <Typography variant="subtitle2">Nos apena verte partir</Typography>
           <Typography variant="caption" mb={2}>
-            Antes de cerrar tu cuenta, asegúrate de que el saldo sea $0. Una vez eliminada, no podrás realizar más
+            Antes de cerrar tu cuenta, asegúrate de que el saldo sea S/0. Una vez eliminada, no podrás realizar más
             operaciones.
           </Typography>
           <Typography variant="caption">Ten en cuenta que esta decisión es irreversible.</Typography>

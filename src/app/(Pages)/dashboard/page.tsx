@@ -7,8 +7,8 @@ import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { api } from '@/utils/api';
 import { expiredFormatDate } from '@/utils/dates';
-import { CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
+import { CardCollect, CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
 import { useHeadersStore, useChargeStore, useDebStore, useMenuStore, useUiStore, useUserStore } from '@/store';
 
 export default function Dashboard() {
@@ -216,9 +216,8 @@ export default function Dashboard() {
                     });
                   }}
                 />
-                <CardDebt
+                <CardCollect
                   data={cardClients}
-                  OweMe
                   onClick={() => {
                     push('/dashboard/clients');
                     sendGTMEvent({

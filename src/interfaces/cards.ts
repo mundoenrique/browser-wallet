@@ -56,12 +56,25 @@ export interface FrontInformationProps {
 /**
  * Debt card
  *
- * @typeParam OweMe (Optional): boolean
+ * @typeParam data:
+ *
+ * code: string;
+ *
+ * data: {
+ *
+ *   amount: number | string | null;
+ *
+ *   currencyCode: string;
+ *
+ *   expirationDate?: string | null;
+ *
+ *   clients?: number | null;
+ *
+ * };
  * @typeParam onClick (Optional): () => void
  */
 export interface CardDebtProps {
   data: ICardDebt;
-  OweMe?: boolean;
   onClick?: () => void | boolean;
 }
 
