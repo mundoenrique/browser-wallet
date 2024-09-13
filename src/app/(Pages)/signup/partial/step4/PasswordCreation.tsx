@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
-import { CardStep } from '..';
 import Ending from '../Ending';
 import { api } from '@/utils/api';
 import { FormPass } from '@/components';
+import { CardStep, ErrorPage } from '..';
 import { encryptForge } from '@/utils/toolHelper';
 import { useRegisterStore, useUiStore, useCatalogsStore, useUserStore, useHeadersStore } from '@/store';
 
@@ -18,11 +18,13 @@ export default function PasswordCreation() {
 
   const { setModalError, setLoadingScreen } = useUiStore();
 
-  const { updateStep, setShowHeader, onboardingUuId, control } = useRegisterStore();
-
   const { updateCatalog, passwordTermsCatalog } = useCatalogsStore();
 
   const phaseInfo = useRegisterStore((state) => state.ONB_PHASES_TERMS);
+
+  const { updateStep, setShowHeader, onboardingUuId, control } = useRegisterStore();
+
+  const [error, setError] = useState<boolean>(false);
 
   const [loadingModal, setLoadingModal] = useState<boolean>(false);
 
@@ -81,7 +83,10 @@ export default function PasswordCreation() {
         const { decision } = response.data.data;
         if (decision === 'ACCEPT') {
           onSubmit(data);
-        } else if (decision === 'ERROR' || decision === 'STOP') {
+        } else if (decision === 'ERROR') {
+          setLoadingScreen(false);
+          setError(true);
+        } else if (decision === 'STOP') {
           setLoadingScreen(false);
           updateStep(4);
           setModalError({
@@ -89,7 +94,26 @@ export default function PasswordCreation() {
             description: 'No pudimos validar tus datos, inténtalo nuevamente.',
           });
         } else {
-          validateBiometric(data);
+          let attempts = 0;
+          const retryBiometricValidation = () => {
+            if (attempts < 2) {
+              attempts++;
+              setTimeout(
+                () => {
+                  validateBiometric(data);
+                },
+                attempts == 1 ? 10000 : 5000
+              );
+            } else {
+              setLoadingScreen(false);
+              updateStep(4);
+              setModalError({
+                title: 'Ups!',
+                description: 'No pudimos validar tus datos después de varios intentos. intentalo nuevamente.',
+              });
+            }
+          };
+          retryBiometricValidation();
         }
       })
       .catch(() => {
@@ -154,7 +178,7 @@ export default function PasswordCreation() {
         }, []),
       },
     };
-    setLoadingScreen(true);
+    setLoadingScreen(true, { message: 'Estamos verificando tu información' });
 
     api
       .post('/onboarding/credentials', requestFormData)
@@ -173,6 +197,10 @@ export default function PasswordCreation() {
   useEffect(() => {
     setShowHeader(true);
   }, [setShowHeader]);
+
+  if (error) {
+    return <ErrorPage />;
+  }
 
   return (
     <>
