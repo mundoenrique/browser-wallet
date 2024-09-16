@@ -62,19 +62,19 @@ export default function FormPass(porps: FormPassProps): JSX.Element {
               labelHandle={
                 <>
                   Acepto y declaro bajo juramento que la información proporcionada es veraz, completa y actualizada, de
-                  conformidad con la{' '}
-                  <Typography component="span" variant="body2" sx={{ textDecoration: 'underline' }}>
-                    Ley 29985
-                  </Typography>{' '}
-                  y{' '}
-                  <Typography component="span" variant="body2" sx={{ textDecoration: 'underline' }}>
+                  conformidad con la Ley 29985 y{' '}
+                  <Typography
+                    onClick={() => setShowModal(true)}
+                    component="span"
+                    variant="body2"
+                    sx={{ textDecoration: 'underline' }}
+                  >
                     condiciones de Contrato de la cuenta de dinero electrónico.
                   </Typography>
                 </>
               }
               control={control}
               onClick={() => {
-                setShowModal(true);
                 sendGTMEvent({
                   event: 'ga4.trackEvent',
                   eventName: 'select_content',

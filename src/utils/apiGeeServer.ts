@@ -329,7 +329,7 @@ async function encrypToDecrypt(request: NextRequest, data: any, url: string, typ
   let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
   const dataRedis = (await getRedis(`session:${uuid}`)) || '';
   const keysObjet = type === 'server' ? KEYS_TO_ENCRYPT_API : KEYS_TO_ENCRYPT_CLIENT;
-  const noSessionValidationRoutes = ['api/v0/onboarding/termsandconditions'];
+  const noSessionValidationRoutes = ['api/v0/onboarding/termsandconditions', 'api/v0/onboarding/pep'];
   let decryptedObject = data;
 
   if (type === 'client') {
