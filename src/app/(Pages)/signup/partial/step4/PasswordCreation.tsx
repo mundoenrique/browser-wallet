@@ -86,7 +86,7 @@ export default function PasswordCreation() {
         } else if (decision === 'ERROR') {
           setLoadingScreen(false);
           setError(true);
-        } else if (decision === 'STOP') {
+        } else if (decision === 'STOP' || decision === 'REJECT') {
           setLoadingScreen(false);
           updateStep(4);
           setModalError({
