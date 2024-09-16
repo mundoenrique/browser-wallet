@@ -114,9 +114,6 @@ export async function DELETE(request: NextRequest) {
       await putRedis(`session:${uuid}`, stateObject);
     }
 
-    request.headers.get('X-Session-Mobile') &&
-      await delRedis(`session:${request.headers.get('X-Session-Mobile')}`)
-
     const responsePayload = { code: '200.00.000', message: 'Process Ok', data: { message: '' } };
 
     let response: NextResponse;
