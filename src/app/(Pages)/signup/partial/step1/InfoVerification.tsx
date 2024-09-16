@@ -408,17 +408,26 @@ export default function InfoVerification() {
             labelHandle={
               <>
                 Acepto{' '}
-                <Typography component="span" variant="body2" sx={{ textDecoration: 'underline' }}>
+                <Typography
+                  onClick={handleModalTerm}
+                  component="span"
+                  variant="body2"
+                  sx={{ textDecoration: 'underline' }}
+                >
                   Términos y Condiciones
                 </Typography>{' '}
                 y{' '}
-                <Typography component="span" variant="body2" sx={{ textDecoration: 'underline' }}>
+                <Typography
+                  onClick={handleModalTerm}
+                  component="span"
+                  variant="body2"
+                  sx={{ textDecoration: 'underline' }}
+                >
                   Política de Privacidad de Datos
                 </Typography>
               </>
             }
             control={control}
-            onClick={handleModalTerm}
           />
           <InputCheck
             name="policy"
