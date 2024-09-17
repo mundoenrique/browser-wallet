@@ -16,9 +16,9 @@ export default function PasswordCreation() {
 
   const host = useHeadersStore((state) => state.host);
 
-  const { setModalError, setLoadingScreen } = useUiStore();
-
   const { updateCatalog, passwordTermsCatalog } = useCatalogsStore();
+
+  const { setModalError, setLoadingScreen, count, setCount } = useUiStore();
 
   const phaseInfo = useRegisterStore((state) => state.ONB_PHASES_TERMS);
 
@@ -30,7 +30,8 @@ export default function PasswordCreation() {
 
   const validateBiometric = async (data: any) => {
     const { consultant } = phaseInfo as any;
-    const shortDoc = consultant.documentType === 'DNI' ? consultant.documentNumber.slice(2) : consultant.documentNumber;
+    const shortDoc =
+      consultant.documentType === 'DNI' ? consultant.documentNumber.slice(-8) : consultant.documentNumber;
     const payload = {
       payload: {
         contacts: [
@@ -83,16 +84,22 @@ export default function PasswordCreation() {
         const { decision } = response.data.data;
         if (decision === 'ACCEPT') {
           onSubmit(data);
-        } else if (decision === 'ERROR') {
+        } else if (decision === 'ERROR' || decision === 'REFER') {
           setLoadingScreen(false);
           setError(true);
         } else if (decision === 'STOP' || decision === 'REJECT') {
-          setLoadingScreen(false);
-          updateStep(4);
-          setModalError({
-            title: 'Algo salió mal',
-            description: 'No pudimos validar tus datos, inténtalo nuevamente.',
-          });
+          if (count == 1) {
+            setLoadingScreen(false);
+            setError(true);
+          } else {
+            setCount(1);
+            setLoadingScreen(false);
+            updateStep(4);
+            setModalError({
+              title: 'Algo salió mal',
+              description: 'No pudimos validar tus datos, inténtalo nuevamente.',
+            });
+          }
         } else {
           let attempts = 0;
           const retryBiometricValidation = () => {
@@ -106,11 +113,7 @@ export default function PasswordCreation() {
               );
             } else {
               setLoadingScreen(false);
-              updateStep(4);
-              setModalError({
-                title: 'Ups!',
-                description: 'No pudimos validar tus datos después de varios intentos. intentalo nuevamente.',
-              });
+              setError(true);
             }
           };
           retryBiometricValidation();

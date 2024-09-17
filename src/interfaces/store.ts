@@ -58,6 +58,8 @@ export type SessionStoreProps = {
  * @typeParam setLoadingScreen: (status: boolean) => void
  */
 export interface UiStore {
+  count: number;
+  setCount: (value: any) => void;
   loadingScreen: boolean;
   setLoadingScreen: (status: boolean, value?: object) => void;
   loadingScreenOptions: { [key: string]: any };
