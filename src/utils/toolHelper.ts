@@ -1,5 +1,6 @@
 import forge from 'node-forge';
 import html2canvas from 'html2canvas';
+import { toJpeg } from 'html-to-image';
 import CryptoJS from 'crypto-js';
 //Internal app
 import { useJwtStore } from '@/store';
@@ -26,15 +27,11 @@ export function stringAvatar(name: string) {
  * @param backgroundColor - The background color for the captured image.
  */
 export const handleDownload = async (element: HTMLElement, fileName: string, backgroundColor: string) => {
-  const canvas = await html2canvas(element, {
-    removeContainer: false,
-    allowTaint: true,
-    backgroundColor: backgroundColor,
-    scale: 1.5,
+  const dataUrl = await toJpeg(element, {
+    backgroundColor: backgroundColor
   });
-  const image = canvas.toDataURL('image/png');
   const link = document.createElement('a');
-  link.href = image;
+  link.href = dataUrl;
   link.download = fileName;
   link.click();
 };
