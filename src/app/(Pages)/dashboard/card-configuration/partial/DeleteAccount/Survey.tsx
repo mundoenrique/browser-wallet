@@ -17,8 +17,8 @@ import {
   useHeadersStore,
   useUserStore,
   useUiStore,
-  useAccessSessionStore,
   useOtpStore,
+  useKeyStore,
 } from '@/store';
 
 export default function Survey() {
@@ -38,7 +38,7 @@ export default function Survey() {
 
   const { setModalError, setLoadingScreen } = useUiStore();
 
-  const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
+  const jwePublicKey = useKeyStore((state) => state.jwePublicKey);
 
   const [openRc, setOpenRc] = useState<boolean>(false);
 
@@ -66,6 +66,13 @@ export default function Survey() {
       .finally(() => {
         setLoadingScreen(false);
       });
+  };
+
+  const returnBelcorp = async () => {
+    sessionStorage.clear();
+    localStorage.clear();
+    await api.delete('/redis', { data: { jwePublicKey, delParam: 'jwt' } });
+    window.open(backLink != '' ? backLink : (process.env.NEXT_PUBLIC_ALLOW_ORIGIN as string), '_self');
   };
 
   const onSubmit = async (data: any) => {
@@ -178,8 +185,7 @@ export default function Survey() {
       <ModalResponsive
         open={openRc}
         handleClose={() => {
-          setAccessSession(false);
-          window.open(backLink != '' ? backLink : (process.env.NEXT_PUBLIC_ALLOW_ORIGIN as string), '_self');
+          returnBelcorp();
         }}
       >
         <Typography variant="subtitle1" mb={3}>
