@@ -39,7 +39,9 @@ export default function PasswordCreation() {
             person: {
               names: [
                 {
-                  firstName: encryptForge(`${consultant.firstName} ${consultant.middleName}`),
+                  firstName: encryptForge(
+                    `${consultant.firstName} ${consultant.middleName ? consultant.middleName : ''}`
+                  ),
                   surName: encryptForge(consultant.firstLastName),
                 },
               ],
@@ -81,7 +83,10 @@ export default function PasswordCreation() {
     await api
       .post('/onboarding/validatebiometric', payload)
       .then((response) => {
-        const { decision } = response.data.data;
+        // const { decision } = response.data.data;
+
+        let decision = 'NODECISION';
+
         if (decision === 'ACCEPT') {
           onSubmit(data);
         } else if (decision === 'ERROR' || decision === 'REFER') {
