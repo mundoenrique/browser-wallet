@@ -21,14 +21,42 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
   const { onClick, data } = props;
   const noDebt = data.data?.expirationDate && data.data?.amount != '0.0';
   const [loading, setLoading] = useState(true);
+  const [balanceColor, setBalanceColor] = useState<string>('#33415');
+  const [newAmount, setNewAmount] = useState<number>(0);
+  const [isNegativeAmount, setIsNegativeAmount] = useState<boolean>(false);
+
+  const validateAmount = () => {
+    if (data.data?.amount && Number(data.data?.amount) < 0) {
+      setIsNegativeAmount(true);
+      setBalanceColor('#307E0D');
+      setNewAmount(Math.abs(data.data?.amount as number));
+    } else {
+      setIsNegativeAmount(false);
+      setBalanceColor('#334155');
+      setNewAmount(data.data?.amount as number);
+    }
+  };
+
+  const returnAmount = () => {
+    if (isNegativeAmount) {
+      return `${Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(newAmount)}`;
+    } else {
+      return `${Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(
+        data.data?.amount as number
+      )}`;
+    }
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
     }, 3000);
-
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    validateAmount();
+  }, [data.data.amount]);
 
   return (
     <Card
@@ -72,15 +100,15 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
         )}
       </Box>
       <Box px={1}>
-        <Typography sx={{ fontSize: 10, fontWeight: 400 }}>Mi deuda con Belcorp</Typography>
-        <Typography variant="h6" noWrap>
+        <Typography sx={{ fontSize: 10, fontWeight: 400 }}>
+          {isNegativeAmount ? 'Tienes un saldo a favor' : 'Mi deuda con Belcorp'}
+        </Typography>
+        <Typography variant="h6" noWrap sx={{ color: balanceColor }}>
           {data?.code === '200.00.000' ? (
             loading ? (
               <Skeleton variant="text" />
             ) : data.data?.amount ? (
-              `${Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(
-                data.data?.amount as number
-              )}`
+              returnAmount()
             ) : (
               'S/ 0.00'
             )
@@ -104,7 +132,11 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
       >
         <Clock sx={{ fontSize: 12, color: 'primary.main' }} />
         <Typography fontSize={8} sx={{ width: '100%', pl: 1 }}>
-          {noDebt ? expiredFormatDate(data.data?.expirationDate ?? '') : 'Vencimiento no disponible'}
+          {!isNegativeAmount || data.data?.amount === '0.0'
+            ? noDebt
+              ? expiredFormatDate(data.data?.expirationDate ?? '')
+              : 'Vencimiento no disponible'
+            : 'Estás al día en tus pagos'}
         </Typography>
         {noDebt ? <ArrowCircle sx={{ fontSize: 12, color: 'primary.main' }} /> : <></>}
       </Box>
