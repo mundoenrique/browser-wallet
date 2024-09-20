@@ -8,6 +8,7 @@ jest.mock('@/app/(Pages)/dashboard/debt/partial', () => ({
   Success: jest.fn(() => <div>Success Component</div>),
   Error: jest.fn(() => <div>Error Component</div>),
   Debt: jest.fn(() => <div>Debt Component</div>),
+  Congratulations: jest.fn(() => <div>Congratulations Component</div>),
 }));
 
 describe('MyDebt Component', () => {
@@ -20,6 +21,13 @@ describe('MyDebt Component', () => {
     useDebStore.setState({ view: 'DEBT' });
     const { getByText } = render(<MyDebt />);
     expect(getByText('Debt Component')).toBeInTheDocument();
+  });
+
+  //** Renders the Congratulations component when the view is Congratulations
+  it('renders Congratulations component when view is CONGRATULATIONS', () => {
+    useDebStore.setState({ view: 'CONGRATULATIONS' });
+    const { getByText } = render(<MyDebt />);
+    expect(getByText('Congratulations Component')).toBeInTheDocument();
   });
 
   //** Renders the Success component when the view is SUCCESS
@@ -41,5 +49,11 @@ describe('MyDebt Component', () => {
     useDebStore.setState({ view: undefined });
     const { getByText } = render(<MyDebt />);
     expect(getByText('Debt Component')).toBeInTheDocument();
+  });
+
+  it('sets view to CONGRATULATIONS when debt amount is less than or equal to 0', () => {
+    useDebStore.setState({ debt: { amount: 0 }, view: 'DEBT' });
+    render(<MyDebt />);
+    expect(useDebStore.getState().view).toBe('CONGRATULATIONS');
   });
 });
