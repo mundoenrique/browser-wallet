@@ -1,8 +1,7 @@
 'use client';
 
-//Internal app
 import { useDebStore } from '@/store';
-import { Success, Error, Debt } from './partial';
+import { Success, Error, Debt, Congratulations } from './partial';
 
 export default function MyDebt() {
   const { view } = useDebStore();
@@ -12,6 +11,7 @@ export default function MyDebt() {
       DEBT: <Debt />,
       SUCCESS: <Success />,
       ERROR: <Error />,
+      CONGRATULATIONS: <Congratulations />,
     };
 
     return routes[page] || routes['DEBT'];
