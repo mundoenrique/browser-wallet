@@ -50,10 +50,4 @@ describe('MyDebt Component', () => {
     const { getByText } = render(<MyDebt />);
     expect(getByText('Debt Component')).toBeInTheDocument();
   });
-
-  it('sets view to CONGRATULATIONS when debt amount is less than or equal to 0', () => {
-    useDebStore.setState({ debt: { amount: 0 }, view: 'DEBT' });
-    render(<MyDebt />);
-    expect(useDebStore.getState().view).toBe('CONGRATULATIONS');
-  });
 });

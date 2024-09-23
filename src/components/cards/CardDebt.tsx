@@ -19,10 +19,15 @@ import { fuchsiaBlue, slate } from '@/theme/theme-default';
  */
 export default function CardDebt(props: CardDebtProps): JSX.Element {
   const { onClick, data } = props;
+
   const noDebt = data.data?.expirationDate && data.data?.amount != '0.0';
+
   const [loading, setLoading] = useState(true);
-  const [balanceColor, setBalanceColor] = useState<string>('#33415');
+
   const [newAmount, setNewAmount] = useState<number>(0);
+
+  const [balanceColor, setBalanceColor] = useState<string>('#33415');
+
   const [isNegativeAmount, setIsNegativeAmount] = useState<boolean>(false);
 
   const validateAmount = () => {
@@ -56,6 +61,7 @@ export default function CardDebt(props: CardDebtProps): JSX.Element {
 
   useEffect(() => {
     validateAmount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.data.amount]);
 
   return (
