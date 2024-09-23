@@ -186,7 +186,7 @@ export default function Debt() {
                   )}`}
             </Typography>
             <Typography variant="body2" color="primary.main">
-              {debt.expirationDate}
+              {debt?.expirationDate}
             </Typography>
           </Stack>
         </Card>
