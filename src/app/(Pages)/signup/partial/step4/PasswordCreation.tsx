@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
@@ -27,6 +27,12 @@ export default function PasswordCreation() {
   const [error, setError] = useState<boolean>(false);
 
   const [loadingModal, setLoadingModal] = useState<boolean>(false);
+
+  const countRef = useRef(count);
+
+  useEffect(() => {
+    countRef.current = count;
+  }, [count]);
 
   const validateBiometric = async (data: any) => {
     const { consultant } = phaseInfo as any;
@@ -106,22 +112,21 @@ export default function PasswordCreation() {
             });
           }
         } else {
-          let attempts = 0;
-          const retryBiometricValidation = () => {
-            if (attempts < 2) {
-              attempts++;
-              setTimeout(
-                () => {
-                  validateBiometric(data);
-                },
-                attempts == 1 ? 10000 : 5000
-              );
-            } else {
-              setLoadingScreen(false);
-              setError(true);
-            }
-          };
-          retryBiometricValidation();
+          console.log('🚀 ~ .then ~ count:', countRef.current);
+          setCount(countRef.current + 1);
+          if (countRef.current < 2) {
+            console.log('entre en reenvio');
+
+            setTimeout(
+              () => {
+                validateBiometric(data);
+              },
+              countRef.current == 1 ? 10000 : 5000
+            );
+          } else {
+            setLoadingScreen(false);
+            setError(true);
+          }
         }
       })
       .catch(() => {
