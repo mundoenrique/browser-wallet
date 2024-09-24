@@ -89,9 +89,7 @@ export default function PasswordCreation() {
     await api
       .post('/onboarding/validatebiometric', payload)
       .then((response) => {
-        // const { decision } = response.data.data;
-
-        let decision = 'NODECISION';
+        const { decision } = response.data.data;
 
         if (decision === 'ACCEPT') {
           onSubmit(data);
