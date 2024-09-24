@@ -28,7 +28,7 @@ export default function CardTicket(props: CardTicketProps) {
   const host = useHeadersStore((state) => state.host);
 
   const handleShareClick = () => {
-    handleShare(componentRef.current, shareData, fuchsiaBlue[800]);
+    handleShare(componentRef.current, shareData, fuchsiaBlue[50]);
 
     sendGTMEvent({
       event: 'ga4.trackEvent',
@@ -44,7 +44,7 @@ export default function CardTicket(props: CardTicketProps) {
   };
 
   const handleDownloadClick = () => {
-    handleDownload(componentRef.current, 'comprobante.png', fuchsiaBlue[800]);
+    handleDownload(componentRef.current, 'comprobante.png', fuchsiaBlue[50]);
 
     sendGTMEvent({
       event: 'ga4.trackEvent',
