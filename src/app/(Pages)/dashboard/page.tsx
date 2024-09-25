@@ -14,7 +14,7 @@ import { useHeadersStore, useChargeStore, useDebStore, useMenuStore, useUiStore,
 export default function Dashboard() {
   const { push } = useRouter();
 
-  const { setView } = useDebStore();
+  // const { setView } = useDebStore();
 
   const { getUserCardId } = useUserStore();
 
@@ -83,9 +83,9 @@ export default function Dashboard() {
       .then((response: any) => {
         if (response.status === 200) {
           const { data } = response.data;
-          if (data.amount <= 0) {
-            setView('CONGRATULATIONS');
-          }
+          // if (data.amount <= 0) {
+          //   setView('CONGRATULATIONS');
+          // }
           setCardMyDebt(response.data);
           setDebt({
             amount: data.amount,
