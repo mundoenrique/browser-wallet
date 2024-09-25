@@ -14,6 +14,11 @@ export async function middleware(request: NextRequest) {
 
   const isProtectedRoute = protectedRoutes.includes(partsUrl[1]);
   if (isProtectedRoute) {
+
+    if (process.env.WEB_ENV === 'prod' || process.env.WEB_ENV === 'uat') {
+      return NextResponse.next();
+    }
+
     let uuid = request.cookies.get(SESSION_ID)?.value;
     const res = await setDataRedis('POST', { uuid: `session:${uuid}`, dataRedis: 'get' });
 
