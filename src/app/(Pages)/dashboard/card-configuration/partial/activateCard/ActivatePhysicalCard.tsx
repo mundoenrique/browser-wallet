@@ -96,7 +96,8 @@ export default function ActivatePhysicalCard() {
 
   const cardId = useRef<string | null>(null);
 
-  const baseURL = process.env.NEXT_PUBLIC_WEB_URL;
+  // const baseURL = process.env.NEXT_PUBLIC_WEB_URL;
+  const baseURL = 'https://9hn307dq-3000.use2.devtunnels.ms';
   const url = `${baseURL}/qr`;
 
   const getCardInformation = async () => {
