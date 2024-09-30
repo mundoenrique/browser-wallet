@@ -1,5 +1,4 @@
 export { default as PEP } from './step3/PEP';
-export { default as Ending } from './Ending';
 export { default as Landing } from './Landing';
 export { default as CardStep } from './CardStep';
 export { default as ErrorPage } from './ErrorPage';

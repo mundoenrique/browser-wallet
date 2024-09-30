@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
-import Ending from '../Ending';
 import { api } from '@/utils/api';
 import { FormPass } from '@/components';
 import { CardStep, ErrorPage } from '..';
@@ -25,8 +24,6 @@ export default function PasswordCreation() {
   const { updateStep, setShowHeader, onboardingUuId, control } = useRegisterStore();
 
   const [error, setError] = useState<boolean>(false);
-
-  const [loadingModal, setLoadingModal] = useState<boolean>(false);
 
   const countRef = useRef(count);
 
@@ -85,7 +82,9 @@ export default function PasswordCreation() {
         ],
       },
     };
+
     setLoadingScreen(true, { message: 'Estamos verificando tu información' });
+
     await api
       .post('/onboarding/validatebiometric', payload)
       .then((response) => {
@@ -110,11 +109,8 @@ export default function PasswordCreation() {
             });
           }
         } else {
-          console.log('🚀 ~ .then ~ count:', countRef.current);
           setCount(countRef.current + 1);
           if (countRef.current < 2) {
-            console.log('entre en reenvio');
-
             setTimeout(
               () => {
                 validateBiometric(data);
@@ -189,19 +185,15 @@ export default function PasswordCreation() {
         }, []),
       },
     };
-    setLoadingScreen(true, { message: 'Estamos verificando tu información' });
 
     api
       .post('/onboarding/credentials', requestFormData)
       .then((response) => {
         setUserId(response.data.data.user.userId);
-        setLoadingModal(true);
+        setLoadingScreen(true, { animations: true });
       })
       .catch((e) => {
         setModalError({ error: e });
-      })
-      .finally(() => {
-        setLoadingScreen(false);
       });
   };
 
@@ -214,73 +206,67 @@ export default function PasswordCreation() {
   }
 
   return (
-    <>
-      {!loadingModal && (
-        <CardStep stepNumber="4">
-          <FormPass
-            register
-            onSubmit={validateBiometric}
-            description={
-              <>
-                <Typography variant="subtitle1" sx={{ mb: 3, mx: 'auto' }}>
-                  Ahora es momento de activar tu cuenta
-                </Typography>
-                <Typography variant="body2" mb={3 / 2}>
-                  Para finalizar crea una contraseña segura
-                </Typography>
-                <Box sx={{ mb: 2 }}>
-                  <Typography variant="subtitle2">Elige 6 números que recuerdes.</Typography>
-                  <Typography variant="body2">Evita fechas de cumpleaños, números consecutivos ó iguales.</Typography>
-                </Box>
-              </>
-            }
-            buttons={
-              <>
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    updateStep(4);
-                    sendGTMEvent({
-                      event: 'ga4.trackEvent',
-                      eventName: 'select_content',
-                      eventParams: {
-                        content_type: 'boton',
-                        section: 'Yiro :: onboarding :: step4 :: createPassword',
-                        previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
-                        selected_content: 'Anterior',
-                        destination_page: `${host}/signin`,
-                      },
-                    });
-                  }}
-                >
-                  Anterior
-                </Button>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  onClick={() => {
-                    sendGTMEvent({
-                      event: 'ga4.trackEvent',
-                      eventName: 'select_content',
-                      eventParams: {
-                        content_type: 'boton',
-                        section: 'Yiro :: onboarding :: step4 :: createPassword',
-                        previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
-                        selected_content: 'Siguiente',
-                        destination_page: `${host}/signin`,
-                      },
-                    });
-                  }}
-                >
-                  Siguiente
-                </Button>
-              </>
-            }
-          />
-        </CardStep>
-      )}
-
-      {loadingModal && <Ending />}
-    </>
+    <CardStep stepNumber="4">
+      <FormPass
+        register
+        onSubmit={validateBiometric}
+        description={
+          <>
+            <Typography variant="subtitle1" sx={{ mb: 3, mx: 'auto' }}>
+              Ahora es momento de activar tu cuenta
+            </Typography>
+            <Typography variant="body2" mb={3 / 2}>
+              Para finalizar crea una contraseña segura
+            </Typography>
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="subtitle2">Elige 6 números que recuerdes.</Typography>
+              <Typography variant="body2">Evita fechas de cumpleaños, números consecutivos ó iguales.</Typography>
+            </Box>
+          </>
+        }
+        buttons={
+          <>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                updateStep(4);
+                sendGTMEvent({
+                  event: 'ga4.trackEvent',
+                  eventName: 'select_content',
+                  eventParams: {
+                    content_type: 'boton',
+                    section: 'Yiro :: onboarding :: step4 :: createPassword',
+                    previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                    selected_content: 'Anterior',
+                    destination_page: `${host}/signin`,
+                  },
+                });
+              }}
+            >
+              Anterior
+            </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              onClick={() => {
+                sendGTMEvent({
+                  event: 'ga4.trackEvent',
+                  eventName: 'select_content',
+                  eventParams: {
+                    content_type: 'boton',
+                    section: 'Yiro :: onboarding :: step4 :: createPassword',
+                    previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                    selected_content: 'Siguiente',
+                    destination_page: `${host}/signin`,
+                  },
+                });
+              }}
+            >
+              Siguiente
+            </Button>
+          </>
+        }
+      />
+    </CardStep>
   );
 }

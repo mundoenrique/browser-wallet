@@ -137,7 +137,7 @@ export default function Transfer() {
           }
         } else if (responseReceiver.status === 'rejected' && responseBalance.status === 'fulfilled') {
           if (responseReceiver.reason?.response?.data?.data?.code === '400.00.033') {
-            setError('numberClient', { type: 'customError', message: 'Este número no tiene Yiro' });
+            setError('numberClient', { type: 'customError', message: 'Este número no está afiliado a Yiro.' });
           } else {
             setModalError({ error: responseReceiver.reason });
           }
