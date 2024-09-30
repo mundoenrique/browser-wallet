@@ -162,8 +162,7 @@ export default function BlockCard() {
         <Box
           component="form"
           onSubmit={handleSubmit(() => {
-            // setOpenOtp(true);
-            onSubmit();
+            setOpenOtp(true);
             sendGTMEvent({
               event: 'ga4.trackEvent',
               eventName: 'select_content',
