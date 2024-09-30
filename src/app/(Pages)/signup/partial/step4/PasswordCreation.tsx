@@ -82,6 +82,7 @@ export default function PasswordCreation() {
         ],
       },
     };
+
     setLoadingScreen(true, { message: 'Estamos verificando tu información' });
 
     await api
@@ -108,11 +109,8 @@ export default function PasswordCreation() {
             });
           }
         } else {
-          console.log('🚀 ~ .then ~ count:', countRef.current);
           setCount(countRef.current + 1);
           if (countRef.current < 2) {
-            console.log('entre en reenvio');
-
             setTimeout(
               () => {
                 validateBiometric(data);
@@ -196,9 +194,6 @@ export default function PasswordCreation() {
       })
       .catch((e) => {
         setModalError({ error: e });
-      })
-      .finally(() => {
-        setLoadingScreen(false);
       });
   };
 

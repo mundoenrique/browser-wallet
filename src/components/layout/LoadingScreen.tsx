@@ -69,7 +69,7 @@ const AnimationLogo = () => {
     if (currentImageIndex < 3) {
       timer = setInterval(() => {
         setCurrentImageIndex((prevIndex: number) => prevIndex + 1);
-      }, 3000);
+      }, 2000);
     }
     return () => {
       clearInterval(timer);
