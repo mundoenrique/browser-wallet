@@ -118,6 +118,8 @@ export default function Transfer() {
         if (responseReceiver.status === 'fulfilled' && responseBalance.status === 'fulfilled') {
           if (!amountCheck) {
             setError('amount', { type: 'customError', message: 'Saldo insuficiente' });
+          } else if (responseReceiver.value?.data?.data?.status.code !== 'ACTIVE') {
+            setError('numberClient', { type: 'customError', message: 'Este número no está afiliado a Yiro.' });
           } else {
             const {
               firstName,
@@ -149,7 +151,7 @@ export default function Transfer() {
           setModalError({ error: responseBalance.reason });
         } else if (responseReceiver.status === 'rejected' && responseBalance.status === 'rejected') {
           if (responseReceiver.reason?.response?.data?.data?.code === '400.00.033') {
-            setError('numberClient', { type: 'customError', message: 'Este número no tiene Yiro' });
+            setError('numberClient', { type: 'customError', message: 'Este número no está afiliado a Yiro.' });
           } else {
             setModalError({ error: responseReceiver.reason });
           }
