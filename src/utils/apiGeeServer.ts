@@ -443,6 +443,7 @@ function encryptJSON(obj: any, keysObjet: any, keyDecrypt: string, keyEncrypt: s
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
       if (keysObjet.includes(key) && typeof obj[key] === 'string') {
+        //Eliminar luego de retorno cifrados cardId y UserId, junto con el valItem
         const valItem = validateItemDecrypt(url, key);
         if (!/^[0-9]+$/.test(obj[key]) && !valItem) {
           obj[key] = decryptForge(obj[key], keyDecrypt);
@@ -455,6 +456,7 @@ function encryptJSON(obj: any, keysObjet: any, keyDecrypt: string, keyEncrypt: s
   }
 }
 
+//Eliminar luego de retorno cifrados cardId y UserId
 function validateItemDecrypt(url: string, valor: string): boolean {
 
   const itemValidate = KEY_NOT_ENCRYPT.find((item: any) => item.url === url);
