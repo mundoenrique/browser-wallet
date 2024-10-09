@@ -8,6 +8,7 @@ import { sendGTMEvent } from '@next/third-parties/google';
 import { api } from '@/utils/api';
 import ModalResponsive from './ModalResponsive';
 import { useHeadersStore, useUserStore, useUiStore } from '@/store';
+import { encryptForge } from '@/utils/toolHelper';
 
 export default function ModalCardBundle({ open }: { open: boolean }) {
   const router = useRouter();
@@ -28,7 +29,7 @@ export default function ModalCardBundle({ open }: { open: boolean }) {
     setLoadingScreen(true);
     setBlock(true);
     const payload = {
-      userId: user.userId,
+      userId: encryptForge(user.userId),
     };
 
     api
