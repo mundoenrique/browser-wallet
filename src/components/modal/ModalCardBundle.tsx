@@ -36,6 +36,8 @@ export default function ModalCardBundle({ open }: { open: boolean }) {
       .post('/cards/replacement', payload)
       .then((response) => {
         setUser({ ...user, cardSolutions: { ...user.cardSolutions, status: {}, cardId: response.data.data.cardId } });
+        router.push('/dashboard');
+        router.refresh();
       })
       .catch((e) => {
         setModalError({ error: e });
@@ -69,8 +71,7 @@ export default function ModalCardBundle({ open }: { open: boolean }) {
         variant="contained"
         onClick={async () => {
           await requestBundledCard();
-          router.push('/dashboard');
-          router.refresh();
+
           sendGTMEvent({
             event: 'ga4.trackEvent',
             eventName: 'select_content',
