@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 //Internal app
 import { api } from '@/utils/api';
 import { CardIcons } from '%/Icons';
-import { formatTime } from '@/utils/toolHelper';
+import { encryptForge, formatTime } from '@/utils/toolHelper';
 import { ContainerLayout, HandleCard, Linking, ModalResponsive, QRCodeReader } from '@/components';
 import { useNavTitleStore, useConfigCardStore, useUiStore, useUserStore, useOtpStore, useHeadersStore } from '@/store';
 
@@ -123,9 +123,10 @@ export default function ActivatePhysicalCard() {
   const cardholderAssociation = async () => {
     setLoadingScreen(true);
     const data = {
-      cardId: cardId.current,
-      userId,
+      cardId: encryptForge(cardId.current),
+      userId: encryptForge(userId),
     };
+
     await api
       .post('/cards/cardholders', data)
       .then(async (response: any) => {
