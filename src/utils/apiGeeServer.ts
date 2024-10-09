@@ -16,6 +16,7 @@ import {
   KEYS_TO_ENCRYPT_API,
   KEYS_TO_ENCRYPT_CLIENT,
   KEYS_DATA_VALIDATE,
+  KEY_NOT_ENCRYPT,
 } from '@/utils/constants';
 
 const baseURL = getEnvVariable('BACK_URL');
@@ -329,7 +330,9 @@ async function encrypToDecrypt(request: NextRequest, data: any, url: string, typ
   let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
   const dataRedis = (await getRedis(`session:${uuid}`)) || '';
   const keysObjet = type === 'server' ? KEYS_TO_ENCRYPT_API : KEYS_TO_ENCRYPT_CLIENT;
-  const noSessionValidationRoutes = ['api/v0/onboarding/termsandconditions', 'api/v0/onboarding/pep'];
+  const noSessionValidationRoutes = ['api/v0/onboarding/termsandconditions',
+  'api/v0/onboarding/pep'];
+
   let decryptedObject = data;
 
   if (type === 'client') {
@@ -348,7 +351,7 @@ async function encrypToDecrypt(request: NextRequest, data: any, url: string, typ
       typeof pattern === 'string' ? pattern === url : pattern.test(url)
     );
 
-    if (requiresValidation) encryptJSON(decryptedObject, keysObjet, keyDecrypt, keyEncrypt);
+    if (requiresValidation) encryptJSON(decryptedObject, keysObjet, keyDecrypt, keyEncrypt, url);
   }
 
   if (type === 'client') {
@@ -436,19 +439,29 @@ async function validateParam(resRedis: any, url: string, uuid: string) {
   }
 }
 
-function encryptJSON(obj: any, keysObjet: any, keyDecrypt: string, keyEncrypt: string) {
+function encryptJSON(obj: any, keysObjet: any, keyDecrypt: string, keyEncrypt: string, url: string) {
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
       if (keysObjet.includes(key) && typeof obj[key] === 'string') {
-        if (!/^[0-9]+$/.test(obj[key])) {
+        //Eliminar luego de retorno cifrados cardId y UserId, junto con el valItem
+        const valItem = validateItemDecrypt(url, key);
+        if (!/^[0-9]+$/.test(obj[key]) && !valItem) {
           obj[key] = decryptForge(obj[key], keyDecrypt);
           obj[key] = encryptForge(obj[key], keyEncrypt);
         }
       } else if (typeof obj[key] === 'object' && obj[key] !== null) {
-        encryptJSON(obj[key], keysObjet, keyDecrypt, keyEncrypt);
+        encryptJSON(obj[key], keysObjet, keyDecrypt, keyEncrypt, url);
       }
     }
   }
+}
+
+//Eliminar luego de retorno cifrados cardId y UserId
+function validateItemDecrypt(url: string, valor: string): boolean {
+
+  const itemValidate = KEY_NOT_ENCRYPT.find((item: any) => item.url === url);
+  return itemValidate ? itemValidate.valores.includes(valor) : false;
+
 }
 
 async function validateDevice(request: NextRequest) {
