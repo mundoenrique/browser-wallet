@@ -59,10 +59,10 @@ export default function ModalCardBundle({ open }: { open: boolean }) {
         🚫 Tarjeta Bloqueada
       </Typography>
       <Stack spacing={2} sx={{ textAlign: 'left' }} mb={3}>
-        <Typography variant="body2">Tu tarjeta esta bloqueada.</Typography>
+        <Typography variant="body2">Tu tarjeta está bloqueada.</Typography>
         <Typography variant="body2">Además estamos creándote una nueva cuenta Yiro Virtual</Typography>
         <Typography variant="body2">
-          No te preocupes conservaras todos los datos de tu cuenta anterior y puedes seguir usando nuestros servicios.
+          No te preocupes conservarás todos los datos de tu cuenta anterior y puedes seguir usando nuestros servicios.
         </Typography>
         <Typography variant="body2">Si quieres una nueva tarjeta física tienes que volver a solicitarla.</Typography>
         <Typography variant="body2">Si tienes afiliado un pago recurrente tienes que volver a generarlo.</Typography>
