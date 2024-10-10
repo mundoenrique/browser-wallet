@@ -66,10 +66,10 @@ const AnimationLogo = () => {
 
   useEffect(() => {
     let timer = setInterval(() => {});
-    if (currentImageIndex < 3) {
+    if (currentImageIndex < 2) {
       timer = setInterval(() => {
         setCurrentImageIndex((prevIndex: number) => prevIndex + 1);
-      }, 2000);
+      }, 3000);
     }
     return () => {
       clearInterval(timer);
@@ -84,9 +84,9 @@ const AnimationLogo = () => {
   useEffect(() => {
     setShowHeader(false);
     (async () => {
-      timeEvent(4000)
+      timeEvent(6000)
         .then(() => {
-          return timeEvent(1500);
+          return timeEvent(2000);
         })
         .then(() => {
           replace('/signin');
@@ -99,33 +99,26 @@ const AnimationLogo = () => {
       {currentImageIndex < 2 && (
         <Box sx={{ zIndex: 1, display: 'grid', justifyContent: 'center' }}>
           {currentImageIndex === 0 && (
-            <Box mb={3}>
-              <Image src={animation1} width={360} height={345} alt={`Animation Yiro ${currentImageIndex}`} priority />
-            </Box>
-          )}
-          {currentImageIndex === 1 && (
             <Zoom in={true}>
-              <Image src={animation2} width={360} height={345} alt={`Animation Yiro ${currentImageIndex}`} priority />
+              <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <Image src={animation2} width={360} height={345} alt={`Animation Yiro ${currentImageIndex}`} priority />
+                <Typography
+                  sx={{
+                    color: fuchsiaBlue[200],
+                    mb: { xs: 7, sm: 3 },
+                    fontSize: 28,
+                    fontWeight: 700,
+                    textAlign: 'center',
+                  }}
+                >
+                  ¡Felicidades! <br /> Ya eres parte de <br /> Yiro
+                </Typography>
+              </Box>
             </Zoom>
           )}
         </Box>
       )}
-      {currentImageIndex === 1 && (
-        <Zoom in={true}>
-          <Typography
-            sx={{
-              color: fuchsiaBlue[200],
-              mb: { xs: 7, sm: 3 },
-              fontSize: 28,
-              fontWeight: 700,
-              textAlign: 'center',
-            }}
-          >
-            ¡Felicidades! <br /> Ya eres parte de <br /> Yiro
-          </Typography>
-        </Zoom>
-      )}
-      {currentImageIndex >= 2 && (
+      {currentImageIndex >= 1 && (
         <Zoom in={true} timeout={1000}>
           <Box>
             <LogoGreen />
