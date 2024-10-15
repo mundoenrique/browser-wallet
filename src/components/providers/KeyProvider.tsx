@@ -13,6 +13,7 @@ import { removePEMHeadersAndFooters } from '@/utils/jwt';
 import { useJwtStore, useKeyStore, useActiveAppStore, useAccessSessionStore } from '@/store';
 import { decryptForge, fastModularExponentiation, generateAesKey, generatePublicKey } from '@/utils/toolHelper';
 import uuid4 from 'uuid4';
+import { Typography } from '@mui/material';
 
 export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   const pathname = usePathname();
@@ -51,7 +52,9 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
       setCreateAccess(jwePrivateKey);
       setActiveApp(true);
     } else {
-      setTimeout(() => { setTime(false); }, 3000);
+      setTimeout(() => {
+        setTime(false);
+      }, 3000);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeApp, time, setTimeout, setActiveApp, setCreateAccess]);
@@ -62,23 +65,23 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
         try {
           window.name = uuid4();
           const idDevice = window.name;
-          const keysAes = generatePublicKey()
+          const keysAes = generatePublicKey();
           const { jwePublicKey, jwsPublicKey } = keys as { jwePublicKey: string; jwsPublicKey: string };
           const response = await api.post('/gettoken', {
             jwePublicKey,
             jwsPublicKey,
             isBrowser,
             idDevice,
-            exchange: keysAes.keyPublic
+            exchange: keysAes.keyPublic,
           });
           const token = (await response.data.data.jwt) as string;
           const uuid = (await response.data.data.sessionId) as string;
           const publicKey = (await response.data.data.exchange) as number;
           const primeNumber = parseInt(process.env.NEXT_PUBLIC_PRIME_NUMBER || '0');
           const exchange = fastModularExponentiation(publicKey, keysAes.keyPrivate, primeNumber);
-          const exchangeKey = generateAesKey(exchange)
+          const exchangeKey = generateAesKey(exchange);
           setKeys(keys);
-          setDataToken({token, uuid, exchange: exchangeKey.toString()});
+          setDataToken({ token, uuid, exchange: exchangeKey.toString() });
           setCreateAccess('');
           setInitAccess(true);
           setAccessSession(false);
@@ -94,7 +97,6 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   }, [initAccess, activeApp, keys, setDataToken, setKeys, setCreateAccess, setAccessSession]);
 
   if (time || (!initAccess && !token && pathname != '/signout')) {
-
     return (
       <PurpleLayout>
         <LogoGreen />
@@ -102,6 +104,12 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
     );
   }
 
-  return <>{ children }</>;
-
+  return (
+    <>
+      {children}
+      <Typography sx={{ position: 'absolute', bottom: '10px', right: '10px' }} variant="caption">
+        v1.0.2
+      </Typography>
+    </>
+  );
 }

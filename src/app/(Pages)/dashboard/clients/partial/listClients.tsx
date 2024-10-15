@@ -214,9 +214,10 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
                         overflow: 'hidden',
                         whiteSpace: 'nowrap',
                         textOverflow: 'ellipsis',
+                        textTransform: 'capitalize',
                       }}
                     >
-                      {client.fullname}
+                      {client.fullname?.toLowerCase()}
                     </Typography>
                     <Typography fontSize={10} lineHeight="16px">
                       {capitalizeFirstLetter(dayjs(client.date).format('MMMM D, h:mm a'))}
