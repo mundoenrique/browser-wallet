@@ -87,11 +87,10 @@ const RowDetail = ({ row }: { row: TableDataProps['data'][number] }) => (
           noWrap
           sx={{
             maxWidth: 140,
-            textTransform: 'lowercase',
-            '&::first-letter': { textTransform: 'uppercase' },
+            textTransform: 'capitalize',
           }}
         >
-          {row.description ?? '-'}
+          {row.description.toLowerCase() ?? '-'}
         </Typography>
         <Typography
           sx={{
