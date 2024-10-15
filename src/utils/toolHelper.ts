@@ -27,7 +27,7 @@ export function stringAvatar(name: string) {
  */
 export const handleDownload = async (element: HTMLElement, fileName: string, backgroundColor: string) => {
   const dataUrl = await toJpeg(element, {
-    backgroundColor: backgroundColor
+    backgroundColor: backgroundColor,
   });
   const link = document.createElement('a');
   link.href = dataUrl;
@@ -48,13 +48,13 @@ export const handleShare = async (element: HTMLElement, shareData: any, backgrou
   try {
     if (webShareSupported) {
       const blob = await toBlob(element, {
-        backgroundColor: backgroundColor
+        backgroundColor: backgroundColor,
       });
       const file = new File([blob as any], 'ticket.png', { type: 'image/png' });
-      await navigator.share({files: [file]});
+      await navigator.share({ files: [file] });
     } else {
       const image = await toJpeg(element, {
-        backgroundColor: backgroundColor
+        backgroundColor: backgroundColor,
       });
       const link = document.createElement('a');
       link.href = image;
@@ -230,4 +230,9 @@ export const generateAesKey = (key: any) => {
 export const capitalizeFirstLetter = (str: string): string => {
   if (!str) return str;
   return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+// Function filter response code movements
+export const filterResponseCode = (data: any) => {
+  return data.filter((item: any) => item.responseCode === '00');
 };

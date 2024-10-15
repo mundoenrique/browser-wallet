@@ -7,7 +7,7 @@ import { Box, Typography, useTheme } from '@mui/material';
 //Internal app
 import { api } from '@/utils/api';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { capitalizeFirstLetter } from '@/utils/toolHelper';
+import { capitalizeFirstLetter, filterResponseCode } from '@/utils/toolHelper';
 import { InputSelect, LastMovements, Linking, ModalError } from '@/components';
 import { useMenuStore, useNavTitleStore, useHeadersStore, useUserStore } from '@/store';
 
@@ -73,7 +73,8 @@ export default function Movements() {
           data: { data },
         } = response;
         if (data) {
-          setMovementData((state: any) => [...state, ...data]);
+          const newData = filterResponseCode(data);
+          setMovementData((state: any) => [...state, ...newData]);
         }
       })
       .catch(() => {
