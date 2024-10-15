@@ -7,6 +7,7 @@ import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { api } from '@/utils/api';
 import { expiredFormatDate } from '@/utils/dates';
+import { filterResponseCode } from '@/utils/toolHelper';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
 import { CardCollect, CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
 import { useHeadersStore, useChargeStore, useDebStore, useMenuStore, useUiStore, useUserStore } from '@/store';
@@ -66,7 +67,7 @@ export default function Dashboard() {
         },
       })
       .then((response: any) => {
-        response.data.data && setMovementData(response.data.data);
+        response.data.data && setMovementData(filterResponseCode(response.data.data));
       })
       .catch((e) => {
         const { code } = e.response?.data?.data || 0;
