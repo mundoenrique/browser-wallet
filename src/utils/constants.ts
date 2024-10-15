@@ -53,23 +53,24 @@ export const KEYS_TO_ENCRYPT_API = [
   'otpCode',
   'password',
   'cardId',
-  'userId'
+  'userId',
 ];
 
 export const KEYS_TO_ENCRYPT_CLIENT = ['cardId', 'phoneNumber', 'pan', 'expiredDate', 'cvv'];
 
-export const KEYS_DATA_VALIDATE = [
-  'userId',
-  'cardId'
-];
+export const KEYS_DATA_VALIDATE = ['userId', 'cardId'];
 
 export const KEY_NOT_ENCRYPT = [
   {
     url: 'api/v0/users/credentials',
-    valores: ['userId']
+    valores: ['userId'],
   },
   {
     url: 'api/v0/cards/users/physicalcard',
-    valores: ['userId']
+    valores: ['userId'],
+  },
+  {
+    url: 'api/v0/cards/sendmoney',
+    valores: ['cardId'],
   },
 ];
