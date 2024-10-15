@@ -330,8 +330,7 @@ async function encrypToDecrypt(request: NextRequest, data: any, url: string, typ
   let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
   const dataRedis = (await getRedis(`session:${uuid}`)) || '';
   const keysObjet = type === 'server' ? KEYS_TO_ENCRYPT_API : KEYS_TO_ENCRYPT_CLIENT;
-  const noSessionValidationRoutes = ['api/v0/onboarding/termsandconditions',
-  'api/v0/onboarding/pep'];
+  const noSessionValidationRoutes = ['api/v0/onboarding/termsandconditions', 'api/v0/onboarding/pep'];
 
   let decryptedObject = data;
 
@@ -458,10 +457,8 @@ function encryptJSON(obj: any, keysObjet: any, keyDecrypt: string, keyEncrypt: s
 
 //Eliminar luego de retorno cifrados cardId y UserId
 function validateItemDecrypt(url: string, valor: string): boolean {
-
   const itemValidate = KEY_NOT_ENCRYPT.find((item: any) => item.url === url);
   return itemValidate ? itemValidate.valores.includes(valor) : false;
-
 }
 
 async function validateDevice(request: NextRequest) {
