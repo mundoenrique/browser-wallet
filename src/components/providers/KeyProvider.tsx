@@ -107,7 +107,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   return (
     <>
       {children}
-      <Typography sx={{ position: 'absolute', bottom: '10px', right: '10px' }} variant="caption">
+      <Typography sx={{ position: 'fixed', bottom: '10px', right: '10px' }} variant="caption">
         v1.0.3
       </Typography>
     </>
