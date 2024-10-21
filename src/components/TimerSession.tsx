@@ -32,8 +32,7 @@ export default function TimmerSession() {
   const resetSession = async () => {
     const date = new Date();
     localStorage.setItem('sessionTime', date.toString());
-    const stateObject = { timeSession: date.toString() };
-    await setDataRedis('PUT', { uuid: null, data: stateObject });
+    await api.post('/activeSession', { data: { jwePublicKey } });
     setOpen(false);
   };
 
