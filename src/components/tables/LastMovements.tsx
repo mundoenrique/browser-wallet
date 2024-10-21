@@ -90,7 +90,7 @@ const RowDetail = ({ row }: { row: TableDataProps['data'][number] }) => (
             textTransform: 'capitalize',
           }}
         >
-          {row.description.toLowerCase() ?? '-'}
+          {row.description?.toLowerCase() ?? '-'}
         </Typography>
         <Typography
           sx={{
