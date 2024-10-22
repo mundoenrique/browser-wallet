@@ -8,7 +8,7 @@ import { RegularExpressions } from '@/interfaces';
 export const regularExpressions: Partial<RegularExpressions> = {
   onlyNumber: /^[0-9]{2,20}$/,
   onlyOneNumber: /^[0-9]{1}$/,
-  namesValid: /^([a-zA-ZñáéíóúÑÁÉÍÓÚ]+[\s]*)+$/,
+  namesValid: /^([a-zA-ZñáéíóúÑÁÉÍÓÚ]+\s*)+$/,
   validNickName: /^[a-zA-Z0-9_]{6,16}$/,
   shortPhrase: /^[a-zA-Z0-9ñáéíóúÑÁÉÍÓÚ\s.]$/,
   longPhrase: /^[a-zA-Z0-9ñáéíóú ().,:;-]{5,150}$/,
