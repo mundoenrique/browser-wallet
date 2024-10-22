@@ -35,6 +35,7 @@ const config: Config = {
     'src/app/**/conditions/*page.tsx',
     'src/app/**/questions/*page.tsx',
     'src/app/**/legal/*page.tsx',
+    'src/app/**/policies/*page.tsx',
   ],
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
   coverageProvider: 'v8',

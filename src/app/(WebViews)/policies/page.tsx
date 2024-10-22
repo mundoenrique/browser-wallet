@@ -1,8 +1,8 @@
 'use client';
 
 //Internal app
-import { Questions } from '@/components';
+import { Policies } from '@/components';
 
 export default function page() {
-  return <Questions />;
+  return <Policies />;
 }
