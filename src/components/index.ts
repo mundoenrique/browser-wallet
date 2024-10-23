@@ -60,3 +60,5 @@ export { default as Policies } from './Policies';
 export { default as Conditions } from './Conditions';
 //Timerrsession
 export { default as Timersession } from './TimerSession';
+//Utils
+export { default as DashLine } from './utils/DashLine';
