@@ -13,7 +13,7 @@ import { api } from '@/utils/api';
 import { getSchema } from '@/config';
 import { handleMaskOtp } from '@/utils/toolHelper';
 import { useRegisterStore, useUiStore, useCatalogsStore, useHeadersStore } from '@/store';
-import { InputCheck, InputText, ModalResponsive, InputSelect, Terms } from '@/components';
+import { InputCheck, InputText, ModalResponsive, InputSelect, Terms, Policies } from '@/components';
 
 export default function InfoVerification() {
   const theme = useTheme();
@@ -35,6 +35,8 @@ export default function InfoVerification() {
   const [editEmail, setEditEmail] = useState<boolean>(false);
 
   const [openTerms, setOpenTerms] = useState<boolean>(false);
+
+  const [openPolicies, setOpenPolicies] = useState<boolean>(false);
 
   const [editPhoneNumber, setEditPhoneNumber] = useState<boolean>(false);
 
@@ -164,6 +166,22 @@ export default function InfoVerification() {
   const handleModalTerm = (e: any) => {
     e.preventDefault();
     setOpenTerms(true);
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'checkbox',
+        section: 'Yiro :: onboarding :: step1',
+        previous_section: 'Yiro :: onboarding :: step0',
+        selected_content: 'Acepto Términos y Condiciones y Política de Privacidad de Datos',
+        destination_page: `${host}/signup/onboarding/step2`,
+      },
+    });
+  };
+
+  const handleModalPolicies = (e: any) => {
+    e.preventDefault();
+    setOpenPolicies(true);
     sendGTMEvent({
       event: 'ga4.trackEvent',
       eventName: 'select_content',
@@ -418,7 +436,7 @@ export default function InfoVerification() {
                 </Typography>{' '}
                 y{' '}
                 <Typography
-                  onClick={handleModalTerm}
+                  onClick={handleModalPolicies}
                   component="span"
                   variant="body2"
                   sx={{ textDecoration: 'underline' }}
@@ -573,6 +591,36 @@ export default function InfoVerification() {
       >
         <Box sx={{ height: '90%', overflow: 'auto', px: 2 }}>
           <Terms />
+        </Box>
+      </ModalResponsive>
+
+      <ModalResponsive
+        open={openPolicies}
+        handleClose={() => {
+          setOpenPolicies(false);
+          sendGTMEvent({
+            event: 'ga4.trackEvent',
+            eventName: 'select_content',
+            eventParams: {
+              content_type: 'boton_modal',
+              section: 'Yiro :: onboarding :: step1 :: politicaYprivacidad',
+              previous_section: 'Yiro :: onboarding :: step1',
+              selected_content: 'Cerrar',
+              destination_page: `${host}/signup/onboarding/step2`,
+              pop_up_type: 'onboarding',
+              pop_up_title: 'Politica y privacidad',
+            },
+          });
+        }}
+        sx={{
+          width: { sm: '90vw', xs: '100%' },
+          maxWidth: { sm: 800, xs: '100%' },
+          height: { sm: '90vh', xs: '80vh' },
+          maxHeight: { sm: 600, xs: '80vh' },
+        }}
+      >
+        <Box sx={{ height: '90%', overflow: 'auto', px: 2 }}>
+          <Policies />
         </Box>
       </ModalResponsive>
     </CardStep>
