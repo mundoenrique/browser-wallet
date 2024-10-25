@@ -2,6 +2,14 @@ import { render, screen } from '@testing-library/react';
 //Internal app
 import Policies from '@/app/(WebViews)/policies/page';
 
+class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+global.ResizeObserver = ResizeObserver;
+
 jest.mock('jose', () => ({
   compactDecrypt: jest.fn(() => ({ plaintext: 'mocked plaintext' })),
 }));
@@ -13,9 +21,6 @@ describe('Policies', () => {
   });
 
   it('should render all text, titles, subtitles.', () => {
-    expect(
-      screen.getByText(/TÉRMINOS Y CONDICIONES E Commerce y Mi Tienda Online- CLIENTE DE LA CONSULTORA/i)
-    ).toBeInTheDocument();
-    expect(screen.getByText(/Actualización: febrero 2023/i)).toBeInTheDocument();
+    expect(screen.getByText(/POLÍTICA DE PRIVACIDAD – BILLETERA YIRO - PERÚ/i)).toBeInTheDocument();
   });
 });

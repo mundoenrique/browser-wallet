@@ -12,13 +12,6 @@ describe('Legal', () => {
 
   // ** Renders a Legal, a title, subtitles.
   it('should render all necessary elements Dashboard Legal', () => {
-    expect(
-      screen.getByText('TÉRMINOS Y CONDICIONES E Commerce y Mi Tienda Online- CLIENTE DE LA CONSULTORA')
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        'El presente documento contiene los Términos y Condiciones Generales (en adelante, los “Términos y Condiciones Generales”) aplicables a los Sitios Web de las marcas Ésika, L’bel y Cyzone (en adelante, “las Marcas”) que se encuentran en las URL: www.esika.com; www.lbel.com; www.cyzone.com (en adelante, los “Sitios Web”), respecto de las condiciones de uso y venta que rigen las transacciones en los Sitios Web (en adelante, los “Servicios”).'
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText('TÉRMINOS Y CONDICIONES – BILLETERA YIRO- PERÚ')).toBeInTheDocument();
   });
 });
