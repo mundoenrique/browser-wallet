@@ -1,3 +1,4 @@
+import Policies from './Policies';
 //pwa
 export { default as QRCodeReader } from './PWA/QRCodeReader';
 //form
@@ -55,7 +56,9 @@ export { default as StatusReport } from './errors/StatusReport';
 export { default as NotFoundError } from './errors/NotFoundError';
 //WebViews
 export { default as Terms } from './Terms';
-export { default as Questions } from './Questions';
+export { default as Policies } from './Policies';
 export { default as Conditions } from './Conditions';
 //Timerrsession
 export { default as Timersession } from './TimerSession';
+//Utils
+export { default as DashLine } from './utils/DashLine';

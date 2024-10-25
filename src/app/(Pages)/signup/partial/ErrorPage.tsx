@@ -12,7 +12,7 @@ export default function ErrorPage() {
   const { backLink } = useHeadersStore();
 
   const handleWhatsapp = () => {
-    window.open('https://api.whatsapp.com/send?phone=51997535474', '_blank');
+    window.open('https://api.whatsapp.com/send?phone=51997535474', '_blank', 'noopener');
   };
 
   return (

@@ -7,7 +7,7 @@ describe('Help', () => {
   const routerPushMock = jest.fn();
 
   beforeEach(async () => {
-    mockRouterPush(routerPushMock)
+    mockRouterPush(routerPushMock);
     await act(async () => {
       render(<Help />);
     });
@@ -29,7 +29,7 @@ describe('Help', () => {
     const whatsappHandleCard = screen.getByText('Contáctanos por WhatsApp');
     expect(screen.getByText(/contáctanos por WhatsApp/i)).toBeInTheDocument();
     fireEvent.click(whatsappHandleCard);
-    expect(window.open).toHaveBeenCalledWith('https://api.whatsapp.com/send?phone=51997535474', '_blank');
+    expect(window.open).toHaveBeenCalledWith('https://api.whatsapp.com/send?phone=51997535474', '_blank', 'noopener');
   });
 
   it('calls handleQuestionsfunction when Questions HandleCard is clicked', () => {

@@ -25,7 +25,7 @@ export default function Help() {
   };
 
   const handleWhatsapp = () => {
-    window.open('https://api.whatsapp.com/send?phone=51997535474', '_blank');
+    window.open('https://api.whatsapp.com/send?phone=51997535474', '_blank', 'noopener');
     sendGTMEvent({
       event: 'ga4.trackEvent',
       eventName: 'select_content',

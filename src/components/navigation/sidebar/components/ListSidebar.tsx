@@ -26,6 +26,8 @@ export default function ListSidebar(): JSX.Element {
 
   const updatePage = useConfigCardStore((state) => state.updatePage);
 
+  const successActivateCard = useConfigCardStore((state) => state.page);
+
   const jwePublicKey = useKeyStore((state) => state.jwePublicKey);
 
   const user = useUserStore((state) => state.user);
@@ -69,7 +71,7 @@ export default function ListSidebar(): JSX.Element {
 
       <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', cursor: 'pointer' }}>
         <LinkMui component={Link} href="/dashboard/card-configuration" sx={{ textDecoration: 'none' }}>
-          {!isPhysicalCard() && (
+          {!isPhysicalCard() && successActivateCard !== 'success' && (
             <Card
               variant="detailCard"
               sx={{ mt: { xs: 10, md: 'auto' }, mb: { xs: 0, md: 'auto' } }}

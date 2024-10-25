@@ -200,7 +200,8 @@ export const fastModularExponentiation = function (a: number, b: number, n: numb
 
 export const generatePublicKey = () => {
   function randomBigInt(max: any) {
-    return Math.floor(Math.random() * Number(max));
+    const numberRandom = randomNum();
+    return Math.floor( numberRandom * Number(max));
   }
 
   const primeNumber = parseInt(process.env.NEXT_PUBLIC_PRIME_NUMBER || '0');
@@ -211,6 +212,16 @@ export const generatePublicKey = () => {
 
   return { keyPublic, keyPrivate };
 };
+
+function randomNum() {
+  const array = new Uint16Array(1);
+  if (typeof window !== 'undefined') {
+    window.crypto.getRandomValues(array);
+  } else {
+    crypto.getRandomValues(array);
+  }
+  return array[0]
+}
 
 export const generateAesKey = (key: any) => {
   const buffer = Buffer.from(key.toString(), 'utf-8');

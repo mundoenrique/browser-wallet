@@ -12,9 +12,6 @@ describe('Legal', () => {
   });
 
   it('should render all text, titles, subtitles.', () => {
-    expect(
-      screen.getByText(/TÉRMINOS Y CONDICIONES E Commerce y Mi Tienda Online- CLIENTE DE LA CONSULTORA/i)
-    ).toBeInTheDocument();
-    expect(screen.getByText(/Actualización: febrero 2023/i)).toBeInTheDocument();
+    expect(screen.getByText(/TÉRMINOS Y CONDICIONES – BILLETERA YIRO- PERÚ/i)).toBeInTheDocument();
   });
 });
