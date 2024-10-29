@@ -41,7 +41,7 @@ export default function Policies() {
           seguridad de los datos proporcionados por los usuarios de Perú, a través de la billetera digital denominada
           “Yiro” (en adelante, la “Billetera”), la cual se encuentra alojada en la página “Somos Belcorp” contenida en
           el siguiente URL:
-          <Link href="http://www.somosbelcorp.biz" target="_blank" rel="noopener" sx={{ pl: 1 }}>
+          <Link href="https://www.somosbelcorp.biz" target="_blank" rel="noopener" sx={{ pl: 1 }}>
             www.somosbelcorp.biz
           </Link>
           o en la aplicación móvil “Ésika Conmigo” (en adelante, los “Sitios Web”), tiene el compromiso de respetar la
