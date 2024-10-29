@@ -295,7 +295,7 @@ export default function Terms() {
           El presente documento contiene los Términos y Condiciones (en adelante, los &quot;Términos y
           Condiciones&quot;) aplicables a la billetera digital &quot;Yiro&quot; (en adelante, &quot;Yiro&quot; y/o
           &quot;Billetera&quot; y/o &quot;billetera digital&quot;) a la que se tendrá acceso en el URL:{' '}
-          <Link href="http://www.somosbelcorp.com/" target="_blank" rel="noopener">
+          <Link href="https://www.somosbelcorp.com/" target="_blank" rel="noopener">
             www.somosbelcorp.com
           </Link>{' '}
           (en adelante y en App &quot;Esika Conmigo&quot;, a los que se les podrá denominar de manera conjunta como
@@ -377,7 +377,7 @@ export default function Terms() {
         <Typography paragraph>
           <strong>Activos Digitales:</strong> Programas y/o aplicaciones web en los que se encontrará alojada la
           billetera Yiro, que comprenden al URL:{' '}
-          <Link href="http://www.somosbelcorp.com/" target="_blank" rel="noopener">
+          <Link href="https://www.somosbelcorp.com/" target="_blank" rel="noopener">
             www.somosbelcorp.com
           </Link>{' '}
           (&quot;Somos Belcorp&quot;) y al App &quot;Esika Conmigo&quot;.
