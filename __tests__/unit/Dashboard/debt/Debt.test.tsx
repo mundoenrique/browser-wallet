@@ -6,7 +6,7 @@ import MyDebt from '@/app/(Pages)/dashboard/debt/page';
 // Mock the components
 jest.mock('@/app/(Pages)/dashboard/debt/partial', () => ({
   Success: jest.fn(() => <div>Success Component</div>),
-  Error: jest.fn(() => <div>Error Component</div>),
+  ErrorPage: jest.fn(() => <div>Error Component</div>),
   Debt: jest.fn(() => <div>Debt Component</div>),
   Congratulations: jest.fn(() => <div>Congratulations Component</div>),
 }));
