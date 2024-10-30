@@ -1,7 +1,7 @@
 {
   "solution": "belcorp-web",
   "name": "belcorp-corporation",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "private": true,
   "author": "Novopayment",
   "license": "MIT",
