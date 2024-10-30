@@ -127,7 +127,8 @@ export default function InfoVerification() {
       'TERMINO 2': data.policy,
     };
 
-    const { uuid, ...consultantData } = ONB_PHASES_TERMS?.consultant;
+    const consultant = ONB_PHASES_TERMS?.consultant;
+    const { uuid, ...consultantData } = consultant ?? {};
 
     const requestFormData = {
       currentPhaseCode: 'ONB_PHASES_TERMS',
@@ -209,6 +210,13 @@ export default function InfoVerification() {
     trigger(['email', 'phoneNumber']);
   };
 
+  const transformCatalog = (catalog: any) => {
+    return catalog.map((country: { value: string; code: string }) => ({
+      text: country.value,
+      value: country.code.slice(0, 2),
+    }));
+  };
+
   useEffect(() => {
     setShowHeader(true);
     trigger(['email', 'phoneNumber']);
@@ -221,21 +229,14 @@ export default function InfoVerification() {
           catalogCode: 'NATIONALITIES_CATALOG',
         })
         .then((response) => {
-          updateCatalog(
-            'countriesCatalog',
-            response.data.data.data.map((country: { value: string; code: string }) => ({
-              text: country.value,
-              value: country.code.slice(0, 2),
-            }))
-          );
+          const catalogs = transformCatalog(response.data.data.data);
+          updateCatalog('countriesCatalog', catalogs);
         })
         .catch((e) => {
           setModalError({ error: e });
         });
     };
-    {
-      countriesCatalog.length === 0 && fetchCountryList();
-    }
+    countriesCatalog.length === 0 && fetchCountryList();
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -257,9 +258,8 @@ export default function InfoVerification() {
           setModalError({ error: e });
         });
     };
-    {
-      termsCatalog.length === 0 && fetchTermsList();
-    }
+
+    termsCatalog.length === 0 && fetchTermsList();
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (

@@ -20,15 +20,9 @@ export type ValidationShape = { [key: string]: AnySchema };
  */
 export interface RegularExpressions {
   onlyNumber: RegExp;
-  onlyOneNumber: RegExp;
   namesValid: RegExp;
-  validNickName: RegExp;
-  shortPhrase: RegExp;
-  longPhrase: RegExp;
   alphaName: RegExp;
-  alphaLetter: RegExp;
   emailValid: RegExp;
-  alphanumunder: RegExp;
   alphanum: RegExp;
   company: RegExp;
   password: {
@@ -39,13 +33,5 @@ export interface RegularExpressions {
   };
   numeric: RegExp;
   phone: RegExp;
-  phoneMasked: RegExp;
   floatAmount: RegExp;
-  date: {
-    dmy: RegExp;
-    my: RegExp;
-    y: RegExp;
-  };
-  checkedOption: RegExp;
-  docType: RegExp;
 }

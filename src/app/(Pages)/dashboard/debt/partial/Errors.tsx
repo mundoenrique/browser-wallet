@@ -8,7 +8,7 @@ import { useDebStore } from '@/store';
 import { PurpleLayout } from '@/components';
 import { fuchsiaBlue } from '@/theme/theme-default';
 
-export default function Error() {
+export default function ErrorPage() {
   const error = useDebStore((state) => state.error);
 
   const setView = useDebStore((state) => state.setView);

@@ -1,7 +1,7 @@
 'use client';
 
 import { useDebStore } from '@/store';
-import { Success, Error, Debt, Congratulations } from './partial';
+import { Success, ErrorPage, Debt, Congratulations } from './partial';
 
 export default function MyDebt() {
   const { view } = useDebStore();
@@ -10,7 +10,7 @@ export default function MyDebt() {
     const routes: { [key: string]: any } = {
       DEBT: <Debt />,
       SUCCESS: <Success />,
-      ERROR: <Error />,
+      ERROR: <ErrorPage />,
       CONGRATULATIONS: <Congratulations />,
     };
 

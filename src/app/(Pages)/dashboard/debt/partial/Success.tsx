@@ -77,8 +77,8 @@ export default function Success() {
             </Typography>
             <Card sx={{ boxShadow: 'none', p: 1 }}>
               <Stack direction="column" divider={<Divider orientation="horizontal" />} spacing={1}>
-                {description.map((item, i) => (
-                  <Box key={i} sx={{ display: 'flex', alignItems: 'center' }}>
+                {description.map((item, index) => (
+                  <Box key={`${index}-${item.label}`} sx={{ display: 'flex', alignItems: 'center' }}>
                     <Avatar sx={{ bgcolor: fuchsiaBlue[200], width: 26, height: 26, mr: 1 }}>{item.icon}</Avatar>
                     <Box sx={{ display: 'grid', alignItems: 'center' }}>
                       <Typography fontSize={10}>{item.label}</Typography>

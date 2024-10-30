@@ -22,8 +22,10 @@ function drawLine(begin: Point, end: Point, color: string, el: CanvasRenderingCo
   el?.beginPath();
   el?.moveTo(begin.x, begin.y);
   el?.lineTo(end.x, end.y);
-  el ? (el.lineWidth = 4) : null;
-  el ? (el.strokeStyle = color) : null;
+  if (el) {
+    el.lineWidth = 4;
+    el.strokeStyle = color;
+  }
   el?.stroke();
 }
 
@@ -31,7 +33,8 @@ function drawLine(begin: Point, end: Point, color: string, el: CanvasRenderingCo
  * Generates the QR code used to create a socket.
  * @param readCode - Receive a promise with the data.
  */
-export default function QRCodeReader({ readCode }: IQRCodeReader) {
+export default function QRCodeReader(props: Readonly<IQRCodeReader>) {
+  const { readCode } = props;
   let videoElement: HTMLVideoElement;
   let canvasElement: HTMLCanvasElement;
   let canvasContext: CanvasRenderingContext2D | null;
@@ -87,7 +90,9 @@ export default function QRCodeReader({ readCode }: IQRCodeReader) {
         }}
         hidden
         playsInline
-      ></video>
+      >
+        <track kind="captions" />
+      </video>
     </>
   );
 }
