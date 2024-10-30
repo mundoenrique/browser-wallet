@@ -89,81 +89,88 @@ export default function Transfer() {
     };
 
     if (!validate.differentAccount || validate.min || validate.max) {
-      !validate.differentAccount &&
-        setError('numberClient', { type: 'customError', message: 'No se puede transferir a la misma cuenta' });
-
-      validate.min && setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });
-
-      validate.max &&
-        setError('amount', { type: 'customError', message: 'El monto debe ser menor o igual a S/ 4950.00' });
-
+      handleValidationErrors(validate);
       return;
     }
 
     setLoadingScreen(true);
 
     const validateReceiver = api.get('/users/search', { params: { phoneNumber: data.numberClient } });
-
     const validateBalance = api.get(`/cards/${senderCardId()}/balance`);
 
     Promise.allSettled([validateReceiver, validateBalance])
+      .then((responses: any) => handleApiResponses(responses, data))
+      .catch(() => setModalError())
+      .finally(() => setLoadingScreen(false));
+  };
 
-      .then((responses: any) => {
-        const [responseReceiver, responseBalance] = responses;
+  const handleValidationErrors = (validate: any) => {
+    if (!validate.differentAccount) {
+      setError('numberClient', { type: 'customError', message: 'No se puede transferir a la misma cuenta' });
+    }
+    if (validate.min) {
+      setError('amount', { type: 'customError', message: 'El monto debe ser mayor o igual a S/ 1.00' });
+    }
+    if (validate.max) {
+      setError('amount', { type: 'customError', message: 'El monto debe ser menor o igual a S/ 4950.00' });
+    }
+  };
 
-        const balance = responseBalance.value?.data?.data?.availableBalance || 0;
+  const handleApiResponses = (responses: any, data: any) => {
+    const [responseReceiver, responseBalance] = responses;
+    const balance = responseBalance.value?.data?.data?.availableBalance || 0;
+    const amountCheck = parseFloat(data.amount) <= parseFloat(balance);
 
-        const amountCheck = parseFloat(data.amount) <= parseFloat(balance);
+    if (responseReceiver.status === 'fulfilled' && responseBalance.status === 'fulfilled') {
+      handleFulfilledResponses(responseReceiver, amountCheck, data);
+    } else if (responseReceiver.status === 'rejected' && responseBalance.status === 'fulfilled') {
+      handleRejectedReceiver(responseReceiver, amountCheck);
+    } else if (responseReceiver.status === 'fulfilled' && responseBalance.status === 'rejected') {
+      setModalError({ error: responseBalance.reason });
+    } else if (responseReceiver.status === 'rejected' && responseBalance.status === 'rejected') {
+      handleBothRejected(responseReceiver, responseBalance);
+    }
+  };
 
-        if (responseReceiver.status === 'fulfilled' && responseBalance.status === 'fulfilled') {
-          if (!amountCheck) {
-            setError('amount', { type: 'customError', message: 'Saldo insuficiente' });
-          } else if (responseReceiver.value?.data?.data?.status.code !== 'ACTIVE') {
-            setError('numberClient', { type: 'customError', message: 'Este número no está afiliado a Yiro.' });
-          } else {
-            const {
-              firstName,
-              firstLastName,
-              cardSolutions: { cardId },
-            } = responseReceiver.value?.data?.data;
+  const handleFulfilledResponses = (responseReceiver: any, amountCheck: any, data: any) => {
+    if (!amountCheck) {
+      setError('amount', { type: 'customError', message: 'Saldo insuficiente' });
+    } else if (responseReceiver.value?.data?.data?.status.code !== 'ACTIVE') {
+      setError('numberClient', { type: 'customError', message: 'Este número no está afiliado a Yiro.' });
+    } else {
+      const {
+        firstName,
+        firstLastName,
+        cardSolutions: { cardId },
+      } = responseReceiver.value?.data?.data ?? {};
+      setTransferInfo((prevState) => ({
+        ...prevState,
+        receiver: `${firstName} ${firstLastName}`,
+        amount: parseFloat(data.amount),
+      }));
+      setReceiverCardId(decryptForge(cardId));
+      setOpenModalOtp(true);
+    }
+  };
 
-            setTransferInfo((prevState) => ({
-              ...prevState,
-              receiver: `${firstName} ${firstLastName}`,
-              amount: parseFloat(data.amount),
-            }));
+  const handleRejectedReceiver = (responseReceiver: any, amountCheck: boolean) => {
+    if (responseReceiver.reason?.response?.data?.data?.code === '400.00.033') {
+      setError('numberClient', { type: 'customError', message: 'Este número no está afiliado a Yiro.' });
+    } else {
+      setModalError({ error: responseReceiver.reason });
+    }
+    if (!amountCheck) {
+      setError('amount', { type: 'customError', message: 'Saldo insuficiente' });
+    }
+  };
 
-            setReceiverCardId(decryptForge(cardId));
-
-            setOpenModalOtp(true);
-          }
-        } else if (responseReceiver.status === 'rejected' && responseBalance.status === 'fulfilled') {
-          if (responseReceiver.reason?.response?.data?.data?.code === '400.00.033') {
-            setError('numberClient', { type: 'customError', message: 'Este número no está afiliado a Yiro.' });
-          } else {
-            setModalError({ error: responseReceiver.reason });
-          }
-
-          if (!amountCheck) {
-            setError('amount', { type: 'customError', message: 'Saldo insuficiente' });
-          }
-        } else if (responseReceiver.status === 'fulfilled' && responseBalance.status === 'rejected') {
-          setModalError({ error: responseBalance.reason });
-        } else if (responseReceiver.status === 'rejected' && responseBalance.status === 'rejected') {
-          if (responseReceiver.reason?.response?.data?.data?.code === '400.00.033') {
-            setError('numberClient', { type: 'customError', message: 'Este número no está afiliado a Yiro.' });
-          } else {
-            setModalError({ error: responseReceiver.reason });
-          }
-          setModalError({ error: responseBalance.reason });
-        }
-      })
-      .catch(() => {
-        setModalError();
-      })
-      .finally(() => {
-        setLoadingScreen(false);
-      });
+  const handleBothRejected = (responseReceiver: any, responseBalance: any) => {
+    if (responseReceiver.reason?.response?.data?.data?.code === '400.00.033') {
+      setError('numberClient', { type: 'customError', message: 'Este número no está afiliado a Yiro.' });
+    } else {
+      setModalError({ error: responseReceiver.reason });
+    }
+    setModalError({ error: responseBalance.reason });
   };
 
   const handleConfirmation = async () => {

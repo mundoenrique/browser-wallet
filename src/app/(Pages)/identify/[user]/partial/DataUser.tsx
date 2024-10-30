@@ -27,7 +27,9 @@ const phaseToStep = (phase: string) => {
   return phasesSteps[phase] || 0;
 };
 
-export default function DataUser({ user, referer, host }: DataUserProps) {
+export default function DataUser(props: Readonly<DataUserProps>) {
+  const { user, referer, host } = props;
+
   const { replace } = useRouter();
 
   const userObject = JSON.parse(user);
@@ -85,7 +87,11 @@ export default function DataUser({ user, referer, host }: DataUserProps) {
     };
 
     Object.hasOwn(redirectObject, status) && (await redirectObject[status].store());
-    Object.hasOwn(redirectObject, status) ? replace(redirectObject[status].path) : <NotFoundError code={404} />;
+    if (Object.hasOwn(redirectObject, status)) {
+      replace(redirectObject[status].path);
+    } else {
+      return <NotFoundError code={404} />;
+    }
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {

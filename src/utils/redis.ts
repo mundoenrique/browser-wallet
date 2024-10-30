@@ -3,12 +3,12 @@ import Redis, { RedisOptions } from 'ioredis';
 import { TIME_SESSION_REDIS } from '@/utils/constants';
 
 const redis = {
-  host: process.env.REDIS_HOST || '',
-  port: parseInt(process.env.REDIS_PORT || '6379'),
-  username: process.env.REDIS_USER || '',
-  password: process.env.REDIS_PASSWORD || '',
+  host: process.env.REDIS_HOST ?? '',
+  port: parseInt(process.env.REDIS_PORT ?? '6379'),
+  username: process.env.REDIS_USER ?? '',
+  password: process.env.REDIS_PASSWORD ?? '',
   db: 0,
-  prefix: process.env.REDIX_PREFIX || '',
+  prefix: process.env.REDIX_PREFIX ?? '',
 };
 
 function getRedisConfiguration(): {
@@ -51,17 +51,11 @@ export function createRedisInstance(config = getRedisConfiguration()) {
 
     const redis = new Redis(options);
 
-    redis.on('error', () => {
-      return false;
-    });
+    redis.on('error', () => false);
 
-    redis.on('ready', async () => {
-      return true;
-    });
+    redis.on('ready', async () => true);
 
-    redis.on('end', () => {
-      return true;
-    });
+    redis.on('end', () => true);
 
     return redis;
   } catch (e) {

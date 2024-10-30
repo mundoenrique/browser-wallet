@@ -86,7 +86,7 @@ export default function ActivatePhysicalCard() {
 
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
-  const { SVG } = useQRCode();
+  const { SVG: Svg } = useQRCode();
 
   const [showQR, setShowQR] = useState<boolean>(false);
 
@@ -177,11 +177,11 @@ export default function ActivatePhysicalCard() {
     });
   };
 
-  const handleInfoUser = async (data: any) => {
+  const handleInfoUser = (data: any) => {
     if (data !== null && typeof data === 'string') {
       disconnectSocket();
       cardId.current = JSON.parse(data);
-      await cardholderAssociation();
+      cardholderAssociation();
     }
   };
 
@@ -294,7 +294,7 @@ export default function ActivatePhysicalCard() {
               <Typography variant="body2" mb={2} textAlign="start">
                 <b>Paso 1:</b> Escanea con tu teléfono el código QR que aparece en tu pantalla.
               </Typography>
-              <SVG
+              <Svg
                 text={url}
                 options={{
                   margin: 2,
