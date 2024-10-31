@@ -32,7 +32,6 @@ export default function ModalCardBundle({ open }: { open: boolean }) {
   const getCardInformation = async () => {
     await api.get(`/cards/${getUserCardId()}`, { params: { decryptData: false } }).then((response: any) => {
       const { data } = response;
-      console.log('🚀 ~ main - getCardInformation ~ data.data:', data.data);
       setCardProperties('cardInformation', data.data);
     });
   };

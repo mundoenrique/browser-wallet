@@ -22,8 +22,6 @@ export default function SuccessWallets() {
 
   const [name, setName] = useState<string>(load?.name ?? '');
 
-  const [url, setUrl] = useState<string>(linkData?.url ?? '');
-
   const [amount, setAmount] = useState<number>(linkData?.amount ?? 0);
 
   const [expirationDate, setExpirationDate] = useState<string>(linkData?.expirationDate ?? '');
@@ -33,7 +31,6 @@ export default function SuccessWallets() {
   useEffect(() => {
     setProviderPaymentCode(linkData?.providerPaymentCode ?? '');
     setExpirationDate(linkData?.expirationDate ?? '');
-    setUrl(linkData?.url ?? '');
     setAmount(linkData?.amount ?? 0);
     setName(load?.name ?? '');
     setQr(linkData?.qr ?? '');
@@ -117,7 +114,7 @@ export default function SuccessWallets() {
       </PurpleLayout>
 
       <ModalCollect
-        type='wallet'
+        type="wallet"
         open={showModal}
         handleClose={() => {
           setShowModal(false);

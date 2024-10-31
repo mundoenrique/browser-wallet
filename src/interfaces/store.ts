@@ -294,7 +294,7 @@ export interface OtpStore {
  */
 export interface DebtStore {
   debt: any;
-  view: 'DEBT' | 'SUCCESS' | 'ERROR' | 'CONGRATULATIONS' | string | undefined;
+  view: 'DEBT' | 'SUCCESS' | 'ERROR' | 'CONGRATULATIONS' | undefined;
   payOffDebt: IDebt | null;
   error: IPayOffDebtError | null;
   balance: any;

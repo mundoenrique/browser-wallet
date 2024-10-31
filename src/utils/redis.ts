@@ -51,11 +51,17 @@ export function createRedisInstance(config = getRedisConfiguration()) {
 
     const redis = new Redis(options);
 
-    redis.on('error', () => false);
+    redis.on('error', (error) => {
+      console.log('Error Redis:', error);
+    });
 
-    redis.on('ready', async () => true);
+    redis.on('ready', () => {
+      console.log('Redis ready');
+    });
 
-    redis.on('end', () => true);
+    redis.on('end', () => {
+      console.log('Redis end');
+    });
 
     return redis;
   } catch (e) {

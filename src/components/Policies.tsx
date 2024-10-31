@@ -240,7 +240,7 @@ export default function Policies() {
                   </ListItem>
                   <ListItem sx={{ display: 'list-item' }}>
                     <Typography paragraph>
-                      En caso el Usuario lo autorice, enviar promociones y/o publicidad de <strong>LA EMPRESA</strong>
+                      En caso el Usuario lo autorice, enviar promociones y/o publicidad de <strong>LA EMPRESA</strong>{' '}
                       y/o de sus empresas vinculadas listadas en el Anexo 1, en relación con los servicios y actividades
                       de la Billetera o con la promoción de las marcas de <strong>LA EMPRESA</strong>. Para estos
                       efectos, <strong>LA EMPRESA</strong> podrá compartir los datos personales de los Usuarios con sus
@@ -300,10 +300,9 @@ export default function Policies() {
                       Cumplir con las obligaciones legales y/o contractuales que resulten aplicables a la provisión de
                       la Billetera, incluyendo aquellas que correspondan a éste como canal de contratación y uso del
                       servicio de dinero electrónico provisto por Tebca, conforme al marco normativo aplicable en Perú,
-                      a los acuerdos celebrados con Tebca y el resto de empresas vinculadas o afiliadas a
-                      <strong>LA EMPRESA</strong>
-                      para la provisión de operaciones a través de la Billetera y a los Términos y Condiciones
-                      celebrados entre <strong>LA EMPRESA</strong> y los Usuarios.
+                      a los acuerdos celebrados con Tebca y el resto de empresas vinculadas o afiliadas a{' '}
+                      <strong>LA EMPRESA</strong> para la provisión de operaciones a través de la Billetera y a los
+                      Términos y Condiciones celebrados entre <strong>LA EMPRESA</strong> y los Usuarios.
                     </Typography>
                   </ListItem>
                   <ListItem sx={{ display: 'list-item' }}>
@@ -316,10 +315,10 @@ export default function Policies() {
                 <Typography paragraph>
                   Los Datos Personales que recopila o trata <strong>LA EMPRESA</strong> estarán relacionados con una o
                   varias de las finalidades determinadas señaladas de manera previa. El tratamiento de los Datos
-                  Personales realizado por
-                  <strong>LA EMPRESA</strong> no se extenderá a otra finalidad que no haya sido la establecida al
-                  momento de su recopilación o en el marco de los acuerdos celebrados con los titulares de Datos
-                  Personales, excluyendo los casos en que se utilice un procedimiento de disociación o anonimización.
+                  Personales realizado por <strong>LA EMPRESA</strong> no se extenderá a otra finalidad que no haya sido
+                  la establecida al momento de su recopilación o en el marco de los acuerdos celebrados con los
+                  titulares de Datos Personales, excluyendo los casos en que se utilice un procedimiento de disociación
+                  o anonimización.
                 </Typography>
               </Box>
             </Box>
@@ -853,7 +852,7 @@ export default function Policies() {
             <Typography variant="subtitle1">OBJETO:</Typography>
             <Typography paragraph>
               El presente documento tiene por objeto describir el procedimiento que los titulares de datos personales
-              contenidos en bancos de datos de titularidad de <strong>CETCO S.A.,</strong>en adelante
+              contenidos en bancos de datos de titularidad de <strong>CETCO S.A.,</strong>en adelante{' '}
               <strong>“LA EMPRESA”</strong> , deben de seguir para el ejercicio de los derechos de acceso,
               rectificación, cancelación y oposición, en adelante los “derechos ARCO”, en el marco de la Ley N° 29733 -
               Ley de Protección de Datos Personales (en adelante la “Ley”) y de su Reglamento aprobado mediante Decreto
@@ -863,7 +862,7 @@ export default function Policies() {
           <ListItem sx={{ display: 'list-item', p: 0 }}>
             <Typography variant="subtitle1">DERECHOS ARCO:</Typography>
             <Typography paragraph>
-              De conformidad con la mencionada Ley y su Reglamento, los derechos que toda persona puede ejercer ante
+              De conformidad con la mencionada Ley y su Reglamento, los derechos que toda persona puede ejercer ante{' '}
               <strong>LA EMPRESA</strong>, respecto del tratamiento de sus datos personales son:
             </Typography>
             <List sx={{ listStyleType: 'circle', pl: 2 }}>
