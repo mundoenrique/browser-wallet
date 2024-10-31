@@ -7,7 +7,7 @@ import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
 import { api } from '@/utils/api';
 import ModalResponsive from './ModalResponsive';
-import { useHeadersStore, useUserStore, useUiStore } from '@/store';
+import { useHeadersStore, useUserStore, useUiStore, useConfigCardStore } from '@/store';
 import { encryptForge } from '@/utils/toolHelper';
 
 export default function ModalCardBundle({ open }: { open: boolean }) {
@@ -23,7 +23,19 @@ export default function ModalCardBundle({ open }: { open: boolean }) {
 
   const setLoadingScreen = useUiStore((state) => state.setLoadingScreen);
 
+  const getUserCardId = useUserStore((state) => state.getUserCardId);
+
+  const setCardProperties = useConfigCardStore((state) => state.setCardProperties);
+
   const [block, setBlock] = useState<boolean>(false);
+
+  const getCardInformation = async () => {
+    await api.get(`/cards/${getUserCardId()}`, { params: { decryptData: false } }).then((response: any) => {
+      const { data } = response;
+      console.log('🚀 ~ main - getCardInformation ~ data.data:', data.data);
+      setCardProperties('cardInformation', data.data);
+    });
+  };
 
   const requestBundledCard = async () => {
     setLoadingScreen(true);
@@ -34,8 +46,9 @@ export default function ModalCardBundle({ open }: { open: boolean }) {
 
     api
       .post('/cards/replacement', payload)
-      .then((response) => {
+      .then(async (response) => {
         setUser({ ...user, cardSolutions: { ...user.cardSolutions, status: {}, cardId: response.data.data.cardId } });
+        await getCardInformation();
         router.push('/dashboard');
         router.refresh();
       })
