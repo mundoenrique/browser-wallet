@@ -37,6 +37,7 @@ export default function RootLayout({ children }: ChildrenProps) {
             height="0"
             width="0"
             style={{ display: 'none', visibility: 'hidden' }}
+            title="google-tag-manager"
           ></iframe>
         </noscript>
         {/* <!-- End Google Tag Manager (noscript) --> */}

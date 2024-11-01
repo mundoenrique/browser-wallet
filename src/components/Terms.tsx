@@ -2,7 +2,6 @@
 
 import {
   Box,
-  Grid,
   Link,
   List,
   ListItem,
@@ -260,9 +259,8 @@ export default function Terms() {
       'S/140,000 ',
     ],
     ['Cobros a clientes a PagoEfectivo (Billeteras)', 'S/500', 'S/15,000 ', 'S/35,000 ', 'S/140,000 '],
-    ,
     ['Recargas', 'S/4,950 ', 'S/15,000 ', 'S/35,000 ', 'S/140,000 '],
-    ['Retiros de fondos', 'S/2,500 ', , 'S/7,500 ', 'S/30,000 ', 'S/135,000 '],
+    ['Retiros de fondos', 'S/2,500 ', 'S/7,500 ', 'S/30,000 ', 'S/135,000 '],
     ['Pago en establecimientos afiliados a la red Visa', 'S/4,950 ', 'S/15,000 ', 'S/35,000 ', 'S/140,000'],
   ];
 
@@ -281,7 +279,7 @@ export default function Terms() {
       <Typography
         variant="h6"
         color="primary"
-        sx={{ color: 'primary.main', mb: 6, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
+        sx={{ color: 'primary.main', mb: 3, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
       >
         TÉRMINOS Y CONDICIONES – BILLETERA YIRO- PERÚ
       </Typography>

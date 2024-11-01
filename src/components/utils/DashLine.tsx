@@ -28,14 +28,13 @@ const DashLine = ({ symbol = '-', isContinuous = false, width = '100%' }) => {
     if (containerRef.current) {
       const currentContainer = containerRef.current;
       resizeObserver.observe(currentContainer);
-    }
 
-    return () => {
-      const currentContainer = containerRef.current;
-      if (currentContainer) {
-        resizeObserver.unobserve(currentContainer);
-      }
-    };
+      return () => {
+        if (currentContainer) {
+          resizeObserver.unobserve(currentContainer);
+        }
+      };
+    }
   }, [symbol, isContinuous]);
 
   return (

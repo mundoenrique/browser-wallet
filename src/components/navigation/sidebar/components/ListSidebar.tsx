@@ -55,6 +55,15 @@ export default function ListSidebar(): JSX.Element {
     setAccessSession(false);
   };
 
+  const handleConditionBanner = () => {
+    if (isPhysicalCard() == undefined) {
+      const status = cardActivationStatus() !== 'DONE';
+      return status;
+    }
+
+    return !isPhysicalCard();
+  };
+
   return (
     <>
       <Box
@@ -71,7 +80,7 @@ export default function ListSidebar(): JSX.Element {
 
       <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', cursor: 'pointer' }}>
         <LinkMui component={Link} href="/dashboard/card-configuration" sx={{ textDecoration: 'none' }}>
-          {!isPhysicalCard() && successActivateCard !== 'success' && (
+          {handleConditionBanner() && successActivateCard !== 'success' && (
             <Card
               variant="detailCard"
               sx={{ mt: { xs: 10, md: 'auto' }, mb: { xs: 0, md: 'auto' } }}

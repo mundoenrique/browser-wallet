@@ -2,6 +2,19 @@ import { act, render, screen } from '@testing-library/react';
 //Internal app
 import Legal from '@/app/(Pages)/dashboard/legal/page';
 
+// Mock ResizeObserver
+global.ResizeObserver = class {
+  observe() {
+    // Intentionally left empty
+  }
+  unobserve() {
+    // Intentionally left empty
+  }
+  disconnect() {
+    // Intentionally left empty
+  }
+};
+
 describe('Legal', () => {
   beforeEach(async () => {
     await act(async () => {

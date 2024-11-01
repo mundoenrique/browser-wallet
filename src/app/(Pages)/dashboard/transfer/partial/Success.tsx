@@ -72,8 +72,8 @@ export default function Success({ onClick, transferDetail }: CardTicketProps) {
             </Typography>
             <Card sx={{ boxShadow: 'none', p: 1 }}>
               <Stack direction="column" divider={<Divider orientation="horizontal" />} spacing={1}>
-                {description.map((item, i) => (
-                  <Box key={i} sx={{ display: 'flex', alignItems: 'center' }}>
+                {description.map((item) => (
+                  <Box key={item.label} sx={{ display: 'flex', alignItems: 'center' }}>
                     <Avatar
                       sx={{
                         bgcolor: fuchsiaBlue[200],

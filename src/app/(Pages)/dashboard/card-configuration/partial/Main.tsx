@@ -1,6 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import Arrow from '@mui/icons-material/ArrowForwardIos';
 import { useEffect, useCallback, useState } from 'react';
 import { sendGTMEvent } from '@next/third-parties/google';
@@ -24,6 +25,8 @@ import {
 
 export default function CardConfiguration() {
   const theme = useTheme();
+
+  const router = useRouter();
 
   const match = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -121,6 +124,7 @@ export default function CardConfiguration() {
       })
       .finally(() => {
         setLoadingScreen(false);
+        router.refresh();
       });
   };
 

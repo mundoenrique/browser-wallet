@@ -99,8 +99,16 @@ export default function FormPass(porps: FormPassProps): JSX.Element {
         handleClose={() => {
           setShowModal(false);
         }}
+        sx={{
+          width: { sm: '90vw', xs: '100%' },
+          maxWidth: { sm: 800, xs: '100%' },
+          height: { sm: '90vh', xs: '80vh' },
+          maxHeight: { sm: 600, xs: '80vh' },
+        }}
       >
-        <Conditions />
+        <Box sx={{ height: '90%', overflow: 'auto', px: 2 }}>
+          <Conditions />
+        </Box>
       </ModalResponsive>
     </>
   );

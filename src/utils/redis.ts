@@ -51,12 +51,6 @@ export function createRedisInstance(config = getRedisConfiguration()) {
 
     const redis = new Redis(options);
 
-    redis.on('error', () => false);
-
-    redis.on('ready', async () => true);
-
-    redis.on('end', () => true);
-
     return redis;
   } catch (e) {
     throw new Error(`[Redis] Could not create a Redis instance`);

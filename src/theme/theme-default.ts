@@ -266,8 +266,6 @@ const theme = createTheme({
             letterSpacing: '0.1px',
             justifyContent: 'start',
             padding: '0',
-            // margin: '0',
-            // boxShadow: 'none',
             '&:hover': {
               backgroundColor: 'transparent',
               color: fuchsiaBlue[800],

@@ -16,7 +16,7 @@ import { IClientProps, IListClientsProps } from '@/interfaces';
 import { capitalizeFirstLetter, stringAvatar } from '@/utils/toolHelper';
 import { useClientStore, useUserStore, useUiStore, useHeadersStore, useChargeStore } from '@/store';
 
-export default function ClientList(props: IListClientsProps): JSX.Element {
+export default function ClientList(props: Readonly<IListClientsProps>): JSX.Element {
   const { data, loading, disabledBtnDelete, error, isClients } = props;
 
   const router = useRouter();
@@ -171,7 +171,7 @@ export default function ClientList(props: IListClientsProps): JSX.Element {
         {data.length > 0 &&
           clientsData.map((client: IClientProps, index: number) => (
             <Box
-              key={index}
+              key={client.chargeId}
               component="li"
               sx={{
                 height: 60,

@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect } from 'react';
+import { Box } from '@mui/material';
 import { sendGTMEvent } from '@next/third-parties/google';
 //Internal app
-import { ContainerLayout, Terms } from '@/components';
 import { useNavTitleStore, useMenuStore, useHeadersStore } from '@/store';
+import { Conditions, ContainerLayout, Policies, Terms } from '@/components';
 
 export default function Legal() {
   const { setCurrentItem } = useMenuStore();
@@ -34,7 +35,11 @@ export default function Legal() {
 
   return (
     <ContainerLayout fullWidth>
-      <Terms />
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Terms />
+        <Conditions />
+        <Policies />
+      </Box>
     </ContainerLayout>
   );
 }
