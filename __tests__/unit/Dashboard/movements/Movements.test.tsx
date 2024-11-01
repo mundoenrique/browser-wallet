@@ -15,6 +15,26 @@ jest.mock('@/store', () => ({
   })),
 }));
 
+// Mocking the Autocomplete component
+interface AutocompleteProps {
+  getOptionLabel?: (option: any) => string;
+  options: any[];
+}
+
+jest.mock('@mui/material/Autocomplete', () => {
+  const MockAutocomplete = (props: AutocompleteProps) => {
+    const { getOptionLabel, options } = props;
+    const optionLabel = getOptionLabel ? getOptionLabel(options[0]) : '';
+    return (
+      <div>
+        <input data-testid="autocomplete-input" value={optionLabel} readOnly />
+      </div>
+    );
+  };
+  MockAutocomplete.displayName = 'MockAutocomplete';
+  return MockAutocomplete;
+});
+
 describe('Movements', () => {
   const routerPushMock = jest.fn();
 
