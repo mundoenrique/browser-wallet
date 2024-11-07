@@ -81,7 +81,6 @@ export default function MainLayout({ children }: ChildrenProps): JSX.Element {
           <Box
             component="main"
             sx={{
-              display: 'grid',
               width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
               mt: { xs: '60px', md: 'auto' },
               mx: { xs: 'auto', md: 0 },
