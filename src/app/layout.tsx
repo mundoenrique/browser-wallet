@@ -28,12 +28,12 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function RootLayout({ children }: ChildrenProps) {
   return (
     <html lang="es">
-      <GoogleTagManager gtmId="GTM-M8QMC8" />
+      <GoogleTagManager gtmId="GTM-M94NWV2J" />
       <body>
         {/* <!-- Google Tag Manager (noscript) --> */}
         <noscript>
           <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-M8QMC8"
+            src="https://www.googletagmanager.com/ns.html?id=GTM-M94NWV2J"
             height="0"
             width="0"
             style={{ display: 'none', visibility: 'hidden' }}
