@@ -1087,37 +1087,61 @@ export default function Policies() {
         <Typography variant="body1" sx={{ textAlign: 'center' }}>
           Nombres del Titular de los Datos Personales:
         </Typography>
-        <DashLine />
+        <Typography variant="body1">
+          - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - - - - -
+        </Typography>
         <Typography variant="body1" sx={{ textAlign: 'center' }}>
           Apellidos del Titular de los Datos Personales:
         </Typography>
-        <DashLine />
+        <Typography variant="body1">
+          - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - - - - -
+        </Typography>
         <Typography variant="body1" sx={{ textAlign: 'center' }}>
           Nombre del representante legal del Titular de los Datos Personales (en caso corresponda):
         </Typography>
-        <DashLine />
+        <Typography variant="body1">
+          - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - - - - -
+        </Typography>
         <Typography variant="body1" sx={{ textAlign: 'center' }}>
           Documento Nacional de Identidad o documento equivalente del Titular de los Datos Personales:
         </Typography>
-        <DashLine />
+        <Typography variant="body1">
+          - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - - - - -
+        </Typography>
         <Typography variant="body1" sx={{ textAlign: 'center' }}>
           Documento Nacional de Identidad o documento equivalente del Representante Legal (cuando corresponda)
         </Typography>
-        <DashLine />
+        <Typography variant="body1">
+          - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - - - - -
+        </Typography>
         <Typography variant="body1" sx={{ textAlign: 'center' }}>
           Domicilio del Titular de los Datos Personales o de su Representante (en caso corresponda), o dirección
           electrónica, para efecto de las notificaciones que se deriven de la presente solicitud:
         </Typography>
-        <DashLine />
-        <DashLine />
+        <Typography variant="body1">
+          - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - - - - -
+        </Typography>
         <Typography variant="body1" sx={{ textAlign: 'center' }}>
           N° Telefónico del Titular de los Datos Personales (opcional)
         </Typography>
-        <DashLine />
+        <Typography variant="body1">
+          - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - - - - -
+        </Typography>
         <Typography variant="body1" sx={{ textAlign: 'center' }}>
           N° Telefónico del Representante del Titular de los Datos Personales, en caso corresponda (opcional)
         </Typography>
-        <DashLine />
+        <Typography variant="body1">
+          - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - - - - -
+        </Typography>
         <Typography variant="body1" sx={{ textAlign: 'center' }}>
           Marque con una &quot;x&quot; el derecho que desea ejercer:
         </Typography>
@@ -1132,8 +1156,11 @@ export default function Policies() {
           deberá indicar específicamente a qué datos personales se refiere, así como las modificaciones que deban
           realizarse a los mismos, aportando la documentación que sustente su petición):
         </Typography>
-        <DashLine symbol={'_'} isContinuous={true} />
-        <DashLine symbol={'_'} isContinuous={true} />
+        <Typography variant="body1">
+          - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - - - - -
+        </Typography>
         <Typography paragraph>Documentos anexos a la solicitud:</Typography>
         <List sx={{ listStyleType: 'lower-alpha', pl: 2 }}>
           <ListItem sx={{ display: 'list-item', p: 0 }}>
@@ -1159,9 +1186,9 @@ export default function Policies() {
         </Typography>
         <Box sx={{ display: 'flex' }}>
           <Typography paragraph>Fecha: </Typography>
-          <DashLine symbol={'_'} isContinuous={true} width="7%" />
+          <DashLine symbol={'_'} isContinuous={true} width="10%" />
         </Box>
-        <DashLine symbol={'_'} isContinuous={true} width="10%" />
+        <DashLine symbol={'_'} isContinuous={true} width="20%" />
 
         <Typography paragraph>Firma del solicitante</Typography>
       </Stack>

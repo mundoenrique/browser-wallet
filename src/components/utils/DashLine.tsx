@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Box, Typography } from '@mui/material';
 
-const DashLine = ({ symbol = '-', isContinuous = false, width = '100%' }) => {
+const DashLine = ({ symbol = '-', isContinuous = false, width = '500px' }) => {
   const [pattern, setPattern] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
 

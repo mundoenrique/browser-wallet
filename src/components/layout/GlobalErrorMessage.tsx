@@ -72,7 +72,7 @@ export default function GlobalErrorMessage() {
 
     if (modalErrorObject) {
       if ('title' in modalErrorObject && 'description' in modalErrorObject) {
-        sessionExpired(modalErrorObject.code || '');
+        sessionExpired(modalErrorObject.code ?? '');
 
         const { title: modalTitle, description: modalDescription } = modalErrorObject;
         title = modalTitle;
