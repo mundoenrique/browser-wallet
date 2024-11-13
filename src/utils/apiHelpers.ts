@@ -39,7 +39,7 @@ export function handleError(
 
     return NextResponse.json({ message, error: errorMessage }, { status });
   } else {
-    status = status ? status : 500;
+    status = status ?? 500;
 
     return NextResponse.json({ message }, { status });
   }
@@ -139,7 +139,7 @@ export async function handleResponse(
     const jws: string = await signJWE(jwsApiPrivateKey, jwe);
 
     if (isBrowser) {
-      var expires = new Date(Date.now() + 86400 * 1000).toUTCString();
+      const expires = new Date(Date.now() + 86400 * 1000).toUTCString();
       cookieSet = `${SESSION_ID}=${encryptForge(
         responseObj.data.sessionId,
         REDIS_CIPHER
@@ -162,8 +162,8 @@ export async function handleResponse(
 }
 
 export async function handleApiGeeRequest(data: object): Promise<any> {
-  const jwe_public_key: string = process.env.BACK_JWE_PUBLIC_KEY || '';
-  const jws_private_key: string = process.env.BACK_JWS_PRIVATE_KEY || '';
+  const jwe_public_key: string = process.env.BACK_JWE_PUBLIC_KEY ?? '';
+  const jws_private_key: string = process.env.BACK_JWS_PRIVATE_KEY ?? '';
 
   try {
     const jwe: string = await encryptJWE(data, jwe_public_key);
@@ -180,8 +180,6 @@ export async function handleApiGeeResponse(
   status: number,
   jweAppPublicKey: string
 ): Promise<any> {
-  const jweApiGeePrivateKey = getEnvVariable('BACK_JWE_PRIVATE_KEY');
-
   if (responseObj.data) {
     logger.debug('Response services %s', JSON.stringify({ status, data: responseObj.data }));
   }

@@ -15,7 +15,7 @@ import { fuchsiaBlue } from '@/theme/theme-default';
  * @param avatar - Icon or image that the avatar will have.
  * @param disabled - Disables the card, accepted when using a function.
  */
-export default function HandleCard(props: HandleCardProps): JSX.Element {
+export default function HandleCard(props: Readonly<HandleCardProps>): JSX.Element {
   const { children, icon, onClick, large = 40, avatar, disabled } = props;
 
   return (

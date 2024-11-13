@@ -15,7 +15,7 @@ import { fuchsiaBlue } from '@/theme/theme-default';
  * @param description - Message description
  * @param onClick - Handling component actions
  */
-export default function StatusReport(props: StatusReportProps) {
+export default function StatusReport(props: Readonly<StatusReportProps>) {
   const { title, description, onClick } = props;
 
   return (

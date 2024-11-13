@@ -16,7 +16,7 @@ import { BackInformationProps } from '@/interfaces';
  * @param expDate - Card expiration date.
  * @param cvc - Shows the cvv2.
  */
-export default function BackInformation(props: BackInformationProps): JSX.Element {
+export default function BackInformation(props: Readonly<BackInformationProps>): JSX.Element {
   const { hideDetails, holder, cardNumber, expDate, cvc } = props;
 
   return (

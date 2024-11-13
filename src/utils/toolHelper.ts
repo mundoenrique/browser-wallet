@@ -70,7 +70,7 @@ export const encryptForge = (data: any, exchange: any = '') => {
   let key: string = exchange ?? '';
 
   if (!exchange) {
-    key = useJwtStore.getState().exchange || '';
+    key = useJwtStore.getState().exchange ?? '';
     key = forge.util.decode64(key);
   }
 
@@ -95,7 +95,7 @@ export const decryptForge = (encryptedData: any, exchange: any = '') => {
   let key: string = exchange ?? '';
 
   if (!exchange) {
-    key = useJwtStore.getState().exchange || '';
+    key = useJwtStore.getState().exchange ?? '';
     key = forge.util.decode64(key);
   }
 
@@ -204,8 +204,8 @@ export const generatePublicKey = () => {
     return Math.floor(numberRandom * Number(max));
   }
 
-  const primeNumber = parseInt(process.env.NEXT_PUBLIC_PRIME_NUMBER || '0');
-  const modulus = parseInt(process.env.NEXT_PUBLIC_MODULE_NUMBER || '0');
+  const primeNumber = parseInt(process.env.NEXT_PUBLIC_PRIME_NUMBER ?? '0');
+  const modulus = parseInt(process.env.NEXT_PUBLIC_MODULE_NUMBER ?? '0');
 
   const keyPrivate = randomBigInt(primeNumber);
   const keyPublic = fastModularExponentiation(modulus, keyPrivate, primeNumber);

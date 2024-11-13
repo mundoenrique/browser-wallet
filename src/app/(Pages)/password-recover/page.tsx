@@ -3,7 +3,7 @@
 import { Card } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 //Internal
-import OTP from './partial/OTP';
+import Otp from './partial/Otp';
 import { api } from '@/utils/api';
 import { OtpStore } from '@/interfaces';
 import { NavExternal } from '@/components';
@@ -51,11 +51,11 @@ export default function Recover() {
 
   const configRecoverRoutes = (page: OtpStore['otpValid']) => {
     const routes: { [key: string]: JSX.Element } = {
-      OTP: <OTP handleResendOTP={requestTFACode} />,
+      OTP: <Otp handleResendOTP={requestTFACode} />,
       PASSWORD: <UpdatePass />,
     };
     const validatePage = page && routes[page];
-    return validatePage || routes['OTP'];
+    return validatePage ?? routes['OTP'];
   };
 
   return (

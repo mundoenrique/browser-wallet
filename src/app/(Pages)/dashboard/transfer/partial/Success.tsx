@@ -12,7 +12,7 @@ import { stringAvatar } from '@/utils/toolHelper';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { CardTicket, ContainerLayout, Linking, PurpleLayout } from '@/components';
 
-export default function Success({ onClick, transferDetail }: CardTicketProps) {
+export default function Success({ onClick, transferDetail }: Readonly<CardTicketProps>) {
   const host = useHeadersStore((state) => state.host);
 
   useEffect(() => {

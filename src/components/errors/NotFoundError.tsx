@@ -15,7 +15,7 @@ import { fuchsiaBlue } from '@/theme/theme-default';
  *
  * @param code - Error code generated
  */
-export default function NotFoundError({ code }: NotFoundErrorProps) {
+export default function NotFoundError({ code }: Readonly<NotFoundErrorProps>) {
   const router = useRouter();
 
   return (

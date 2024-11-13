@@ -6,7 +6,6 @@ import { SESSION_ID } from '@/utils/constants';
 import { decryptJWE, getEnvVariable, handleResponse, putRedis } from '@/utils';
 
 export async function POST(request: NextRequest) {
-
   try {
     const encryptedBody = await request.json();
     const { data } = encryptedBody;
@@ -15,9 +14,9 @@ export async function POST(request: NextRequest) {
 
     const decryptedPayload: any = await decryptJWE(data, jwePrivateKey);
 
-    const  jwePublicKey  = decryptedPayload.data.jwePublicKey ;
+    const jwePublicKey = decryptedPayload.data.jwePublicKey;
 
-    const uuid = cookies().get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || null;
+    const uuid = cookies().get(SESSION_ID)?.value ?? request.headers.get('X-Session-Mobile') ?? null;
 
     const date = new Date();
     const stateObject = { timeSession: date.toString() };
@@ -31,7 +30,6 @@ export async function POST(request: NextRequest) {
     let response: NextResponse;
     response = await handleResponse(responsePayload, jwePublicKey, jwsPrivateKey, 200);
     return response;
-
   } catch (error) {
     return new NextResponse(JSON.stringify({ error: 'Failed to get Data' }), { status: 500 });
   }

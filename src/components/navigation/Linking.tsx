@@ -21,7 +21,7 @@ import { LinkingProps } from '@/interfaces';
  * @param adormentStart - Show the icon at the beginning of the element.
  * @param adormentEnd - Show the icon at the end of the element.
  */
-export default function Linking(props: LinkingProps): JSX.Element {
+export default function Linking(props: Readonly<LinkingProps>): JSX.Element {
   const {
     href,
     mb = 4,
@@ -44,7 +44,7 @@ export default function Linking(props: LinkingProps): JSX.Element {
         display: 'flex',
         alignItems: 'center',
         textDecoration: underline ? 'underline' : 'none',
-        color: color ? color : 'primary.main',
+        color: color ?? 'primary.main',
       }}
       mb={mb}
       fontWeight={700}

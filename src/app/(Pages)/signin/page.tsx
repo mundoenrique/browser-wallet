@@ -13,7 +13,7 @@ import { getSchema } from '@/config';
 import LogoGreen from '%/images/LogoGreen';
 import { encryptForge } from '@/utils/toolHelper';
 import { TCredentials, TUserDetail } from '@/interfaces';
-import { InputPass, ModalResponsive, NavExternal } from '@/components';
+import { InputPass, NavExternal } from '@/components';
 import {
   useHeadersStore,
   useOtpStore,
@@ -51,10 +51,6 @@ export default function Signin() {
 
   const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
 
-  const [errorMessage] = useState<string>('');
-
-  const [open, setOpen] = useState<boolean>(false);
-
   const [userData, setUserData] = useState<TUserDetail | null>(null);
 
   const { control, handleSubmit } = useForm({
@@ -71,7 +67,7 @@ export default function Signin() {
   const onSubmit = async (data: any) => {
     const { password } = data;
     const requestData: TCredentials = {
-      userId: userData?.userId || '',
+      userId: userData?.userId ?? '',
       password: encryptForge(password),
     };
     setLoadingScreen(true);
@@ -91,13 +87,10 @@ export default function Signin() {
         const { code } = e.response.data.data;
         if (code) {
           const eCode = code?.split('.').pop() ?? '';
-          switch (eCode) {
-            case '9999':
-              router.push('/signout');
-              break;
-            default:
-              setModalError({ error: e });
-              break;
+          if (eCode === '9999') {
+            router.push('/signout');
+          } else {
+            setModalError({ error: e });
           }
         }
       })
@@ -123,7 +116,7 @@ export default function Signin() {
   };
 
   useEffect(() => {
-    const id = userId ? userId : user.userId;
+    const id = userId || user.userId;
     getUserDetails(id);
     setOTPValid('OTP');
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -246,13 +239,6 @@ export default function Signin() {
           Ingresar
         </Button>
       </Box>
-
-      <ModalResponsive open={open} handleClose={() => setOpen(false)}>
-        <Typography py={2} fontWeight={700}>
-          Signin
-        </Typography>
-        <Typography textAlign="center">{errorMessage}</Typography>
-      </ModalResponsive>
     </>
   );
 }

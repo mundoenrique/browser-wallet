@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,7 +13,7 @@ import InputOTP from '@/components/form/InputOTP';
 import { encryptForge, handleMaskOtp } from '@/utils/toolHelper';
 import { useHeadersStore, useOtpStore, useUiStore, useUserStore } from '@/store';
 
-export default function AuthOtp(props: AuthOtpFormProps) {
+export default function AuthOtp(props: Readonly<AuthOtpFormProps>) {
   const { handleResendOTP } = props;
 
   const host = useHeadersStore((state) => state.host);

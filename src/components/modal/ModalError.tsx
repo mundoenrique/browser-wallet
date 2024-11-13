@@ -4,7 +4,7 @@ import { Alert, AlertTitle, Snackbar, Typography } from '@mui/material';
 //Internal app
 import { ModalErrorProps } from '@/interfaces';
 
-export default function ModalError(props: ModalErrorProps) {
+export default function ModalError(props: Readonly<ModalErrorProps>) {
   const { title, description, open, handleClose, handleReload } = props;
 
   return (

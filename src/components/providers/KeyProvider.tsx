@@ -11,18 +11,18 @@ import { ChildrenProps } from '@/interfaces';
 import PurpleLayout from '../layout/PurpleLayout';
 import { removePEMHeadersAndFooters } from '@/utils/jwt';
 import { useJwtStore, useKeyStore, useActiveAppStore, useAccessSessionStore } from '@/store';
-import { decryptForge, fastModularExponentiation, generateAesKey, generatePublicKey } from '@/utils/toolHelper';
+import { fastModularExponentiation, generateAesKey, generatePublicKey } from '@/utils/toolHelper';
 import uuid4 from 'uuid4';
 import { Typography } from '@mui/material';
 
-export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
+export default function KeyProvider({ children }: Readonly<ChildrenProps>): JSX.Element {
   const pathname = usePathname();
 
-  const [keys, setKeysStore] = useState<any>('');
+  const [keys, setKeys] = useState<any>('');
 
   const [time, setTime] = useState<boolean>(true);
 
-  const setKeys = useKeyStore((state) => state.setKeys);
+  const setKeysStore = useKeyStore((state) => state.setKeys);
 
   const setDataToken = useJwtStore((state) => state.setDataToken);
 
@@ -48,7 +48,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
       const jwsKeypair = new NodeRSA({ b: 2048 });
       const jwsPrivateKey = removePEMHeadersAndFooters(jwsKeypair.exportKey('pkcs8-private-pem'));
       const jwsPublicKey = removePEMHeadersAndFooters(jwsKeypair.exportKey('pkcs8-public-pem'));
-      setKeysStore({ jwePublicKey, jwePrivateKey, jwsPublicKey, jwsPrivateKey });
+      setKeys({ jwePublicKey, jwePrivateKey, jwsPublicKey, jwsPrivateKey });
       setCreateAccess(jwePrivateKey);
       setActiveApp(true);
     } else {
@@ -77,10 +77,10 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
           const token = (await response.data.data.jwt) as string;
           const uuid = (await response.data.data.sessionId) as string;
           const publicKey = (await response.data.data.exchange) as number;
-          const primeNumber = parseInt(process.env.NEXT_PUBLIC_PRIME_NUMBER || '0');
+          const primeNumber = parseInt(process.env.NEXT_PUBLIC_PRIME_NUMBER ?? '0');
           const exchange = fastModularExponentiation(publicKey, keysAes.keyPrivate, primeNumber);
           const exchangeKey = generateAesKey(exchange);
-          setKeys(keys);
+          setKeysStore(keys);
           setDataToken({ token, uuid, exchange: exchangeKey.toString() });
           setCreateAccess('');
           setInitAccess(true);
@@ -94,7 +94,7 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
 
     token && setCreateAccess('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initAccess, activeApp, keys, setDataToken, setKeys, setCreateAccess, setAccessSession]);
+  }, [initAccess, activeApp, keys, setDataToken, setKeysStore, setCreateAccess, setAccessSession]);
 
   if (time || (!initAccess && !token && pathname != '/signout')) {
     return (

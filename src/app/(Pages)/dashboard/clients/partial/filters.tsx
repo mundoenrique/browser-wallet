@@ -8,7 +8,7 @@ import { useHeadersStore } from '@/store';
 import { IFiltersProps } from '@/interfaces';
 import { InputCheckGroup, InputSelect } from '@/components';
 
-export default function Filters(props: IFiltersProps): JSX.Element {
+export default function Filters(props: Readonly<IFiltersProps>): JSX.Element {
   const {
     checkboxOptions,
     checkboxOptionDefault,

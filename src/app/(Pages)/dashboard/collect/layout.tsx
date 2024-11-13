@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   description: 'Cobrale a tus clientes através de nuestros distintos medios de pago en Yiro',
 };
 
-export default function CollectLayout({ children }: ChildrenProps) {
+export default function CollectLayout({ children }: Readonly<ChildrenProps>) {
   return <>{children}</>;
 }

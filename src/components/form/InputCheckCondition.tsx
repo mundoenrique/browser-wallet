@@ -8,7 +8,7 @@ import { FormControl, FormLabel, FormHelperText, Radio, FormControlLabel, RadioG
 //Internal App
 import { InputOptionsProps } from '@/interfaces';
 
-function InputRadioMUI(props: InputOptionsProps): JSX.Element {
+function InputRadioMUI(props: Readonly<InputOptionsProps>): JSX.Element {
   const { name, label, labelError, error, value, onChange, options, onClick } = props;
 
   return (
@@ -57,7 +57,7 @@ function InputRadioMUI(props: InputOptionsProps): JSX.Element {
             <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
           </>
         ) : (
-          <>{labelError || ''}</>
+          <>{labelError ?? ''}</>
         )}
       </FormHelperText>
     </FormControl>
@@ -85,7 +85,7 @@ function InputRadioMUI(props: InputOptionsProps): JSX.Element {
  * @label Material UI - {@link https://mui.com/material-ui/react-radio-button/}
  * @label Material UI - {@link https://mui.com/material-ui/api/radio/}
  */
-export default function InputCheckCondition(props: InputOptionsProps): JSX.Element {
+export default function InputCheckCondition(props: Readonly<InputOptionsProps>): JSX.Element {
   const { name, control, onChange, options, ...restProps } = props;
 
   return (

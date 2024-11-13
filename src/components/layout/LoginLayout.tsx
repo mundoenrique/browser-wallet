@@ -32,7 +32,7 @@ const ContainerLayout = ({ children }: ChildrenProps) => {
  *
  * @param children - Children elements.
  */
-export default function LoginLayout({ children }: ChildrenProps): JSX.Element {
+export default function LoginLayout({ children }: Readonly<ChildrenProps>): JSX.Element {
   const theme = useTheme();
   const match = useMediaQuery(theme.breakpoints.down('sm'));
 

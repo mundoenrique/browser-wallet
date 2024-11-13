@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({ children }: ChildrenProps) {
+export default function RootLayout({ children }: Readonly<ChildrenProps>) {
   return (
     <html lang="es">
       <GoogleTagManager gtmId="GTM-M94NWV2J" />

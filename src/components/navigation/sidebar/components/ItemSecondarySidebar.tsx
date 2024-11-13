@@ -15,7 +15,7 @@ import { ItemSecondarySidebarProps } from '@/interfaces';
  * @param href - Item link.
  * @param onClick - Handle action.
  */
-export default function ItemSecondarySidebar(props: ItemSecondarySidebarProps): JSX.Element {
+export default function ItemSecondarySidebar(props: Readonly<ItemSecondarySidebarProps>): JSX.Element {
   const { color, text, icon, href, onClick } = props;
 
   return (

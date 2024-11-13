@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   description: 'Recarga tu billetera Yiro',
 };
 
-export default function RechargeLayout({ children }: ChildrenProps) {
+export default function RechargeLayout({ children }: Readonly<ChildrenProps>) {
   return <>{children}</>;
 }

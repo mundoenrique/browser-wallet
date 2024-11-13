@@ -8,7 +8,7 @@ import { PayLink } from './PayLink';
 import { MuiModalProps } from '@/interfaces';
 import { ModalResponsive } from '@/components';
 
-export function ModalCollect(props: MuiModalProps) {
+export function ModalCollect(props: Readonly<MuiModalProps>) {
   const { type, open, handleClose } = props;
 
   useEffect(() => {
@@ -31,10 +31,7 @@ export function ModalCollect(props: MuiModalProps) {
 
   return (
     <ModalResponsive open={open} handleClose={handleClose}>
-      {
-        type === 'wallet' ? <PayCash /> : <PayLink />
-      }
-
+      {type === 'wallet' ? <PayCash /> : <PayLink />}
     </ModalResponsive>
   );
 }

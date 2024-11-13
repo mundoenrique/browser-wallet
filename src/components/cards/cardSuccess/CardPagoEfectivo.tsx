@@ -26,7 +26,14 @@ import { handleDownload, handleShare } from '@/utils/toolHelper';
  * @param share - handling for image shared
  * @param codeQr - Qr Code Pago Efectivo
  */
-export default function CardPagoEfectivo({ cip, children, label, download, share, codeQr }: CardPagoEfectivoProps) {
+export default function CardPagoEfectivo({
+  cip,
+  children,
+  label,
+  download,
+  share,
+  codeQr,
+}: Readonly<CardPagoEfectivoProps>) {
   const ticketRef = useRef<any>(null);
 
   const host = useHeadersStore((state) => state.host);

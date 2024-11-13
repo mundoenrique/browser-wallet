@@ -5,15 +5,14 @@ import logger from '@/utils/logger';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
 import { REDIS_CIPHER, SESSION_ID, TIME_SESSION_REDIS } from '@/utils/constants';
 import { createRedisInstance, getRedis, postRedis } from '@/utils/redis';
-import { decryptJWE, delRedis, getEnvVariable, handleResponse, putRedis } from '@/utils';
+import { decryptJWE, getEnvVariable, handleResponse, putRedis } from '@/utils';
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const uuidCookie =
-      cookies().get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || null;
-    const reqData = searchParams.get('reqData') || 'session:' + uuidCookie;
-    const resData: string = (await getRedis(reqData)) || '';
+    const uuidCookie = cookies().get(SESSION_ID)?.value ?? request.headers.get('X-Session-Mobile') ?? null;
+    const reqData = searchParams.get('reqData') ?? 'session:' + uuidCookie;
+    const resData: string = (await getRedis(reqData)) ?? '';
     const data = resData ? encryptForge(resData, REDIS_CIPHER) : '';
 
     return new NextResponse(JSON.stringify({ data }), { status: 200 });
@@ -24,14 +23,13 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const uuidCookie =
-      cookies().get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || null;
+    const uuidCookie = cookies().get(SESSION_ID)?.value ?? request.headers.get('X-Session-Mobile') ?? null;
     const dataBody = await request.json();
     const decryptData = JSON.parse(decryptForge(dataBody.data, REDIS_CIPHER));
     const uuid = decryptData.uuid ? decryptData.uuid : 'session:' + uuidCookie;
 
     if (decryptData.dataRedis === 'get') {
-      const resData: string = (await getRedis(decryptData.uuid)) || '';
+      const resData: string = (await getRedis(decryptData.uuid)) ?? '';
       return new NextResponse(JSON.stringify(resData), { status: 200 });
     } else {
       await postRedis(uuid, dataBody.dataRedis);
@@ -44,8 +42,7 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const uuidCookie =
-      cookies().get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || null;
+    const uuidCookie = cookies().get(SESSION_ID)?.value ?? request.headers.get('X-Session-Mobile') ?? null;
     const dataBody = await request.json();
     const decryptData = JSON.parse(decryptForge(dataBody.data, REDIS_CIPHER));
     const uuid = decryptData.uuid ? decryptData.uuid : 'session:' + uuidCookie;
@@ -93,10 +90,10 @@ export async function DELETE(request: NextRequest) {
 
     const { key, delParam, jwePublicKey } = decryptedPayload as { key: string; delParam: string; jwePublicKey: string };
 
-    const uuid = cookies().get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || null;
+    const uuid = cookies().get(SESSION_ID)?.value ?? request.headers.get('X-Session-Mobile') ?? null;
     const redis = createRedisInstance();
 
-    let keyRedis = key ? key : `session:${uuid}`;
+    let keyRedis = key || `session:${uuid}`;
     const time = keyRedis !== 'activeSession' ? TIME_SESSION_REDIS : 60 * 60 * 8;
 
     const dataRedis: string | null = await redis.get(keyRedis);

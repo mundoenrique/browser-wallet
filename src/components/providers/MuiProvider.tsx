@@ -11,7 +11,7 @@ import { ChildrenProps } from '@/interfaces';
  *
  * @param children - Children element.
  */
-export default function MuiProvider({ children }: ChildrenProps): JSX.Element {
+export default function MuiProvider({ children }: Readonly<ChildrenProps>): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

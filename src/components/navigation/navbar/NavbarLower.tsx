@@ -60,7 +60,7 @@ export default function NavbarLower(): JSX.Element {
     >
       <List sx={{ display: 'flex' }} disablePadding>
         {itemMenu.map((menu, i) => {
-          const currentItemMenu = currentItem === menu.id ? true : false;
+          const currentItemMenu = currentItem === menu.id;
 
           return (
             <ListItem disablePadding key={i} onClick={() => setCurrentItem(menu.id)}>

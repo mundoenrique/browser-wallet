@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   description: 'Sección de ayuda con las preguntas frecuentes de Yiro',
 };
 
-export default function QuestionsLayout({ children }: ChildrenProps) {
+export default function QuestionsLayout({ children }: Readonly<ChildrenProps>) {
   return <>{children}</>;
 }

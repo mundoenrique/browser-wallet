@@ -18,7 +18,7 @@ import { GainIcons } from '%/Icons';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { TextFieldProps, NumericFormatCustomInput } from '@/interfaces';
 
-function InputTextPay(props: TextFieldProps): JSX.Element {
+function InputTextPay(props: Readonly<TextFieldProps>): JSX.Element {
   const { name, label, labelError, type, error, value, onChange, disabled, readOnly } = props;
 
   const textLabel = label ?? name;
@@ -64,7 +64,7 @@ function InputTextPay(props: TextFieldProps): JSX.Element {
               <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
             </>
           ) : (
-            <>{labelError || ''}</>
+            <>{labelError ?? ''}</>
           )}
         </FormHelperText>
       </FormControl>
@@ -87,7 +87,7 @@ function InputTextPay(props: TextFieldProps): JSX.Element {
  * @label React Hook Form - {@link https://react-hook-form.com/docs/useform/control}
  * @label Material UI - {@link https://mui.com/material-ui/api/outlined-input/}
  */
-export default function InputText(props: TextFieldProps) {
+export default function InputText(props: Readonly<TextFieldProps>) {
   const { name, control, onChange, ...restProps } = props;
   return (
     <>

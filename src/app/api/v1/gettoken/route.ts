@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
 
     const decryptedPayload = await decryptJWE(data, jwePrivateKey);
 
-    const keysAes = generatePublicKey()
+    const keysAes = generatePublicKey();
 
     logger.debug('Request middleware Web %s', JSON.stringify({ method, reqUrl: url, body: decryptedPayload }));
 
@@ -32,24 +32,26 @@ export async function POST(request: NextRequest) {
       exchange: number;
     };
 
-    const primeNumber = parseInt(process.env.PRIME_NUMBER || '0');
+    const primeNumber = parseInt(process.env.PRIME_NUMBER ?? '0');
     const secret = fastModularExponentiation(exchange, keysAes.keyPrivate, primeNumber);
     const exchangeKey = generateAesKey(secret);
 
-    const deviceId = idDevice ? idDevice : null;
-    const uuidSession = (deviceId) ? encryptForge(uuid, REDIS_CIPHER) : uuid;
+    const deviceId = idDevice || null;
+    const uuidSession = deviceId ? encryptForge(uuid, REDIS_CIPHER) : uuid;
     const stateObject = { login: false, ipAddress, uuid, deviceId, exchange: exchangeKey };
 
     await postRedis(`session:${uuidSession}`, stateObject);
 
-    const token = await signJWT(jwsPrivateKey, {jwePublicKey, jwsPublicKey, uuid });
+    const token = await signJWT(jwsPrivateKey, { jwePublicKey, jwsPublicKey, uuid });
 
     const responsePayload = {
-      code: '200.00.000', message: 'Process Ok', data: {
+      code: '200.00.000',
+      message: 'Process Ok',
+      data: {
         jwt: token,
         sessionId: uuid,
-        exchange: keysAes.keyPublic
-      }
+        exchange: keysAes.keyPublic,
+      },
     };
 
     logger.debug('Response middleware Web %s', JSON.stringify({ status: 200, data: responsePayload }));

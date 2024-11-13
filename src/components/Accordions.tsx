@@ -13,7 +13,7 @@ import { AccordionsProps } from '@/interfaces';
  * @param title - Text that goes on the card.
  * @param content - Content to display.
  */
-export default function Accordions(props: AccordionsProps): JSX.Element {
+export default function Accordions(props: Readonly<AccordionsProps>): JSX.Element {
   const { collapsed, title, content } = props;
 
   const [isCollapsed, setIsCollapsed] = useState<boolean | undefined>(collapsed);

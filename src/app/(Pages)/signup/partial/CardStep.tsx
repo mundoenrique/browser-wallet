@@ -4,7 +4,7 @@ import { Card, Typography, useMediaQuery, useTheme } from '@mui/material';
 //Internal app
 import { StepperProps } from '@/interfaces';
 
-export default function CardStep(props: StepperProps) {
+export default function CardStep(props: Readonly<StepperProps>) {
   const { children, stepNumber } = props;
 
   const theme = useTheme();

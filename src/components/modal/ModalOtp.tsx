@@ -25,7 +25,7 @@ import { useUiStore, useOtpStore, useUserStore } from '@/store';
  * @param processCode - Identify value of OTP.
  * @returns Json with the verification code
  */
-export default function ModalOtp(props: ModalOtpProps): JSX.Element {
+export default function ModalOtp(props: Readonly<ModalOtpProps>): JSX.Element {
   const { handleClose, open, onSubmit, closeApp, title, textButton, processCode, disableSubmit } = props;
 
   const { setModalError } = useUiStore();
