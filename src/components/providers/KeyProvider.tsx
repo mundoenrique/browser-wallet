@@ -102,7 +102,15 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initAccess, activeApp, keys, setDataToken, setKeys, setCreateAccess, setAccessSession]);
 
-  if (time || (!initAccess && !token && pathname != '/signout')) {
+  if (
+    time ||
+    (!initAccess &&
+      !token &&
+      pathname != '/signout' &&
+      pathname != '/policies' &&
+      pathname != '/legal' &&
+      pathname != '/conditions')
+  ) {
     return (
       <PurpleLayout>
         <LogoGreen />
