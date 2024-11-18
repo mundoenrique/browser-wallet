@@ -6,7 +6,7 @@ import { mockRouterPush } from '../../../tools/unitTestHelper.test';
 
 jest.mock('@/app/(Pages)/dashboard/clients/partial/listClients', () => ({
   __esModule: true,
-  default: jest.fn().mockReturnValue(<div data-testid="mocked-otp-component" />),
+  default: jest.fn().mockReturnValue(<div data-testid="mocked-otp-recover-component" />),
 }));
 
 jest.mock('@/store', () => ({
@@ -48,7 +48,7 @@ describe('Clients', () => {
   it('calls getClientesApi function', async () => {
     await act(async () => {
       render(<Clients />);
-    })
+    });
     await mockApi.get(`/payments/123456789/chargelist`, {
       params: { days: 30, limit: 100, page: 1, date: 7, transactionCode: 1 },
     });
@@ -66,7 +66,7 @@ describe('Clients', () => {
 
     await act(async () => {
       render(<Clients />);
-    })
+    });
 
     await waitFor(() => {
       expect(mockApi.get).toHaveBeenCalled();
@@ -76,6 +76,6 @@ describe('Clients', () => {
   it('handle filters.', async () => {
     await act(async () => {
       render(<Clients />);
-    })
+    });
   });
 });
