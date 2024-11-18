@@ -6,7 +6,7 @@ import Recover from '@/app/(Pages)/password-recover/page';
 jest.mock('@/utils/api');
 const mockApi = api as jest.Mocked<typeof api>;
 
-jest.mock('@/app/(Pages)/password-recover/partial/OTP', () => ({
+jest.mock('@/app/(Pages)/password-recover/partial/OtpRecover', () => ({
   __esModule: true,
   default: jest.fn().mockReturnValue(<div data-testid="mocked-otp-component" />),
 }));

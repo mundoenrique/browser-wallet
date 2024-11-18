@@ -13,7 +13,7 @@ import InputOTP from '@/components/form/InputOTP';
 import { encryptForge, handleMaskOtp } from '@/utils/toolHelper';
 import { useHeadersStore, useOtpStore, useUiStore, useUserStore } from '@/store';
 
-export default function AuthOtp(props: Readonly<AuthOtpFormProps>) {
+export default function OtpRecover(props: Readonly<AuthOtpFormProps>) {
   const { handleResendOTP } = props;
 
   const host = useHeadersStore((state) => state.host);
