@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   description: 'Paga tus deudas con Yiro',
 };
 
-export default function DebtLayout({ children }: ChildrenProps) {
+export default function DebtLayout({ children }: Readonly<ChildrenProps>) {
   return <>{children}</>;
 }

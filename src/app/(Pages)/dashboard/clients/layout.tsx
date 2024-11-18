@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   description: 'Gestiona tus clientes en Yiro',
 };
 
-export default function ClientsLayout({ children }: ChildrenProps) {
+export default function ClientsLayout({ children }: Readonly<ChildrenProps>) {
   return <>{children}</>;
 }

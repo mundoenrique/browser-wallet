@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   description: 'Términos y condiciones del servicio Yiro',
 };
 
-export default function LegalLayout({ children }: ChildrenProps) {
+export default function LegalLayout({ children }: Readonly<ChildrenProps>) {
   return <>{children}</>;
 }

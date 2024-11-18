@@ -1,4 +1,3 @@
-import Policies from './Policies';
 //pwa
 export { default as QRCodeReader } from './PWA/QRCodeReader';
 //form

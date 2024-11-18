@@ -8,7 +8,7 @@ import { Box, ListItem, ListItemIcon, ListItemText, Typography, Stack } from '@m
 import { MuiModalProps } from '@/interfaces';
 import { ModalResponsive } from '@/components';
 
-export function ModalRecharge(props: MuiModalProps) {
+export function ModalRecharge(props: Readonly<MuiModalProps>) {
   const { open, handleClose } = props;
 
   useEffect(() => {

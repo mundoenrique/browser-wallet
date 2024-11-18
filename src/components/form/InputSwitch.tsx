@@ -5,7 +5,7 @@ import { FormControl, FormControlLabel, Switch } from '@mui/material';
 //Internal App
 import { SwitchListProps } from '@/interfaces';
 
-function SwitchMUI(props: SwitchListProps): JSX.Element {
+function SwitchMUI(props: Readonly<SwitchListProps>): JSX.Element {
   const { name, onChange, value, label, disabled, checked, fullWidth, switchProps } = props;
 
   return (
@@ -40,7 +40,7 @@ function SwitchMUI(props: SwitchListProps): JSX.Element {
  * @label React Hook Form - {@link https://react-hook-form.com/docs/useform/control}
  * @label Material UI - {@link https://mui.com/material-ui/react-switch/}
  */
-export default function SwitchCheck(props: SwitchListProps) {
+export default function SwitchCheck(props: Readonly<SwitchListProps>) {
   const { name, control, onChange, switchProps, ...restProps } = props;
 
   return (
@@ -53,7 +53,7 @@ export default function SwitchCheck(props: SwitchListProps) {
             <SwitchMUI
               name={name}
               value={field.value}
-              checked={!field.value ? false : true}
+              checked={!!field.value}
               onChange={(e) => {
                 field.onChange(e);
                 onChange && onChange(e);

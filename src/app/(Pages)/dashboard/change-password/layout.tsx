@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   description: 'Cambiar contraseña en Yiro',
 };
 
-export default function ChangePasswordLayout({ children }: ChildrenProps) {
+export default function ChangePasswordLayout({ children }: Readonly<ChildrenProps>) {
   return <>{children}</>;
 }

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: 'Envío de credenciales',
 };
 
-export default function BelcorpLayout({ children }: ChildrenProps) {
+export default function BelcorpLayout({ children }: Readonly<ChildrenProps>) {
   if (process.env.ACCESS_BELCORP == 'OFF') return <NotFoundError code={404} />;
   return <LoginLayout>{children}</LoginLayout>;
 }

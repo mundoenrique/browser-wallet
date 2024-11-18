@@ -72,7 +72,7 @@ export default function Clients() {
 
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const [isLoading, setIsloading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [filterMonth, setFilterMonth] = useState(dateRank()[0]);
 
@@ -129,7 +129,7 @@ export default function Clients() {
   };
 
   const getClientAPI = async () => {
-    setIsloading(true);
+    setIsLoading(true);
     setError(false);
     api
       .get(`/payments/${user.userId}/chargelist`, {
@@ -157,7 +157,7 @@ export default function Clients() {
         setModalError({ error: e });
       })
       .finally(() => {
-        setIsloading(false);
+        setIsLoading(false);
       });
   };
 

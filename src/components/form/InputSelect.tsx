@@ -7,7 +7,7 @@ import { FormControl, FormHelperText, Autocomplete, TextField, InputLabel } from
 //Internal App
 import { InputOptionsProps } from '@/interfaces';
 
-function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
+function AutocompleteMUI(props: Readonly<InputOptionsProps>): JSX.Element {
   const { name, label, options, labelError, error, value, onChange, disabled, readOnly, disableClearable } = props;
   const textLabel = label ?? name;
 
@@ -41,7 +41,7 @@ function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
               <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
             </>
           ) : (
-            <>{labelError || ''}</>
+            <>{labelError ?? ''}</>
           )}
         </FormHelperText>
       </FormControl>
@@ -73,7 +73,7 @@ function AutocompleteMUI(props: InputOptionsProps): JSX.Element {
  * @label React Hook Form - {@link https://react-hook-form.com/docs/useform/control}
  * @label Material UI - {@link https://mui.com/material-ui/react-autocomplete/}
  */
-export default function InputSelect(props: InputOptionsProps): JSX.Element {
+export default function InputSelect(props: Readonly<InputOptionsProps>): JSX.Element {
   const { name, control, onChange, options, disableClearable, ...restProps } = props;
 
   return (

@@ -21,7 +21,7 @@ import { Conditions, InputCheck, InputPass, ModalResponsive } from '@/components
  * @returns The JSON with the data delivered.
  * @throws If there is an error in any field that does not comply with the regular expressions.
  */
-export default function FormPass(porps: FormPassProps): JSX.Element {
+export default function FormPass(porps: Readonly<FormPassProps>): JSX.Element {
   const { onSubmit, description, buttons, register } = porps;
 
   const host = useHeadersStore((state) => state.host);

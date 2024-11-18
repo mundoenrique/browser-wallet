@@ -12,7 +12,7 @@ import { fuchsiaBlue } from '@/theme/theme-default';
  * @param avatarImage - Confirm and receive the image link.
  * @param avatarText - Receive a text when you do not receive the image.
  */
-export default function CardReport(props: CardTicketProps) {
+export default function CardReport(props: Readonly<CardTicketProps>) {
   const { children, avatarImage, avatarText } = props;
 
   return (

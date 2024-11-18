@@ -6,7 +6,7 @@ import { FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/mat
 //Internal app
 import { TextFieldProps } from '@/interfaces';
 
-function InputMUI(props: TextFieldProps): JSX.Element {
+function InputMUI(props: Readonly<TextFieldProps>): JSX.Element {
   const {
     name,
     label,
@@ -59,7 +59,7 @@ function InputMUI(props: TextFieldProps): JSX.Element {
               <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
             </>
           ) : (
-            <>{labelError || ''}</>
+            <>{labelError ?? ''}</>
           )}
         </FormHelperText>
       </FormControl>
@@ -82,7 +82,7 @@ function InputMUI(props: TextFieldProps): JSX.Element {
  * @label React Hook Form - {@link https://react-hook-form.com/docs/useform/control}
  * @label Material UI - {@link https://mui.com/material-ui/api/outlined-input/}
  */
-export default function InputText(props: TextFieldProps) {
+export default function InputText(props: Readonly<TextFieldProps>) {
   const { name, control, onChange, endAdornment, sx, colorText, inputProps, ...restProps } = props;
 
   return (

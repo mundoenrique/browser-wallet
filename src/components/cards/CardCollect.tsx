@@ -15,9 +15,9 @@ import { fuchsiaBlue, slate } from '@/theme/theme-default';
  * @param onClick - Confirm and manage the card.
  * @returns Debt balances.
  */
-export default function CardCollect(props: CardDebtProps): JSX.Element {
+export default function CardCollect(props: Readonly<CardDebtProps>): JSX.Element {
   const { onClick, data } = props;
-  const maxOweMe = data?.data?.clients || 0;
+  const maxOweMe = data?.data?.clients ?? 0;
   const clientOweMe = ['', '', '', '', '', '', ''];
   const [loading, setLoading] = useState(true);
 

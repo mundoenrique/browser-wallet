@@ -12,7 +12,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { CalendarIcons } from '%/Icons';
 import { InputDatePickerProps } from '@/interfaces';
 
-function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
+function DatePickerMUI(props: Readonly<InputDatePickerProps>): JSX.Element {
   const {
     name,
     label,
@@ -50,7 +50,7 @@ function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
           value={value}
           onChange={onChange}
           views={views}
-          format={format ? format : 'DD/MM/YYYY'}
+          format={format ?? 'DD/MM/YYYY'}
           sx={{
             width: '100%',
             '&>.MuiFormLabel-root': { display: 'none' },
@@ -82,7 +82,7 @@ function DatePickerMUI(props: InputDatePickerProps): JSX.Element {
               <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
             </>
           ) : (
-            <>{labelError || ''}</>
+            <>{labelError ?? ''}</>
           )}
         </FormHelperText>
       </LocalizationProvider>

@@ -18,7 +18,7 @@ import { useDrawerStore, useUserStore, useAccessSessionStore } from '@/store';
  *
  * @param children - Children elements.
  */
-export default function MainLayout({ children }: ChildrenProps): JSX.Element {
+export default function MainLayout({ children }: Readonly<ChildrenProps>): JSX.Element {
   const { push } = useRouter();
   const drawerWidth = 315;
 

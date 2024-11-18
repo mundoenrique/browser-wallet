@@ -15,7 +15,7 @@ import { MuiNavExternalProps } from '@/interfaces';
  * @param closeApp - Confirm if the link to exit the application is displayed.
  * @param onClick - Handle action.
  */
-export default function NavExternal({ image, color, closeApp, onClick }: MuiNavExternalProps): JSX.Element {
+export default function NavExternal({ image, color, closeApp, onClick }: Readonly<MuiNavExternalProps>): JSX.Element {
   const { backLink } = useHeadersStore();
 
   return (

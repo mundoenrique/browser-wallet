@@ -22,7 +22,7 @@ import { formatTime } from '@/utils/toolHelper';
  * @label React Hook Form - {@link https://react-hook-form.com/docs/useform/control}
  * @label MUI Otp input - {@link https://viclafouch.github.io/mui-otp-input/}
  */
-export default function InputOTP(props: InputOTPProps): JSX.Element {
+export default function InputOTP(props: Readonly<InputOTPProps>): JSX.Element {
   const { control, name, length, title, text, labelError, handleResendOTP, timeLeft, setTime } = props;
 
   const [open, setOpen] = useState(false);
@@ -76,7 +76,7 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
                     <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
                   </>
                 ) : (
-                  <>{labelError || ''}</>
+                  <>{labelError ?? ''}</>
                 )}
               </FormHelperText>
             </Box>
@@ -87,11 +87,7 @@ export default function InputOTP(props: InputOTPProps): JSX.Element {
           Tiempo restante - {formatTime(timeLeft)}
         </Typography>
 
-        <Button
-          onClick={handleResend}
-          sx={{ color: 'primary.main', height: 20 }}
-          disabled={timeLeft === 0 ? false : true}
-        >
+        <Button onClick={handleResend} sx={{ color: 'primary.main', height: 20 }} disabled={timeLeft !== 0}>
           Reenviar código
         </Button>
       </Box>

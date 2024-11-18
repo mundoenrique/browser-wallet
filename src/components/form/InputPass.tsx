@@ -25,7 +25,7 @@ import { TextFieldProps } from '@/interfaces';
  * @label React Hook Form - {@link https://react-hook-form.com/docs/useform/control}
  * @label Material UI - {@link https://mui.com/material-ui/api/outlined-input/}
  */
-export default function InputPass(props: TextFieldProps): JSX.Element {
+export default function InputPass(props: Readonly<TextFieldProps>): JSX.Element {
   const { name, control, label, labelError, onChange, colorText, disabled, readOnly, inputProperties } = props;
 
   const [passwordShown, setPasswordShown] = useState(false);
@@ -42,7 +42,7 @@ export default function InputPass(props: TextFieldProps): JSX.Element {
         control={control}
         render={({ field, fieldState: { error } }) => (
           <>
-            <InputLabel htmlFor={name} sx={{ mb: 3 / 2, color: colorText ? colorText : 'inherit' }}>
+            <InputLabel htmlFor={name} sx={{ mb: 3 / 2, color: colorText ?? 'inherit' }}>
               {inputLabel}
             </InputLabel>
             <FormControl fullWidth variant="outlined" error={!!error} sx={{ mb: '5px' }}>

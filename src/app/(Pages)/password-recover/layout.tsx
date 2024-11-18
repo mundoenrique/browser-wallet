@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   description: 'Recupera tu contraseña',
 };
 
-export default function RecoverLayout({ children }: ChildrenProps) {
+export default function RecoverLayout({ children }: Readonly<ChildrenProps>) {
   return <>{children}</>;
 }

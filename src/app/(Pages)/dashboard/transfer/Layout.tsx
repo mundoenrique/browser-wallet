@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   description: 'Transfiere dinero a otro consultor con tu Yiro',
 };
 
-export default function TransferLayout({ children }: ChildrenProps) {
+export default function TransferLayout({ children }: Readonly<ChildrenProps>) {
   return <>{children}</>;
 }

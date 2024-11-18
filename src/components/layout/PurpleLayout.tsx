@@ -29,7 +29,7 @@ export default function PurpleLayout({
   navbar,
   confetti,
   width,
-}: PurpleLayoutProps): JSX.Element {
+}: Readonly<PurpleLayoutProps>): JSX.Element {
   const { title } = useNavTitleStore();
 
   const [height, setHeight] = useState<number>();

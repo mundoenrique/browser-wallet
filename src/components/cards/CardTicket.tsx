@@ -9,7 +9,7 @@ import { sendGTMEvent } from '@next/third-parties/google';
 import { CardTicketProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import CheckCircleIcon from '%/images/arts/CheckCircleIcon';
-import { handleDownload, handleShare } from '@/utils/toolHelper';
+import { handleDownload } from '@/utils/toolHelper';
 
 /**
  * Card used to display the generated result
@@ -20,28 +20,11 @@ import { handleDownload, handleShare } from '@/utils/toolHelper';
  * @param shared - Handles the action of sharing an image.
  * @param onClick - Action handling for a button.
  */
-export default function CardTicket(props: CardTicketProps) {
+export default function CardTicket(props: Readonly<CardTicketProps>) {
   const { children, textBotton, download, shared, onClick } = props;
   const componentRef = useRef<any>(null);
-  const shareData: any = { files: [] };
 
   const host = useHeadersStore((state) => state.host);
-
-  const handleShareClick = () => {
-    handleShare(componentRef.current, shareData, fuchsiaBlue[50]);
-
-    sendGTMEvent({
-      event: 'ga4.trackEvent',
-      eventName: 'select_content',
-      eventParams: {
-        content_type: 'boton',
-        section: 'Yiro :: transferencia :: operacionExitosa',
-        previous_section: 'Yiro :: transferencia :: monto',
-        selected_content: 'Compartir',
-        destination_page: `${host}/dashboard/transfer`,
-      },
-    });
-  };
 
   const handleDownloadClick = () => {
     handleDownload(componentRef.current, 'comprobante.png', fuchsiaBlue[50]);

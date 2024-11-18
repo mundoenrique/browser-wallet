@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   description: 'Configuración de la tarjeta física o virtual Yiro',
 };
 
-export default function CardConfigurationLayout({ children }: ChildrenProps) {
+export default function CardConfigurationLayout({ children }: Readonly<ChildrenProps>) {
   return <>{children}</>;
 }

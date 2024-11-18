@@ -12,7 +12,7 @@ import { CardInfoOperationProps } from '@/interfaces';
  * @param amount - Transaction amount
  * @param name - Username for the operation
  */
-export default function CardInfoOperation(props: CardInfoOperationProps) {
+export default function CardInfoOperation(props: Readonly<CardInfoOperationProps>) {
   const { date, amount, name } = props;
 
   return (

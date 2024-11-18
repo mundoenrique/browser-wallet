@@ -2,7 +2,7 @@
 
 import { Typography, Button } from '@mui/material';
 
-export default function GlobalError({ error, reset }: { error: Error; reset: () => void }) {
+export default function GlobalError({ error, reset }: Readonly<{ error: Error; reset: () => void }>) {
   return (
     <html lang="en">
       <body>

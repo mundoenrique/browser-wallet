@@ -20,7 +20,7 @@ const options: any = [
   { text: 'No', value: 'false' },
 ];
 
-export default function PEP() {
+export default function PepOnboarding() {
   const maxDate = dayjs();
 
   const minDate = maxDate.subtract(10, 'years');
@@ -180,10 +180,17 @@ export default function PEP() {
     setShowHeader(true);
   }, [setShowHeader]);
 
+  const transformData = (data: any) => {
+    return data.map((item: { value: string; code: string }) => ({
+      text: item.value,
+      value: item.code,
+    }));
+  };
+
   useEffect(() => {
     const fetchDepartmentsCatalog = async () => {
-      api
-        .post('/catalogs/search', {
+      try {
+        const response = await api.post('/catalogs/search', {
           catalogCode: 'GEO_LOCATION_LEVEL_ONE_CATALOG',
           parameters: [
             {
@@ -195,29 +202,20 @@ export default function PEP() {
               value: 'GEO_LOCATION_LEVEL_ONE',
             },
           ],
-        })
-        .then((response) => {
-          updateCatalog(
-            'departamentsCatalog',
-            response.data.data.data.map((department: { value: string; code: string }) => ({
-              text: department.value,
-              value: department.code,
-            }))
-          );
-        })
-        .catch((e) => {
-          setModalError({ error: e });
         });
+        const departments = transformData(response.data.data.data);
+        updateCatalog('departamentsCatalog', departments);
+      } catch (e) {
+        setModalError({ error: e });
+      }
     };
-    {
-      departamentsCatalog.length === 0 && fetchDepartmentsCatalog();
-    }
+    departamentsCatalog.length === 0 && fetchDepartmentsCatalog();
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const fetchProvincesCatalog = async () => {
-      api
-        .post('/catalogs/search', {
+      try {
+        const response = await api.post('/catalogs/search', {
           catalogCode: 'GEO_LOCATION_LEVEL_TWO_CATALOG',
           parameters: [
             {
@@ -233,30 +231,21 @@ export default function PEP() {
               value: watchDepartment,
             },
           ],
-        })
-        .then((response) => {
-          updateCatalog(
-            'provincesCatalog',
-            response.data.data.data.map((province: { value: string; code: string }) => ({
-              text: province.value,
-              value: province.code,
-            }))
-          );
-        })
-        .catch((e) => {
-          setModalError({ error: e });
         });
+        const provinces = transformData(response.data.data.data);
+        updateCatalog('provincesCatalog', provinces);
+      } catch (e) {
+        setModalError({ error: e });
+      }
     };
 
-    {
-      provincesCatalog.length === 0 && fetchProvincesCatalog();
-    }
+    provincesCatalog.length === 0 && fetchProvincesCatalog();
   }, [watchDepartment]); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const fetchDistrictsCatalog = async () => {
-      api
-        .post('/catalogs/search', {
+      try {
+        const response = await api.post('/catalogs/search', {
           catalogCode: 'GEO_LOCATION_LEVEL_THREE_CATALOG',
           parameters: [
             {
@@ -272,49 +261,31 @@ export default function PEP() {
               value: watchProvince,
             },
           ],
-        })
-        .then((response) => {
-          updateCatalog(
-            'districtsCatalog',
-            response.data.data.data.map((district: { value: string; code: string }) => ({
-              text: district.value,
-              value: district.code,
-            }))
-          );
-        })
-        .catch((e) => {
-          setModalError({ error: e });
         });
+        const districts = transformData(response.data.data.data);
+        updateCatalog('districtsCatalog', districts);
+      } catch (e) {
+        setModalError({ error: e });
+      }
     };
 
-    {
-      districtsCatalog.length === 0 && fetchDistrictsCatalog();
-    }
+    districtsCatalog.length === 0 && fetchDistrictsCatalog();
   }, [watchProvince]); //eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const fetchDocumentsCatalog = async () => {
-      api
-        .post('/catalogs/search', {
+      try {
+        const response = await api.post('/catalogs/search', {
           catalogCode: 'DOCUMENTS_TYPE_CATALOG',
-        })
-        .then((response) => {
-          updateCatalog(
-            'documentTypesCatalog',
-            response.data.data.data.map((documentType: { value: string; code: string }) => ({
-              text: documentType.value,
-              value: documentType.code,
-            }))
-          );
-        })
-        .catch((e) => {
-          setModalError({ error: e });
         });
+        const documents = transformData(response.data.data.data);
+        updateCatalog('documentTypesCatalog', documents);
+      } catch (e) {
+        setModalError({ error: e });
+      }
     };
 
-    {
-      documentTypesCatalog.length === 0 && fetchDocumentsCatalog();
-    }
+    documentTypesCatalog.length === 0 && fetchDocumentsCatalog();
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   return (

@@ -6,9 +6,9 @@ import Recover from '@/app/(Pages)/password-recover/page';
 jest.mock('@/utils/api');
 const mockApi = api as jest.Mocked<typeof api>;
 
-jest.mock('@/app/(Pages)/password-recover/partial/OTP', () => ({
+jest.mock('@/app/(Pages)/password-recover/partial/OtpRecover', () => ({
   __esModule: true,
-  default: jest.fn().mockReturnValue(<div data-testid="mocked-otp-component" />),
+  default: jest.fn().mockReturnValue(<div data-testid="mocked-otp-recover-component" />),
 }));
 
 jest.mock('@/app/(Pages)/password-recover/partial/UpdatePass', () => ({
@@ -41,7 +41,7 @@ describe('Recover', () => {
 
   //** This test checks if the initial state of the component is correct
   it('has correct initial state', () => {
-    expect(screen.getByTestId('mocked-otp-component')).toBeInTheDocument();
+    expect(screen.getByTestId('mocked-otp-recover-component')).toBeInTheDocument();
   });
 
   it('sendGTMEvent button', async () => {
@@ -65,7 +65,7 @@ describe('Recover', () => {
   });
 
   it('submit form and call api post', async () => {
-    fireEvent.click(screen.getByTestId('mocked-otp-component'));
+    fireEvent.click(screen.getByTestId('mocked-otp-recover-component'));
 
     await mockApi.post(`/users/051999541/tfa`, { otpProcessCode: 'CHANGE_PASSWORD_OTP' });
 

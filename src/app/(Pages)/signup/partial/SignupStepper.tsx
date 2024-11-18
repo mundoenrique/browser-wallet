@@ -7,7 +7,7 @@ import { NavExternal } from '@/components';
 import { sendGTMEvent } from '@next/third-parties/google';
 import { useHeadersStore, useKeyStore, useRegisterStore } from '@/store';
 
-export default function SignupStepper(props: { currentStep: number; children: JSX.Element[] }) {
+export default function SignupStepper(props: Readonly<{ currentStep: number; children: JSX.Element[] }>) {
   const { currentStep, children } = props;
 
   const { backLink } = useHeadersStore();

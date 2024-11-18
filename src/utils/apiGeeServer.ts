@@ -49,7 +49,7 @@ apiGee.interceptors.request.use(
     return request;
   },
   (error) => {
-    return Promise.reject(error);
+    return Promise.reject(new Error(error));
   }
 );
 
@@ -62,7 +62,7 @@ apiGee.interceptors.response.use(
     return response;
   },
   (error) => {
-    return Promise.reject(error);
+    return Promise.reject(new Error(error));
   }
 );
 
@@ -198,8 +198,8 @@ export async function HandleCustomerRequest(request: NextRequest) {
 }
 
 async function validateSession(request: NextRequest) {
-  let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
-  const dataRedis = (await getRedis(`session:${uuid}`)) || null;
+  let uuid = request.cookies.get(SESSION_ID)?.value ?? request.headers.get('X-Session-Mobile') ?? '';
+  const dataRedis = (await getRedis(`session:${uuid}`)) ?? null;
 
   if (dataRedis) {
     const resRedis = JSON.parse(dataRedis);
@@ -256,9 +256,9 @@ async function refreshTime(uuid: string) {
 
 async function startSession(request: NextRequest, url: string, status: number) {
   if (url.includes('/users/credentials') && status === 200) {
-    let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
-    const device = request.cookies.get(SESSION_ID)?.value ? true : false;
-    const dataRedis = (await getRedis(`session:${uuid}`)) || '';
+    let uuid = request.cookies.get(SESSION_ID)?.value ?? request.headers.get('X-Session-Mobile') ?? '';
+    const device = !!request.cookies.get(SESSION_ID)?.value;
+    const dataRedis = (await getRedis(`session:${uuid}`)) ?? '';
 
     const stateObject = { login: true };
     await putRedis(`session:${uuid}`, stateObject);
@@ -277,7 +277,7 @@ async function duplicateSession(userId: string, uuid: string, device: boolean) {
   if (!device) return false;
 
   const redis = createRedisInstance();
-  const dataRedis = (await getRedis(`activeSession`)) || '';
+  const dataRedis = (await getRedis(`activeSession`)) ?? '';
   const resRedis = dataRedis ? JSON.parse(dataRedis) : {};
 
   !dataRedis && (await redis.set('activeSession', '{}'));
@@ -334,8 +334,8 @@ function validateApiRoute(url: string) {
 }
 
 async function encrypToDecrypt(request: NextRequest, data: any, url: string, type: string) {
-  let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
-  const dataRedis = (await getRedis(`session:${uuid}`)) || '';
+  let uuid = request.cookies.get(SESSION_ID)?.value ?? request.headers.get('X-Session-Mobile') ?? '';
+  const dataRedis = (await getRedis(`session:${uuid}`)) ?? '';
   const keysObjet = type === 'server' ? KEYS_TO_ENCRYPT_API : KEYS_TO_ENCRYPT_CLIENT;
   const noSessionValidationRoutes = ['api/v0/onboarding/termsandconditions', 'api/v0/onboarding/pep'];
 
@@ -373,8 +373,8 @@ async function saveDataValidate(request: NextRequest, data: any, url: string) {
   };
 
   let result: DataObject = {};
-  let uuid = request.cookies.get(SESSION_ID)?.value || request.headers.get('X-Session-Mobile') || '';
-  const dataRedis = (await getRedis(`session:${uuid}`)) || '';
+  let uuid = request.cookies.get(SESSION_ID)?.value ?? request.headers.get('X-Session-Mobile') ?? '';
+  const dataRedis = (await getRedis(`session:${uuid}`)) ?? '';
 
   const consultantCodePattern = '\\d{9}';
   const noSessionValidationRoutes = [new RegExp(`^api/v0/users/search\\?phoneNumber=${consultantCodePattern}$`)];
@@ -407,7 +407,7 @@ async function saveDataValidate(request: NextRequest, data: any, url: string) {
 
 async function validateParam(resRedis: any, url: string, uuid: string) {
   const regex = /api\/v0\/(onboarding|users|payments|cards)\/([a-z0-9-]+)(?:\/.*)?/;
-  const match = url.match(regex) || '';
+  const match = RegExp(regex).exec(url) ?? '';
 
   const uuidPattern = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
   const consultantCodePattern = '\\d{9}';
@@ -435,11 +435,12 @@ async function validateParam(resRedis: any, url: string, uuid: string) {
     case 'payments':
       if (paramFromUrl != resRedis.userId) await delRedis(`session:${uuid}`);
       return paramFromUrl === resRedis.userId;
-    case 'cards':
+    case 'cards': {
       const secret = forge.util.decode64(resRedis.exchange);
       const cardId = decryptForge(resRedis.cardId, secret);
       if (paramFromUrl != cardId) await delRedis(`session:${uuid}`);
       return paramFromUrl === cardId;
+    }
     default:
       return true;
   }
@@ -451,7 +452,7 @@ function encryptJSON(obj: any, keysObjet: any, keyDecrypt: string, keyEncrypt: s
       if (keysObjet.includes(key) && typeof obj[key] === 'string') {
         //Eliminar luego de retorno cifrados cardId y UserId, junto con el valItem
         const valItem = validateItemDecrypt(url, key);
-        if (!/^[0-9]+$/.test(obj[key]) && !valItem) {
+        if (!/^\d+$/.test(obj[key]) && !valItem) {
           obj[key] = decryptForge(obj[key], keyDecrypt);
           obj[key] = encryptForge(obj[key], keyEncrypt);
         }
@@ -473,11 +474,11 @@ async function validateDevice(request: NextRequest) {
 
   if (request.headers.get('X-Device-Id')) {
     let uuid = request.cookies.get(SESSION_ID)?.value;
-    const dataRedis = (await getRedis(`session:${uuid}`)) || '';
+    const dataRedis = (await getRedis(`session:${uuid}`)) ?? '';
 
     if (dataRedis) {
       const resRedis = JSON.parse(dataRedis);
-      validate = resRedis.deviceId === request.headers.get('X-Device-Id') ? true : false;
+      validate = resRedis.deviceId === request.headers.get('X-Device-Id');
     } else {
       validate = false;
     }

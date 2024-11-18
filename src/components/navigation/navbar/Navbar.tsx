@@ -18,7 +18,7 @@ import { useHeadersStore, useNavTitleStore } from '@/store';
  *
  * The titles are rendered based on the current page with a useEffect and stored in a global state, this is done directly from each page.
  */
-export default function Navbar(props: NavbarProps): JSX.Element {
+export default function Navbar(props: Readonly<NavbarProps>): JSX.Element {
   const { onClick } = props;
 
   const { title } = useNavTitleStore();

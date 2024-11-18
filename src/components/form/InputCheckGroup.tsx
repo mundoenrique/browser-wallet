@@ -6,9 +6,9 @@ import { Checkbox, FormControlLabel, FormGroup, Typography } from '@mui/material
 import { OffCheck, OnCheck } from '%/Icons';
 import { InputCheckGroupOptionProps, InputCheckGroupOptionsProps } from '@/interfaces';
 
-export default function InputCheckGroup(props: InputCheckGroupOptionsProps): JSX.Element {
+export default function InputCheckGroup(props: Readonly<InputCheckGroupOptionsProps>): JSX.Element {
   const { name, options, onChange, defaultValue } = props;
-  const [selectedValue, setSelectedValue] = useState(defaultValue || '');
+  const [selectedValue, setSelectedValue] = useState(defaultValue ?? '');
 
   const handleCheckboxChange: (e: any) => void = (option: InputCheckGroupOptionProps) => {
     onChange && onChange(option);

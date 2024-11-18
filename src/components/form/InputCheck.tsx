@@ -8,7 +8,7 @@ import { FormControl, FormHelperText, Checkbox, FormControlLabel, FormGroup, Typ
 import { OffCheck, OnCheck } from '%/Icons';
 import { InputCheckProps } from '@/interfaces';
 
-function InputCheckMUI(props: InputCheckProps): JSX.Element {
+function InputCheckMUI(props: Readonly<InputCheckProps>): JSX.Element {
   const {
     name,
     label,
@@ -61,7 +61,7 @@ function InputCheckMUI(props: InputCheckProps): JSX.Element {
             <Info fontSize="small" sx={{ mr: 1 }} /> {error.message}
           </>
         ) : (
-          <>{labelError || ''}</>
+          <>{labelError ?? ''}</>
         )}
       </FormHelperText>
     </FormControl>
@@ -83,9 +83,9 @@ function InputCheckMUI(props: InputCheckProps): JSX.Element {
  * @label React Hook Form - {@link https://react-hook-form.com/docs/useform/control}
  * @label Material UI - {@link https://mui.com/material-ui/react-checkbox/}
  */
-export default function InputCheck(props: InputCheckProps): JSX.Element {
+export default function InputCheck(props: Readonly<InputCheckProps>): JSX.Element {
   const { name, control, onChange, onClick, checked, labelHandle, ...restProps } = props;
-  const [isChecked, setIsChecked] = useState(checked ? true : false);
+  const [isChecked, setIsChecked] = useState(!!checked);
 
   return (
     <>
@@ -97,7 +97,7 @@ export default function InputCheck(props: InputCheckProps): JSX.Element {
             <InputCheckMUI
               name={name}
               value={field.value}
-              checked={field.value ? true : false}
+              checked={!!field.value}
               onChange={(e) => {
                 setIsChecked(!isChecked);
                 onChange && onChange(e);

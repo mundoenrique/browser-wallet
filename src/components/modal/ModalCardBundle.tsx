@@ -10,7 +10,7 @@ import ModalResponsive from './ModalResponsive';
 import { useHeadersStore, useUserStore, useUiStore, useConfigCardStore } from '@/store';
 import { encryptForge } from '@/utils/toolHelper';
 
-export default function ModalCardBundle({ open }: { open: boolean }) {
+export default function ModalCardBundle({ open }: Readonly<{ open: boolean }>) {
   const router = useRouter();
 
   const host = useHeadersStore((state) => state.host);

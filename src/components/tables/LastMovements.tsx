@@ -22,7 +22,7 @@ import { SkeletonTable, EmptySlot, ErrorSlot } from '@/components';
  * }]
  */
 
-export default function LastMovements({ data, loading, error, emptySlot }: TableDataProps): JSX.Element {
+export default function LastMovements({ data, loading, error, emptySlot }: Readonly<TableDataProps>): JSX.Element {
   return (
     <Box
       sx={{

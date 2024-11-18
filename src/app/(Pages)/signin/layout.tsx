@@ -8,6 +8,6 @@ export const metadata: Metadata = {
   description: 'Inicio de sesión en tu bolsillo',
 };
 
-export default function SigninLayout({ children }: ChildrenProps) {
+export default function SigninLayout({ children }: Readonly<ChildrenProps>) {
   return <LoginLayout>{children}</LoginLayout>;
 }

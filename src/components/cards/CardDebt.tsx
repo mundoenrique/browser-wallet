@@ -17,7 +17,7 @@ import { fuchsiaBlue, slate } from '@/theme/theme-default';
  * @param onClick - Confirm and manage the card.
  * @returns Debt balances.
  */
-export default function CardDebt(props: CardDebtProps): JSX.Element {
+export default function CardDebt(props: Readonly<CardDebtProps>): JSX.Element {
   const { onClick, data } = props;
 
   const noDebt = data.data?.expirationDate && data.data?.amount != '0.0';

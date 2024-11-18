@@ -10,7 +10,7 @@ import { ContainerLayoutProps } from '@/interfaces';
  * @param children - Children elements.
  * @param fullWidth - Container width.
  */
-export default function ContainerLayout(props: ContainerLayoutProps): JSX.Element {
+export default function ContainerLayout(props: Readonly<ContainerLayoutProps>): JSX.Element {
   const { children, fullWidth } = props;
 
   return (

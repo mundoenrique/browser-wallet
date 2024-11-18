@@ -11,13 +11,19 @@ export default async function UserPage({ params, searchParams }: any) {
   const clientId = searchParams?.clientId || '';
 
   const protocol = headersList.get('x-forwarded-proto');
-  const referer = headersList.get('referer') || '';
+  const referer = headersList.get('referer') ?? '';
   const host = headersList.get('host');
 
-  const userData = await getRedis(`identify:${user}`)
-  await delRedis(`identify:${user}`)
+  const userData = await getRedis(`identify:${user}`);
+  await delRedis(`identify:${user}`);
 
   if (!userData) return <NotFoundError code={404} />;
 
-  return <DataUser user={userData} referer={`${referer}?sessionId=${sessionId}&clientId=${clientId}`} host={`${protocol}://${host}`} />;
+  return (
+    <DataUser
+      user={userData}
+      referer={`${referer}?sessionId=${sessionId}&clientId=${clientId}`}
+      host={`${protocol}://${host}`}
+    />
+  );
 }
