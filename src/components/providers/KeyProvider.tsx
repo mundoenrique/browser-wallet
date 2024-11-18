@@ -41,7 +41,13 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
   const token = useJwtStore((state) => state.token);
 
   useEffect(() => {
-    if (!activeApp && pathname != '/signout') {
+    if (
+      !activeApp &&
+      pathname != '/signout' &&
+      pathname != '/policies' &&
+      pathname != '/legal' &&
+      pathname != '/conditions'
+    ) {
       const jweKeypair = new NodeRSA({ b: 2048 });
       const jwePrivateKey = removePEMHeadersAndFooters(jweKeypair.exportKey('pkcs8-private-pem'));
       const jwePublicKey = removePEMHeadersAndFooters(jweKeypair.exportKey('pkcs8-public-pem'));
@@ -96,7 +102,15 @@ export default function KeyProvider({ children }: ChildrenProps): JSX.Element {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initAccess, activeApp, keys, setDataToken, setKeys, setCreateAccess, setAccessSession]);
 
-  if (time || (!initAccess && !token && pathname != '/signout')) {
+  if (
+    time ||
+    (!initAccess &&
+      !token &&
+      pathname != '/signout' &&
+      pathname != '/policies' &&
+      pathname != '/legal' &&
+      pathname != '/conditions')
+  ) {
     return (
       <PurpleLayout>
         <LogoGreen />

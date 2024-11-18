@@ -132,7 +132,7 @@ export async function getOauthBearer() {
 
 export async function HandleCustomerRequest(request: NextRequest) {
   let { method, headers } = request;
-  const url = headers.get('x-url') as string;
+  let url = headers.get('x-url') as string;
 
   const validate = await validateSession(request);
 
@@ -148,6 +148,13 @@ export async function HandleCustomerRequest(request: NextRequest) {
 
   if (data) {
     const dataEncrypt = await encrypToDecrypt(request, data, url, 'server');
+
+    if (url === 'api/v0/onboarding/validate') {
+      const { consultantCode, countryCode } = dataEncrypt.body;
+      url = `api/v0/onboarding/validate?consultantCode=${consultantCode}&countryCode=${countryCode}`;
+      method = 'GET';
+    }
+
     const { jwe, jws } = await handleApiGeeRequest(dataEncrypt);
     jweString = jwe;
     jwsString = jws;
