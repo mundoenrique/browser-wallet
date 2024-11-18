@@ -3,7 +3,7 @@
 // Internal app
 import { useRegisterStore } from '@/store';
 import {
-  Pep,
+  PepOnboarding,
   Landing,
   Ocupation,
   SignupStepper,
@@ -26,7 +26,7 @@ export default function Signup() {
 
       <Ocupation />
 
-      <Pep />
+      <PepOnboarding />
 
       <Biometric />
 

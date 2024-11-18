@@ -20,7 +20,7 @@ const options: any = [
   { text: 'No', value: 'false' },
 ];
 
-export default function Pep() {
+export default function PepOnboarding() {
   const maxDate = dayjs();
 
   const minDate = maxDate.subtract(10, 'years');
