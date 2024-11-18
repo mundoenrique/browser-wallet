@@ -2,7 +2,6 @@ import { act, render, screen, fireEvent, waitFor } from '@testing-library/react'
 //Internal app
 import Recharge from '@/app/(Pages)/dashboard/recharge/page';
 import { renderInput, mockRouterPush } from '../../../tools/unitTestHelper.test';
-import { api } from '@/utils/api';
 
 jest.mock('@/store', () => ({
   ...jest.requireActual('@/store'),
@@ -13,7 +12,6 @@ jest.mock('@/store', () => ({
 }));
 
 jest.mock('@/utils/api');
-const mockApi = api as jest.Mocked<typeof api>;
 
 describe('Recharge', () => {
   let amountInput: HTMLInputElement;
@@ -58,5 +56,5 @@ describe('Recharge', () => {
       fireEvent.click(submitButton);
       waitFor(() => expect(screen.getByText('El monto debe ser menor o igual a S/ 4950.00')).toBeInTheDocument());
     });
-  })
+  });
 });
