@@ -99,8 +99,8 @@ export default function DataUser(props: Readonly<DataUserProps>) {
       (async () => {
         const { code, country } = userObject;
         api
-          .get(`/onboarding/validate`, {
-            params: {
+          .post(`/onboarding/validate`, {
+            body: {
               consultantCode: code,
               countryCode: country,
             },
