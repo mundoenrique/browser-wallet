@@ -3,7 +3,7 @@
 import { Card } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 //Internal
-import Otp from './partial/Otp';
+import Otp from './partial/OtpRecover';
 import { api } from '@/utils/api';
 import { OtpStore } from '@/interfaces';
 import { NavExternal } from '@/components';
