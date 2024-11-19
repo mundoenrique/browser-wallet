@@ -150,7 +150,7 @@ export async function HandleCustomerRequest(request: NextRequest) {
     const dataEncrypt = await encrypToDecrypt(request, data, url, 'server');
 
     if (url === 'api/v0/onboarding/validate') {
-      const { consultantCode, countryCode } = dataEncrypt.body;
+      const { consultantCode, countryCode } = dataEncrypt;
       url = `api/v0/onboarding/validate?consultantCode=${consultantCode}&countryCode=${countryCode}`;
       method = 'GET';
     }
