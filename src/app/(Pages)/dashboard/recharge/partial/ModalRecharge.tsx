@@ -25,9 +25,8 @@ export function ModalRecharge(props: Readonly<MuiModalProps>) {
         },
       });
     }
-    return;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [open]);
 
   return (
     <ModalResponsive open={open} handleClose={handleClose}>

@@ -27,7 +27,7 @@ export default function Question() {
         page_location: `${host}/dashboard/help`,
         page_title: 'Yiro :: ayuda :: preguntas frecuentes',
         page_referrer: `${host}/dashboard`,
-        section: 'Yiro :: ayuda :: Preguntas frecuentes',
+        section: 'Yiro :: misClientes :: filtro',
         previous_section: 'dashboard',
       },
     });

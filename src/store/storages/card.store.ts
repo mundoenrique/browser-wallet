@@ -24,8 +24,6 @@ const storageApi: StateStorage = {
   setItem: async function (name: string, value: any): Promise<void> {
     const card = JSON.parse(value);
     await setDataRedis('PUT', { uuid: null, data: { card } });
-
-    return;
   },
 
   removeItem: function (name: string): void | Promise<void> {
