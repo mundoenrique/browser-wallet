@@ -169,9 +169,9 @@ export default function InfoVerification() {
     setOpenTerms(true);
     sendGTMEvent({
       event: 'ga4.trackEvent',
-      eventName: 'select_content',
+      eventName: 'view_popup',
       eventParams: {
-        content_type: 'checkbox',
+        content_type: 'modal',
         section: 'Yiro :: onboarding :: step1',
         previous_section: 'Yiro :: onboarding :: step0',
         selected_content: 'Acepto Términos y Condiciones y Política de Privacidad de Datos',
@@ -185,9 +185,9 @@ export default function InfoVerification() {
     setOpenPolicies(true);
     sendGTMEvent({
       event: 'ga4.trackEvent',
-      eventName: 'select_content',
+      eventName: 'view_popup',
       eventParams: {
-        content_type: 'checkbox',
+        content_type: 'modal',
         section: 'Yiro :: onboarding :: step1',
         previous_section: 'Yiro :: onboarding :: step0',
         selected_content: 'Acepto Términos y Condiciones y Política de Privacidad de Datos',
@@ -445,6 +445,19 @@ export default function InfoVerification() {
                 </Typography>
               </>
             }
+            onClick={() => {
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'checkbox',
+                  section: 'Yiro :: onboarding :: step1',
+                  previous_section: 'Yiro :: onboarding :: step0',
+                  selected_content: 'Acepto Términos y Condiciones y Política de Privacidad de Datos',
+                  destination_page: `${host}/signup/onboarding/step2`,
+                },
+              });
+            }}
             control={control}
           />
           <InputCheck

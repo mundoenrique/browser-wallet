@@ -1,6 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Typography } from '@mui/material';
 import { useEffect, useState, useCallback } from 'react';
@@ -14,6 +15,8 @@ import { ContainerLayout, InputPass, Linking, ModalResponsive } from '@/componen
 import { useNavTitleStore, useConfigCardStore, useUiStore, useOtpStore, useUserStore, useHeadersStore } from '@/store';
 
 export default function ChangePin() {
+  const router = useRouter();
+
   const host = useHeadersStore((state) => state.host);
 
   const otpUuid = useOtpStore((state) => state.otpUuid);
@@ -188,8 +191,8 @@ export default function ChangePin() {
         <Button
           variant="contained"
           onClick={() => {
+            router.push('/dashboard');
             setOpenRc(false);
-            updatePage('main');
           }}
           fullWidth
         >

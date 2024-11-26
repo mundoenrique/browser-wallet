@@ -22,6 +22,19 @@ export default function SignupStepper(props: Readonly<{ currentStep: number; chi
     await api.delete('/redis', { data: { jwePublicKey, delParam: 'jwt' } });
   };
 
+  let section = '';
+  let previous = 'identify';
+  if (currentStep > 0) {
+    section = `::step${currentStep}`;
+    previous = `::step${currentStep - 1}`;
+  } else if (currentStep === 3) {
+    section = '::step3::3.2consultora';
+    previous = '::step2';
+  } else if (currentStep === 4) {
+    section = '::step3::3.3PEP';
+    previous = '::step3::3.2consultora';
+  }
+
   return (
     <Box
       sx={{
@@ -42,8 +55,8 @@ export default function SignupStepper(props: Readonly<{ currentStep: number; chi
               eventName: 'select_content',
               eventParams: {
                 content_type: 'boton',
-                section: 'Yiro :: onboarding',
-                previous_section: 'identify',
+                section: `Yiro :: onboarding${section}`,
+                previous_section: previous,
                 selected_content: 'Volver a Somos Belcorp',
                 destination_page: `${backLink}`,
               },

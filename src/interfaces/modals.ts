@@ -1,5 +1,4 @@
 import { BoxProps } from '@mui/system';
-import { Dispatch } from 'react';
 
 /**
  * Global modal

@@ -51,11 +51,11 @@ export default function PepOnboarding() {
       event: 'ga4.trackEvent',
       eventName: 'page_view_ga4',
       eventParams: {
-        page_location: `${host}/signup/onboarding/step3-2`,
+        page_location: `${host}/signup/onboarding/step3-3`,
         page_title: 'Yiro :: onboarding :: step3 :: 3.3PEP',
         page_referrer: `${host}/signup/onboarding/step3-1`,
         section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
-        previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
+        previous_section: 'Yiro :: onboarding :: step3 :: 3.2ocupacion',
       },
     });
   }, [host]);
@@ -88,20 +88,6 @@ export default function PepOnboarding() {
   const watchProvince = watch('pepForm.provinceCode');
   const watchDepartment = watch('pepForm.departmentCode');
   const WatchIsRelativeAlive = watch('pepForm.isRelativeAlive');
-
-  useEffect(() => {
-    sendGTMEvent({
-      event: 'ga4.trackEvent',
-      eventName: 'page_view_ga4',
-      eventParams: {
-        page_location: `${host}/signup/onboarding/step3-2`,
-        page_title: 'Yiro :: onboarding :: step3 :: 3.3PEP',
-        page_referrer: `${host}/signup/onboarding/step3-1`,
-        section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
-        previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
-      },
-    });
-  }, [host]);
 
   const onSubmit = async (data: any) => {
     const requestFormData = {
@@ -161,18 +147,18 @@ export default function PepOnboarding() {
 
   useEffect(() => {
     watchIsPep && setIsPep(watchIsPep.toLowerCase() === 'true');
-    isPep &&
-      sendGTMEvent({
-        event: 'ga4.trackEvent',
-        eventName: 'select_content',
-        eventParams: {
-          page_location: `${host}/signup/onboarding/step3-2`,
-          page_title: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
-          page_referrer: `${host}/signup/onboarding/step3-1`,
-          section: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
-          previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
-        },
-      });
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'checkbox',
+        page_location: `${host}/signup/onboarding/step3-3`,
+        page_title: `Yiro :: onboarding :: step3 :: ${isPep ? '3.4datosPEP' : '3.3PEP'}`,
+        page_referrer: `${host}/signup/onboarding/step3-1`,
+        section: `Yiro :: onboarding :: step3 :: ${isPep ? '3.4datosPEP' : '3.3PEP'}`,
+        previous_section: 'Yiro :: onboarding :: step3 :: 3.2PEP',
+      },
+    });
     WatchIsRelativeAlive && setHasParents(WatchIsRelativeAlive.toLowerCase() === 'true');
   }, [watchIsPep, WatchIsRelativeAlive, isPep, host]);
 
@@ -305,6 +291,17 @@ export default function PepOnboarding() {
             sx={{ textDecoration: 'underline', cursor: 'pointer', textAlign: { sm: 'center' } }}
             onClick={() => {
               setShowPepInfo(true);
+              sendGTMEvent({
+                event: 'ga4.trackEvent',
+                eventName: 'select_content',
+                eventParams: {
+                  content_type: 'message',
+                  section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                  previous_section: 'Yiro :: onboarding :: step3 :: 3.2ocupacion',
+                  selected_content: '¿Qué es una Persona Expuesta Políticamente(PEP)?',
+                  destination_page: `${host}/signup/onboarding/step4`,
+                },
+              });
             }}
           >
             ¿Eres una Persona Políticamente Expuesta (PEP)?
@@ -398,9 +395,11 @@ export default function PepOnboarding() {
                     eventName: 'page_view_ga4',
                     eventParams: {
                       content_type: 'checkbox',
-                      section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
-                      previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
-                      selected_content: isPep ? 'Si' : 'No',
+                      section: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
+                      previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                      selected_content: isPep
+                        ? 'Sí::Participación del 25% o más de una empresa'
+                        : 'No::Participación del 25% o más de una empresa',
                       destination_page: `${host}/signup/onboarding/step4`,
                     },
                   });
@@ -433,7 +432,7 @@ export default function PepOnboarding() {
                         content_type: 'checkbox',
                         section: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
                         previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
-                        selected_content: 'Si',
+                        selected_content: 'Sí::Parientes vivos segundo grado',
                         destination_page: `${host}/signup/onboarding/step4`,
                       },
                     });
@@ -446,7 +445,7 @@ export default function PepOnboarding() {
                         content_type: 'checkbox',
                         section: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
                         previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
-                        selected_content: 'No',
+                        selected_content: 'No::Parientes vivos segundo grado',
                         destination_page: `${host}/signup/onboarding/step4`,
                       },
                     });

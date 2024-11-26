@@ -10,7 +10,15 @@ import { expiredFormatDate } from '@/utils/dates';
 import { filterResponseCode } from '@/utils/toolHelper';
 import CardInformation from '@/components/cards/cardInformation/CardInformation';
 import { CardCollect, CardDebt, LastMovements, Linking, UserWelcome } from '@/components';
-import { useHeadersStore, useChargeStore, useDebStore, useMenuStore, useUiStore, useUserStore } from '@/store';
+import {
+  useHeadersStore,
+  useChargeStore,
+  useDebStore,
+  useMenuStore,
+  useUiStore,
+  useUserStore,
+  useConfigCardStore,
+} from '@/store';
 
 export default function Dashboard() {
   const { push } = useRouter();
@@ -28,6 +36,8 @@ export default function Dashboard() {
   const setModalError = useUiStore((state) => state.setModalError);
 
   const setCurrentItem = useMenuStore((state) => state.setCurrentItem);
+
+  const updatePage = useConfigCardStore((state) => state.updatePage);
 
   const [movementData, setMovementData] = useState<[]>([]);
 
@@ -139,6 +149,7 @@ export default function Dashboard() {
     getMovements();
     getDebtBalance();
     getCharge();
+    updatePage('main');
   }, []); //eslint-disable-line
 
   useEffect(() => {

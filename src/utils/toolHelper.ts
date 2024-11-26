@@ -46,11 +46,12 @@ export const handleShare = async (element: HTMLElement, shareData: any, backgrou
   const webShareSupported = 'canShare' in navigator;
 
   try {
-    if (webShareSupported) {
-      const blob = await toBlob(element, {
-        backgroundColor: backgroundColor,
-      });
-      const file = new File([blob as any], 'ticket.png', { type: 'image/png' });
+    const blob = await toBlob(element, {
+      backgroundColor: backgroundColor,
+    });
+    const file = new File([blob as any], 'ticket.png', { type: 'image/png' });
+
+    if (webShareSupported && navigator.canShare({ files: [file] })) {
       await navigator.share({ files: [file] });
     } else {
       const image = await toJpeg(element, {
