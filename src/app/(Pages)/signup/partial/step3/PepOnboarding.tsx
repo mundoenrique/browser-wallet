@@ -395,9 +395,11 @@ export default function PepOnboarding() {
                     eventName: 'page_view_ga4',
                     eventParams: {
                       content_type: 'checkbox',
-                      section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
-                      previous_section: 'Yiro :: onboarding :: step3 :: 3.1ocupacion',
-                      selected_content: isPep ? 'Si' : 'No',
+                      section: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
+                      previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
+                      selected_content: isPep
+                        ? 'Sí::Participación del 25% o más de una empresa'
+                        : 'No::Participación del 25% o más de una empresa',
                       destination_page: `${host}/signup/onboarding/step4`,
                     },
                   });
@@ -430,7 +432,7 @@ export default function PepOnboarding() {
                         content_type: 'checkbox',
                         section: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
                         previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
-                        selected_content: 'Si',
+                        selected_content: 'Sí::Parientes vivos segundo grado',
                         destination_page: `${host}/signup/onboarding/step4`,
                       },
                     });
@@ -443,7 +445,7 @@ export default function PepOnboarding() {
                         content_type: 'checkbox',
                         section: 'Yiro :: onboarding :: step3 :: 3.4datosPEP',
                         previous_section: 'Yiro :: onboarding :: step3 :: 3.3PEP',
-                        selected_content: 'No',
+                        selected_content: 'No::Parientes vivos segundo grado',
                         destination_page: `${host}/signup/onboarding/step4`,
                       },
                     });

@@ -192,7 +192,6 @@ export default function ChangePin() {
           variant="contained"
           onClick={() => {
             router.push('/dashboard');
-            updatePage('main');
             setOpenRc(false);
           }}
           fullWidth
