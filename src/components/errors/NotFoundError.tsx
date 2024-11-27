@@ -1,9 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { Box, Typography, Stack } from '@mui/material';
 //Internal app
+import { useHeadersStore } from '@/store';
 import Linking from '../navigation/Linking';
 import Pet from '%/images/arts/pet-sorry.png';
 import PurpleLayout from '../layout/PurpleLayout';
@@ -16,7 +16,7 @@ import { fuchsiaBlue } from '@/theme/theme-default';
  * @param code - Error code generated
  */
 export default function NotFoundError({ code }: Readonly<NotFoundErrorProps>) {
-  const router = useRouter();
+  const { backLink } = useHeadersStore();
 
   return (
     <PurpleLayout hidePelca>
@@ -40,7 +40,7 @@ export default function NotFoundError({ code }: Readonly<NotFoundErrorProps>) {
           </Typography>
         </Stack>
 
-        <Linking href="" label="Volver" hidenArrow color="white" underline onClick={() => router.back()} />
+        <Linking href={backLink} label="Volver" hidenArrow color="white" underline />
       </Box>
     </PurpleLayout>
   );
