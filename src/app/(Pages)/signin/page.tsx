@@ -61,7 +61,7 @@ export default function Signin() {
   const closeSession = async () => {
     sessionStorage.clear();
     localStorage.clear();
-    await api.delete('/redis', { data: { jwePublicKey, delParam: 'jwt' } });
+    await api.delete('/redis', { data: { jwePublicKey, delParam: 'jwt', removeRedis: true } });
   };
 
   const onSubmit = async (data: any) => {
