@@ -61,7 +61,23 @@ export default function Signin() {
   const closeSession = async () => {
     sessionStorage.clear();
     localStorage.clear();
-    await api.delete('/redis', { data: { jwePublicKey, delParam: 'jwt' } });
+    await api.delete('/redis', { data: { jwePublicKey, delParam: 'jwt', removeRedis: true } });
+
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'Yiro :: login :: interno',
+        previous_section: 'identify',
+        selected_content: 'Volver a Somos Belcorp',
+        destination_page: `${backLink}`,
+      },
+    });
+
+    setTimeout(() => {
+      window.open(backLink != '' ? backLink : (process.env.NEXT_PUBLIC_ALLOW_ORIGIN as string), '_self');
+    }, 1000);
   };
 
   const onSubmit = async (data: any) => {
@@ -141,20 +157,7 @@ export default function Signin() {
       <NavExternal
         color="white"
         closeApp
-        onClick={() => {
-          sendGTMEvent({
-            event: 'ga4.trackEvent',
-            eventName: 'select_content',
-            eventParams: {
-              content_type: 'boton',
-              section: 'Yiro :: login :: interno',
-              previous_section: 'identify',
-              selected_content: 'Volver a Somos Belcorp',
-              destination_page: `${backLink}`,
-            },
-          });
-          closeSession();
-        }}
+        onClick={closeSession}
       />
       <Box
         component="form"

@@ -11,7 +11,12 @@ export default async function UserPage({ params, searchParams }: any) {
   const clientId = searchParams?.clientId || '';
 
   const protocol = headersList.get('x-forwarded-proto');
-  const referer = headersList.get('referer') ?? '';
+  let referer = headersList.get('referer') ?? '';
+
+  if (process.env.WEB_ENV === 'prod') {
+    referer = `${process.env.NEXT_PUBLIC_ALLOW_ORIGIN}`;
+  }
+
   const host = headersList.get('host');
 
   const userData = await getRedis(`identify:${user}`);

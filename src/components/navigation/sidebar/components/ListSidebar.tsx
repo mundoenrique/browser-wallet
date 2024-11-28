@@ -43,7 +43,23 @@ export default function ListSidebar(): JSX.Element {
   const returnBelcorp = async () => {
     sessionStorage.clear();
     localStorage.clear();
-    await api.delete('/redis', { data: { jwePublicKey, delParam: 'jwt' } });
+    await api.delete('/redis', { data: { jwePublicKey, delParam: 'jwt', removeRedis: true } });
+
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: `Yiro :: Regresa a Somos Belcorp :: menu_1`,
+        previous_section: 'dashboard',
+        selected_content: 'menu_1 :: Regresa a Somos Belcorp',
+        destination_page: `${backLink}`,
+      },
+    });
+
+    setTimeout(() => {
+      window.open(backLink != '' ? backLink : (process.env.NEXT_PUBLIC_ALLOW_ORIGIN as string), '_self');
+    }, 1000);
   };
 
   const closeSession = async () => {
@@ -125,23 +141,10 @@ export default function ListSidebar(): JSX.Element {
 
       <List>
         <ItemSecondarySidebar
-          href={backLink}
+          href={''}
           text="Regresa a Somos Belcorp"
           icon={<LogoutAppIcons />}
-          onClick={() => {
-            returnBelcorp();
-            sendGTMEvent({
-              event: 'ga4.trackEvent',
-              eventName: 'select_content',
-              eventParams: {
-                content_type: 'boton',
-                section: `Yiro :: Regresa a Somos Belcorp :: menu_1`,
-                previous_section: 'dashboard',
-                selected_content: 'menu_1 :: Regresa a Somos Belcorp',
-                destination_page: `${backLink}`,
-              },
-            });
-          }}
+          onClick={returnBelcorp}
         />
         <Divider variant="middle" sx={{ bgcolor: `${fuchsiaBlue[400]}` }} />
         <ItemSecondarySidebar
