@@ -16,12 +16,6 @@ export default function SignupStepper(props: Readonly<{ currentStep: number; chi
 
   const jwePublicKey = useKeyStore((state) => state.jwePublicKey);
 
-  const closeSession = async () => {
-    sessionStorage.clear();
-    localStorage.clear();
-    await api.delete('/redis', { data: { jwePublicKey, delParam: 'jwt' } });
-  };
-
   let section = '';
   let previous = 'identify';
   if (currentStep > 0) {
@@ -34,6 +28,28 @@ export default function SignupStepper(props: Readonly<{ currentStep: number; chi
     section = '::step3::3.3PEP';
     previous = '::step3::3.2consultora';
   }
+
+  const closeSession = async () => {
+    sessionStorage.clear();
+    localStorage.clear();
+    await api.delete('/redis', { data: { jwePublicKey, delParam: 'jwt', removeRedis: true } });
+
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: `Yiro :: onboarding${section}`,
+        previous_section: previous,
+        selected_content: 'Volver a Somos Belcorp',
+        destination_page: `${backLink}`,
+      },
+    });
+
+    setTimeout(() => {
+      window.open(backLink != '' ? backLink : (process.env.NEXT_PUBLIC_ALLOW_ORIGIN as string), '_self');
+    }, 1000);
+  };
 
   return (
     <Box
@@ -49,20 +65,7 @@ export default function SignupStepper(props: Readonly<{ currentStep: number; chi
         <NavExternal
           image
           closeApp
-          onClick={() => {
-            sendGTMEvent({
-              event: 'ga4.trackEvent',
-              eventName: 'select_content',
-              eventParams: {
-                content_type: 'boton',
-                section: `Yiro :: onboarding${section}`,
-                previous_section: previous,
-                selected_content: 'Volver a Somos Belcorp',
-                destination_page: `${backLink}`,
-              },
-            });
-            closeSession();
-          }}
+          onClick={ closeSession }
         />
       )}
 

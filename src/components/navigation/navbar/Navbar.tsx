@@ -8,7 +8,8 @@ import { AppBar, IconButton, Toolbar, Typography, Box } from '@mui/material';
 import Linking from '../Linking';
 import { NavbarProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import { useHeadersStore, useNavTitleStore } from '@/store';
+import { useHeadersStore, useKeyStore, useNavTitleStore } from '@/store';
+import { api } from '@/utils/api';
 
 /**
  * Top bar used in responsive to show menu and titles.
@@ -21,11 +22,35 @@ import { useHeadersStore, useNavTitleStore } from '@/store';
 export default function Navbar(props: Readonly<NavbarProps>): JSX.Element {
   const { onClick } = props;
 
+  const jwePublicKey = useKeyStore((state) => state.jwePublicKey);
+
   const { title } = useNavTitleStore();
   const backLink = useHeadersStore((state) => state.backLink);
 
   const pathname = usePathname();
   const dashboardNav = pathname === '/dashboard';
+
+  const returnBelcorp = async () => {
+    sessionStorage.clear();
+    localStorage.clear();
+    await api.delete('/redis', { data: { jwePublicKey, delParam: 'jwt', removeRedis: true } });
+
+    sendGTMEvent({
+      event: 'ga4.trackEvent',
+      eventName: 'select_content',
+      eventParams: {
+        content_type: 'boton',
+        section: 'Yiro :: Volver a Somos Belcorp :: menu_1',
+        previous_section: 'dashboard',
+        selected_content: 'menu_1 :: Volver a Somos Belcorp',
+        destination_page: `${backLink}`,
+      },
+    });
+
+    setTimeout(() => {
+      window.open(backLink != '' ? backLink : (process.env.NEXT_PUBLIC_ALLOW_ORIGIN as string), '_self');
+    }, 1000);
+  };
 
   return (
     <AppBar
@@ -50,23 +75,11 @@ export default function Navbar(props: Readonly<NavbarProps>): JSX.Element {
 
         {dashboardNav ? (
           <Linking
-            href={backLink}
+            href={''}
             label="Volver a Somos Belcorp"
             mb={0}
             adormentEnd
-            onClick={() => {
-              sendGTMEvent({
-                event: 'ga4.trackEvent',
-                eventName: 'select_content',
-                eventParams: {
-                  content_type: 'boton',
-                  section: 'Yiro :: Volver a Somos Belcorp :: menu_1',
-                  previous_section: 'dashboard',
-                  selected_content: 'menu_1 :: Volver a Somos Belcorp',
-                  destination_page: `${backLink}`,
-                },
-              });
-            }}
+            onClick={returnBelcorp}
           />
         ) : (
           <>

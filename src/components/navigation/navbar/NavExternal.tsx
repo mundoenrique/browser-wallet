@@ -48,7 +48,7 @@ export default function NavExternal({ image, color, closeApp, onClick }: Readonl
           <Linking href="/signin" label="Volver" mb={0} adormentStart onClick={onClick} />
         ) : (
           <Linking
-            href={backLink}
+            href={''}
             label="Volver a Somos Belcorp"
             mb={0}
             color={color}
