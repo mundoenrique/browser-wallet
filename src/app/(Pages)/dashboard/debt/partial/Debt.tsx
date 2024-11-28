@@ -181,6 +181,10 @@ export default function Debt() {
               {debt?.amount === 0 && 'S/ 0.00'}
               {debt?.amount > 0 &&
                 `${Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(debt?.amount as number)}`}
+              {debt?.amount < 0 &&
+                `S/ ${Intl.NumberFormat('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(
+                  debt?.amount as number
+                )}`}
             </Typography>
             <Typography variant="body2" color="primary.main">
               {debt?.expirationDate}
