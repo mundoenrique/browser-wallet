@@ -1,6 +1,7 @@
 import forge from 'node-forge';
-import { toJpeg, toBlob } from 'html-to-image';
 import CryptoJS from 'crypto-js';
+import html2canvas from 'html2canvas';
+import { toJpeg, toBlob } from 'html-to-image';
 //Internal app
 import { useJwtStore } from '@/store';
 import { REDIS_CIPHER } from '@/utils/constants';
@@ -44,7 +45,8 @@ export const handleDownload = async (element: HTMLElement, fileName: string, bac
  */
 export const handleShare = async (element: HTMLElement, shareData: any, backgroundColor: string) => {
   const userAgent = window.navigator.userAgent;
-  const macOS = /Mac/i.test(userAgent) ? true : false;
+  const macOS = !!/Mac/i.test(userAgent);
+  console.log('🚀 ~ handleShare ~ macOS:', macOS);
 
   if (!macOS) {
     const webShareSupported = 'canShare' in navigator;
@@ -71,59 +73,41 @@ export const handleShare = async (element: HTMLElement, shareData: any, backgrou
       console.error(err);
     }
   } else {
-    downloadCodeAsImage('ticket', 'ticket.png', backgroundColor);
+    dowloadCanvas(element, shareData, backgroundColor);
   }
 };
 
 /**
  * Downloads a portion of the code as a JPEG image.
  *
- * @param elementId - The ID of the HTML element to be captured.
- * @param fileName - The name of the downloaded file.
+ * @param element - The HTML element to be captured.
+ * @param shareData - The data to be shared, including the URL and files.
  * @param backgroundColor - The background color for the captured image.
  */
-export const downloadCodeAsImage = (elementId: string, fileName: string, backgroundColor: string) => {
-  const element = document.getElementById(elementId);
-  if (!element) {
-    console.error(`Element with ID ${elementId} not found`);
-    return;
-  }
+export const dowloadCanvas = async (element: HTMLElement, shareData: any, backgroundColor: string) => {
+  const webShareSupported = 'canShare' in navigator;
 
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
-
-  if (!context) {
-    console.error('Failed to get canvas context');
-    return;
-  }
-
-  const rect = element.getBoundingClientRect();
-  canvas.width = rect.width;
-  canvas.height = rect.height;
-
-  context.fillStyle = backgroundColor;
-  context.fillRect(0, 0, canvas.width, canvas.height);
-
-  context.font = '16px Arial';
-  context.fillStyle = 'black';
-  context.textAlign = 'left';
-  context.textBaseline = 'top';
-
-  const lines = element.innerText.split('\n');
-  lines.forEach((line, index) => {
-    context.fillText(line, 10, 20 * index + 10);
-  });
-
-  canvas.toBlob((blob) => {
-    if (blob) {
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = fileName;
-      link.click();
+  try {
+    const canvas = await html2canvas(element, {
+      removeContainer: false,
+      allowTaint: true,
+      backgroundColor: backgroundColor,
+    });
+    if (webShareSupported) {
+      const blob: Blob = await new Promise((resolve: any) => canvas.toBlob(resolve, 'image/png'));
+      const file: File = new File([blob], 'cobro.png', { type: 'image/png' });
+      shareData['files'].push(file);
+      await navigator.share(shareData);
     } else {
-      console.error('Failed to create blob from canvas');
+      const image = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = image;
+      link.download = 'ticket.png';
+      link.click();
     }
-  }, 'image/jpeg');
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const encryptForge = (data: any, exchange: any = '') => {
@@ -195,6 +179,7 @@ export const setDataRedis = async (method: string, data = {}) => {
 
     return await response.json();
   } catch (error) {
+    console.error('Error in setDataRedis:', error);
     throw error;
   }
 };
@@ -240,11 +225,11 @@ export const validateTime = (timeSession: number, dateSession: string) => {
 
 export const fastModularExponentiation = function (a: number, b: number, n: number) {
   a = a % n;
-  var result = 1;
-  var x = a;
+  let result = 1;
+  let x = a;
 
   while (b > 0) {
-    var leastSignificantBit = b % 2;
+    let leastSignificantBit = b % 2;
     b = Math.floor(b / 2);
 
     if (leastSignificantBit == 1) {
