@@ -1,23 +1,27 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 //Internal app
-import { useHeadersStore } from '@/store';
+import { api } from '@/utils/api';
 import LogoGreen from '%/images/LogoGreen';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { PurpleLayout, Linking } from '@/components';
+import { useHeadersStore, useKeyStore } from '@/store';
 
 export default function SignOut() {
-  const [url, setUrl] = useState<string>('');
   const backLink = useHeadersStore((state) => state.backLink);
 
-  useEffect(() => {
-    const urlRef: any = backLink != '' ? backLink : process.env.NEXT_PUBLIC_ALLOW_ORIGIN;
-    setUrl(urlRef);
+  const jwePublicKey = useKeyStore((state) => state.jwePublicKey);
+
+  const returnBelcorp = async () => {
     sessionStorage.clear();
     localStorage.clear();
-  }, [backLink, setUrl]);
+    await api.delete('/redis', { data: { jwePublicKey, delParam: 'jwt', removeRedis: true } });
+
+    setTimeout(() => {
+      window.open(backLink != '' ? backLink : (process.env.NEXT_PUBLIC_ALLOW_ORIGIN as string), '_self');
+    }, 1000);
+  };
 
   return (
     <PurpleLayout>
@@ -34,7 +38,7 @@ export default function SignOut() {
           </Typography>
         </Stack>
 
-        {url && <Linking href={url} label="Volver" hidenArrow color="white" underline />}
+        <Linking href={''} label="Volver" hidenArrow color="white" underline onClick={returnBelcorp} />
       </Box>
     </PurpleLayout>
   );

@@ -6,10 +6,10 @@ import { sendGTMEvent } from '@next/third-parties/google';
 import { AppBar, IconButton, Toolbar, Typography, Box } from '@mui/material';
 //Internal app
 import Linking from '../Linking';
+import { api } from '@/utils/api';
 import { NavbarProps } from '@/interfaces';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { useHeadersStore, useKeyStore, useNavTitleStore } from '@/store';
-import { api } from '@/utils/api';
 
 /**
  * Top bar used in responsive to show menu and titles.
@@ -74,13 +74,7 @@ export default function Navbar(props: Readonly<NavbarProps>): JSX.Element {
         </IconButton>
 
         {dashboardNav ? (
-          <Linking
-            href={''}
-            label="Volver a Somos Belcorp"
-            mb={0}
-            adormentEnd
-            onClick={returnBelcorp}
-          />
+          <Linking href={''} label="Volver a Somos Belcorp" mb={0} adormentEnd onClick={returnBelcorp} />
         ) : (
           <>
             <Typography variant="subtitle1" color="primary.main">
