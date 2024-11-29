@@ -3,7 +3,6 @@
 import NodeRSA from 'node-rsa';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { isBrowser } from 'react-device-detect';
 // Internal app
 import { api } from '@/utils/api';
 import LogoGreen from '%/images/LogoGreen';
@@ -76,7 +75,7 @@ export default function KeyProvider({ children }: Readonly<ChildrenProps>): JSX.
           const response = await api.post('/gettoken', {
             jwePublicKey,
             jwsPublicKey,
-            isBrowser,
+            isBrowser: true,
             idDevice,
             exchange: keysAes.keyPublic,
           });
