@@ -1,7 +1,6 @@
 import { StateStorage, createJSONStorage } from 'zustand/middleware';
 //Internal app
 import { decryptForge, setDataRedis } from '@/utils/toolHelper';
-import { REDIS_CIPHER } from '@/utils/constants';
 
 const storageApi: StateStorage = {
   getItem: async function (name: string): Promise<string | null> {
@@ -9,7 +8,7 @@ const storageApi: StateStorage = {
       const data = await fetch(`${process.env.NEXT_PUBLIC_WEB_URL}/api/v1/redis`).then((res) => res.json());
 
       if (data.data) {
-        const decrypt = decryptForge(data.data, REDIS_CIPHER);
+        const decrypt = decryptForge(data.data, process.env.NEXT_PUBLIC_AES_KEY);
         const response = JSON.parse(decrypt);
 
         return JSON.stringify(response.accessSession);

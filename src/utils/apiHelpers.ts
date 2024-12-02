@@ -4,7 +4,7 @@ import logger from './logger';
 import { handleApiResponse } from '.';
 import { encryptForge } from './toolHelper';
 import { IApiGeeResponse, IEncryptedBody, IJWTPayload } from '@/interfaces';
-import { JWT_HEADER, JWS_HEADER, SESSION_ID, REDIS_CIPHER } from './constants';
+import { JWT_HEADER, JWS_HEADER, SESSION_ID } from './constants';
 import { verifyJWT, encryptJWE, decryptJWE, signJWE, verifyDetachedJWS } from './jwt';
 
 type EnvVariableKey =
@@ -142,7 +142,7 @@ export async function handleResponse(
       const expires = new Date(Date.now() + 86400 * 1000).toUTCString();
       cookieSet = `${SESSION_ID}=${encryptForge(
         responseObj.data.sessionId,
-        REDIS_CIPHER
+        process.env.AES_KEY
       )}; HttpOnly=true; Path=/; Secure=true; SameSite=true; Expires=${expires};`;
     }
 

@@ -350,8 +350,8 @@ async function encrypToDecrypt(request: NextRequest, data: any, url: string, typ
   if (dataRedis) {
     const resRedis = JSON.parse(dataRedis);
     const secret = forge.util.decode64(resRedis.exchange);
-    const keyDecrypt = type === 'server' ? secret : REDIS_CIPHER;
-    const keyEncrypt = type === 'server' ? REDIS_CIPHER : secret;
+    const keyDecrypt = type === 'server' ? secret : process.env.AES_KEY || '';
+    const keyEncrypt = type === 'server' ? process.env.AES_KEY || '' : secret;
 
     const requiresValidation = !noSessionValidationRoutes.some((pattern: any) =>
       typeof pattern === 'string' ? pattern === url : pattern.test(url)

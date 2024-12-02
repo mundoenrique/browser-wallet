@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import logger from '@/utils/logger';
 import { encryptForge, fastModularExponentiation, generateAesKey, generatePublicKey } from '@/utils/toolHelper';
 import { decryptJWE, getEnvVariable, handleResponse, signJWT, postRedis } from '@/utils';
-import { REDIS_CIPHER } from '@/utils/constants';
 
 export async function POST(request: NextRequest) {
   const { url, method } = request;
@@ -37,7 +36,7 @@ export async function POST(request: NextRequest) {
     const exchangeKey = generateAesKey(secret);
 
     const deviceId = idDevice || null;
-    const uuidSession = deviceId ? encryptForge(uuid, REDIS_CIPHER) : uuid;
+    const uuidSession = deviceId ? encryptForge(uuid, process.env.AES_KEY) : uuid;
     const stateObject = { login: false, ipAddress, uuid, deviceId, exchange: exchangeKey };
 
     await postRedis(`session:${uuidSession}`, stateObject);

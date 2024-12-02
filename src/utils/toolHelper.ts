@@ -4,7 +4,6 @@ import html2canvas from 'html2canvas';
 import { toJpeg, toBlob } from 'html-to-image';
 //Internal app
 import { useJwtStore } from '@/store';
-import { REDIS_CIPHER } from '@/utils/constants';
 
 /**
  * Handle text initials on the avatar
@@ -164,7 +163,7 @@ export const decryptForge = (encryptedData: any, exchange: any = '') => {
 
 export const setDataRedis = async (method: string, data = {}) => {
   try {
-    const encryptData = encryptForge(JSON.stringify(data), REDIS_CIPHER);
+    const encryptData = encryptForge(JSON.stringify(data), process.env.NEXT_PUBLIC_AES_KEY);
     const url = process.env.NEXT_PUBLIC_WEB_URL + '/api/v1/redis';
 
     const response = await fetch(url, {

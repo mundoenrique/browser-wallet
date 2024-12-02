@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 //Internal app
 import logger from '@/utils/logger';
 import { decryptForge, encryptForge } from '@/utils/toolHelper';
-import { REDIS_CIPHER, SESSION_ID, TIME_SESSION_REDIS } from '@/utils/constants';
+import { SESSION_ID, TIME_SESSION_REDIS } from '@/utils/constants';
 import { createRedisInstance, getRedis, postRedis, delRedis } from '@/utils/redis';
 import { decryptJWE, getEnvVariable, handleResponse, putRedis } from '@/utils';
 
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     const uuidCookie = cookies().get(SESSION_ID)?.value ?? request.headers.get('X-Session-Mobile') ?? null;
     const reqData = searchParams.get('reqData') ?? 'session:' + uuidCookie;
     const resData: string = (await getRedis(reqData)) ?? '';
-    const data = resData ? encryptForge(resData, REDIS_CIPHER) : '';
+    const data = resData ? encryptForge(resData, process.env.AES_KEY) : '';
 
     return new NextResponse(JSON.stringify({ data }), { status: 200 });
   } catch (error) {
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
   try {
     const uuidCookie = cookies().get(SESSION_ID)?.value ?? request.headers.get('X-Session-Mobile') ?? null;
     const dataBody = await request.json();
-    const decryptData = JSON.parse(decryptForge(dataBody.data, REDIS_CIPHER));
+    const decryptData = JSON.parse(decryptForge(dataBody.data, process.env.AES_KEY));
     const uuid = decryptData.uuid ? decryptData.uuid : 'session:' + uuidCookie;
 
     if (decryptData.dataRedis === 'get') {
@@ -44,7 +44,7 @@ export async function PUT(request: NextRequest) {
   try {
     const uuidCookie = cookies().get(SESSION_ID)?.value ?? request.headers.get('X-Session-Mobile') ?? null;
     const dataBody = await request.json();
-    const decryptData = JSON.parse(decryptForge(dataBody.data, REDIS_CIPHER));
+    const decryptData = JSON.parse(decryptForge(dataBody.data, process.env.AES_KEY));
     const uuid = decryptData.uuid ? decryptData.uuid : 'session:' + uuidCookie;
 
     try {
@@ -67,7 +67,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const res = { data: { code: '200.00.000', message: 'ok' } };
-    const response = encryptForge(JSON.stringify(res), REDIS_CIPHER);
+    const response = encryptForge(JSON.stringify(res), process.env.AES_KEY);
 
     return new NextResponse(JSON.stringify({ data: response }), { status: 200 });
   } catch (error) {
