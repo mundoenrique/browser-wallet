@@ -61,7 +61,7 @@ export default function SuccessWallets() {
             Crear solicitud de cobro
           </Typography>
           <Typography color="white" fontSize={14}>
-            Comparte esta información para que te paguen a través de Pago Efectivo:
+            Comparte esta información para que te paguen a través de PagoEfectivo:
           </Typography>
           <CardPagoEfectivo cip={providerPaymentCode} codeQr={qr} label="Compartir" share>
             <CardInfoOperation date={formattedSortDate(expirationDate)} amount={amount} name={name} />

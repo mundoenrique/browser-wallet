@@ -52,7 +52,7 @@ export default function Success() {
             Generar recarga
           </Typography>
           <Typography color="white" fontSize={14}>
-            Recarga a través de Pago Efectivo por una de estas 2 opciones:
+            Recarga a través de PagoEfectivo por una de estas 2 opciones:
           </Typography>
           <CardPagoEfectivo cip={providerPaymentCode} codeQr={qr} label="Guardar código QR" download>
             <Button

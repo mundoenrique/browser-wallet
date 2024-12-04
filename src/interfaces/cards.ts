@@ -119,7 +119,7 @@ export interface CardInfoOperationProps {
 }
 
 /**
- * Card Pago Efectivo
+ * Card PagoEfectivo
  *
  * @typeParam string | number
  * @typeParam children: React.ReactNode
