@@ -802,7 +802,7 @@ export default function Terms() {
               las cuales serán comunicadas a través de los canales oficiales de Yiro y se encuentran detalladas en el
               punto 6de este documento. Finalmente, las solicitudes remitidas en mérito a dicho servicio de cobro pueden
               estar sujetas a limites vigentes y/o que incorpore a futuro LA EMPRESA, según requerimientos y/o
-              exigencias que realice Pago Efectivo, las cuales le serán comunicadas vía correo electrónico. Los Usuarios
+              exigencias que realice PagoEfectivo, las cuales le serán comunicadas vía correo electrónico. Los Usuarios
               reconocen que, cuando el dinero se encuentre cargado a sus Cuentas, no tendrán derecho a solicitar que se
               revierta la operación.
             </Typography>
@@ -825,7 +825,7 @@ export default function Terms() {
             </Typography>
             <Typography paragraph>
               Finalmente, las solicitudes remitidas en mérito a dicho servicio de cobro pueden estar sujetas a limites
-              adicionales según lo determine Pago Efectivo para pagos con otras billeteras electrónicas, transferencias,
+              adicionales según lo determine PagoEfectivo para pagos con otras billeteras electrónicas, transferencias,
               pago desde banca móvil, banca por internet y agentes; y Links de cobro de Cybersource para pagos con
               Tarjeta de Crédito y/o Débito; las cuales le serán comunicadas vía correo electrónico y se encuentran
               detalladas en el punto de &quot;montos máximos&quot; de este documento. Las transferencias pueden estar
