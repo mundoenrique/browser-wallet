@@ -163,9 +163,7 @@ export default function PasswordCreation() {
           setModalError({ error: e });
         });
     };
-    {
-      passwordTermsCatalog.length === 0 && fetchTermPasswordCatalog();
-    }
+    passwordTermsCatalog.length === 0 && fetchTermPasswordCatalog();
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   const onSubmit = async (data: any) => {
