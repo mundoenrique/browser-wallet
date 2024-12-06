@@ -1,12 +1,13 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 //Internal app
 import { useHeadersStore } from '@/store';
-import LogoGreen from '%/images/LogoGreen';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { PurpleLayout, Linking } from '@/components';
+import logoGreenStatic from '%/images/logoGreenStatic.svg';
 
 export default function SignOut() {
   const [url, setUrl] = useState<string>('');
@@ -22,7 +23,7 @@ export default function SignOut() {
   return (
     <PurpleLayout>
       <Box sx={{ width: { xs: 'auto', sm: 542 }, display: 'grid', justifyItems: 'center', textAlign: 'center', mx: 3 }}>
-        <LogoGreen />
+        <Image src={logoGreenStatic} alt="Yiro logo" priority />
         <Stack spacing={3 / 2} mt={2} mb={3}>
           <Box>
             <Typography variant="subtitle1" color={fuchsiaBlue[50]}>

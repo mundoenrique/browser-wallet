@@ -1,11 +1,12 @@
 'use client';
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Typography, Box } from '@mui/material';
 import { useEffect, useCallback, useState } from 'react';
 //Internal app
 import { api } from '@/utils/api';
-import LogoGreen from '%/images/LogoGreen';
+import logoGreenStatic from '%/images/logoGreenStatic.svg';
 import { DataUserProps } from '@/interfaces';
 import { PurpleLayout, NotFoundError } from '@/components';
 import { useHeadersStore, useRegisterStore, useUiStore } from '@/store';
@@ -119,7 +120,7 @@ export default function DataUser(props: Readonly<DataUserProps>) {
   return (
     <PurpleLayout>
       <Box sx={{ zIndex: 1, display: 'grid', justifyItems: 'center', gap: 3 }}>
-        <LogoGreen />
+        <Image src={logoGreenStatic} alt="Yiro logo" priority />
         <Typography variant="h6" color="white" align="center" sx={{ width: 222 }}>
           Estamos verificando tu información
         </Typography>

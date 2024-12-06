@@ -10,7 +10,6 @@ import { Backdrop, CircularProgress, Typography, Box, Zoom } from '@mui/material
 import yiro from '%/images/arts/yiro.png';
 import LogoGreen from '%/images/LogoGreen';
 import { PurpleLayout } from '@/components';
-import animation1 from '%/images/animation1.svg';
 import animation2 from '%/images/animation2.svg';
 import { fuchsiaBlue } from '@/theme/theme-default';
 import { useHeadersStore, useRegisterStore, useUiStore } from '@/store';
