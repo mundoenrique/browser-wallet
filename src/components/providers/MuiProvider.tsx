@@ -1,5 +1,6 @@
 'use client';
 
+import axios from 'axios';
 import { CssBaseline } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
@@ -14,8 +15,7 @@ import { ChildrenProps } from '@/interfaces';
  */
 export default function MuiProvider({ children }: Readonly<ChildrenProps>): JSX.Element {
   const handleBeforeUnload = useCallback(async () => {
-    // await axios.get('/api/v1/logout');
-    console.log('Cerro sesion------------------------');
+    await axios.get('/api/v1/logout');
   }, []);
 
   const handleKeyDown = useCallback(
