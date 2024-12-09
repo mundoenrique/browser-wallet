@@ -1,7 +1,7 @@
 {
   "solution": "belcorp-web",
   "name": "belcorp-corporation",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "private": true,
   "author": "Novopayment",
   "license": "MIT",
@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "standalone": "cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/ && node .next/standalone/server.js"
   },
   "jest-junit": {
     "output": "output/coverage/junit/junit.xml",

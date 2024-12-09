@@ -108,9 +108,13 @@ ALLOW_ORIGIN={{PAGE_ALLOW_ORIGIN}} \* URL de página anfitriona.
 
 PRIME_NUMBER={{PRIME_NUMBER}} \* Semilla para solución de algoritmo AES256 (Número primo de 6 dígitos)
 
-LOG_FILE={{ ON | OFF}} \* habilitar o deshabilitar la escritura de logs en archivos
+LOG_FILE={{ ON | OFF }} \* habilitar o deshabilitar la escritura de logs en archivos
 
 MAX_FIES={{MAX_DAYS_LOG_FILE}} \* Tiempo de expiración de para archivos de logs, por defecto 60 días (60d)
+
+HANDLE_SESS={{ ON | OFF }} \* habilitar o deshabilitar control de sesión con eventos del navegador
+
+AES_KEY={{AES_KEY}} \* Llave de transporte de metodo de encriptación AES256
 
 TIMEZONE={{TIMEZONE}} \* Zona horaria para fecha de logs, por defecto Lima (America/Lima)
 
