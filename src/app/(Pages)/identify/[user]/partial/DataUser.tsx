@@ -2,13 +2,15 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { isBrowser } from 'react-device-detect';
 import { Typography, Box } from '@mui/material';
 import { useEffect, useCallback, useState } from 'react';
 //Internal app
 import { api } from '@/utils/api';
-import logoGreenStatic from '%/images/logoGreenStatic.svg';
+import LogoGreen from '%/images/LogoGreen';
 import { DataUserProps } from '@/interfaces';
 import { PurpleLayout, NotFoundError } from '@/components';
+import logoGreenStatic from '%/images/logoGreenStatic.svg';
 import { useHeadersStore, useRegisterStore, useUiStore } from '@/store';
 
 /**
@@ -120,7 +122,7 @@ export default function DataUser(props: Readonly<DataUserProps>) {
   return (
     <PurpleLayout>
       <Box sx={{ zIndex: 1, display: 'grid', justifyItems: 'center', gap: 3 }}>
-        <Image src={logoGreenStatic} alt="Yiro logo" priority />
+        {isBrowser ? <LogoGreen /> : <Image src={logoGreenStatic} alt="Yiro logo" />}
         <Typography variant="h6" color="white" align="center" sx={{ width: 222 }}>
           Estamos verificando tu información
         </Typography>
