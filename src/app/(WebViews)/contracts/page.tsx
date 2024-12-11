@@ -1,8 +1,8 @@
 'use client';
+import { Box } from '@mui/material';
 
 //Internal app
 import { Conditions, Terms, Policies, ContainerLayout } from '@/components';
-import { Box } from '@mui/material';
 
 export default function page() {
   return (
