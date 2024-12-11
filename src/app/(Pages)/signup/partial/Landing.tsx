@@ -10,9 +10,9 @@ import ErrorPage from './ErrorPage';
 import LogoPurple from '%/images/LogoPurple';
 import { encryptForge } from '@/utils/toolHelper';
 import { fuchsiaBlue } from '@/theme/theme-default';
-import animation1 from '%/images/pwa/animation1.png';
-import animation2 from '%/images/pwa/animation2.png';
-import animation3 from '%/images/pwa/animation3.png';
+import animation1 from '%/images/animation1.png';
+import animation2 from '%/images/animation2.png';
+import animation3 from '%/images/animation3.png';
 import { useHeadersStore, useJwtStore, useRegisterStore, useUiStore } from '@/store';
 
 const animationState = [
