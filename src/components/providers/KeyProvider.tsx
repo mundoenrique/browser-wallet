@@ -45,7 +45,8 @@ export default function KeyProvider({ children }: Readonly<ChildrenProps>): JSX.
       pathname != '/signout' &&
       pathname != '/policies' &&
       pathname != '/legal' &&
-      pathname != '/conditions'
+      pathname != '/conditions' &&
+      pathname != 'contracts'
     ) {
       const jweKeypair = new NodeRSA({ b: 2048 });
       const jwePrivateKey = removePEMHeadersAndFooters(jweKeypair.exportKey('pkcs8-private-pem'));
@@ -108,7 +109,8 @@ export default function KeyProvider({ children }: Readonly<ChildrenProps>): JSX.
       pathname != '/signout' &&
       pathname != '/policies' &&
       pathname != '/legal' &&
-      pathname != '/conditions')
+      pathname != '/conditions' &&
+      pathname != 'contracts')
   ) {
     return (
       <PurpleLayout>
