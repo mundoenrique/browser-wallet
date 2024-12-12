@@ -10,7 +10,7 @@ export default function Conditions() {
       <Typography
         variant="h6"
         align="center"
-        sx={{ color: 'primary.main', mb: 3, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
+        sx={{ color: 'primary.main', mb: 3, display: { md: 'block' }, textAlign: 'center' }}
       >
         CONTRATO DE CUENTA GENERAL DE DINERO ELECTRÓNICO PERSONA NATURAL
       </Typography>
