@@ -27,7 +27,7 @@ export default function Policies() {
       <Typography
         variant="h6"
         color="primary"
-        sx={{ color: 'primary.main', mb: 6, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
+        sx={{ color: 'primary.main', mb: 6, display: { md: 'block' }, textAlign: 'center' }}
       >
         POLÍTICA DE PRIVACIDAD – BILLETERA YIRO - PERÚ
       </Typography>

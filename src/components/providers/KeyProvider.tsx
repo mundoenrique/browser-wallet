@@ -45,7 +45,8 @@ export default function KeyProvider({ children }: Readonly<ChildrenProps>): JSX.
       pathname != '/signout' &&
       pathname != '/policies' &&
       pathname != '/legal' &&
-      pathname != '/conditions'
+      pathname != '/conditions' &&
+      pathname != '/contracts'
     ) {
       const jweKeypair = new NodeRSA({ b: 2048 });
       const jwePrivateKey = removePEMHeadersAndFooters(jweKeypair.exportKey('pkcs8-private-pem'));
@@ -108,7 +109,8 @@ export default function KeyProvider({ children }: Readonly<ChildrenProps>): JSX.
       pathname != '/signout' &&
       pathname != '/policies' &&
       pathname != '/legal' &&
-      pathname != '/conditions')
+      pathname != '/conditions' &&
+      pathname != '/contracts')
   ) {
     return (
       <PurpleLayout>
@@ -121,7 +123,7 @@ export default function KeyProvider({ children }: Readonly<ChildrenProps>): JSX.
     <>
       {children}
       <Typography sx={{ position: 'fixed', bottom: '10px', right: '10px' }} variant="caption">
-        v1.0.16
+        v1.0.18
       </Typography>
     </>
   );

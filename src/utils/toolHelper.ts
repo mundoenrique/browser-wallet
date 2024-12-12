@@ -1,7 +1,6 @@
 import forge from 'node-forge';
-import CryptoJS from 'crypto-js';
 import html2canvas from 'html2canvas';
-import { toJpeg, toBlob } from 'html-to-image';
+import CryptoJS from 'crypto-js';
 //Internal app
 import { useJwtStore } from '@/store';
 
@@ -26,11 +25,15 @@ export function stringAvatar(name: string) {
  * @param backgroundColor - The background color for the captured image.
  */
 export const handleDownload = async (element: HTMLElement, fileName: string, backgroundColor: string) => {
-  const dataUrl = await toJpeg(element, {
+  const canvas = await html2canvas(element, {
+    removeContainer: false,
+    allowTaint: true,
     backgroundColor: backgroundColor,
+    scale: 1.5,
   });
+  const image = canvas.toDataURL('image/png');
   const link = document.createElement('a');
-  link.href = dataUrl;
+  link.href = image;
   link.download = fileName;
   link.click();
 };
@@ -43,47 +46,6 @@ export const handleDownload = async (element: HTMLElement, fileName: string, bac
  * @param backgroundColor - The background color for the captured image.
  */
 export const handleShare = async (element: HTMLElement, shareData: any, backgroundColor: string) => {
-  const userAgent = window.navigator.userAgent;
-  const macOS = !!/Mac/i.test(userAgent);
-  console.log('🚀 ~ handleShare ~ macOS:', macOS);
-
-  if (!macOS) {
-    const webShareSupported = 'canShare' in navigator;
-
-    try {
-      const blob = await toBlob(element, {
-        backgroundColor: backgroundColor,
-      });
-      const file = new File([blob as any], 'ticket.png', { type: 'image/png' });
-
-      if (webShareSupported && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file] });
-      } else {
-        const image = await toJpeg(element, {
-          backgroundColor: backgroundColor,
-        });
-        const link = document.createElement('a');
-        link.href = image;
-        link.download = 'ticket.png';
-        link.target = '_blank';
-        link.click();
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  } else {
-    downloadCanvas(element, shareData, backgroundColor);
-  }
-};
-
-/**
- * Downloads a portion of the code as a JPEG image.
- *
- * @param element - The HTML element to be captured.
- * @param shareData - The data to be shared, including the URL and files.
- * @param backgroundColor - The background color for the captured image.
- */
-export const downloadCanvas = async (element: HTMLElement, shareData: any, backgroundColor: string) => {
   const webShareSupported = 'canShare' in navigator;
 
   try {
@@ -91,10 +53,11 @@ export const downloadCanvas = async (element: HTMLElement, shareData: any, backg
       removeContainer: false,
       allowTaint: true,
       backgroundColor: backgroundColor,
+      scale: 1.5,
     });
     if (webShareSupported) {
       const blob: Blob = await new Promise((resolve: any) => canvas.toBlob(resolve, 'image/png'));
-      const file: File = new File([blob], 'cobro.png', { type: 'image/png' });
+      const file: File = new File([blob], 'ticket.png', { type: 'image/png' });
       shareData['files'].push(file);
       await navigator.share(shareData);
     } else {
