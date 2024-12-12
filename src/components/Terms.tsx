@@ -279,7 +279,7 @@ export default function Terms() {
       <Typography
         variant="h6"
         color="primary"
-        sx={{ color: 'primary.main', mb: 3, display: { xs: 'none ', md: 'block' }, textAlign: 'center' }}
+        sx={{ color: 'primary.main', mb: 3, display: { md: 'block' }, textAlign: 'center' }}
       >
         TÉRMINOS Y CONDICIONES – BILLETERA YIRO- PERÚ
       </Typography>
