@@ -12,7 +12,6 @@ const nextConfig = {
         hostname: '**.pagoefectivo.pe',
       },
     ],
-    domains: ['**.pagoefectivo.pe'],
   },
 };
 

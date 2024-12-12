@@ -1,6 +1,7 @@
 import forge from 'node-forge';
+import html2canvas from 'html2canvas';
 import CryptoJS from 'crypto-js';
-import { toJpeg, toBlob } from 'html-to-image';
+import { toJpeg } from 'html-to-image';
 //Internal app
 import { useJwtStore } from '@/store';
 
@@ -45,16 +46,19 @@ export const handleShare = async (element: HTMLElement, shareData: any, backgrou
   const webShareSupported = 'canShare' in navigator;
 
   try {
+    const canvas = await html2canvas(element, {
+      removeContainer: false,
+      allowTaint: true,
+      backgroundColor: backgroundColor,
+      scale: 1.5,
+    });
     if (webShareSupported) {
-      const blob = await toBlob(element, {
-        backgroundColor: backgroundColor,
-      });
-      const file = new File([blob as any], 'ticket.png', { type: 'image/png' });
-      await navigator.share({ files: [file] });
+      const blob: Blob = await new Promise((resolve: any) => canvas.toBlob(resolve, 'image/png'));
+      const file: File = new File([blob], 'ticket.png', { type: 'image/png' });
+      shareData['files'].push(file);
+      await navigator.share(shareData);
     } else {
-      const image = await toJpeg(element, {
-        backgroundColor: backgroundColor,
-      });
+      const image = canvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.href = image;
       link.download = 'ticket.png';
