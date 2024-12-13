@@ -12,7 +12,6 @@ export async function generateMetadata(): Promise<Metadata> {
       template: '%s | Yiro',
       default: 'Yiro',
     },
-    manifest: `/manifest.webmanifest`,
     description: 'La billetera digital que te ayudará a pagar, cobrar y ordenar tus finanzas.',
     icons: [
       {

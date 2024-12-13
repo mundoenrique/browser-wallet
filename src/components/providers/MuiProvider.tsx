@@ -7,6 +7,7 @@ import { ThemeProvider } from '@mui/material/styles';
 //Internal app
 import theme from '@/theme/theme-default';
 import { ChildrenProps } from '@/interfaces';
+import { useAccessSessionStore } from '@/store';
 
 /**
  * Provider setting material ui theme
@@ -14,7 +15,13 @@ import { ChildrenProps } from '@/interfaces';
  * @param children - Children element.
  */
 export default function MuiProvider({ children }: Readonly<ChildrenProps>): JSX.Element {
+
+  const accessSession = useAccessSessionStore((state) => state.accessSession);
+
+  const setAccessSession = useAccessSessionStore((state) => state.setAccessSession);
+
   const handleBeforeUnload = useCallback(async () => {
+    accessSession && setAccessSession(false)
     await axios.get('/api/v1/logout');
   }, []);
 

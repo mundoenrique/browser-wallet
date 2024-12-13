@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 //Internal app
 import logger from '@/utils/logger';
-import { delRedis } from '@/utils/redis';
+import { putRedis } from '@/utils/redis';
 import { SESSION_ID } from '@/utils/constants';
 
 export async function GET(request: NextRequest) {
@@ -11,7 +11,8 @@ export async function GET(request: NextRequest) {
 
     logger.debug('Delete session Redis  %s', JSON.stringify({ session: uuid }));
 
-    await delRedis(`session:${uuid}`);
+    const stateObject = { login: false };
+    await putRedis(`session:${uuid}`, stateObject);
 
     return new NextResponse(JSON.stringify({ code: '200.00.000', message: 'ok' }), { status: 200 });
   } catch (error) {
