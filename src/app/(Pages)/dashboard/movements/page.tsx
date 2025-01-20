@@ -64,7 +64,7 @@ export default function Movements() {
         params: {
           date: filterMonth,
           days: 90,
-          limit: 1000,
+          limit: 100,
           page: currentPage,
         },
       })
