@@ -123,7 +123,7 @@ export default function KeyProvider({ children }: Readonly<ChildrenProps>): JSX.
     <>
       {children}
       <Typography sx={{ position: 'fixed', bottom: '10px', right: '10px' }} variant="caption">
-        v1.0.18
+        v1.0.19
       </Typography>
     </>
   );
