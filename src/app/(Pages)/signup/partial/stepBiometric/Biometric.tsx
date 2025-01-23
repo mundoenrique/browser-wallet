@@ -1,13 +1,19 @@
 'use client';
 
+import uuid4 from 'uuid4';
 import { Box, Button } from '@mui/material';
 import { useCallback, useEffect, useRef, useState } from 'react';
 //Internal app
 import { api } from '@/utils/api';
-
-import { useRegisterStore, useUiStore } from '@/store';
+import { useJwtStore, useRegisterStore, useUiStore } from '@/store';
 
 export default function Biometric() {
+  let uuid = uuid4();
+
+  const changeUuid = () => {
+    useJwtStore.setState(() => ({ uuid: uuid }));
+  };
+
   const { setModalError, setLoadingScreen } = useUiStore();
   const { updateStep, updateControl } = useRegisterStore();
 
@@ -45,7 +51,10 @@ export default function Biometric() {
         window.removeEventListener('message', receiveMessage);
       }
 
-      if (data.payload.value === 'error') setBtnBack(true);
+      if (data.payload.value === 'error') {
+        setBtnBack(true);
+        changeUuid();
+      }
     }
   };
 
@@ -66,6 +75,8 @@ export default function Biometric() {
       })
       .catch((e) => {
         setModalError({ error: e });
+        updateStep(4);
+        changeUuid();
       })
       .finally(() => {
         setLoadingScreen(false);

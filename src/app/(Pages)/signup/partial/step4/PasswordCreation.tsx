@@ -1,5 +1,6 @@
 'use client';
 
+import uuid4 from 'uuid4';
 import { useEffect, useRef, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { sendGTMEvent } from '@next/third-parties/google';
@@ -8,9 +9,11 @@ import { api } from '@/utils/api';
 import { FormPass } from '@/components';
 import { CardStep, ErrorPage } from '..';
 import { encryptForge } from '@/utils/toolHelper';
-import { useRegisterStore, useUiStore, useCatalogsStore, useUserStore, useHeadersStore } from '@/store';
+import { useRegisterStore, useUiStore, useCatalogsStore, useUserStore, useHeadersStore, useJwtStore } from '@/store';
 
 export default function PasswordCreation() {
+  let uuid = uuid4();
+
   const { setUserId } = useUserStore();
 
   const host = useHeadersStore((state) => state.host);
@@ -26,6 +29,10 @@ export default function PasswordCreation() {
   const [error, setError] = useState<boolean>(false);
 
   const countRef = useRef(count);
+
+  const changeUuid = () => {
+    useJwtStore.setState(() => ({ uuid: uuid }));
+  };
 
   useEffect(() => {
     countRef.current = count;
@@ -103,6 +110,7 @@ export default function PasswordCreation() {
             setCount(1);
             setLoadingScreen(false);
             updateStep(4);
+            changeUuid();
             setModalError({
               title: 'Algo salió mal',
               description: 'No pudimos validar tus datos, inténtalo nuevamente.',
@@ -126,6 +134,7 @@ export default function PasswordCreation() {
       .catch(() => {
         setLoadingScreen(false);
         updateStep(4);
+        changeUuid();
         setModalError({ title: 'Algo salió mal', description: 'No pudimos validar tus datos.' });
       });
   };
