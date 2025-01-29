@@ -45,10 +45,6 @@ export const handleShare = async (element: HTMLElement, shareData: any, backgrou
   const webShareSupported = 'canShare' in navigator;
 
   const userAgent = window.navigator.userAgent;
-  console.log('🚀 ~ handleShare ~ userAgent:', userAgent.indexOf('Win'));
-  console.log('🚀 ~ handleShare ~ userAgent:', userAgent.indexOf('Mac'));
-  // userAgent.indexOf('Win') !== -1
-  // else if (userAgent.indexOf('Mac') !== -1
 
   const canvas = await html2canvas(element, {
     removeContainer: false,
