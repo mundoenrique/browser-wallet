@@ -31,11 +31,7 @@ export const handleDownload = async (element: HTMLElement, fileName: string, bac
     backgroundColor: backgroundColor,
     scale: 1.5,
   });
-  const image = canvas.toDataURL('image/png');
-  const link = document.createElement('a');
-  link.href = image;
-  link.download = fileName;
-  link.click();
+  handleDownloadImage(canvas, fileName);
 };
 
 /**
@@ -48,28 +44,35 @@ export const handleDownload = async (element: HTMLElement, fileName: string, bac
 export const handleShare = async (element: HTMLElement, shareData: any, backgroundColor: string) => {
   const webShareSupported = 'canShare' in navigator;
 
+  const userAgent = window.navigator.userAgent;
+
+  const canvas = await html2canvas(element, {
+    removeContainer: false,
+    allowTaint: true,
+    backgroundColor: backgroundColor,
+    scale: 1.5,
+  });
+
   try {
-    const canvas = await html2canvas(element, {
-      removeContainer: false,
-      allowTaint: true,
-      backgroundColor: backgroundColor,
-      scale: 1.5,
-    });
-    if (webShareSupported) {
+    if (webShareSupported && userAgent.indexOf('Win') !== -1) {
       const blob: Blob = await new Promise((resolve: any) => canvas.toBlob(resolve, 'image/png'));
       const file: File = new File([blob], 'ticket.png', { type: 'image/png' });
       shareData['files'].push(file);
       await navigator.share(shareData);
     } else {
-      const image = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.href = image;
-      link.download = 'ticket.png';
-      link.click();
+      handleDownloadImage(canvas, 'ticket.png');
     }
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    handleDownloadImage(canvas, 'ticket.png');
   }
+};
+
+const handleDownloadImage = async (canvas: any, fileName: string) => {
+  const image = canvas.toDataURL('image/png');
+  const link = document.createElement('a');
+  link.href = image;
+  link.download = fileName ?? 'ticket.png';
+  link.click();
 };
 
 export const encryptForge = (data: any, exchange: any = '') => {
