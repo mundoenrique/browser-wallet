@@ -51,7 +51,7 @@ export async function middleware(request: NextRequest) {
 
   const url_api_name: string = partsUrl[3] || '';
   const resUrlBase = pathname.substring(pathname.indexOf(url_api_name) + url_api_name.length);
-  const apiUrl: string = URL_BASE[url_api_name] + resUrlBase + decodeURIComponent(nextUrl.search);
+  const apiUrl: string = URL_BASE[url_api_name] + resUrlBase + decodeQueryParam(nextUrl.search);
   const partsUrlApi = apiUrl.split('/');
 
   const isProtectedApiV0 = protectedApiV0.includes(partsUrlApi[2]);
@@ -61,6 +61,10 @@ export async function middleware(request: NextRequest) {
     response.headers.set('x-url', apiUrl);
     return response;
   }
+}
+
+function decodeQueryParam(p:any) {
+  return decodeURIComponent(p.replace(/\+/g, " "));
 }
 
 export const config = {
