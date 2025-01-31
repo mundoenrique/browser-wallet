@@ -201,6 +201,7 @@ export default function PasswordCreation() {
       })
       .catch((e) => {
         setModalError({ error: e });
+        updateStep(4);
       });
   };
 
