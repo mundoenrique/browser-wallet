@@ -255,5 +255,5 @@ export const capitalizeFirstLetter = (str: string): string => {
 
 // Function filter response code movements
 export const filterResponseCode = (data: any) => {
-  return data.filter((item: any) => item.responseCode === '00');
+  return data.filter((item: any) => item.authCode !== '');
 };
