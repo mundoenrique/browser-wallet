@@ -5,7 +5,7 @@ import { Avatar, Box, Typography } from '@mui/material';
 import { NorthEast, SouthEast } from '@mui/icons-material';
 //Internal app
 import { TableDataProps } from '@/interfaces';
-import { stringAvatar } from '@/utils/toolHelper';
+import { stringAvatar, capitalizeFirstLetterMovements } from '@/utils/toolHelper';
 import { fuchsiaBlue, slate } from '@/theme/theme-default';
 import { SkeletonTable, EmptySlot, ErrorSlot } from '@/components';
 
@@ -90,7 +90,7 @@ const RowDetail = ({ row }: { row: TableDataProps['data'][number] }) => (
             textTransform: 'capitalize',
           }}
         >
-          {row.description}
+          {capitalizeFirstLetterMovements(row.description)}
         </Typography>
         <Typography
           sx={{
