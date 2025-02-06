@@ -257,3 +257,11 @@ export const capitalizeFirstLetter = (str: string): string => {
 export const filterResponseCode = (data: any) => {
   return data.filter((item: any) => item.authCode && item.authCode !== '00');
 };
+
+//function cappitalize
+
+export const capitalizeFirstLetterMovements = (str: string): string => {
+  if (!str) return '-';
+  else if (str === 'Recarga PagoEfectivo') return str;
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
