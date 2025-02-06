@@ -262,6 +262,6 @@ export const filterResponseCode = (data: any) => {
 
 export const capitalizeFirstLetterMovements = (str: string): string => {
   if (!str) return '-';
-  else if (str === 'Recarga PagoEfectivo') return str;
+  else if (str.includes('PagoEfectivo')) return str;
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };
