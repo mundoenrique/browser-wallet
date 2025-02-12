@@ -39,7 +39,7 @@ const storeAPi: StateCreator<UserStore, [['zustand/devtools', never]]> = (set, g
    * Set activate card status
    */
   setActivateCard: () => {
-    const physicalCards = { status: 'PENDING' };
+    const physicalCards = { status: 'REQUEST' };
     set({ user: { ...get().user, physicalCards } });
   },
 });
