@@ -73,7 +73,7 @@ export default function ListSidebar(): JSX.Element {
 
   const handleConditionBanner = () => {
     if (isPhysicalCard() == undefined) {
-      const status = cardActivationStatus() !== 'DONE';
+      const status = cardActivationStatus() !== 'ACTIVE';
       return status;
     }
 
@@ -102,9 +102,9 @@ export default function ListSidebar(): JSX.Element {
               sx={{ mt: { xs: 10, md: 'auto' }, mb: { xs: 0, md: 'auto' } }}
               onClick={() => {
                 updatePage(
-                  cardActivationStatus() === 'PENDING'
+                  cardActivationStatus() === 'REQUEST'
                     ? 'activatePhysicalCard'
-                    : cardActivationStatus() === 'DONE'
+                    : cardActivationStatus() === 'ACTIVE'
                     ? ''
                     : 'requestPhysicalCard'
                 );
@@ -114,12 +114,12 @@ export default function ListSidebar(): JSX.Element {
                   eventParams: {
                     content_type: 'boton',
                     section:
-                      cardActivationStatus() === 'PENDING'
+                      cardActivationStatus() === 'REQUEST'
                         ? `Yiro :: ¿Ya activaste tu tarjeta? :: menu_1`
                         : `Yiro :: ¿Ya solicitaste tu tarjeta? :: menu_1`,
                     previous_section: 'dashboard',
                     selected_content:
-                      cardActivationStatus() === 'PENDING'
+                      cardActivationStatus() === 'REQUEST'
                         ? 'menu_1 :: ¿Ya activaste tu tarjeta?'
                         : 'menu_1 :: ¿Ya solicitaste tu tarjeta?',
                     destination_page: `${host}/card-configuration`,
@@ -131,7 +131,7 @@ export default function ListSidebar(): JSX.Element {
                 <Image src={card} width={70} height={44} alt="Tarjeta Yiro" priority />
               </Box>
               <Typography fontSize="14px" fontWeight={700} mr={4}>
-                {cardActivationStatus() === 'PENDING' ? '¿Ya activaste tu tarjeta?' : '¿Ya solicitaste tu tarjeta?'}
+                {cardActivationStatus() === 'REQUEST' ? '¿Ya activaste tu tarjeta?' : '¿Ya solicitaste tu tarjeta?'}
               </Typography>
             </Card>
           )}

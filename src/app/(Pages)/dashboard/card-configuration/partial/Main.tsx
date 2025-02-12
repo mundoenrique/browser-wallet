@@ -166,7 +166,7 @@ export default function CardConfiguration() {
         <Stack spacing={3 / 2} mt={3}>
           {!isPhysicalCard() && (
             <>
-              {cardActivationStatus() === 'PENDING' ? (
+              {cardActivationStatus() === 'REQUEST' ? (
                 <HandleCard
                   onClick={() => {
                     updatePage('activatePhysicalCard');
