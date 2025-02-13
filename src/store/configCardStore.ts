@@ -33,7 +33,7 @@ const storeAPi: StateCreator<ConfigCardStore, [['zustand/devtools', never]]> = (
    */
   cardActivationStatus: () => {
     const user = useUserStore.getState().user;
-    if (!Object.hasOwn(user, 'physicalCards')) {
+    if (!Object.hasOwn(user, 'requestPhysicalCard')) {
       return 'NONE';
     }
     return user.physicalCards.status;
